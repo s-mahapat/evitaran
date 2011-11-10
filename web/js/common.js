@@ -69,3 +69,50 @@ function openModalPopUp(url){
 function changePwdDialog(url) {
 	newwindow=window.showModalDialog(url,'title',"dialogHeight: 200px; dialogWidth: 200px;center: yes;resizeable: no;status: no;menubar: no;scrollbars: no;toolbar: no;");
 }
+
+function isEmpty(element){
+    if(element.value.length == 0){
+        return true;
+    }else{
+        //check if there are non space characters.
+    }
+    return false;
+}
+
+function makeReadOnly(){
+
+
+    var formFields = document.getElementsByTagName("input");
+
+    for(var i=0;i<formFields.length;i++){
+        var formField = formFields[i];
+        if( formField.className == "IASTextBox"
+            || formField.className == "IASEmailTextBox"
+            || formField.className == "IASCheckBox"
+            || formField.className == "IASDateTextBox"
+        ){
+            formField.disabled = true;
+            //formField.style.backgroundColor = "#D3D3D3";
+        }
+    }
+
+    formFields = document.getElementsByTagName("select");
+
+    for(i=0;i<formFields.length;i++){
+        formField = formFields[i];
+        if(formField.className == "IASComboBox"){
+            formField.disabled = true;
+            //formField.style.backgroundColor = "#D3D3D3";
+        }
+    }
+
+    formFields = document.getElementsByTagName("textarea");
+
+    for(i=0;i<formFields.length;i++){
+        formField = formFields[i];
+        if(formField.className == "IASTextArea"){
+            formField.disabled = true;
+            //formField.style.backgroundColor = "#D3D3D3";
+        }
+    }
+}
