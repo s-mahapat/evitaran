@@ -14,7 +14,7 @@ import javax.servlet.RequestDispatcher;
  *
  * @author Shailendra Mahapatra
  */
-public class main extends HttpServlet {
+public class subscriber extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -28,24 +28,11 @@ public class main extends HttpServlet {
         String action = request.getParameter("action");
         String url = null;
         try{
-            if(action.equalsIgnoreCase("home")){
-                url = "/jsp/home.jsp";
-            }else if(action.equalsIgnoreCase("logout")){
-                url = "/jsp/login/logout.jsp";
-            }else if(action.equalsIgnoreCase("createinward")){
-                url = "/jsp/inward/createinward.jsp";
-            }else if(action.equalsIgnoreCase("searchinward")){
-                url = "/jsp/inward/searchinward.jsp";
-            }else if(action.equalsIgnoreCase("pendinginwards")){
-                url = "/jsp/inward/processinward.jsp";
-            }else if(action.equalsIgnoreCase("gml")){
-                url = "/jsp/ml/generateml.jsp";
-            }else if(action.equalsIgnoreCase("newsubscription")){
-                url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/subscriber?action=new";
-            }else if(action.equalsIgnoreCase("renewsubscription")){
-                url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/subscriber?action=renew";
+            if(action.equalsIgnoreCase("new")){
+                url = "subscriber/subscriber_subscription.jsp";
+            }else if(action.equalsIgnoreCase("renew")){
+                url = "subscriber/subscriber_subscription.jsp";
             }
-
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }

@@ -30,7 +30,9 @@ public class inward extends HttpServlet {
         String url = null;
         try{
             if(action.equalsIgnoreCase("saveinward")){
-                url = "/inward/viewinward.jsp";
+                url = "/jsp/inward/viewinward.jsp";
+            }else if(action.equalsIgnoreCase("search")){
+
             }
 
             RequestDispatcher rd = request.getRequestDispatcher(url);
