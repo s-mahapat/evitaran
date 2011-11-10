@@ -9,7 +9,7 @@
     <body>
         <%@include file="templates/layout.jsp" %>
         <div id="bodyContainer">
-            <img id="watermark" src="images/watermark.png"></img>
+            <img id="watermark" src="<%=request.getContextPath() + "/images/watermark.png"%>"/>
         </div>
     </body>
 </html>
