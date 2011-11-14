@@ -173,7 +173,7 @@
                 <label>Cheque Return:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="checkReturn" id="checkReturn"/>
+                <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="checkReturn" id="checkReturn" onchange="enableCheckReturn()"/>
             </span>
         </div>
 
@@ -224,25 +224,19 @@
 <%-----------------------------------------------------------------------------------------------------%>
 <fieldset class="subMainFieldSet">
     <div class="IASFormFieldDiv">
-        <!--<div id="nextBtnDiv">
-            <input class="IASButton" TABINDEX="12" type="submit" value="Next" name="btnNext"/>
-        </div>
-        <div id="processInwardBtnDiv">
-            <input class="IASButton" TABINDEX="14" type="submit" value="Process Inward" name="btnProcessInward"/>
-        </div>
-        -->
+        <%--<input type="hidden" name="action" id="action"/>--%>
         <div id="editInwardBtnDiv">
-            <input class="IASButton" TABINDEX="14" type="button" value="Edit Inward" id="btnEditInward" name="btnEditInward"/>
+            <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="12" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
         </div>
         <div id="saveBtnDiv">
-            <input class="IASButton" TABINDEX="13" type="submit" value="Save" id="btnSave" name="btnSave"/>
+            <input onclick="setActionValue('save')" class="IASButton" TABINDEX="13" type="submit" value="Save" id="btnSaveInward" name="submitAction"/>
         </div>
 
         <div id="sendAckBtnDiv">
-            <input class="IASButton" TABINDEX="15" type="button" value="Send Acknowledgement" id="btnSendAck" name="btnSendAck"/>
+            <input onclick="setActionValue('sendAck')" class="IASButton" TABINDEX="14" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>
         </div>
         <div id="sendReturnBtnDiv">
-            <input class="IASButton" TABINDEX="16" type="button" value="Send Return" id="btnSendReturn" name="btnSendReturn"/>
+            <input onclick="setActionValue('sendReturn')" class="IASButton" TABINDEX="15" type="submit" value="Send Return" id="btnSendReturn" name="submitAction"/>
         </div>
     </div>
 </fieldset>

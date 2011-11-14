@@ -7,17 +7,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
-        <link rel="stylesheet" type="text/css" href="../css/inward.css" />
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/inward/inward.css"%>"/>
 
         <title>Edit Inward</title>
 
         <%--------------------------------------------------------------%>
         <%-- Calendar --%>
         <%--------------------------------------------------------------%>
-        <script src="../js/CalendarPopup.js" type="text/javascript"></script>
+        <script src="<%=request.getContextPath() + "/js/CalendarPopup.js"%>" type="text/javascript"></script>
+        <script src="<%=request.getContextPath() + "/js/inward/editinward.js"%>" type="text/javascript"></script>
         <script type="text/javascript">
             var calFrom = new CalendarPopup("dateDiv");
             calFrom.showNavigationDropdowns();
+            addOnloadEvent(makeInwardReadOnly);
         </script>
 
     </head>

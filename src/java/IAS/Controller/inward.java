@@ -5,7 +5,6 @@
 package IAS.Controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,10 +28,16 @@ public class inward extends HttpServlet {
         String action = request.getParameter("action");
         String url = null;
         try{
-            if(action.equalsIgnoreCase("saveinward")){
+            if(action.equalsIgnoreCase("save")){
                 url = "/jsp/inward/viewinward.jsp";
-            }else if(action.equalsIgnoreCase("search")){
-
+            }else if(action.equalsIgnoreCase("edit")){
+                url = "/jsp/inward/editinward.jsp";
+            }else if(action.equalsIgnoreCase("view")){
+                url = "/jsp/inward/viewinward.jsp";
+            }else if(action.equalsIgnoreCase("sendAck")){
+                url = "/jsp/inward/ackinward.jsp";
+            }else if(action.equalsIgnoreCase("sendReturn")){
+                url = "/jsp/inward/returninward.jsp";
             }
 
             RequestDispatcher rd = request.getRequestDispatcher(url);

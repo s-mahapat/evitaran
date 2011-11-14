@@ -3,17 +3,20 @@
  * and open the template in the editor.
  */
 
-
 function makeInwardReadOnly(){
 
-    document.getElementById("btnSaveInward").disabled = true;
-    document.getElementById("btnSearchSubscriber").disabled = true;
-
+    document.getElementById("btnEditInward").disabled = true;
     if(document.getElementById("checkReturn").checked){
         document.getElementById("btnSendReturn").disabled = false;
     }else{
         document.getElementById("btnSendReturn").disabled = true;
     }
+}
 
-
+function enableCheckReturn(){
+    if(document.getElementById("checkReturn").checked){
+        document.getElementById("btnSendReturn").disabled = false;
+    }else{
+        document.getElementById("btnSendReturn").disabled = true;
+    }
 }

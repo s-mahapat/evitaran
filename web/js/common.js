@@ -118,5 +118,23 @@ function makeReadOnly(){
 }
 
 function setActionValue(value){
-    document.getElementById('action').value = value;
+    var Divs = document.getElementsByTagName('div');
+    var mainDiv;
+    for(var i=0;i<Divs.length;i++){
+        if(Divs[i].className == 'MainDiv'){
+            mainDiv = Divs[i];
+            break;
+        }
+    }
+    var hiddenInput = document.getElementById('action');
+    if( hiddenInput == null){
+        hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('id', 'action');
+        hiddenInput.setAttribute('name', 'action');
+        hiddenInput.setAttribute('value', value);
+        mainDiv.appendChild(hiddenInput);
+    }else{
+        document.getElementById('action').value = value;
+    }
 }

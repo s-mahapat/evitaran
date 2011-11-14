@@ -7,9 +7,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
-        <link rel="stylesheet" type="text/css" href="../css/inward.css" />
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/inward/inward.css"%>"/>
         <title>View Inward</title>
-        <script type="text/javascript" src="../js/viewinward.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/viewinward.js"%>"></script>
         <script>
             addOnloadEvent(makeReadOnly);
             addOnloadEvent(makeInwardReadOnly);
@@ -19,7 +19,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="" name="inwardForm">
+            <form method="POST" action="<%=request.getContextPath() + "/inward"%>" name="inwardForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>View Inward</legend>

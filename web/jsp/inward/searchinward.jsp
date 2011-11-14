@@ -7,7 +7,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
-        <link rel="stylesheet" type="text/css" href="css/inward.css" />
+        <link rel="stylesheet" type="text/css" href="css/inward/inward.css" />
 
         <title>Search Inward</title>
 
@@ -149,7 +149,7 @@
                                         <td>Bangalore</td>
                                         <td>176787</td>
                                         <td>New Subscription</td>
-                                        <td><a href="<%=request.getContextPath() + "/inward/viewinward.jsp"%>">view</a><a href="<%=request.getContextPath() + "/inward/editinward.jsp"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/inward?action=view"%>">view</a><a href="<%=request.getContextPath() + "/inward?action=edit"%>">edit</a></td>
                                     </tr>
                                     <tr>
                                         <td>124</td>
@@ -158,7 +158,7 @@
                                         <td>Bangalore</td>
                                         <td>176787</td>
                                         <td>Renew Subscription</td>
-                                        <td><a href="<%=request.getContextPath() + "/inward/viewinward.jsp"%>">view</a><a href="<%=request.getContextPath() + "/inward/editinward.jsp"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/inward/viewinward.jsp"%>">view</a><a href="<%=request.getContextPath() + "/inward?action=edit"%>">edit</a></td>
                                     </tr>
                                     <tr>
                                         <td>125</td>

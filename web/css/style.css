@@ -86,6 +86,15 @@ body{
     z-index: 2;
 }
 
+/*
+#bodyContainer{
+    left: 0px;
+    top: 8px;
+    padding-left: 12%;
+    position: relative;
+    width: 88%;
+    height: auto;
+}*/
 #bodyContainer{
     left: 0px;
     top: 68px;
@@ -229,12 +238,12 @@ body{
 
 .IASFormLeftDiv{
     float: left;
-    width: 48%;
+    width: 40%;
     padding: 5px;
 }
 
 .IASFormRightDiv{
-    width: 48%;
+    width: 40%;
     float: right;
     padding: 5px;
 }
@@ -244,6 +253,7 @@ body{
     margin: 4px;
     float: left;
     width: 98%;
+    /*padding: 10px;*/
 }
 
 

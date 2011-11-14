@@ -2,14 +2,22 @@
     Document   : Generate Mailing List
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    String listType = request.getParameter("list");
+    String list = null;
+    if(listType.equalsIgnoreCase("ml")){
+        list = "Mailing";
+    }else if(listType.equalsIgnoreCase("bil")){
+        list = "Back Issue";
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <base href="${pageContext.request.contextPath}">
         <%@include file="../templates/style.jsp"%>
         <link rel="stylesheet" type="text/css" href="css/ml.css"/>
-        <title>Generate Mailing List</title>
+        <title>Generate <%=list%> List</title>
         <script type="text/javascript" src="js/ml.js"></script>
         <script>
             //addOnloadEvent(makeReadOnly);
@@ -19,10 +27,10 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="" name="mlForm">
+            <form method="POST" action="<%=request.getContextPath() + "/ml?action=gml"%>" name="mlForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Generate Mailing List</legend>
+                        <legend>Generate <%=list%> List</legend>
                         <fieldset class="subMainFieldSet">
                             <legend>Mailing List Criteria</legend>
                             <div class="IASFormLeftDiv">
@@ -82,20 +90,24 @@
                                         </select>
                                     </span>
                                 </div>
-                            </div>
-                        </fieldset>
-
-                        <!--
-                        /* Actions Field Set */
-                        -->
-                        <fieldset class="subMainFieldSet">
-                            <div class="IASFormFieldDiv">
-                                <div class="singleActionBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="submit" value="Generate Mailing List" id="btnGenerateML" name="btnGenerateML"/>
+                                <div class="IASFormFieldDiv">
+                                    &nbsp;
+                                </div>
+                                <div class="IASFormFieldDiv">
+                                    &nbsp;
+                                </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        &nbsp;
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASButton" TABINDEX="6" type="submit" value="Generate Mailing List" id="btnGenerateML" name="btnGenerateML"/>
+                                    </span>
                                 </div>
 
                             </div>
                         </fieldset>
+
                     </fieldset>
                 </div>
             </form>
