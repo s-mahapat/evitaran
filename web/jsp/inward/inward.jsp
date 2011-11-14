@@ -1,7 +1,7 @@
 
 <%-- Calendar --%>
 <%--------------------------------------------------------------%>
-<script src="../js/CalendarPopup.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath() + "/js/CalendarPopup.js"%>" type="text/javascript"></script>
 <script type="text/javascript">
     var calFrom = new CalendarPopup("dateDiv");
     calFrom.showNavigationDropdowns();

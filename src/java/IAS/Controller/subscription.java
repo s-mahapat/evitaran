@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 
-public class subscriber extends HttpServlet {
+public class subscription extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -25,28 +25,15 @@ public class subscriber extends HttpServlet {
         String action = request.getParameter("action");
         String url = null;
         try{
-            if(action.equalsIgnoreCase("save")){
-                url = "/jsp/subscriber/viewsubscriber.jsp";
-            }
-            else if(action.equalsIgnoreCase("edit")){
-                url = "/jsp/subscriber/editsubscriber.jsp";
-            }
-            else if(action.equalsIgnoreCase("display")){
-                url = "/jsp/subscriber/viewsubscriber.jsp";
-            }
-            else if(action.equalsIgnoreCase("view")){
+            if(action.equalsIgnoreCase("view")){
                 url = "/jsp/subscription/viewsubscription.jsp";
             }
-            else if(action.equalsIgnoreCase("add")){
-                url = "/jsp/subscription/addnewsubscription.jsp";
+            else if(action.equalsIgnoreCase("save")){
+                url = "/jsp/subscription/viewsubscription.jsp";
             }
-            else if(action.equalsIgnoreCase("gpi")){
-                url = "/jsp/inward/generateproformainvoice.jsp";
+            else if(action.equalsIgnoreCase("edit")){
+                url = "/jsp/subscription/editsubscription.jsp";
             }
-            else if(action.equalsIgnoreCase("mil")){
-                url = "/jsp/subscription/missingissuelist.jsp";
-            }
-            
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }

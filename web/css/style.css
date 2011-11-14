@@ -88,9 +88,9 @@ body{
 
 #bodyContainer{
     left: 0px;
-    top: 8px;
+    top: 68px;
     padding-left: 12%;
-    position: relative;
+    position: fixed;
     width: 88%;
     height: auto;
 }
@@ -229,19 +229,21 @@ body{
 
 .IASFormLeftDiv{
     float: left;
-    width: 40%;
+    width: 48%;
     padding: 5px;
 }
 
 .IASFormRightDiv{
-    width: 40%;
+    width: 48%;
     float: right;
     padding: 5px;
 }
 
 .IASFormFieldDiv{
     clear: both;
-    padding: 10px;
+    margin: 4px;
+    float: left;
+    width: 98%;
 }
 
 

@@ -46,8 +46,8 @@
     </div>
     <div>
         <span>Subscriber</span>
-        <a href="<%=contextPath + "/main?action=test"%>">View Subscriber</a>
-        <a href="<%=contextPath + "/subscriber_subscription.jsp"%>">Edit Subscriber</a>
+        <a href="<%=contextPath + "/main?action=createsubscriber"%>">Create Subscriber</a>
+        <a href="<%=contextPath + "/main?action=searchsubscriber"%>">Search Subscriber</a>
     </div>
     <div>
         <span>Mailing List</span>

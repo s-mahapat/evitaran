@@ -1,0 +1,34 @@
+/* 
+    Document   : subscription
+    Created on : Nov 12, 2011, 4:39:26 PM
+    Author     : I036897
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+#displaySubscriptionBtnDiv{
+    float: left;
+    width: 17%;
+    margin-left: 23%; 
+}
+
+#saveSubscriptionBtnDiv{
+    float: left;
+    width: 6%;
+}
+
+#editSubscriptionBtnDiv{
+    float: left;
+    width: 10%;
+    margin-right: 5%; 
+}
+

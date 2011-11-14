@@ -14,9 +14,14 @@
     <servlet>
         <servlet-name>subscriber</servlet-name>
         <servlet-class>IAS.Controller.subscriber</servlet-class>
-        <run-as>
-            <role-name>user</role-name>
-        </run-as>
+    </servlet>
+    <servlet>
+        <servlet-name>subscription</servlet-name>
+        <servlet-class>IAS.Controller.subscription</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>debug</servlet-name>
+        <servlet-class>IAS.Controller.debug</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
@@ -30,6 +35,14 @@
         <servlet-name>subscriber</servlet-name>
         <url-pattern>/subscriber</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>subscription</servlet-name>
+        <url-pattern>/subscription</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>debug</servlet-name>
+        <url-pattern>/debug</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -41,9 +54,9 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>JSS</web-resource-name>
-            <description> accessible by authenticated users of the user role</description>--&gt;
+            <description> accessible by authenticated users of the user role</description>
             <url-pattern>*.*</url-pattern>
-            </web-resource-collection>
+        </web-resource-collection>
         <auth-constraint>
             <description>These roles are allowed access</description>
             <role-name>user</role-name>

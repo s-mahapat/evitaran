@@ -34,17 +34,17 @@ root {
 #searchBtnDiv{
     margin-left: 35%;
     float: left;
-    width: 15%;
+    width: 10%;
 }
 
 #filterBtnDiv{
     margin-left: 35%;
     float: left;
-    width: 15%;
+    width: 10%;
 }
 
 #resetBtnDiv{
-    margin-right: 35%;
-    float: right;
-    width: 15%;
+    /*margin-right: 35%;*/
+    float: left;
+    width: 10%;
 }

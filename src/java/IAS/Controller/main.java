@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+
 /**
  *
  * @author Shailendra Mahapatra
@@ -27,33 +28,32 @@ public class main extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String url = null;
-        try{
-            if(action.equalsIgnoreCase("home")){
+        try {
+            if (action.equalsIgnoreCase("home")) {
                 url = "/jsp/home.jsp";
-            }else if(action.equalsIgnoreCase("logout")){
+            } else if (action.equalsIgnoreCase("logout")) {
                 url = "/jsp/login/logout.jsp";
-            }else if(action.equalsIgnoreCase("createinward")){
+            } else if (action.equalsIgnoreCase("createinward")) {
                 url = "/jsp/inward/createinward.jsp";
-            }else if(action.equalsIgnoreCase("searchinward")){
+            } else if (action.equalsIgnoreCase("searchinward")) {
                 url = "/jsp/inward/searchinward.jsp";
-            }else if(action.equalsIgnoreCase("pendinginwards")){
+            } else if (action.equalsIgnoreCase("pendinginwards")) {
                 url = "/jsp/inward/processinward.jsp";
-            }else if(action.equalsIgnoreCase("gml")){
+            } else if (action.equalsIgnoreCase("gml")) {
                 url = "/jsp/ml/generateml.jsp";
-            }else if(action.equalsIgnoreCase("newsubscription")){
+            } else if (action.equalsIgnoreCase("newsubscription")) {
                 url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/subscriber?action=new";
-            }else if(action.equalsIgnoreCase("renewsubscription")){
+            } else if (action.equalsIgnoreCase("renewsubscription")) {
                 url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/subscriber?action=renew";
+            } else if (action.equalsIgnoreCase("createsubscriber")) {
+                url = "/jsp/subscriber/createsubscriber.jsp";
+            }else if (action.equalsIgnoreCase("searchsubscriber")) {
+                url = "/jsp/subscriber/searchsubscriber.jsp";
             }
-
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-        }
-        catch(Exception e){
-
-        }
-        finally{
-
+        } catch (Exception e) {
+        } finally {
         }
 
     }

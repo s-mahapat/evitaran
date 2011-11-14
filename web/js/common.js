@@ -116,3 +116,7 @@ function makeReadOnly(){
         }
     }
 }
+
+function setActionValue(value){
+    document.getElementById('action').value = value;
+}

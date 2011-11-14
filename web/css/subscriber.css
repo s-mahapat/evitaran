@@ -1,0 +1,53 @@
+/*
+    Document   : Style for Subscriber and Subscription JSPs are defined here
+*/
+root { 
+    display: block;
+}
+
+
+/*Subscriber CSS*/
+#editSubscriberBtnDiv{
+    float: left;
+    width: 10%;
+    margin-left: 5%;
+}
+
+#saveSubscriberBtnDiv{
+    float: left;
+    width: 10%;   
+}
+
+#displaySubscriberBtnDiv{
+    float: left;
+    width: 10%;  
+}
+
+#viewsubscriptionBtnDiv{
+    float: left;
+    width: 15%;
+}
+
+#addsubscriptionBtnDiv{
+    float: left;
+    width: 15%;
+}
+
+#generateProformaInvoiceBtnDiv{
+    float: left;
+    width: 20%;
+}
+
+#missingIssueListBtnDiv{
+    float: left;
+    width: 10%;
+    margin-right:3%;
+}
+
+
+/*Search Subscriber CSS*/
+#searchBtnDiv{
+    float: left;
+    width: 20%;
+    margin-left: 30%;
+}
