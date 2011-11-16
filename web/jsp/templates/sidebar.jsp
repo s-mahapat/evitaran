@@ -56,27 +56,28 @@
     </div>
     <div>
         <span>Reports</span>
-        <a href="<%=contextPath + "/reports/statement.jsp"%>">Statement</a>
-        <a href="<%=contextPath + "/reports/listJournals.jsp"%>">List of Journals</a> 
-        <a href="<%=contextPath + "/reports/listSubType.jsp"%>">List of Subscriber types</a> 
-        <a href="<%=contextPath + "/reports/listAgent.jsp"%>">List of Agent</a> 
-        <a href="<%=contextPath + "/reports/listSubscriber.jsp"%>">List of Subscribers</a> 
-        <a href="<%=contextPath + "/reports/circulationFiguresJournal.jsp"%>">Circulation figures for journals</a> 
-        <a href="<%=contextPath + "/reports/profarmaInvoice.jsp"%>">List of Invoice</a>  
-        <a href="<%=contextPath + "/reports/listBackissue.jsp"%>">List of back issue sent</a>  
-        <a href="<%=contextPath + "/reports/listRenewalReminder.jsp"%>">List of  renewal reminder sent</a> 
-        <a href="<%=contextPath + "/reports/listmailinglist.jsp"%>">List of mailing list sent</a> 
-        <a href="<%=contextPath + "/reports/journalRates.jsp"%>">Rates for Journals</a>         
+        <a href="<%=contextPath + "/main?action=statement"%>">Statement</a>
+        <a href="<%=contextPath + "/main?action=listJournals"%>">List of Journals</a> 
+        <a href="<%=contextPath + "/main?action=listSubType"%>">List of Subscriber types</a> 
+        <a href="<%=contextPath + "/main?action=listAgent"%>">List of Agent</a> 
+        <a href="<%=contextPath + "/main?action=listSubscriber"%>">List of Subscribers</a> 
+        <a href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation figures for journals</a> 
+        <a href="<%=contextPath + "/main?action=listprofarmaInvoice"%>">List of Invoice</a>  
+        <a href="<%=contextPath + "/main?action=listBackissue"%>">List of back issue sent</a>  
+        <a href="<%=contextPath + "/main?action=listReminder"%>">List of  renewal reminder sent</a> 
+        <a href="<%=contextPath + "/main?action=listmailinglist"%>">List of mailing list sent</a> 
+        <a href="<%=contextPath + "/main?action=journalRates"%>">Rates for Journals</a>         
     </div>
+
     <div>
         <span>Master Data</span>
-        <a href="<%=contextPath + "/masterdata/addNewSubType.jsp"%>">Add New Subscriber Type</a>
-        <a href="<%=contextPath + "/masterdata/searchSubType.jsp"%>">Search Subscriber Type</a>
-        <a href="<%=contextPath + "/masterdata/addJournal.jsp"%>">Add Journal</a>
-        <a href="<%=contextPath + "/masterdata/searchJournal.jsp"%>">Search Journal</a>
-        <a href="<%=contextPath + "/masterdata/addAgent.jsp"%>">Add Agent</a>
-        <a href="<%=contextPath + "/masterdata/searchAgent.jsp"%>">Search Agent</a>
-        <a href="<%=contextPath + "/masterdata/annualSubscriptionRates.jsp"%>">Annual Subscription Rate</a>
+        <a href="<%=contextPath + "/main?action=addSubType"%>">Add New Subscriber Type</a>
+        <a href="<%=contextPath + "/main?action=searchSubType"%>">Search Subscriber Type</a>
+        <a href="<%=contextPath + "/main?action=addJournal"%>">Add Journal</a>
+        <a href="<%=contextPath + "/main?action=searchJournal"%>">Search Journal</a>
+        <a href="<%=contextPath + "/main?action=addAgent"%>">Add Agent</a>
+        <a href="<%=contextPath + "/main?action=searchAgent"%>">Search Agent</a>
+        <a href="<%=contextPath + "/main?action=annualSubscriptionRates"%>">Annual Subscription Rate</a>
     </div>
 
 </div>

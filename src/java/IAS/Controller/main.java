@@ -53,7 +53,44 @@ public class main extends HttpServlet {
                url = "/jsp/subscriber/createsubscriber.jsp";
             }else if (action.equalsIgnoreCase("searchsubscriber")) {
                 url = "/jsp/subscriber/searchsubscriber.jsp";
+            }else if (action.equalsIgnoreCase("addSubType")) {
+                url = "/jsp/masterdata/addNewSubType.jsp";
+            }else if (action.equalsIgnoreCase("addJournal")) {
+                url = "/jsp/masterdata/addJournal.jsp";
+            }else if (action.equalsIgnoreCase("addAgent")) {
+                url = "/jsp/masterdata/addAgent.jsp";
+            }else if (action.equalsIgnoreCase("searchSubType")) {
+                url = "/jsp/masterdata/searchSubType.jsp";
+            }else if (action.equalsIgnoreCase("searchJournal")) {
+                url = "/jsp/masterdata/searchJournal.jsp";
+            }else if (action.equalsIgnoreCase("searchAgent")) {
+                url = "/jsp/masterdata/searchAgent.jsp";
+            }else if (action.equalsIgnoreCase("subRate")) {
+                url = "/jsp/masterdata/annualSubscriptionrates.jsp";
+            }else if (action.equalsIgnoreCase("listAgent")) {
+                url = "/jsp/reports/listAgent.jsp";
+            }else if (action.equalsIgnoreCase("listBackissue")) {
+                url = "/jsp/reports/listBackissue.jsp";
+            }else if (action.equalsIgnoreCase("listJournal")) {
+                url = "/jsp/reports/listJournal.jsp";
+            }else if (action.equalsIgnoreCase("listReminder")) {
+                url = "/jsp/reports/listRenewalReminder.jsp";
+            }else if (action.equalsIgnoreCase("listSubType")) {
+                url = "/jsp/reports/listSubType.jsp";
+            }else if (action.equalsIgnoreCase("listSubscriber")) {
+                url = "/jsp/reports/listSubscriber.jsp";
+            }else if (action.equalsIgnoreCase("listmailinglist")) {
+                url = "/jsp/reports/listmailinglist.jsp";
+            }else if (action.equalsIgnoreCase("statement")) {
+                url = "/jsp/reports/statement.jsp";
+            }else if (action.equalsIgnoreCase("journalRates")) {
+                url = "/jsp/reports/journalRates.jsp";
+            }else if (action.equalsIgnoreCase("circulationFigure")) {
+                url = "/jsp/reports/circulationFiguresJournal.jsp";
+            }else if (action.equalsIgnoreCase("listprofarmaInvoice")) {
+                url = "/jsp/reports/listprofarmaInvoice.jsp";
             }
+            
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         } catch (Exception e) {
