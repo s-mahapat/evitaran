@@ -71,8 +71,8 @@ public class main extends HttpServlet {
                 url = "/jsp/reports/listAgent.jsp";
             }else if (action.equalsIgnoreCase("listBackissue")) {
                 url = "/jsp/reports/listBackissue.jsp";
-            }else if (action.equalsIgnoreCase("listJournal")) {
-                url = "/jsp/reports/listJournal.jsp";
+            }else if (action.equalsIgnoreCase("listJournals")) {
+                url = "/jsp/reports/listJournals.jsp";
             }else if (action.equalsIgnoreCase("listReminder")) {
                 url = "/jsp/reports/listRenewalReminder.jsp";
             }else if (action.equalsIgnoreCase("listSubType")) {

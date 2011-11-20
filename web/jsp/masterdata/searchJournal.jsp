@@ -48,7 +48,8 @@
                                         <input class="IASTextBox" TABINDEX="1" type="text" name="journalCode" id="journalCode" value=""/>
                                     </span>
                                 </div>
-
+                            </div>    
+                            <div class="IASFormLeftDiv">
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
@@ -96,21 +97,21 @@
                                         <td>P</td>
                                         <td>Prammana</td>
                                         <td>1776</td>
-                                        <td><a href="<%=request.getContextPath() + "/inward?action=view"%>">view</a><a href="<%=request.getContextPath() + "/inward?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/journal?action=view"%>">view</a><a href="<%=request.getContextPath() + "/journal?action=edit"%>">edit</a></td>
                                     </tr>
                                     <tr>
                                         <td>2</td>
                                         <td>CS</td>
                                         <td>Current Science</td>
                                         <td>1498</td>
-                                        <td><a href="<%=request.getContextPath() + "/inward?action=view"%>">view</a><a href="<%=request.getContextPath() + "/inward?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/journal?action=view"%>">view</a><a href="<%=request.getContextPath() + "/journal?action=edit"%>">edit</a></td>
                                     </tr>
                                     <tr>
                                         <td>3</td>
                                         <td>RES</td>
                                         <td>Resonance</td>
                                         <td>1998</td>
-                                        <td><a href="<%=request.getContextPath() + "/inward?action=view"%>">view</a><a href="<%=request.getContextPath() + "/inward?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/journal?action=view"%>">view</a><a href="<%=request.getContextPath() + "/journal?action=edit"%>">edit</a></td>
                                     </tr>
                                 </tbody>
                             </table>
