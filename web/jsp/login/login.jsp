@@ -25,7 +25,8 @@
 <jsp:include page="/templates/header.jsp"></jsp:include>
 <jsp:include page="/templates/loginsidebar.jsp"></jsp:include>
 <div id="bodyContainer">
-    <form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginId','password')">
+    <%--<form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginId','password')">--%>
+        <form action="<%=request.getContextPath() + "/home.jsp"%>" method="post" name="frmlogin" onsubmit="return validate('loginId','password')">
             <div id="loginDiv" class="MainDiv">
                 <fieldset id="fieldsetLogin" class="subMainFieldSet">
                     <legend>Login</legend>

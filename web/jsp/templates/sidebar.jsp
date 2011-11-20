@@ -42,18 +42,27 @@
         <a href="<%=contextPath + "/inward/processinward.jsp"%>">Request for Invoice</a>
         <a href="<%=contextPath + "/main?action=missingissue"%>">Missing Issue</a>
         <a href="<%=contextPath + "/inward/processinward.jsp"%>">Reprint</a>
+        <a href="<%=contextPath + "/inward/updateReceiptNumbers.jsp"%>">Update Receipt Numbers</a>
 
     </div>
     <div>
         <span>Subscriber</span>
         <a href="<%=contextPath + "/main?action=createsubscriber"%>">Create Subscriber</a>
         <a href="<%=contextPath + "/main?action=searchsubscriber"%>">Search Subscriber</a>
+        <a href="<%=contextPath + "/subscriber/addSummerFellows.jsp"%>">Add Summer Fellows</a>
     </div>
     <div>
         <span>Mailing List</span>
         <a href="<%=contextPath + "/main?action=gml"%>">Generate Mailing List</a>
         <a href="<%=contextPath + "/main?action=gbil"%>">Generate Back Issue List</a>
     </div>
+    
+    <div>
+        <span>Reminders</span>
+        <a href="<%=contextPath + "/main?action=sendReminders"%>">Send Reminders</a>
+        <a href="<%=contextPath + "/main?action=showSentReminders"%>">Show Sent Reminders</a>
+    </div>
+    
     <div>
         <span>Reports</span>
         <a href="<%=contextPath + "/main?action=statement"%>">Statement</a>

@@ -23,6 +23,10 @@
         <servlet-name>subscription</servlet-name>
         <servlet-class>IAS.Controller.subscription</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>reminders</servlet-name>
+        <servlet-class>IAS.Controller.reminders</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -43,7 +47,10 @@
         <servlet-name>subscription</servlet-name>
         <url-pattern>/subscription</url-pattern>
     </servlet-mapping>
-   
+    <servlet-mapping>
+        <servlet-name>reminders</servlet-name>
+        <url-pattern>/reminders</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -52,7 +59,6 @@
     <welcome-file-list>
         <welcome-file>jsp/home.jsp</welcome-file>
     </welcome-file-list>
-   
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>JSS</web-resource-name>
