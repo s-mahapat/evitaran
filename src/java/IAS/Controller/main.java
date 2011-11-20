@@ -89,6 +89,10 @@ public class main extends HttpServlet {
                 url = "/jsp/reports/circulationFiguresJournal.jsp";
             }else if (action.equalsIgnoreCase("listprofarmaInvoice")) {
                 url = "/jsp/reports/listprofarmaInvoice.jsp";
+            }else if (action.equalsIgnoreCase("sendReminders")) {
+                url = "/jsp/reminders/sendReminders.jsp";
+            }else if (action.equalsIgnoreCase("showSentReminders")) {
+                url = "/jsp/reminders/showSentReminders.jsp";
             }
             
             RequestDispatcher rd = request.getRequestDispatcher(url);
