@@ -9,7 +9,8 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/inward/inward.css"/>
         <title>Create Inward</title>
-        <script type="text/javascript" src="js/createinward.js"></script>
+        <script type="text/javascript" src="js/inward/createinward.js"></script>
+
         <script>
             addOnloadEvent(makeReadOnly);
         </script>
@@ -27,5 +28,5 @@
                 </div>
             </form>
         </div>
-    </body>
+   </body>
 </html>

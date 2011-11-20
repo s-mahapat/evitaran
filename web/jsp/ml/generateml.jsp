@@ -90,6 +90,18 @@
                                         </select>
                                     </span>
                                 </div>
+
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Type:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <label class="IASActionLabel">Sticker</label>
+                                        <input checked type="radio" class="IASRadioButton" TABINDEX="6" name="mlType" id="mlTypeSticker" value="sticker"/>
+                                        <label class="IASActionLabel">Label</label>
+                                        <input type="radio" class="IASRadioButton" TABINDEX="7" name="mlType" id="mlTypeLabel" value="label"/>
+                                    </span>
+                                </div>
                                 <div class="IASFormFieldDiv">
                                     &nbsp;
                                 </div>

@@ -1,10 +1,20 @@
 
 <%-- Calendar --%>
 <%--------------------------------------------------------------%>
+<script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
 <script src="<%=request.getContextPath() + "/js/CalendarPopup.js"%>" type="text/javascript"></script>
 <script type="text/javascript">
-    var calFrom = new CalendarPopup("dateDiv");
-    calFrom.showNavigationDropdowns();
+    //var calFrom = new CalendarPopup("dateDiv");
+    //calFrom.showNavigationDropdowns();
+    $(function() {
+		$( "#paymentdate" ).datepicker({
+			showOn: "button",
+                        dateFormat: 'dd/mm/yy',
+			buttonImage: "images/calendar.gif",
+			buttonImageOnly: true
+		});
+	});
+
 </script>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Inward Info Field Set --%>
@@ -86,8 +96,7 @@
                 <input class="IASTextBoxMandatory" readonly type="text" name="subscriberId" id="subscriberId" value=""/>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASButton" TABINDEX="16" type="button" value="Search Subscriber"
-                       name="btnSearchSubscriber" id="btnSearchSubscriber" onclick="validateSearchSubscriber()"/>
+                <input class="IASButton" TABINDEX="16" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
             </span>
 
         </div>
@@ -135,13 +144,11 @@
             <span class="IASFormDivSpanLabel">
                 <label>Payment Date:</label>
             </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASDateTextBox" readonly size="10" value="" id="paymentDate"/>
-                <a href="#" onClick="calFrom.select(document.inwardForm.paymentDate,'anchor1','dd/MM/yyyy'); return false;" NAME="anchor1" ID="anchor1">
-                    <img class="calendarIcon" alt="select" src="" TABINDEX="6"/>
-                </a>
-            </span>
             <div class="dateDiv" id="dateDiv"></div>
+            <span class="IASFormDivSpanInputBox">
+                <input type="text" class="IASDateTextBox" readonly size="10" name="paymentdate" id="paymentdate"/>
+            </span>
+
         </div>
 
 

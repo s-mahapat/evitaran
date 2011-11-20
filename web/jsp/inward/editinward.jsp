@@ -14,11 +14,10 @@
         <%--------------------------------------------------------------%>
         <%-- Calendar --%>
         <%--------------------------------------------------------------%>
-        <script src="<%=request.getContextPath() + "/js/CalendarPopup.js"%>" type="text/javascript"></script>
-        <script src="<%=request.getContextPath() + "/js/inward/editinward.js"%>" type="text/javascript"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/editinward.js"%>"></script>
         <script type="text/javascript">
-            var calFrom = new CalendarPopup("dateDiv");
-            calFrom.showNavigationDropdowns();
+            //var calFrom = new CalendarPopup("dateDiv");
+            //calFrom.showNavigationDropdowns();
             addOnloadEvent(makeInwardReadOnly);
         </script>
 

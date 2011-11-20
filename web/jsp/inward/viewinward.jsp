@@ -9,7 +9,7 @@
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/inward/inward.css"%>"/>
         <title>View Inward</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/viewinward.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/viewinward.js"%>"></script>
         <script>
             addOnloadEvent(makeReadOnly);
             addOnloadEvent(makeInwardReadOnly);

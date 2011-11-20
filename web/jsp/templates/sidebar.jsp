@@ -38,7 +38,7 @@
         <a href="<%=contextPath + "/main?action=pendinginwards"%>">Pending Inwards</a>
         <a href="<%=contextPath + "/main?action=newsubscription"%>">New Subscription</a>
         <a href="<%=contextPath + "/main?action=renewsubscription"%>">Renew Subscription</a>
-        <a href="<%=contextPath + "/inward/processinward.jsp"%>">Address Change</a>
+        <a href="<%=contextPath + "/main?action=addresschange"%>">Address Change</a>
         <a href="<%=contextPath + "/inward/processinward.jsp"%>">Request for Invoice</a>
         <a href="<%=contextPath + "/main?action=missingissue"%>">Missing Issue</a>
         <a href="<%=contextPath + "/inward/processinward.jsp"%>">Reprint</a>

@@ -16,8 +16,99 @@
         <%--------------------------------------------------------------%>
         <script src="js/CalendarPopup.js" type="text/javascript"></script>
         <script type="text/javascript">
-            var calPopup = new CalendarPopup("dateDiv");
-            calPopup.showNavigationDropdowns();
+            //var calPopup = new CalendarPopup("dateDiv");
+            //calPopup.showNavigationDropdowns();
+            var selectedInward = 0;
+            var selectedSubscriberId = 0;
+            var isPageLoaded = false;
+            $(function(){
+
+                      $("#inwardTable").jqGrid({
+                        url:'/JDS/jsp/inward/inwards.jsp',
+                        datatype: 'xml',
+                        mtype: 'GET',
+                        width: '100%',
+                        autowidth: true,
+                        height: 240,
+                        forceFit: true,
+                        sortable: true,
+                        loadonce: true,
+                        rownumbers: true,
+                        emptyrecords: "No inwards to view",
+                        loadtext: "Loading...",
+                        colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose'],
+                        colModel :[
+                          {name:'Inward No', index:'inward_id', width:50, align:'center', xmlmap:'inward_id'},
+                          {name:'Subscriber Id', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_id'},
+                          {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
+                          {name:'Received Date', index:'date', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'date'},
+                          {name:'City', index:'city', width:80, align:'center', sortable:false, xmlmap:'city'},
+                          {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'cheque'},
+                          {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'purpose',formatter:'showlink'},
+                        ],
+                        xmlReader : {
+                          root: "result",
+                          row: "inward",
+                          page: "inwards>page",
+                          total: "inwards>total",
+                          records : "inwards>records",
+                          repeatitems: false,
+                          id: "id"
+                       },
+                        pager: '#pager',
+                        rowNum: 10,
+                        rowList:[10,30,50,100],
+                        viewrecords: true,
+                        gridview: true,
+                        caption: '&nbsp;',
+                        gridComplete: function() {
+                            var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
+                            if(ids.length > 0){
+                                $("#btnNext").removeAttr("disabled");
+                            }
+                            for (var i = 0; i < ids.length; i++) {
+                                var cl = ids[i];
+                                var rowData = jQuery("#inwardTable").jqGrid('getRowData',cl);
+                                var inwardId = rowData['Inward No'];
+                                var subscriberId = rowData['Subscriber Id'] || 0;
+                                action = "<a style='color:blue;' href='inward?action=view'>View</a><a style='color:blue;' href='inward?action=edit&inward=" + inwardId + "'>Edit</a>";
+                                jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Purpose: action });
+                            }
+                        },
+                        beforeRequest: function(){
+                          return isPageLoaded;
+                        },
+                        loadError: function(xhr,status,error){
+                            alert("Failed getting data from server" + status);
+                        }
+
+               });
+
+            });
+
+            $(function() {
+                    var dates = $( "#from, #to" ).datepicker({
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            dateFormat: 'dd/mm/yy',
+                            numberOfMonths: 3,
+                            onSelect: function( selectedDate ) {
+                                    var option = this.id == "from" ? "minDate" : "maxDate",
+                                            instance = $( this ).data( "datepicker" ),
+                                            date = $.datepicker.parseDate(
+                                                    instance.settings.dateFormat ||
+                                                    $.datepicker._defaults.dateFormat,
+                                                    selectedDate, instance.settings );
+                                    dates.not( this ).datepicker( "option", option, date );
+                            }
+                    });
+            });
+
+            function searchInwards(){
+                isPageLoaded = true;
+                jQuery("#inwardTable").trigger("reloadGrid");
+            }
+
         </script>
 
     </head>
@@ -59,42 +150,25 @@
                             <div class="IASFormRightDiv">
 
                                 <div class="IASFormFieldDiv">
-                                    <%------ Date Range Label ------%>
                                     <span class="IASFormDivSpanLabel">
                                         <label>Date Range:</label>
                                     </span>
-
-                                    <%---------- Date Division -----------%>
-                                    <div class="dateDiv" id="dateDiv"></div>
-
-                                    <%------ From Date Input Box ------%>
+                                    <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" value="" id="fromDate"/>
-                                           <a href="#" onClick="calPopup.select(document.processInwardForm.fromDate,'anchor1','dd/MM/yyyy');
-                                               return false;" NAME="anchor1" ID="anchor1">
-                                            <img class="calendarIcon" alt="select" src="" TABINDEX="2" />
-                                        </a>
+                                        <input class="IASDateTextBox" readonly size="10" type="text" id="from" name="from"/>
                                     </span>
-
-                                    <%-- Hyphen between From date and To Date --%>
                                     <span class="IASFormDivSpanForHyphen">
-                                        <label> - </label>
+                                        <label> to </label>
                                     </span>
-
-                                    <%--------------- To Date Input Box --------------%>
-                                    <span class="IASFormDivSpanInputBoxForSearchInward">
-                                        <input class="IASDateTextBox" readonly size="10" value="" id="toDate"/>
-                                           <a href="#" onClick="calPopup.select(document.processInwardForm.toDate,'anchor2','dd/MM/yyyy');
-                                               return false;" NAME="anchor2" ID="anchor2">
-                                            <img class="calendarIcon" alt="select" src=""  TABINDEX="3"/>
-                                        </a>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDateTextBox" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                             </div>
 
                             <div class="IASFormFieldDiv">
                                 <div id="filterBtnDiv">
-                                    <input class="IASButton" type="submit" value="Filter"  TABINDEX="4"/>
+                                    <input class="IASButton" type="button" onclick="searchInwards()" value="Filter"  TABINDEX="4"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
@@ -112,47 +186,8 @@
                         <fieldset class="subMainFieldSet">
                             <legend>Inwards</legend>
 
-                            <table class="datatable">
-                                <thead>
-                                    <tr>
-                                        <td>Inward Number</td>
-                                        <td>Purpose</td>
-                                        <td>Inward Creation Date</td>
-                                        <td>From</td>
-                                        <td>Follow On Actions</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>121</td>
-                                        <td>New Subscription</td>
-                                        <td>12/10/2011</td>
-                                        <td>Pinki Pachisia</td>
-                                        <td><a href="#">Create New Subscription</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>122</td>
-                                        <td>Process Renewal</td>
-                                        <td>12/10/2011</td>
-                                        <td>Shailendra Mahapatra</td>
-                                        <td><a href="#">Process Renewal</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>123</td>
-                                        <td>Address Change</td>
-                                        <td>14/10/2011</td>
-                                        <td>Deepali Gokhale</td>
-                                        <td><a href="#">Address Change</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>124</td>
-                                        <td>Request For Invoice</td>
-                                        <td>15/10/2011</td>
-                                        <td>Alok Modak</td>
-                                        <td><a href="#">Request For Invoice</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <table class="datatable" id="inwardTable"></table>
+                            <div id="pager"></div>
                         </fieldset>
                     </fieldset>
                 </div>

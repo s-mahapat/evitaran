@@ -7,3 +7,10 @@ function init(){
 
     document.searchInwardForm.inwardNumber.focus();
 }
+
+
+function setInwardSubscriber(inwardId,subscriberId){
+    selectedInward = inwardId;
+    selectedSubscriberId = subscriberId || 0;
+
+}

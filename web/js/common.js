@@ -138,3 +138,11 @@ function setActionValue(value){
         document.getElementById('action').value = value;
     }
 }
+
+function alert(msg,title){
+     if(title == null){
+         title = 'Journal Distribution System';
+     }
+     jAlert(msg,title);
+     return false;
+}

@@ -4,25 +4,6 @@
  */
 
 
-function makeReadOnly(){
-
-    document.getElementById("btnEditInward").disabled = true;
-    document.getElementById("btnSendAck").disabled = true;
-    document.getElementById("btnSendReturn").disabled = true;
-    document.getElementById("receiptNumber").disabled = true;
-    document.getElementById("checkReturn").disabled = true;
-    document.getElementById("checkReturnReason").disabled = true;
-    document.getElementById("checkReturnReasonOther").disabled = true;
-
-
-
-    //document.getElementById("paymentDate").setAttribute('readonly', 'true');
-
-
-
-
-}
-
 function validateSearchSubscriber(){
 
     /*if(isNaN(document.getElementById("pincode").value)){
@@ -38,4 +19,11 @@ function validateSearchSubscriber(){
     }else{
         openModalPopUp("../subscriber/searchsubscriber.jsp", 'Select Subscriber');
     }
+}
+
+
+function setInwardSubscriber(inwardId,subscriberId){
+    selectedInward = inwardId;
+    selectedSubscriberId = subscriberId || 0;
+
 }

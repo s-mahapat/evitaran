@@ -30,69 +30,123 @@ public class main extends HttpServlet {
         String url = null;
         try {
             if (action.equalsIgnoreCase("home")) {
+
                 url = "/jsp/home.jsp";
             } else if (action.equalsIgnoreCase("logout")) {
+
                 url = "/jsp/login/logout.jsp";
             } else if (action.equalsIgnoreCase("createinward")) {
+
                 url = "/jsp/inward/createinward.jsp";
             } else if (action.equalsIgnoreCase("searchinward")) {
+
                 url = "/jsp/inward/searchinward.jsp";
             } else if (action.equalsIgnoreCase("pendinginwards")) {
+
                 url = "/jsp/inward/processinward.jsp";
             } else if (action.equalsIgnoreCase("gml")) {
+
                 url = "/jsp/ml/generateml.jsp?list=ml";
             }else if(action.equalsIgnoreCase("gbil")){
+
                 url = "/jsp/ml/generateml.jsp?list=bil";
             } else if (action.equalsIgnoreCase("newsubscription")) {
-                url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/subscriber?action=new";
+
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=newsubscription&next=" + request.getContextPath() + "/jsp/subscriber/createsubscriber.jsp";
             } else if (action.equalsIgnoreCase("renewsubscription")) {
-                url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/subscriber?action=renew";
+
+                url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/jsp/subscription/addnewsubscription.jsp";
             }else if(action.equalsIgnoreCase("missingissue")){
-                url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/subscriber?action=searchsubscriber";
+
+                url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/jsp/subscriber/subscriberlist.jsp";
             } else if (action.equalsIgnoreCase("createsubscriber")) {
-               url = "/jsp/subscriber/createsubscriber.jsp";
+
+                url = "/jsp/subscriber/createsubscriber.jsp";
             }else if (action.equalsIgnoreCase("searchsubscriber")) {
+
                 url = "/jsp/subscriber/searchsubscriber.jsp";
+            }else if(action.equalsIgnoreCase("addresschange")){
+                
+				url = "/jsp/inward/gatekeeperinward.jsp?nextAction=addresschange&next=" + request.getContextPath() + "/jsp/subscriber/editsubscriber.jsp";
+				
             }else if (action.equalsIgnoreCase("addSubType")) {
-                url = "/jsp/masterdata/addNewSubType.jsp";
+                
+				url = "/jsp/masterdata/addNewSubType.jsp";
+				
             }else if (action.equalsIgnoreCase("addJournal")) {
-                url = "/jsp/masterdata/addJournal.jsp";
+                
+				url = "/jsp/masterdata/addJournal.jsp";
+				
             }else if (action.equalsIgnoreCase("addAgent")) {
-                url = "/jsp/masterdata/addAgent.jsp";
+                
+				url = "/jsp/masterdata/addAgent.jsp";
+				
             }else if (action.equalsIgnoreCase("searchSubType")) {
-                url = "/jsp/masterdata/searchSubType.jsp";
+                
+				url = "/jsp/masterdata/searchSubType.jsp";
+				
             }else if (action.equalsIgnoreCase("searchJournal")) {
-                url = "/jsp/masterdata/searchJournal.jsp";
+                
+				url = "/jsp/masterdata/searchJournal.jsp";
+				
             }else if (action.equalsIgnoreCase("searchAgent")) {
-                url = "/jsp/masterdata/searchAgent.jsp";
+                
+				url = "/jsp/masterdata/searchAgent.jsp";
+				
             }else if (action.equalsIgnoreCase("subRate")) {
-                url = "/jsp/masterdata/annualSubscriptionrates.jsp";
+                
+				url = "/jsp/masterdata/annualSubscriptionrates.jsp";
+				
             }else if (action.equalsIgnoreCase("listAgent")) {
-                url = "/jsp/reports/listAgent.jsp";
+                
+				url = "/jsp/reports/listAgent.jsp";
+				
             }else if (action.equalsIgnoreCase("listBackissue")) {
-                url = "/jsp/reports/listBackissue.jsp";
+                
+				url = "/jsp/reports/listBackissue.jsp";
+				
             }else if (action.equalsIgnoreCase("listJournals")) {
-                url = "/jsp/reports/listJournals.jsp";
+                
+				url = "/jsp/reports/listJournals.jsp";
+				
             }else if (action.equalsIgnoreCase("listReminder")) {
-                url = "/jsp/reports/listRenewalReminder.jsp";
+                
+				url = "/jsp/reports/listRenewalReminder.jsp";
             }else if (action.equalsIgnoreCase("listSubType")) {
-                url = "/jsp/reports/listSubType.jsp";
+                
+				url = "/jsp/reports/listSubType.jsp";
+				
             }else if (action.equalsIgnoreCase("listSubscriber")) {
-                url = "/jsp/reports/listSubscriber.jsp";
+                
+				url = "/jsp/reports/listSubscriber.jsp";
+				
             }else if (action.equalsIgnoreCase("listmailinglist")) {
-                url = "/jsp/reports/listmailinglist.jsp";
+                
+				url = "/jsp/reports/listmailinglist.jsp";
+				
             }else if (action.equalsIgnoreCase("statement")) {
-                url = "/jsp/reports/statement.jsp";
+                
+				url = "/jsp/reports/statement.jsp";
+				
             }else if (action.equalsIgnoreCase("journalRates")) {
-                url = "/jsp/reports/journalRates.jsp";
+                
+				url = "/jsp/reports/journalRates.jsp";
+				
             }else if (action.equalsIgnoreCase("circulationFigure")) {
-                url = "/jsp/reports/circulationFiguresJournal.jsp";
+                
+				url = "/jsp/reports/circulationFiguresJournal.jsp";
+				
             }else if (action.equalsIgnoreCase("listprofarmaInvoice")) {
-                url = "/jsp/reports/listprofarmaInvoice.jsp";
+                
+				url = "/jsp/reports/listprofarmaInvoice.jsp";
+				
             }else if (action.equalsIgnoreCase("sendReminders")) {
-                url = "/jsp/reminders/sendReminders.jsp";
+                
+				url = "/jsp/reminders/sendReminders.jsp";
+				
             }else if (action.equalsIgnoreCase("showSentReminders")) {
-                url = "/jsp/reminders/showSentReminders.jsp";
+                
+				url = "/jsp/reminders/showSentReminders.jsp";
             }
             
             RequestDispatcher rd = request.getRequestDispatcher(url);
