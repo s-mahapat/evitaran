@@ -11,9 +11,11 @@
         <title>View Subscription</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "js/common.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/viewsubscription.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script>
             addOnloadEvent(makeReadOnly);
             addOnloadEvent(makeViewSubscriptionReadOnly);
+            addOnloadEvent(listSubscription("Display"));
         </script>
     </head>
     <body>
@@ -24,7 +26,9 @@
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>View Subscription</legend>
-                        <%@include file="subscription.jsp"%>
+                        <%@include file="subscriptiondetails.jsp"%>
+                        <%@include file="subscriptionlist.jsp"%>
+                        <%@include file="subscriptionactions.jsp"%>
                     </fieldset>
                 </div>
             </form>

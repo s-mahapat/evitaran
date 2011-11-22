@@ -17,7 +17,7 @@ function validateSearchSubscriber(){
             alert("Please fill in the From,City and Pincode to search for subscriber");
             return;
     }else{
-        openModalPopUp("../subscriber/searchsubscriber.jsp", 'Select Subscriber');
+        openModalPopUp("jsp/subscriber/subscriberlist.jsp", 'Select Subscriber');
     }
 }
 

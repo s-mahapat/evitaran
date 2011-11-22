@@ -1,5 +1,5 @@
 <%--
-    Document   : View Subscription
+    Document   : Add New Subscription
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -14,17 +14,21 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script>
             addOnloadEvent(makeAddNewSubscriptionReadOnly);
+            addOnloadEvent(listSubscription("edit"));
         </script>
     </head>
     <body>
-
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
             <form method="post" action="<%=request.getContextPath() + "/subscription"%>" name="subscriptionForm">
+
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Add New Subscription</legend>
-                        <%@include file="subscription.jsp"%>
+                        <legend>Add New Subscription</legend>                        
+                        <%@include file="subscriptiondetails.jsp"%>
+                        <%@include file="selectjournal.jsp"%>
+                        <%@include file="subscriptionlist.jsp"%>
+                        <%@include file="subscriptionactions.jsp"%>
                     </fieldset>
                 </div>
             </form>

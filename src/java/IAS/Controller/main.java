@@ -58,7 +58,7 @@ public class main extends HttpServlet {
                 url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/jsp/subscription/addnewsubscription.jsp";
             }else if(action.equalsIgnoreCase("missingissue")){
 
-                url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/jsp/subscriber/subscriberlist.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=missingissue&next=" + request.getContextPath() + "/jsp/missingissue/missingissuelist.jsp";
             } else if (action.equalsIgnoreCase("createsubscriber")) {
 
                 url = "/jsp/subscriber/createsubscriber.jsp";

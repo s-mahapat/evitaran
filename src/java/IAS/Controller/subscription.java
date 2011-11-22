@@ -24,24 +24,18 @@ public class subscription extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String url = null;
-        try{
-            if(action.equalsIgnoreCase("view")){
+        try {
+            if (action.equalsIgnoreCase("view")) {
                 url = "/jsp/subscription/viewsubscription.jsp";
-            }
-            else if(action.equalsIgnoreCase("save")){
+            } else if (action.equalsIgnoreCase("save")) {
                 url = "/jsp/subscription/viewsubscription.jsp";
-            }
-            else if(action.equalsIgnoreCase("edit")){
+            } else if (action.equalsIgnoreCase("edit")) {
                 url = "/jsp/subscription/editsubscription.jsp";
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-        }
-        catch(Exception e){
-
-        }
-        finally{
-
+        } catch (Exception e) {
+        } finally {
         }
 
     }

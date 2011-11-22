@@ -5,6 +5,62 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/styleforpopup.jsp"></jsp:include>
         <title>Search Subscriber</title>
+        <script>
+            $(function(){
+                $(".datatable").jqGrid({
+                    url:'/JDS/jsp/subscriber/subscriberlistXML.jsp',
+                    datatype: 'xml',
+                    mtype: 'GET',
+                    width: '100%',
+                    autowidth: true,
+                    forceFit: true,
+                    sortable: true,
+                    loadonce: true,
+                    rownumbers: true,
+                    emptyrecords: "No subscribers to view",
+                    loadtext: "Loading...",
+                    colNames:['Select','Subscriber Id','Subscriber Name', 'Department','City','Pin Code','Country', 'Email'],
+                    colModel :[
+                        {name:'Select', index:'select', width:50, align:'center',xmlmap:'subscriber_id',
+                            formatter:function (cellvalue, options, rowObject) {
+                                return '<input onclick="javascript:selectedSubscriber=this.value" type="radio" id="selectedSubscriberRadio" name="selectedSubscriberRadio" value="' + cellvalue + '"/>';
+                            }
+                        },
+                        {name:'Subscriber Id', index:'subscriber_id', width:20, align:'center', xmlmap:'subscriber_id'},
+                        {name:'Subscriber Name', index:'subscriber_name', width:30, align:'center', xmlmap:'subscriber_name'},
+                        {name:'Department', index:'dept', width:60, align:'center', xmlmap:'dept'},
+                        {name:'City', index:'city', width:50, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
+                        {name:'Pin Code', index:'pincode', width:50, align:'center', sortable:false, xmlmap:'pincode'},
+                        {name:'Country', index:'country', width:50, align:'center', xmlmap:'country'},
+                        {name:'Email', index:'email', width:50, align:'center', xmlmap:'email'},
+                    ],
+                    xmlReader : {
+                        root: "result",
+                        row: "subscriberlist",
+                        page: "subscriberlistXML>page",
+                        total: "subscriberlist>total",
+                        records : "subscriberlist>records",
+                        repeatitems: false,
+                        id: "id"
+                    },
+                    pager: '#pager',
+                    rowNum:10,
+                    rowList:[10,20,30],
+                    viewrecords: true,
+                    gridview: true,
+                    caption: '&nbsp;',
+                        
+                    gridComplete: function() {
+                        //var ids = jQuery(".datatable").jqGrid('getDataIDs');
+                        //for (var i = 0; i < ids.length; i++) {
+                        //var cl = ids[i];
+                        //action = "<input type='Button' name='addToMailList' value=\"Add to Mailing List\" onclick=''/>";
+                        //jQuery(".datatable").jqGrid('setRowData', ids[i], { btnAML: action });
+                    }
+                });
+            });
+        </script>    
+
     </head>
     <body>
         <div id="bodyContainer">
@@ -13,44 +69,9 @@
                     <legend>Search Subscriber Result</legend>
 
                     <fieldset class="subMainFieldSet">
-                        <legend>Subscriber List</legend>
-
-                        <table class="datatable">
-                            <thead>
-                                <tr>
-                                    <td>Select</td>
-                                    <td>Subscriber Id</td>
-                                    <td>Subscriber Name</td>
-                                    <td>Department</td>
-                                    <td>City</td>
-                                    <td>Pin Code</td>
-                                    <td>Country</td>
-                                    <td>Email</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td> <input class="IASRadioButton" TABINDEX="9" type="radio" name="selectSubcriber"/> </td>
-                                    <td>1</td>
-                                    <td>Pinki Pachisia</td>
-                                    <td>IAS1</td>
-                                    <td>Bangalore</td>
-                                    <td>560066</td>
-                                    <td>India</td>
-                                    <td>pinki@ias.com</td>
-                                </tr>
-                                <tr>
-                                    <td> <input class="IASRadioButton" TABINDEX="10" type="radio" name="selectSubcriber"/> </td>
-                                    <td>2</td>
-                                    <td>Shailendra Mahapatra</td>
-                                    <td>IAS2</td>
-                                    <td>Bangalore</td>
-                                    <td>560067</td>
-                                    <td>India</td>
-                                    <td>shail@ias.com</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <legend>Subscriber List</legend>                        
+                        <table class="datatable" id="subscriberList"></table>
+                        <div id="pager"></div>
                     </fieldset>
 
 

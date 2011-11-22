@@ -175,6 +175,12 @@ body{
     font-size: 12px;
 }
 
+.IASTextBoxForNumbers{
+    width: 30px;
+    font-family: "Cambria",serif;
+    font-size: 12px;
+}
+
 .IASTextBoxMandatory{
     width: 120px;
     font-family: "Cambria",serif;
@@ -222,6 +228,7 @@ body{
     height: 20px;
     font-size: 10px;
     font-weight: bold;
+    margin: 0px 20px;
 }
 
 .IASComboBox{
@@ -327,6 +334,16 @@ A:active {
     background-repeat: no-repeat;
 }
 
+.deleteIcon{
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    border: 0px;
+    padding-bottom: 0px;
+    background-image: url("../images/delete.gif");
+    background-repeat: no-repeat;
+}
+
 #welcomeUser{
     float: right;
     margin-right: 20px;
@@ -336,6 +353,10 @@ A:active {
 }
 
 .singleActionBtnDiv{
-
     text-align: center;
+}
+
+.actionBtnDiv{
+    text-align: center;
+    width: 100%;
 }
