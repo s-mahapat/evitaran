@@ -30,10 +30,10 @@ public class reminders extends HttpServlet {
         String url = null;
         try {
             if (action.equalsIgnoreCase("search")) {
-                url = "/jsp/reminders/searchedReminders.jsp";
-            } else if (action.equalsIgnoreCase("showSentReminders")) {
-                url = "/jsp/reminders/sentReminders.jsp";
-            } 
+                url = "/jsp/reminders/showSendRemindersSearchOutput.jsp";
+            } else if (action.equalsIgnoreCase("commitSendReminders")) {
+                url = "/jsp/reminders/commitSendReminders.jsp";
+            }  
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }catch (Exception e) {

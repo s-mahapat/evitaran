@@ -63,6 +63,17 @@ body{
     padding: 5px;
 }
 
+#iaslogo{
+    height: 88px;
+    width: 12%;
+    float: left;
+    position: fixed;
+    margin-left: 0px;
+    top:15px;
+    background-image: url("../images/logo_main.gif");
+    z-index: 3;
+    background-repeat: no-repeat;
+}
 
 #sidebar{
     background-color: #cc9b00;

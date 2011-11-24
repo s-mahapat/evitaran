@@ -16,7 +16,7 @@
         <%@include file="../templates/layout.jsp" %>
         
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reminders"%>" name="search">
+            <form method="post" action="<%=request.getContextPath() + "/reminders?action=search"%>" name="search">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Send Reminders</legend>
@@ -27,7 +27,7 @@
                                 <thead>
                                     <tr>
                                         <td>Select</td>
-                                        <td>Type of Reminder</td>
+                                       <td>Type of Reminder</td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,13 +51,12 @@
                     <fieldset class="subMainFieldSet">
                         <div class="IASFormFieldDiv">
                             <div id="okBtnDiv">
-                                <input class="IASButton" TABINDEX="4" type="submit" value="Ok" name="btnSubmit"/>
+                                <input class="IASButton" TABINDEX="4" type="submit" value="Search" name="btnSubmit"/>
                             </div>
                         </div>
                     </fieldset>
                 </div>
             </form>
         </div>
-        <h1>Hello World!</h1>
     </body>
 </html>
