@@ -10,22 +10,12 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/journal.css" />
 
         <title>Search Journal</title>
-
-        <%--------------------------------------------------------------%>
-        <%-- Calendar --%>
-        <%--------------------------------------------------------------%>
-        <script src="js/CalendarPopup.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            var calPopup = new CalendarPopup("dateDiv");
-            calPopup.showNavigationDropdowns();
-        </script>
-
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchAgentForm">
+            <form method="post" action="" name="searchJournalForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Journal</legend>
@@ -49,7 +39,7 @@
                                     </span>
                                 </div>
                             </div>    
-                            <div class="IASFormLeftDiv">
+                            <div class="IASFormRightDiv">
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
@@ -63,11 +53,11 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="3" type="submit" value="Search"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
+                                    <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                                 </div>
                             </div>
 

@@ -151,7 +151,7 @@
                                         <td>Bangalore</td>
                                         <td>5600045</td>
                                         <td>lmbooks@gmail.com</td>
-                                        <td><a href="<%=request.getContextPath() + "/masterdata?action=view"%>">view</a><a href="<%=request.getContextPath() + "/masterdata?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/agent?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent?action=edit"%>">edit</a></td>
                                     </tr>
                                     <tr>
                                         <td>55</td>
@@ -161,7 +161,7 @@
                                         <td>New Delhi</td>
                                         <td>4500022</td>
                                         <td>info@sapna.co.in</td>
-                                        <td><a href="<%=request.getContextPath() + "/masterdata?action=view"%>">view</a><a href="<%=request.getContextPath() + "/masterdata?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/agent?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent?action=edit"%>">edit</a></td>
                                     </tr>
                                     <tr>
                                         <td>100</td>
@@ -171,7 +171,7 @@
                                         <td>Mumbai</td>
                                         <td>560045</td>
                                         <td>inquiry@booksnbooks.com</td>
-                                        <td><a href="<%=request.getContextPath() + "/masterdata?action=view"%>">view</a><a href="<%=request.getContextPath() + "/masterdata?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/agent?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent?action=edit"%>">edit</a></td>
                                     </tr>
                                 </tbody>
                             </table>

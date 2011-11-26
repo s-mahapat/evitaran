@@ -66,16 +66,16 @@
     <div>
         <span>Reports</span>
         <a href="<%=contextPath + "/main?action=statement"%>">Statement</a>
-        <a href="<%=contextPath + "/main?action=listJournals"%>">List of Journals</a> 
-        <a href="<%=contextPath + "/main?action=listSubType"%>">List of Subscriber types</a> 
-        <a href="<%=contextPath + "/main?action=listAgent"%>">List of Agent</a> 
-        <a href="<%=contextPath + "/main?action=listSubscriber"%>">List of Subscribers</a> 
-        <a href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation figures for journals</a> 
-        <a href="<%=contextPath + "/main?action=listprofarmaInvoice"%>">List of Invoice</a>  
-        <a href="<%=contextPath + "/main?action=listBackissue"%>">List of back issue sent</a>  
-        <a href="<%=contextPath + "/main?action=listReminder"%>">List of  renewal reminder sent</a> 
-        <a href="<%=contextPath + "/main?action=listmailinglist"%>">List of mailing list sent</a> 
-        <a href="<%=contextPath + "/main?action=journalRates"%>">Rates for Journals</a>         
+        <a href="<%=contextPath + "/main?action=listJournals"%>">List Of Journals</a> 
+        <a href="<%=contextPath + "/main?action=listSubType"%>">List Of Subscriber Types</a> 
+        <a href="<%=contextPath + "/main?action=listAgent"%>">List Of Agent</a> 
+        <a href="<%=contextPath + "/main?action=listSubscriber"%>">List Of Subscribers</a> 
+        <a href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation Figures</a> 
+        <a href="<%=contextPath + "/main?action=listprofarmaInvoice"%>">List Of Invoice</a>  
+        <a href="<%=contextPath + "/main?action=listBackissue"%>">List Of Back Issue Sent</a>  
+        <a href="<%=contextPath + "/main?action=listReminder"%>">List of  Renewal Reminder Sent</a> 
+        <a href="<%=contextPath + "/main?action=listmailinglist"%>">List Of Mailing List Sent</a> 
+        <a href="<%=contextPath + "/main?action=journalRates"%>">Rates For Journals</a>         
     </div>
 
     <div>

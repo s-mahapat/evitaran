@@ -11,11 +11,11 @@
 
         <title>Statement</title>
     </head>
-    <body>
+    <body> 
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="listJournals">
+            <form method="post" action="" name="statement">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Statement</legend>
@@ -24,24 +24,66 @@
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Statement</legend>
+                            <legend>Statement of Label for Journal</legend>
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
-
+                                
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Journal Name</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                     <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName">
+                                        <option value ="P">Pramanna</option>
+                                        <option value ="CS">Current Science</option>
+                                        <option value ="RES">Resonance</option>
+                                    </select>
+                                    </span>
+                                </div>
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Year</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                     <select class="IASComboBox" TABINDEX="6" name="year" id="year">
-                                        <option value ="test1">2011</option>
+                                     <select class="IASComboBox" TABINDEX="2" name="year" id="year">
+                                        <option value ="yr">2011</option>
                                     </select>
                                     </span>
                                 </div>
                             </div>    
 
+                            <%-- Search Criteria Right div --%>
+                            <div class="IASFormRightDiv">
+                                
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Subscriber Type</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                     <select class="IASComboBox" TABINDEX="1" name="subType" id="subType">
+                                        <option value ="IP">Indian Personnel</option>
+                                        <option value ="ISC">Indian Institution</option>
+                                    </select>
+                                    </span>
+                                </div>
+
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabelRadio">
+                                        <label>From</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASOptionButton" TABINDEX="10" type="radio" name="free" id="free" value=""/>
+                                    </span>
+                                    <span class="IASFormDivSpanLabelRadio">
+                                        <label>To</label>
+                                    </span>                                    
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASOptionButton" TABINDEX="10" type="radio" name="Paid" id="Paid" value=""/>
+                                    </span>
+                                </div>
+                            </div>  
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
                                     <input class="IASButton" TABINDEX="3" type="submit" value="Search"/>
@@ -88,12 +130,18 @@
                                         <td>5</td>
                                     </tr>
                                     <tr>
-                                        <td>3</td>
                                         <td>RES</td>
                                         <td>Resonance</td>
                                         <td>Indian Institutes</td>
                                          <td>220</td>
                                         <td>6</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td>9325</td>
+                                        <td>13445</td>
                                     </tr>
                                 </tbody>
                             </table>

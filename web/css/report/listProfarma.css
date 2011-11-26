@@ -1,5 +1,5 @@
 /*
-    Document   : Style for Agent related JSPs are defined here
+    Document   : Style for Subscriber Type related JSPs are defined here
 */
 root {
     display:block;
@@ -17,7 +17,7 @@ root {
 }
 
 #searchBtnDiv{
-    margin-left: 40%;
+    margin-left: 35%;
     float: left;
     width: 10%;
 }

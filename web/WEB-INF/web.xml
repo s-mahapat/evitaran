@@ -31,6 +31,14 @@
         <servlet-name>reminders</servlet-name>
         <servlet-class>IAS.Controller.reminders</servlet-class>
     </servlet>
+        <servlet>
+        <servlet-name>journal</servlet-name>
+        <servlet-class>IAS.Controller.journal</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>agent</servlet-name>
+        <servlet-class>IAS.Controller.agent</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -54,6 +62,14 @@
     <servlet-mapping>
         <servlet-name>reminders</servlet-name>
         <url-pattern>/reminders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>journal</servlet-name>
+        <url-pattern>/journal</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>agent</servlet-name>
+        <url-pattern>/agent</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

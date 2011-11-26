@@ -15,7 +15,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchSubTypeForm">
+            <form method="post" action="" name="listSubscriber">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List and Print Subscriber</legend>
@@ -23,6 +23,7 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
+                     <fieldset class="subMainFieldSet">   
                         <div class="IASFormLeftDiv">
 
                             <div class="IASFormFieldDiv">

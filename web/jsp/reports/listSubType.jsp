@@ -52,11 +52,11 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="3" type="submit" value="Search"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
+                                    <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                                 </div>
                             </div>
 
@@ -97,7 +97,7 @@
                                     </tr>
                                     <tr>
                                         <td>AGE</td>
-                                        <td>AGENT</td>
+                                        <td>Agent</td>
                                         <td>Paid</td>
                                         <td>0</td>
                                         <td>10%</td>

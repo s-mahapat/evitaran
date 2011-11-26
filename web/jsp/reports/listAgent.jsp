@@ -9,7 +9,7 @@
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/agent.css" />
 
-        <title>List Agent</title>
+        <title>List And Print Agent</title>
 
         
         <%--------------------------------------------------------------%>
@@ -26,10 +26,10 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchAgentForm">
+            <form method="post" action="" name="listAgentForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>List and Print Agent</legend>
+                        <legend>List And Print Agent</legend>
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
@@ -88,7 +88,7 @@
                                     <%------ From Date Input Box ------%>
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" readonly size="10" value="" id="fromDate"/>
-                                           <a href="#" onClick="calPopup.select(document.searchInwardForm.fromDate,'anchor1','dd/MM/yyyy');
+                                           <a href="#" onClick="calPopup.select(document.listAgentForm.fromDate,'anchor1','dd/MM/yyyy');
                                                return false;" NAME="anchor1" ID="anchor1">
                                             <img class="calendarIcon" alt="select" src="" TABINDEX="4"/>
                                         </a>
@@ -102,7 +102,7 @@
                                     <%--------------- To Date Input Box --------------%>
                                     <span class="IASFormDivSpanInputBoxForSearchInward">
                                         <input class="IASDateTextBox" readonly size="10" value="" id="toDate"/>
-                                           <a href="#" onClick="calPopup.select(document.searchInwardForm.toDate,'anchor2','dd/MM/yyyy');
+                                           <a href="#" onClick="calPopup.select(document.listAgentForm.toDate,'anchor2','dd/MM/yyyy');
                                                return false;" NAME="anchor2" ID="anchor2">
                                             <img class="calendarIcon" alt="select" src="" TABINDEX="5"/>
                                         </a>

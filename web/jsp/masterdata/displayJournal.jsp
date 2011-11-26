@@ -1,5 +1,5 @@
 <%--
-    Document   : Edit Journal
+    Document   : Display Journal
     Author     : Deepali
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -10,7 +10,7 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/masterdata/journal.css"/>
         <title>Create Journal</title>
-        <script type="text/javascript" src="js/msaterdata/editJournal.js"></script>
+        <script type="text/javascript" src="js/msaterdata/displayJournal.js"></script>
         <script>
             addOnloadEvent(makeReadOnly);
         </script>
@@ -22,7 +22,7 @@
             <form method="post" action="<%=request.getContextPath() + "/journal"%>" name="journalForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Edit Journal</legend>
+                        <legend>Display Journal</legend>
                         <%@include file="journal.jsp"%>
                         </fieldset>
                 </div>

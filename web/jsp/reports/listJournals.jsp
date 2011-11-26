@@ -9,7 +9,7 @@
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/journal.css" />
 
-        <title>List Journal</title>
+        <title>List and Print Journal</title>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -39,7 +39,7 @@
                                     </span>
                                 </div>
                             </div>    
-                            <div class="IASFormLeftDiv">
+                            <div class="IASFormRightDiv">
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">

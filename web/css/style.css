@@ -281,6 +281,13 @@ body{
     width: 100px;
 }
 
+.IASFormFieldDiv .IASFormDivSpanLabelRadio{
+    margin-left: 15px;
+    float: left;
+    text-align: right;
+    width: 50px;
+}
+
 .IASFormFieldDiv .IASFormDivSpanInputBox{
     margin-left: 15px;
     float: left;
