@@ -1,4 +1,5 @@
 
+<%@page import="IAS.Class.util"%>
 <%-- Calendar --%>
 <%--------------------------------------------------------------%>
 <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
@@ -84,7 +85,7 @@
                 <label>Creation Date:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASDateTextBox" readonly type="text" name="inwardCreationDate" id="inwardCreationDate" value=""/>
+                <input class="IASDateTextBox" readonly type="text" name="inwardCreationDate" id="inwardCreationDate" value="<%=IAS.Class.util.getDateString()%>"/>
             </span>
         </div>
 
@@ -122,6 +123,10 @@
                 <select class="IASComboBox" TABINDEX="4" name="purpose" id="purpose">
                     <option value ="IASAgent">Create New Subscription</option>
                     <option value ="IASAgent">Renew Subscription</option>
+                    <option value ="IASAgent">Address Change</option>
+                    <option value ="IASAgent">Request for Invoice</option>
+                    <option value ="IASAgent">Missing Issue</option>
+                    <option value ="IASAgent">Reprint</option>
                 </select>
             </span>
         </div>
@@ -135,6 +140,8 @@
                 <select class="IASComboBox" TABINDEX="5" name="modeOfPayment" id="modeOfPayment">
                     <option value ="IASAgent">Cheque</option>
                     <option value ="IASAgent">Money Order</option>
+                    <option value ="IASAgent">Cash</option>
+                    <option value ="IASAgent">Demand Draft</option>
                 </select>
             </span>
         </div>
@@ -146,7 +153,7 @@
             </span>
             <div class="dateDiv" id="dateDiv"></div>
             <span class="IASFormDivSpanInputBox">
-                <input type="text" class="IASDateTextBox" readonly size="10" name="paymentdate" id="paymentdate"/>
+                <input type="text" class="IASDateTextBox" readonly size="10" name="paymentdate" id="paymentdate" value="<%=IAS.Class.util.getDateString()%>"/>
             </span>
 
         </div>

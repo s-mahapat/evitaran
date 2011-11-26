@@ -31,9 +31,13 @@
         <servlet-name>reminders</servlet-name>
         <servlet-class>IAS.Controller.reminders</servlet-class>
     </servlet>
-        <servlet>
+    <servlet>
         <servlet-name>journal</servlet-name>
         <servlet-class>IAS.Controller.journal</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>home</servlet-name>
+        <servlet-class>IAS.Controller.home</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>agent</servlet-name>
@@ -79,11 +83,15 @@
         <servlet-name>errorHandler</servlet-name>
         <url-pattern>/errorHandler</url-pattern>
     </servlet-mapping>    
+    <servlet-mapping>
+        <servlet-name>home</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>jsp/home.jsp</welcome-file>
+        <welcome-file>jsp/login/login.jsp</welcome-file>
     </welcome-file-list>
     <!-- error-code related error pages -->
     <error-page>
@@ -96,19 +104,12 @@
         <location>/errorHandler</location>
     </error-page>
     <security-constraint>
+        <display-name>Authentication</display-name>
         <web-resource-collection>
-            <web-resource-name>JSS</web-resource-name>
+            <web-resource-name>JDS</web-resource-name>
             <description> accessible by authenticated users of the user role</description>
-            <url-pattern>*.*</url-pattern>
+            <url-pattern>/*</url-pattern>
         </web-resource-collection>
-        <auth-constraint>
-            <description>These roles are allowed access</description>
-            <role-name>user</role-name>
-        </auth-constraint>
-        <user-data-constraint>
-            <description>SSL Required</description>
-            <transport-guarantee>NONE</transport-guarantee>
-        </user-data-constraint>
     </security-constraint>
     <security-role>
         <description>Only 'user' role is allowed to access this web application</description>

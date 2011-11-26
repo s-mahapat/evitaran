@@ -160,7 +160,7 @@
             <input onclick="setActionValue('add')" class="IASButton" TABINDEX="102" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction"/>
         </div>
         <div id="generateProformaInvoiceBtnDiv">
-            <input onclick="setActionValue('gpl')" class="IASButton" TABINDEX="102" type="submit" value="Generate Proforma Invoice" id="btnGenerateProformaInvoice" name="btnSubmitAction"/>
+            <input onclick="setActionValue('gpi')" class="IASButton" TABINDEX="102" type="submit" value="Generate Proforma Invoice" id="btnGenerateProformaInvoice" name="btnSubmitAction"/>
         </div>
         <div id="missingIssueListBtnDiv">
             <input onclick="setActionValue('mil')" class="IASButton" TABINDEX="102" type="submit" value="Missing Issue List" id="btnMissingIssueList" name="btnSubmitAction"/>

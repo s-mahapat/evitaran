@@ -8,13 +8,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/inward/inward.css" />
-
         <title>Select Inward</title>
-
-        <%--------------------------------------------------------------%>
-        <%-- Calendar --%>
-        <%--------------------------------------------------------------%>
-        <script src="js/CalendarPopup.js" type="text/javascript"></script>
         <script src="js/inward/gatekeeperinward.js" type="text/javascript"></script>
         <script src="js/inward/inward.js" type="text/javascript"></script>
         <script type="text/javascript">

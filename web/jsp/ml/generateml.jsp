@@ -5,9 +5,9 @@
 <%
     String listType = request.getParameter("list");
     String list = null;
-    if(listType.equalsIgnoreCase("ml")){
+    if (listType.equalsIgnoreCase("ml")) {
         list = "Mailing";
-    }else if(listType.equalsIgnoreCase("bil")){
+    } else if (listType.equalsIgnoreCase("bil")) {
         list = "Back Issue";
     }
 %>
@@ -65,7 +65,10 @@
                                         <label>No. of Copies:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input TABINDEX="3" class="IASTextBox" maxlength="5" type="text" name="numOfCopies" id="numOfCopies" value=""/>
+                                        <select class="IASComboBox" TABINDEX="2" name="numOfCopies" id="numOfCopies">
+                                            <option selected value ="1">1</option>
+                                            <option value ="2">More than 1</option>
+                                        </select>
                                     </span>
                                 </div>
 
@@ -74,7 +77,7 @@
                                         <label>Month:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                         <select class="IASComboBox" TABINDEX="4" name="mlMonth" id="mlMonth">
+                                        <select class="IASComboBox" TABINDEX="4" name="mlMonth" id="mlMonth">
                                             <option value ="0">November</option>
                                         </select>
                                     </span>
@@ -85,7 +88,7 @@
                                         <label>Year:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                         <select class="IASComboBox" TABINDEX="5" name="mlYear" id="mlYear">
+                                        <select class="IASComboBox" TABINDEX="5" name="mlYear" id="mlYear">
                                             <option value ="0">2011</option>
                                         </select>
                                     </span>

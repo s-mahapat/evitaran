@@ -86,22 +86,14 @@ body{
     z-index: 2;
 }
 
-/*
 #bodyContainer{
     left: 0px;
-    top: 8px;
+    /*top: 100px;*/
+    margin-top: 68px;
     padding-left: 12%;
-    position: relative;
+    /*position: fixed;*/
     width: 88%;
-    height: auto;
-}*/
-#bodyContainer{
-    left: 0px;
-    top: 68px;
-    padding-left: 12%;
-    position: fixed;
-    width: 88%;
-    height: auto;
+    overflow: auto;
 }
 
 #watermark{
@@ -317,7 +309,7 @@ body{
 
 .datatable tbody td{
     text-align: center;
-    font-size: small;
+    font-size: 1em;
     font-weight: normal;
     background-color: #ECE5B6;
     vertical-align: middle;
@@ -376,5 +368,24 @@ A:active {
 
 .actionBtnDiv{
     text-align: center;
+}
+
+#IASLetterHeadHeader{
+
     width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: auto;
+    font-family: cambria,sans-serif,serif;
+    font-size: large;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+
+.pageBreak{
+    page-break-before: always;
+}
+
+.underlineText{
+    text-decoration: underline;
 }

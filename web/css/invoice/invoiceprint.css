@@ -1,0 +1,151 @@
+/*
+    Document   : invoiceprint
+    Created on : Nov 24, 2011, 7:37:01 AM
+    Author     : Shailendra Mahapatra
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/*
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+body {
+    width: 23cm;
+    height: 30cm;
+    border: none;
+    padding: 0px;
+    font: 12px Arial, Helvetica,"Lucida Grande", serif; color: #000;
+}
+
+#bodyContainer{
+    margin: 0;
+    padding: 0;
+}
+
+#sidebar, #header{
+    display: none;
+ }
+
+.MainFieldset{
+    border: none;
+ }
+
+ .subMainFieldSet{
+     border: none;
+ }
+
+.InvoiceMainDiv{
+    height: auto;
+    margin: 1cm 1cm;
+    width: 19cm;
+}
+
+.InvoiceSubMainDiv{
+    margin: 0;
+}
+
+.invoceTelephoneDiv{
+
+    float: right;
+    margin: 2% 2% 2% 0;
+    width: 98%;
+    text-align: right;
+}
+
+.invoiceLeftDiv{
+
+    width: 50%;
+    text-align: left;
+    float: left;
+    margin-top: 1cm;
+    margin-left: 1cm;
+}
+
+.invoiceRightDiv{
+
+    width: 30%;
+    text-align: left;
+    float: right;
+    margin-top: 1cm;
+    margin-right: 2%;
+}
+
+.invoceAddressHeaderDiv{
+    width: 100%;
+    float: left;
+}
+
+.invoiceSubscriberAddressHeaderSpan{
+    text-decoration: underline;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.invoiceSubscriberAddressSpan{
+   text-transform: uppercase;
+   text-align: left;
+   line-height: 1.8em;
+}
+
+.invoceAddressDiv{
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+    /*float: left;*/
+
+}
+
+.invoiceSubscriptionDetails{
+    text-transform: uppercase;
+    padding-left: 30px;
+    text-align: left;
+    width: 100%;
+}
+
+.invoiceBody{
+
+    width: 90%;
+    padding-left: 1cm;
+    margin-top: 2cm;
+    float: left;
+    line-height: 2em;
+}
+
+#invoiceNoticeParagraph{
+    text-transform: uppercase;
+    border:#666666 dotted;
+    float: left;
+    width: 50%;
+    text-align: left;
+    margin-top: 0.5cm;
+}
+
+.invoiceWideDiv{
+    width: 90%;
+    float: left;
+    text-align: left;
+    margin-left: 1cm;
+}
+
+.invoiceSubscriptionListTable{
+    width: 90%;
+    float: left;
+    border-color: #777;
+    border-collapse: collapse;
+
+}
+
+.invoiceSubscriptionListTable thead tr td{
+    text-align: center;
+    font-family: Cambria, sans-serif, serif;
+    font-weight: bold;
+}
+
+.invoiceSubscriptionListTable tbody tr td{
+    border: 1px #777 solid;
+    text-align: center;
+    text-transform: uppercase;
+
+}

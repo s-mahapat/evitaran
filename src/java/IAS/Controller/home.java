@@ -11,7 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 
-public class subscriber extends HttpServlet {
+/**
+ *
+ * @author Shailendra Mahapatra
+ */
+public class home extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -22,41 +26,10 @@ public class subscriber extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-        String url = null;
-        try{
-            if(action.equalsIgnoreCase("save")){
-                url = "/jsp/subscriber/viewsubscriber.jsp";
-            }
-            else if(action.equalsIgnoreCase("edit")){
-                url = "/jsp/subscriber/editsubscriber.jsp";
-            }
-            else if(action.equalsIgnoreCase("display")){
-                url = "/jsp/subscriber/viewsubscriber.jsp";
-            }
-            else if(action.equalsIgnoreCase("view")){
-                url = "/jsp/subscription/viewsubscription.jsp";
-            }
-            else if(action.equalsIgnoreCase("add")){
-                url = "/jsp/subscription/addnewsubscription.jsp";
-            }
-            else if(action.equalsIgnoreCase("gpi")){
-                url = "/jsp/invoice/proforma.jsp";
-            }
-            else if(action.equalsIgnoreCase("mil")){
-                url = "/jsp/subscription/missingissuelist.jsp";
-            }
 
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
-        }
-        catch(Exception e){
-
-        }
-        finally{
-
-        }
-
+        String url = "/jsp/home.jsp";
+        RequestDispatcher rd = request.getRequestDispatcher(url);
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

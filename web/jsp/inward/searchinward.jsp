@@ -10,14 +10,7 @@
         <link rel="stylesheet" type="text/css" href="css/inward/inward.css" />
 
         <title>Search Inward</title>
-
-        <%--------------------------------------------------------------%>
-        <%-- Calendar --%>
-        <%--------------------------------------------------------------%>
-        <script src="js/CalendarPopup.js" type="text/javascript"></script>
         <script type="text/javascript">
-            //var calPopup = new CalendarPopup("dateDiv");
-            //calPopup.showNavigationDropdowns();
             var selectedInward = 0;
             var selectedSubscriberId = 0;
             var isPageLoaded = false;
