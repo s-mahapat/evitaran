@@ -145,6 +145,7 @@ public class main extends HttpServlet {
 				url = "/jsp/reminders/sendReminders.jsp";
 				
             }else if (action.equalsIgnoreCase("showSentReminders")) {
+                
                 url = "/jsp/reminders/showSentRemindersSearchOutput.jsp";
             }
             

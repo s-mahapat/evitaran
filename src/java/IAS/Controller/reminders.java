@@ -5,6 +5,7 @@
 package IAS.Controller;
 
 import java.io.IOException;
+import java.util.EmptyStackException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,7 +37,8 @@ public class reminders extends HttpServlet {
             }  
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-        }catch (Exception e) {
+        }
+        catch (Exception e) {
         } finally {
         }
     }

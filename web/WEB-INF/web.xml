@@ -39,6 +39,10 @@
         <servlet-name>agent</servlet-name>
         <servlet-class>IAS.Controller.agent</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>errorHandler</servlet-name>
+        <servlet-class>IAS.Servlet.errorHandler</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -71,12 +75,26 @@
         <servlet-name>agent</servlet-name>
         <url-pattern>/agent</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>errorHandler</servlet-name>
+        <url-pattern>/errorHandler</url-pattern>
+    </servlet-mapping>    
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>jsp/home.jsp</welcome-file>
     </welcome-file-list>
+    <!-- error-code related error pages -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errorHandler</location>
+    </error-page>
+    <!-- exception-type related error pages -->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/errorHandler</location>
+    </error-page>
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>JSS</web-resource-name>
