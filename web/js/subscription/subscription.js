@@ -5,7 +5,7 @@ function setSubmitButtonValue(button,value){
 function listSubscription(mode){
     
     $(function(){
-        $(".datatable").jqGrid({
+        $("#subscriptionList").jqGrid({
             url:'/JDS/jsp/subscription/subscriptionlistXML.jsp',
             datatype: 'xml',
             mtype: 'GET',
@@ -86,15 +86,27 @@ function listSubscription(mode){
             caption: '&nbsp;',
                         
             gridComplete: function() {
-                var ids = jQuery(".datatable").jqGrid('getDataIDs');
+                var ids = jQuery("#subscriptionList").jqGrid('getDataIDs');
                 for (var i = 0; i < ids.length; i++) {
                     var cl = ids[i];
                     action = "<input type='Button' name='deleteJournal' value=\"Delete\" onclick=''/>";
-                    jQuery(".datatable").jqGrid('setRowData', ids[i], {
+                    jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
                         "Delete Journal": action
                     });
                 }
+                
+                //To hide the column - Delete 
+                var myGrid = $('#subscriptionList');
+                var colPos = 6;
+                var cm = myGrid.getGridParam("colModel");
+                
+                if (mode=="Display") {
+                    myGrid.jqGrid('hideCol', cm[colPos].name);
                 }
+            }
         });
+        
+
     });
+   
 }

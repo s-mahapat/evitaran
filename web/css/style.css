@@ -234,6 +234,11 @@ body{
     margin: 0px 20px;
 }
 
+.JDSFileInput{
+    font-family: Cambria;
+    font-size: 12px;
+}
+
 .IASComboBox{
     font-family: "Cambria",serif;
     font-size: 12px;
@@ -263,6 +268,14 @@ body{
     float: left;
     width: 98%;
     /*padding: 10px;*/
+}
+
+.IASFormCenterDiv{
+    clear: both;
+    margin: 4px;
+    float: left;
+    width: 98%;
+    text-align: center;
 }
 
 

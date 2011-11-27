@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urns>
+    <page>1</page>
+    <total>10</total>
+    <records>100</records>
+    <result>
+        <urn>
+            <id>1</id>>
+            <inward_id>J-3402</inward_id>
+            <subscriber_id>42243</subscriber_id>
+            <reciept_no>7896655</reciept_no>
+            <cheque_no>458670</cheque_no>
+            <date>12/12/12</date>
+        </urn>
+        <urn>
+            <id>2</id>>
+            <inward_id>A-3267</inward_id>
+            <subscriber_id>425643</subscriber_id>
+            <reciept_no>783432</reciept_no>
+            <cheque_no>23232470</cheque_no>
+            <date>02/11/12</date>
+        </urn>
+        <urn>
+            <id>3</id>>
+            <inward_id>J-3402</inward_id>
+            <subscriber_id>42243</subscriber_id>
+            <reciept_no>7896655</reciept_no>
+            <cheque_no>458670</cheque_no>
+            <date>12/12/12</date>
+        </urn>
+        <urn>
+            <id>4</id>>
+            <inward_id>J-3402</inward_id>
+            <subscriber_id>42243</subscriber_id>
+            <reciept_no>7896655</reciept_no>
+            <cheque_no>458670</cheque_no>
+            <date>12/12/12</date>
+        </urn>
+    </result>
+</urns>

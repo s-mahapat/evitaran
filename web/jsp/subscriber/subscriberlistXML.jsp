@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subscriberlistXML>
+    <page>1</page>
+    <total>1</total>
+    <records>1</records>
+    <result>
+        <subscriberlist>
+            <id>1</id>
+            <subscriber_id>132</subscriber_id>
+            <subscriber_name>Pinksss</subscriber_name>
+            <dept>GOMO</dept>
+            <city>Bangalore</city>
+            <pincode>4333333</pincode>
+            <country>India</country>
+            <email>pinkipachisia@gmail.com</email>
+        </subscriberlist>
+        <subscriberlist>
+            <id>2</id>
+            <subscriber_id>132</subscriber_id>
+            <subscriber_name>Pinksss</subscriber_name>
+            <dept>GOMO</dept>
+            <city>Bangalore</city>
+            <pincode>4333333</pincode>
+            <country>India</country>
+            <email>pinkipachisia@gmail.com</email>
+        </subscriberlist>
+    </result>
+</subscriberlistXML>

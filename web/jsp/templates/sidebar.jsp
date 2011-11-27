@@ -2,7 +2,7 @@
     var myMenu;
     window.onload = function() {
         myMenu = new SDMenu("sidebar");
-        myMenu.speed = 1;
+        myMenu.speed = 3;                     // Menu sliding speed (1 - 5 recomended)
         myMenu.remember = true;               // Store menu states (expanded or collapsed) in cookie and restore later
         myMenu.oneSmOnly = true;             // One expanded submenu at a time
         myMenu.markCurrent = true;            // Mark current link / page (link.href == location.href)
@@ -41,15 +41,15 @@
         <a href="<%=contextPath + "/main?action=addresschange"%>">Address Change</a>
         <a href="<%=contextPath + "/main?action=gpi"%>">Request for Invoice</a>
         <a href="<%=contextPath + "/main?action=missingissue"%>">Missing Issue</a>
-        <a href="<%=contextPath + "/inward/processinward.jsp"%>">Reprint</a>
-        <a href="<%=contextPath + "/inward/updateReceiptNumbers.jsp"%>">Update Receipt Numbers</a>
+        <a href="<%=contextPath + "/main?action=urn"%>">Update Receipt Numbers</a>
 
     </div>
     <div>
         <span>Subscriber</span>
         <a href="<%=contextPath + "/main?action=createsubscriber"%>">Create Subscriber</a>
         <a href="<%=contextPath + "/main?action=searchsubscriber"%>">Search Subscriber</a>
-        <a href="<%=contextPath + "/subscriber/addSummerFellows.jsp"%>">Add Summer Fellows</a>
+        <a href="<%=contextPath + "/main?action=afs"%>">Add Free Subscriber</a>
+        <a href="<%=contextPath + "/main?action=asf"%>">Add Summer Fellows</a>
     </div>
     <div>
         <span>Mailing List</span>
@@ -66,16 +66,16 @@
     <div>
         <span>Reports</span>
         <a href="<%=contextPath + "/main?action=statement"%>">Statement</a>
-        <a href="<%=contextPath + "/main?action=listJournals"%>">List Of Journals</a>
-        <a href="<%=contextPath + "/main?action=listSubType"%>">List Of Subscriber Types</a>
-        <a href="<%=contextPath + "/main?action=listAgent"%>">List Of Agent</a>
-        <a href="<%=contextPath + "/main?action=listSubscriber"%>">List Of Subscribers</a>
-        <a href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation Figures</a>
-        <a href="<%=contextPath + "/main?action=listprofarmaInvoice"%>">List Of Invoice</a>
-        <a href="<%=contextPath + "/main?action=listBackissue"%>">List Of Back Issue Sent</a>
-        <a href="<%=contextPath + "/main?action=listReminder"%>">List of  Renewal Reminder Sent</a>
-        <a href="<%=contextPath + "/main?action=listmailinglist"%>">List Of Mailing List Sent</a>
-        <a href="<%=contextPath + "/main?action=journalRates"%>">Rates For Journals</a>
+        <a href="<%=contextPath + "/main?action=listJournals"%>">List of Journals</a>
+        <a href="<%=contextPath + "/main?action=listSubType"%>">List of Subscriber types</a>
+        <a href="<%=contextPath + "/main?action=listAgent"%>">List of Agent</a>
+        <a href="<%=contextPath + "/main?action=listSubscriber"%>">List of Subscribers</a>
+        <a href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation figures for journals</a>
+        <a href="<%=contextPath + "/main?action=listprofarmaInvoice"%>">List of Invoice</a>
+        <a href="<%=contextPath + "/main?action=listBackissue"%>">List of back issue sent</a>
+        <a href="<%=contextPath + "/main?action=listReminder"%>">List of  renewal reminder sent</a>
+        <a href="<%=contextPath + "/main?action=listmailinglist"%>">List of mailing list sent</a>
+        <a href="<%=contextPath + "/main?action=journalRates"%>">Rates for Journals</a>
     </div>
 
     <div>

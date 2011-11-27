@@ -163,7 +163,21 @@ public class main extends HttpServlet {
             } else if(action.equalsIgnoreCase("gpi")){
 
                 url = "/jsp/inward/gatekeeperinward.jsp?nextAction=gpi&next=" + request.getContextPath() + "/jsp/invoice/proforma.jsp";
+
+            } else if (action.equals("urn")) {
+
+                url = "/jsp/inward/urn.jsp";
+
+            } else if (action.equals("asf")) {
+
+                url = "/jsp/subscriber/asf.jsp";
+
+            }else if (action.equals("afs")) {
+
+                url = "/jsp/subscriber/afs.jsp";
+
             }
+
 
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

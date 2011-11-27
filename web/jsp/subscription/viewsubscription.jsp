@@ -15,7 +15,7 @@
         <script>
             addOnloadEvent(makeReadOnly);
             addOnloadEvent(makeViewSubscriptionReadOnly);
-            addOnloadEvent(listSubscription("Display"));
+            addOnloadEvent(function(){listSubscription("Display")})
         </script>
     </head>
     <body>

@@ -68,7 +68,28 @@
 
             <span class="IASFormDivSpanInputBox">
                 <select class="IASComboBox" TABINDEX="6" name="subscriberType" id="subscriberType">
-                    <option value ="test1">Free Subscriber</option>
+                    <optgroup id="optGrp1" label="Paid Subscribers">
+                        <option value ="subtype">IC - Indian Schools and Colleges</option>
+                        <option value ="subtype">II - Indian Institutes</option>
+                        <option value ="subtype">IP - Indian Institutes</option>
+                        <option value ="subtype">IN - Indian Institutes</option>
+                        <option value ="subsubtype">IF - Foreign Personnel</option>
+                        <option value ="subsubtype">IF - Foreign Institute</option>
+                    </optgroup>
+                    <optgroup id="optGrp2" label="Free Subscribers">
+                        <option value ="subtype">FELJM - Fellows</option>
+                        <option value ="subtype">XXX - Summer Fellows</option>
+                        <option value ="subtype">AS - Associates</option>
+                        <option value ="subtype">EBALL - Editorial Board Members</option>
+                        <option value ="subtype">EI - Indian Exchange</option>
+                        <option value ="subtype">EF - Foreign Exchange</option>
+                        <option value ="subtype">JGrant - Grant</option>
+                        <option value ="subtype">XXX - Authors</option>
+                        <option value ="subtype">IC - Indian Schools and Colleges</option>
+                    </optgroup>
+                    <option value ="subtype">Agent Subscribers</option>
+                    <option value ="subtype">Agents</option>
+                    <option value ="subtype">Kishore Vaigyanik Yojana</option>
                 </select>
             </span>
         </div>

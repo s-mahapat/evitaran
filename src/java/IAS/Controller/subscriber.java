@@ -44,7 +44,7 @@ public class subscriber extends HttpServlet {
                 url = "/jsp/invoice/proforma.jsp";
             }
             else if(action.equalsIgnoreCase("mil")){
-                url = "/jsp/subscription/missingissuelist.jsp";
+                url = "/jsp/missingissue/missingissuelist.jsp";
             }
 
             RequestDispatcher rd = request.getRequestDispatcher(url);

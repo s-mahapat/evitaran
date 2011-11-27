@@ -14,7 +14,7 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script>
             addOnloadEvent(makeAddNewSubscriptionReadOnly);
-            addOnloadEvent(listSubscription("edit"));
+            addOnloadEvent(function(){listSubscription("View")});
         </script>
     </head>
     <body>
