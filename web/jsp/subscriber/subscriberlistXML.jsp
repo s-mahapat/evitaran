@@ -7,22 +7,22 @@
         <subscriberlist>
             <id>1</id>
             <subscriber_id>132</subscriber_id>
-            <subscriber_name>Pinksss</subscriber_name>
+            <subscriber_name>Sam</subscriber_name>
             <dept>GOMO</dept>
             <city>Bangalore</city>
-            <pincode>4333333</pincode>
+            <Samcode>4333333</Samcode>
             <country>India</country>
-            <email>pinkipachisia@gmail.com</email>
+            <email>Sam@gmail.com</email>
         </subscriberlist>
         <subscriberlist>
             <id>2</id>
             <subscriber_id>132</subscriber_id>
-            <subscriber_name>Pinksss</subscriber_name>
+            <subscriber_name>Sam</subscriber_name>
             <dept>GOMO</dept>
             <city>Bangalore</city>
-            <pincode>4333333</pincode>
+            <Samcode>4333333</Samcode>
             <country>India</country>
-            <email>pinkipachisia@gmail.com</email>
+            <email>Sam@gmail.com</email>
         </subscriberlist>
     </result>
 </subscriberlistXML>
