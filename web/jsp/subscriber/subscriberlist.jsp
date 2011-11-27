@@ -6,9 +6,13 @@
         <jsp:include page="../templates/styleforpopup.jsp"></jsp:include>
         <title>Search Subscriber</title>
         <script>
+            window.returnValue=0;
+            var windowShouldReturnValue = dialogArguments[0];
+            var selectedSubscriberId = 0;
+
             $(function(){
                 $(".datatable").jqGrid({
-                    url:'/JDS/jsp/subscriber/subscriberlistXML.jsp',
+                    url:'/JDS/jsp/subscriber/subscriberlist.xml',
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -21,17 +25,17 @@
                     loadtext: "Loading...",
                     colNames:['Select','Subscriber Id','Subscriber Name', 'Department','City','Pin Code','Country', 'Email'],
                     colModel :[
-                        {name:'Select', index:'select', width:50, align:'center',xmlmap:'subscriber_id',
+                        {name:'Select', index:'select', width:15, align:'center',xmlmap:'subscriber_id',
                             formatter:function (cellvalue, options, rowObject) {
-                                return '<input onclick="javascript:selectedSubscriber=this.value" type="radio" id="selectedSubscriberRadio" name="selectedSubscriberRadio" value="' + cellvalue + '"/>';
+                                return '<input onclick="selectedSubscriberId=this.value" type="radio" id="selectedSubscriberRadio" name="selectedSubscriberRadio" value="' + cellvalue + '"/>';
                             }
                         },
                         {name:'Subscriber Id', index:'subscriber_id', width:20, align:'center', xmlmap:'subscriber_id'},
-                        {name:'Subscriber Name', index:'subscriber_name', width:30, align:'center', xmlmap:'subscriber_name'},
-                        {name:'Department', index:'dept', width:60, align:'center', xmlmap:'dept'},
-                        {name:'City', index:'city', width:50, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                        {name:'Pin Code', index:'pincode', width:50, align:'center', sortable:false, xmlmap:'pincode'},
-                        {name:'Country', index:'country', width:50, align:'center', xmlmap:'country'},
+                        {name:'Subscriber Name', index:'subscriber_name', width:40, align:'center', xmlmap:'subscriber_name'},
+                        {name:'Department', index:'dept', width:40, align:'center', xmlmap:'dept'},
+                        {name:'City', index:'city', width:35, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
+                        {name:'Pin Code', index:'pincode', width:25, align:'center', sortable:false, xmlmap:'pincode'},
+                        {name:'Country', index:'country', width:30, align:'center', xmlmap:'country'},
                         {name:'Email', index:'email', width:50, align:'center', xmlmap:'email'},
                     ],
                     xmlReader : {
@@ -49,7 +53,7 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-                        
+
                     gridComplete: function() {
                         //var ids = jQuery(".datatable").jqGrid('getDataIDs');
                         //for (var i = 0; i < ids.length; i++) {
@@ -59,17 +63,24 @@
                     }
                 });
             });
-        </script>    
+
+            function CheckReturnValue(){
+                if(windowShouldReturnValue && !window.returnValue){
+                    alert("Please select a subscriber");
+                    return false;
+                }
+            }
+        </script>
 
     </head>
-    <body>
+    <body onunload="return CheckReturnValue()">
         <div id="bodyContainer">
             <div class="MainDiv">
                 <fieldset class="MainFieldset">
                     <legend>Search Subscriber Result</legend>
 
                     <fieldset class="subMainFieldSet">
-                        <legend>Subscriber List</legend>                        
+                        <legend>Subscriber List</legend>
                         <table class="datatable" id="subscriberList"></table>
                         <div id="pager"></div>
                     </fieldset>
@@ -80,10 +91,10 @@
                     <fieldset class="subMainFieldSet">
                         <div class="IASFormFieldDiv">
                             <div id="okBtnDiv">
-                                <input class="IASButton" TABINDEX="6" type="submit" value="Ok" name="btnOk"/>
+                                <input class="IASButton" TABINDEX="6" type="button" onclick="window.returnValue=selectedSubscriberId;window.close()" value="OK" name="btnOk"/>
                             </div>
                             <div id="cancelBtnDiv">
-                                <input class="IASButton" TABINDEX="8" type="submit" value="Cancel" name="btnCancel" onclick="javascript:window.close()"/>
+                                <input class="IASButton" TABINDEX="8" type="submit" value="Cancel" name="btnCancel" onclick="window.close()"/>
                             </div>
                         </div>
                     </fieldset>

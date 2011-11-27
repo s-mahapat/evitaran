@@ -8,8 +8,62 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/subType.css" />
-
         <title>List subscriber type</title>
+        <script>
+            var isPageLoaded = false;
+            $(function(){
+
+                      $("#datatable").jqGrid({
+                        url:'',
+                        datatype: 'xml',
+                        mtype: 'GET',
+                        width: '100%',
+                        height: 240,
+                        autowidth: true,
+                        forceFit: true,
+                        sortable: true,
+                        loadonce: true,
+                        rownumbers: true,
+                        emptyrecords: "No records to view",
+                        loadtext: "Loading...",
+                        colNames:['Subscriber Code','Subscriber Type','Free/Paid', 'No. Of Copies','Discount(%)'],
+                        colModel :[
+                          {name:'SubscriberCode', index:'inward_id', width:50, align:'center', xmlmap:'subscriber_code'},
+                          {name:'SubscriberType', index:'inward_id', width:50, align:'center', xmlmap:'subscriber_type'},
+                          {name:'FreePaid', index:'subscriber_id', width:80, align:'center', xmlmap:'free_paid'},
+                          {name:'CopiesCount', index:'from', width:80, align:'center', xmlmap:'no_of_copies'},
+                          {name:'Discount', index:'date', width:80, align:'center',xmlmap:'discount'}
+                        ],
+                        xmlReader : {
+                          root: "result",
+                          row: "row",
+                          page: "data>page",
+                          total: "data>total",
+                          records : "data>records",
+                          repeatitems: false,
+                          id: "journal_id"
+                       },
+                        pager: '#pager',
+                        rowNum:10,
+                        rowList:[10,20,30],
+                        viewrecords: true,
+                        gridview: true,
+                        caption: '&nbsp;',
+                        beforeRequest: function(){
+                          return isPageLoaded;
+                        },
+                        loadError: function(xhr,status,error){
+                            alert("Failed getting data from server" + status);
+                        }
+               });
+
+            });
+
+            function getReport(){
+                isPageLoaded = true;
+                jQuery("#datatable").trigger("reloadGrid");
+            }
+        </script>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -52,7 +106,7 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="3" type="button" onclick="getReport()" value="Search"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
@@ -69,50 +123,10 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
                             <legend>Search Result</legend>
-
-                            <table class="datatable">
-                                <thead>
-                                    <tr>
-                                        <td>Code</td>
-                                        <td>Subscriber Type</td>
-                                        <td>Free/paid</td>
-                                        <td>Number of Free Copies</td>
-                                        <td>Discount</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>FELJM</td>
-                                        <td>Fellow</td>
-                                        <td>Free</td>
-                                        <td>2</td>
-                                        <td>-</td>                                        
-                                    </tr>
-                                    <tr>
-                                        <td>AUTH</td>
-                                        <td>Author</td>
-                                        <td>Free</td>
-                                        <td>1</td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>AGE</td>
-                                        <td>Agent</td>
-                                        <td>Paid</td>
-                                        <td>0</td>
-                                        <td>10%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>KVPY</td>
-                                        <td>Kishore Vaigyanik Pariyojana</td>
-                                        <td>Paid</td>
-                                        <td>1</td>
-                                        <td>0</td>
-                                    </tr>  
-                                </tbody>
-                            </table>
+                            <table class="datatable" id="datatable"></table>
+                            <div id="pager"></div>
                         </fieldset>
-                                    
+
                          <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
@@ -120,7 +134,7 @@
                                 </div>
                             </div>
                         </fieldset>
-                  
+
                     </fieldset>
                 </div>
             </form>

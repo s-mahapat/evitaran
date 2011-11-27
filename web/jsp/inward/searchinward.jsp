@@ -13,7 +13,9 @@
         <script type="text/javascript">
             var selectedInward = 0;
             var selectedSubscriberId = 0;
+            //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
+
             $(function(){
 
                       $("#inwardTable").jqGrid({
@@ -80,28 +82,14 @@
 
             });
 
-            $(function() {
-                    var dates = $( "#from, #to" ).datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            dateFormat: 'dd/mm/yy',
-                            numberOfMonths: 3,
-                            onSelect: function( selectedDate ) {
-                                    var option = this.id == "from" ? "minDate" : "maxDate",
-                                            instance = $( this ).data( "datepicker" ),
-                                            date = $.datepicker.parseDate(
-                                                    instance.settings.dateFormat ||
-                                                    $.datepicker._defaults.dateFormat,
-                                                    selectedDate, instance.settings );
-                                    dates.not( this ).datepicker( "option", option, date );
-                            }
-                    });
-            });
-
+            // called when the search button is clicked
             function searchInwards(){
                 isPageLoaded = true;
                 jQuery("#inwardTable").trigger("reloadGrid");
             }
+
+            // draw the date picker.
+            jQueryDatePicker("from","to");
 
         </script>
 

@@ -8,10 +8,71 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/circulationFigures.css" />
+        <title>Circulation Figures</title>
+        <script>
+            var isPageLoaded = false;
+            $(function(){
 
-        <title>Circulation Figure</title>
+                      $("#datatable").jqGrid({
+                        url:'',
+                        datatype: 'xml',
+                        mtype: 'GET',
+                        width: '100%',
+                        height: 240,
+                        autowidth: true,
+                        forceFit: true,
+                        sortable: true,
+                        loadonce: true,
+                        rownumbers: true,
+                        emptyrecords: "No records to view",
+                        loadtext: "Loading...",
+                        colNames:['Journal Code','Journal Name', 'Inst. India','Inst. Abroad','Indi. India','Indi. Abroad','Comp','Auth','Total Copies','Print Order','Balance Copies'],
+                        colModel :[
+                          {name:'JournalCode', index:'inward_id', width:50, align:'center', xmlmap:'journal_code'},
+                          {name:'JournalName', index:'subscriber_id', width:50, align:'center', xmlmap:'journal_name'},
+                          {name:'InstIndia', index:'subscriber_id', width:50, align:'center', xmlmap:'inst_india'},
+                          {name:'InstAbroad', index:'subscriber_id', width:50, align:'center', xmlmap:'inst_abroad'},
+                          {name:'IndiIndia', index:'subscriber_id', width:50, align:'center', xmlmap:'indi_india'},
+                          {name:'IndiAbroad', index:'subscriber_id', width:50, align:'center', xmlmap:'indi_abroad'},
+                          {name:'Comp', index:'subscriber_id', width:50, align:'center', xmlmap:'comp'},
+                          {name:'Auth', index:'subscriber_id', width:50, align:'center', xmlmap:'auth'},
+                          {name:'TotalCopies', index:'subscriber_id', width:50, align:'center', xmlmap:'total_copies'},
+                          {name:'PrintOrder', index:'subscriber_id', width:50, align:'center', xmlmap:'print_order'},
+                          {name:'BalanceCopies', index:'subscriber_id', width:50, align:'center', xmlmap:'balance_copies'}
+
+                        ],
+                        xmlReader : {
+                          root: "result",
+                          row: "row",
+                          page: "data>page",
+                          total: "data>total",
+                          records : "data>records",
+                          repeatitems: false,
+                          id: "journal_id"
+                       },
+                        pager: '#pager',
+                        rowNum:10,
+                        rowList:[10,20,30],
+                        viewrecords: true,
+                        gridview: true,
+                        caption: '&nbsp;',
+                        beforeRequest: function(){
+                          return isPageLoaded;
+                        },
+                        loadError: function(xhr,status,error){
+                            alert("Failed getting data from server: " + status);
+                        }
+               });
+
+            });
+
+            function getReport(){
+                isPageLoaded = true;
+                jQuery("#datatable").trigger("reloadGrid");
+            }
+        </script>
     </head>
-    <body> 
+    <body>
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
@@ -40,11 +101,11 @@
                                     </select>
                                     </span>
                                 </div>
-                            </div>    
+                            </div>
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="3" type="button" onclick="getReport()" value="Search"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
@@ -62,64 +123,8 @@
                         <fieldset class="subMainFieldSet">
                             <legend>Result</legend>
 
-                            <table class="datatable">
-                                <thead>
-                                    <tr>
-                                        <td>Journal Code</td>
-                                        <td>Journal Name</td>
-                                        <td>Inst. India</td>
-                                        <td>Inst. Abd</td>
-                                        <td>Indi. India</td>
-                                        <td>Indi. Abd</td>
-                                        <td>Comp</td>
-                                        <td>Auth</td>                                        
-                                        <td>Total copies</td>
-                                        <td>Print Order</td>
-                                        <td>Balance Copies</td>                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>P</td>
-                                        <td>Prammana</td>
-                                        <td>9600</td>
-                                        <td>400</td>
-                                        <td>7000</td>
-                                        <td>500</td>
-                                        <td>290</td>
-                                        <td>60</td>                                        
-                                        <td>17850</td>
-                                        <td>18000</td>
-                                        <td>150</td>
-                                    </tr>
-                                    <tr>
-                                        <td>CS</td>
-                                        <td>Current Science</td>
-                                        <td>15000</td>
-                                        <td>1754</td>
-                                        <td>11345</td>
-                                        <td>896</td>
-                                        <td>68</td>
-                                        <td>60</td>                                        
-                                        <td>29123</td>
-                                        <td>30000</td>
-                                        <td>877</td>
-                                    </tr>
-                                    <tr>
-                                        <td>RES</td>
-                                        <td>Resonance</td>
-                                        <td>12000</td>
-                                        <td>5677</td>
-                                        <td>8967</td>
-                                        <td>1349</td>
-                                        <td>78</td>
-                                        <td>34</td>                                        
-                                        <td>28105</td>
-                                        <td>28500</td>
-                                        <td>395</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <table class="datatable" id="datatable"></table>
+                            <div id="pager"></div>
                         </fieldset>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">

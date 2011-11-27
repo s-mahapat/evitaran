@@ -8,8 +8,63 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/journal.css" />
-
         <title>List and Print Journal</title>
+        <script>
+            var isPageLoaded = false;
+            $(function(){
+
+                      $("#datatable").jqGrid({
+                        url:'',
+                        datatype: 'xml',
+                        mtype: 'GET',
+                        width: '100%',
+                        height: 240,
+                        autowidth: true,
+                        forceFit: true,
+                        sortable: true,
+                        loadonce: true,
+                        rownumbers: true,
+                        emptyrecords: "No records to view",
+                        loadtext: "Loading...",
+                        colNames:['Journal ID','Journal Code','Journal Name', 'ISSN NO','No Of Pages','Start Year'],
+                        colModel :[
+                          {name:'JournalId', index:'inward_id', width:50, align:'center', xmlmap:'journal_id'},
+                          {name:'JournalCode', index:'inward_id', width:50, align:'center', xmlmap:'journal_code'},
+                          {name:'JournalName', index:'subscriber_id', width:80, align:'center', xmlmap:'journal_name'},
+                          {name:'ISSNNO', index:'from', width:80, align:'center', xmlmap:'issn_no'},
+                          {name:'PageCount', index:'date', width:80, align:'center',xmlmap:'page_count'},
+                          {name:'StartYear', index:'city', width:80, align:'center', sortable:false, xmlmap:'start_year'},
+                        ],
+                        xmlReader : {
+                          root: "result",
+                          row: "row",
+                          page: "data>page",
+                          total: "data>total",
+                          records : "data>records",
+                          repeatitems: false,
+                          id: "journal_id"
+                       },
+                        pager: '#pager',
+                        rowNum:10,
+                        rowList:[10,20,30],
+                        viewrecords: true,
+                        gridview: true,
+                        caption: '&nbsp;',
+                        beforeRequest: function(){
+                          return isPageLoaded;
+                        },
+                        loadError: function(xhr,status,error){
+                            alert("Failed getting data from server" + status);
+                        }
+               });
+
+            });
+
+            function getReport(){
+                isPageLoaded = true;
+                jQuery("#datatable").trigger("reloadGrid");
+            }
+        </script>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -38,7 +93,7 @@
                                         <input class="IASTextBox" TABINDEX="1" type="text" name="journalCode" id="journalCode" value=""/>
                                     </span>
                                 </div>
-                            </div>    
+                            </div>
                             <div class="IASFormRightDiv">
 
                                 <div class="IASFormFieldDiv">
@@ -53,7 +108,7 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="3" type="button" value="Search" onclick="getReport()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
@@ -70,45 +125,8 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
                             <legend>Search Result</legend>
-
-                            <table class="datatable">
-                                <thead>
-                                    <tr>
-                                        <td>Journal Id</td>
-                                        <td>Journal Code</td>
-                                        <td>Journal Name</td>
-                                        <td>ISSN No</td>
-                                        <td>No Of Pages</td>
-                                        <td>Start Year</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>P</td>
-                                        <td>Prammana</td>
-                                        <td>1776</td>
-                                         <td>270</td>
-                                        <td>1976</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>CS</td>
-                                        <td>Current Science</td>
-                                        <td>1498</td>
-                                         <td>150</td>
-                                        <td>1985</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>RES</td>
-                                        <td>Resonance</td>
-                                        <td>1998</td>
-                                         <td>220</td>
-                                        <td>1992</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <table class="datatable" id="datatable"></table>
+                            <div id="pager"></div>
                         </fieldset>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">

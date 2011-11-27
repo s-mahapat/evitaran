@@ -8,10 +8,71 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/statement.css" />
+        <script>
+            var isPageLoaded = false;
 
+            // draw the date picker.
+            jQueryDatePicker("from","to");
+
+            $(function(){
+
+                      $("#statementTable").jqGrid({
+                        url:'',
+                        datatype: 'xml',
+                        mtype: 'GET',
+                        width: '100%',
+                        height: 240,
+                        autowidth: true,
+                        forceFit: true,
+                        sortable: true,
+                        loadonce: true,
+                        rownumbers: true,
+                        emptyrecords: "No records to view",
+                        loadtext: "Loading...",
+                        colNames:['Journal Code','Journal Name', 'Subscriber Type','Subscriber Count','No. Of Copies'],
+                        colModel :[
+                          {name:'JournalCode', index:'inward_id', width:50, align:'center', xmlmap:'journal_code'},
+                          {name:'JournalName', index:'subscriber_id', width:80, align:'center', xmlmap:'journal_name'},
+                          {name:'SubscriberType', index:'from', width:80, align:'center', xmlmap:'subscriber_type'},
+                          {name:'SubscriberCount', index:'date', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'subscriber_count'},
+                          {name:'Copies', index:'city', width:80, align:'center', sortable:false, xmlmap:'copies'},
+                        ],
+                        xmlReader : {
+                          root: "result",
+                          row: "row",
+                          page: "data>page",
+                          total: "data>total",
+                          records : "data>records",
+                          repeatitems: false,
+                          id: "journal_code"
+                       },
+                        pager: '#pager',
+                        rowNum:10,
+                        rowList:[10,20,30],
+                        viewrecords: true,
+                        gridview: true,
+                        caption: '&nbsp;',
+                        beforeRequest: function(){
+                          return isPageLoaded;
+                        },
+                        loadError: function(xhr,status,error){
+                            alert("Failed getting data from server" + status);
+                        }
+
+               });
+
+            });
+
+            function getStatements(){
+                isPageLoaded = true;
+                jQuery("#statementTable").trigger("reloadGrid");
+            }
+
+
+        </script>
         <title>Statement</title>
     </head>
-    <body> 
+    <body>
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
@@ -28,7 +89,7 @@
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
-                                
+
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Journal Name</label>
@@ -52,11 +113,11 @@
                                     </select>
                                     </span>
                                 </div>
-                            </div>    
+                            </div>
 
                             <%-- Search Criteria Right div --%>
                             <div class="IASFormRightDiv">
-                                
+
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Subscriber Type</label>
@@ -70,23 +131,24 @@
                                 </div>
 
                                 <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabelRadio">
-                                        <label>From</label>
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Date Range:</label>
+                                    </span>
+                                    <div class="dateDiv"></div>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDateTextBox" readonly size="10" type="text" id="from" name="from"/>
+                                    </span>
+                                    <span class="IASFormDivSpanForHyphen">
+                                        <label> to </label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASOptionButton" TABINDEX="10" type="radio" name="free" id="free" value=""/>
-                                    </span>
-                                    <span class="IASFormDivSpanLabelRadio">
-                                        <label>To</label>
-                                    </span>                                    
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASOptionButton" TABINDEX="10" type="radio" name="Paid" id="Paid" value=""/>
+                                        <input class="IASDateTextBox" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
-                            </div>  
+                            </div>
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="3" type="button" value="Search" onclick="getStatements()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
@@ -103,48 +165,8 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
                             <legend>Statement Result</legend>
-
-                            <table class="datatable">
-                                <thead>
-                                    <tr>
-                                        <td>Journal Code</td>
-                                        <td>Journal Name</td>
-                                        <td>Subscriber Type</td>
-                                        <td>No Of subscribers</td>
-                                        <td>number of copies</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>P</td>
-                                        <td>Prammana</td>
-                                        <td>Indian Personnel</td>
-                                        <td>8945</td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr>
-                                        <td>CS</td>
-                                        <td>Current Science</td>
-                                        <td>Indian School and College</td>
-                                         <td>150</td>
-                                        <td>5</td>
-                                    </tr>
-                                    <tr>
-                                        <td>RES</td>
-                                        <td>Resonance</td>
-                                        <td>Indian Institutes</td>
-                                         <td>220</td>
-                                        <td>6</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Total</td>
-                                        <td> </td>
-                                        <td> </td>
-                                        <td>9325</td>
-                                        <td>13445</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <table class="datatable" id="statementTable"></table>
+                            <div id="pager"></div>
                         </fieldset>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">

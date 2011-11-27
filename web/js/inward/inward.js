@@ -25,5 +25,4 @@ function validateSearchSubscriber(){
 function setInwardSubscriber(inwardId,subscriberId){
     selectedInward = inwardId;
     selectedSubscriberId = subscriberId || 0;
-
 }

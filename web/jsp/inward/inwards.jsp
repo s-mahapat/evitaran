@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inwards>
     <page>1</page>
-    <total>10</total>
+    <total>60</total>
     <records>100</records>
     <result>
         <inward>

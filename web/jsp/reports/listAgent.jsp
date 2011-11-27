@@ -8,17 +8,66 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/agent.css" />
-
         <title>List And Print Agent</title>
-
-        
-        <%--------------------------------------------------------------%>
-        <%-- Calendar --%>
-        <%--------------------------------------------------------------%>
-        <script src="js/CalendarPopup.js" type="text/javascript"></script>
         <script type="text/javascript">
-            var calPopup = new CalendarPopup("dateDiv");
-            calPopup.showNavigationDropdowns();
+            var isPageLoaded = false;
+            // draw the date picker.
+            jQueryDatePicker("from","to");
+
+            $(function(){
+
+                      $("#datatable").jqGrid({
+                        url:'',
+                        datatype: 'xml',
+                        mtype: 'GET',
+                        width: '100%',
+                        height: 240,
+                        autowidth: true,
+                        forceFit: true,
+                        sortable: true,
+                        loadonce: true,
+                        rownumbers: true,
+                        emptyrecords: "No records to view",
+                        loadtext: "Loading...",
+                        colNames:['Agent ID','Agent Name','Registration Date', 'Address','City','Pin Code','Email'],
+                        colModel :[
+                          {name:'AgentId', index:'inward_id', width:50, align:'center', xmlmap:'agent_id'},
+                          {name:'AgentName', index:'inward_id', width:50, align:'center', xmlmap:'agent_name'},
+                          {name:'RegistrationDate', index:'subscriber_id', width:80, align:'center', xmlmap:'registration_date'},
+                          {name:'Address', index:'from', width:80, align:'center', xmlmap:'address'},
+                          {name:'City', index:'date', width:80, align:'center',xmlmap:'city'},
+                          {name:'PinCode', index:'city', width:80, align:'center', sortable:false, xmlmap:'pincode'},
+                          {name:'Email', index:'city', width:80, align:'center', sortable:false, xmlmap:'email'}
+                        ],
+                        xmlReader : {
+                          root: "result",
+                          row: "row",
+                          page: "data>page",
+                          total: "data>total",
+                          records : "data>records",
+                          repeatitems: false,
+                          id: "agent_id"
+                       },
+                        pager: '#pager',
+                        rowNum:10,
+                        rowList:[10,20,30],
+                        viewrecords: true,
+                        gridview: true,
+                        caption: '&nbsp;',
+                        beforeRequest: function(){
+                          return isPageLoaded;
+                        },
+                        loadError: function(xhr,status,error){
+                            alert("Failed getting data from server" + status);
+                        }
+               });
+
+            });
+
+            function getReport(){
+                isPageLoaded = true;
+                jQuery("#datatable").trigger("reloadGrid");
+            }
         </script>
 
     </head>
@@ -77,42 +126,25 @@
 
 
                                 <div class="IASFormFieldDiv">
-                                    <%------ Date Range Label ------%>
                                     <span class="IASFormDivSpanLabel">
                                         <label>Reg. Date Range:</label>
                                     </span>
-
-                                    <%---------- Date Division -----------%>
-                                    <div class="dateDiv" id="dateDiv"></div>
-
-                                    <%------ From Date Input Box ------%>
+                                    <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" value="" id="fromDate"/>
-                                           <a href="#" onClick="calPopup.select(document.listAgentForm.fromDate,'anchor1','dd/MM/yyyy');
-                                               return false;" NAME="anchor1" ID="anchor1">
-                                            <img class="calendarIcon" alt="select" src="" TABINDEX="4"/>
-                                        </a>
+                                        <input class="IASDateTextBox" readonly size="10" type="text" id="from" name="from"/>
                                     </span>
-
-                                    <%-- Hyphen between From date and To Date --%>
                                     <span class="IASFormDivSpanForHyphen">
-                                        <label> - </label>
+                                        <label> to </label>
                                     </span>
-
-                                    <%--------------- To Date Input Box --------------%>
-                                    <span class="IASFormDivSpanInputBoxForSearchInward">
-                                        <input class="IASDateTextBox" readonly size="10" value="" id="toDate"/>
-                                           <a href="#" onClick="calPopup.select(document.listAgentForm.toDate,'anchor2','dd/MM/yyyy');
-                                               return false;" NAME="anchor2" ID="anchor2">
-                                            <img class="calendarIcon" alt="select" src="" TABINDEX="5"/>
-                                        </a>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDateTextBox" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                             </div>
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="6" type="button" onclick="getReport()" value="Search"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
@@ -129,58 +161,18 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
                             <legend>Result</legend>
+                            <table class="datatable" id="datatable"></table>
+                            <div id="pager"></div>
 
-                            <table class="datatable">
-                                <thead>
-                                    <tr>
-                                        <td>Agent Id</td>
-                                        <td>Agent Name</td>
-                                        <td>Registration Date</td>
-                                        <td>Address</td>
-                                        <td>City</td>
-                                        <td>Pin code</td>
-                                        <td>email id</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>123</td>
-                                        <td>LM Book Stores</td>
-                                        <td>12/10/2011</td>
-                                        <td>M G Road</td>
-                                        <td>Bangalore</td>
-                                        <td>5600045</td>
-                                        <td>lmbooks@gmail.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td>55</td>
-                                        <td>Sapna Book House</td>
-                                        <td>19/09/2009</td>
-                                        <td>M G Road</td>
-                                        <td>New Delhi</td>
-                                        <td>4500022</td>
-                                        <td>info@sapna.co.in</td>
-                                    </tr>
-                                    <tr>
-                                        <td>100</td>
-                                        <td>Books N Books</td>
-                                        <td>12/10/2010</td>
-                                        <td>M G Road</td>
-                                        <td>Mumbai</td>
-                                        <td>560045</td>
-                                        <td>inquiry@booksnbooks.com</td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </fieldset>
-                                    
-                         <fieldset class="subMainFieldSet">
+
+                        <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
                                 </div>
                             </div>
-                        </fieldset>                                    
+                        </fieldset>
                     </fieldset>
                 </div>
             </form>

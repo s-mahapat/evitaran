@@ -16,6 +16,7 @@
             //calPopup.showNavigationDropdowns();
             var selectedInward = 0;
             var selectedSubscriberId = 0;
+            var selectedInwardRowIndex = -1;
             var isPageLoaded = false;
             $(function(){
 
@@ -104,6 +105,7 @@
             function searchInwards(){
                 isPageLoaded = true;
                 jQuery("#inwardTable").trigger("reloadGrid");
+                //jQuery("#inwardTable").trigger("reloadGrid");
             }
 
 

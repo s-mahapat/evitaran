@@ -2,7 +2,7 @@
     var myMenu;
     window.onload = function() {
         myMenu = new SDMenu("sidebar");
-        myMenu.speed = 3;                     // Menu sliding speed (1 - 5 recomended)
+        myMenu.speed = 4;
         myMenu.remember = true;               // Store menu states (expanded or collapsed) in cookie and restore later
         myMenu.oneSmOnly = true;             // One expanded submenu at a time
         myMenu.markCurrent = true;            // Mark current link / page (link.href == location.href)

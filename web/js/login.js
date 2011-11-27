@@ -7,7 +7,7 @@ var bPasswordSuccess = false;
 
 function init(){
 
-    document.frmlogin.loginId.focus();
+    //document.frmlogin.loginId.focus();
 }
 
 function clearErrorMsg(){

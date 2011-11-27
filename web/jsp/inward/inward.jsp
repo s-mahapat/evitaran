@@ -3,19 +3,8 @@
 <%-- Calendar --%>
 <%--------------------------------------------------------------%>
 <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
-<script src="<%=request.getContextPath() + "/js/CalendarPopup.js"%>" type="text/javascript"></script>
 <script type="text/javascript">
-    //var calFrom = new CalendarPopup("dateDiv");
-    //calFrom.showNavigationDropdowns();
-    $(function() {
-		$( "#paymentdate" ).datepicker({
-			showOn: "button",
-                        dateFormat: 'dd/mm/yy',
-			buttonImage: "images/calendar.gif",
-			buttonImageOnly: true
-		});
-	});
-
+    jQueryCalendar("paymentdate");
 </script>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Inward Info Field Set --%>

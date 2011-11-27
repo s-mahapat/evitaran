@@ -63,18 +63,24 @@ function checkMandatoryFields(){
 
 
 function openModalPopUp(url){
-    newwindow=window.showModalDialog(url,'title',"dialogHeight: 500px; dialogWidth: 1000px;center: yes;resizeable: no;status: no;menubar: no;scrollbars: yes;toolbar: no;");
+    result=window.showModalDialog(url,0,"dialogHeight: 500px; dialogWidth: 1100px;center: yes;resizeable: no;status: no;menubar: no;scrollbars: yes;toolbar: no;");
+    return result;
+}
+
+function openModalPopUpMandatoryReturn(url){
+    result=window.showModalDialog(url,1,"dialogHeight: 500px; dialogWidth: 1100px;center: yes;resizeable: no;status: no;menubar: no;scrollbars: yes;toolbar: no;");
+    return result;
 }
 
 function changePwdDialog(url) {
-	newwindow=window.showModalDialog(url,'title',"dialogHeight: 200px; dialogWidth: 200px;center: yes;resizeable: no;status: no;menubar: no;scrollbars: no;toolbar: no;");
+    result=window.showModalDialog(url,'title',"dialogHeight: 200px; dialogWidth: 200px;center: yes;resizeable: no;status: no;menubar: no;scrollbars: no;toolbar: no;");
 }
 
 function isEmpty(element){
     if(element.value.length == 0){
         return true;
     }else{
-        //check if there are non space characters.
+    //check if there are non space characters.
     }
     return false;
 }
@@ -90,9 +96,9 @@ function makeReadOnly(){
             || formField.className == "IASEmailTextBox"
             || formField.className == "IASCheckBox"
             || formField.className == "IASDateTextBox"
-        ){
+            ){
             formField.disabled = true;
-            //formField.style.backgroundColor = "#D3D3D3";
+        //formField.style.backgroundColor = "#D3D3D3";
         }
     }
 
@@ -102,7 +108,7 @@ function makeReadOnly(){
         formField = formFields[i];
         if(formField.className == "IASComboBox"){
             formField.disabled = true;
-            //formField.style.backgroundColor = "#D3D3D3";
+        //formField.style.backgroundColor = "#D3D3D3";
         }
     }
 
@@ -112,7 +118,7 @@ function makeReadOnly(){
         formField = formFields[i];
         if(formField.className == "IASTextArea"){
             formField.disabled = true;
-            //formField.style.backgroundColor = "#D3D3D3";
+        //formField.style.backgroundColor = "#D3D3D3";
         }
     }
 }
@@ -140,9 +146,50 @@ function setActionValue(value){
 }
 
 function alert(msg,title){
-     if(title == null){
-         title = 'Journal Distribution System';
-     }
-     jAlert(msg,title);
-     return false;
+    if(title == null){
+        title = 'Journal Distribution System';
+    }
+    jAlert(msg,title);
+    return false;
+}
+
+
+function jQueryCalendar(divId){
+
+    var div = "#" + divId;
+    $(function() {
+        $( div ).datepicker({
+            showOn: "button",
+            dateFormat: 'dd/mm/yy',
+            buttonImage: "images/calendar.gif",
+            buttonImageOnly: true
+        });
+    });
+}
+
+function jQueryDatePicker(fromDiv, toDiv){
+
+    fromDiv = "#" + fromDiv;
+    toDiv = "#" + toDiv;
+    dateRangediv = fromDiv + "," + toDiv;
+
+    $(function() {
+        var dates = $( dateRangediv ).datepicker({
+            //defaultDate: "+1w",
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy',
+            numberOfMonths: 3,
+            onSelect: function( selectedDate ) {
+                var option = this.id == "from" ? "minDate" : "maxDate",
+                instance = $( this ).data( "datepicker" ),
+                date = $.datepicker.parseDate(
+                    instance.settings.dateFormat ||
+                    $.datepicker._defaults.dateFormat,
+                    selectedDate, instance.settings );
+                dates.not( this ).datepicker( "option", option, date );
+            }
+        });
+    });
+
 }

@@ -8,8 +8,67 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/subscriber.css" />
-
         <title>List and Print Subscriber</title>
+        <script>
+            jQueryCalendar("creationdate");
+            var isPageLoaded = false;
+        
+            $(function(){
+
+                      $("#datatable").jqGrid({
+                        url:'',
+                        datatype: 'xml',
+                        mtype: 'GET',
+                        width: '100%',
+                        height: 240,
+                        autowidth: true,
+                        forceFit: true,
+                        sortable: true,
+                        loadonce: true,
+                        rownumbers: true,
+                        emptyrecords: "No records to view",
+                        loadtext: "Loading...",
+                        colNames:['Subscriber ID','Subscriber Name', 'Department','City','Pin Code','Email'],
+                        colModel :[
+                          {name:'SubscriberID', index:'inward_id', width:20, align:'center', xmlmap:'subscriber_id'},
+                          {name:'SubscriberName', index:'subscriber_id', width:80, align:'center', xmlmap:'subscriber_name'},
+                          {name:'Department', index:'from', width:50, align:'center', xmlmap:'department'},
+                          {name:'City', index:'date', width:50, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
+                          {name:'PinCode', index:'city', width:30, align:'center', sortable:false, xmlmap:'pincode'},
+                          {name:'Email', index:'city', width:40, align:'center', sortable:false, xmlmap:'email'},
+                        ],
+                        xmlReader : {
+                          root: "result",
+                          row: "row",
+                          page: "data>page",
+                          total: "data>total",
+                          records : "data>records",
+                          repeatitems: false,
+                          id: "journal_code"
+                       },
+                        pager: '#pager',
+                        rowNum:10,
+                        rowList:[10,20,30],
+                        viewrecords: true,
+                        gridview: true,
+                        caption: '&nbsp;',
+                        beforeRequest: function(){
+                          return isPageLoaded;
+                        },
+                        loadError: function(xhr,status,error){
+                            alert("Failed getting data from server" + status);
+                        }
+
+               });
+
+            });
+
+             function getReport(){
+                isPageLoaded = true;
+                jQuery("#datatable").trigger("reloadGrid");
+            }
+
+        </script>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -24,12 +83,12 @@
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                      <fieldset class="subMainFieldSet">
-                        <div class="IASFormLeftDiv">
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
+                            <div class="IASFormLeftDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
                                     <label>Journal Name</label>
-                                </span>
-                                <span class="IASFormDivSpanInputBox">
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
                                  <select class="IASComboBox" TABINDEX="6" name="journalName" id="journalName">
                                     <option value ="P">Pramanna</option>
                                     <option value ="JAA">Journal of astrophysics and Astronomy</option>
@@ -43,14 +102,14 @@
                                     <option value ="CURR">Current Science</option>
                                     <option value ="RES">Resonance</option>
                                 </select>
-                                </span>
+                                    </span>
                              </div>
 
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
                                     <label>Subscriber Type</label>
-                                </span>
-                                <span class="IASFormDivSpanInputBox">
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
                                  <select class="IASComboBox" TABINDEX="6" name="subType" id="subType">
                                     <option value ="IC">Indian Schools and colleges</option>
                                     <option value ="II">Indian institutes</option>
@@ -69,72 +128,71 @@
                                     <option value ="AGE">Agent</option>
                                     <option value ="KVPY">Kishore Vaigyanik Pariyojana</option>
                                  </select>
-                                </span>
-                            </div>
+                                    </span>
+                                </div>
 
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
                                     <label>Free</label>
-                                </span>
-                                <span class="IASFormDivSpanInputBox">
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
                                     <input class="IASOptionButton" TABINDEX="10" type="radio" name="free" id="free" value=""/>
-                                </span>
+                                    </span>
                                 <span class="IASFormDivSpanLabelRadio">
                                     <label>Paid</label>
-                                </span>
-                                <span class="IASFormDivSpanInputBox">
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
                                     <input class="IASOptionButton" TABINDEX="10" type="radio" name="Paid" id="Paid" value=""/>
-                                </span>
-                            </div>
+                                    </span>
+                                </div>
                         </div>
-                        <div class="IASFormRightDiv">
+                            <div class="IASFormRightDiv">
 
-
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
                                     <label>City:</label>
-                                </span>
+                                    </span>
 
-                                <span class="IASFormDivSpanInputBox">
+                                    <span class="IASFormDivSpanInputBox">
                                     <input class="IASTextBox" TABINDEX="4" type="text" name="city" id="city" value=""/>
-                                </span>
-                            </div>
+                                    </span>
+                                </div>
 
                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Country:</label>
-                                </span>
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Country:</label>
+                                    </span>
 
-                                <span class="IASFormDivSpanInputBox">
+                                    <span class="IASFormDivSpanInputBox">
                                     <select class="IASComboBox" TABINDEX="8" name="country" id="country">
-                                        <option value ="India">India</option>
-                                    </select>
-                                </span>
-                            </div>
+                                            <option value ="India">India</option>
+                                        </select>
+                                    </span>
+                                </div>
 
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
                                     <label>Pin Code:</label>
-                                </span>
+                                    </span>
 
-                                <span class="IASFormDivSpanInputBox">
+                                    <span class="IASFormDivSpanInputBox">
                                     <input class="IASTextBox" TABINDEX="5" type="text" name="pinCode" id="pinCode" value=""/>
-                                </span>
-                            </div>
+                                    </span>
+                                </div>
 
                         </div>
 
-                        <div class="IASFormFieldDiv">
-                            <div id="searchBtnDiv">
-                                <input class="IASButton" TABINDEX="6" type="submit" value="Search"/>
+                            <div class="IASFormFieldDiv">
+                                <div id="searchBtnDiv">
+                                    <input class="IASButton" TABINDEX="6" type="button" onclick="getReport()" value="Search"/>
+                                </div>
+
+                                <div id="resetBtnDiv">
+                                    <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
+                                </div>
                             </div>
 
-                            <div id="resetBtnDiv">
-                                <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
-                            </div>
-                         </div>
-
-                      </fieldset>
+                        </fieldset>
 
 
 
@@ -143,49 +201,11 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
                             <legend>Search Result</legend>
-
-                        <table class="datatable">
-                            <thead>
-                                <tr>
-                                    <td>Subscriber Id</td>
-                                    <td>Subscriber Name</td>
-                                    <td>Journal/s</td>
-                                    <td>Subscriber Type</td>
-                                    <td>Department</td>
-                                    <td>City</td>
-                                    <td>Pin Code</td>
-                                    <td>Country</td>
-                                    <td>Email</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Pinki Pachisia</td>
-                                    <td>P, CS, RES</td>
-                                    <td>Indian Personnel</td>
-                                    <td>IAS1</td>
-                                    <td>Bangalore</td>
-                                    <td>560066</td>
-                                    <td>India</td>
-                                    <td>pinki@ias.com</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Shailendra Mahapatra</td>
-                                    <td>JAA</td>
-                                    <td>Indian Personnel</td>
-                                    <td>IAS2</td>
-                                    <td>Bangalore</td>
-                                    <td>560067</td>
-                                    <td>India</td>
-                                    <td>shail@ias.com</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                            <table class="datatable" id="datatable"></table>
+                            <div id="pager"></div>
                         </fieldset>
 
-                         <fieldset class="subMainFieldSet">
+                        <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
