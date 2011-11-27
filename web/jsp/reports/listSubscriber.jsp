@@ -9,7 +9,7 @@
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/subscriber.css" />
 
-        <title>List subscriber</title>
+        <title>List and Print Subscriber</title>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -18,45 +18,76 @@
             <form method="post" action="" name="listSubscriber">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>List and Print Subscriber</legend>
+                        <legend>List and Print Subscribers</legend>
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-                     <fieldset class="subMainFieldSet">   
+                     <fieldset class="subMainFieldSet">
                         <div class="IASFormLeftDiv">
+                            <div class="IASFormFieldDiv">
+                                <span class="IASFormDivSpanLabel">
+                                    <label>Journal Name</label>
+                                </span>
+                                <span class="IASFormDivSpanInputBox">
+                                 <select class="IASComboBox" TABINDEX="6" name="journalName" id="journalName">
+                                    <option value ="P">Pramanna</option>
+                                    <option value ="JAA">Journal of astrophysics and Astronomy</option>
+                                    <option value ="MS">Proceedings</option>
+                                    <option value ="EPS">Journal of Earth System Science</option>
+                                    <option value ="CS">Journal of Chemical Sciences</option>
+                                    <option value ="BMS">Bulletin of Materials Science</option>
+                                    <option value ="S">Sadhana</option>
+                                    <option value ="JB">Journal of Biosciences</option>
+                                    <option value ="JG">Journal of Genetics</option>
+                                    <option value ="CURR">Current Science</option>
+                                    <option value ="RES">Resonance</option>
+                                </select>
+                                </span>
+                             </div>
 
                             <div class="IASFormFieldDiv">
                                 <span class="IASFormDivSpanLabel">
-                                    <label>Subscriber ID:</label>
+                                    <label>Subscriber Type</label>
                                 </span>
-
                                 <span class="IASFormDivSpanInputBox">
-                                    <input class="IASTextBox" TABINDEX="1" type="text" name="subscriberID" id="subscriberID" value=""/>
+                                 <select class="IASComboBox" TABINDEX="6" name="subType" id="subType">
+                                    <option value ="IC">Indian Schools and colleges</option>
+                                    <option value ="II">Indian institutes</option>
+                                    <option value ="IP">Indian Personnel</option>
+                                    <option value ="IN">Indian Industry Corporate</option>
+                                    <option value ="FI">Foreign Institute</option>
+                                    <option value ="FP">Foreign Personnel</option>
+                                    <option value ="FELJM">Fellows</option>
+                                    <option value ="SF">Summer Fellows</option>
+                                    <option value ="EBALL">Editorial Board Members</option>
+                                    <option value ="ASS">Associates</option>
+                                    <option value ="AUT">Authors</option>
+                                    <option value ="JG">Grant</option>
+                                    <option value ="EI">Indian Exchange</option>
+                                    <option value ="AF">Foreign Exchange</option>
+                                    <option value ="AGE">Agent</option>
+                                    <option value ="KVPY">Kishore Vaigyanik Pariyojana</option>
+                                 </select>
                                 </span>
                             </div>
-
 
                             <div class="IASFormFieldDiv">
                                 <span class="IASFormDivSpanLabel">
-                                    <label>Subscriber Name:</label>
+                                    <label>Free</label>
                                 </span>
-
                                 <span class="IASFormDivSpanInputBox">
-                                    <input class="IASTextBox" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value=""/>
+                                    <input class="IASOptionButton" TABINDEX="10" type="radio" name="free" id="free" value=""/>
+                                </span>
+                                <span class="IASFormDivSpanLabelRadio">
+                                    <label>Paid</label>
+                                </span>
+                                <span class="IASFormDivSpanInputBox">
+                                    <input class="IASOptionButton" TABINDEX="10" type="radio" name="Paid" id="Paid" value=""/>
                                 </span>
                             </div>
-
-
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Address:</label>
-                                </span>
-
-                                <span class="IASFormDivSpanInputBox">
-                                    <textarea class="IASTextArea" TABINDEX="3" name="subscriberAddress" id="subscriberAddress"></textarea>
-                                </span>
-                            </div>
+                        </div>
+                        <div class="IASFormRightDiv">
 
 
                             <div class="IASFormFieldDiv">
@@ -65,10 +96,21 @@
                                 </span>
 
                                 <span class="IASFormDivSpanInputBox">
-                                    <input class="IASTextBox" TABINDEX="4" type="text" name="subscriberCity" id="subscriberCity" value=""/>
+                                    <input class="IASTextBox" TABINDEX="4" type="text" name="city" id="city" value=""/>
                                 </span>
                             </div>
 
+                           <div class="IASFormFieldDiv">
+                                <span class="IASFormDivSpanLabel">
+                                    <label>Country:</label>
+                                </span>
+
+                                <span class="IASFormDivSpanInputBox">
+                                    <select class="IASComboBox" TABINDEX="8" name="country" id="country">
+                                        <option value ="India">India</option>
+                                    </select>
+                                </span>
+                            </div>
 
                             <div class="IASFormFieldDiv">
                                 <span class="IASFormDivSpanLabel">
@@ -76,97 +118,23 @@
                                 </span>
 
                                 <span class="IASFormDivSpanInputBox">
-                                    <input class="IASTextBox" TABINDEX="5" type="text" name="subscriberPinCode" id="subscriberPinCode" value=""/>
-                                </span>
-                            </div>
-
-
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Subscriber Type:</label>
-                                </span>
-
-                                <span class="IASFormDivSpanInputBox">
-                                    <select class="IASComboBox" TABINDEX="6" name="subscriberType" id="subscriberType">
-                                        <option value ="test1">Free Subscriber</option>
-                                    </select>
+                                    <input class="IASTextBox" TABINDEX="5" type="text" name="pinCode" id="pinCode" value=""/>
                                 </span>
                             </div>
 
                         </div>
 
-                        <div class="IASFormRightDiv">
-
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Creation Date:</label>
-                                </span>
-
-                                <span class="IASFormDivSpanInputBox">
-                                    <input class="IASDateTextBox" readonly type="text" name="creationDate" id="creationDate" value=""/>
-                                </span>
+                        <div class="IASFormFieldDiv">
+                            <div id="searchBtnDiv">
+                                <input class="IASButton" TABINDEX="6" type="submit" value="Search"/>
                             </div>
 
-
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Department:</label>
-                                </span>
-
-                                <span class="IASFormDivSpanInputBox">
-                                    <input class="IASTextBox" TABINDEX="7" type="text" name="department" id="department" value=""/>
-                                </span>
+                            <div id="resetBtnDiv">
+                                <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
                             </div>
-
-
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Country:</label>
-                                </span>
-
-                                <span class="IASFormDivSpanInputBox">
-                                    <select class="IASComboBox" TABINDEX="8" name="subscriberCountry" id="subscriberCountry">
-                                        <option value ="India">India</option>
-                                    </select>
-                                </span>
-                            </div>
-
-
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Email:</label>
-                                </span>
-
-                                <span class="IASFormDivSpanInputBox">
-                                    <input class="IASEmailTextBox" TABINDEX="9" type="text" name="subscriberEmail" id="subscriberEmail" value=""/>
-                                </span>
-                            </div>
-
-
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Agent:</label>
-                                </span>
-
-                                <span class="IASFormDivSpanInputBox">
-                                    <select class="IASComboBox" TABINDEX="10" name="subscriberAgent" id="subscriberAgent">
-                                        <option value ="IASAgent">IASAgent</option>
-                                    </select>
-                                </span>
-                            </div>
-
                          </div>
-                            <div class="IASFormFieldDiv">
-                                <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="submit" value="Search"/>
-                                </div>
 
-                                <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
-                                </div>
-                            </div>
-
-                        </fieldset>
+                      </fieldset>
 
 
 
@@ -181,6 +149,8 @@
                                 <tr>
                                     <td>Subscriber Id</td>
                                     <td>Subscriber Name</td>
+                                    <td>Journal/s</td>
+                                    <td>Subscriber Type</td>
                                     <td>Department</td>
                                     <td>City</td>
                                     <td>Pin Code</td>
@@ -192,6 +162,8 @@
                                 <tr>
                                     <td>1</td>
                                     <td>Pinki Pachisia</td>
+                                    <td>P, CS, RES</td>
+                                    <td>Indian Personnel</td>
                                     <td>IAS1</td>
                                     <td>Bangalore</td>
                                     <td>560066</td>
@@ -201,6 +173,8 @@
                                 <tr>
                                     <td>2</td>
                                     <td>Shailendra Mahapatra</td>
+                                    <td>JAA</td>
+                                    <td>Indian Personnel</td>
                                     <td>IAS2</td>
                                     <td>Bangalore</td>
                                     <td>560067</td>
@@ -210,7 +184,7 @@
                             </tbody>
                         </table>
                         </fieldset>
-                                    
+
                          <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
@@ -218,7 +192,7 @@
                                 </div>
                             </div>
                         </fieldset>
-                  
+
                     </fieldset>
                 </div>
             </form>

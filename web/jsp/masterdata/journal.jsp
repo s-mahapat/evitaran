@@ -71,9 +71,6 @@
         <div id="saveBtnDiv">
             <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="101" type="submit" value="Save" id="btnSave" name="btnSubmitAction"/>
         </div>
-        <div id="updateBtnDiv">
-            <input onclick="setActionValue('update')" class="IASButton" TABINDEX="101" type="submit" value="Update" id="btnUpdate" name="btnSubmitAction"/>
-        </div>
         <div id="editBtnDiv">
             <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="101" type="submit" value="Edit" id="btnEdit" name="btnSubmitAction"/>
         </div>

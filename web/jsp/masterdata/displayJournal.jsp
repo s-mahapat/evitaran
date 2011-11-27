@@ -10,7 +10,7 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/masterdata/journal.css"/>
         <title>Create Journal</title>
-        <script type="text/javascript" src="js/msaterdata/displayJournal.js"></script>
+        <script type="text/javascript" src="js/masterdata/displayJournal.js"></script>
         <script>
             addOnloadEvent(makeReadOnly);
         </script>

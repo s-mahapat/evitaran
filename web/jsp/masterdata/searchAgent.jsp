@@ -87,7 +87,7 @@
                                     <%------ From Date Input Box ------%>
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" readonly size="10" value="" id="fromDate"/>
-                                           <a href="#" onClick="calPopup.select(document.searchInwardForm.fromDate,'anchor1','dd/MM/yyyy');
+                                           <a href="#" onClick="calPopup.select(document.searchAgentForm.fromDate,'anchor1','dd/MM/yyyy');
                                                return false;" NAME="anchor1" ID="anchor1">
                                             <img class="calendarIcon" alt="select" src="" TABINDEX="4"/>
                                         </a>
@@ -101,7 +101,7 @@
                                     <%--------------- To Date Input Box --------------%>
                                     <span class="IASFormDivSpanInputBoxForSearchInward">
                                         <input class="IASDateTextBox" readonly size="10" value="" id="toDate"/>
-                                           <a href="#" onClick="calPopup.select(document.searchInwardForm.toDate,'anchor2','dd/MM/yyyy');
+                                           <a href="#" onClick="calPopup.select(document.searchAgentForm.toDate,'anchor2','dd/MM/yyyy');
                                                return false;" NAME="anchor2" ID="anchor2">
                                             <img class="calendarIcon" alt="select" src="" TABINDEX="5"/>
                                         </a>
@@ -151,7 +151,7 @@
                                         <td>Bangalore</td>
                                         <td>5600045</td>
                                         <td>lmbooks@gmail.com</td>
-                                        <td><a href="<%=request.getContextPath() + "/agent?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/agent1?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent1?action=edit"%>">edit</a></td>
                                     </tr>
                                     <tr>
                                         <td>55</td>
@@ -161,7 +161,7 @@
                                         <td>New Delhi</td>
                                         <td>4500022</td>
                                         <td>info@sapna.co.in</td>
-                                        <td><a href="<%=request.getContextPath() + "/agent?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/agent1?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent1?action=edit"%>">edit</a></td>
                                     </tr>
                                     <tr>
                                         <td>100</td>
@@ -171,7 +171,7 @@
                                         <td>Mumbai</td>
                                         <td>560045</td>
                                         <td>inquiry@booksnbooks.com</td>
-                                        <td><a href="<%=request.getContextPath() + "/agent?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/agent1?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent1?action=edit"%>">edit</a></td>
                                     </tr>
                                 </tbody>
                             </table>

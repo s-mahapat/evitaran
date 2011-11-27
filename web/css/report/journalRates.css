@@ -1,5 +1,5 @@
 /*
-    Document   : Style for Agent related JSPs are defined here
+    Document   : Style for Subscriber Type related JSPs are defined here
 */
 root {
     display:block;
@@ -8,16 +8,12 @@ root {
 #updateBtnDiv{
     float: left;
     width: 10%;
+    margin-left: 25%;
 }
 
 #saveBtnDiv{
     float: left;
     width: 8%;
-    margin-left: 35%;
-}
-#editBtnDiv{
-    float: left;
-    width: 10%;
 }
 
 #searchBtnDiv{

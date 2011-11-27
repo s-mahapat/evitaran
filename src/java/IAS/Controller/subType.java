@@ -14,7 +14,7 @@ import javax.servlet.RequestDispatcher;
  *
  * @author Shailendra Mahapatra
  */
-public class journal extends HttpServlet {
+public class subType extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -29,13 +29,12 @@ public class journal extends HttpServlet {
         String url = null;
         try{
             if(action.equalsIgnoreCase("save")){
-                url = "/jsp/masterdata/displayJournal.jsp";
+                url = "/jsp/masterdata/displaySubType.jsp";
             }else if(action.equalsIgnoreCase("edit")){
-                url = "/jsp/masterdata/editJournal.jsp";
+                url = "/jsp/masterdata/editSubType.jsp";
             }else if(action.equalsIgnoreCase("view")){
-                url = "/jsp/masterdata/displayJournal.jsp";
+                url = "/jsp/masterdata/displaySubType.jsp";
             }
-            
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }

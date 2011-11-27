@@ -14,7 +14,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchAgentForm">
+            <form method="post" action="<%=request.getContextPath() + "/subType"%>" name="subTypeForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Journal</legend>
@@ -87,7 +87,7 @@
                                         <td>Free</td>
                                         <td>2</td>
                                         <td>-</td>
-                                        <td><a href="<%=request.getContextPath() + "/journal?action=view"%>">view</a><a href="<%=request.getContextPath() + "/journal?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/subType?action=view"%>">view</a><a href="<%=request.getContextPath() + "/subType?action=edit"%>">edit</a></td>
                                     </tr>
                                     <tr>
                                         <td>AUTH</td>
@@ -95,7 +95,7 @@
                                         <td>Free</td>
                                         <td>1</td>
                                         <td>-</td>
-                                        <td><a href="<%=request.getContextPath() + "/journal?action=view"%>">view</a><a href="<%=request.getContextPath() + "/journal?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/subType?action=view"%>">view</a><a href="<%=request.getContextPath() + "/subType?action=edit"%>">edit</a></td>
                                     </tr>
                                     <tr>
                                         <td>AGE</td>
@@ -103,7 +103,7 @@
                                         <td>Paid</td>
                                         <td>0</td>
                                         <td>10%</td>
-                                        <td><a href="<%=request.getContextPath() + "/journal?action=view"%>">view</a><a href="<%=request.getContextPath() + "/journal?action=edit"%>">edit</a></td>
+                                        <td><a href="<%=request.getContextPath() + "/subType?action=view"%>">view</a><a href="<%=request.getContextPath() + "/subType?action=edit"%>">edit</a></td>
                                     </tr>
                                     <tr>
                                         <td>KVPY</td>
@@ -112,11 +112,11 @@
                                         <td>1</td>
                                         <td>0</td>
                                         <td><a href="<%=request.getContextPath() + "/journal?action=view"%>">view</a><a href="<%=request.getContextPath() + "/journal?action=edit"%>">edit</a></td>
-                                    </tr>                                    
+                                    </tr>
                                 </tbody>
                             </table>
                         </fieldset>
-                                    
+
                        <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
@@ -124,7 +124,7 @@
                                 </div>
                             </div>
                         </fieldset>
-                                    
+
                     </fieldset>
                 </div>
             </form>

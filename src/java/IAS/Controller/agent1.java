@@ -14,7 +14,7 @@ import javax.servlet.RequestDispatcher;
  *
  * @author Shailendra Mahapatra
  */
-public class agent extends HttpServlet {
+public class agent1 extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,7 +35,6 @@ public class agent extends HttpServlet {
             }else if(action.equalsIgnoreCase("view")){
                 url = "/jsp/masterdata/displayAgent.jsp";
             }
-
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }

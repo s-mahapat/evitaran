@@ -7,7 +7,6 @@
 function makeReadOnly(){
 
     document.getElementById("btnEdit").disabled = true;
-    //document.getElementById("btnUpdate").disabled = true;
-    document.getElementById("btnSave").disabled = true;
+    //document.getElementById("btnSave").disabled = true;
 
 }
