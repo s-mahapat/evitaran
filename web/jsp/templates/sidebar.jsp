@@ -86,7 +86,7 @@
         <a href="<%=contextPath + "/main?action=searchJournal"%>">Search Journal</a>
         <a href="<%=contextPath + "/main?action=addAgent"%>">Add Agent</a>
         <a href="<%=contextPath + "/main?action=searchAgent"%>">Search Agent</a>
-        <a href="<%=contextPath + "/main?action=annualSubscriptionRates"%>">Annual Subscription Rate</a>
+        <a href="<%=contextPath + "/main?action=subRate"%>">Annual Subscription Rate</a>
     </div>
 
 </div>

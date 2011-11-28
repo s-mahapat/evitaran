@@ -1,5 +1,5 @@
 <%--
-    Document   : Search Agent
+    Document   : Print mailing List
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -7,10 +7,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
-        <link rel="stylesheet" type="text/css" href="css/masterdata/agent.css" />
+        <link rel="stylesheet" type="text/css" href="css/report/listmailinglist.css" />
 
-        <title>Search Agent</title>
-
+        <title>Print Mailing List</title>
         <%--------------------------------------------------------------%>
         <%-- Calendar --%>
         <%--------------------------------------------------------------%>
@@ -25,101 +24,105 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchAgentForm">
+            <form method="post" action="" name="listMailingListForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Search Agent</legend>
+                        <legend>Print Mailing List</legend>
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-                        <fieldset class="subMainFieldSet">
-                            <legend>Search Criteria</legend>
-
-                            <%-- Search Criteria left div --%>
-                            <div class="IASFormLeftDiv">
-
-
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Agent Name:</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="1" type="text" name="agentName" id="agentName" value=""/>
-                                    </span>
-                                </div>
-
-
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>address:</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="2" type="text" name="address" id="address" value=""/>
-                                    </span>
-                                </div>
-                            </div>
-
-
-                            <%-- Search Criteria right div --%>
-                            <div class="IASFormRightDiv">
-
-
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>City:</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="3" type="text" name="city" id="city" value=""/>
-                                    </span>
-                                </div>
-
-
-                                <div class="IASFormFieldDiv">
-                                    <%------ Date Range Label ------%>
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Reg. Date Range:</label>
-                                    </span>
-
-                                    <%---------- Date Division -----------%>
-                                    <div class="dateDiv" id="dateDiv"></div>
-
-                                    <%------ From Date Input Box ------%>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" value="" id="fromDate"/>
-                                           <a href="#" onClick="calPopup.select(document.searchInwardForm.fromDate,'anchor1','dd/MM/yyyy');
-                                               return false;" NAME="anchor1" ID="anchor1">
-                                            <img class="calendarIcon" alt="select" src="" TABINDEX="4"/>
-                                        </a>
-                                    </span>
-
-                                    <%-- Hyphen between From date and To Date --%>
-                                    <span class="IASFormDivSpanForHyphen">
-                                        <label> - </label>
-                                    </span>
-
-                                    <%--------------- To Date Input Box --------------%>
-                                    <span class="IASFormDivSpanInputBoxForSearchInward">
-                                        <input class="IASDateTextBox" readonly size="10" value="" id="toDate"/>
-                                           <a href="#" onClick="calPopup.select(document.searchInwardForm.toDate,'anchor2','dd/MM/yyyy');
-                                               return false;" NAME="anchor2" ID="anchor2">
-                                            <img class="calendarIcon" alt="select" src="" TABINDEX="5"/>
-                                        </a>
-                                    </span>
-                                </div>
-                            </div>
+                     <fieldset class="subMainFieldSet">
+                        <div class="IASFormLeftDiv">
+                            <div class="IASFormFieldDiv">
+                                <span class="IASFormDivSpanLabel">
+                                    <label>Journal Name</label>
+                                </span>
+                                <span class="IASFormDivSpanInputBox">
+                                 <select class="IASComboBox" TABINDEX="6" name="journalName" id="journalName">
+                                    <option value ="P">Pramanna</option>
+                                    <option value ="JAA">Journal of astrophysics and Astronomy</option>
+                                    <option value ="MS">Proceedings</option>
+                                    <option value ="EPS">Journal of Earth System Science</option>
+                                    <option value ="CS">Journal of Chemical Sciences</option>
+                                    <option value ="BMS">Bulletin of Materials Science</option>
+                                    <option value ="S">Sadhana</option>
+                                    <option value ="JB">Journal of Biosciences</option>
+                                    <option value ="JG">Journal of Genetics</option>
+                                    <option value ="CURR">Current Science</option>
+                                    <option value ="RES">Resonance</option>
+                                </select>
+                                </span>
+                             </div>
 
                             <div class="IASFormFieldDiv">
-                                <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="submit" value="Search"/>
-                                </div>
+                                <span class="IASFormDivSpanLabel">
+                                    <label>Subscriber Type</label>
+                                </span>
+                                <span class="IASFormDivSpanInputBox">
+                                 <select class="IASComboBox" TABINDEX="6" name="subType" id="subType">
+                                    <option value ="IC">Indian Schools and colleges</option>
+                                    <option value ="II">Indian institutes</option>
+                                    <option value ="IP">Indian Personnel</option>
+                                    <option value ="IN">Indian Industry Corporate</option>
+                                    <option value ="FI">Foreign Institute</option>
+                                    <option value ="FP">Foreign Personnel</option>
+                                    <option value ="AGE">Agent</option>
+                                    <option value ="KVPY">Kishore Vaigyanik Pariyojana</option>
+                                 </select>
+                                </span>
+                            </div>
+                        </div>
 
-                                <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
-                                </div>
+                        <div class="IASFormRightDiv">
+
+                            <div class="IASFormFieldDiv">
+                                <span class="IASFormDivSpanLabel">
+                                    <label>Month</label>
+                                </span>
+                                <span class="IASFormDivSpanInputBox">
+                                 <select class="IASComboBox" TABINDEX="6" name="month" id="month">
+                                    <option value ="1">Jan</option>
+                                    <option value ="2">Feb</option>
+                                    <option value ="3">Mar</option>
+                                    <option value ="4">Apr</option>
+                                    <option value ="5">May</option>
+                                    <option value ="6">Jun</option>
+                                    <option value ="7">Jul</option>
+                                    <option value ="8">Aug</option>
+                                    <option value ="9">Sep</option>
+                                    <option value ="10">Oct</option>
+                                    <option value ="11">Nov</option>
+                                    <option value ="12">Dec</option>
+                                 </select>
+                                </span>
+                            </div>
+                            <div class="IASFormFieldDiv">
+                                <span class="IASFormDivSpanLabel">
+                                    <label>Year</label>
+                                </span>
+                                <span class="IASFormDivSpanInputBox">
+                                 <select class="IASComboBox" TABINDEX="6" name="Year" id="Year">
+                                    <option value ="1">2009</option>
+                                    <option value ="2">2010</option>
+                                    <option value ="3">2011</option>
+                                 </select>
+                                </span>
                             </div>
 
-                        </fieldset>
+                        </div>
+
+                        <div class="IASFormFieldDiv">
+                            <div id="searchBtnDiv">
+                                <input class="IASButton" TABINDEX="6" type="submit" value="Search"/>
+                            </div>
+
+                            <div id="resetBtnDiv">
+                                <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
+                            </div>
+                         </div>
+
+                      </fieldset>
 
 
 
@@ -127,55 +130,60 @@
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Search Result</legend>
+                            <legend>Mailing List</legend>
 
-                            <table class="datatable">
-                                <thead>
-                                    <tr>
-                                        <td>Agent Id</td>
-                                        <td>Agent Name</td>
-                                        <td>Registration Date</td>
-                                        <td>Address</td>
-                                        <td>City</td>
-                                        <td>Pin code</td>
-                                        <td>email id</td>
-                                        <td>View/Edit</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>123</td>
-                                        <td>LM Book Stores</td>
-                                        <td>12/10/2011</td>
-                                        <td>M G Road</td>
-                                        <td>Bangalore</td>
-                                        <td>5600045</td>
-                                        <td>lmbooks@gmail.com</td>
-                                        <td><a href="<%=request.getContextPath() + "/masterdata?action=view"%>">view</a><a href="<%=request.getContextPath() + "/masterdata?action=edit"%>">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>55</td>
-                                        <td>Sapna Book House</td>
-                                        <td>19/09/2009</td>
-                                        <td>M G Road</td>
-                                        <td>New Delhi</td>
-                                        <td>4500022</td>
-                                        <td>info@sapna.co.in</td>
-                                        <td><a href="<%=request.getContextPath() + "/masterdata?action=view"%>">view</a><a href="<%=request.getContextPath() + "/masterdata?action=edit"%>">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>100</td>
-                                        <td>Books N Books</td>
-                                        <td>12/10/2010</td>
-                                        <td>M G Road</td>
-                                        <td>Mumbai</td>
-                                        <td>560045</td>
-                                        <td>inquiry@booksnbooks.com</td>
-                                        <td><a href="<%=request.getContextPath() + "/masterdata?action=view"%>">view</a><a href="<%=request.getContextPath() + "/masterdata?action=edit"%>">edit</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <table class="datatable">
+                            <thead>
+                                <tr>
+                                    <td>Subscriber Id</td>
+                                    <td>Subscriber Name</td>
+                                    <td>Journal/s</td>
+                                    <td>No of copies</td>
+                                    <td>Subscriber Type</td>
+                                    <td>Department</td>
+                                    <td>City</td>
+                                    <td>Pin Code</td>
+                                    <td>Country</td>
+                                    <td>Email</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Pinki Pachisia</td>
+                                    <td>P, CS, RES</td>
+                                    <td>2, 5, 5</td>
+                                    <td>Indian Personnel</td>
+                                    <td>IAS1</td>
+                                    <td>Bangalore</td>
+                                    <td>560066</td>
+                                    <td>India</td>
+                                    <td>pinki@ias.com</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Shailendra Mahapatra</td>
+                                    <td>JAA</td>
+                                    <td>1</td>
+                                    <td>Indian Personnel</td>
+                                    <td>IAS2</td>
+                                    <td>Bangalore</td>
+                                    <td>560067</td>
+                                    <td>India</td>
+                                    <td>shail@ias.com</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         </fieldset>
+
+                         <fieldset class="subMainFieldSet">
+                            <div class="IASFormFieldDiv">
+                                <div class="singleActionBtnDiv">
+                                    <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
+                                </div>
+                            </div>
+                        </fieldset>
+
                     </fieldset>
                 </div>
             </form>
