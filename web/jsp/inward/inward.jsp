@@ -226,21 +226,11 @@
 <%-- Create Inward Actions Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>
 <fieldset class="subMainFieldSet">
-    <div class="IASFormFieldDiv">
-        <%--<input type="hidden" name="action" id="action"/>--%>
-        <div id="editInwardBtnDiv">
-            <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="12" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
-        </div>
-        <div id="saveBtnDiv">
-            <input onclick="setActionValue('save')" class="IASButton" TABINDEX="13" type="submit" value="Save" id="btnSaveInward" name="submitAction"/>
-        </div>
-
-        <div id="sendAckBtnDiv">
-            <input onclick="setActionValue('sendAck')" class="IASButton" TABINDEX="14" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>
-        </div>
-        <div id="sendReturnBtnDiv">
-            <input onclick="setActionValue('sendReturn')" class="IASButton" TABINDEX="15" type="submit" value="Send Return" id="btnSendReturn" name="submitAction"/>
-        </div>
+    <div class="actionBtnDiv">
+        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="12" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
+        <input onclick="setActionValue('save')" class="IASButton" TABINDEX="13" type="submit" value="Save" id="btnSaveInward" name="submitAction"/>
+        <input onclick="setActionValue('sendAck')" class="IASButton" TABINDEX="14" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>
+        <input onclick="setActionValue('sendReturn')" class="IASButton" TABINDEX="15" type="submit" value="Send Return" id="btnSendReturn" name="submitAction"/>
     </div>
 </fieldset>
 

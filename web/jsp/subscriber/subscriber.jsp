@@ -163,28 +163,12 @@
 <%--Actions--%>
 
 <fieldset class="subMainFieldSet">
-    <div class="IASFormFieldDiv">
-        <input type="hidden" name="action" id="action"/>
-        <div id="editSubscriberBtnDiv">
-            <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="100" type="submit" value="Edit Details" id="btnEditSubscriber" name="btnSubmitAction"/>
-        </div>
-        <div id="saveSubscriberBtnDiv">
-            <input onclick="setActionValue('save')" class="IASButton" TABINDEX="101" type="submit" value="Save" id="btnSaveSubscriber" name="btnSubmitAction"/>
-        </div>
-        <div id="displaySubscriberBtnDiv">
-            <input onclick="setActionValue('display')" class="IASButton" TABINDEX="102" type="submit" value="View Details" id="btnDisplaySubscriber" name="btnSubmitAction"/>
-        </div>
-        <div id="viewsubscriptionBtnDiv">
-            <input onclick="setActionValue('view')" class="IASButton" TABINDEX="102" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
-        </div>
-        <div id="addsubscriptionBtnDiv">
-            <input onclick="setActionValue('add')" class="IASButton" TABINDEX="102" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction"/>
-        </div>
-        <div id="generateProformaInvoiceBtnDiv">
-            <input onclick="setActionValue('gpi')" class="IASButton" TABINDEX="102" type="submit" value="Generate Proforma Invoice" id="btnGenerateProformaInvoice" name="btnSubmitAction"/>
-        </div>
-        <div id="missingIssueListBtnDiv">
-            <input onclick="setActionValue('mil')" class="IASButton" TABINDEX="102" type="submit" value="Missing Issue List" id="btnMissingIssueList" name="btnSubmitAction"/>
-        </div>
+    <div class="actionBtnDiv">
+        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="100" type="submit" value="Edit Details" id="btnEditSubscriber" name="btnSubmitAction"/>
+        <input onclick="setActionValue('save')" class="IASButton" TABINDEX="101" type="submit" value="Save" id="btnSaveSubscriber" name="btnSubmitAction"/>
+        <input onclick="setActionValue('display')" class="IASButton" TABINDEX="102" type="submit" value="View Details" id="btnDisplaySubscriber" name="btnSubmitAction"/>
+        <input onclick="setActionValue('view')" class="IASButton" TABINDEX="102" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
+        <input onclick="setActionValue('add')" class="IASButton" TABINDEX="102" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction"/>
+        <input onclick="setActionValue('mil')" class="IASButton" TABINDEX="102" type="submit" value="Missing Issue List" id="btnMissingIssueList" name="btnSubmitAction"/>
     </div>
 </fieldset>

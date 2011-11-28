@@ -31,31 +31,6 @@ root {
 
 }
 
-#searchBtnDiv{
-    margin-left: 35%;
-    float: left;
-    width: 10%;
-}
-
-#filterBtnDiv{
-    margin-left: 35%;
-    float: left;
-    width: 10%;
-}
-
-#resetBtnDiv{
-    /*margin-right: 35%;*/
-    float: left;
-    width: 10%;
-}
-
-
-.JDSFileURNBtnDiv{
-    margin-top: 6%;
-    margin-left: 24%;
-    width: 50%;
-}
-
 .JDSFileInputBtn{
     margin: 0px 4px;
     font-family: Arial;

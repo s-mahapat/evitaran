@@ -20,86 +20,86 @@
             var isPageLoaded = false;
             $(function(){
 
-                      $("#inwardTable").jqGrid({
-                        url:'/JDS/jsp/inward/inwards.jsp',
-                        datatype: 'xml',
-                        mtype: 'GET',
-                        width: '100%',
-                        height: 240,
-                        autowidth: true,
-                        forceFit: true,
-                        sortable: true,
-                        loadonce: true,
-                        rownumbers: true,
-                        emptyrecords: "No inwards to view",
-                        loadtext: "Loading...",
-                        colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose'],
-                        colModel :[
-                          {name:'Select', index:'select', width:50, align:'center',xmlmap:'inward_id'},
-                          {name:'Inward No', index:'inward_id', width:50, align:'center', xmlmap:'inward_id'},
-                          {name:'Subscriber Id', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_id'},
-                          {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
-                          {name:'Received Date', index:'date', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'date'},
-                          {name:'City', index:'city', width:80, align:'center', sortable:false, xmlmap:'city'},
-                          {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'cheque'},
-                          {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'purpose'},
-                        ],
-                        xmlReader : {
-                          root: "result",
-                          row: "inward",
-                          page: "inwards>page",
-                          total: "inwards>total",
-                          records : "inwards>records",
-                          repeatitems: false,
-                          id: "id"
-                       },
-                        pager: '#pager',
-                        rowNum:10,
-                        rowList:[10,20,30],
-                        viewrecords: true,
-                        gridview: true,
-                        caption: '&nbsp;',
-                        gridComplete: function() {
-                            var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
-                            if(ids.length > 0){
-                                $("#btnNext").removeAttr("disabled");
-                            }
-                            for (var i = 0; i < ids.length; i++) {
-                                var cl = ids[i];
-                                var rowData = jQuery("#inwardTable").jqGrid('getRowData',cl);
-                                var inwardId = rowData['Inward No'];
-                                var subscriberId = rowData['Subscriber Id'] || 0;
-                                action = "<input type='radio' name='selectedInwardRadio' value='" + cl + "' onclick='setInwardSubscriber(" + inwardId + "," + subscriberId + ")'/>";
-                                jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Select: action });
-                            }
-                        },
-                        beforeRequest: function(){
-                          return isPageLoaded;
-                        },
-                        loadError: function(xhr,status,error){
-                            alert("Failed getting data from server" + status);
+                $("#inwardTable").jqGrid({
+                    url:'/JDS/jsp/inward/inwards.jsp',
+                    datatype: 'xml',
+                    mtype: 'GET',
+                    width: '100%',
+                    height: 240,
+                    autowidth: true,
+                    forceFit: true,
+                    sortable: true,
+                    loadonce: true,
+                    rownumbers: true,
+                    emptyrecords: "No inwards to view",
+                    loadtext: "Loading...",
+                    colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose'],
+                    colModel :[
+                        {name:'Select', index:'select', width:50, align:'center',xmlmap:'inward_id'},
+                        {name:'Inward No', index:'inward_id', width:50, align:'center', xmlmap:'inward_id'},
+                        {name:'Subscriber Id', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_id'},
+                        {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
+                        {name:'Received Date', index:'date', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'date'},
+                        {name:'City', index:'city', width:80, align:'center', sortable:false, xmlmap:'city'},
+                        {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'cheque'},
+                        {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'purpose'},
+                    ],
+                    xmlReader : {
+                        root: "result",
+                        row: "inward",
+                        page: "inwards>page",
+                        total: "inwards>total",
+                        records : "inwards>records",
+                        repeatitems: false,
+                        id: "id"
+                    },
+                    pager: '#pager',
+                    rowNum:10,
+                    rowList:[10,20,30],
+                    viewrecords: true,
+                    gridview: true,
+                    caption: '&nbsp;',
+                    gridComplete: function() {
+                        var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+                            $("#btnNext").removeAttr("disabled");
                         }
+                        for (var i = 0; i < ids.length; i++) {
+                            var cl = ids[i];
+                            var rowData = jQuery("#inwardTable").jqGrid('getRowData',cl);
+                            var inwardId = rowData['Inward No'];
+                            var subscriberId = rowData['Subscriber Id'] || 0;
+                            action = "<input type='radio' name='selectedInwardRadio' value='" + cl + "' onclick='setInwardSubscriber(" + inwardId + "," + subscriberId + ")'/>";
+                            jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Select: action });
+                        }
+                    },
+                    beforeRequest: function(){
+                        return isPageLoaded;
+                    },
+                    loadError: function(xhr,status,error){
+                        alert("Failed getting data from server" + status);
+                    }
 
-               });
+                });
 
             });
 
             $(function() {
-                    var dates = $( "#from, #to" ).datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            dateFormat: 'dd/mm/yy',
-                            numberOfMonths: 3,
-                            onSelect: function( selectedDate ) {
-                                    var option = this.id == "from" ? "minDate" : "maxDate",
-                                            instance = $( this ).data( "datepicker" ),
-                                            date = $.datepicker.parseDate(
-                                                    instance.settings.dateFormat ||
-                                                    $.datepicker._defaults.dateFormat,
-                                                    selectedDate, instance.settings );
-                                    dates.not( this ).datepicker( "option", option, date );
-                            }
-                    });
+                var dates = $( "#from, #to" ).datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    dateFormat: 'dd/mm/yy',
+                    numberOfMonths: 3,
+                    onSelect: function( selectedDate ) {
+                        var option = this.id == "from" ? "minDate" : "maxDate",
+                        instance = $( this ).data( "datepicker" ),
+                        date = $.datepicker.parseDate(
+                        instance.settings.dateFormat ||
+                            $.datepicker._defaults.dateFormat,
+                        selectedDate, instance.settings );
+                        dates.not( this ).datepicker( "option", option, date );
+                    }
+                });
             });
 
             function searchInwards(){
@@ -185,11 +185,8 @@
                             </div>
 
                             <div class="IASFormFieldDiv">
-                                <div id="searchBtnDiv">
+                                <div class="actionBtnDiv">
                                     <input class="IASButton" TABINDEX="6" type="button" value="Search" onclick="searchInwards()"/>
-                                </div>
-
-                                <div id="resetBtnDiv">
                                     <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
                                 </div>
                             </div>

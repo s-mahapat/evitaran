@@ -23,85 +23,85 @@
             var isPageLoaded = false;
             $(function(){
 
-                      $("#inwardTable").jqGrid({
-                        url:'/JDS/jsp/inward/inwards.jsp',
-                        datatype: 'xml',
-                        mtype: 'GET',
-                        width: '100%',
-                        autowidth: true,
-                        height: 240,
-                        forceFit: true,
-                        sortable: true,
-                        loadonce: true,
-                        rownumbers: true,
-                        emptyrecords: "No inwards to view",
-                        loadtext: "Loading...",
-                        colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose'],
-                        colModel :[
-                          {name:'Inward No', index:'inward_id', width:50, align:'center', xmlmap:'inward_id'},
-                          {name:'Subscriber Id', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_id'},
-                          {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
-                          {name:'Received Date', index:'date', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'date'},
-                          {name:'City', index:'city', width:80, align:'center', sortable:false, xmlmap:'city'},
-                          {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'cheque'},
-                          {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'purpose',formatter:'showlink'},
-                        ],
-                        xmlReader : {
-                          root: "result",
-                          row: "inward",
-                          page: "inwards>page",
-                          total: "inwards>total",
-                          records : "inwards>records",
-                          repeatitems: false,
-                          id: "id"
-                       },
-                        pager: '#pager',
-                        rowNum: 10,
-                        rowList:[10,30,50,100],
-                        viewrecords: true,
-                        gridview: true,
-                        caption: '&nbsp;',
-                        gridComplete: function() {
-                            var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
-                            if(ids.length > 0){
-                                $("#btnNext").removeAttr("disabled");
-                            }
-                            for (var i = 0; i < ids.length; i++) {
-                                var cl = ids[i];
-                                var rowData = jQuery("#inwardTable").jqGrid('getRowData',cl);
-                                var inwardId = rowData['Inward No'];
-                                var subscriberId = rowData['Subscriber Id'] || 0;
-                                action = "<a style='color:blue;' href='inward?action=view'>View</a><a style='color:blue;' href='inward?action=edit&inward=" + inwardId + "'>Edit</a>";
-                                jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Purpose: action });
-                            }
-                        },
-                        beforeRequest: function(){
-                          return isPageLoaded;
-                        },
-                        loadError: function(xhr,status,error){
-                            alert("Failed getting data from server" + status);
+                $("#inwardTable").jqGrid({
+                    url:'/JDS/jsp/inward/inwards.jsp',
+                    datatype: 'xml',
+                    mtype: 'GET',
+                    width: '100%',
+                    autowidth: true,
+                    height: 240,
+                    forceFit: true,
+                    sortable: true,
+                    loadonce: true,
+                    rownumbers: true,
+                    emptyrecords: "No inwards to view",
+                    loadtext: "Loading...",
+                    colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose'],
+                    colModel :[
+                        {name:'Inward No', index:'inward_id', width:50, align:'center', xmlmap:'inward_id'},
+                        {name:'Subscriber Id', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_id'},
+                        {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
+                        {name:'Received Date', index:'date', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'date'},
+                        {name:'City', index:'city', width:80, align:'center', sortable:false, xmlmap:'city'},
+                        {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'cheque'},
+                        {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'purpose',formatter:'showlink'},
+                    ],
+                    xmlReader : {
+                        root: "result",
+                        row: "inward",
+                        page: "inwards>page",
+                        total: "inwards>total",
+                        records : "inwards>records",
+                        repeatitems: false,
+                        id: "id"
+                    },
+                    pager: '#pager',
+                    rowNum: 10,
+                    rowList:[10,30,50,100],
+                    viewrecords: true,
+                    gridview: true,
+                    caption: '&nbsp;',
+                    gridComplete: function() {
+                        var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+                            $("#btnNext").removeAttr("disabled");
                         }
+                        for (var i = 0; i < ids.length; i++) {
+                            var cl = ids[i];
+                            var rowData = jQuery("#inwardTable").jqGrid('getRowData',cl);
+                            var inwardId = rowData['Inward No'];
+                            var subscriberId = rowData['Subscriber Id'] || 0;
+                            action = "<a style='color:blue;' href='inward?action=view'>View</a><a style='color:blue;' href='inward?action=edit&inward=" + inwardId + "'>Edit</a>";
+                            jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Purpose: action });
+                        }
+                    },
+                    beforeRequest: function(){
+                        return isPageLoaded;
+                    },
+                    loadError: function(xhr,status,error){
+                        alert("Failed getting data from server" + status);
+                    }
 
-               });
+                });
 
             });
 
             $(function() {
-                    var dates = $( "#from, #to" ).datepicker({
-                            defaultDate: "+1w",
-                            changeMonth: true,
-                            dateFormat: 'dd/mm/yy',
-                            numberOfMonths: 3,
-                            onSelect: function( selectedDate ) {
-                                    var option = this.id == "from" ? "minDate" : "maxDate",
-                                            instance = $( this ).data( "datepicker" ),
-                                            date = $.datepicker.parseDate(
-                                                    instance.settings.dateFormat ||
-                                                    $.datepicker._defaults.dateFormat,
-                                                    selectedDate, instance.settings );
-                                    dates.not( this ).datepicker( "option", option, date );
-                            }
-                    });
+                var dates = $( "#from, #to" ).datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    dateFormat: 'dd/mm/yy',
+                    numberOfMonths: 3,
+                    onSelect: function( selectedDate ) {
+                        var option = this.id == "from" ? "minDate" : "maxDate",
+                        instance = $( this ).data( "datepicker" ),
+                        date = $.datepicker.parseDate(
+                        instance.settings.dateFormat ||
+                            $.datepicker._defaults.dateFormat,
+                        selectedDate, instance.settings );
+                        dates.not( this ).datepicker( "option", option, date );
+                    }
+                });
             });
 
             function searchInwards(){
@@ -129,7 +129,6 @@
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
-
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
@@ -167,15 +166,11 @@
                             </div>
 
                             <div class="IASFormFieldDiv">
-                                <div id="filterBtnDiv">
+                                <div class="actionBtnDiv">
                                     <input class="IASButton" type="button" onclick="searchInwards()" value="Filter"  TABINDEX="4"/>
-                                </div>
-
-                                <div id="resetBtnDiv">
                                     <input class="IASButton" type="reset" value="Reset"  TABINDEX="5"/>
                                 </div>
                             </div>
-
                         </fieldset>
 
 

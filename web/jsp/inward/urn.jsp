@@ -78,8 +78,9 @@
                                         <input class="JDSFileInput" type="file" maxlength="512" name="files[]" multiple>
                                     </span>
                                 </div>
-                                <div class="JDSFileURNBtnDiv">
-                                    <span class="IASFormDivSpanLabel">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">&nbsp;</span>
+                                    <span class="IASFormDivSpanInputBox">
                                         <button class="JDSFileInputBtn" type="submit">Start upload</button>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">

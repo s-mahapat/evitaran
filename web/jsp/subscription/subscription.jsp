@@ -97,20 +97,9 @@
 </fieldset>
 
 <fieldset class="subMainFieldSet">
-
-    <div class="IASFormFieldDiv">
-        <input type="hidden" name="action" id="action"/>
-        <div id="displaySubscriptionBtnDiv">
-            <input onclick="setActionValue('view')" class="IASButton" TABINDEX="101" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
-        </div>
-
-        <div id="saveSubscriptionBtnDiv">
-            <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="101" type="submit" value="Save" id="btnSaveSubscription" name="btnSubmitAction"/>
-        </div>
-
-        <div id="editSubscriptionBtnDiv">
-            <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="101" type="submit" value="Edit Subscription" id="btnEditSubscription" name="btnSubmitAction"/>
-        </div>
+    <div class="actionBtnDiv">
+        <input onclick="setActionValue('view')" class="IASButton" TABINDEX="101" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
+        <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="101" type="submit" value="Save" id="btnSaveSubscription" name="btnSubmitAction"/>
+        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="101" type="submit" value="Edit Subscription" id="btnEditSubscription" name="btnSubmitAction"/>
     </div>
-
 </fieldset>
