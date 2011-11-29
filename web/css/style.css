@@ -87,13 +87,10 @@ body{
 }
 
 #bodyContainer{
-    left: 0px;
-    /*top: 100px;*/
     margin-top: 68px;
-    padding-left: 12%;
-    /*position: fixed;*/
     width: 88%;
     overflow: auto;
+    float: right;
 }
 
 #watermark{

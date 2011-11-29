@@ -53,7 +53,7 @@
                         total: "inwards>total",
                         records : "inwards>records",
                         repeatitems: false,
-                        id: "id"
+                        id: "inward_id"
                     },
                     pager: '#pager',
                     rowNum: 10,
@@ -68,7 +68,7 @@
                         }
                         for (var i = 0; i < ids.length; i++) {
                             var cl = ids[i];
-                            var rowData = jQuery("#inwardTable").jqGrid('getRowData',cl);
+                            var rowData = jQuery("#inwardTable").jqGrid('getLocalRow',cl);
                             var inwardId = rowData['Inward No'];
                             var subscriberId = rowData['Subscriber Id'] || 0;
                             action = "<a style='color:blue;' href='inward?action=view'>View</a><a style='color:blue;' href='inward?action=edit&inward=" + inwardId + "'>Edit</a>";

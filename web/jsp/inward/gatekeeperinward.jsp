@@ -42,7 +42,7 @@
                         {name:'Received Date', index:'date', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'date'},
                         {name:'City', index:'city', width:80, align:'center', sortable:false, xmlmap:'city'},
                         {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'cheque'},
-                        {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'purpose'},
+                        {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'purpose'}
                     ],
                     xmlReader : {
                         root: "result",
@@ -51,7 +51,7 @@
                         total: "inwards>total",
                         records : "inwards>records",
                         repeatitems: false,
-                        id: "id"
+                        id: "inward_id"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -66,7 +66,7 @@
                         }
                         for (var i = 0; i < ids.length; i++) {
                             var cl = ids[i];
-                            var rowData = jQuery("#inwardTable").jqGrid('getRowData',cl);
+                            var rowData = jQuery("#inwardTable").jqGrid('getLocalRow',cl);
                             var inwardId = rowData['Inward No'];
                             var subscriberId = rowData['Subscriber Id'] || 0;
                             action = "<input type='radio' name='selectedInwardRadio' value='" + cl + "' onclick='setInwardSubscriber(" + inwardId + "," + subscriberId + ")'/>";

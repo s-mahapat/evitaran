@@ -13,12 +13,15 @@ function makeReadOnly(){
     document.getElementById("checkReturn").disabled = true;
     document.getElementById("checkReturnReason").disabled = true;
     document.getElementById("checkReturnReasonOther").disabled = true;
+}
 
+function validateNewInward(){
 
+    var InwardPurpose = document.getElementById("purpose").value.toLowerCase();
+    if(InwardPurpose == 'others' && isEmpty(document.getElementById("remarks"))){
 
-    //document.getElementById("paymentDate").setAttribute('readonly', 'true');
-
-
-
-
+        alert("Since you have created a miscellaneous inward, please fill in the remarks section");
+        return false;
+    }
+    return true;
 }

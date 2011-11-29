@@ -23,6 +23,7 @@ function validateSearchSubscriber(){
 
 
 function setInwardSubscriber(inwardId,subscriberId){
+    alert(subscriberId);
     selectedInward = inwardId;
     selectedSubscriberId = subscriberId || 0;
 }

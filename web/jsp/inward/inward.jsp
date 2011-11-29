@@ -34,7 +34,14 @@
                 <input class="IASTextBox" TABINDEX="2" type="text" name="city" id="city" value=""/>
             </span>
         </div>
-
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Pincode:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBox" TABINDEX="4" type="text" name="pincode" id="pincode" value=""/>
+            </span>
+        </div>
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
@@ -45,14 +52,7 @@
             </span>
         </div>
 
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Pincode:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" TABINDEX="4" type="text" name="pincode" id="pincode" value=""/>
-            </span>
-        </div>
+
     </div>
 
     <%-- Inward Info right div --%>
@@ -64,7 +64,7 @@
                 <label>Inward Number:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" readonly type="text" name="inwardNumber" id="inwardNumber" value=""/>
+                <input class="IASTextBox" readonly disabled type="text" name="inwardNumber" id="inwardNumber" value=""/>
             </span>
         </div>
 
@@ -110,12 +110,16 @@
             </span>
             <span class="IASFormDivSpanInputBox">
                 <select class="IASComboBox" TABINDEX="4" name="purpose" id="purpose">
-                    <option value ="IASAgent">Create New Subscription</option>
-                    <option value ="IASAgent">Renew Subscription</option>
+                    <option value ="new">New Subscription</option>
+                    <option value ="renew">Renew Subscription</option>
                     <option value ="IASAgent">Address Change</option>
                     <option value ="IASAgent">Request for Invoice</option>
-                    <option value ="IASAgent">Missing Issue</option>
+                    <option value ="IASAgent" style="line-height: 2em">Missing Issue</option>
                     <option value ="IASAgent">Reprint</option>
+                    <option value="advertisement">Advertisement</option>
+                    <option value="manuscript">Manuscript</option>
+                    <option value="cash">Cash</option>
+                    <option value="others">Others</option>
                 </select>
             </span>
         </div>
@@ -182,12 +186,14 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Reason:</label>
+                <label>Reason For Return:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <select class="IASComboBox" TABINDEX="10" type="checkbox" name="checkReturnReason" id="checkReturnReason">
                     <option value="0">Select</option>
-                    <option value="Other">Other</option>
+                    <option value="1">Incorrect Name</option>
+                    <option value="2">Bounced</option>
+                    <option value="2">Other</option>
                 </select>
             </span>
             <span class="IASFormDivSpanInputBox">

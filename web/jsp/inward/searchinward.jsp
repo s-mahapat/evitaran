@@ -33,14 +33,14 @@
                     loadtext: "Loading...",
                     colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','View/Edit'],
                     colModel :[
-                        {name:'Inward No', index:'inward_id', width:50, align:'center', xmlmap:'inward_id'},
-                        {name:'Subscriber Id', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_id'},
+                        {name:'InwardNo', index:'inward_id', width:50, align:'center', xmlmap:'inward_id'},
+                        {name:'SubscriberId', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_id'},
                         {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
-                        {name:'Received Date', index:'date', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'date'},
-                        {name:'City', index:'city', width:80, align:'center', sortable:false, xmlmap:'city'},
+                        {name:'ReceivedDate', index:'date', width:80, align:'center', xmlmap:'date'},
+                        {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
                         {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'cheque'},
                         {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'purpose'},
-                        {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'},
+                        {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
                         root: "result",
@@ -49,7 +49,7 @@
                         total: "inwards>total",
                         records : "inwards>records",
                         repeatitems: false,
-                        id: "id"
+                        id: "inward_id"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -64,7 +64,7 @@
                         }
                         for (var i = 0; i < ids.length; i++) {
                             var cl = ids[i];
-                            var rowData = jQuery("#inwardTable").jqGrid('getRowData',cl);
+                            var rowData = jQuery("#inwardTable").jqGrid('getLocalRow',cl);
                             var inwardId = rowData['Inward No'];
                             var subscriberId = rowData['Subscriber Id'] || 0;
                             action = "<a style='color:blue;' href='inward?action=view'>View</a><a style='color:blue;' href='inward?action=edit&inward=" + inwardId + "'>Edit</a>";
