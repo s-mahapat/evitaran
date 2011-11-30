@@ -49,6 +49,17 @@
             </span>
         </div>
 
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Country:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBox">
+                <select class="IASComboBox" TABINDEX="8" name="subscriberCountry" id="subscriberCountry">
+                    <option value ="India">India</option>
+                </select>
+            </span>
+        </div>
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
@@ -119,16 +130,13 @@
             </span>
         </div>
 
-
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Country:</label>
+                <label>Institution:</label>
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="8" name="subscriberCountry" id="subscriberCountry">
-                    <option value ="India">India</option>
-                </select>
+                <input class="IASTextBox" TABINDEX="7" type="text" name="institution" id="institution" value=""/>
             </span>
         </div>
 
@@ -156,6 +164,16 @@
             </span>
         </div>
 
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Deactivate</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBox">
+                <input type="checkbox" class="IASCheckBox" disabled TABINDEX="11" name="isDeactived" id="isDeactived" onclick="deActivateSubscriber()"/>
+            </span>
+        </div>
+
     </div>
 
 </fieldset>
@@ -164,11 +182,11 @@
 
 <fieldset class="subMainFieldSet">
     <div class="actionBtnDiv">
-        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="100" type="submit" value="Edit Details" id="btnEditSubscriber" name="btnSubmitAction"/>
+        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="100" type="submit" value="Edit Subscriber" id="btnEditSubscriber" name="btnSubmitAction"/>
         <input onclick="setActionValue('save')" class="IASButton" TABINDEX="101" type="submit" value="Save" id="btnSaveSubscriber" name="btnSubmitAction"/>
-        <input onclick="setActionValue('display')" class="IASButton" TABINDEX="102" type="submit" value="View Details" id="btnDisplaySubscriber" name="btnSubmitAction"/>
+        <input onclick="setActionValue('display')" class="IASButton" TABINDEX="102" type="submit" value="View Subscriber" id="btnDisplaySubscriber" name="btnSubmitAction"/>
         <input onclick="setActionValue('view')" class="IASButton" TABINDEX="102" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
         <input onclick="setActionValue('add')" class="IASButton" TABINDEX="102" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction"/>
-        <input onclick="setActionValue('mil')" class="IASButton" TABINDEX="102" type="submit" value="Missing Issue List" id="btnMissingIssueList" name="btnSubmitAction"/>
+        <!--<input onclick="setActionValue('mil')" class="IASButton" TABINDEX="102" type="submit" value="Missing Issue List" id="btnMissingIssueList" name="btnSubmitAction"/>-->
     </div>
 </fieldset>

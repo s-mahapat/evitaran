@@ -156,11 +156,19 @@ function setActionValue(value){
     }
 }
 
-function alert(msg,title){
+function alert(msg,title,callback){
     if(title == null){
         title = 'Journal Distribution System';
     }
-    jAlert(msg,title);
+    jAlert(msg,title,callback);
+    return false;
+}
+
+function jdsConfirm(msg,title,callback){
+    if(title.length == 0){
+        title = 'Journal Distribution System';
+    }
+    jConfirm(msg,title,callback);
     return false;
 }
 

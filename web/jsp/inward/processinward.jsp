@@ -86,23 +86,8 @@
 
             });
 
-            $(function() {
-                var dates = $( "#from, #to" ).datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    dateFormat: 'dd/mm/yy',
-                    numberOfMonths: 3,
-                    onSelect: function( selectedDate ) {
-                        var option = this.id == "from" ? "minDate" : "maxDate",
-                        instance = $( this ).data( "datepicker" ),
-                        date = $.datepicker.parseDate(
-                        instance.settings.dateFormat ||
-                            $.datepicker._defaults.dateFormat,
-                        selectedDate, instance.settings );
-                        dates.not( this ).datepicker( "option", option, date );
-                    }
-                });
-            });
+            // jquery date picker
+            jQueryDatePicker("from", "to");
 
             function searchInwards(){
                 isPageLoaded = true;

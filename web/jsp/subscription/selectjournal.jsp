@@ -16,7 +16,6 @@
             </select>
         </span>
 
-
         <span class="IASFormDivSpanLabel">
             <label>Journal name:</label>
         </span>
@@ -47,8 +46,16 @@
             <input class="IASTextBoxForNumbers" TABINDEX="13" type="text" name="noOfYears" id="noOfYears" value=""/>
         </span>
 
+        <span class="IASFormDivSpanLabel">
+            <label>Select All Journals:</label>
+        </span>
         <span class="IASFormDivSpanInputBox">
-            <input class="IASButton" TABINDEX="14" type="button" value="Add Journal" id="btnAddLine" name="btnAddLine" onclick="addJournalToList(subscriptionForm)"/>
+            <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selalljrnl" id="selAllJrnl" onclick="disableJrnl()"/>
+        </span>
+
+
+        <span class="IASFormDivSpanInputBox">
+            <input class="IASButton" TABINDEX="14" type="button" value="Add" id="btnAddLine" name="btnAddLine" onclick="addJournalToList(subscriptionForm)"/>
         </span>
     </div>
 </fieldset>

@@ -180,7 +180,7 @@
                 <label>Cheque Return:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="checkReturn" id="checkReturn" onchange="enableCheckReturn()"/>
+                <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="checkReturn" id="checkReturn" onclick="enableCheckReturn()"/>
             </span>
         </div>
 
