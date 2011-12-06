@@ -18,6 +18,11 @@
             var selectedSubscriberId = 0;
             var selectedInwardRowIndex = -1;
             var isPageLoaded = false;
+
+            $(document).ready(function(){
+                $("#btnNext").attr("disabled","disabled");
+            })
+
             $(function(){
 
                 $("#inwardTable").jqGrid({
@@ -38,7 +43,7 @@
                         {name:'Select', index:'select', width:50, align:'center',xmlmap:'inward_id'},
                         {name:'Inward No', index:'inward_id', width:50, align:'center', xmlmap:'inward_id'},
                         {name:'Subscriber Id', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_id'},
-                        {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
+                        {name:'From', index:'from', width:80, align:'center', search:true, xmlmap:'from'},
                         {name:'Received Date', index:'date', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'date'},
                         {name:'City', index:'city', width:80, align:'center', sortable:false, xmlmap:'city'},
                         {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'cheque'},
@@ -58,11 +63,12 @@
                     rowList:[10,20,30],
                     viewrecords: true,
                     gridview: true,
-                    caption: '&nbsp;',
+                    caption:'&nbsp;',
                     gridComplete: function() {
                         var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
                             $("#btnNext").removeAttr("disabled");
+                            //$("#btnNext").
                         }
                         for (var i = 0; i < ids.length; i++) {
                             var cl = ids[i];
@@ -105,6 +111,7 @@
             function searchInwards(){
                 isPageLoaded = true;
                 jQuery("#inwardTable").trigger("reloadGrid");
+                return false;
                 //jQuery("#inwardTable").trigger("reloadGrid");
             }
 
@@ -207,7 +214,7 @@
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
-                                    <input class="IASButton" TABINDEX="8" type="submit" value="Next" id="btnNext" name="btnNext" disabled/>
+                                    <input class="IASButton" TABINDEX="8" type="submit" value="Next" id="btnNext" name="btnNext"/>
                                 </div>
                             </div>
                         </fieldset>

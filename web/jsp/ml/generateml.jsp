@@ -16,18 +16,94 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp"%>
-        <link rel="stylesheet" type="text/css" href="css/ml.css"/>
         <title>Generate <%=list%> List</title>
-        <script type="text/javascript" src="js/ml.js"></script>
+        <script type="text/javascript" src="js/ml/ml.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.print-preview.js"></script>
+        <link rel="stylesheet"  media="screen" type="text/css" href="<%=request.getContextPath() + "/css/jquery/print-preview.css"%>"/>
+        <link rel="stylesheet"  media="print" type="text/css" href="<%=request.getContextPath() + "/css/ml/printml.css"%>"/>
+        <link rel="stylesheet"  media="screen" type="text/css" href="<%=request.getContextPath() + "/css/ml/viewml.css"%>"/>
         <script>
-            //addOnloadEvent(makeReadOnly);
+            //disabled the print on load
+            $(document).ready(function(){
+                $("#btnPrintml").attr("disabled",true);
+                $("#btnPrintPreview").attr("disabled",true);
+            })
+            var isPageLoaded = false;
+
+            $(function(){
+
+                $("#datatable").jqGrid({
+                    url:'jsp/ml/ml.xml',
+                    datatype: 'xml',
+                    mtype: 'GET',
+                    width: '100%',
+                    height: 240,
+                    autowidth: true,
+                    forceFit: true,
+                    sortable: true,
+                    loadonce: true,
+                    rownumbers: true,
+                    emptyrecords: "No records to view",
+                    loadtext: "Loading...",
+                    colNames:['Subscriber Id','Subscriber Name','Journal Name', 'Journal Code','Subscription Period','#Copies','Address'],
+                    colModel :[
+                        {name:'SubscriberID', index:'SubscriberID', width:40, align:'center',xmlmap:'subscriber_id'},
+                        {name:'SubscriberName', index:'SubscriberName', width:50, align:'center', xmlmap:'subscriber_name'},
+                        {name:'JournalName', index:'JournalName', width:50, align:'center', xmlmap:'journal_name'},
+                        {name:'JournalCode', index:'JournalCode', width:40, align:'center', xmlmap:'journal_code'},
+                        {name:'SubscriptionPeriod', index:'SubscriptionPeriod', width:50, align:'center', xmlmap:'subscription_period'},
+                        {name:'CopiesCount', index:'CopiesCount', width:30, align:'center',xmlmap:'copies'},
+                        {name:'Address', index:'Address', width:80, align:'center', xmlmap:'address'},
+                    ],
+                    xmlReader : {
+                        root: "result",
+                        row: "item",
+                        page: "jds>page",
+                        total: "jds>total",
+                        records : "jds>records",
+                        repeatitems: false,
+                        id: "subscription_id"
+                    },
+                    pager: '#pager',
+                    rowNum:10,
+                    rowList:[10,20,30],
+                    viewrecords: true,
+                    gridview: false,
+                    beforeRequest: function(){
+                        return isPageLoaded;
+                    },
+                    gridComplete: function() {
+                        var ids = jQuery("#datatable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+
+                            $("#btnPrintml").removeAttr("disabled");
+                            $("#btnPrintPreview").removeAttr("disabled");
+                        }
+
+
+                        for (var i = 0; i < ids.length; i++) {
+                            action = '<a href="#" onclick="showPrintPreview(' + ids[i] + ')" style="color:blue">View</a>';
+                            jQuery("#datatable").jqGrid('setRowData', ids[i], { Preview: action });
+                        }
+
+                    },
+                    loadError: function(xhr,status,error){
+                        alert("Failed getting data from server" + status);
+                    }
+
+                });
+
+            });
+
+
+
         </script>
     </head>
     <body>
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="POST" action="<%=request.getContextPath() + "/ml?action=gml"%>" name="mlForm">
+            <form method="GET" action="" name="mlForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Generate <%=list%> List</legend>
@@ -59,7 +135,6 @@
                                         </select>
                                     </span>
                                 </div>
-
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>No. of Copies:</label>
@@ -71,6 +146,10 @@
                                         </select>
                                     </span>
                                 </div>
+                            </div>
+
+                            <div class="IASFormRightDiv">
+
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
@@ -105,27 +184,27 @@
                                         <input type="radio" class="IASRadioButton" TABINDEX="7" name="mlType" id="mlTypeLabel" value="label"/>
                                     </span>
                                 </div>
-                                <div class="IASFormFieldDiv">
-                                    &nbsp;
-                                </div>
-                                <div class="IASFormFieldDiv">
-                                    &nbsp;
-                                </div>
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        &nbsp;
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASButton" TABINDEX="6" type="submit" value="Generate Mailing List" id="btnGenerateML" name="btnGenerateML"/>
-                                    </span>
-                                </div>
-
+                            </div>
+                            <div class="actionBtnDiv">
+                                <input class="IASButton" TABINDEX="6" type="button" value="Generate Mailing List" id="btnGenerateML" name="btnGenerateML" onclick="getMailingList()"/>
                             </div>
                         </fieldset>
-
+                        <%-- Start of result table --%>
+                        <fieldset class="subMainFieldSet">
+                            <table class="datatable" id="datatable"></table>
+                            <div id="pager"></div>
+                        </fieldset>
+                        <fieldset class="subMainFieldSet">
+                            <div class="actionBtnDiv">
+                                <input type="button" id="btnPrintPreview" class="IASButton" value="Print" onclick="showPrintPreview()"/>
+                                <!--<input type="button" id="btnPrintml" class="IASButton" value="Print" onclick="Print()"/>-->
+                            </div>
+                        </fieldset>
                     </fieldset>
                 </div>
+
             </form>
         </div>
+                        <div id="printPreview"></div>
     </body>
 </html>

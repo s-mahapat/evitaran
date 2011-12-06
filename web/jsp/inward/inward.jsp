@@ -139,6 +139,15 @@
             </span>
         </div>
 
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Transaction No:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBox" type="text" name="transactionNumber" id="transactionNumber" value=""/>
+            </span>
+        </div>
+
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
@@ -215,7 +224,14 @@
     <%-- Inward Info right div --%>
     <div class="IASFormRightDiv">
 
-
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Ack. Date:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBox" TABINDEX="12" disabled type="text" name="ackDate" id="ackDate" value=""/>
+            </span>
+        </div>
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Remarks:</label>

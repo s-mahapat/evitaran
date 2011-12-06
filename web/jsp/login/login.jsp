@@ -154,8 +154,7 @@
         <jsp:include page="../templates/header.jsp"></jsp:include>
         <jsp:include page="../templates/loginsidebar.jsp"></jsp:include>
             <div id="bodyContainer">
-            <%--<form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginId','password')">--%>
-            <form action="<%=request.getContextPath() + "/home"%>" method="post" name="frmlogin">
+            <form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginId','password')">
                 <div id="loginDiv">
                     <ul>
                         <li><a href="#login">Login</a></li>
@@ -164,19 +163,28 @@
                     <div id="login">
                         <div class="authField">
                             <span class="authLabel">User Name</span>
-                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBox" name="j_user" id="loginFieldId"/></span>
+                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBox" name="j_username" id="loginFieldId"/></span>
                         </div>
                         <div class="authField">
                             <span class="authLabel">Password</span>
-                            <span class="authInput"><input type="password" maxlength="16" style="width:160px" class="IASTextBox" name="j_pass" id="passwordField"/></span>
+                            <span class="authInput"><input type="password" maxlength="16" style="width:160px" class="IASTextBox" name="j_password" id="passwordField"/></span>
                         </div>
                         <div class="authAction">
                             <input type="submit" value="Login"/>
                             <input type="reset" value="Reset"/>
                         </div>
+                        <div class="authField">
+                            <span id="loginErrorMsg" class="authLabel">&nbsp;</span>
+                        </div>
                     </div>
                     <div id="resetpwd">
-
+                        <div class="authField">
+                            <span class="authLabel">Email ID:</span>
+                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBox" name="j_user" id="loginFieldId"/></span>
+                        </div>
+                        <div class="authAction">
+                            <input type="submit" value="Reset Password"/>
+                        </div>
                     </div>
 
                 </div>

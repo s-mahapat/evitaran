@@ -224,14 +224,21 @@ body{
     background-color: #eee;
 }
 
+.IASButton{
+    height: 22px;
+    font-size: 0.9em;
+    font-weight: bolder;
+    color: black;
+}
 
+/*
 .IASButton{
     height: 20px;
     font-size: 10px;
     font-weight: bold;
     margin: 0px 2px;
 }
-
+*/
 .JDSFileInput{
     font-family: Cambria;
     font-size: 12px;
@@ -332,6 +339,11 @@ body{
     padding: 5px;
 }
 
+.jdsLink{
+    color: blue;
+    text-decoration: none;
+}
+
 A:link {
     text-decoration: none
 }
@@ -381,6 +393,7 @@ A:active {
     text-align: center;
     width: 90%;
     margin-right: 10%;
+    float: left;
 }
 
 #IASLetterHeadHeader{

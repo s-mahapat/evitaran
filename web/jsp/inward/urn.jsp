@@ -81,10 +81,10 @@
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">&nbsp;</span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <button class="JDSFileInputBtn" type="submit">Start upload</button>
+                                        <button class="IASButton" type="submit">Start Upload</button>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <button class="JDSFileInputBtn" type="reset">Cancel upload</button>
+                                        <button class="IASButton" type="reset">Cancel Upload</button>
                                     </span>
                                 </div>
                             </div>
