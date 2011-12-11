@@ -19,6 +19,8 @@
                 if(userPrincipal != null){
                     out.println("Welcome " + userPrincipal + " !");
                     out.println("<a href=" + request.getContextPath() + "/main?action=logout" + ">Logout</a>");
+                }else{
+                    response.sendRedirect(request.getContextPath() + "/jsp/login/login.jsp");
                 }
             }
 

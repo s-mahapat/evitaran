@@ -24,33 +24,40 @@
                 <input class="IASTextBox" TABINDEX="1" type="text" name="from" id="from" value=""/>
             </span>
         </div>
-
-
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Country:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+               <input class="IASTextBox" TABINDEX="2" name="country" id="country" value="India">
+            </span>
+        </div>
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>State:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBox" TABINDEX="3" name="state" id="state" value="">
+            </span>
+        </div>
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>City:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="2" type="text" name="city" id="city" value=""/>
+                <input class="IASTextBox" TABINDEX="3" name="city" id="city">
             </span>
         </div>
+
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Pincode:</label>
+                <label>PIN Code:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASTextBox" TABINDEX="4" type="text" name="pincode" id="pincode" value=""/>
             </span>
         </div>
 
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Email:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" TABINDEX="3" type="text" name="email" id="email" value=""/>
-            </span>
-        </div>
 
 
     </div>
@@ -71,7 +78,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Creation Date:</label>
+                <label>Inward Date:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASDateTextBox" readonly type="text" name="inwardCreationDate" id="inwardCreationDate" value="<%=IAS.Class.util.getDateString()%>"/>
@@ -90,6 +97,16 @@
             </span>
 
         </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Email:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASEmailTextBox" TABINDEX="3" type="text" name="email" id="email" value=""/>
+            </span>
+        </div>
+
     </div>
 </fieldset>
 
@@ -141,7 +158,16 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Transaction No:</label>
+                <label>Bank Name:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBox" type="text" name="bankName" id="bankName" value=""/>
+            </span>
+        </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Cheque/DD No:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASTextBox" type="text" name="transactionNumber" id="transactionNumber" value=""/>
@@ -184,15 +210,27 @@
         </div>
 
 
+    </div>
+
+    <%-- Inward Info right div --%>
+    <div class="IASFormRightDiv">
+
+         <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Receipt Number:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBox" TABINDEX="11" type="text" name="receiptNumber" id="receiptNumber" value=""/>
+            </span>
+        </div>
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Cheque Return:</label>
+                <label>Cheque/DD Return:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="checkReturn" id="checkReturn" onclick="enableCheckReturn()"/>
             </span>
         </div>
-
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Reason For Return:</label>
@@ -209,27 +247,20 @@
                 <input class="IASTextBox" TABINDEX="11" type="text" name="checkReturnReasonOther" id="checkReturnReasonOther" value=""/>
             </span>
         </div>
-
-
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Receipt Number:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="11" type="text" name="receiptNumber" id="receiptNumber" value=""/>
-            </span>
-        </div>
-    </div>
-
-    <%-- Inward Info right div --%>
-    <div class="IASFormRightDiv">
-
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Ack. Date:</label>
+                <label>Acknowledgement Date:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASTextBox" TABINDEX="12" disabled type="text" name="ackDate" id="ackDate" value=""/>
+            </span>
+        </div>
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Return Date:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBox" TABINDEX="12" disabled type="text" name="returnDate" id="returnDate" value=""/>
             </span>
         </div>
         <div class="IASFormFieldDiv">

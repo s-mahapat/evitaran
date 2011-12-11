@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "errorHandler", urlPatterns = {"/errorHandler"})
 public class errorHandler extends HttpServlet {
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @see Reference http://www.tutorialspoint.com/servlets/servlets-exception-handling.htm
      * @param request servlet request
@@ -33,26 +33,26 @@ public class errorHandler extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-                // Analyze the servlet exception       
-                
+                // Analyze the servlet exception
+
                 Integer statusCode = (Integer)
                 request.getAttribute("javax.servlet.error.status_code");
-                
+
                 String exceptionType = (String)
                         request.getAttribute("javax.servlet.error.exception_type");
-                
+
                 String errorMsg = (String)
                         request.getAttribute("javax.servlet.error.message");
-                
+
                 String requestUri = (String)
                 request.getAttribute("javax.servlet.error.request_uri");
                 if (requestUri == null){
                  requestUri = "Unknown";
-                } 
-                
+                }
+
                 Throwable throwable = (Throwable)
                 request.getAttribute("javax.servlet.error.exception");
-                
+
                 String servletName = (String)
                         request.getAttribute("javax.servlet.error.servlet_name");
                 if (servletName == null){
@@ -68,12 +68,12 @@ public class errorHandler extends HttpServlet {
                 "<html>\n" +
                 "<head><title>" + title + "</title></head>\n" +
                 "<body bgcolor=\"#f0f0f0\">\n");
-                
-                out.println("Kindly report the following messages to " 
-                        + "<A HREF=\"mailto:deepaligokhale7@gmail.com\">Deepali Gokhale</A>"                         
+
+                out.println("Kindly report the following messages to "
+                        + "<A HREF=\"mailto:deepaligokhale7@gmail.com\">Deepali Gokhale</A>"
                         + "<br></br>");
                 out.println("Click on the link to goto <a href=\""
-                        + response.encodeURL("http://localhost:8080/JDS/jsp/home.jsp")
+                        + response.encodeURL("http://localhost:8080/JDS/home")
                         + "\">Home Page</a>."
                         + "<br></br>");
 
@@ -88,7 +88,7 @@ public class errorHandler extends HttpServlet {
                 //out.println("The exception message: " + throwable.getMessage( ) + "<br></br>");
                 out.println("Remote address: " + request.getRemoteAddr() + "tried to load http://" + request.getServerName() + request.getRequestURI() + "</br></br>");
                 out.println("User agent = " + request.getHeader("User-Agent") + "</br></br>");
-                
+
                 Object exception = request.getAttribute( "javax.servlet.error.exception" );
                 // if we have the exception dump it out to the page
                 if( exception != null ) {
@@ -105,16 +105,16 @@ public class errorHandler extends HttpServlet {
                         if( bos != null ) bos.close();
                     }
                 }
-    
+
                 out.println("</body>");
                 out.println("</html>");
-        } finally {            
+        } finally {
             out.close();
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -127,7 +127,7 @@ public class errorHandler extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -140,7 +140,7 @@ public class errorHandler extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */

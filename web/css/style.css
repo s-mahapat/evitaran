@@ -225,10 +225,11 @@ body{
 }
 
 .IASButton{
-    height: 22px;
-    font-size: 0.9em;
-    font-weight: bolder;
+    /*height: 20px;*/
+    font-size: 9px;
+    font-weight: bold;
     color: black;
+    text-transform: capitalize;
 }
 
 /*
@@ -284,21 +285,21 @@ body{
 }
 
 
-.IASFormFieldDiv .IASFormDivSpanLabel{
+.IASFormDivSpanLabel{
     margin-left: 15px;
     float: left;
     text-align: right;
-    width: 100px;
+    width: 150px;
 }
 
-.IASFormFieldDiv .IASFormDivSpanLabelRadio{
+.IASFormDivSpanLabelRadio{
     margin-left: 15px;
     float: left;
     text-align: right;
     width: 50px;
 }
 
-.IASFormFieldDiv .IASFormDivSpanInputBox{
+.IASFormDivSpanInputBox{
     margin-left: 15px;
     float: left;
 }

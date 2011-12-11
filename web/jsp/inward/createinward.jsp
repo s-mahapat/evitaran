@@ -13,6 +13,16 @@
 
         <script>
             addOnloadEvent(makeReadOnly);
+            var myArr = new Array;
+
+            $(document).ready(function() {
+                jdsAutoComplete("/JDS/CMasterData?md=city","city","city");
+                jdsAutoComplete("/JDS/CMasterData?md=country","country","country");
+                jdsAutoComplete("/JDS/CMasterData?md=state","state","state");
+            });
+
+
+
         </script>
     </head>
     <body>
@@ -24,9 +34,9 @@
                     <fieldset class="MainFieldset">
                         <legend>Create Inward</legend>
                         <%@include file="inward.jsp"%>
-                        </fieldset>
+                    </fieldset>
                 </div>
             </form>
         </div>
-   </body>
+    </body>
 </html>

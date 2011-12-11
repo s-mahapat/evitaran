@@ -25,7 +25,7 @@
           <fieldset class="subMainFieldSet">
               <legend>Error</legend>
               <label>Invalid username or password. Please try again </label>
-              <a href="login.jsp">login</a>
+              <a href="<%=request.getContextPath() + "/home"%>">login</a>
            </fieldset>
      </div>
 </div>

@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <context-param>
+        <description>username to connect to database</description>
+        <param-name>db_user</param-name>
+        <param-value>jds</param-value>
+    </context-param>
+    <context-param>
+        <description>password to connect to database</description>
+        <param-name>db_password</param-name>
+        <param-value>jds</param-value>
+    </context-param>
+    <context-param>
+        <description>database name</description>
+        <param-name>db_name</param-name>
+        <param-value>JDS</param-value>
+    </context-param>
+    <listener>
+        <listener-class>IAS.Class.Database</listener-class>
+    </listener>
     <servlet>
         <servlet-name>main</servlet-name>
         <servlet-class>IAS.Controller.main</servlet-class>
@@ -51,6 +69,17 @@
         <servlet-name>subType</servlet-name>
         <servlet-class>IAS.Controller.subType</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MasterData</servlet-name>
+        <servlet-class>IAS.Model.MasterData</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CMasterData</servlet-name>
+        <servlet-class>IAS.Controller.CMasterData</servlet-class>
+        <run-as>
+            <role-name>user</role-name>
+        </run-as>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -95,8 +124,16 @@
         <servlet-name>subType</servlet-name>
         <url-pattern>/subType</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MasterData</servlet-name>
+        <url-pattern>/MasterData</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CMasterData</servlet-name>
+        <url-pattern>/CMasterData</url-pattern>
+    </servlet-mapping>
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>60</session-timeout>
     </session-config>
     <!-- error-code related error pages -->
     <error-page>
@@ -108,16 +145,33 @@
         <location>/errorHandler</location>
     </error-page>
     <welcome-file-list>
-        <welcome-file>jsp/home.jsp</welcome-file>
+        <welcome-file>/home</welcome-file>
     </welcome-file-list>
     <security-constraint>
         <display-name>Authentication</display-name>
         <web-resource-collection>
             <web-resource-name>JDS</web-resource-name>
             <description> accessible by authenticated users of the user role</description>
-            <url-pattern>/*</url-pattern>
+            <url-pattern>*.jsp</url-pattern>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>home</web-resource-name>
+            <description/>
+            <url-pattern>/home</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>user</role-name>
+        </auth-constraint>
     </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>JDBCRealm</realm-name>
+        <form-login-config>
+            <form-login-page>/jsp/login/login.jsp</form-login-page>
+            <form-error-page>/jsp/login/loginerror.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
     <security-role>
         <description>Only 'user' role is allowed to access this web application</description>
         <role-name>user</role-name>

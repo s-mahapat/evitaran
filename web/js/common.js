@@ -90,10 +90,10 @@ function isEmpty(element){
 }
 
 function trim(s) {
-	s = s.replace(/(^\s*)|(\s*$)/gi,"");
-	s = s.replace(/[ ]{2,}/gi," ");
-	s = s.replace(/\n /,"\n");
-	return s;
+    s = s.replace(/(^\s*)|(\s*$)/gi,"");
+    s = s.replace(/[ ]{2,}/gi," ");
+    s = s.replace(/\n /,"\n");
+    return s;
 }
 
 function makeReadOnly(){
@@ -209,6 +209,32 @@ function jQueryDatePicker(fromDiv, toDiv){
                 dates.not( this ).datepicker( "option", option, date );
             }
         });
+    });
+
+}
+
+function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
+
+    var _formElementId = "#" + formElementId;
+    var myArr = new Array;
+    $.ajax({
+        type: "GET",
+        url: requestURL, // change to full path of file on server
+        dataType: "xml",
+        success: function(xml){
+            $(xml).find(xmlRowTag).each(function(){
+                myArr.push($(this).text());
+            });
+        },
+        complete: function(){
+            $(_formElementId).autocomplete({
+                source: myArr,
+                minLength: 0
+            });
+        },
+        error: function() {
+            alert("XML File could not be found");
+        }
     });
 
 }
