@@ -8,7 +8,8 @@ function makeInwardReadOnly(){
 
     document.getElementById("btnSaveInward").disabled = true;
     document.getElementById("btnSearchSubscriber").disabled = true;
-    document.getElementById("paymentdate").disabled = true;
+    document.getElementById("paymentdate").setAttribute("readonly",true);
+    document.getElementById("checkReturn").disabled = true;
 
     //hide the calendar icon using jquery
     $(".ui-datepicker-trigger").hide();
@@ -20,7 +21,7 @@ function makeInwardReadOnly(){
     }
 
     // dummy function to generate random inward numbers
-    document.getElementById("inwardNumber").value = "11K-" + Math.floor(Math.random()*99999);
+    //document.getElementById("inwardNumber").value = "11K-" + Math.floor(Math.random()*99999);
 
 
 }

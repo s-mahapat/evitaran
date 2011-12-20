@@ -10,44 +10,59 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import IAS.Model.inwardModel;
+import IAS.Bean.inwardFormBean;
+import java.sql.SQLException;
+
 /**
  *
  * @author Shailendra Mahapatra
  */
 public class inward extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private inwardModel _inwardModel = null;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String url = null;
-        try{
-            if(action.equalsIgnoreCase("save")){
-                url = "/jsp/inward/viewinward.jsp";
-            }else if(action.equalsIgnoreCase("edit")){
+
+        inwardFormBean _inwardFormBean = new IAS.Bean.inwardFormBean();
+        /* set the attribute to the same name as the bean id used in the inward form, else
+         * the next screen may not have the bean contents accessible. The bean has to be passed on in the
+         * request to the next page
+         */
+        //
+        try {
+
+            _inwardModel = new IAS.Model.inwardModel(request, _inwardFormBean);
+            if (action.equalsIgnoreCase("save")) {
+
+                //if the record count saved is 1, it indicates that the record was saved else fail.
+                if(_inwardModel.Save(request, _inwardFormBean) == 1){
+                   url = "/jsp/inward/viewinward.jsp";
+               }else{
+                   url = "/jsp/errors/error.jsp";
+               }
+
+            } else if (action.equalsIgnoreCase("edit")) {
                 url = "/jsp/inward/editinward.jsp";
-            }else if(action.equalsIgnoreCase("view")){
+            } else if (action.equalsIgnoreCase("view")) {
                 url = "/jsp/inward/viewinward.jsp";
-            }else if(action.equalsIgnoreCase("sendAck")){
+            } else if (action.equalsIgnoreCase("sendAck")) {
                 url = "/jsp/inward/ackinward.jsp";
-            }else if(action.equalsIgnoreCase("sendReturn")){
+            } else if (action.equalsIgnoreCase("sendReturn")) {
                 url = "/jsp/inward/returninward.jsp";
             }
 
+
+        } catch (SQLException e) {
+            url = "/jsp/errors/error.jsp";
+        } catch (Exception e) {
+            url = "/jsp/errors/error.jsp";
+        } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-        }
-        catch(Exception e){
-
-        }
-        finally{
-
         }
     }
 

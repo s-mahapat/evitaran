@@ -2,7 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package IAS.Class;
+package IAS.Model;
+import IAS.Class.Database;
 import javax.servlet.http.HttpSession;
 import java.sql.*;
 /**
@@ -23,7 +24,7 @@ public class MasterData {
         return instance;
     }
 
-    public ResultSet getColumnData(String[] Columns, String table){
+    public ResultSet getColumnsData(String[] Columns, String table) throws SQLException{
 
         String columnStr = Columns[0];
 
@@ -33,6 +34,16 @@ public class MasterData {
         }
 
         String query = "SELECT " + columnStr + " from " + table;
+
+        ResultSet rs = null;
+        Database db = (Database)session.getAttribute("db_connection");
+        rs = db.executeQuery(query);
+        return rs;
+    }
+
+    public ResultSet getColumnData(String Column, String table) throws SQLException{
+
+        String query = "SELECT " + Column + " from " + table;
 
         ResultSet rs = null;
         Database db = (Database)session.getAttribute("db_connection");

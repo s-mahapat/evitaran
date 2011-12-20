@@ -16,6 +16,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import java.io.PrintWriter;
+import java.util.*;
 
 /**
  *
@@ -23,7 +24,21 @@ import java.io.PrintWriter;
  */
 public class CMasterData extends HttpServlet {
 
-    private IAS.Class.MasterData MasterDataModel = null;
+    private IAS.Model.MasterData MasterDataModel = null;
+    private HashMap<String, String> columnTableMap = null;
+
+    @Override
+    public void init() {
+
+        columnTableMap = new HashMap<String, String>();
+        columnTableMap.put("city", "cities");
+        columnTableMap.put("country", "countries");
+        columnTableMap.put("state", "states");
+        columnTableMap.put("purpose", "inward_purpose");
+        columnTableMap.put("payment_mode", "payment_mode");
+        columnTableMap.put("currency", "currency");
+        columnTableMap.put("return_reason", "inward_return_reasons");
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,26 +50,15 @@ public class CMasterData extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        String mdataRequested = request.getParameter("md");
-        MasterDataModel = IAS.Class.MasterData.getInstance(request.getSession());
-
-        if (mdataRequested.equalsIgnoreCase("city")) {
-            String[] Columns = {mdataRequested.toLowerCase()};
-            String xml = this.convertResultSetToXML(MasterDataModel.getColumnData(Columns,"cities"));
-            out.println(xml);
-            out.close();
-        }
-
-        if (mdataRequested.equalsIgnoreCase("country")) {
-            String[] Columns = {mdataRequested.toLowerCase()};
-            String xml = this.convertResultSetToXML(MasterDataModel.getColumnData(Columns,"countries"));
-            out.println(xml);
-            out.close();
-        }
-
-        if (mdataRequested.equalsIgnoreCase("state")) {
-            String[] Columns = {mdataRequested.toLowerCase()};
-            String xml = this.convertResultSetToXML(MasterDataModel.getColumnData(Columns,"states"));
+        String xml = null;
+        String mdataRequested = request.getParameter("md").toLowerCase();
+        MasterDataModel = IAS.Model.MasterData.getInstance(request.getSession());
+        String tableName = (String) columnTableMap.get(mdataRequested);
+        try {
+            xml = this.convertResultSetToXML(MasterDataModel.getColumnData(mdataRequested, tableName));
+        } catch (SQLException ex) {
+        } catch (Exception ex) {
+        } finally {
             out.println(xml);
             out.close();
         }
@@ -62,47 +66,39 @@ public class CMasterData extends HttpServlet {
 
     }
 
-    public String convertResultSetToXML(ResultSet rs) {
+    public String convertResultSetToXML(ResultSet rs) throws ParserConfigurationException, SQLException, TransformerException {
 
         String xml = null;
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.newDocument();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
 
-            Element results = doc.createElement("results");
-            doc.appendChild(results);
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
 
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int colCount = rsmd.getColumnCount();
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int colCount = rsmd.getColumnCount();
 
-            while (rs.next()) {
-                Element row = doc.createElement("row");
-                results.appendChild(row);
+        while (rs.next()) {
+            Element row = doc.createElement("row");
+            results.appendChild(row);
 
-                for (int i = 1; i <= colCount; i++) {
-                    String columnName = rsmd.getColumnName(i);
-                    Object value = rs.getObject(i);
+            for (int i = 1; i <= colCount; i++) {
+                String columnName = rsmd.getColumnName(i);
+                Object value = rs.getObject(i);
 
-                    Element node = doc.createElement(columnName);
-                    node.appendChild(doc.createTextNode(value.toString()));
-                    row.appendChild(node);
-                }
+                Element node = doc.createElement(columnName);
+                node.appendChild(doc.createTextNode(value.toString()));
+                row.appendChild(node);
             }
-            DOMSource domSource = new DOMSource(doc);
-            StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.transform(domSource, result);
-            xml = writer.toString();
-        } catch (ParserConfigurationException ex) {
-
-        }catch(SQLException ex){
-
-        }catch (TransformerException ex) {
-            ex.printStackTrace();
         }
+        DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.transform(domSource, result);
+        xml = writer.toString();
 
         return xml;
 

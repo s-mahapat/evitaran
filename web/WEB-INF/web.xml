@@ -15,6 +15,16 @@
         <param-name>db_name</param-name>
         <param-value>JDS</param-value>
     </context-param>
+    <context-param>
+        <description>database server name</description>
+        <param-name>db_host</param-name>
+        <param-value>localhost</param-value>
+    </context-param>
+    <context-param>
+        <description>The database driver used</description>
+        <param-name>db_driver</param-name>
+        <param-value>jdbc:mysql</param-value>
+    </context-param>
     <listener>
         <listener-class>IAS.Class.Database</listener-class>
     </listener>
@@ -80,6 +90,10 @@
             <role-name>user</role-name>
         </run-as>
     </servlet>
+    <servlet>
+        <servlet-name>inwardModel</servlet-name>
+        <servlet-class>IAS.Model.inwardModel</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -132,21 +146,25 @@
         <servlet-name>CMasterData</servlet-name>
         <url-pattern>/CMasterData</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>inwardModel</servlet-name>
+        <url-pattern>/inwardModel</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
     <!-- error-code related error pages -->
-    <error-page>
-        <error-code>404</error-code>
-        <location>/errorHandler</location>
-    </error-page>
-    <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>/errorHandler</location>
-    </error-page>
     <welcome-file-list>
         <welcome-file>/home</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/jsp/errors/error.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/jsp/errors/error.jsp</location>
+    </error-page>
     <security-constraint>
         <display-name>Authentication</display-name>
         <web-resource-collection>

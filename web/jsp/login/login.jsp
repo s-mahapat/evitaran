@@ -163,11 +163,11 @@
                     <div id="login">
                         <div class="authField">
                             <span class="authLabel">User Name</span>
-                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBox" name="j_username" id="loginFieldId"/></span>
+                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBox" name="j_username" value="jds" id="loginFieldId"/></span>
                         </div>
                         <div class="authField">
                             <span class="authLabel">Password</span>
-                            <span class="authInput"><input type="password" maxlength="16" style="width:160px" class="IASTextBox" name="j_password" id="passwordField"/></span>
+                            <span class="authInput"><input type="password" maxlength="16" style="width:160px" class="IASTextBox" value="jds" name="j_password" id="passwordField"/></span>
                         </div>
                         <div class="authAction">
                             <input type="submit" value="Login"/>

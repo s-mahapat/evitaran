@@ -22,7 +22,7 @@ public class home extends HttpServlet {
 
     private ServletContext context = null;
     private static final String jdbcDriver = "com.mysql.jdbc.Driver";
-    private static String dbURL = "jdbc:mysql://localhost/";
+
     private Connection connection;
 
     @Override
@@ -48,7 +48,7 @@ public class home extends HttpServlet {
 
         String username = context.getInitParameter("db_user");
         String password = context.getInitParameter("db_password");
-        dbURL += context.getInitParameter("db_name") ;
+        String dbURL = context.getInitParameter("db_driver") + "://" + context.getInitParameter("db_host") + "/" + context.getInitParameter("db_name");
 
         try {
             HttpSession session = request.getSession(true);

@@ -175,6 +175,12 @@ body{
     font-size: 12px;
 }
 
+.IASTextBoxWide{
+    width: 180px;
+    font-family: "Cambria",serif;
+    font-size: 12px;
+}
+
 .IASTextBoxForNumbers{
     width: 30px;
     font-family: "Cambria",serif;
@@ -183,6 +189,13 @@ body{
 
 .IASTextBoxMandatory{
     width: 120px;
+    font-family: "Cambria",serif;
+    font-size: 12px;
+    background-color: antiquewhite;
+}
+
+.IASTextBoxMandatoryWide{
+    width: 180px;
     font-family: "Cambria",serif;
     font-size: 12px;
     background-color: antiquewhite;
@@ -226,8 +239,8 @@ body{
 
 .IASButton{
     /*height: 20px;*/
-    font-size: 9px;
-    font-weight: bold;
+    font-size: 10px;
+    font-weight: bolder;
     color: black;
     text-transform: capitalize;
 }
@@ -248,6 +261,13 @@ body{
 .IASComboBox{
     font-family: "Cambria",serif;
     font-size: 12px;
+    width: 120px;
+}
+
+.IASComboBoxWide{
+    font-family: "Cambria",serif;
+    font-size: 12px;
+    width: 180px;
 }
 
 .IASComboBoxMandatory{

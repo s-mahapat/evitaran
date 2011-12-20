@@ -4,6 +4,7 @@
  */
 package IAS.Class;
 import javax.servlet.*;
+import IAS.Model.InwardSubscriberHelper;
 /**
  *
  * @author Shailendra Mahapatra
@@ -12,6 +13,8 @@ public class JDSServletContext implements ServletContextListener{
 
     @Override
     public void contextInitialized(ServletContextEvent event){
+
+        InwardSubscriberHelper inwardSubHelper = new InwardSubscriberHelper(event.getServletContext());
 
     }
 

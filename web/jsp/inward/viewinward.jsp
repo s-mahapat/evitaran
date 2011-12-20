@@ -18,6 +18,7 @@
     <body>
 
         <%@include file="../templates/layout.jsp" %>
+        <jsp:useBean class="IAS.Bean.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
         <div id="bodyContainer">
             <form method="POST" action="<%=request.getContextPath() + "/inward"%>" name="inwardForm">
                 <div class="MainDiv">

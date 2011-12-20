@@ -27,6 +27,24 @@ function addOnloadEvent(fnc){
  *  Or to pass argumentsaddOnloadEvent(function(){ myFunctionName('myArgument') });
  */
 
+function validateEmail(FieldId){
+    var isValidEmail = false;
+    var str= document.getElementById(FieldId).value;
+    if(str.length == 0){
+        isValidEmail=true;
+    }
+    var filter=/^.+@.+\..{2,3}$/;
+    if (filter.test(str)){
+        isValidEmail=true;
+    }
+    if(!isValidEmail){
+        alert("Please input a valid email address!");
+        document.getElementById(FieldId).value = "";
+        document.getElementById(FieldId).focus();
+    }
+
+}
+
 function checkMandatoryFields(){
 
     var tagsToValidate = new Array('input', 'select','textarea');
@@ -42,7 +60,7 @@ function checkMandatoryFields(){
 
                 if (allFields[j].value.length == 0) {
                     var elementID = allFields[j].id;
-                    document.getElementById(elementID).style.backgroundColor = 'pink';
+                    //document.getElementById(elementID).style.backgroundColor = 'pink';
                     document.getElementById(elementID).focus();
                     isMandatoryFilledFlag = false;
                 //break;
@@ -53,7 +71,7 @@ function checkMandatoryFields(){
         }
     }
     if (isMandatoryFilledFlag == false){
-        alert("Please fill in all Mandatory fields. The mandatory fields are marked in RED");
+        alert("Please fill in all Mandatory fields");
     }
     else{
         return true;
@@ -104,11 +122,12 @@ function makeReadOnly(){
     for(var i=0;i<formFields.length;i++){
         var formField = formFields[i];
         if( formField.className == "IASTextBox"
+            || formField.className == "IASTextBoxMandatory"
             || formField.className == "IASEmailTextBox"
             || formField.className == "IASCheckBox"
             || formField.className == "IASDateTextBox"
             ){
-            formField.disabled = true;
+            formField.setAttribute("readonly",true);
         //formField.style.backgroundColor = "#D3D3D3";
         }
     }
@@ -117,7 +136,7 @@ function makeReadOnly(){
 
     for(i=0;i<formFields.length;i++){
         formField = formFields[i];
-        if(formField.className == "IASComboBox"){
+        if(formField.className == "IASComboBox"  || formField.className == "IASComboBoxWide"){
             formField.disabled = true;
         //formField.style.backgroundColor = "#D3D3D3";
         }
@@ -212,8 +231,60 @@ function jQueryDatePicker(fromDiv, toDiv){
     });
 
 }
-
+/*
+ * This function makes an ajax call to get data from server.
+ * requesturl = request url
+ * xmlrowTag = the tag name in the xml output that has the data value
+ * formelementid= id of the element where the autocomplete should be displayed.
+ */
 function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
+
+    var _formElementId = "#" + formElementId;
+    var myArr = new Array;
+
+    // bind the onblur event to the element, so we allow only values from the list
+    $(_formElementId).bind('blur', function(){
+
+        if ($.inArray($(this).val(), myArr) == -1 &&  $(this).val().length > 0){
+            $(this).val('');
+            //$(this).focus();
+            alert('Please select a valid value from the list');
+
+            //$(_formElementId).html("No match found!" + $(this).val());
+        }
+
+    });
+    $.ajax({
+        type: "GET",
+        url: requestURL, // change to full path of file on server
+        dataType: "xml",
+        success: function(xml){
+            $(xml).find(xmlRowTag).each(function(){
+                myArr.push($(this).text());
+            });
+        },
+        complete: function(){
+            $(_formElementId).autocomplete({
+                source: myArr,
+                minLength: 2
+            });
+        },
+        error: function() {
+            alert("XML File could not be found");
+        }
+    });
+
+}
+
+/*
+     * This function makes an ajax call to get data from server.
+     * requesturl = request url
+     * xmlrowTag = the tag name in the xml output that has the data value
+     * formelementid= id of the element where the autocomplete should be displayed.
+     * This function will append the valus to the already existing ones. Mainly helpful
+     * to populate drop down lists.
+     */
+function jdsAppend(requestURL,xmlRowTag,formElementId){
 
     var _formElementId = "#" + formElementId;
     var myArr = new Array;
@@ -227,10 +298,16 @@ function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
             });
         },
         complete: function(){
-            $(_formElementId).autocomplete({
-                source: myArr,
-                minLength: 0
-            });
+            var html=null;
+            for(var i=0;i<myArr.length;i++){
+                if(html==null){
+                    html = "<option value=" + "\"" + myArr[i]  + "\"" + ">" + myArr[i] + "</option>";
+                }else{
+                    html += "<option value=" + "\"" + myArr[i]  + "\"" + ">" + myArr[i] + "</option>";
+                }
+
+            }
+            $(_formElementId).append(html);
         },
         error: function() {
             alert("XML File could not be found");
@@ -238,3 +315,4 @@ function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
     });
 
 }
+

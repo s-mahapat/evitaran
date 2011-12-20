@@ -17,11 +17,34 @@ function makeReadOnly(){
 
 function validateNewInward(){
 
-    var InwardPurpose = document.getElementById("purpose").value.toLowerCase();
+    // check the inward purpose field
+    var InwardPurpose = document.getElementById("inwardPurpose").value.toLowerCase();
+
+    if(InwardPurpose == 0){
+        alert("Please select an Inward Purpose");
+        return false;
+    }
+
+
     if(InwardPurpose == 'others' && isEmpty(document.getElementById("remarks"))){
 
         alert("Since you have created a miscellaneous inward, please fill in the remarks section");
         return false;
     }
-    return true;
+
+    if(document.getElementById("paymentMode").value == 0){
+
+        alert("Please select payment mode");
+        return false;
+
+    }
+
+    if(document.getElementById("currency").value == 0){
+        alert("Please select Currency");
+        return false;
+    }
+
+    return checkMandatoryFields();
+
+
 }

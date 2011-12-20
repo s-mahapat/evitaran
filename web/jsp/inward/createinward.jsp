@@ -14,20 +14,12 @@
         <script>
             addOnloadEvent(makeReadOnly);
             var myArr = new Array;
-
-            $(document).ready(function() {
-                jdsAutoComplete("/JDS/CMasterData?md=city","city","city");
-                jdsAutoComplete("/JDS/CMasterData?md=country","country","country");
-                jdsAutoComplete("/JDS/CMasterData?md=state","state","state");
-            });
-
-
-
         </script>
     </head>
     <body>
 
         <%@include file="../templates/layout.jsp" %>
+        <jsp:useBean class="IAS.Bean.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
         <div id="bodyContainer">
             <form method="post" action="<%=request.getContextPath() + "/inward"%>" name="inwardForm" onsubmit="return validateNewInward()">
                 <div class="MainDiv">

@@ -3,90 +3,89 @@
  * and open the template in the editor.
  */
 package IAS.Class;
+
 import javax.servlet.*;
 import java.sql.*;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
-public class Database implements HttpSessionBindingListener{
+public class Database implements HttpSessionBindingListener {
 
     ServletContext context;
     private Connection connection = null;
 
-    public Database(){
-
+    public Database() {
     }
 
-    public Database(Connection conn,ServletContext context){
+    public Database(Connection conn, ServletContext context) {
         this.connection = conn;
         this.context = context;
     }
 
-    public void setConnection(Connection conn){
+    public void setConnection(Connection conn) {
         this.connection = conn;
     }
 
     @Override
-    public void valueUnbound(HttpSessionBindingEvent e){
+    public void valueUnbound(HttpSessionBindingEvent e) {
 
-        try{
-            if(connection != null){
+        try {
+            if (connection != null) {
                 connection.rollback();
                 connection.close();
             }
-        }catch(SQLException ex){
-
+        } catch (SQLException ex) {
         }
     }
 
     @Override
-    public void valueBound(HttpSessionBindingEvent e){
+    public void valueBound(HttpSessionBindingEvent e) {
         context.log("Session Bound event");
     }
 
-
-
-    public Connection getConnection(){
+    public Connection getConnection() {
         return connection;
     }
 
-    public ResultSet executeQuery(String query) {
+    public ResultSet executeQuery(String query) throws SQLException {
         PreparedStatement st = null;
         ResultSet rs = null;
-        try{
+        st = connection.prepareStatement(query);
+        rs = st.executeQuery();
 
-            st = connection.prepareStatement(query);
-            rs = st.executeQuery();
-
-        }catch(SQLException e){
-
-        }finally{
-            if(st == null)
-                return null;
-            else
-                return rs;
+        if (st == null) {
+            return null;
+        } else {
+            return rs;
         }
-
 
     }
 
-    public int executeUpdate(String statement){
+    public int executeUpdate(String statement) throws SQLException {
 
         PreparedStatement st = null;
         int rs = 0;
-        try{
+        st = connection.prepareStatement(statement);
+        rs = st.executeUpdate();
 
-            st = connection.prepareStatement(statement);
-            rs = st.executeUpdate();
-
-        }catch(SQLException e){
-
-        }finally{
-            if(st == null)
-                return -1;
-            else
-                return rs;
+        if (st == null) {
+            return 0;
+        } else {
+            return rs;
         }
+
+    }
+
+    public int executeUpdatePreparedStatement(PreparedStatement pstatement) throws SQLException {
+
+        int rs = 0;
+        rs = pstatement.executeUpdate();
+        if (pstatement == null) {
+            return 0;
+        } else {
+            return rs;
+        }
+
     }
 
     public void close() {
@@ -100,10 +99,9 @@ public class Database implements HttpSessionBindingListener{
 
     @Override
     protected void finalize() {
-        try{
+        try {
             super.finalize();
-        }catch(java.lang.Throwable e){
-
+        } catch (java.lang.Throwable e) {
         }
         close();
     }
