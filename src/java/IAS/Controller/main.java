@@ -109,6 +109,38 @@ public class main extends HttpServlet {
 
                 url = "/jsp/masterdata/annualSubscriptionrates.jsp";
 
+            } else if (action.equalsIgnoreCase("addCity")) {
+
+                url = "/jsp/masterdata/addCity.jsp";
+
+            } else if (action.equalsIgnoreCase("addCountry")) {
+
+                url = "/jsp/masterdata/addCountry.jsp";
+
+            } else if (action.equalsIgnoreCase("addDistrict")) {
+
+                url = "/jsp/masterdata/addDistrict.jsp";
+
+            } else if (action.equalsIgnoreCase("addState")) {
+
+                url = "/jsp/masterdata/addState.jsp";
+
+            } else if (action.equalsIgnoreCase("searchCity")) {
+
+                url = "/jsp/masterdata/searchCity.jsp";
+
+            } else if (action.equalsIgnoreCase("searchCountry")) {
+
+                url = "/jsp/masterdata/searchCountry.jsp";
+
+            } else if (action.equalsIgnoreCase("searchDistrict")) {
+
+                url = "/jsp/masterdata/searchDistirct.jsp";
+
+            } else if (action.equalsIgnoreCase("searchState")) {
+
+                url = "/jsp/masterdata/searchState.jsp";
+
             } else if (action.equalsIgnoreCase("listAgent")) {
 
                 url = "/jsp/reports/listAgent.jsp";

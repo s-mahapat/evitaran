@@ -79,7 +79,7 @@
             <form method="post" action="" name="circulationFigures">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Statement of Label for Journal</legend>
+                        <legend>Circulation Figures for Journal</legend>
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>

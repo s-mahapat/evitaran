@@ -20,8 +20,8 @@
 <%-----------------------------------------------------------------------------------------------------%>
 
 <fieldset class="subMainFieldSet">
+    <legend>Agent Details</legend>
     <div class="IASFormFieldDiv">
-        <legend>Agent Details</legend>
         <div class="IASFormLeftDiv">
             <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">

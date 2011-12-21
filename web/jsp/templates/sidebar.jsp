@@ -87,6 +87,14 @@
         <a tabindex="-1" href="<%=contextPath + "/main?action=addAgent"%>">Add Agent</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=searchAgent"%>">Search Agent</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=subRate"%>">Annual Subscription Rate</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=addCity"%>">Add City</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=searchCity"%>">Search City</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=addCountry"%>">Add Country</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=searchCountry"%>">Search Country</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=addDistrict"%>">Add District</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=searchDistrict"%>">Search District</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=addState"%>">Add State</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=searchstate"%>">Search State</a>
     </div>
 
 </div>
