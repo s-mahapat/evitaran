@@ -72,7 +72,7 @@ DROP TABLE IF EXISTS `inward`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `inward` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `inward_no` varchar(9) NOT NULL,
+  `inwardNumber` varchar(9) NOT NULL,
   `from` varchar(64) NOT NULL,
   `country` int(11) DEFAULT NULL,
   `state` int(11) DEFAULT NULL,
@@ -81,23 +81,26 @@ CREATE TABLE `inward` (
   `email` varchar(64) DEFAULT NULL,
   `institution` varchar(64) DEFAULT NULL,
   `department` varchar(64) DEFAULT NULL,
-  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `subscriber_id` int(11) NOT NULL DEFAULT '0',
-  `purpose_id` int(11) NOT NULL,
-  `payment_mode_id` int(11) NOT NULL,
-  `cheque_dd_no` int(11) DEFAULT NULL,
-  `payment_date` date DEFAULT NULL,
+  `inwardCreationDate` date NOT NULL,
+  `subscriberId` varchar(15) DEFAULT NULL,
+  `inwardPurpose` int(11) NOT NULL,
+  `paymentMode` int(11) NOT NULL,
+  `chqddNumber` int(11) DEFAULT NULL,
+  `paymentDate` date DEFAULT NULL,
   `amount` float DEFAULT '0',
-  `currency_id` int(11) NOT NULL,
-  `is_return` tinyint(1) NOT NULL DEFAULT '0',
-  `return_reason_id` int(11) DEFAULT NULL,
-  `return_reason_other` varchar(20) DEFAULT NULL,
-  `receipt_no` int(11) DEFAULT NULL,
-  `ack_date` date DEFAULT NULL,
+  `currency` int(11) NOT NULL,
+  `chequeDDReturn` tinyint(1) NOT NULL DEFAULT '0',
+  `chequeDDReturnReason` int(11) DEFAULT NULL,
+  `chequeDDReturnReasonOther` varchar(20) DEFAULT NULL,
+  `receiptNumber` int(11) DEFAULT NULL,
+  `ackDate` date DEFAULT NULL,
   `remarks` text,
+  `bankName` varchar(64) DEFAULT NULL,
+  `returnDate` date DEFAULT NULL,
+  `completed` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `inward_no_UNIQUE` (`inward_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `inward_no_UNIQUE` (`inwardNumber`)
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -132,21 +135,6 @@ CREATE TABLE `inward_return_reasons` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `jds_format_helper`
---
-
-DROP TABLE IF EXISTS `jds_format_helper`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `jds_format_helper` (
-  `year` int(11) NOT NULL,
-  `last_inward_number` int(11) NOT NULL DEFAULT '0',
-  `last_subscriber_number` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`year`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Remembers the last inward number and subscriber number. Helps in generating the next inward & subscriber number';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `payment_mode`
 --
 
@@ -174,47 +162,6 @@ CREATE TABLE `states` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `state_UNIQUE` (`state`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `subscriber`
---
-
-DROP TABLE IF EXISTS `subscriber`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subscriber` (
-  `subscriber_id` varchar(10) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `city` varchar(45) NOT NULL,
-  `country` varchar(45) NOT NULL,
-  `pincode` varchar(45) DEFAULT NULL,
-  `type_id` int(11) NOT NULL,
-  `creation_date` date NOT NULL,
-  `department` varchar(30) DEFAULT NULL,
-  `institution` varchar(45) DEFAULT NULL,
-  `email` varchar(30) DEFAULT NULL,
-  `agent_id` int(11) DEFAULT '0',
-  `deactive` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`subscriber_id`),
-  UNIQUE KEY `subscriber_id_UNIQUE` (`subscriber_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `subscriber_type`
---
-
-DROP TABLE IF EXISTS `subscriber_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subscriber_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `type_UNIQUE` (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -254,4 +201,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-12-20  6:33:02
+-- Dump completed on 2011-12-25 23:59:01

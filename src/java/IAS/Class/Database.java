@@ -61,6 +61,18 @@ public class Database implements HttpSessionBindingListener {
 
     }
 
+    public ResultSet executeQueryPreparedStatement(PreparedStatement pstatement) throws SQLException {
+
+        ResultSet rs = null;
+        rs = pstatement.executeQuery();
+        if (pstatement == null) {
+            return null;
+        } else {
+            return rs;
+        }
+
+    }
+
     public int executeUpdate(String statement) throws SQLException {
 
         PreparedStatement st = null;
@@ -80,6 +92,7 @@ public class Database implements HttpSessionBindingListener {
 
         int rs = 0;
         rs = pstatement.executeUpdate();
+        //this.connection.commit();
         if (pstatement == null) {
             return 0;
         } else {

@@ -102,7 +102,7 @@ DROP TABLE IF EXISTS `inward`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `inward` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `inward_no` varchar(9) NOT NULL,
+  `inwardNumber` varchar(9) NOT NULL,
   `from` varchar(64) NOT NULL,
   `country` int(11) DEFAULT NULL,
   `state` int(11) DEFAULT NULL,
@@ -111,23 +111,26 @@ CREATE TABLE `inward` (
   `email` varchar(64) DEFAULT NULL,
   `institution` varchar(64) DEFAULT NULL,
   `department` varchar(64) DEFAULT NULL,
-  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `subscriber_id` int(11) NOT NULL DEFAULT '0',
-  `purpose_id` int(11) NOT NULL,
-  `payment_mode_id` int(11) NOT NULL,
-  `cheque_dd_no` int(11) DEFAULT NULL,
-  `payment_date` date DEFAULT NULL,
+  `inwardCreationDate` date NOT NULL,
+  `subscriberId` varchar(15) DEFAULT NULL,
+  `inwardPurpose` int(11) NOT NULL,
+  `paymentMode` int(11) NOT NULL,
+  `chqddNumber` int(11) DEFAULT NULL,
+  `paymentDate` date DEFAULT NULL,
   `amount` float DEFAULT '0',
-  `currency_id` int(11) NOT NULL,
-  `is_return` tinyint(1) NOT NULL DEFAULT '0',
-  `return_reason_id` int(11) DEFAULT NULL,
-  `return_reason_other` varchar(20) DEFAULT NULL,
-  `receipt_no` int(11) DEFAULT NULL,
-  `ack_date` date DEFAULT NULL,
+  `currency` int(11) NOT NULL,
+  `chequeDDReturn` tinyint(1) NOT NULL DEFAULT '0',
+  `chequeDDReturnReason` int(11) DEFAULT NULL,
+  `chequeDDReturnReasonOther` varchar(20) DEFAULT NULL,
+  `receiptNumber` int(11) DEFAULT NULL,
+  `ackDate` date DEFAULT NULL,
   `remarks` text,
+  `bankName` varchar(64) DEFAULT NULL,
+  `returnDate` date DEFAULT NULL,
+  `completed` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `inward_no_UNIQUE` (`inward_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `inward_no_UNIQUE` (`inwardNumber`)
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +139,7 @@ CREATE TABLE `inward` (
 
 LOCK TABLES `inward` WRITE;
 /*!40000 ALTER TABLE `inward` DISABLE KEYS */;
-INSERT INTO `inward` VALUES (8,'11L-00001','test',1,12,3,0,'','','','2011-12-18 18:44:00',0,3,4,0,'2011-12-19',0,1,0,NULL,NULL,0,NULL,'');
+INSERT INTO `inward` VALUES (67,'11L-00001','abc',1,13,147,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(68,'11L-00002','abc',1,13,3,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(69,'11L-00003','test',1,21,57,0,'','','','2011-12-25','0',5,1,0,'2011-12-25',0,2,0,NULL,NULL,0,NULL,'','',NULL,0),(70,'11L-00004','test',1,13,147,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(71,'11L-00005','test',1,13,147,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,'',0,NULL,'','',NULL,0),(72,'11L-00006','Kamala Pachisia',1,1,23,0,'','','','2011-12-25','0',3,2,0,'2011-12-25',0,2,0,NULL,NULL,0,NULL,'','',NULL,0),(73,'11L-00007','Kamala Pachisia',1,1,23,0,'','','','2011-12-25','0',3,2,0,'2011-12-25',0,2,0,NULL,'',0,NULL,'','',NULL,0),(74,'11L-00008','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(75,'11L-00009','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(76,'11L-00010','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(77,'11L-00011','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(78,'11L-00012','abc',1,1,5,0,'','','','2011-12-25','0',7,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(79,'11L-00013','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(80,'11L-00014','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(81,'11L-00015','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(82,'11L-00016','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(83,'11L-00017','abc',1,1,23,0,'','','','2011-12-25','0',7,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(84,'11L-00018','munnu',1,1,23,0,'sm@test.com','','','2011-12-25','0',3,1,12345,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','State Bank of india',NULL,0),(85,'11L-00019','mun',1,1,5,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(86,'11L-00020','hjh',1,1,80,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(87,'11L-00021','abc',1,1,168,0,'','test','test','2011-12-25','0',3,1,0,'2011-12-25',4560,1,0,NULL,NULL,0,NULL,'','ICICI Bank',NULL,0);
 /*!40000 ALTER TABLE `inward` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,30 +195,6 @@ INSERT INTO `inward_return_reasons` VALUES (3,'Cheque/ DD not in favour of India
 UNLOCK TABLES;
 
 --
--- Table structure for table `jds_format_helper`
---
-
-DROP TABLE IF EXISTS `jds_format_helper`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `jds_format_helper` (
-  `year` int(11) NOT NULL,
-  `last_inward_number` int(11) NOT NULL DEFAULT '0',
-  `last_subscriber_number` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`year`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Remembers the last inward number and subscriber number. Helps in generating the next inward & subscriber number';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `jds_format_helper`
---
-
-LOCK TABLES `jds_format_helper` WRITE;
-/*!40000 ALTER TABLE `jds_format_helper` DISABLE KEYS */;
-/*!40000 ALTER TABLE `jds_format_helper` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `payment_mode`
 --
 
@@ -263,65 +242,6 @@ LOCK TABLES `states` WRITE;
 /*!40000 ALTER TABLE `states` DISABLE KEYS */;
 INSERT INTO `states` VALUES (1,'Andhra Pradesh'),(2,'Arunachal Pradesh'),(3,'Assam'),(4,'Bihar'),(5,'Chattisgarh'),(7,'Goa'),(8,'Gujarat'),(10,'Haryana'),(9,'Himachal Pradesh'),(12,'Jammu & Kashmir'),(11,'Jharkhand'),(13,'Karnataka'),(14,'Kerela'),(18,'Madhya Pradesh'),(17,'Maharastra'),(15,'Manipur'),(16,'Meghalaya'),(19,'Mizoram'),(20,'Nagaland'),(6,'New Delhi'),(21,'Orissa'),(23,'Pondicherry'),(22,'Punjab'),(24,'Rajasthan'),(25,'Sikkim'),(26,'Tamilnadu'),(27,'Tripura'),(28,'Uttar Pradesh'),(29,'Uttaranchal'),(30,'West Bengal');
 /*!40000 ALTER TABLE `states` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `subscriber`
---
-
-DROP TABLE IF EXISTS `subscriber`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subscriber` (
-  `subscriber_id` varchar(10) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `city` varchar(45) NOT NULL,
-  `country` varchar(45) NOT NULL,
-  `pincode` varchar(45) DEFAULT NULL,
-  `type_id` int(11) NOT NULL,
-  `creation_date` date NOT NULL,
-  `department` varchar(30) DEFAULT NULL,
-  `institution` varchar(45) DEFAULT NULL,
-  `email` varchar(30) DEFAULT NULL,
-  `agent_id` int(11) DEFAULT '0',
-  `deactive` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`subscriber_id`),
-  UNIQUE KEY `subscriber_id_UNIQUE` (`subscriber_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `subscriber`
---
-
-LOCK TABLES `subscriber` WRITE;
-/*!40000 ALTER TABLE `subscriber` DISABLE KEYS */;
-/*!40000 ALTER TABLE `subscriber` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `subscriber_type`
---
-
-DROP TABLE IF EXISTS `subscriber_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subscriber_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `type_UNIQUE` (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `subscriber_type`
---
-
-LOCK TABLES `subscriber_type` WRITE;
-/*!40000 ALTER TABLE `subscriber_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `subscriber_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -381,4 +301,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-12-20  6:33:17
+-- Dump completed on 2011-12-25 23:59:04

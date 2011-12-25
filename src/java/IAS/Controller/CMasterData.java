@@ -17,7 +17,8 @@ import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import java.io.PrintWriter;
 import java.util.*;
-
+import IAS.Class.Database;
+import IAS.Class.Queries;
 /**
  *
  * @author Shailendra Mahapatra
@@ -30,14 +31,14 @@ public class CMasterData extends HttpServlet {
     @Override
     public void init() {
 
-        columnTableMap = new HashMap<String, String>();
+        /*columnTableMap = new HashMap<String, String>();
         columnTableMap.put("city", "cities");
         columnTableMap.put("country", "countries");
         columnTableMap.put("state", "states");
         columnTableMap.put("purpose", "inward_purpose");
         columnTableMap.put("payment_mode", "payment_mode");
         columnTableMap.put("currency", "currency");
-        columnTableMap.put("return_reason", "inward_return_reasons");
+        columnTableMap.put("return_reason", "inward_return_reasons");*/
     }
 
     /**
@@ -52,10 +53,13 @@ public class CMasterData extends HttpServlet {
         PrintWriter out = response.getWriter();
         String xml = null;
         String mdataRequested = request.getParameter("md").toLowerCase();
-        MasterDataModel = IAS.Model.MasterData.getInstance(request.getSession());
-        String tableName = (String) columnTableMap.get(mdataRequested);
+        //MasterDataModel = IAS.Model.MasterData.getInstance(request.getSession());
+        Database db = (Database)request.getSession().getAttribute("db_connection");
+        //String query = (String) columnTableMap.get(mdataRequested);
+
         try {
-            xml = this.convertResultSetToXML(MasterDataModel.getColumnData(mdataRequested, tableName));
+            //xml = this.convertResultSetToXML(MasterDataModel.getColumnData(mdataRequested, tableName));
+            xml = this.convertResultSetToXML(db.executeQuery(Queries.getQuery(mdataRequested)));
         } catch (SQLException ex) {
         } catch (Exception ex) {
         } finally {

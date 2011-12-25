@@ -72,10 +72,6 @@
         <servlet-class>IAS.Controller.agent1</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>errorHandler</servlet-name>
-        <servlet-class>IAS.Servlet.errorHandler</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>subType</servlet-name>
         <servlet-class>IAS.Controller.subType</servlet-class>
     </servlet>
@@ -93,6 +89,10 @@
     <servlet>
         <servlet-name>inwardModel</servlet-name>
         <servlet-class>IAS.Model.inwardModel</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>errorHandler</servlet-name>
+        <servlet-class>IAS.Controller.errorHandler</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
@@ -127,10 +127,6 @@
         <url-pattern>/agent1</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>errorHandler</servlet-name>
-        <url-pattern>/errorHandler</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>home</servlet-name>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
@@ -150,6 +146,10 @@
         <servlet-name>inwardModel</servlet-name>
         <url-pattern>/inwardModel</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>errorHandler</servlet-name>
+        <url-pattern>/errorHandler</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
@@ -157,10 +157,6 @@
     <welcome-file-list>
         <welcome-file>/home</welcome-file>
     </welcome-file-list>
-    <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>/jsp/errors/error.jsp</location>
-    </error-page>
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
         <location>/jsp/errors/error.jsp</location>

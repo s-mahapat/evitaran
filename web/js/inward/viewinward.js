@@ -8,7 +8,7 @@ function makeInwardReadOnly(){
 
     document.getElementById("btnSaveInward").disabled = true;
     document.getElementById("btnSearchSubscriber").disabled = true;
-    document.getElementById("paymentdate").setAttribute("readonly",true);
+    document.getElementById("paymentDate").setAttribute("readonly",true);
     document.getElementById("checkReturn").disabled = true;
 
     //hide the calendar icon using jquery

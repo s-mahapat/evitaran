@@ -58,7 +58,7 @@ function checkMandatoryFields(){
                 allFields[j].className == 'IASTextAreaMandatory' ||
                 allFields[j].className == 'IASComboBoxMandatory' ){
 
-                if (allFields[j].value.length == 0) {
+                if (allFields[j].value.length == 0 || allFields[j].value == 0) {
                     var elementID = allFields[j].id;
                     //document.getElementById(elementID).style.backgroundColor = 'pink';
                     document.getElementById(elementID).focus();
@@ -126,9 +126,10 @@ function makeReadOnly(){
             || formField.className == "IASEmailTextBox"
             || formField.className == "IASCheckBox"
             || formField.className == "IASDateTextBox"
+            || formField.className == "IASTextBoxMandatoryWide"
             ){
             formField.setAttribute("readonly",true);
-        //formField.style.backgroundColor = "#D3D3D3";
+            formField.style.backgroundColor = "#EEE";
         }
     }
 
@@ -136,9 +137,12 @@ function makeReadOnly(){
 
     for(i=0;i<formFields.length;i++){
         formField = formFields[i];
-        if(formField.className == "IASComboBox"  || formField.className == "IASComboBoxWide"){
+        if(formField.className == "IASComboBox"
+            || formField.className == "IASComboBoxWide"
+            || formField.className == "IASComboBoxMandatory"
+            ){
             formField.disabled = true;
-        //formField.style.backgroundColor = "#D3D3D3";
+            formField.style.backgroundColor = "#EEE";
         }
     }
 
@@ -148,7 +152,7 @@ function makeReadOnly(){
         formField = formFields[i];
         if(formField.className == "IASTextArea"){
             formField.disabled = true;
-        //formField.style.backgroundColor = "#D3D3D3";
+            formField.style.backgroundColor = "#EEE";
         }
     }
 }
@@ -175,13 +179,13 @@ function setActionValue(value){
     }
 }
 
-function alert(msg,title,callback){
+/*function alert(msg,title,callback){
     if(title == null){
         title = 'Journal Distribution System';
     }
     jAlert(msg,title,callback);
     return false;
-}
+}*/
 
 function jdsConfirm(msg,title,callback){
     if(title.length == 0){
@@ -242,15 +246,13 @@ function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
     var _formElementId = "#" + formElementId;
     var myArr = new Array;
 
-    // bind the onblur event to the element, so we allow only values from the list
-    $(_formElementId).bind('blur', function(){
+    // bind the autocompletechange event to the element, so we allow only values from the list
+    $(_formElementId).bind('autocompletechange', function(){
 
         if ($.inArray($(this).val(), myArr) == -1 &&  $(this).val().length > 0){
             $(this).val('');
-            //$(this).focus();
+            $(this).focus();
             alert('Please select a valid value from the list');
-
-            //$(_formElementId).html("No match found!" + $(this).val());
         }
 
     });
@@ -300,10 +302,15 @@ function jdsAppend(requestURL,xmlRowTag,formElementId){
         complete: function(){
             var html=null;
             for(var i=0;i<myArr.length;i++){
+                //set this variable to save the state from the last postback
+                var isSelected="";
+
+                if($(_formElementId).val() == myArr[i])
+                    isSelected = "selected";
                 if(html==null){
-                    html = "<option value=" + "\"" + myArr[i]  + "\"" + ">" + myArr[i] + "</option>";
+                    html = "<option value=" + "\"" + myArr[i]  + "\"" + isSelected + ">" + myArr[i] + "</option>";
                 }else{
-                    html += "<option value=" + "\"" + myArr[i]  + "\"" + ">" + myArr[i] + "</option>";
+                    html += "<option value=" + "\"" + myArr[i]  + "\"" + isSelected + ">" + myArr[i] + "</option>";
                 }
 
             }

@@ -10,7 +10,7 @@ import java.sql.*;
 
 public class Queries {
 
-    private static final String propFileName = "jds_sql.properties";
+    private static String propFileName = "jds_sql.properties";
     private static Properties props;
 
     public static Properties getQueries() throws SQLException {

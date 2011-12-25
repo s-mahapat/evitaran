@@ -1,4 +1,4 @@
-<%@ page isErrorPage="true" %>
+<%@page isErrorPage="true" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,31 +14,45 @@
             <div class="MainDiv">
                 <fieldset class="MainFieldset">
                     <fieldset class="subMainFieldSet">
-                        <pre>
-                            <%
-                                if (exception != null) {
-                                    exception.printStackTrace(response.getWriter());
-                                }
-                            %>
-                        </pre>
+
+
+                        <table id="datatable">
+                            <tr>
+                                <td>Exception Class</td>
+                                <td>
+                                    <%
+                                        if (exception != null) {
+                                            out.println(exception.getClass());
+                                        }
+                                    %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Exception Message</td>
+                                <td>
+                                    <%
+                                        if (exception != null) {
+                                            out.println(exception.getMessage());
+                                        }
+                                    %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Exception stack trace</td>
+                                <td>
+                                    <%
+                                        if (exception != null) {
+                                            out.println(exception.getStackTrace());
+                                        }
+                                    %>
+                                </td>
+                            </tr>
+                        </table>
                     </fieldset>
                 </fieldset>
             </div>
 
-            <%--<table>
-                <tr>
-                    <td>Exception Class</td>
-                    <td><%=exception.getClass()%></td>
-                </tr>
-                <tr>
-                    <td>Exception Message</td>
-                    <td><%=exception.getMessage()%></td>
-                </tr>
-                <tr>
-                    <td>Exception stack trace</td>
-                <td><%=exception.getStackTrace()%></td>
-                </tr>
-            </table>--%>
+
         </div>
     </body>
 </html>

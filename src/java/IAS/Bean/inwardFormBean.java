@@ -1,6 +1,7 @@
 package IAS.Bean;
 import IAS.Class.util;
-
+import java.util.Date;
+import java.text.*;
 public class inwardFormBean extends JDSBean{
 
     /* Inward header fields */
@@ -10,7 +11,7 @@ public class inwardFormBean extends JDSBean{
     private String city = "";
     private int pincode = 0;
     private String inwardNumber = "";
-    private String inwardCreationDate = util.getDateString();
+    private Date inwardCreationDate = new java.util.Date();
     private int subscriberId = 0;
     private String email = "";
     private String institution="";
@@ -21,13 +22,13 @@ public class inwardFormBean extends JDSBean{
     private String paymentMode;
     private String bankName;
     private int chqddNumber = 0;
-    private String paymentDate = util.getDateString();
+    private Date paymentDate = new java.util.Date();
     private float amount = 0;
     private String currency;
     private int receiptNumber = 0;
-    private boolean chequeReturn = false;
-    private String chequeReturnReason;
-    private String chequeReturnReasonOther;
+    private boolean chequeDDReturn = false;
+    private String chequeDDReturnReason;
+    private String chequeDDReturnReasonOther;
     private String ackDate;
     private String returnDate;
     private String remarks;
@@ -85,10 +86,11 @@ public class inwardFormBean extends JDSBean{
     }
 
     public String getInwardCreationDate() {
-        return this.inwardCreationDate;
+        Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
+        return dtformat.format(this.inwardCreationDate);
     }
 
-    public void setInwardCreationDate(String _InwardCreationDate) {
+    public void setInwardCreationDate(Date _InwardCreationDate) {
         this.inwardCreationDate = _InwardCreationDate;
     }
 
@@ -173,10 +175,11 @@ public class inwardFormBean extends JDSBean{
     }
 
     public String getPaymentDate() {
-        return this.paymentDate;
+        Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
+        return dtformat.format(this.paymentDate);
     }
 
-    public void setPaymentDate(String _PaymentDate) {
+    public void setPaymentDate(Date _PaymentDate) {
         this.paymentDate = _PaymentDate;
     }
 
@@ -201,35 +204,35 @@ public class inwardFormBean extends JDSBean{
     }
 
     public String getReceiptNumberAsText() {
-        return this.amount==0 ? "" : String.valueOf(this.receiptNumber);
+        return this.receiptNumber == 0 ? "" : String.valueOf(this.receiptNumber);
     }
 
     public void setReceiptNumber(int _ReceiptNumber) {
         this.receiptNumber = _ReceiptNumber;
     }
 
-    public boolean isChequeReturn() {
-        return this.chequeReturn;
+    public boolean isChequeDDReturn() {
+        return this.chequeDDReturn;
     }
 
-    public void  setChequeReturn(boolean  _isChequeReturn) {
-        this.chequeReturn = _isChequeReturn;
+    public void  setChequeDDReturn(boolean  _isChequeReturn) {
+        this.chequeDDReturn = _isChequeReturn;
     }
 
-    public String getChequeReturnReason() {
-        return this.chequeReturnReason;
+    public String getChequeDDReturnReason() {
+        return this.chequeDDReturnReason;
     }
 
-    public void setChequeReturnReason(String _ChequeReturnReason) {
-        this.chequeReturnReason = _ChequeReturnReason;
+    public void setChequeDDReturnReason(String _ChequeReturnReason) {
+        this.chequeDDReturnReason = _ChequeReturnReason;
     }
 
-    public String getChequeReturnReasonOther() {
-        return this.chequeReturnReasonOther;
+    public String getChequeDDReturnReasonOther() {
+        return this.chequeDDReturnReasonOther;
     }
 
-    public void setChequeReturnReasonOther(String _ChequeReturnReasonOther) {
-        this.chequeReturnReasonOther = _ChequeReturnReasonOther;
+    public void setChequeDDReturnReasonOther(String _ChequeReturnReasonOther) {
+        this.chequeDDReturnReasonOther = _ChequeReturnReasonOther;
     }
 
     public String getAckDate() {
@@ -254,5 +257,9 @@ public class inwardFormBean extends JDSBean{
 
     public void setRemarks(String _Remarks) {
         this.remarks = _Remarks;
+    }
+
+    public IAS.Bean.inwardFormBean Clone(){
+        return this;
     }
 }
