@@ -61,7 +61,7 @@
     </servlet>
     <servlet>
         <servlet-name>journal</servlet-name>
-        <servlet-class>IAS.Controller.journal</servlet-class>
+        <servlet-class>IAS.Controller.masterdata.journal</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>home</servlet-name>
@@ -69,11 +69,11 @@
     </servlet>
     <servlet>
         <servlet-name>agent</servlet-name>
-        <servlet-class>IAS.Controller.agent1</servlet-class>
+        <servlet-class>IAS.Controller.masterdata.agent1</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>subType</servlet-name>
-        <servlet-class>IAS.Controller.subType</servlet-class>
+        <servlet-class>IAS.Controller.masterdata.subType</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>MasterData</servlet-name>
@@ -93,6 +93,22 @@
     <servlet>
         <servlet-name>errorHandler</servlet-name>
         <servlet-class>IAS.Controller.errorHandler</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>city</servlet-name>
+        <servlet-class>IAS.Controller.masterdata.city</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>country</servlet-name>
+        <servlet-class>IAS.Controller.masterdata.country</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>district</servlet-name>
+        <servlet-class>IAS.Controller.masterdata.district</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>state</servlet-name>
+        <servlet-class>IAS.Controller.masterdata.state</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
@@ -149,6 +165,22 @@
     <servlet-mapping>
         <servlet-name>errorHandler</servlet-name>
         <url-pattern>/errorHandler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>city</servlet-name>
+        <url-pattern>/city</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>country</servlet-name>
+        <url-pattern>/country</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>district</servlet-name>
+        <url-pattern>/district</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>state</servlet-name>
+        <url-pattern>/state</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>

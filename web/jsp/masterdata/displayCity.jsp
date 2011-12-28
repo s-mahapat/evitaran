@@ -14,6 +14,7 @@
         <script type="text/javascript" src="js/masterdata/displayCity.js"></script>
         <script>
             addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeCityReadOnly);
         </script>
     </head>
     <body>

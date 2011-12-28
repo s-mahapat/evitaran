@@ -13,7 +13,7 @@
         <title>Edit City</title>
         <script type="text/javascript" src="js/masterdata/editCity.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeEditReadOnly);
         </script>
     </head>
     <body>

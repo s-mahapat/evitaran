@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-function makeReadOnly(){
+function makeAgentReadOnly(){
 
     //document.getElementById("btnEdit").disabled = true;
     document.getElementById("btnSave").disabled = true;

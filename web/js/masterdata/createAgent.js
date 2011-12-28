@@ -4,9 +4,9 @@
  */
 
 
-function makeReadOnly(){
+function makeCreateReadOnly(){
 
     document.getElementById("btnEdit").disabled = true;
+    document.getElementById("agentId").disabled =true;
     //document.getElementById("btnSave").disabled = true;
-
 }

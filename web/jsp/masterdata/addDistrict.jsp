@@ -11,9 +11,9 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/masterdata/district.css"/>
         <title>Add District</title>
-        <script type="text/javascript" src="js/masterdata/createDistrict.js"></script>
+        <script type="text/javascript" src="js/masterdata/addDistrict.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeCreateReadOnly);
         </script>
     </head>
     <body>

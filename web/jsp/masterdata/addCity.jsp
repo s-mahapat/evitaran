@@ -11,15 +11,16 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/masterdata/city.css"/>
         <title>Add City</title>
-        <script type="text/javascript" src="js/masterdata/createCity.js"></script>
+        <script type="text/javascript" src="js/masterdata/addCity.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeCreateReadOnly);
         </script>
     </head>
     <body>
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
+            <jsp:useBean class="IAS.Bean.masterdata.cityFormBean" id="cityFormBean" scope="request"></jsp:useBean>
             <form method="post" action="<%=request.getContextPath() + "/city"%>" name="cityForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">

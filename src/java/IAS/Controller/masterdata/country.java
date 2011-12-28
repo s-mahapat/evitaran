@@ -2,20 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package IAS.Controller;
+package IAS.Controller.masterdata;
 
+import IAS.Controller.*;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import IAS.Bean.masterdata.countryFormBean;
+import IAS.Model.masterdata.countryModel;
 /**
  *
  * @author Shailendra Mahapatra
  */
-public class agent1 extends HttpServlet {
-
+public class country extends HttpServlet {
+    private countryModel _countryModel = null; 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -26,15 +29,19 @@ public class agent1 extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        countryFormBean _countryFormBean = new IAS.Bean.masterdata.countryFormBean();
         String url = null;
         try{
+            _countryModel = new IAS.Model.masterdata.countryModel(request, _countryFormBean);
             if(action.equalsIgnoreCase("save")){
-                url = "/jsp/masterdata/displayAgent.jsp";
+                _countryModel.Save(request, _countryFormBean);
+                url = "/jsp/masterdata/displayCountry.jsp";
             }else if(action.equalsIgnoreCase("edit")){
-                url = "/jsp/masterdata/editAgent.jsp";
+                url = "/jsp/masterdata/editCountry.jsp";
             }else if(action.equalsIgnoreCase("view")){
-                url = "/jsp/masterdata/displayAgent.jsp";
+                url = "/jsp/masterdata/displayCountry.jsp";
             }
+            
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }

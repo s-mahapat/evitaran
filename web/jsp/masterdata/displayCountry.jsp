@@ -14,6 +14,7 @@
         <script type="text/javascript" src="js/masterdata/displayCountry.js"></script>
         <script>
             addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeCountryReadOnly);
         </script>
     </head>
     <body>

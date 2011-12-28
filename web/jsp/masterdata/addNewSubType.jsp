@@ -11,7 +11,7 @@
         <title>Add Subscriber Type</title>
         <script type="text/javascript" src="js/masterdata/createSubType.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeCreateReadOnly);
         </script>
     </head>
     <body>

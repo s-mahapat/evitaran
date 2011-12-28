@@ -10,6 +10,69 @@
         <link rel="stylesheet" type="text/css" href="css/report/listBackIssue.css" />
 
         <title>Print Back Issue List</title>
+           <script>
+            var isPageLoaded = false;
+            $(function(){
+
+                      $("#datatable").jqGrid({
+                        url:'',
+                        datatype: 'xml',
+                        mtype: 'GET',
+                        width: '100%',
+                        height: 240,
+                        autowidth: true,
+                        forceFit: true,
+                        sortable: true,
+                        loadonce: true,
+                        rownumbers: true,
+                        emptyrecords: "No records to view",
+                        loadtext: "Loading...",
+                        colNames:['Subscriber Id','Subscriber Name','Subscriber Type','Journal/s','No. Of Copies','Month','Year','City','Pin Code','Country','Email'],
+                        colModel :[
+                          {name:'subscriberId', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_Id'},
+                          {name:'subscriberName', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_name'},
+                          {name:'SubType', index:'subscriber_id', width:50, align:'center', xmlmap:'sub_type'},
+                          {name:'journal', index:'subscriber_id', width:50, align:'center', xmlmap:'journal'},
+                          {name:'noOfCopies', index:'subscriber_id', width:50, align:'center', xmlmap:'no_of_copies'},
+                          {name:'month', index:'subscriber_id', width:50, align:'center', xmlmap:'month'},                          
+                          {name:'year', index:'subscriber_id', width:50, align:'center', xmlmap:'year'},
+                          {name:'city', index:'subscriber_id', width:50, align:'center', xmlmap:'city'},
+                          {name:'country', index:'subscriber_id', width:50, align:'center', xmlmap:'country'},
+                          {name:'pinCode', index:'subscriber_id', width:50, align:'center', xmlmap:'pin_code'},
+                          {name:'emailId', index:'subscriber_id', width:50, align:'center', xmlmap:'email_id'}
+
+                        ],
+                        xmlReader : {
+                          root: "result",
+                          row: "row",
+                          page: "data>page",
+                          total: "data>total",
+                          records : "data>records",
+                          repeatitems: false,
+                          id: "subscriber_id"
+                       },
+                        pager: '#pager',
+                        rowNum:10,
+                        rowList:[10,20,30],
+                        viewrecords: true,
+                        gridview: true,
+                        caption: '&nbsp;',
+                        beforeRequest: function(){
+                          return isPageLoaded;
+                        },
+                        loadError: function(xhr,status,error){
+                            alert("Failed getting data from server: " + status);
+                        }
+               });
+
+            });
+
+            function getReport(){
+                isPageLoaded = true;
+                jQuery("#datatable").trigger("reloadGrid");
+            }
+        </script>
+        
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -115,58 +178,18 @@
 
                       </fieldset>
 
-
-
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-                        <fieldset class="subMainFieldSet">
-                            <legend>List Back Issue Result</legend>
+                       <fieldset class="subMainFieldSet">
+                            <legend>Result</legend>
 
-                        <table class="datatable">
-                            <thead>
-                                <tr>
-                                    <td>Subscriber Id</td>
-                                    <td>Subscriber Name</td>
-                                    <td>Journal/s</td>
-                                    <td>No of copies</td>
-                                    <td>Subscriber Type</td>
-                                    <td>Department</td>
-                                    <td>City</td>
-                                    <td>Pin Code</td>
-                                    <td>Country</td>
-                                    <td>Email</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Pinki Pachisia</td>
-                                    <td>P, CS, RES</td>
-                                    <td>2, 5, 5</td>
-                                    <td>Indian Personnel</td>
-                                    <td>IAS1</td>
-                                    <td>Bangalore</td>
-                                    <td>560066</td>
-                                    <td>India</td>
-                                    <td>pinki@ias.com</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Shailendra Mahapatra</td>
-                                    <td>JAA</td>
-                                    <td>1</td>
-                                    <td>Indian Personnel</td>
-                                    <td>IAS2</td>
-                                    <td>Bangalore</td>
-                                    <td>560067</td>
-                                    <td>India</td>
-                                    <td>shail@ias.com</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                            <table class="datatable" id="datatable"></table>
+                            <div id="pager"></div>
                         </fieldset>
-
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        <%-- Print Button Field Set --%>
+                        <%-----------------------------------------------------------------------------------------------------%>
                          <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">

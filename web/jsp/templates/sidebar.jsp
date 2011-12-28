@@ -60,7 +60,6 @@
     <div>
         <span>Reminders</span>
         <a tabindex="-1" href="<%=contextPath + "/main?action=sendReminders"%>">Send Reminders</a>
-        <a tabindex="-1" href="<%=contextPath + "/main?action=showSentReminders"%>">Show Sent Reminders</a>
     </div>
 
     <div>

@@ -12,7 +12,7 @@
         <title>Edit Agent</title>
         <script type="text/javascript" src="js/masterdata/editAgent.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeEditReadOnly);
         </script>
     </head>
     <body>

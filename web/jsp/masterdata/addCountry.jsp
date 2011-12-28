@@ -11,9 +11,9 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/masterdata/country.css"/>
         <title>Add Country</title>
-        <script type="text/javascript" src="js/masterdata/createCountry.js"></script>
+        <script type="text/javascript" src="js/masterdata/addCountry.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeCreateReadOnly);
         </script>
     </head>
     <body>

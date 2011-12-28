@@ -10,6 +10,65 @@
         <link rel="stylesheet" type="text/css" href="css/report/journalRates.css" />
 
         <title>Annual Rates for Journal</title>
+        <script>
+            var isPageLoaded = false;
+            $(function(){
+
+                      $("#datatable").jqGrid({
+                        url:'',
+                        datatype: 'xml',
+                        mtype: 'GET',
+                        width: '100%',
+                        height: 240,
+                        autowidth: true,
+                        forceFit: true,
+                        sortable: true,
+                        loadonce: true,
+                        rownumbers: true,
+                        emptyrecords: "No records to view",
+                        loadtext: "Loading...",
+                        colNames:['Id','Journal Code','Journal Name','Subscriber SubType','1 Year','2 Year','3 Year','5 Year'],
+                        colModel :[
+                          {name:'journalRateId', index:'journalRate_Id', width:50, align:'center', xmlmap:'journalRate_Id'},
+                          {name:'journalCode', index:'journalRate_Id', width:50, align:'center', xmlmap:'journal_code'},
+                          {name:'journalName', index:'journalRate_Id', width:50, align:'center', xmlmap:'journal_name'},
+                          {name:'subType', index:'journalRate_Id', width:50, align:'center', xmlmap:'subType'},
+                          {name:'year1', index:'journalRate_Id', width:50, align:'center', xmlmap:'year1'},
+                          {name:'year2', index:'journalRate_Id', width:50, align:'center', xmlmap:'year2'},
+                          {name:'year3', index:'journalRate_Id', width:50, align:'center', xmlmap:'year3'},                          
+                          {name:'year5', index:'journalRate_Id', width:50, align:'center', xmlmap:'year5'},                          
+                        ],
+                        xmlReader : {
+                          root: "result",
+                          row: "row",
+                          page: "data>page",
+                          total: "data>total",
+                          records : "data>records",
+                          repeatitems: false,
+                          id: "subscriber_id"
+                       },
+                        pager: '#pager',
+                        rowNum:10,
+                        rowList:[10,20,30],
+                        viewrecords: true,
+                        gridview: true,
+                        caption: '&nbsp;',
+                        beforeRequest: function(){
+                          return isPageLoaded;
+                        },
+                        loadError: function(xhr,status,error){
+                            alert("Failed getting data from server: " + status);
+                        }
+               });
+
+            });
+
+            function getReport(){
+                isPageLoaded = true;
+                jQuery("#datatable").trigger("reloadGrid");
+            }
+        </script>
+        
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -101,48 +160,15 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-                        <fieldset class="subMainFieldSet">
-                            <legend>Search Result for "Indian Personnel"</legend>
+                       <fieldset class="subMainFieldSet">
+                            <legend>Result</legend>
 
-                            <table class="datatable">
-                                <thead>
-                                    <tr>
-                                        <td>Subscriber Type</td>
-                                        <td>Journal Name</td>
-                                        <td>ISSN No</td>
-                                        <td>No Of Pages</td>
-                                        <td>Start Year</td>
-                                        <td>Annual Rate</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Indian Personnel</td>
-                                        <td>Prammana</td>
-                                        <td>1776</td>
-                                        <td>270</td>
-                                        <td>1976</td>
-                                        <td>1200</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Indian Personnel</td>
-                                        <td>Current Science</td>
-                                        <td>1498</td>
-                                         <td>150</td>
-                                        <td>1985</td>
-                                        <td>1600</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Indian Personnel</td>
-                                        <td>Resonance</td>
-                                        <td>1998</td>
-                                         <td>220</td>
-                                        <td>1992</td>
-                                        <td>750</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <table class="datatable" id="datatable"></table>
+                            <div id="pager"></div>
                         </fieldset>
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        <%-- Print Button Field Set --%>
+                        <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">

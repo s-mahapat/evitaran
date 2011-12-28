@@ -4,7 +4,7 @@
  */
 
 
-function makeReadOnly(){
+function makeJournalReadOnly(){
 
     //document.getElementById("btnEdit").disabled = true;
     document.getElementById("btnSave").disabled = true;

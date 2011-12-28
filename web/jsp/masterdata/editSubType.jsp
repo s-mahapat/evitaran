@@ -11,7 +11,7 @@
         <title>Edit Subscriber Type</title>
         <script type="text/javascript" src="js/masterdata/editSubType.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeEditReadOnly);
         </script>
     </head>
     <body>

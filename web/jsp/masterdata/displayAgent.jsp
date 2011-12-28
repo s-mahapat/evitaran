@@ -13,6 +13,7 @@
         <script type="text/javascript" src="js/masterdata/displayAgent.js"></script>
         <script>
             addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeAgentReadOnly);            
         </script>
     </head>
     <body>

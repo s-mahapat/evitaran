@@ -11,6 +11,87 @@
 
         <title>Search Agent</title>
 
+        <script type="text/javascript">
+            var selectedAgentName = 0;
+            var selectedAgentId = 0;
+            //initally set to false, after the first search the flag is set to true
+            var isPageLoaded = false;
+
+            $(function(){
+
+                $("#AgentTable").jqGrid({
+                    url:'',
+                    datatype: 'xml',
+                    mtype: 'GET',
+                    width: '100%',
+                    height: 240,
+                    autowidth: true,
+                    forceFit: true,
+                    sortable: true,
+                    loadonce: true,
+                    rownumbers: true,
+                    emptyrecords: "No Agent",
+                    loadtext: "Loading...",
+                    colNames:['Agent Id','Agent Name','Registriation Date','emailId', 'Address','City','Action'],
+                    colModel :[
+                        {name:'AgentId', index:'agentId', width:50, align:'center', xmlmap:'agentId'},
+                        {name:'AgentName', index:'agentName', width:80, align:'center', xmlmap:'agentName'},
+                        {name:'Registration Date', index:'regDate', width:80, align:'center', xmlmap:'regDate'},
+                        {name:'emailId', index:'emailId', width:80, align:'center', xmlmap:'emailId'},
+                        {name:'Address', index:'address', width:80, align:'center', xmlmap:'address'},
+                        {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
+                        {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
+                    ],
+                    xmlReader : {
+                        root: "result",
+                        row: "AgentName",
+                        page: "agentName>page",
+                        total: "agentName>total",
+                        records : "agentName>records",
+                        repeatitems: false,
+                        id: "agentId"
+                    },
+                    pager: '#pager',
+                    rowNum:10,
+                    rowList:[10,20,30],
+                    viewrecords: true,
+                    gridview: true,
+                    caption: '&nbsp;',
+                    gridComplete: function() {
+                        var ids = jQuery("#agentTable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+                            $("#btnNext").removeAttr("disabled");
+                        }
+                        for (var i = 0; i < ids.length; i++) {
+                            var cl = ids[i];
+                            var rowData = jQuery("#agentTable").jqGrid('getLocalRow',cl);
+                            var cityId = rowData['Agent Id'] || 0;
+                            action = "<a style='color:blue;' href='agent1?action=view'>View</a><a style='color:blue;' href='agent1?action=edit&agent=" + agentId + "'>Edit</a>";
+                            jQuery("#agentTable").jqGrid('setRowData', ids[i], { Action: action });
+                        }
+                    },
+                    beforeRequest: function(){
+                        return isPageLoaded;
+                    },
+                    loadError: function(xhr,status,error){
+                        alert("Failed getting data from server" + status);
+                    }
+
+                });
+
+            });
+
+            // called when the search button is clicked
+            function searchAgent(){
+                isPageLoaded = true;
+                jQuery("#agentTable").trigger("reloadGrid");
+            }
+
+            // draw the date picker.
+            jQueryDatePicker("from","to");
+
+        </script>
+        
         <%--------------------------------------------------------------%>
         <%-- Calendar --%>
         <%--------------------------------------------------------------%>
@@ -18,8 +99,8 @@
         <script type="text/javascript">
             var calPopup = new CalendarPopup("dateDiv");
             calPopup.showNavigationDropdowns();
-        </script>
-
+        </script>    
+    
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -121,60 +202,14 @@
 
                         </fieldset>
 
-
-
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
                             <legend>Search Result</legend>
 
-                            <table class="datatable">
-                                <thead>
-                                    <tr>
-                                        <td>Agent Id</td>
-                                        <td>Agent Name</td>
-                                        <td>Registration Date</td>
-                                        <td>Address</td>
-                                        <td>City</td>
-                                        <td>Pin code</td>
-                                        <td>email id</td>
-                                        <td>View/Edit</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>123</td>
-                                        <td>LM Book Stores</td>
-                                        <td>12/10/2011</td>
-                                        <td>M G Road</td>
-                                        <td>Bangalore</td>
-                                        <td>5600045</td>
-                                        <td>lmbooks@gmail.com</td>
-                                        <td><a href="<%=request.getContextPath() + "/agent1?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent1?action=edit"%>">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>55</td>
-                                        <td>Sapna Book House</td>
-                                        <td>19/09/2009</td>
-                                        <td>M G Road</td>
-                                        <td>New Delhi</td>
-                                        <td>4500022</td>
-                                        <td>info@sapna.co.in</td>
-                                        <td><a href="<%=request.getContextPath() + "/agent1?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent1?action=edit"%>">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>100</td>
-                                        <td>Books N Books</td>
-                                        <td>12/10/2010</td>
-                                        <td>M G Road</td>
-                                        <td>Mumbai</td>
-                                        <td>560045</td>
-                                        <td>inquiry@booksnbooks.com</td>
-                                        <td><a href="<%=request.getContextPath() + "/agent1?action=view"%>">view</a><a href="<%=request.getContextPath() + "/agent1?action=edit"%>">edit</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <table class="datatable" id="AgentTable"></table>
+                            <div id="pager"></div>
                         </fieldset>
                     </fieldset>
                 </div>

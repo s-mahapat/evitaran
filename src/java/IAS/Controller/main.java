@@ -188,10 +188,6 @@ public class main extends HttpServlet {
 
                 url = "/jsp/reminders/sendReminders.jsp";
 
-            } else if (action.equalsIgnoreCase("showSentReminders")) {
-
-                url = "/jsp/reminders/showSentRemindersSearchOutput.jsp";
-
             } else if(action.equalsIgnoreCase("gpi")){
 
                 url = "/jsp/inward/gatekeeperinward.jsp?nextAction=gpi&next=" + request.getContextPath() + "/jsp/invoice/proforma.jsp";

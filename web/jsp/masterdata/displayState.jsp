@@ -14,6 +14,7 @@
         <script type="text/javascript" src="js/masterdata/displayState.js"></script>
         <script>
             addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeStateReadOnly);
         </script>
     </head>
     <body>

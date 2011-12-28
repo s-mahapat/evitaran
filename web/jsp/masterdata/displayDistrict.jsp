@@ -14,6 +14,7 @@
         <script type="text/javascript" src="js/masterdata/displayDistrict.js"></script>
         <script>
             addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeDistrictReadOnly);
         </script>
     </head>
     <body>

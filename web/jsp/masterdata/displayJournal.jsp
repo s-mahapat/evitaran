@@ -13,6 +13,7 @@
         <script type="text/javascript" src="js/masterdata/displayJournal.js"></script>
         <script>
             addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeJournalReadOnly);
         </script>
     </head>
     <body>

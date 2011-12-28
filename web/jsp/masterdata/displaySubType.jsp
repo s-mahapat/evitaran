@@ -12,6 +12,7 @@
         <script type="text/javascript" src="js/masterdata/displaySubType.js"></script>
         <script>
             addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeSubTypeReadOnly);
         </script>
     </head>
     <body>

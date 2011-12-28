@@ -12,7 +12,7 @@
         <title>Create Journal</title>
         <script type="text/javascript" src="js/masterdata/editJournal.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeEditReadOnly);
         </script>
     </head>
     <body>

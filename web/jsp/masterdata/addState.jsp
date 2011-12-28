@@ -11,9 +11,9 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/masterdata/state.css"/>
         <title>Add State</title>
-        <script type="text/javascript" src="js/masterdata/createState.js"></script>
+        <script type="text/javascript" src="js/masterdata/addState.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
+            addOnloadEvent(makeCreateReadOnly);
         </script>
     </head>
     <body>
