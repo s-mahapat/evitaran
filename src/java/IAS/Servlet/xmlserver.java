@@ -2,49 +2,39 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package IAS.Controller;
+package IAS.Servlet;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.*;
-import java.io.*;
-import java.io.PrintWriter;
-import IAS.Class.Database;
-import IAS.Class.Queries;
-import IAS.Class.util;
 
 /**
  *
  * @author Shailendra Mahapatra
  */
-public class CMasterData extends HttpServlet {
+public class xmlserver extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/xml");
         PrintWriter out = response.getWriter();
-        String xml = null;
-        String mdataRequested = request.getParameter("md").toLowerCase();
-        Database db = (Database) request.getSession().getAttribute("db_connection");
-
+        String xml = (String)request.getAttribute("xml");
         try {
-            // convertResultSetToXML is defined in IAS.Class.util.java
-            xml = util.convertResultSetToXML(db.executeQuery(Queries.getQuery(mdataRequested)));
-        } catch (SQLException ex) {
-
-        } catch (Exception ex) {
-
-        } finally {
-            response.setContentType("text/xml");
             out.println(xml);
+        } finally {
             out.close();
         }
-
-
     }
-
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -95,6 +95,10 @@
         <servlet-class>IAS.Controller.errorHandler</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>xmlserver</servlet-name>
+        <servlet-class>IAS.Servlet.xmlserver</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>city</servlet-name>
         <servlet-class>IAS.Controller.masterdata.city</servlet-class>
     </servlet>
@@ -167,6 +171,10 @@
         <url-pattern>/errorHandler</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>xmlserver</servlet-name>
+        <url-pattern>/xmlserver</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>city</servlet-name>
         <url-pattern>/city</url-pattern>
     </servlet-mapping>
@@ -189,10 +197,6 @@
     <welcome-file-list>
         <welcome-file>/home</welcome-file>
     </welcome-file-list>
-    <error-page>
-        <exception-type>java.lang.Exception</exception-type>
-        <location>/jsp/errors/error.jsp</location>
-    </error-page>
     <security-constraint>
         <display-name>Authentication</display-name>
         <web-resource-collection>

@@ -26,3 +26,33 @@ function setInwardSubscriber(inwardId,subscriberId){
     selectedInward = inwardId;
     selectedSubscriberId = subscriberId || 0;
 }
+
+function validateNewInward(){
+
+    var isInwardValid = true;
+
+    // called from common.js
+    //isInwardValid = checkMandatoryFields();
+
+    // check the inward purpose field
+    var InwardPurpose = document.getElementById("inwardPurpose").value.toLowerCase();
+
+    if(checkMandatoryFields() == false){
+        isInwardValid = false;
+    }
+    else if(InwardPurpose == 0){
+        alert("Please select an Inward Purpose");
+        isInwardValid = false;
+    }
+    else if(InwardPurpose == 'others' && isEmpty(document.getElementById("remarks"))){
+
+        alert("Since you have created a miscellaneous inward, please fill in the remarks section");
+        isInwardValid = false;
+    }
+    if(!isEmpty(document.getElementById("paymentMode")) && isEmpty(document.getElementById("currency"))){
+        alert("Please select a currency");
+        isInwardValid = false;
+    }
+
+    return isInwardValid;
+}

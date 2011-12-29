@@ -26,7 +26,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="" name="inwardForm">
+            <form method="post" action="<%=request.getContextPath() + "/inward"%>" name="inwardForm" onsubmit="return validateNewInward()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Edit Inward</legend>

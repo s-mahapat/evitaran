@@ -8,18 +8,25 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/inward/inward.css" />
-
         <title>Search Inward</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/searchinward.js"%>"></script>
         <script type="text/javascript">
             var selectedInward = 0;
             var selectedSubscriberId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
+
+
             $(function(){
 
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
+
+                // set the default focus to inward text box.
+                $("#inwardNumber").focus();
+
                 $("#inwardTable").jqGrid({
-                    url:'/JDS/jsp/inward/inwards.jsp',
+                    url:"<%=request.getContextPath() + "/inward?action=search"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -27,31 +34,32 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    loadonce: false,
                     rownumbers: true,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
                     colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','View/Edit'],
                     colModel :[
-                        {name:'InwardNo', index:'inward_id', width:50, align:'center', xmlmap:'inward_id'},
-                        {name:'SubscriberId', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_id'},
+                        {name:'InwardNo', index:'inward_id', width:50, align:'center', xmlmap:'inwardNumber'},
+                        {name:'SubscriberId', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriberId'},
                         {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
-                        {name:'ReceivedDate', index:'date', width:80, align:'center', xmlmap:'date'},
+                        {name:'ReceivedDate', index:'date', width:80, align:'center', xmlmap:'inwardCreationDate'},
                         {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
-                        {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'cheque'},
-                        {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'purpose'},
+                        {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'chqddNumber'},
+                        {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'inwardPurpose'},
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
-                        root: "result",
-                        row: "inward",
-                        page: "inwards>page",
-                        total: "inwards>total",
-                        records : "inwards>records",
+                        root: "results",
+                        row: "row",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
-                        id: "inward_id"
+                        id: "inwardNumber"
                     },
                     pager: '#pager',
+                    pginput: false,
                     rowNum:10,
                     rowList:[10,20,30],
                     viewrecords: true,
@@ -63,11 +71,11 @@
                             $("#btnNext").removeAttr("disabled");
                         }
                         for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-                            var rowData = jQuery("#inwardTable").jqGrid('getLocalRow',cl);
-                            var inwardId = rowData['Inward No'];
-                            var subscriberId = rowData['Subscriber Id'] || 0;
-                            action = "<a style='color:blue;' href='inward?action=view'>View</a><a style='color:blue;' href='inward?action=edit&inward=" + inwardId + "'>Edit</a>";
+                            var inwardId = ids[i];
+                            //var rowData = jQuery("#inwardTable").jqGrid('getLocalRow',cl);
+                            //var inwardId = cl; //rowData['InwardNo'];
+                            //var subscriberId = rowData['Subscriber Id'] || 0;
+                            action = "<a style='color:blue;' href='inward?action=view&inwardNumber=" + inwardId + "'>View</a><a style='color:blue;' href='inward?action=edit&inwardNumber=" + inwardId + "'>Edit</a>";
                             jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -75,7 +83,7 @@
                         return isPageLoaded;
                     },
                     loadError: function(xhr,status,error){
-                        alert("Failed getting data from server" + status);
+                        alert("Failed getting data from server " + status);
                     }
 
                 });
@@ -84,8 +92,19 @@
 
             // called when the search button is clicked
             function searchInwards(){
-                isPageLoaded = true;
-                jQuery("#inwardTable").trigger("reloadGrid");
+                if(validateSearch() == true){
+                    isPageLoaded = true;
+                    jQuery("#inwardTable").setGridParam({postData:
+                            {city           : $("#city").val(),
+                            inwardNumber    : $("#inwardNumber").val(),
+                            chequeNumber    : $("#chequeNumber").val(),
+                            fromDate        : $("#from").val(),
+                            toDate          : $("#to").val()
+                        }});
+                    jQuery("#inwardTable").trigger("clearGridData");
+                    jQuery("#inwardTable").trigger("reloadGrid");
+                }
+
             }
 
             // draw the date picker.
@@ -143,7 +162,9 @@
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="3" type="text" name="city" id="city" value=""/>
+                                        <select class="IASComboBox" TABINDEX="4" name="city" id="city">
+                                            <option value="NULL">Select</option>
+                                        </select>
                                     </span>
                                 </div>
 

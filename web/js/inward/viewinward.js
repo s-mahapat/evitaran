@@ -9,12 +9,12 @@ function makeInwardReadOnly(){
     document.getElementById("btnSaveInward").disabled = true;
     document.getElementById("btnSearchSubscriber").disabled = true;
     document.getElementById("paymentDate").setAttribute("readonly",true);
-    document.getElementById("checkReturn").disabled = true;
+    document.getElementById("chequeDDReturn").disabled = true;
 
-    //hide the calendar icon using jquery
+    //hide the calendar icon using jquery .ui-datepicker-trigger
     $(".ui-datepicker-trigger").hide();
 
-    if(document.getElementById("checkReturn").checked){
+    if(document.getElementById("chequeDDReturn").checked){
         document.getElementById("btnSendReturn").disabled = false;
     }else{
         document.getElementById("btnSendReturn").disabled = true;

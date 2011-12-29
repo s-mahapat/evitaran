@@ -94,7 +94,7 @@
 
 
             #loginDiv{
-                margin: 15% auto;
+                margin: 15% auto 0 auto;
                 width: 40%;
                 text-align: center;
                 height: 200px;
@@ -102,8 +102,6 @@
 
             #loginErrorMsg{
 
-                margin-bottom: 20px;
-                margin-top: 10px;
                 text-align: center;
                 color: red;
             }
@@ -150,11 +148,11 @@
 
         </style>
     </head>
-    <body onload="init()">
+    <body>
         <jsp:include page="../templates/header.jsp"></jsp:include>
         <jsp:include page="../templates/loginsidebar.jsp"></jsp:include>
-            <div id="bodyContainer">
-            <form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginId','password')">
+        <div id="bodyContainer">
+            <form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginFieldId','passwordField')">
                 <div id="loginDiv">
                     <ul>
                         <li><a href="#login">Login</a></li>
@@ -163,7 +161,7 @@
                     <div id="login">
                         <div class="authField">
                             <span class="authLabel">User Name</span>
-                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBox" name="j_username" value="jds" id="loginFieldId"/></span>
+                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBox" name="j_username" value="jds@ias.com" id="loginFieldId" onblur="validateEmail(this.id)"/></span>
                         </div>
                         <div class="authField">
                             <span class="authLabel">Password</span>
@@ -173,14 +171,13 @@
                             <input type="submit" value="Login"/>
                             <input type="reset" value="Reset"/>
                         </div>
-                        <div class="authField">
-                            <span id="loginErrorMsg" class="authLabel">&nbsp;</span>
-                        </div>
+
                     </div>
+
                     <div id="resetpwd">
                         <div class="authField">
                             <span class="authLabel">Email ID:</span>
-                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBox" name="j_user" id="loginFieldId"/></span>
+                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBox" name="j_user" id="ResetloginFieldId"/></span>
                         </div>
                         <div class="authAction">
                             <input type="submit" value="Reset Password"/>
@@ -188,6 +185,10 @@
                     </div>
 
                 </div>
+                <div id="loginErrorMsg">
+
+                </div>
+
             </form>
         </div>
     </body>

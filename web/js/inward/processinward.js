@@ -1,14 +1,6 @@
-function setInwardSubscriber(inwardId,subscriberId){
-    selectedInward = inwardId;
-    selectedSubscriberId = subscriberId || 0;
-
-}
-
 function validateSearch(){
 
-    if(isEmpty(document.getElementById("inwardNumber"))
-        && isEmpty(document.getElementById("chequeNumber"))
-        && document.getElementById("city").value == "NULL"
+    if(document.getElementById("inwardPurpose").value == "NULL"
         && isEmpty(document.getElementById("from"))
         && isEmpty(document.getElementById("to"))
         ){

@@ -114,11 +114,11 @@ CREATE TABLE `inward` (
   `inwardCreationDate` date NOT NULL,
   `subscriberId` varchar(15) DEFAULT NULL,
   `inwardPurpose` int(11) NOT NULL,
-  `paymentMode` int(11) NOT NULL,
+  `paymentMode` int(11) DEFAULT NULL,
   `chqddNumber` int(11) DEFAULT NULL,
   `paymentDate` date DEFAULT NULL,
   `amount` float DEFAULT '0',
-  `currency` int(11) NOT NULL,
+  `currency` int(11) DEFAULT NULL,
   `chequeDDReturn` tinyint(1) NOT NULL DEFAULT '0',
   `chequeDDReturnReason` int(11) DEFAULT NULL,
   `chequeDDReturnReasonOther` varchar(20) DEFAULT NULL,
@@ -129,8 +129,11 @@ CREATE TABLE `inward` (
   `returnDate` date DEFAULT NULL,
   `completed` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `inward_no_UNIQUE` (`inwardNumber`)
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `inward_no_UNIQUE` (`inwardNumber`),
+  KEY `city` (`city`),
+  KEY `inwardCreationDate` (`inwardCreationDate`),
+  KEY `inwardPurpose` (`inwardPurpose`)
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,7 +142,7 @@ CREATE TABLE `inward` (
 
 LOCK TABLES `inward` WRITE;
 /*!40000 ALTER TABLE `inward` DISABLE KEYS */;
-INSERT INTO `inward` VALUES (67,'11L-00001','abc',1,13,147,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(68,'11L-00002','abc',1,13,3,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(69,'11L-00003','test',1,21,57,0,'','','','2011-12-25','0',5,1,0,'2011-12-25',0,2,0,NULL,NULL,0,NULL,'','',NULL,0),(70,'11L-00004','test',1,13,147,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(71,'11L-00005','test',1,13,147,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,'',0,NULL,'','',NULL,0),(72,'11L-00006','Kamala Pachisia',1,1,23,0,'','','','2011-12-25','0',3,2,0,'2011-12-25',0,2,0,NULL,NULL,0,NULL,'','',NULL,0),(73,'11L-00007','Kamala Pachisia',1,1,23,0,'','','','2011-12-25','0',3,2,0,'2011-12-25',0,2,0,NULL,'',0,NULL,'','',NULL,0),(74,'11L-00008','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(75,'11L-00009','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(76,'11L-00010','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(77,'11L-00011','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(78,'11L-00012','abc',1,1,5,0,'','','','2011-12-25','0',7,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(79,'11L-00013','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(80,'11L-00014','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(81,'11L-00015','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(82,'11L-00016','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(83,'11L-00017','abc',1,1,23,0,'','','','2011-12-25','0',7,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(84,'11L-00018','munnu',1,1,23,0,'sm@test.com','','','2011-12-25','0',3,1,12345,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','State Bank of india',NULL,0),(85,'11L-00019','mun',1,1,5,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(86,'11L-00020','hjh',1,1,80,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(87,'11L-00021','abc',1,1,168,0,'','test','test','2011-12-25','0',3,1,0,'2011-12-25',4560,1,0,NULL,NULL,0,NULL,'','ICICI Bank',NULL,0);
+INSERT INTO `inward` VALUES (67,'11L-00001','abc',1,13,147,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,1),(68,'11L-00002','abc',1,13,3,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(69,'11L-00003','test',1,21,57,0,'','','','2011-12-25','0',5,1,0,'2011-12-25',0,2,0,NULL,NULL,0,NULL,'','',NULL,0),(70,'11L-00004','test',1,13,147,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(71,'11L-00005','test',1,13,147,0,'','','','2011-12-25','0',1,4,0,'2011-12-25',0,1,0,NULL,'',0,NULL,'','',NULL,0),(72,'11L-00006','Mrs Kamala Pachisia',1,1,23,0,'','','','2011-12-25','0',3,2,0,'2011-12-28',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(73,'11L-00007','Kamala Pachisia',1,1,23,0,'','','','2011-12-25','0',3,2,0,'2011-12-25',0,2,0,NULL,'',0,NULL,'','',NULL,0),(74,'11L-00008','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(75,'11L-00009','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(76,'11L-00010','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(77,'11L-00011','abc',1,1,23,0,'','','','2011-12-25','0',3,1,0,'2011-12-28',0,2,0,NULL,NULL,0,NULL,'','',NULL,0),(78,'11L-00012','abc',1,1,5,0,'','','','2011-12-25','0',7,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(79,'11L-00013','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(80,'11L-00014','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(81,'11L-00015','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(82,'11L-00016','abc',1,1,23,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(83,'11L-00017','abc',1,1,23,0,'','','','2011-12-25','0',7,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(84,'11L-00018','munnu',1,1,23,0,'sm@test.com','','','2011-12-25','0',3,1,12345,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','State Bank of india',NULL,0),(85,'11L-00019','mun',1,1,5,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(86,'11L-00020','hjh',1,1,80,0,'','','','2011-12-25','0',3,4,0,'2011-12-25',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(87,'11L-00021','abc',1,1,168,0,'','test','test','2011-12-25','0',3,1,0,'2011-12-25',4560,1,0,NULL,NULL,0,NULL,'','ICICI Bank',NULL,0),(88,'11L-00022','Pinki Pachisia',1,13,3,560067,'pinki.pachisia@gmail.com','SAP Labs','SRM','2011-12-26','0',1,4,52152,'2011-12-26',0,1,0,NULL,NULL,0,NULL,'','CitiBank',NULL,0),(89,'11L-00023','a',1,1,23,0,'','','','2011-12-26','0',3,4,0,'2011-12-26',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(90,'11L-00024','a',1,1,23,0,'','','','2011-12-26','0',3,4,0,'2011-12-26',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(91,'11L-00025','Pinki Pachisia',1,13,3,560067,'pinki.pachisia@gmail.com','SAP Labs','SRM','2011-12-26','0',1,2,252512,'2011-12-26',1200,1,0,NULL,NULL,0,NULL,'test remarks','ICICI Bank',NULL,0),(92,'11L-00026','b',1,1,23,0,'','','','2011-12-26','0',3,4,0,'2011-12-26',0,1,0,NULL,NULL,0,NULL,'sd','',NULL,0),(93,'11L-00027','abc',1,1,23,0,'','','','2011-12-26','0',3,4,0,'2011-12-26',0,1,0,NULL,NULL,0,NULL,'sdf','',NULL,0),(94,'11L-00028','abc',1,1,23,0,'','','','2011-12-26','0',3,4,0,'2011-12-26',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(95,'11L-00029','abc',1,1,23,0,'','','','2011-12-26','0',3,4,0,'2011-12-26',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(96,'11L-00030','abc',1,1,23,0,'','','','2011-12-26','0',3,4,0,'2011-12-26',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(97,'11L-00031','abc',1,1,5,0,'','','','2011-12-26','0',3,1,0,'2011-12-26',0,1,0,NULL,NULL,0,NULL,'test','',NULL,0),(98,'11L-00032','abc',1,1,23,0,'','','','2011-12-26','0',3,4,0,'2011-12-26',0,1,0,NULL,NULL,0,NULL,'test','',NULL,0),(99,'11L-00033','test',1,13,3,0,'','','','2011-12-28','0',1,4,0,'2011-12-28',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(100,'11L-00034','test',1,13,3,560067,'pinki.pachisia@gmail.com','','','2011-12-28','0',1,4,12345,'2011-12-28',654,1,0,NULL,NULL,0,NULL,'','CitiBank',NULL,0),(101,'11L-00035','abc',1,1,5,0,'','','','2011-12-29','0',3,4,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(102,'11L-00036','abc',1,1,23,0,'','','','2011-12-29','0',3,4,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(103,'11L-00037','abc',1,1,5,0,'','','','2011-12-29','0',1,4,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(104,'11L-00038','hg',1,1,23,0,'','','','2011-12-29','0',3,4,0,'2011-12-29',0,1,0,NULL,NULL,0,NULL,'','',NULL,0),(105,'11L-00039','test',1,1,23,0,'','','','2011-12-29','0',3,NULL,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(106,'11L-00040','test',1,1,23,0,'','','','2011-12-29','0',3,NULL,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(107,'11L-00041','test',1,1,23,0,'','','','2011-12-29','0',3,NULL,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(108,'11L-00042','test',1,1,23,0,'','','','2011-12-29','0',3,NULL,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(109,'11L-00043','abc',1,1,23,0,'','','','2011-12-29','0',3,NULL,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(110,'11L-00044','abc',1,1,23,0,'','','','2011-12-29','0',3,NULL,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(111,'11L-00045','abc',1,1,23,0,'','','','2011-12-29','0',3,NULL,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(112,'11L-00046','abc',1,1,23,0,'','','','2011-12-29','0',3,NULL,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(113,'11L-00047','abc',1,1,23,0,'','','','2011-12-29','0',3,NULL,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(114,'11L-00048','',1,3,5,0,'','','','2011-12-29','0',3,1,0,'2011-12-29',0,1,0,NULL,NULL,0,NULL,'trt','',NULL,0),(115,'11L-00049','',1,1,23,0,'','','','2011-12-29','0',3,NULL,0,'2011-12-29',0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0);
 /*!40000 ALTER TABLE `inward` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -245,6 +248,29 @@ INSERT INTO `states` VALUES (1,'Andhra Pradesh'),(2,'Arunachal Pradesh'),(3,'Ass
 UNLOCK TABLES;
 
 --
+-- Table structure for table `subscriber`
+--
+
+DROP TABLE IF EXISTS `subscriber`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subscriber` (
+  `subscriber_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`subscriber_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `subscriber`
+--
+
+LOCK TABLES `subscriber` WRITE;
+/*!40000 ALTER TABLE `subscriber` DISABLE KEYS */;
+/*!40000 ALTER TABLE `subscriber` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_role`
 --
 
@@ -264,7 +290,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES ('jds','user'),('shail@ias.com','user'),('tomcat','manager-script');
+INSERT INTO `user_role` VALUES ('jds@ias.com','user'),('shail@ias.com','user'),('tomcat','manager-script');
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,7 +314,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('jds','jds'),('shail@ias.com','shail'),('tomcat','tomcat');
+INSERT INTO `users` VALUES ('jds@ias.com','jds'),('shail@ias.com','shail'),('tomcat','tomcat');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -301,4 +327,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-12-25 23:59:04
+-- Dump completed on 2011-12-29 22:14:57

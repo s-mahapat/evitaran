@@ -34,7 +34,7 @@ function validateEmail(loginFieldId){
         mdiv.innerHTML = "&nbsp;";
      }
      else {
-        mdiv.innerHTML = "Please input a valid email address!";
+        mdiv.innerHTML = "Please enter a valid email address!";
         document.getElementById(loginFieldId).value = "";
         document.getElementById(loginFieldId).focus();
         bLoginSuccess = false;

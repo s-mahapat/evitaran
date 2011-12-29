@@ -13,6 +13,9 @@ import javax.servlet.http.HttpSession;
 import IAS.Class.util;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.HashMap;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.apache.commons.dbutils.BeanProcessor;
 
 /**
@@ -61,7 +64,7 @@ public class inwardModel extends JDSModel {
             inwardFormBean.setInwardNumber(getNextInwardNumber());
 
             // the query name from the jds_sql properties files in WEB-INF/properties folder
-            sql = Queries.getQuery("inward_insert");
+            sql = Queries.getQuery("insert_inward");
 
             PreparedStatement st = conn.prepareStatement(sql);
 
@@ -74,14 +77,21 @@ public class inwardModel extends JDSModel {
     }
 
     public String editInward() throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
-        return GetInward();
+        return this.GetInward();
+
+    }
+
+    public String viewInward() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
+
+        return this.GetInward();
 
     }
 
     private int _updateInward() throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException{
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("update_inward");
@@ -239,5 +249,65 @@ public class inwardModel extends JDSModel {
         String monthChar = Character.toString(alphabet[_month]);
         return monthChar.toUpperCase();
 
+    }
+
+    public String searchInward() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String xml = null;
+        String sql = Queries.getQuery("search_inward");
+        String inwardNumber = request.getParameter("inwardNumber");
+        String chequeNumber = request.getParameter("chequeNumber");
+        String city = request.getParameter("city");
+        String fromDate = request.getParameter("fromDate");
+        String toDate = request.getParameter("toDate");
+
+        if (inwardNumber != null && inwardNumber.length() > 0) {
+            sql += " and inwardNumber=" + "'" + inwardNumber + "'";
+        }
+
+        if (chequeNumber != null && chequeNumber.length() > 0) {
+            sql += " and chequeDDReturn =" + "'" + chequeNumber + "'";
+        }
+
+        if (city.compareToIgnoreCase("NULL") != 0  && city != null && city.length() > 0) {
+            sql += " and t2.id=t1.city and t2.city = " + "\"" + city + "\"";
+        }
+
+        if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
+            sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+        }
+
+        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose";
+
+        ResultSet rs = this.db.executeQuery(sql);
+
+        xml = util.convertResultSetToXML(rs);
+
+        return xml;
+    }
+
+    public String getPendngInwards() throws SQLException, ParseException, ParserConfigurationException, TransformerException{
+
+        String xml = null;
+
+        String sql = Queries.getQuery("pending_inwards");
+        String inwardPurpose = request.getParameter("inwardPurpose");
+        String fromDate = request.getParameter("fromDate");
+        String toDate = request.getParameter("toDate");
+
+        if (inwardPurpose.compareToIgnoreCase("NULL") != 0 && inwardPurpose != null && inwardPurpose.length() > 0) {
+            sql += " and t3.purpose =" + "'" + inwardPurpose + "'";
+        }
+
+        if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
+            sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+        }
+
+        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose";
+
+        ResultSet rs = this.db.executeQuery(sql);
+
+        xml = util.convertResultSetToXML(rs);
+
+        return xml;
     }
 }

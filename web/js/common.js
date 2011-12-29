@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  *use this function to add events to the onload event
  */
 function addOnloadEvent(fnc){
@@ -55,6 +50,7 @@ function checkMandatoryFields(){
 
         for (var j=0;j<allFields.length;j++){
             if(allFields[j].className == 'IASTextBoxMandatory' ||
+                allFields[j].className == 'IASTextBoxMandatoryWide' ||
                 allFields[j].className == 'IASTextAreaMandatory' ||
                 allFields[j].className == 'IASComboBoxMandatory' ){
 
@@ -217,19 +213,23 @@ function jQueryDatePicker(fromDiv, toDiv){
 
     $(function() {
         var dates = $( dateRangediv ).datepicker({
-            //defaultDate: "+1w",
+            defaultDate: "-1m",
             changeMonth: true,
             changeYear: true,
             dateFormat: 'dd/mm/yy',
-            numberOfMonths: 3,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            numberOfMonths: 2,
+            showMonthAfterYear: true,
+            showButtonPanel: true,
             onSelect: function( selectedDate ) {
-                var option = this.id == "from" ? "minDate" : "maxDate",
+                //var option = this.id == "from" ? "minDate" : "maxDate",
                 instance = $( this ).data( "datepicker" ),
                 date = $.datepicker.parseDate(
                     instance.settings.dateFormat ||
                     $.datepicker._defaults.dateFormat,
                     selectedDate, instance.settings );
-                dates.not( this ).datepicker( "option", option, date );
+                //dates.not( this ).datepicker( "option", option, date );
             }
         });
     });
@@ -302,22 +302,25 @@ function jdsAppend(requestURL,xmlRowTag,formElementId){
         complete: function(){
             var html=null;
             for(var i=0;i<myArr.length;i++){
-                //set this variable to save the state from the last postback
-                var isSelected="";
 
-                if($(_formElementId).val() == myArr[i])
-                    isSelected = "selected";
+                //set this variable to save the state from the last postback
+                //var isSelected="";
+
+                if($(_formElementId).val() == myArr[i]){
+                    //isSelected = "selected";
+                    continue;
+                }
                 if(html==null){
-                    html = "<option value=" + "\"" + myArr[i]  + "\"" + isSelected + ">" + myArr[i] + "</option>";
+                    html = "<option value=" + "\"" + myArr[i]  + "\"" + ">" + myArr[i] + "</option>";
                 }else{
-                    html += "<option value=" + "\"" + myArr[i]  + "\"" + isSelected + ">" + myArr[i] + "</option>";
+                    html += "<option value=" + "\"" + myArr[i]  + "\"" + ">" + myArr[i] + "</option>";
                 }
 
             }
             $(_formElementId).append(html);
         },
         error: function() {
-            alert("XML File could not be found");
+            alert("XML File could not be found at " + requestURL);
         }
     });
 

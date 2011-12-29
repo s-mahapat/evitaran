@@ -14,7 +14,7 @@
         jdsAppend("<%=request.getContextPath() + "/CMasterData?md=return_reason"%>","return_reason","chequeDDReturnReason");
     });
 
-    jQueryCalendar("paymentdate");
+    jQueryCalendar("paymentDate");
 </script>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Inward Info Field Set --%>
@@ -31,7 +31,7 @@
                 <label>From:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxMandatoryWide" TABINDEX="1" type="text" name="from" id="from" value="<jsp:getProperty name="inwardFormBean" property="from"/>"/>
+                <input class="IASTextBoxMandatoryWide" maxlength="64" TABINDEX="1" type="text" name="from" id="from" value="<jsp:getProperty name="inwardFormBean" property="from"/>"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -88,7 +88,7 @@
                 <label>PIN Code:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="5" type="text" name="pincode" id="pincode" value="${inwardFormBean.pincodeAsText}"/>
+                <input class="IASTextBox" maxlength="11" TABINDEX="5" type="text" name="pincode" id="pincode" value="${inwardFormBean.pincodeAsText}"/>
             </span>
         </div>
 
@@ -97,7 +97,7 @@
                 <label>Email:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" TABINDEX="6" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${inwardFormBean.email}"/>
+                <input class="IASEmailTextBox" maxlength="64" TABINDEX="6" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${inwardFormBean.email}"/>
             </span>
         </div>
     </div>
@@ -142,7 +142,7 @@
                 <label>Institution:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="8" type="text" name="institution" id="institution" value="${inwardFormBean.institution}"/>
+                <input class="IASTextBox" maxlength="64" TABINDEX="8" type="text" name="institution" id="institution" value="${inwardFormBean.institution}"/>
             </span>
         </div>
 
@@ -151,7 +151,7 @@
                 <label>Department:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="9" type="text" name="department" id="department" value="${inwardFormBean.department}"/>
+                <input class="IASTextBox" maxlength="64" TABINDEX="9" type="text" name="department" id="department" value="${inwardFormBean.department}"/>
             </span>
         </div>
 
@@ -174,7 +174,7 @@
                 <label>Purpose:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="10" name="inwardPurpose" id="inwardPurpose">
+                <select class="IASComboBoxMandatory" TABINDEX="10" name="inwardPurpose" id="inwardPurpose">
                     <option value="0">Select</option>
                     <%
                         if (inwardFormBean.getInwardPurpose() != null) {
@@ -192,9 +192,9 @@
             </span>
             <span class="IASFormDivSpanInputBox">
                 <select class="IASComboBox" TABINDEX="11" name="paymentMode" id="paymentMode">
-                    <option value="0">Select</option>
+                    <option value="">Select</option>
                     <%
-                        if (inwardFormBean.getPaymentMode() != null) {
+                        if (inwardFormBean.getPaymentMode() != null && inwardFormBean.getPaymentMode().length() > 0) {
                             out.println("<option value=" + "\"" + inwardFormBean.getPaymentMode() + "\"" + " selected >" + inwardFormBean.getPaymentMode() + "</option>");
                         }
                     %>
@@ -207,7 +207,7 @@
                 <label>Bank Name:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="12" type="text" name="bankName" id="bankName" value="${inwardFormBean.bankName}"/>
+                <input class="IASTextBox" maxlength="64" TABINDEX="12" type="text" name="bankName" id="bankName" value="${inwardFormBean.bankName}"/>
             </span>
         </div>
 
@@ -216,7 +216,7 @@
                 <label>Cheque/DD No:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="13" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
+                <input class="IASTextBox" maxlength="11" TABINDEX="13" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
             </span>
         </div>
 
@@ -249,9 +249,9 @@
             </span>
             <span class="IASFormDivSpanInputBox">
                 <select class="IASComboBox" TABINDEX="16" name="currency" id="currency">
-                    <option value="0">Select</option>
+                    <option value="">Select</option>
                     <%
-                        if (inwardFormBean.getCurrency() != null) {
+                        if (inwardFormBean.getCurrency() != null && inwardFormBean.getCurrency().length() > 0) {
                             out.println("<option value=" + "\"" + inwardFormBean.getCurrency() + "\"" + " selected >" + inwardFormBean.getCurrency() + "</option>");
                         }
                     %>
@@ -270,7 +270,7 @@
                 <label>Receipt Number:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="17" type="text" name="receiptNumber" id="receiptNumber" value="${inwardFormBean.receiptNumberAsText}"/>
+                <input class="IASTextBox" maxlength="11" TABINDEX="17" type="text" name="receiptNumber" id="receiptNumber" value="${inwardFormBean.receiptNumberAsText}"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -297,7 +297,7 @@
                 <label>Return Date:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="22" disabled type="text" name="returnDate" id="returnDate" value="${inwardFormBean.returnDate}"/>
+                <input class="IASTextBox" TABINDEX="21" disabled type="text" name="returnDate" id="returnDate" value="${inwardFormBean.returnDate}"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -305,7 +305,7 @@
                 <label>Acknowledgement Date:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="21" disabled type="text" name="ackDate" id="ackDate" value="${inwardFormBean.ackDate}"/>
+                <input class="IASTextBox" TABINDEX="22" disabled type="text" name="ackDate" id="ackDate" value="${inwardFormBean.ackDate}"/>
             </span>
         </div>
 
@@ -314,7 +314,7 @@
                 <label>Remarks:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <textarea class="IASTextArea" TABINDEX="23" name="remarks" id="remarks" value="${inwardFormBean.remarks}"></textarea>
+                <textarea class="IASTextArea" maxlength="100" TABINDEX="23" name="remarks" id="remarks">${inwardFormBean.remarks}</textarea>
             </span>
         </div>
     </div>
