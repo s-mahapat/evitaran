@@ -10,8 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import IAS.Model.subscriberModel;
+import java.sql.SQLException;
 
 public class subscriber extends HttpServlet {
+
+    private subscriberModel _subscriberModel = null;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -24,42 +28,47 @@ public class subscriber extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String url = null;
-        try{
-            if(action.equalsIgnoreCase("save")){
+        try {
+
+            _subscriberModel = new IAS.Model.subscriberModel(request);
+
+            if (action.equalsIgnoreCase("save")) {
+                //if the record count saved is 1, it indicates that the record was saved else fail.
+                if (_subscriberModel.Save() == 1) {
+                    url = "/jsp/subscriber/viewsubscriber.jsp";
+                } else {
+                    url = "/jsp/errors/error.jsp";
+                }
+            } else if (action.equalsIgnoreCase("edit")) {
+                if (_subscriberModel.editSubscriber() != null) {
+                    url = "/jsp/subscriber/editsubscriber.jsp";
+                } else {
+                    url = "/jsp/errors/error.jsp";
+                }
+            } else if (action.equalsIgnoreCase("display")) {
                 url = "/jsp/subscriber/viewsubscriber.jsp";
-            }
-            else if(action.equalsIgnoreCase("edit")){
-                url = "/jsp/subscriber/editsubscriber.jsp";
-            }
-            else if(action.equalsIgnoreCase("display")){
-                url = "/jsp/subscriber/viewsubscriber.jsp";
-            }
-            else if(action.equalsIgnoreCase("view")){
+            } else if (action.equalsIgnoreCase("view")) {
                 url = "/jsp/subscription/viewsubscription.jsp";
-            }
-            else if(action.equalsIgnoreCase("add")){
+            } else if (action.equalsIgnoreCase("add")) {
                 url = "/jsp/subscription/addnewsubscription.jsp";
-            }
-            else if(action.equalsIgnoreCase("gpi")){
+            } else if (action.equalsIgnoreCase("gpi")) {
                 url = "/jsp/invoice/proforma.jsp";
-            }
-            else if(action.equalsIgnoreCase("mil")){
+            } else if (action.equalsIgnoreCase("mil")) {
                 url = "/jsp/missingissue/missingissuelist.jsp";
             }
-
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+        } catch (Exception e) {
+            url = "/jsp/errors/error.jsp";
+        } finally {
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+            if (rd != null) {
+                rd.forward(request, response);
+            } else {
+                url = "/jsp/errors/error.jsp";
+            }
         }
-        catch(Exception e){
-
-        }
-        finally{
-
-        }
-
     }
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request

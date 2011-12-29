@@ -13,7 +13,7 @@
     <context-param>
         <description>database name</description>
         <param-name>db_name</param-name>
-        <param-value>JDS</param-value>
+        <param-value>jds</param-value>
     </context-param>
     <context-param>
         <description>database server name</description>

@@ -25,19 +25,6 @@
                 <input class="IASTextBox" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value=""/>
             </span>
         </div>
-
-       <%-- <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Start Year:</label>
-            </span>
-
-            <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="11" name="subscriptionStartYear" id="subscriptionStartYear">
-                    <option value ="IASAgent">2007</option>
-                    <option value ="IASAgent">2008</option>
-                </select>
-            </span>
-        </div>--%>
     </div>
 
     <div class="IASFormRightDiv">

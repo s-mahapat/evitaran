@@ -10,6 +10,7 @@ function listSubscription(mode){
             datatype: 'xml',
             mtype: 'GET',
             width: '100%',
+            height: 250,
             autowidth: true,
             forceFit: true,
             sortable: true,
@@ -17,7 +18,7 @@ function listSubscription(mode){
             rownumbers: true,
             emptyrecords: "No subscription to view",
             loadtext: "Loading...",
-            colNames:['Journal Code','Journal Name','#Copies', 'Start Year','#Years','Delete Journal'],
+            colNames:['Journal Code','Journal Name','Copies#', 'Start Year','Number Of Years','Delete Journal'],
             colModel :[
             {
                 name:'Journal Code',
@@ -36,7 +37,7 @@ function listSubscription(mode){
             },
 
             {
-                name:'#Copies',
+                name:'Copies#',
                 index:'num_copies',
                 width:60,
                 align:'center',
@@ -54,7 +55,7 @@ function listSubscription(mode){
             },
 
             {
-                name:'#Years',
+                name:'Number Of Years',
                 index:'num_years',
                 width:50,
                 align:'center',

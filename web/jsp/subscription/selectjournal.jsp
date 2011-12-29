@@ -1,6 +1,8 @@
 <%--
     Document   : Select Journal
 --%>
+<%@page import="IAS.Class.util"%>
+
 <fieldset class="subMainFieldSet">
     <legend>Select Journal</legend>
 
@@ -11,8 +13,12 @@
 
         <span class="IASFormDivSpanInputBox">
             <select class="IASComboBox" TABINDEX="11" name="subscriptionStartYear" id="subscriptionStartYear">
-                <option value ="IASAgent">2007</option>
-                <option value ="IASAgent">2008</option>
+                <%
+                    int year = Integer.parseInt(util.getDateString("yyyy"));
+                    for (int i = year; i < year + 5; i++) {%>
+                <option value ="year"><%= i%></option><%
+                    }
+                %>
             </select>
         </span>
 
@@ -34,7 +40,13 @@
         </span>
 
         <span class="IASFormDivSpanInputBox">
-            <input class="IASTextBoxForNumbers" TABINDEX="13" type="text" name="noOfCopies" id="noOfCopies" value=""/>
+            <select class="IASComboBox" TABINDEX="11" name="noOfCopies" id="noOfCopies">
+                <%
+                    for (int i = 0; i < 20; i++) {%>
+                <option value ="copies"><%= i + 1%></option><%
+                    }
+                %>
+            </select>
         </span>
 
 
@@ -43,7 +55,13 @@
         </span>
 
         <span class="IASFormDivSpanInputBox">
-            <input class="IASTextBoxForNumbers" TABINDEX="13" type="text" name="noOfYears" id="noOfYears" value=""/>
+            <select class="IASComboBox" TABINDEX="11" name="noOfYears" id="noOfYears">
+                <%
+                    for (int j = 0; j < 20; j++) {%>
+                <option value ="years"><%= j + 1%></option><%
+                    }
+                %>
+            </select>
         </span>
 
         <span class="IASFormDivSpanLabel">

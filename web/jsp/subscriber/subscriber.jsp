@@ -1,6 +1,15 @@
-<%--
-    Document   : Subscriber
---%>
+
+<%@page language="java" import="java.util.*" %>
+<jsp:useBean class="IAS.Bean.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
+<script>
+    $(document).ready(function() {
+        jdsAppend("/JDS/CMasterData?md=city","city","city");
+        jdsAppend("/JDS/CMasterData?md=country","country","country");
+        jdsAppend("/JDS/CMasterData?md=state","state","state");
+        jdsAppend("/JDS/CMasterData?md=district","district","district");
+        jdsAppend("/JDS/CMasterData?md=sub_type","subtype","subtype");
+    });
+</script>
 <fieldset class="subMainFieldSet">
     <legend>Subscriber</legend>
 
@@ -8,11 +17,11 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Subscriber ID:</label>
+                <label>Subscriber Number:</label>
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="1" type="text" name="subscriberID" id="subscriberID" value=""/>
+                <input class="IASTextBox" READONLY TABINDEX="1" type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
             </span>
         </div>
 
@@ -23,7 +32,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value=""/>
+                <input class="IASTextBoxMandatoryWide" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
             </span>
         </div>
 
@@ -34,7 +43,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <textarea class="IASTextArea" TABINDEX="3" name="subscriberAddress" id="subscriberAddress"></textarea>
+                <textarea class="IASTextAreaMandatory" TABINDEX="3" name="subscriberAddress" id="subscriberAddress">${subscriberFormBean.subscriberAddress}</textarea>
             </span>
         </div>
 
@@ -45,7 +54,49 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="4" type="text" name="subscriberCity" id="subscriberCity" value=""/>
+                <select class="IASComboBoxMandatory" TABINDEX="9" name="city" id="city">
+                    <option value="0" selected >Select</option>
+                    <%
+                        if (!subscriberFormBean.getCity().isEmpty()) {
+                            out.println("<option value=" + "\"" + subscriberFormBean.getCity() + "\"" + " selected >" + subscriberFormBean.getCity() + "</option>");
+                        }
+                    %>
+                </select>
+            </span>
+        </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>District:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBox">
+                <select class="IASComboBox" TABINDEX="9" name="district" id="district">
+                    <option value="0" selected >Select</option>
+                    <%
+                        if (!subscriberFormBean.getDistrict().isEmpty()) {
+                            out.println("<option value=" + "\"" + subscriberFormBean.getDistrict() + "\"" + " selected >" + subscriberFormBean.getDistrict() + "</option>");
+                        }
+                    %>
+
+                </select>
+            </span>
+        </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>State:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <select class="IASComboBoxMandatory" TABINDEX="3" name="state" id="state">
+                    <option value="0" selected >Select</option>
+                    <%
+                        if (!subscriberFormBean.getState().isEmpty()) {
+                            out.println("<option value=" + "\"" + subscriberFormBean.getState() + "\"" + " selected >" + subscriberFormBean.getState() + "</option>");
+                        }
+                    %>
+                </select>
+                <%--<input class="IASTextBoxMandatory" TABINDEX="3" name="state" id="state" value="<jsp:getProperty name="inwardFormBean" property="state"/>"--%>
             </span>
         </div>
 
@@ -55,8 +106,13 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="8" name="subscriberCountry" id="subscriberCountry">
-                    <option value ="India">India</option>
+                <select class="IASComboBoxMandatory" TABINDEX="9" name="country" id="country">
+                    <option value="0" selected >Select</option>
+                    <%
+                        if (!subscriberFormBean.getCountry().isEmpty()) {
+                            out.println("<option value=" + "\"" + subscriberFormBean.getCountry() + "\"" + " selected >" + subscriberFormBean.getCountry() + "</option>");
+                        }
+                    %>
                 </select>
             </span>
         </div>
@@ -67,7 +123,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="5" type="text" name="subscriberPinCode" id="subscriberPinCode" value=""/>
+                <input class="IASTextBox" TABINDEX="5" type="text" name="pincode" id="pincode" value="${subscriberFormBean.pincodeAsText}"/>
             </span>
         </div>
 
@@ -78,30 +134,25 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="6" name="subscriberType" id="subscriberType">
-                    <optgroup id="optGrp1" label="Paid Subscribers">
-                        <option value ="subtype">IC - Indian Schools and Colleges</option>
-                        <option value ="subtype">II - Indian Institutes</option>
-                        <option value ="subtype">IP - Indian Institutes</option>
-                        <option value ="subtype">IN - Indian Institutes</option>
-                        <option value ="subsubtype">IF - Foreign Personnel</option>
-                        <option value ="subsubtype">IF - Foreign Institute</option>
-                    </optgroup>
-                    <optgroup id="optGrp2" label="Free Subscribers">
-                        <option value ="subtype">FELJM - Fellows</option>
-                        <option value ="subtype">XXX - Summer Fellows</option>
-                        <option value ="subtype">AS - Associates</option>
-                        <option value ="subtype">EBALL - Editorial Board Members</option>
-                        <option value ="subtype">EI - Indian Exchange</option>
-                        <option value ="subtype">EF - Foreign Exchange</option>
-                        <option value ="subtype">JGrant - Grant</option>
-                        <option value ="subtype">XXX - Authors</option>
-                        <option value ="subtype">IC - Indian Schools and Colleges</option>
-                    </optgroup>
-                    <option value ="subtype">Agent Subscribers</option>
-                    <option value ="subtype">Agents</option>
-                    <option value ="subtype">Kishore Vaigyanik Yojana</option>
+                <select class="IASComboBoxSmallMandatory" TABINDEX="9" name="subtype" id="subtype"
+                        onchange="subtypeAppend()">
+                    <option value="0" selected >Select</option>
+                    <%
+                        if (!subscriberFormBean.getSubtype().isEmpty()) {
+                            out.println("<option value=" + "\"" + subscriberFormBean.getSubtype() + "\"" + " selected >" + subscriberFormBean.getSubtype() + "</option>");
+                        }
+                    %>
                 </select>
+                <select class="IASComboBoxMandatory" TABINDEX="9" name="subtypedesc" id="subtypedesc"
+                        onchange="subtypeCodeAppend()">
+                    <option value="0">Select</option>
+                    <%
+                        if (!subscriberFormBean.getSubtypedesc().isEmpty()) {
+                            out.println("<option value=" + "\"" + subscriberFormBean.getSubtypedesc() + "\"" + " selected >" + subscriberFormBean.getSubtypedesc() + "</option>");
+                        }
+                    %>
+                </select>
+                <label id="subtypecode"></label>
             </span>
         </div>
 
@@ -115,7 +166,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASDateTextBox" readonly type="text" name="creationDate" id="creationDate" value=""/>
+                <input class="IASDateTextBox" readonly type="text" name="subscriberCreationDate" id="subscriberCreationDate" value="${subscriberFormBean.subscriberCreationDate}"/>
             </span>
         </div>
 
@@ -126,7 +177,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="7" type="text" name="department" id="department" value=""/>
+                <input class="IASTextBox" TABINDEX="7" type="text" name="department" id="department" value="${subscriberFormBean.department}"/>
             </span>
         </div>
 
@@ -136,7 +187,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="7" type="text" name="institution" id="institution" value=""/>
+                <input class="IASTextBox" TABINDEX="7" type="text" name="institution" id="institution" value="${subscriberFormBean.institution}"/>
             </span>
         </div>
 
@@ -147,7 +198,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" TABINDEX="9" type="text" name="subscriberEmail" id="subscriberEmail" value=""/>
+                <input class="IASEmailTextBox" TABINDEX="9" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${subscriberFormBean.email}"/>
             </span>
         </div>
 
@@ -174,6 +225,16 @@
             </span>
         </div>
 
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Deactivation Date:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASDateTextBox" disabled readonly type="text" name="deactivationDate" id="deactivationDate" value=""/>
+            </span>
+        </div>
+
     </div>
 
 </fieldset>
@@ -187,6 +248,5 @@
         <input onclick="setActionValue('display')" class="IASButton" TABINDEX="102" type="submit" value="View Subscriber" id="btnDisplaySubscriber" name="btnSubmitAction"/>
         <input onclick="setActionValue('view')" class="IASButton" TABINDEX="102" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
         <input onclick="setActionValue('add')" class="IASButton" TABINDEX="102" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction"/>
-        <!--<input onclick="setActionValue('mil')" class="IASButton" TABINDEX="102" type="submit" value="Missing Issue List" id="btnMissingIssueList" name="btnSubmitAction"/>-->
     </div>
 </fieldset>

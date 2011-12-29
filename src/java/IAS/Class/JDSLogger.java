@@ -6,7 +6,7 @@
 package IAS.Class;
 
 import org.apache.log4j.*;
-
+/*
 public final class JDSLogger{
 
     private static Logger logger = null;

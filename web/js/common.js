@@ -52,6 +52,8 @@ function checkMandatoryFields(){
             if(allFields[j].className == 'IASTextBoxMandatory' ||
                 allFields[j].className == 'IASTextBoxMandatoryWide' ||
                 allFields[j].className == 'IASTextAreaMandatory' ||
+                allFields[j].className == 'IASComboBoxMediumMandatory' ||
+                allFields[j].className == 'IASComboBoxSmallMandatory' ||
                 allFields[j].className == 'IASComboBoxMandatory' ){
 
                 if (allFields[j].value.length == 0 || allFields[j].value == 0) {
@@ -119,6 +121,7 @@ function makeReadOnly(){
         var formField = formFields[i];
         if( formField.className == "IASTextBox"
             || formField.className == "IASTextBoxMandatory"
+            || formField.className == "IASTextBoxMandatoryWide"
             || formField.className == "IASEmailTextBox"
             || formField.className == "IASCheckBox"
             || formField.className == "IASDateTextBox"
@@ -135,6 +138,8 @@ function makeReadOnly(){
         formField = formFields[i];
         if(formField.className == "IASComboBox"
             || formField.className == "IASComboBoxWide"
+            || formField.className == "IASComboBoxMediumMandatory"
+            || formField.className == "IASComboBoxSmallMandatory"
             || formField.className == "IASComboBoxMandatory"
             ){
             formField.disabled = true;
@@ -146,7 +151,7 @@ function makeReadOnly(){
 
     for(i=0;i<formFields.length;i++){
         formField = formFields[i];
-        if(formField.className == "IASTextArea"){
+        if( formField.className == "IASTextArea" ||  formField.className == "IASTextAreaMandatory" ){
             formField.disabled = true;
             formField.style.backgroundColor = "#EEE";
         }

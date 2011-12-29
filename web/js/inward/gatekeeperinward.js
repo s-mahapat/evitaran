@@ -9,14 +9,19 @@ function isInwardSelected(){
         alert("Please select an Inward");
         return false;
 
-    }else if(document.getElementById("nextAction").value != 'newsubscription' && selectedSubscriberId <= 0 && isSubscriberMandatory){
+    }else if(document.getElementById("nextAction").value != 'newsubscription'
+        && selectedSubscriberId <= 0
+        && isSubscriberMandatory
+        && document.getElementById("nextAction").value != 'createsubscriber'){
         /*
          *  if the dialog is for newsubscription we do not have check for the subscriber id, just show th next screen
          */
         var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp");
         if(selectedSubscriberFromDialog > 0){
             selectedSubscriberId = selectedSubscriberFromDialog;
-            jQuery("#inwardTable").jqGrid('setRowData', selectedInward, {'Subscriber Id': selectedSubscriberFromDialog });
+            jQuery("#inwardTable").jqGrid('setRowData', selectedInward, {
+                'Subscriber Id': selectedSubscriberFromDialog
+            });
         }
 
 
@@ -26,7 +31,7 @@ function isInwardSelected(){
          */
         if(document.getElementById("nextAction").value == 'gpi' && !selectedSubscriberFromDialog){
             isSubscriberMandatory = false;
-            //alert("You have not selected any subscrber");
+        //alert("You have not selected any subscrber");
         }
         return false;
     }

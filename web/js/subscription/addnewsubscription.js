@@ -5,58 +5,49 @@ function makeAddNewSubscriptionReadOnly(){
     document.getElementById("subscriberName").disabled = true;
 }
 
-function addJournalToList(subscriptionForm){
+function addJournalToList(){
 
 
+    if(document.getElementById("selAllJrnl").checked){
+        var jrnlArray= new Array();
+        var jrnls=document.getElementById("journalName");
+        for(j=0;j<jrnls.length;j++){
+            jrnlArray[j]=document.subscriptionForm.journalName.options[j].text;
+        }
 
-    var table = document.getElementById("subscriptionList");
-
-    var rowCount = table.rows.length;
-    var row = table.insertRow(rowCount);
-
-    var colCount = table.rows[0].cells.length;
-
-    for(var i=0; i<colCount; i++) {
-
-        var newcell = row.insertCell(i);
-
-        newcell.innerHTML = table.rows[0].cells[i].innerHTML;
-
-        switch(newcell.innerHTML) {
-            case "Journal Code":
-                newcell.innerHTML = '34';
-                break;
-            case "Journal Name":
-                var journalName=document.subscriptionForm.journalName.options[document.subscriptionForm.journalName.selectedIndex].text;
-                newcell.innerHTML = journalName;
-                break;
-            case "Number Of Copies":
-                newcell.innerHTML = document.getElementById("noOfCopies").value;
-                break;
-            case "Number Of Years":
-                newcell.innerHTML = document.getElementById("noOfYears").value;
-                break;
-            case "Start Year":
-                var subscriptionStartYear=document.subscriptionForm.subscriptionStartYear.options[document.subscriptionForm.subscriptionStartYear.selectedIndex].text;
-                newcell.innerHTML = subscriptionStartYear;
-                break;
-            case "Delete Journal":
-                //var link = document.createElement("a");
-                //link.setAttribute("href", "delete")
-
-                //var linkText = document.createTextNode("Delete");
-                //link.appendChild(linkText);
-                //// Add the link to the previously created
-                newcell.innerHTML = '<a href="#" onClick=""><img class="deleteIcon" alt="Delete Subscription" src=""></a>';
-                break;
+        for(i=0;i<jrnls.length;i++){
+            var rowId = jQuery("#subscriptionList").jqGrid('getDataIDs');
+            var newRowData = [{
+                "Journal Code": "34",
+                "Journal Name": jrnlArray[i],
+                "Copies#": document.subscriptionForm.noOfCopies.options[document.subscriptionForm.noOfCopies.selectedIndex].text,
+                "Start Year": document.subscriptionForm.subscriptionStartYear.options[document.subscriptionForm.subscriptionStartYear.selectedIndex].text,
+                "Number Of Years": document.subscriptionForm.noOfYears.options[document.subscriptionForm.noOfYears.selectedIndex].text,
+                "Delete Journal": "<input type='Button' name='deleteJournal' value=\"Delete\" onclick=''/>"
+            }];
+            $("#subscriptionList").addRowData(rowId+1, newRowData);
         }
     }
+    else{
+        rowId = jQuery("#subscriptionList").jqGrid('getDataIDs');
+        newRowData = [{
+            "Journal Code": "34",
+            "Journal Name": document.subscriptionForm.journalName.options[document.subscriptionForm.journalName.selectedIndex].text,
+            "Copies#": document.subscriptionForm.noOfCopies.options[document.subscriptionForm.noOfCopies.selectedIndex].text,
+            "Start Year": document.subscriptionForm.subscriptionStartYear.options[document.subscriptionForm.subscriptionStartYear.selectedIndex].text,
+            "Number Of Years": document.subscriptionForm.noOfYears.options[document.subscriptionForm.noOfYears.selectedIndex].text,
+            "Delete Journal": "<input type='Button' name='deleteJournal' value=\"Delete\" onclick=''/>"
+        }];
+        $("#subscriptionList").addRowData(rowId+1, newRowData);
+    }
+
+
 }
 
-    function disableJrnl(){
-        if(document.getElementById("selAllJrnl").checked){
-            document.getElementById("journalName").disabled = true;
-        }else{
-            document.getElementById("journalName").disabled = false;
-        }
+function disableJrnl(){
+    if(document.getElementById("selAllJrnl").checked){
+        document.getElementById("journalName").disabled = true;
+    }else{
+        document.getElementById("journalName").disabled = false;
     }
+}

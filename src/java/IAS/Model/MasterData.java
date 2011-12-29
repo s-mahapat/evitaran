@@ -43,14 +43,13 @@ public class MasterData {
 
     public ResultSet getColumnData(String Column, String table) throws SQLException{
 
-        String query = "SELECT " + Column + " from " + table;
+        String query = "SELECT DISTINCT " + Column + " from " + table;
 
         ResultSet rs = null;
         Database db = (Database)session.getAttribute("db_connection");
         rs = db.executeQuery(query);
         return rs;
     }
-
 
 
 

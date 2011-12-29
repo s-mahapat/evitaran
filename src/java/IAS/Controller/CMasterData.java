@@ -25,12 +25,21 @@ public class CMasterData extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         String xml = null;
+        String strDBValue = null;
         String mdataRequested = request.getParameter("md").toLowerCase();
         Database db = (Database) request.getSession().getAttribute("db_connection");
-
+        String mdataReqKey = request.getParameter("mdkey");
+        String mdataReqValue = request.getParameter("mdvalue");
         try {
-            // convertResultSetToXML is defined in IAS.Class.util.java
-            xml = util.convertResultSetToXML(db.executeQuery(Queries.getQuery(mdataRequested)));
+            if (mdataReqValue == null) {
+                xml = util.convertResultSetToXML(db.executeQuery(Queries.getQuery(mdataRequested)));
+            }
+            if (mdataReqValue != null) {
+                PreparedStatement ps = db.getConnection().prepareStatement(Queries.getQuery(mdataRequested));
+                ps.setString(1, mdataReqValue);
+                ResultSet rs = ps.executeQuery();
+                xml = util.convertResultSetToXML(rs);
+            }
         } catch (SQLException ex) {
 
         } catch (Exception ex) {
@@ -40,13 +49,11 @@ public class CMasterData extends HttpServlet {
             out.println(xml);
             out.close();
         }
-
-
     }
 
 
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+       // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request

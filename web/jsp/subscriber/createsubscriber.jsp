@@ -9,16 +9,17 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/subscriber.css"%>"/>
         <title>Create Subscriber</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/subscriber.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/createsubscriber.js"%>"></script>
         <script>
             addOnloadEvent(makeCreateSubscriberReadOnly);
-        </script>    
+        </script>
     </head>
     <body>
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/subscriber"%>" name="subscriberForm">
+            <form method="post" action="<%=request.getContextPath() + "/subscriber"%>" name="subscriberForm" onsubmit = "return validateNewSubscriber()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Create Subscriber</legend>

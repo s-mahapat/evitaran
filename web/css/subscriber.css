@@ -1,7 +1,7 @@
 /*
     Document   : Style for Subscriber and Subscription JSPs are defined here
 */
-root { 
+root {
     display: block;
 }
 
@@ -15,12 +15,12 @@ root {
 
 #saveSubscriberBtnDiv{
     float: left;
-    width: 10%;   
+    width: 10%;
 }
 
 #displaySubscriberBtnDiv{
     float: left;
-    width: 10%;  
+    width: 10%;
 }
 
 #viewsubscriptionBtnDiv{

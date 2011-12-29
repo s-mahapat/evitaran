@@ -71,7 +71,8 @@ public class main extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("createsubscriber")) {
 
-                url = "/jsp/subscriber/createsubscriber.jsp";
+                //url = "/jsp/subscriber/createsubscriber.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&next=" + request.getContextPath() + "/jsp/subscriber/createsubscriber.jsp";
 
             } else if (action.equalsIgnoreCase("searchsubscriber")) {
 
@@ -198,11 +199,13 @@ public class main extends HttpServlet {
 
             } else if (action.equals("asf")) {
 
-                url = "/jsp/subscriber/asf.jsp";
+                //url = "/jsp/subscriber/asf.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&next=" + request.getContextPath() + "/jsp/subscriber/asf.jsp";
 
             }else if (action.equals("afs")) {
 
-                url = "/jsp/subscriber/afs.jsp";
+                //url = "/jsp/subscriber/afs.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&next=" + request.getContextPath() + "/jsp/subscriber/afs.jsp";
 
             }
 

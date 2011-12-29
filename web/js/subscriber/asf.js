@@ -4,8 +4,6 @@ function makeCreateSubscriberReadOnly(){
     document.getElementById("btnDisplaySubscriber").disabled = true;
     document.getElementById("btnViewSubscription").disabled = true;
     document.getElementById("btnAddSubscription").disabled = true;
-    document.getElementById("btnGenerateProformaInvoice").disabled = true;
-    document.getElementById("btnMissingIssueList").disabled = true;
 
     //Remove all the options and option group in case of summer fellows
     document.getElementById("subscriberType").options.length=0;

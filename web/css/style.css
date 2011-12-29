@@ -211,6 +211,7 @@ body{
     font-family:inherit;
     font-size: inherit;
     background-color: antiquewhite;
+    height: 50px;
 }
 
 .IASEmailTextBox{
@@ -234,7 +235,7 @@ body{
     width: 70px;
     font-family: "Cambria",serif;
     font-size: 12px;
-    background-color: #eee;
+    background-color: #EEE;
 }
 
 .IASButton{
@@ -268,6 +269,20 @@ body{
     font-family: "Cambria",serif;
     font-size: 12px;
     width: 180px;
+}
+
+.IASComboBoxMediumMandatory{
+    font-family: "Cambria",serif;
+    font-size: 12px;
+    width: 160px;
+    background-color: antiquewhite;
+}
+
+.IASComboBoxSmallMandatory{
+    font-family: "Cambria",serif;
+    font-size: 12px;
+    width: 100px;
+    background-color: antiquewhite;
 }
 
 .IASComboBoxMandatory{
