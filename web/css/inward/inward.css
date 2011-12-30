@@ -37,3 +37,10 @@ root {
     font-size: 10px;
 
 }
+
+.IASTextBoxInward{
+    width: 120px;
+    font-family: "Cambria",serif;
+    font-size: 12px;
+    background-color: #EEE;
+}
