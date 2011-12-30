@@ -19,7 +19,7 @@ function subtypeCodeAppend(){
         dataType: "xml",
         success: function(xml){
             $(xml).find("subtypecode").each(function(){
-                $("#subtypecode").text(("Journal Code - " + $(this).text()));
+                $("#subtypecode").text(("Subscriber Code - " + $(this).text()));
             });
         },
         error: function() {

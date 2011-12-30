@@ -6,7 +6,12 @@ function makeEditSubscriberReadOnly(){
     document.getElementById("subscriberAgent").options.length=0;
     document.getElementById("subscriberAgent").disabled = true;
     document.getElementById("isDeactived").disabled = false;
+}
 
+function subtypeDescriptionAppend(){
+    var subType = document.subscriberForm.subtype.options[document.subscriberForm.subtype.selectedIndex].text;
+    requestURL = "/JDS/CMasterData?md=subtype_desc&mdvalue=" + subType;
+    jdsAppend(requestURL,"subtypedesc","subtypedesc");
 }
 
 // called when the deactive user check box is clicked

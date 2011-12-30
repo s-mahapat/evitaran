@@ -13,6 +13,7 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/editsubscriber.js"%>"></script>
         <script>
             addOnloadEvent(makeEditSubscriberReadOnly);
+            addOnloadEvent(subtypeDescriptionAppend);
             addOnloadEvent(subtypeCodeAppend);
         </script>
     </head>
