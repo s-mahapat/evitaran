@@ -65,7 +65,7 @@ public class subscriberModel extends JDSModel {
 
         String nextSubscriber = null;
         // Identify the subscriber type i.e.Free or Paid
-        String subtype = this._subscriberFormBean.getSubtype().equalsIgnoreCase("Free") ? "F" : "P";
+        String subtype = "S";
         //get the last subscriber number from subscriber table
         String lastSubscriberSql = Queries.getQuery("get_last_subscriber");
         ResultSet rs = db.executeQuery(lastSubscriberSql);
@@ -106,6 +106,12 @@ public class subscriberModel extends JDSModel {
     public String editSubscriber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
         return GetSubscriber();
+    }
+
+    public String viewSubscriber() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
+
+        return this.GetSubscriber();
     }
 
     private int _updateSubscriber() throws SQLException, ParseException,
@@ -181,7 +187,7 @@ public class subscriberModel extends JDSModel {
         }
 
         if (subscriberName != null && subscriberName.length() > 0) {
-            sql += " and subscriberName =" + "'" + subscriberName + "'";
+            sql += " and subscriberName like " + "'%" + subscriberName + "%'";
         }
 
         if (city.compareToIgnoreCase("NULL") != 0 && city != null && city.length() > 0) {

@@ -58,11 +58,9 @@
                     gridComplete: function() {
                         var ids = jQuery("#subscriberTable").jqGrid('getDataIDs');
                         for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-
-                            action = "<a style='color:blue;' href=\"" + "<%=request.getContextPath()%>" + "/subscriber?action=display" + "\">View</a>" +
-                                "<a style='color:blue;' href=\"" + "<%=request.getContextPath()%>" + "/subscriber?action=edit" + "\">Edit</a>";
-                            jQuery(".datatable").jqGrid('setRowData', ids[i], { Action: action });
+                            var subscriberId = ids[i];
+                            action = "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "'>View</a><a style='color:blue;' href='subscriber?action=edit&subscriberNumber=" + subscriberId + "'>Edit</a>";
+                            jQuery("#subscriberTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
                     beforeRequest: function(){
@@ -77,6 +75,7 @@
 
             // called when the search button is clicked
             function searchSubscriber(){
+             jQuery("#subscriberTable").setGridParam({ datatype: "xml" });
                 if(validateSearchSubscriber() == true){
                     isPageLoaded = true;
                     jQuery("#subscriberTable").setGridParam({postData:

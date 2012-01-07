@@ -26,7 +26,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="" name="subscriberForm">
+            <form method="post" action="<%=request.getContextPath() + "/subscriber"%>" name="subscriberForm" onsubmit = "return validateNewSubscriber()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Edit Subscriber</legend>
