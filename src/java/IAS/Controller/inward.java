@@ -29,8 +29,6 @@ public class inward extends HttpServlet {
                 //if the record count saved is 1, it indicates that the record was saved else fail.
                 if (_inwardModel.Save() == 1) {
                     url = "/jsp/inward/viewinward.jsp";
-                } else {
-                    url = "/jsp/errors/error.jsp";
                 }
             }
             /*
@@ -40,8 +38,6 @@ public class inward extends HttpServlet {
 
                 if (_inwardModel.editInward() != null) {
                     url = "/jsp/inward/editinward.jsp";
-                } else {
-                    url = "/jsp/errors/error.jsp";
                 }
 
             }
@@ -52,8 +48,6 @@ public class inward extends HttpServlet {
 
                 if (_inwardModel.viewInward() != null) {
                     url = "/jsp/inward/viewinward.jsp";
-                } else {
-                    url = "/jsp/errors/error.jsp";
                 }
 
             } else if (action.equalsIgnoreCase("sendAck")) {
@@ -61,8 +55,6 @@ public class inward extends HttpServlet {
             } else if (action.equalsIgnoreCase("sendReturn")) {
                 if (_inwardModel.viewInward() != null){
                     url = "/jsp/inward/returninward.jsp";
-                }else {
-                    url = "/jsp/errors/error.jsp";
                 }
             } else if (action.equalsIgnoreCase("search")) {
 
@@ -87,17 +79,19 @@ public class inward extends HttpServlet {
                 // save the return
                 if(_inwardModel.updateChequeReturn() != null){
                     url = "/jsp/inward/returninward.jsp";
-                }else {
-                    url = "/jsp/errors/error.jsp";
                 }
             }
-        } catch (SQLException e) {
-            url = "/jsp/errors/error.jsp";
-
-        } catch (Exception e) {
-            url = "/jsp/errors/error.jsp";
+        }  catch (Exception e) {
+            //url = "/jsp/errors/error.jsp";
+            request.setAttribute("exception", e);
 
         } finally {
+            if(url == null){
+
+                url = "/jsp/errors/error.jsp";
+
+            }
+
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
             if (rd != null) {
                 rd.forward(request, response);

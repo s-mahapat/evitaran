@@ -190,7 +190,7 @@ public class subscriberModel extends JDSModel {
             sql += " and subscriberName like " + "'%" + subscriberName + "%'";
         }
 
-        if (city.compareToIgnoreCase("NULL") != 0 && city != null && city.length() > 0) {
+        if (city != null && city.compareToIgnoreCase("NULL") != 0 &&  city.length() > 0) {
             sql += " and t2.id=t1.city and t2.city = " + "\"" + city + "\"";
         }
 
@@ -198,7 +198,7 @@ public class subscriberModel extends JDSModel {
             sql += " and email =" + "'" + email + "'";
         }
 
-        if (pincode.compareToIgnoreCase("NULL") != 0 && pincode != null && pincode.length() > 0) {
+        if (pincode != null && pincode.compareToIgnoreCase("NULL") != 0 &&  pincode.length() > 0) {
             sql += " and pincode =" + "'" + pincode + "'";
         }
 

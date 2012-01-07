@@ -36,20 +36,14 @@ public class subscriber extends HttpServlet {
                 //if the record count saved is 1, it indicates that the record was saved else fail.
                 if (_subscriberModel.Save() == 1) {
                     url = "/jsp/subscriber/viewsubscriber.jsp";
-                } else {
-                    url = "/jsp/errors/error.jsp";
                 }
             } else if (action.equalsIgnoreCase("edit")) {
                 if (_subscriberModel.editSubscriber() != null) {
                     url = "/jsp/subscriber/editsubscriber.jsp";
-                } else {
-                    url = "/jsp/errors/error.jsp";
                 }
             } else if (action.equalsIgnoreCase("display")) {
                 if (_subscriberModel.viewSubscriber() != null) {
                     url = "/jsp/subscriber/viewsubscriber.jsp";
-                } else {
-                    url = "/jsp/errors/error.jsp";
                 }
             } else if (action.equalsIgnoreCase("search")) {
 
@@ -68,6 +62,7 @@ public class subscriber extends HttpServlet {
             }
         } catch (Exception e) {
             url = "/jsp/errors/error.jsp";
+            request.setAttribute("exception", e);
         } finally {
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
             if (rd != null) {

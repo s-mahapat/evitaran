@@ -63,8 +63,8 @@ public final class util {
             for (int i = 1; i <= colCount; i++) {
                 //String columnName = rsmd.getColumnName(i);
                 String columnName = rsmd.getColumnLabel(i);
-                Object value = rs.getObject(i);
-
+                // check if the value is null, then initialize it to a blank string
+                Object value = rs.getObject(i)!= null ? rs.getObject(i) : "";
                 Element node = doc.createElement(columnName);
                 node.appendChild(doc.createTextNode(value.toString()));
                 row.appendChild(node);

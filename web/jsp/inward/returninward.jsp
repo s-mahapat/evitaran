@@ -15,6 +15,11 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=return_reason"%>","return_reason","chequeDDReturnReason");
+                if(document.getElementById("chequeDDReturnReason").value == "NULL"){
+                    document.getElementById("btnPrintPreview").disabled = true;
+                }else{
+                    document.getElementById("btnPrintPreview").disabled = false;
+                }
             })
 
         </script>
@@ -53,7 +58,7 @@
                                         <label>From:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxMandatoryWide" maxlength="64" readonly TABINDEX="1" type="text" name="from" id="from" value="<jsp:getProperty name="inwardFormBean" property="from"/>"/>
+                                        <input class="IASTextBoxMandatoryWide" maxlength="64" readonly TABINDEX="-1" type="text" name="from" id="from" value="<jsp:getProperty name="inwardFormBean" property="from"/>"/>
                                     </span>
                                 </div>
 
@@ -62,7 +67,7 @@
                                         <label>Reason For Return:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWideMandatory" name="chequeDDReturnReason" id="chequeDDReturnReason" onchange="enableOtherReason()">
+                                        <select class="IASComboBoxWideMandatory" TABINDEX="1" name="chequeDDReturnReason" id="chequeDDReturnReason" onchange="enableOtherReason()">
                                             <option value="NULL">Select</option>
                                             <%
                                                 if (inwardFormBean.getChequeDDReturnReason() != null && inwardFormBean.getChequeDDReturnReason().isEmpty() == false) {
@@ -79,7 +84,7 @@
                                         <label>Other Reason:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxWide" TABINDEX="20" disabled type="text" name="chequeDDReturnReasonOther" id="chequeDDReturnReasonOther" value="${inwardFormBean.chequeDDReturnReasonOther}" onblur="setOtherReturnReason()"/>
+                                        <input class="IASTextBoxWide" TABINDEX="-1" disabled type="text" name="chequeDDReturnReasonOther" id="chequeDDReturnReasonOther" value="${inwardFormBean.chequeDDReturnReasonOther}" onblur="setOtherReturnReason()"/>
                                     </span>
                                 </div>
 
@@ -91,7 +96,7 @@
                                         <label>Cheque/DD No:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" maxlength="11" TABINDEX="13" readonly type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
+                                        <input class="IASTextBox" maxlength="11" TABINDEX="-1" readonly type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
                                     </span>
                                 </div>
 
@@ -102,7 +107,7 @@
                                     </span>
                                     <div class="dateDiv" id="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input type="text" class="IASDateTextBox" TABINDEX="14" readonly size="10" name="paymentDate" id="paymentDate" value="${inwardFormBean.paymentDate}"/>
+                                        <input type="text" class="IASDateTextBox" TABINDEX="-1" readonly size="10" name="paymentDate" id="paymentDate" value="${inwardFormBean.paymentDate}"/>
                                     </span>
 
                                 </div>
@@ -113,7 +118,7 @@
                                         <label>Amount:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="15" readonly type="text" name="amount" id="amount" value="${inwardFormBean.amount}"/>
+                                        <input class="IASTextBox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value="${inwardFormBean.amount}"/>
                                         <label>${inwardFormBean.currency}</label>
                                     </span>
                                 </div>
@@ -158,8 +163,8 @@
                         </fieldset>
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv" style="margin-top: 20px;">
-                                <input onclick="setActionValue('saveReturn')" TABINDEX="24" class="IASButton" type="submit" value="Save" id="btnSaveReturn" name="btnSaveReturn"/>
-                                <input TABINDEX="24" class="IASButton" type="button" value="Print" id="btnPrintPreview" name="btnPrintPreview" onclick="showChequeDDReturnPrintPreview()"/>
+                                <input onclick="setActionValue('saveReturn')" TABINDEX="2" class="IASButton" type="submit" value="Save" id="btnSaveReturn" name="btnSaveReturn"/>
+                                <input TABINDEX="3" class="IASButton" type="button" value="Print" id="btnPrintPreview" name="btnPrintPreview" onclick="showChequeDDReturnPrintPreview()"/>
                             </div>
                             <div class="actionBtnDiv" style="margin-top: 15px;color: green">
                                 <%

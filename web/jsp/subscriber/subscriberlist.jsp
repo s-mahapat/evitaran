@@ -12,10 +12,16 @@
 
             $(function(){
                 $(".datatable").jqGrid({
-                    url:'/JDS/jsp/subscriber/subscriberlist.xml',
+                    url:"<%=request.getContextPath() + "/subscriber?action=search"%>",
+                    postData:{
+                        city            : "<%=request.getParameter("city")%>",
+                        subscriberName  : "<%=request.getParameter("subscriberName")%>",
+                        pincode         : "<%=request.getParameter("pincode")%>"
+                    },
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
+                    height: 240,
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
@@ -25,27 +31,27 @@
                     loadtext: "Loading...",
                     colNames:['Select','Subscriber Id','Subscriber Name', 'Department','City','Pin Code','Country', 'Email'],
                     colModel :[
-                        {name:'Select', index:'select', width:15, align:'center',xmlmap:'subscriber_id',
-                            formatter:function (cellvalue, options, rowObject) {
+                        {name:'Select', index:'select', width:15, align:'center',xmlmap:'subscriberNumber'
+                            /*formatter:function (cellvalue, options, rowObject) {
                                 return '<input onclick="selectedSubscriberId=this.value" type="radio" id="selectedSubscriberRadio" name="selectedSubscriberRadio" value="' + cellvalue + '"/>';
-                            }
+                            }*/
                         },
-                        {name:'Subscriber Id', index:'subscriber_id', width:20, align:'center', xmlmap:'subscriber_id'},
-                        {name:'Subscriber Name', index:'subscriber_name', width:40, align:'center', xmlmap:'subscriber_name'},
-                        {name:'Department', index:'dept', width:40, align:'center', xmlmap:'dept'},
-                        {name:'City', index:'city', width:35, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                        {name:'Pin Code', index:'pincode', width:25, align:'center', sortable:false, xmlmap:'pincode'},
+                        {name:'Subscriber Number', index:'subscriberNumber', width:40, align:'center', xmlmap:'subscriberNumber'},
+                        {name:'Subscriber Name', index:'subscriberName', width:40, align:'center', xmlmap:'subscriberName'},
+                        {name:'Department', index:'department', width:40, align:'center', xmlmap:'department'},
+                        {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
+                        {name:'Pin Code', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
                         {name:'Country', index:'country', width:30, align:'center', xmlmap:'country'},
-                        {name:'Email', index:'email', width:50, align:'center', xmlmap:'email'},
+                        {name:'Action', index:'action', width:40, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
-                        root: "result",
-                        row: "subscriberlist",
-                        page: "subscriberlistXML>page",
-                        total: "subscriberlist>total",
-                        records : "subscriberlist>records",
+                        root: "results",
+                        row: "row",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
-                        id: "id"
+                        id: "subscriberNumber"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -55,11 +61,12 @@
                     caption: '&nbsp;',
 
                     gridComplete: function() {
-                        //var ids = jQuery(".datatable").jqGrid('getDataIDs');
-                        //for (var i = 0; i < ids.length; i++) {
-                        //var cl = ids[i];
-                        //action = "<input type='Button' name='addToMailList' value=\"Add to Mailing List\" onclick=''/>";
-                        //jQuery(".datatable").jqGrid('setRowData', ids[i], { btnAML: action });
+                        var ids = jQuery(".datatable").jqGrid('getDataIDs');
+                        for (var i = 0; i < ids.length; i++) {
+                            var cl = ids[i];
+                            action = "<input type='radio' name='selectedSubscriberRadio' id='selectedSubscriberRadio'" + " value=" + "\"" + cl + "\"" + " onclick='selectedSubscriberId=this.value'" + "/>";
+                            jQuery(".datatable").jqGrid('setRowData', ids[i], { Select: action });
+                        }
                     }
                 });
             });
@@ -78,15 +85,11 @@
             <div class="MainDiv">
                 <fieldset class="MainFieldset">
                     <legend>Search Subscriber Result</legend>
-
                     <fieldset class="subMainFieldSet">
                         <legend>Subscriber List</legend>
                         <table class="datatable" id="subscriberList"></table>
                         <div id="pager"></div>
                     </fieldset>
-
-
-                    <%--Actions--%>
 
                     <fieldset class="subMainFieldSet">
                         <div class="IASFormFieldDiv">

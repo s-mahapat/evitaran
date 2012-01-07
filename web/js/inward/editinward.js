@@ -6,9 +6,9 @@
 function makeInwardReadOnly(){
 
     document.getElementById("btnEditInward").disabled = true;
-    if(document.getElementById("chequeDDReturn").checked){
+    /*if(document.getElementById("chequeDDReturn").checked){
         document.getElementById("btnSendReturn").disabled = true;
     }else{
         document.getElementById("btnSendReturn").disabled = false;
-    }
+    }*/
 }

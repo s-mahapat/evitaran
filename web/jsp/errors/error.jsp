@@ -1,5 +1,8 @@
 <%@page isErrorPage="true" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    Exception _exception = (Exception)request.getAttribute("exception");
+%>
 <!DOCTYPE html>
 <html>
 
@@ -21,8 +24,8 @@
                                 <td>Exception Class</td>
                                 <td>
                                     <%
-                                        if (exception != null) {
-                                            out.println(exception.getClass());
+                                        if (_exception != null) {
+                                            out.println(_exception.getClass());
                                         }
                                     %>
                                 </td>
@@ -31,8 +34,8 @@
                                 <td>Exception Message</td>
                                 <td>
                                     <%
-                                        if (exception != null) {
-                                            out.println(exception.getMessage());
+                                        if (_exception != null) {
+                                            out.println(_exception.getMessage());
                                         }
                                     %>
                                 </td>
@@ -41,8 +44,8 @@
                                 <td>Exception stack trace</td>
                                 <td>
                                     <%
-                                        if (exception != null) {
-                                            exception.printStackTrace(response.getWriter());
+                                        if (_exception != null) {
+                                            _exception.printStackTrace(response.getWriter());
                                         }
                                     %>
                                 </td>

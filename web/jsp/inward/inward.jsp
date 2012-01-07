@@ -52,10 +52,10 @@
                 <label>State:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="3" name="state" id="state">
-                    <option value="0" selected >Select</option>
+                <select class="IASComboBox" TABINDEX="3" name="state" id="state">
+                    <option value="" selected >Select</option>
                     <%
-                        if (!inwardFormBean.getState().isEmpty()) {
+                        if (inwardFormBean.getState() != null && !inwardFormBean.getState().isEmpty()) {
                             out.println("<option value=" + "\"" + inwardFormBean.getState() + "\"" + " selected >" + inwardFormBean.getState() + "</option>");
                         }
                     %>
@@ -69,9 +69,9 @@
             </span>
             <span class="IASFormDivSpanInputBox">
                 <select class="IASComboBoxMandatory" TABINDEX="4" name="city" id="city">
-                    <option value="0" selected >Select</option>
+                    <option value="" selected >Select</option>
                     <%
-                        if (!inwardFormBean.getCity().isEmpty()) {
+                        if (inwardFormBean.getCity() != null && !inwardFormBean.getCity().isEmpty()) {
                             out.println("<option value=" + "\"" + inwardFormBean.getCity() + "\"" + " selected >" + inwardFormBean.getCity() + "</option>");
                         }
                     %>

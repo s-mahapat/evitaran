@@ -105,6 +105,19 @@ function isEmpty(element){
     return false;
 }
 
+function isEmptyValue(evalue){
+    var elValue = evalue.toString();
+    if(elValue.length == 0){
+        return true;
+    }else{
+        //check if there are non space characters.
+        if(elValue.match(/^\s+$/)){
+            return true;
+        }
+    }
+    return false;
+}
+
 function trim(s) {
     s = s.replace(/(^\s*)|(\s*$)/gi,"");
     s = s.replace(/[ ]{2,}/gi," ");

@@ -1,6 +1,8 @@
 function enableOtherReason(){
-    if(document.getElementById("chequeDDReturnReason").value == "Others")
+    if(document.getElementById("chequeDDReturnReason").value == "Others"){
         document.getElementById("chequeDDReturnReasonOther").disabled = false;
+        document.getElementById("chequeDDReturnReasonOther").focus();
+    }
     else{
         document.getElementById("chequeDDReturnReasonOther").value = "";
         document.getElementById("chequeDDReturnReasonOther").disabled = true;

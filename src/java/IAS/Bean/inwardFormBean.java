@@ -1,13 +1,11 @@
 package IAS.Bean;
 import IAS.Class.util;
-import java.util.Date;
-import java.text.*;
 public class inwardFormBean extends JDSBean{
 
     /* Inward header fields */
     private String from = "";
     private String country = "";
-    private String state = "";
+    private String state;
     private String city = "";
     private int pincode = 0;
     private String inwardNumber = "";

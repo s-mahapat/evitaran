@@ -17,7 +17,7 @@ function isInwardSelected(){
          *  if the dialog is for newsubscription we do not have check for the subscriber id, just show th next screen
          */
         var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp");
-        if(selectedSubscriberFromDialog > 0){
+        if(!isEmptyValue(selectedSubscriberFromDialog)){
             selectedSubscriberId = selectedSubscriberFromDialog;
             jQuery("#inwardTable").jqGrid('setRowData', selectedInward, {
                 'SubscriberId': selectedSubscriberFromDialog

@@ -18,7 +18,14 @@ function validateSearchSubscriber(){
             alert("Please fill in the From,City and Pincode to search for subscriber");
             return;
     }else{
-        openModalPopUp("jsp/subscriber/subscriberlist.jsp", 'Select Subscriber');
+        var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp?"
+            + "city=" + document.getElementById("city").value + "&"
+            + "subscriberName=" + document.getElementById("from").value + "&"
+            + "pincode=" + document.getElementById("pincode").value, 'Select Subscriber');
+        
+        if(!isEmptyValue(selectedSubscriberFromDialog) && selectedSubscriberFromDialog != 0){
+            document.getElementById("subscriberId").value = selectedSubscriberFromDialog;
+        }
     }
 }
 
@@ -58,7 +65,7 @@ function validateNewInward(){
     }
 
     //if the payment mode is cheque/dd/mo ensure that the instrument number is filled in
-    else if(document.getElementById("paymentMode").value != "Cash" && (isEmpty(document.getElementById("chqddNumber")))){
+    else if((!isEmpty(document.getElementById("paymentMode")) && document.getElementById("paymentMode").value != "Cash") && (isEmpty(document.getElementById("chqddNumber")))){
         alert("Please enter the " + document.getElementById("paymentMode").value + " number");
         isInwardValid = false;
     }

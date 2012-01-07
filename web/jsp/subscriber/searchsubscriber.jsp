@@ -13,69 +13,72 @@
         <script type="text/javascript">
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
-            $(function(){
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
-                $("#subscriberNumber").focus()
-                $("#subscriberTable").jqGrid({
-                    url:"<%=request.getContextPath() + "/subscriber?action=search"%>",
-                    datatype: 'xml',
-                    mtype: 'GET',
-                    width: '100%',
-                    autowidth: true,
-                    forceFit: true,
-                    sortable: true,
-                    loadonce: true,
-                    rownumbers: true,
-                    emptyrecords: "No subscribers to view",
-                    loadtext: "Loading...",
-                    colNames:['Subscriber Number','Subscriber Name', 'Department','City','Pin Code','Country', 'Action'],
-                    colModel :[
-                        {name:'Subscriber Number', index:'subscriberNumber', width:40, align:'center', xmlmap:'subscriberNumber'},
-                        {name:'Subscriber Name', index:'subscriberName', width:40, align:'center', xmlmap:'subscriberName'},
-                        {name:'Department', index:'department', width:40, align:'center', xmlmap:'department'},
-                        {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                        {name:'Pin Code', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
-                        {name:'Country', index:'country', width:30, align:'center', xmlmap:'country'},
-                        {name:'Action', index:'action', width:40, align:'center',formatter:'showlink'}
-                    ],
-                    xmlReader : {
-                        root: "results",
-                        row: "row",
-                        page: "results>page",
-                        total: "results>total",
-                        records : "results>records",
-                        repeatitems: false,
-                        id: "subscriberNumber"
-                    },
-                    pager: '#pager',
-                    pginput: false,
-                    rowNum:10,
-                    rowList:[10,20,30],
-                    viewrecords: true,
-                    gridview: true,
-                    caption: '&nbsp;',
+            $(document).ready(function (){
+                $(function(){
+                    jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
+                    $("#subscriberNumber").focus()
+                    $("#subscriberTable").jqGrid({
+                        url:"<%=request.getContextPath() + "/subscriber?action=search"%>",
+                        datatype: 'xml',
+                        mtype: 'GET',
+                        width: '100%',
+                        autowidth: true,
+                        forceFit: true,
+                        sortable: true,
+                        loadonce: true,
+                        rownumbers: true,
+                        emptyrecords: "No subscribers to view",
+                        loadtext: "Loading...",
+                        colNames:['Subscriber Number','Subscriber Name', 'Department','City','Pin Code','Country', 'Action'],
+                        colModel :[
+                            {name:'Subscriber Number', index:'subscriberNumber', width:40, align:'center', xmlmap:'subscriberNumber'},
+                            {name:'Subscriber Name', index:'subscriberName', width:40, align:'center', xmlmap:'subscriberName'},
+                            {name:'Department', index:'department', width:40, align:'center', xmlmap:'department'},
+                            {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
+                            {name:'Pin Code', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
+                            {name:'Country', index:'country', width:30, align:'center', xmlmap:'country'},
+                            {name:'Action', index:'action', width:40, align:'center',formatter:'showlink'}
+                        ],
+                        xmlReader : {
+                            root: "results",
+                            row: "row",
+                            page: "results>page",
+                            total: "results>total",
+                            records : "results>records",
+                            repeatitems: false,
+                            id: "subscriberNumber"
+                        },
+                        pager: '#pager',
+                        pginput: false,
+                        rowNum:10,
+                        rowList:[10,20,30],
+                        viewrecords: true,
+                        gridview: true,
+                        caption: '&nbsp;',
 
-                    gridComplete: function() {
-                        var ids = jQuery("#subscriberTable").jqGrid('getDataIDs');
-                        for (var i = 0; i < ids.length; i++) {
-                            var subscriberId = ids[i];
-                            action = "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "'>View</a><a style='color:blue;' href='subscriber?action=edit&subscriberNumber=" + subscriberId + "'>Edit</a>";
-                            jQuery("#subscriberTable").jqGrid('setRowData', ids[i], { Action: action });
+                        gridComplete: function() {
+                            var ids = jQuery("#subscriberTable").jqGrid('getDataIDs');
+                            for (var i = 0; i < ids.length; i++) {
+                                var subscriberId = ids[i];
+                                action = "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "'>View</a><a style='color:blue;' href='subscriber?action=edit&subscriberNumber=" + subscriberId + "'>Edit</a>";
+                                jQuery("#subscriberTable").jqGrid('setRowData', ids[i], { Action: action });
+                            }
+                        },
+                        beforeRequest: function(){
+                            return isPageLoaded;
+                        },
+                        loadError: function(xhr,status,error){
+                            alert("Failed getting data from server " + status);
                         }
-                    },
-                    beforeRequest: function(){
-                        return isPageLoaded;
-                    },
-                    loadError: function(xhr,status,error){
-                        alert("Failed getting data from server " + status);
-                    }
+                    });
                 });
             });
 
 
+
             // called when the search button is clicked
             function searchSubscriber(){
-             jQuery("#subscriberTable").setGridParam({ datatype: "xml" });
+                jQuery("#subscriberTable").setGridParam({ datatype: "xml" });
                 if(validateSearchSubscriber() == true){
                     isPageLoaded = true;
                     jQuery("#subscriberTable").setGridParam({postData:
