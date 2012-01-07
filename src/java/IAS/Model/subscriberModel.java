@@ -10,6 +10,8 @@ import IAS.Class.util;
 import java.text.ParseException;
 import java.util.Calendar;
 import org.apache.commons.dbutils.BeanProcessor;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 public class subscriberModel extends JDSModel {
 
@@ -18,7 +20,6 @@ public class subscriberModel extends JDSModel {
     private Connection conn = null;
     private Database db = null;
     private HttpSession session = null;
-
 
     public subscriberModel(HttpServletRequest request) throws SQLException {
         this.request = request;
@@ -29,7 +30,6 @@ public class subscriberModel extends JDSModel {
         this.db = (Database) session.getAttribute("db_connection");
         this.conn = db.getConnection();
     }
-
 
     public int Save() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
@@ -60,13 +60,12 @@ public class subscriberModel extends JDSModel {
         }
     }
 
-
     private synchronized String getNextSubscriberNumber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
         String nextSubscriber = null;
         // Identify the subscriber type i.e.Free or Paid
-        String subtype = this._subscriberFormBean.getSubtype().equalsIgnoreCase("Free")? "F" : "P" ;
+        String subtype = this._subscriberFormBean.getSubtype().equalsIgnoreCase("Free") ? "F" : "P";
         //get the last subscriber number from subscriber table
         String lastSubscriberSql = Queries.getQuery("get_last_subscriber");
         ResultSet rs = db.executeQuery(lastSubscriberSql);
@@ -97,7 +96,6 @@ public class subscriberModel extends JDSModel {
         return nextSubscriber;
     }
 
-
     private String getMonthToCharacterMap(int _month) {
         char[] alphabet = "abcdefghijkl".toCharArray();
         // the calendar objects month starts from 0
@@ -105,12 +103,10 @@ public class subscriberModel extends JDSModel {
         return monthChar.toUpperCase();
     }
 
-
     public String editSubscriber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
         return GetSubscriber();
     }
-
 
     private int _updateSubscriber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
@@ -123,7 +119,6 @@ public class subscriberModel extends JDSModel {
         this._setSubscriberStatementParams(st, mode);
         return db.executeUpdatePreparedStatement(st);
     }
-
 
     public String GetSubscriber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
@@ -149,7 +144,6 @@ public class subscriberModel extends JDSModel {
         return subscriberFormBean.getSubscriberNumber();
     }
 
-
     private void _setSubscriberStatementParams(PreparedStatement st, String mode) throws SQLException, ParseException {
         int paramIndex = 0;
         if (mode.equalsIgnoreCase("Create")) {
@@ -171,5 +165,43 @@ public class subscriberModel extends JDSModel {
         if (mode.equalsIgnoreCase("Update")) {
             st.setString(++paramIndex, _subscriberFormBean.getSubscriberNumber());
         }
+    }
+
+    public String searchSubscriber() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String xml = null;
+        String sql = Queries.getQuery("search_subscriber");
+        String subscriberNumber = request.getParameter("subscriberNumber");
+        String subscriberName = request.getParameter("subscriberName");
+        String email = request.getParameter("email");
+        String city = request.getParameter("city");
+        String pincode = request.getParameter("pincode");
+
+        if (subscriberNumber != null && subscriberNumber.length() > 0) {
+            sql += " and subscriberNumber=" + "'" + subscriberNumber + "'";
+        }
+
+        if (subscriberName != null && subscriberName.length() > 0) {
+            sql += " and subscriberName =" + "'" + subscriberName + "'";
+        }
+
+        if (city.compareToIgnoreCase("NULL") != 0 && city != null && city.length() > 0) {
+            sql += " and t2.id=t1.city and t2.city = " + "\"" + city + "\"";
+        }
+
+        if (email != null && email.length() > 0) {
+            sql += " and email =" + "'" + email + "'";
+        }
+
+        if (pincode.compareToIgnoreCase("NULL") != 0 && pincode != null && pincode.length() > 0) {
+            sql += " and pincode =" + "'" + pincode + "'";
+        }
+
+        sql += " group by subscriberNumber, subscriberName, city, email, pincode";
+
+        ResultSet rs = this.db.executeQuery(sql);
+
+        xml = util.convertResultSetToXML(rs);
+
+        return xml;
     }
 }

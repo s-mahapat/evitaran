@@ -4,13 +4,14 @@ function validateSearchSubscriber(){
         alert("Invalid Pin Code");
         return;
     }*/
-    if( document.getElementById("subscriberId").value.length == 0
-        && document.getElementById("subscriberName").value.length == 0
-        && document.getElementById("eMail").value.length == 0
-        && document.getElementById("city").value.length == 0
+    if( isEmpty(document.getElementById("subscriberNumber"))
+        && isEmpty(document.getElementById("subscriberName"))
+        && isEmpty(document.getElementById("email"))
+        && document.getElementById("city").value == "NULL"
         && document.getElementById("pincode").value.length == 0
         ){
         alert("Please fill in at least one field to search for subscriber");
-        return;
+        return false;
     }
+    return true;
 }

@@ -14,6 +14,11 @@
         <script>
             addOnloadEvent(makeCreateSubscriberReadOnly);
         </script>
+        <script>
+            $(document).ready(function() {
+                jdsAppend("/JDS/CMasterData?md=sub_type","subtype","subtype");
+            });
+        </script>
     </head>
     <body>
 

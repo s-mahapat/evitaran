@@ -16,6 +16,11 @@
             addOnloadEvent(subtypeDescriptionAppend);
             addOnloadEvent(subtypeCodeAppend);
         </script>
+        <script>
+            $(document).ready(function() {
+                jdsAppend("/JDS/CMasterData?md=sub_type","subtype","subtype");
+            });
+        </script>
     </head>
     <body>
 

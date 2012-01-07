@@ -47,6 +47,12 @@ public class subscriber extends HttpServlet {
                 }
             } else if (action.equalsIgnoreCase("display")) {
                 url = "/jsp/subscriber/viewsubscriber.jsp";
+            } else if (action.equalsIgnoreCase("search")) {
+
+                String xml = _subscriberModel.searchSubscriber();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
             } else if (action.equalsIgnoreCase("view")) {
                 url = "/jsp/subscription/viewsubscription.jsp";
             } else if (action.equalsIgnoreCase("add")) {

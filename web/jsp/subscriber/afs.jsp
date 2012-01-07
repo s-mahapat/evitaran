@@ -10,8 +10,15 @@
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/subscriber.css"%>"/>
         <title>Add Free Subscriber</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/afs.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/subscriber.js"%>"></script>
         <script>
             addOnloadEvent(makeCreateSubscriberReadOnly);
+            addOnloadEvent(subtypeCodeAppend);
+        </script>
+        <script>
+            $(document).ready(function() {
+                jdsAppend("/JDS/CMasterData?md=subtype_free","subtype","subtype");
+            });
         </script>
     </head>
     <body>
