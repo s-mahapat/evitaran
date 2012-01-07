@@ -59,20 +59,19 @@ public class main extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("newsubscription")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=newsubscription&next=" + request.getContextPath() + "/jsp/subscriber/createsubscriber.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=newsubscription&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/jsp/subscriber/createsubscriber.jsp";
 
             } else if (action.equalsIgnoreCase("renewsubscription")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?next=" + request.getContextPath() + "/jsp/subscription/addnewsubscription.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=renewsubscription&inwardPurpose=Renew Subscription&next=" + request.getContextPath() + "/jsp/subscription/addnewsubscription.jsp";
 
             } else if (action.equalsIgnoreCase("missingissue")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=missingissue&next=" + request.getContextPath() + "/jsp/missingissue/missingissuelist.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=missingissue&inwardPurpose=Missing Issue&next=" + request.getContextPath() + "/jsp/missingissue/missingissuelist.jsp";
 
             } else if (action.equalsIgnoreCase("createsubscriber")) {
 
-                //url = "/jsp/subscriber/createsubscriber.jsp";
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&next=" + request.getContextPath() + "/jsp/subscriber/createsubscriber.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/jsp/subscriber/createsubscriber.jsp";
 
             } else if (action.equalsIgnoreCase("searchsubscriber")) {
 
@@ -80,7 +79,7 @@ public class main extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("addresschange")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=addresschange&next=" + request.getContextPath() + "/jsp/subscriber/editsubscriber.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=addresschange&inwardPurpose=Address Change&next=" + request.getContextPath() + "/jsp/subscriber/editsubscriber.jsp";
 
             } else if (action.equalsIgnoreCase("addSubType")) {
 
@@ -157,6 +156,7 @@ public class main extends HttpServlet {
             } else if (action.equalsIgnoreCase("listReminder")) {
 
                 url = "/jsp/reports/listRenewalReminder.jsp";
+
             } else if (action.equalsIgnoreCase("listSubType")) {
 
                 url = "/jsp/reports/listSubType.jsp";
@@ -191,7 +191,7 @@ public class main extends HttpServlet {
 
             } else if(action.equalsIgnoreCase("gpi")){
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=gpi&next=" + request.getContextPath() + "/jsp/invoice/proforma.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=gpi&inwardPurpose=Request For Invoice&next=" + request.getContextPath() + "/jsp/invoice/proforma.jsp";
 
             } else if (action.equals("urn")) {
 
@@ -199,13 +199,11 @@ public class main extends HttpServlet {
 
             } else if (action.equals("asf")) {
 
-                //url = "/jsp/subscriber/asf.jsp";
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&next=" + request.getContextPath() + "/jsp/subscriber/asf.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/jsp/subscriber/asf.jsp";
 
             }else if (action.equals("afs")) {
 
-                //url = "/jsp/subscriber/afs.jsp";
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&next=" + request.getContextPath() + "/jsp/subscriber/afs.jsp";
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/jsp/subscriber/afs.jsp";
 
             }
 

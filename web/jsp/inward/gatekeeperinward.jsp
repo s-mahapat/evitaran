@@ -12,8 +12,6 @@
         <script src="js/inward/gatekeeperinward.js" type="text/javascript"></script>
         <script src="js/inward/inward.js" type="text/javascript"></script>
         <script type="text/javascript">
-            //var calPopup = new CalendarPopup("dateDiv");
-            //calPopup.showNavigationDropdowns();
             var selectedInward = 0;
             var selectedSubscriberId = 0;
             var selectedInwardRowIndex = -1;
@@ -37,7 +35,7 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
@@ -62,7 +60,6 @@
                         id: "inwardNumber"
                     },
                     pager: '#pager',
-                    pginput: false,
                     rowNum:10,
                     rowList:[10,20,30],
                     viewrecords: true,
@@ -72,7 +69,6 @@
                         var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
                             $("#btnNext").removeAttr("disabled");
-                            //$("#btnNext").
                         }
                         for (var i = 0; i < ids.length; i++) {
                             var cl = ids[i];
@@ -97,21 +93,20 @@
             function searchInwards(){
                 if(validateSearch() == true){
                     isPageLoaded = true;
+                    jQuery("#inwardTable").setGridParam({ datatype: "xml" });
                     jQuery("#inwardTable").setGridParam({postData:
                             {city           : $("#city").val(),
                             inwardNumber    : $("#inwardNumber").val(),
                             chequeNumber    : $("#chequeNumber").val(),
                             fromDate        : $("#from").val(),
-                            toDate          : $("#to").val()
+                            toDate          : $("#to").val(),
+                            inwardPurpose   : $("#inwardPurpose").val()
                         }});
                     jQuery("#inwardTable").trigger("clearGridData");
                     jQuery("#inwardTable").trigger("reloadGrid");
                 }
 
             }
-
-
-
         </script>
 
     </head>
@@ -120,6 +115,7 @@
         <div id="bodyContainer">
             <form method="post" action="<%=request.getParameter("next")%>" name="searchInwardForm" onsubmit="return isInwardSelected()">
                 <input type="hidden" id="nextAction" name ="nextAction" value="<%=request.getParameter("nextAction")%>"/>
+                <input type="hidden" id="inwardPurpose" name ="inwardPurpose" value="<%=request.getParameter("inwardPurpose")%>"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Inward</legend>

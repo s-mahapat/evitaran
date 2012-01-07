@@ -11,7 +11,7 @@ public class inwardFormBean extends JDSBean{
     private String city = "";
     private int pincode = 0;
     private String inwardNumber = "";
-    private Date inwardCreationDate = new java.util.Date();
+    private String inwardCreationDate = util.getDateString();
     private int subscriberId = 0;
     private String email = "";
     private String institution="";
@@ -22,13 +22,13 @@ public class inwardFormBean extends JDSBean{
     private String paymentMode;
     private String bankName;
     private int chqddNumber = 0;
-    private Date paymentDate = new java.util.Date();
+    private String paymentDate = null;// = new java.util.Date();
     private float amount = 0;
     private String currency;
     private int receiptNumber = 0;
     private boolean chequeDDReturn = false;
-    private String chequeDDReturnReason;
-    private String chequeDDReturnReasonOther;
+    private String chequeDDReturnReason = null;
+    private String chequeDDReturnReasonOther = null;
     private String ackDate;
     private String returnDate;
     private String remarks;
@@ -86,11 +86,11 @@ public class inwardFormBean extends JDSBean{
     }
 
     public String getInwardCreationDate() {
-        Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
-        return dtformat.format(this.inwardCreationDate);
+        //Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
+        return this.inwardCreationDate ;//!= null ? dtformat.format(this.inwardCreationDate) : "";
     }
 
-    public void setInwardCreationDate(Date _InwardCreationDate) {
+    public void setInwardCreationDate(String _InwardCreationDate) {
         this.inwardCreationDate = _InwardCreationDate;
     }
 
@@ -175,11 +175,11 @@ public class inwardFormBean extends JDSBean{
     }
 
     public String getPaymentDate() {
-        Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
-        return dtformat.format(this.paymentDate);
+        //Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
+        return this.paymentDate; // != null ? dtformat.format(this.paymentDate) : "";
     }
 
-    public void setPaymentDate(Date _PaymentDate) {
+    public void setPaymentDate(String _PaymentDate) {
         this.paymentDate = _PaymentDate;
     }
 

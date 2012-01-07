@@ -30,7 +30,7 @@
                     height: 240,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
@@ -54,7 +54,6 @@
                         id: "inwardNumber"
                     },
                     pager: '#pager',
-                    pginput: false,
                     rowNum: 10,
                     rowList:[10,30,50,100],
                     viewrecords: true,
@@ -92,6 +91,7 @@
             function searchInwards(){
                 if(validateSearch() == true){
                     isPageLoaded = true;
+                    jQuery("#inwardTable").setGridParam({ datatype: "xml" });
                     jQuery("#inwardTable").setGridParam({postData:
                             {inwardPurpose  : $("#inwardPurpose").val(),
                             fromDate        : $("#from").val(),

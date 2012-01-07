@@ -90,6 +90,33 @@ public class inwardModel extends JDSModel {
 
     }
 
+    public String updateChequeReturn() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
+
+        inwardFormBean inwardFormBean = new IAS.Bean.inwardFormBean();
+        request.setAttribute("inwardFormBean", inwardFormBean);
+
+        //FillBean is defined in the parent class IAS.Model/JDSModel.java
+        FillBean(this.request, inwardFormBean);
+        this._inwardFormBean = inwardFormBean;
+
+        // the query name from the jds_sql properties files in WEB-INF/properties folder
+        String sql = Queries.getQuery("update_cheque_return");
+
+        PreparedStatement st = conn.prepareStatement(sql);
+        int paramIndex = 0;
+        st.setBoolean(++paramIndex, true);
+        st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReason());
+        st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReasonOther());
+        st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+        st.setString(++paramIndex, inwardFormBean.getInwardNumber());
+
+        db.executeUpdatePreparedStatement(st);
+
+        return this.GetInward();
+
+    }
+
     private int _updateInward() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
@@ -259,16 +286,21 @@ public class inwardModel extends JDSModel {
         String city = request.getParameter("city");
         String fromDate = request.getParameter("fromDate");
         String toDate = request.getParameter("toDate");
+        String inwardPurpose = request.getParameter("inwardPurpose");
 
         if (inwardNumber != null && inwardNumber.length() > 0) {
             sql += " and inwardNumber=" + "'" + inwardNumber + "'";
+        }
+
+        if (inwardPurpose != null && inwardPurpose.compareToIgnoreCase("NULL") != 0 && inwardPurpose.length() > 0) {
+            sql += " and t3.purpose =" + "'" + inwardPurpose + "'";
         }
 
         if (chequeNumber != null && chequeNumber.length() > 0) {
             sql += " and chequeDDReturn =" + "'" + chequeNumber + "'";
         }
 
-        if (city.compareToIgnoreCase("NULL") != 0  && city != null && city.length() > 0) {
+        if (city != null && city.compareToIgnoreCase("NULL") != 0  && city != null && city.length() > 0) {
             sql += " and t2.id=t1.city and t2.city = " + "\"" + city + "\"";
         }
 

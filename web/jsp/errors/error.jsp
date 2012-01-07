@@ -42,7 +42,7 @@
                                 <td>
                                     <%
                                         if (exception != null) {
-                                            out.println(exception.getStackTrace());
+                                            exception.printStackTrace(response.getWriter());
                                         }
                                     %>
                                 </td>

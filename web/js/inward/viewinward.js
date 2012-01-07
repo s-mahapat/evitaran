@@ -12,7 +12,8 @@ function makeInwardReadOnly(){
     document.getElementById("chequeDDReturn").disabled = true;
 
     //hide the calendar icon using jquery .ui-datepicker-trigger
-    $(".ui-datepicker-trigger").hide();
+    $("#paymentDate").datepicker("disable");
+    //$(".ui-datepicker-trigger").hide();
 
     if(document.getElementById("chequeDDReturn").checked){
         document.getElementById("btnSendReturn").disabled = false;

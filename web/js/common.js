@@ -79,7 +79,7 @@ function checkMandatoryFields(){
 
 
 function openModalPopUp(url){
-    result=window.showModalDialog(url,0,"dialogHeight: 500px; dialogWidth: 1100px;center: yes;resizeable: no;status: no;menubar: no;scrollbars: yes;toolbar: no;");
+    result = window.showModalDialog(url,0,"dialogHeight: 500px; dialogWidth: 1100px;center: yes;resizeable: no;status: no;menubar: no;scrollbars: yes;toolbar: no;");
     return result;
 }
 
@@ -202,10 +202,9 @@ function jQueryCalendar(divId){
     var div = "#" + divId;
     $(function() {
         $( div ).datepicker({
-            showOn: "button",
             dateFormat: 'dd/mm/yy',
-            buttonImage: "images/calendar.gif",
-            buttonImageOnly: true
+            changeMonth: true,
+            changeYear: true
         });
     });
 }
@@ -234,7 +233,7 @@ function jQueryDatePicker(fromDiv, toDiv){
                     instance.settings.dateFormat ||
                     $.datepicker._defaults.dateFormat,
                     selectedDate, instance.settings );
-                //dates.not( this ).datepicker( "option", option, date );
+            //dates.not( this ).datepicker( "option", option, date );
             }
         });
     });

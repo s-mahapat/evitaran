@@ -1,6 +1,4 @@
-<%@page errorPage="../errorHandler"%>
 <%@page import="IAS.Class.util"%>
-
 <jsp:useBean class="IAS.Bean.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
 <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
 <script type="text/javascript">
@@ -11,7 +9,6 @@
         jdsAppend("<%=request.getContextPath() + "/CMasterData?md=purpose"%>","purpose","inwardPurpose");
         jdsAppend("<%=request.getContextPath() + "/CMasterData?md=payment_mode"%>","payment_mode","paymentMode");
         jdsAppend("<%=request.getContextPath() + "/CMasterData?md=currency"%>","currency","currency");
-        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=return_reason"%>","return_reason","chequeDDReturnReason");
     });
 
     jQueryCalendar("paymentDate");
@@ -213,7 +210,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Cheque/DD No:</label>
+                <label>Cheque/DD/MO No:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASTextBox" maxlength="11" TABINDEX="13" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
@@ -278,7 +275,12 @@
                 <label>Cheque/DD Return:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASCheckBox" TABINDEX="18" type="checkbox" name="chequeDDReturn" id="chequeDDReturn" value="1" disabled/>
+                <input class="IASCheckBox" TABINDEX="18" type="checkbox" name="chequeDDReturn" id="chequeDDReturn" value="1" disabled
+                       <%
+                           if (inwardFormBean.isChequeDDReturn())
+                               out.println("checked");
+                       %>
+                       />
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -286,10 +288,10 @@
                 <label>Reason For Return:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="19" type="test" name="chequeDDReturnReason" id="chequeDDReturnReason" value="${inwardFormBean.chequeDDReturnReason}" disabled>
+                <input class="IASTextBox" TABINDEX="19" type="text" name="chequeDDReturnReason" id="chequeDDReturnReason" value="${inwardFormBean.chequeDDReturnReason}" readonly>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="20" type="text" name="chequeDDReturnReasonOther" id="chequeDDReturnReasonOther" value="${inwardFormBean.chequeDDReturnReasonOther}" disabled/>
+                <input class="IASTextBox" TABINDEX="20" type="text" name="chequeDDReturnReasonOther" id="chequeDDReturnReasonOther" value="${inwardFormBean.chequeDDReturnReasonOther}" readonly/>
             </span>
         </div>
         <div class="IASFormFieldDiv">

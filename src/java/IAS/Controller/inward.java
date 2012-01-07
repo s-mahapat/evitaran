@@ -59,7 +59,11 @@ public class inward extends HttpServlet {
             } else if (action.equalsIgnoreCase("sendAck")) {
                 url = "/jsp/inward/ackinward.jsp";
             } else if (action.equalsIgnoreCase("sendReturn")) {
-                url = "/jsp/inward/returninward.jsp";
+                if (_inwardModel.viewInward() != null){
+                    url = "/jsp/inward/returninward.jsp";
+                }else {
+                    url = "/jsp/errors/error.jsp";
+                }
             } else if (action.equalsIgnoreCase("search")) {
 
                 // searchInward gets all the inwards based on the search criteria entered on screen by the user.
@@ -78,6 +82,14 @@ public class inward extends HttpServlet {
                 String inwardNumber = request.getParameter("inwardNumber");
                 int subscriberId = Integer.parseInt(request.getParameter("subscriberId"));
                 String purpose = request.getParameter("purpose");
+
+            }else if(action.equalsIgnoreCase("saveReturn")){
+                // save the return
+                if(_inwardModel.updateChequeReturn() != null){
+                    url = "/jsp/inward/returninward.jsp";
+                }else {
+                    url = "/jsp/errors/error.jsp";
+                }
             }
         } catch (SQLException e) {
             url = "/jsp/errors/error.jsp";

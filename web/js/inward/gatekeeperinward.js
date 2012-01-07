@@ -20,7 +20,7 @@ function isInwardSelected(){
         if(selectedSubscriberFromDialog > 0){
             selectedSubscriberId = selectedSubscriberFromDialog;
             jQuery("#inwardTable").jqGrid('setRowData', selectedInward, {
-                'Subscriber Id': selectedSubscriberFromDialog
+                'SubscriberId': selectedSubscriberFromDialog
             });
         }
 

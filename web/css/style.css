@@ -271,6 +271,13 @@ body{
     width: 180px;
 }
 
+.IASComboBoxWideMandatory{
+    font-family: "Cambria",serif;
+    font-size: 12px;
+    width: 220px;
+    background-color: antiquewhite;
+}
+
 .IASComboBoxMediumMandatory{
     font-family: "Cambria",serif;
     font-size: 12px;

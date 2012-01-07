@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -34,6 +34,9 @@ public final class util {
 
     public static java.sql.Date dateStringToSqlDate(String stringDate) throws ParseException{
 
+        if(stringDate == null || stringDate.length() == 0){
+            return null;
+        }
         DateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
         java.util.Date parsedUtilDate = formater.parse(stringDate);
         java.sql.Date sqlDate = new java.sql.Date(parsedUtilDate.getTime());
