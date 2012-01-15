@@ -54,7 +54,7 @@ CREATE TABLE `countries` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `country_UNIQUE` (`country`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,7 @@ CREATE TABLE `countries` (
 
 LOCK TABLES `countries` WRITE;
 /*!40000 ALTER TABLE `countries` DISABLE KEYS */;
-INSERT INTO `countries` VALUES (1,'India'),(2,'USA');
+INSERT INTO `countries` VALUES (4,'China'),(1,'India'),(3,'Japan'),(2,'USA');
 /*!40000 ALTER TABLE `countries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,7 +136,7 @@ CREATE TABLE `inward` (
   `institution` varchar(64) DEFAULT NULL,
   `department` varchar(64) DEFAULT NULL,
   `inwardCreationDate` date NOT NULL,
-  `subscriberId` varchar(15) DEFAULT NULL,
+  `subscriberId` int(15) unsigned DEFAULT NULL,
   `inwardPurpose` int(11) NOT NULL,
   `paymentMode` int(11) DEFAULT NULL,
   `chqddNumber` int(11) DEFAULT NULL,
@@ -157,7 +157,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -166,7 +166,7 @@ CREATE TABLE `inward` (
 
 LOCK TABLES `inward` WRITE;
 /*!40000 ALTER TABLE `inward` DISABLE KEYS */;
-INSERT INTO `inward` VALUES (129,'12A-00001','Shail',1,1,23,0,'','','','2012-01-05','0',1,4,12345,'2012-01-03',120,2,0,10,NULL,0,NULL,'','State Bank of india','2012-01-05',0),(130,'12A-00002','Shail',1,1,23,0,'','','','2012-01-05','0',1,4,252512,'2012-01-01',0,1,0,9,NULL,0,NULL,'','ICICI Bank','2012-01-05',0),(131,'12A-00003','abcd',1,1,23,0,'','','','2012-01-05','0',4,NULL,0,NULL,0,NULL,0,4,NULL,0,NULL,'','','2012-01-06',0),(132,'12A-00004','munnu',1,1,23,560067,'pinki.pachisia@gmail.com','','','2012-01-06','0',1,4,252512,'2012-01-01',7890,1,0,1,NULL,0,NULL,'','CitiBank','2012-01-06',0),(133,'12A-00005','abc',1,1,23,0,'','','','2012-01-07','0',1,1,0,'2012-01-02',0,1,0,NULL,'',0,NULL,'','',NULL,0),(134,'12A-00006','abc',1,1,23,0,'','','','2012-01-07','0',3,4,0,'2012-01-01',0,1,1,9,NULL,0,NULL,'','','2012-01-07',0),(135,'12A-00007','a',1,1,23,0,'','','','2012-01-07','0',3,NULL,0,NULL,0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(136,'12A-00008','abc',1,NULL,23,0,'','','','2012-01-07','0',3,NULL,0,NULL,0,NULL,1,1,NULL,0,NULL,'','','2012-01-07',0),(137,'12A-00009','abcd',1,NULL,23,0,'','','','2012-01-07','0',3,NULL,0,NULL,0,NULL,1,1,NULL,0,NULL,'','','2012-01-07',0),(138,'12A-00010','Pinki Pachisia',1,NULL,23,0,'','','','2012-01-07','0',1,1,252512,'2012-01-07',0,1,1,11,NULL,0,NULL,'','','2012-01-07',0),(139,'12A-00011','abcd',1,NULL,5,0,'','','','2012-01-07','0',8,NULL,0,NULL,0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0);
+INSERT INTO `inward` VALUES (129,'12A-00001','Shail',1,1,23,0,'','','','2012-01-05',0,1,4,12345,'2012-01-03',120,2,0,10,NULL,0,NULL,'','State Bank of india','2012-01-05',0),(130,'12A-00002','Shail',1,1,23,0,'','','','2012-01-05',0,1,4,252512,'2012-01-01',0,1,0,9,NULL,0,NULL,'','ICICI Bank','2012-01-05',0),(131,'12A-00003','Shailendra M',1,13,3,0,'','','','2012-01-05',24,4,NULL,0,NULL,0,NULL,0,4,'',0,NULL,'','','2012-01-06',0),(132,'12A-00004','munnu',1,1,23,560067,'pinki.pachisia@gmail.com','','','2012-01-06',0,1,4,252512,'2012-01-01',7890,1,0,1,NULL,0,NULL,'','CitiBank','2012-01-06',0),(133,'12A-00005','abc',1,1,23,0,'','','','2012-01-07',0,1,1,0,'2012-01-02',0,1,0,NULL,'',0,NULL,'','',NULL,0),(134,'12A-00006','abc',1,1,23,0,'','','','2012-01-07',0,3,4,0,'2012-01-01',0,1,1,9,NULL,0,NULL,'','','2012-01-07',0),(135,'12A-00007','a',1,1,23,0,'','','','2012-01-07',0,3,NULL,0,NULL,0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(136,'12A-00008','abc',1,NULL,23,0,'','','','2012-01-07',0,3,NULL,0,NULL,0,NULL,1,1,NULL,0,NULL,'','','2012-01-07',0),(137,'12A-00009','abcd',1,NULL,23,0,'','','','2012-01-07',0,3,NULL,0,NULL,0,NULL,1,1,NULL,0,NULL,'','','2012-01-07',0),(138,'12A-00010','Pinki Pachisia',1,NULL,23,0,'','','','2012-01-07',0,1,1,252512,'2012-01-07',0,1,1,11,NULL,0,NULL,'','','2012-01-07',0),(139,'12A-00011','abcd',1,NULL,5,0,'','','','2012-01-07',0,8,NULL,0,NULL,0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(140,'12A-00012','Shail',1,NULL,147,0,'','','','2012-01-08',117,1,NULL,0,NULL,0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(141,'12A-00013','Pinki Pachisia',1,1,23,0,'','','','2012-01-08',NULL,1,NULL,0,NULL,0,NULL,0,NULL,NULL,0,NULL,'','',NULL,0),(143,'12A-00014','Shailendra M',1,13,3,0,'','','','2012-01-09',24,3,NULL,0,NULL,0,NULL,0,NULL,'',0,NULL,'','',NULL,0),(144,'12A-00015','Shailendra M',1,1,3,560067,'shailendra.mahapatra@gmail.com','','','2012-01-13',24,2,1,12345,'2012-01-11',2340,1,0,NULL,NULL,0,NULL,'','ICICI Bank',NULL,0);
 /*!40000 ALTER TABLE `inward` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,16 +292,16 @@ CREATE TABLE `subscriber` (
   `country` int(11) NOT NULL,
   `pincode` varchar(45) DEFAULT NULL,
   `email` varchar(30) DEFAULT NULL,
-  `subtype` int(11) DEFAULT NULL,
+  `subtype` int(11) unsigned NOT NULL,
   `agent_id` int(11) DEFAULT '0',
   `deactive` tinyint(1) DEFAULT '0',
   `deactivation_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `subscriber_id_UNIQUE` (`subscriberNumber`) USING BTREE,
   KEY `subscriberName` (`subscriberName`),
   KEY `subscriberCity` (`city`),
-  KEY `subscriberPincode` (`pincode`),
-  KEY `subscriber_id_UNIQUE` (`subscriberNumber`)
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=latin1;
+  KEY `subscriberPincode` (`pincode`)
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -310,7 +310,7 @@ CREATE TABLE `subscriber` (
 
 LOCK TABLES `subscriber` WRITE;
 /*!40000 ALTER TABLE `subscriber` DISABLE KEYS */;
-INSERT INTO `subscriber` VALUES (24,'11L-00001','2011-12-27','Shailendra Mahapatra',NULL,NULL,'# 1075, Sobha Amethyst\r\nKannamangala, Kadugodi, Whitefield',3,1,13,1,'560067',NULL,NULL,0,0,NULL);
+INSERT INTO `subscriber` VALUES (24,'11L-00001','2011-12-27','Shailendra Mahapatra',NULL,NULL,'# 1075, Sobha Amethyst\r\nKannamangala, Kadugodi, Whitefield',3,1,13,1,'560067',NULL,1,0,0,NULL),(117,'12A-S-00001','2012-01-07','Shailendra','','','test',147,NULL,13,1,'0','',1,0,0,NULL),(118,'12A-S-00002','2012-01-08','Shailendra','','','test',57,NULL,21,1,'752001','',1,0,0,NULL),(119,'12A-S-00003','2012-01-13','Pinki Pachisia','','','Agra',23,NULL,28,1,'0','',1,0,0,NULL);
 /*!40000 ALTER TABLE `subscriber` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,7 +364,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES ('jds@ias.com','user'),('shail@ias.com','user'),('tomcat','manager-script');
+INSERT INTO `user_role` VALUES ('admin@ias.com','admin'),('jds@ias.com','user'),('shail@ias.com','user'),('tomcat','manager-script');
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,7 +388,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('jds@ias.com','jds'),('shail@ias.com','shail'),('tomcat','tomcat');
+INSERT INTO `users` VALUES ('admin@ias.com','admin'),('jds@ias.com','jds'),('shail@ias.com','shail'),('tomcat','tomcat');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -401,4 +401,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-07 21:09:34
+-- Dump completed on 2012-01-15  8:03:12
