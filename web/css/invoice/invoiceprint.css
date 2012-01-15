@@ -46,6 +46,18 @@ body {
     margin: 0;
 }
 
+#IASLetterHeadHeader{
+
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: auto;
+    font-family: cambria,sans-serif,serif;
+    font-size: large;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+
 .invoceTelephoneDiv{
 
     float: right;
@@ -148,4 +160,8 @@ body {
     text-align: center;
     text-transform: uppercase;
 
+}
+
+.actionBtnDiv{
+    display: none;
 }

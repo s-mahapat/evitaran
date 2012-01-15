@@ -1,4 +1,5 @@
-package IAS.Bean;
+package IAS.Bean.Inward;
+import IAS.Bean.JDSBean;
 import IAS.Class.util;
 public class inwardFormBean extends JDSBean{
 
@@ -10,7 +11,7 @@ public class inwardFormBean extends JDSBean{
     private int pincode = 0;
     private String inwardNumber = "";
     private String inwardCreationDate = util.getDateString();
-    private int subscriberId = 0;
+    private String subscriberId="";
     private String email = "";
     private String institution="";
     private String department = "";
@@ -30,6 +31,7 @@ public class inwardFormBean extends JDSBean{
     private String ackDate;
     private String returnDate;
     private String remarks;
+    private boolean completed = false;
 
     public String getFrom() {
         return (this.from);
@@ -92,16 +94,16 @@ public class inwardFormBean extends JDSBean{
         this.inwardCreationDate = _InwardCreationDate;
     }
 
-    public int getSubscriberId() {
+    public String getSubscriberId() {
         return this.subscriberId;
 
     }
 
     public String getSubscriberIdAsText() {
-        return this.subscriberId==0 ? "" : String.valueOf(this.subscriberId);
+        return this.subscriberId;
     }
 
-    public void setSubscriberId(int _SubscriberId) {
+    public void setSubscriberId(String _SubscriberId) {
         this.subscriberId = _SubscriberId;
     }
 
@@ -257,7 +259,13 @@ public class inwardFormBean extends JDSBean{
         this.remarks = _Remarks;
     }
 
-    public IAS.Bean.inwardFormBean Clone(){
-        return this;
+    public boolean isCompleted(){
+        return this.completed;
     }
+
+    public void setCompleted(boolean _completed){
+        this.completed = _completed;
+    }
+
+
 }

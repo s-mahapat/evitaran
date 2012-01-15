@@ -458,3 +458,16 @@ A:active {
 .underlineText{
     text-decoration: underline;
 }
+
+#accessdenied{
+    background-image: url("../images/403.png");
+    background-repeat: no-repeat;
+    width: 528px;
+    height: 341px;
+    margin: 0 auto;
+}
+
+#accessdeniedtext{
+    text-align: center;
+    font-size: larger;
+}

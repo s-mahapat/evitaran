@@ -35,7 +35,9 @@ public class main extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("logout")) {
 
-                url = "/jsp/login/logout.jsp";
+                request.getSession().invalidate();
+                response.sendRedirect(request.getContextPath() + "/home");
+                //url = "/jsp/login/login.jsp";
 
             } else if (action.equalsIgnoreCase("createinward")) {
 
@@ -47,7 +49,7 @@ public class main extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("pendinginwards")) {
 
-                url = "/jsp/inward/processinward.jsp";
+                url = "/jsp/inward/pendinginwards.jsp";
 
             } else if (action.equalsIgnoreCase("gml")) {
 
@@ -69,29 +71,21 @@ public class main extends HttpServlet {
 
                 url = "/jsp/inward/gatekeeperinward.jsp?nextAction=missingissue&inwardPurpose=Missing Issue&next=" + request.getContextPath() + "/jsp/missingissue/missingissuelist.jsp";
 
+            } else if (action.equalsIgnoreCase("gcreatesubscriber")) {
+
+                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/main?action=createsubscriber";
+
             } else if (action.equalsIgnoreCase("createsubscriber")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/jsp/subscriber/createsubscriber.jsp";
-
-            } else if (action.equalsIgnoreCase("searchsubscriber")) {
+                url = "/jsp/subscriber/createsubscriber.jsp";
+            }
+            else if (action.equalsIgnoreCase("searchsubscriber")) {
 
                 url = "/jsp/subscriber/searchsubscriber.jsp";
 
             } else if (action.equalsIgnoreCase("addresschange")) {
 
                 url = "/jsp/inward/gatekeeperinward.jsp?nextAction=addresschange&inwardPurpose=Address Change&next=" + request.getContextPath() + "/jsp/subscriber/editsubscriber.jsp";
-
-            } else if (action.equalsIgnoreCase("addSubType")) {
-
-                url = "/jsp/masterdata/addNewSubType.jsp";
-
-            } else if (action.equalsIgnoreCase("addJournal")) {
-
-                url = "/jsp/masterdata/addJournal.jsp";
-
-            } else if (action.equalsIgnoreCase("addAgent")) {
-
-                url = "/jsp/masterdata/addAgent.jsp";
 
             } else if (action.equalsIgnoreCase("searchSubType")) {
 
@@ -109,23 +103,7 @@ public class main extends HttpServlet {
 
                 url = "/jsp/masterdata/annualSubscriptionrates.jsp";
 
-            } else if (action.equalsIgnoreCase("addCity")) {
-
-                url = "/jsp/masterdata/addCity.jsp";
-
-            } else if (action.equalsIgnoreCase("addCountry")) {
-
-                url = "/jsp/masterdata/addCountry.jsp";
-
-            } else if (action.equalsIgnoreCase("addDistrict")) {
-
-                url = "/jsp/masterdata/addDistrict.jsp";
-
-            } else if (action.equalsIgnoreCase("addState")) {
-
-                url = "/jsp/masterdata/addState.jsp";
-
-            } else if (action.equalsIgnoreCase("searchCity")) {
+            }else if (action.equalsIgnoreCase("searchCity")) {
 
                 url = "/jsp/masterdata/searchCity.jsp";
 

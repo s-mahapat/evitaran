@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
-import IAS.Model.inwardModel;
-import java.sql.SQLException;
+import IAS.Model.Inward.inwardModel;
+import javax.servlet.http.HttpSession;
 
 public class inward extends HttpServlet {
 
@@ -20,7 +20,7 @@ public class inward extends HttpServlet {
 
         try {
 
-            _inwardModel = new IAS.Model.inwardModel(request);
+            _inwardModel = new IAS.Model.Inward.inwardModel(request);
 
             /*
              * If the action is to save the inward
@@ -30,21 +30,17 @@ public class inward extends HttpServlet {
                 if (_inwardModel.Save() == 1) {
                     url = "/jsp/inward/viewinward.jsp";
                 }
-            }
-            /*
+            } /*
              * If the action is to edit the inward
-             */
-            else if (action.equalsIgnoreCase("edit")) {
+             */ else if (action.equalsIgnoreCase("edit")) {
 
                 if (_inwardModel.editInward() != null) {
                     url = "/jsp/inward/editinward.jsp";
                 }
 
-            }
-            /*
+            } /*
              * If the action is to view the inward
-             */
-            else if (action.equalsIgnoreCase("view")) {
+             */ else if (action.equalsIgnoreCase("view")) {
 
                 if (_inwardModel.viewInward() != null) {
                     url = "/jsp/inward/viewinward.jsp";
@@ -53,7 +49,7 @@ public class inward extends HttpServlet {
             } else if (action.equalsIgnoreCase("sendAck")) {
                 url = "/jsp/inward/ackinward.jsp";
             } else if (action.equalsIgnoreCase("sendReturn")) {
-                if (_inwardModel.viewInward() != null){
+                if (_inwardModel.viewInward() != null) {
                     url = "/jsp/inward/returninward.jsp";
                 }
             } else if (action.equalsIgnoreCase("search")) {
@@ -63,37 +59,64 @@ public class inward extends HttpServlet {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }else if (action.equalsIgnoreCase("pendinginwards")){
+            } else if (action.equalsIgnoreCase("pendinginwards")) {
                 // searchInward gets all the inwards based on the search criteria entered on screen by the user.
                 String xml = _inwardModel.getPendngInwards();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }else if (action.equalsIgnoreCase("processinward")){
+            } else if (action.equalsIgnoreCase("processinward")) {
 
                 String inwardNumber = request.getParameter("inwardNumber");
-                int subscriberId = Integer.parseInt(request.getParameter("subscriberId"));
-                String purpose = request.getParameter("purpose");
+                String subscriberNumber = request.getParameter("subscriberNumber");
+                HttpSession session = request.getSession(false);
+                session.setAttribute("inwardUnderProcess", inwardNumber);
 
-            }else if(action.equalsIgnoreCase("saveReturn")){
+                // we should use the purpose id rather than the purpose name, it can change in the database
+                // but id should not change
+                int purposeID = Integer.parseInt(request.getParameter("purpose"));
+
+                if (purposeID == 1) {
+
+                    if (subscriberNumber != null && !subscriberNumber.isEmpty()) {
+
+                        IAS.Model.subscriberModel _subscriberModel = new IAS.Model.subscriberModel(request);
+                        if (_subscriberModel.GetSubscriber() != null) {
+                            url = "/subscriber?action=add";
+                        }
+
+                    } else {
+
+                        url = "/main?action=createsubscriber";
+                    }
+                } else if (purposeID == 2) {
+                    // Renew subscription
+                    IAS.Model.subscriberModel _subscriberModel = new IAS.Model.subscriberModel(request);
+                    if (_subscriberModel.GetSubscriber() != null) {
+                        url = "/subscriber?action=add";
+                    }
+                } else if (purposeID == 3) {
+                    //Address change
+                    url = "/subscriber?action=edit";
+
+                }else if (purposeID == 4) {
+                    //Request for Invoice
+                    url = "/jsp/invoice/proforma.jsp";
+
+                }
+
+            } else if (action.equalsIgnoreCase("saveReturn")) {
                 // save the return
-                if(_inwardModel.updateChequeReturn() != null){
+                if (_inwardModel.updateChequeReturn() != null) {
                     url = "/jsp/inward/returninward.jsp";
                 }
             }
-        }  catch (Exception e) {
-            //url = "/jsp/errors/error.jsp";
-            request.setAttribute("exception", e);
+        } catch (Exception e) {
+            throw new javax.servlet.ServletException(e);
 
         } finally {
-            if(url == null){
-
-                url = "/jsp/errors/error.jsp";
-
-            }
-
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
-            if (rd != null) {
+            if (rd != null && url != null) {
                 rd.forward(request, response);
                 //response.sendRedirect(request.getContextPath() + url);
             }

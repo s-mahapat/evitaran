@@ -2,18 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package IAS.Model;
+package IAS.Model.Inward;
 
 import javax.servlet.http.HttpServletRequest;
-import IAS.Bean.inwardFormBean;
+import IAS.Bean.Inward.inwardFormBean;
 import java.sql.*;
 import IAS.Class.Queries;
 import IAS.Class.Database;
 import javax.servlet.http.HttpSession;
 import IAS.Class.util;
+import IAS.Model.JDSModel;
 import java.text.ParseException;
 import java.util.Calendar;
-import java.util.HashMap;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -45,7 +45,7 @@ public class inwardModel extends JDSModel {
     public int Save() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
-        inwardFormBean inwardFormBean = new IAS.Bean.inwardFormBean();
+        inwardFormBean inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
         request.setAttribute("inwardFormBean", inwardFormBean);
         String sql;
 
@@ -93,7 +93,7 @@ public class inwardModel extends JDSModel {
     public String updateChequeReturn() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
 
-        inwardFormBean inwardFormBean = new IAS.Bean.inwardFormBean();
+        inwardFormBean inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
         request.setAttribute("inwardFormBean", inwardFormBean);
 
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
@@ -136,7 +136,7 @@ public class inwardModel extends JDSModel {
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         String sql;
-        inwardFormBean inwardFormBean = new IAS.Bean.inwardFormBean();
+        inwardFormBean inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
 
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, inwardFormBean);
@@ -153,8 +153,8 @@ public class inwardModel extends JDSModel {
         // populate the bean from the resultset using the beanprocessor class
         while (rs.next()) {
             BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.inwardFormBean");
-            inwardFormBean = (IAS.Bean.inwardFormBean) bProc.toBean(rs, type);
+            Class type = Class.forName("IAS.Bean.Inward.inwardFormBean");
+            inwardFormBean = (IAS.Bean.Inward.inwardFormBean) bProc.toBean(rs, type);
 
         }
         rs.close();
@@ -175,7 +175,7 @@ public class inwardModel extends JDSModel {
         st.setString(++paramIndex, _inwardFormBean.getInstitution());
         st.setString(++paramIndex, _inwardFormBean.getDepartment());
         st.setDate(++paramIndex, util.dateStringToSqlDate(_inwardFormBean.getInwardCreationDate()));
-        st.setInt(++paramIndex, _inwardFormBean.getSubscriberId());
+        st.setString(++paramIndex, _inwardFormBean.getSubscriberId());
         st.setString(++paramIndex, _inwardFormBean.getInwardPurpose());
         st.setString(++paramIndex, _inwardFormBean.getPaymentMode());
         st.setString(++paramIndex, _inwardFormBean.getBankName());
@@ -202,7 +202,7 @@ public class inwardModel extends JDSModel {
         st.setString(++paramIndex, _inwardFormBean.getInstitution());
         st.setString(++paramIndex, _inwardFormBean.getDepartment());
         //st.setDate(++paramIndex, util.dateStringToSqlDate(_inwardFormBean.getInwardCreationDate()));
-        st.setInt(++paramIndex, _inwardFormBean.getSubscriberId());
+        st.setString(++paramIndex, _inwardFormBean.getSubscriberId());
         st.setString(++paramIndex, _inwardFormBean.getInwardPurpose());
         st.setString(++paramIndex, _inwardFormBean.getPaymentMode());
         st.setString(++paramIndex, _inwardFormBean.getBankName());

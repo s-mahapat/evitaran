@@ -134,3 +134,8 @@ root {
     text-transform: uppercase;
 
 }
+
+#printPreview{
+    display: none;
+    visibility: hidden;
+}

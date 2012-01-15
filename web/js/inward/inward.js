@@ -18,21 +18,29 @@ function validateSearchSubscriber(){
             alert("Please fill in the From,City and Pincode to search for subscriber");
             return;
     }else{
-        var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp?"
-            + "city=" + document.getElementById("city").value + "&"
-            + "subscriberName=" + document.getElementById("from").value + "&"
-            + "pincode=" + document.getElementById("pincode").value, 'Select Subscriber');
-        
+        var selectedSubscriberFromDialog = searchSubscriber(document.getElementById("city").value
+                                                            ,document.getElementById("from").value
+                                                            ,document.getElementById("pincode").value);
+
         if(!isEmptyValue(selectedSubscriberFromDialog) && selectedSubscriberFromDialog != 0){
             document.getElementById("subscriberId").value = selectedSubscriberFromDialog;
         }
     }
 }
 
+function searchSubscriber(city, subscriberName, pincode){
+    var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp?"
+            + "city=" + city + "&"
+            + "subscriberName=" + subscriberName + "&"
+            + "pincode=" + pincode, 'Select Subscriber');
+    return selectedSubscriberFromDialog;
+}
 
-function setInwardSubscriber(inwardId,subscriberId){
+
+function setInwardSubscriber(inwardId,subscriberId, purpose){
     selectedInward = inwardId;
-    selectedSubscriberId = subscriberId || 0;
+    selectedSubscriberId = subscriberId || null;
+    selectedInwardPurpose = purpose;
 }
 
 function validateNewInward(){

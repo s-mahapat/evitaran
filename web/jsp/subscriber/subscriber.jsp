@@ -74,7 +74,7 @@
                 <select class="IASComboBox" TABINDEX="4" name="district" id="district">
                     <option value="0" selected >Select</option>
                     <%
-                        if (!subscriberFormBean.getDistrict().isEmpty()) {
+                        if (subscriberFormBean.getDistrict() != null && !subscriberFormBean.getDistrict().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getDistrict() + "\"" + " selected >" + subscriberFormBean.getDistrict() + "</option>");
                         }
                     %>
@@ -91,7 +91,7 @@
                 <select class="IASComboBoxMandatory" TABINDEX="5" name="state" id="state">
                     <option value="0" selected >Select</option>
                     <%
-                        if (!subscriberFormBean.getState().isEmpty()) {
+                        if (subscriberFormBean.getState() != null && !subscriberFormBean.getState().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getState() + "\"" + " selected >" + subscriberFormBean.getState() + "</option>");
                         }
                     %>

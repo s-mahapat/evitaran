@@ -15,6 +15,7 @@
             var selectedInward = 0;
             var selectedSubscriberId = 0;
             var selectedInwardRowIndex = -1;
+            var selectedInwardPurpose = "";
             var isPageLoaded = false;
 
             $(document).ready(function(){
@@ -39,9 +40,9 @@
                     rownumbers: true,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose'],
+                    colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','PurposeID'],
                     colModel :[
-                        {name:'Select', index:'select', width:50, align:'center',xmlmap:'inwardNumber'},
+                        {name:'Select', index:'select', width:20, align:'center',xmlmap:'inwardNumber'},
                         {name:'InwardNo', index:'inward_id', width:50, align:'center', xmlmap:'inwardNumber'},
                         {name:'SubscriberId', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriberId'},
                         {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
@@ -49,6 +50,7 @@
                         {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
                         {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'chqddNumber'},
                         {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'inwardPurpose'},
+                        {name:'PurposeID', index:'purposeid', width:80, align:'center', hidden:true, xmlmap:'inwardPurposeID'}
                     ],
                     xmlReader : {
                         root: "results",
@@ -72,9 +74,12 @@
                         }
                         for (var i = 0; i < ids.length; i++) {
                             var cl = ids[i];
+
                             var inwardId = jQuery("#inwardTable").jqGrid('getCell',cl,'InwardNo').toString();
                             var subscriberId = jQuery("#inwardTable").jqGrid('getCell',cl,'SubscriberId').toString();
-                            action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + cl + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "')" + "\"" + "/>";
+                            var purpose = jQuery("#inwardTable").jqGrid('getCell',cl,'PurposeID').toString();
+                            //var purpose = jQuery("#inwardTable").jqGrid('getCell',cl,'Purpose').toString();
+                            action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + cl + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purpose + "')" + "\"" + "/>";
                             jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Select: action });
                         }
                     },
@@ -107,15 +112,27 @@
                 }
 
             }
+
+            function next(){
+                alert("here");
+                jQuery("#searchInwardForm").attr("action","");
+                //jQuery("#searchInwardForm").submit();
+
+            }
         </script>
 
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getParameter("next")%>" name="searchInwardForm" onsubmit="return isInwardSelected()">
+            <%--<form method="post" action="<%=request.getParameter("next")%>" name="searchInwardForm" onsubmit="return isInwardSelected()">--%>
+            <form method="post" action="<%=request.getContextPath()+"/inward"%>" name="searchInwardForm" onsubmit="return isInwardSelected()">
                 <input type="hidden" id="nextAction" name ="nextAction" value="<%=request.getParameter("nextAction")%>"/>
                 <input type="hidden" id="inwardPurpose" name ="inwardPurpose" value="<%=request.getParameter("inwardPurpose")%>"/>
+                <input type="hidden" id="inwardNumber" name ="inwardNumber" value=""/>
+                <input type="hidden" id="purpose" name ="purpose" value=""/>
+                <input type="hidden" id="" name ="action" value="processinward"/>
+                <input type="hidden" id="subscriberNumber" name ="subscriberNumber" value=""/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Inward</legend>
@@ -135,7 +152,7 @@
                                         <label>Inward Number:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="1" type="text" name="inwardNumber" id="inwardNumber" value=""/>
+                                        <input class="IASTextBox" TABINDEX="1" type="text" name="inwardNumber" value=""/>
                                     </span>
                                 </div>
 

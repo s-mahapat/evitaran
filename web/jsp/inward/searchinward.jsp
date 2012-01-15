@@ -40,7 +40,7 @@
                         loadtext: "Loading...",
                         colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','View/Edit'],
                         colModel :[
-                            {name:'InwardNo', index:'inward_id', width:50, align:'center', xmlmap:'inwardNumber'},
+                            {name:'InwardNo', index:'InwardNo', width:50, align:'center', xmlmap:'inwardNumber'},
                             {name:'SubscriberId', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriberId'},
                             {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
                             {name:'ReceivedDate', index:'date', width:80, align:'center', xmlmap:'inwardCreationDate'},
@@ -58,6 +58,8 @@
                             repeatitems: false,
                             id: "inwardNumber"
                         },
+                        
+                        sortname:'InwardNo',
                         pager: '#pager',
                         rowNum:10,
                         rowList:[10,20,30],

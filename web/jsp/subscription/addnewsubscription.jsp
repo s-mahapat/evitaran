@@ -24,7 +24,7 @@
 
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Add New Subscription</legend>                        
+                        <legend>Add New Subscription</legend>
                         <%@include file="subscriptiondetails.jsp"%>
                         <%@include file="selectjournal.jsp"%>
                         <%@include file="subscriptionlist.jsp"%>

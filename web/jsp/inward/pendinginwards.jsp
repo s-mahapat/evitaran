@@ -9,14 +9,17 @@
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/inward/inward.css" />
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/processinward.js"%>"></script>
-        <title>Search Inward</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
+        <title>Pending Inwards</title>
         <script type="text/javascript">
             //var calPopup = new CalendarPopup("dateDiv");
             //calPopup.showNavigationDropdowns();
             var selectedInward = 0;
-            var selectedSubscriberId = 0;
+            var selectedSubscriberId = "";
+            var selectedInwardPurpose = "";
             var isPageLoaded = false;
             $(function(){
+                $("#btnNext").attr("disabled","disabled");
 
                 // fill in the inward purpose
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=purpose"%>","purpose","inwardPurpose");
@@ -34,15 +37,17 @@
                     rownumbers: true,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose'],
+                    colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','PurposeID'],
                     colModel :[
+                        {name:'Select', index:'select', width:50, align:'center',xmlmap:'inwardNumber'},
                         {name:'InwardNo', index:'inward_id', width:50, align:'center', xmlmap:'inwardNumber'},
                         {name:'SubscriberId', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriberId'},
                         {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
                         {name:'ReceivedDate', index:'date', width:80, align:'center', xmlmap:'inwardCreationDate'},
                         {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
                         {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'chqddNumber'},
-                        {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'inwardPurpose'}
+                        {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'inwardPurpose'},
+                        {name:'PurposeID', index:'purposeid', width:80, align:'center', hidden:true, xmlmap:'inwardPurposeID'}
                     ],
                     xmlReader : {
                         root: "results",
@@ -66,11 +71,13 @@
                         }
                         for (var i = 0; i < ids.length; i++) {
                             var cl = ids[i];
-                            var purpose = jQuery("#inwardTable").jqGrid('getCell',cl,'Purpose');
-                            var inwardId = jQuery("#inwardTable").jqGrid('getCell',cl,'InwardNo');
-                            var subscriberId = jQuery("#inwardTable").jqGrid('getCell',cl,'SubscriberId');
-                            action = "<a style='color:blue;' href='inward?action=processinward&inwardNumber=" + inwardId + "&subscriberId=" + subscriberId + "&purpose=" + purpose + "'>" + purpose + "</a>";
-                            jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Purpose: action });
+                            var purpose = jQuery("#inwardTable").jqGrid('getCell',cl,'PurposeID').toString();
+                            var inwardId = jQuery("#inwardTable").jqGrid('getCell',cl,'InwardNo').toString();
+                            var subscriberId = jQuery("#inwardTable").jqGrid('getCell',cl,'SubscriberId').toString();
+                            //action = "<a onclick='alert(123)' style='color:blue;' href='inward?action=processinward&inwardNumber=" + inwardId + "&subscriberNumber=" + subscriberId + "&purpose=" + purpose + "'>" + purpose + "</a>";
+                            //jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Purpose: action });
+                            action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + cl + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purpose + "')" + "\"" + "/>";
+                            jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Select: action });
                         }
                     },
                     beforeRequest: function(){
@@ -110,10 +117,10 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="processInwardForm">
+            <form method="post" action="" name="processInwardForm" onsubmit="return isInwardSelected()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Process Inward</legend>
+                        <legend>Pending Inwards</legend>
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
@@ -175,6 +182,13 @@
 
                             <table class="datatable" id="inwardTable"></table>
                             <div id="pager"></div>
+                        </fieldset>
+                        <fieldset class="subMainFieldSet">
+                            <div class="IASFormFieldDiv">
+                                <div class="singleActionBtnDiv">
+                                    <input class="IASButton" TABINDEX="8" type="submit" value="Next" id="btnNext" name="btnNext"/>
+                                </div>
+                            </div>
                         </fieldset>
                     </fieldset>
                 </div>

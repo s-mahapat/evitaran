@@ -1,5 +1,5 @@
 <%@page errorPage="../errors/error.jsp" %>
-<jsp:useBean class="IAS.Bean.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
+<jsp:useBean class="IAS.Bean.Inward.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

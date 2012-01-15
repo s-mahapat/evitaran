@@ -31,9 +31,6 @@
     <servlet>
         <servlet-name>main</servlet-name>
         <servlet-class>IAS.Controller.main</servlet-class>
-        <run-as>
-            <role-name>user</role-name>
-        </run-as>
     </servlet>
     <servlet>
         <servlet-name>inward</servlet-name>
@@ -78,6 +75,9 @@
     <servlet>
         <servlet-name>MasterData</servlet-name>
         <servlet-class>IAS.Model.MasterData</servlet-class>
+        <run-as>
+            <role-name>user</role-name>
+        </run-as>
     </servlet>
     <servlet>
         <servlet-name>CMasterData</servlet-name>
@@ -88,7 +88,7 @@
     </servlet>
     <servlet>
         <servlet-name>inwardModel</servlet-name>
-        <servlet-class>IAS.Model.inwardModel</servlet-class>
+        <servlet-class>IAS.Model.Inward.inwardModel</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>errorHandler</servlet-name>
@@ -113,6 +113,14 @@
     <servlet>
         <servlet-name>state</servlet-name>
         <servlet-class>IAS.Controller.masterdata.state</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addMasterData</servlet-name>
+        <servlet-class>IAS.Controller.addMasterData</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>inwardGateKeeper</servlet-name>
+        <servlet-class>IAS.Controller.inwardGateKeeper</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
@@ -190,6 +198,14 @@
         <servlet-name>state</servlet-name>
         <url-pattern>/state</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addMasterData</servlet-name>
+        <url-pattern>/addMasterData</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>inwardGateKeeper</servlet-name>
+        <url-pattern>/inwardGateKeeper</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
@@ -197,12 +213,28 @@
     <welcome-file-list>
         <welcome-file>/home</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/jsp/errors/403.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.servlet.ServletException</exception-type>
+        <location>/jsp/errors/error.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/jsp/errors/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/jsp/errors/error.jsp</location>
+    </error-page>
     <security-constraint>
         <display-name>Authentication</display-name>
         <web-resource-collection>
             <web-resource-name>JDS</web-resource-name>
             <description> accessible by authenticated users of the user role</description>
-            <url-pattern>*.jsp</url-pattern>
+            <url-pattern>/jsp/*</url-pattern>
         </web-resource-collection>
         <web-resource-collection>
             <web-resource-name>home</web-resource-name>
@@ -212,6 +244,19 @@
         <auth-constraint>
             <description/>
             <role-name>user</role-name>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>MasterDataAccess</display-name>
+        <web-resource-collection>
+            <web-resource-name>MasterData</web-resource-name>
+            <description/>
+            <url-pattern>/addMasterData</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin</role-name>
         </auth-constraint>
     </security-constraint>
     <login-config>
@@ -225,5 +270,9 @@
     <security-role>
         <description>Only 'user' role is allowed to access this web application</description>
         <role-name>user</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>admin</role-name>
     </security-role>
 </web-app>

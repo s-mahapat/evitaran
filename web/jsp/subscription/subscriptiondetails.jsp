@@ -1,6 +1,7 @@
 <%--
     Document   : Subscription
 --%>
+<jsp:useBean class="IAS.Bean.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
 <fieldset class="subMainFieldSet">
     <legend>Subscription Details</legend>
 
@@ -11,7 +12,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="1" type="text" name="subscriberID" id="subscriberID" value=""/>
+                <input class="IASTextBox" TABINDEX="1" type="text" name="subscriberID" id="subscriberID" value="${subscriberFormBean.subscriberNumber}"/>
             </span>
         </div>
 
@@ -22,7 +23,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value=""/>
+                <input class="IASTextBox" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
             </span>
         </div>
     </div>

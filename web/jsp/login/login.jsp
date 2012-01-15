@@ -17,7 +17,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <%@include file="../templates/style.jsp"%>
         <title>Login</title>
-        <script type="text/javascript" src="js/login.js"></script>
+        <script type="text/javascript" src="/js/login.js"></script>
         <script>
             $(function() {
                 $( "#loginDiv" ).tabs();

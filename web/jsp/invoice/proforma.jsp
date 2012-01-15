@@ -4,16 +4,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
+        <script type="text/javascript" src="js/jquery/jquery.print-preview.js"></script>
+        <link rel="stylesheet"  media="screen" type="text/css" href="<%=request.getContextPath() + "/css/jquery/print-preview.css"%>"/>
+        <script type="text/javascript" src="js/invoice/proforma.js"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/invoice/invoice.css"%>" media="screen"/>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/invoice/invoiceprint.css"%>" media="print"/>
+
         <title>Proforma Invoice</title>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
             <form name="pfinvoice">
-                <div class="InvoiceMainDiv">
-                    <div class="InvoiceSubMainDiv">
+                <div class="InvoiceMainDiv" id="InvoiceMainDiv">
+                    <div class="InvoiceSubMainDiv" id="InvoiceSubMainDiv">
                         <fieldset class="subMainFieldSet">
                             <div class="invoceTelephoneDiv">
                                 Phone: 3342546<br>
@@ -208,9 +212,17 @@
                             </div>
 
                         </fieldset>
+
                     </div>
+                    <fieldset class="subMainFieldSet">
+                        <div class="actionBtnDiv" style="margin-top: 10px;">
+                            <input TABINDEX="1" class="IASButton" type="button" value="Print" id="btnPrintPreview" name="btnPrintPreview" onclick="showProformaPrintPreview()"/>
+                        </div>
+                    </fieldset>
                 </div>
+
             </form>
         </div>
+        <div id="printPreview"></div>
     </body>
 </html>

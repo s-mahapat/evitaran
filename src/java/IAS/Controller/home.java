@@ -59,7 +59,7 @@ public class home extends HttpServlet {
                 if(db == null){
                     connection = DriverManager.getConnection(dbURL, username, password);
                     connection.setAutoCommit(true);
-                    db = new Database(connection,request.getServletContext());
+                    db = new Database(connection, this.getServletContext());
                     session.setAttribute("db_connection", db);
                 }
 

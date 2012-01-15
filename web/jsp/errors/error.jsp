@@ -1,8 +1,5 @@
-<%@page isErrorPage="true" %>
+<%@page isErrorPage="true"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    Exception _exception = (Exception)request.getAttribute("exception");
-%>
 <!DOCTYPE html>
 <html>
 
@@ -17,45 +14,46 @@
             <div class="MainDiv">
                 <fieldset class="MainFieldset">
                     <fieldset class="subMainFieldSet">
+                        <table class="datatable">
+                            <%
+                                if (exception != null) {
+                                    out.println("<tr><td>Exception Class</td><td>");
+                                    out.println(exception.getClass());
+                                    out.println("</tr></td>");
 
+                                    out.println("<tr><td>Exception Message</td><td>");
+                                    out.println(exception.getMessage());
+                                    out.println("</tr></td>");
+                                    out.flush();
+                                }
 
-                        <table id="datatable">
-                            <tr>
-                                <td>Exception Class</td>
-                                <td>
-                                    <%
-                                        if (_exception != null) {
-                                            out.println(_exception.getClass());
-                                        }
-                                    %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Exception Message</td>
-                                <td>
-                                    <%
-                                        if (_exception != null) {
-                                            out.println(_exception.getMessage());
-                                        }
-                                    %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Exception stack trace</td>
-                                <td>
-                                    <%
-                                        if (_exception != null) {
-                                            _exception.printStackTrace(response.getWriter());
-                                        }
-                                    %>
-                                </td>
-                            </tr>
+                            %>
                         </table>
+                        <p>
+                            <b>Exception Stack Trace</b>
+                        </p>
+                        <p>
+                            <%
+                                if (exception != null) {
+                                    StackTraceElement elements[] = exception.getStackTrace();
+                                    for (int i = 0, n = elements.length; i < n; i++) {
+
+                                        out.println("<p>");
+                                        out.println("Class: " + elements[i].getClassName() + "<br>");
+                                        out.println("Method Name: " + elements[i].getMethodName() + "<br>");
+                                        out.println("Line Number: " + elements[i].getLineNumber() + "<br>");
+                                        out.println("File Name: " + elements[i].getFileName() + "<br>");
+                                        out.println("</p>");
+                                    }
+                                    //exception.printStackTrace(response.getWriter());
+
+                                }
+                            %>
+                        </p>
+
                     </fieldset>
                 </fieldset>
             </div>
-
-
         </div>
     </body>
 </html>
