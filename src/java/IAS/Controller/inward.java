@@ -8,10 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import IAS.Model.Inward.inwardModel;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.*;
+import IAS.Class.JDSLogger;
 
 public class inward extends HttpServlet {
 
     private inwardModel _inwardModel = null;
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.inward");
+
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -103,6 +107,12 @@ public class inward extends HttpServlet {
                     //Request for Invoice
                     url = "/jsp/invoice/proforma.jsp";
 
+                }else if(purposeID == 100){
+                    // Add Free Subscriber
+                    url = "/jsp/subscriber/afs.jsp";
+                }else if(purposeID == 200){
+                    // Add Summer Fellows
+                    url = "/jsp/subscriber/asf.jsp";
                 }
 
             } else if (action.equalsIgnoreCase("saveReturn")) {
@@ -112,6 +122,7 @@ public class inward extends HttpServlet {
                 }
             }
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
 
         } finally {

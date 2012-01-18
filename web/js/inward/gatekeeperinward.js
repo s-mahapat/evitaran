@@ -1,6 +1,6 @@
 var isSubscriberMandatory = true;
-/*
- * To change this template, choose Tools | Templates
+var resetpurposeID = true;
+ /* To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 function isInwardSelected(){
@@ -35,7 +35,12 @@ function isInwardSelected(){
         }
         return false;
     }
-    $("#purpose").val(selectedInwardPurpose);
+    /*if the purpose came from the controller leave it as it is
+     * This handles the cases of add free subscriber and summer fellows
+     */
+    if(isEmptyValue($("#purpose").val())){
+        $("#purpose").val(selectedInwardPurpose);
+    }
     $("#inwardNumber").val(selectedInward.toString());
     $("#subscriberNumber").val(selectedSubscriberId.toString());
     return true;

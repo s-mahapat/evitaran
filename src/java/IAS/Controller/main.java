@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package IAS.Controller;
 
 import java.io.IOException;
@@ -10,12 +6,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import org.apache.log4j.*;
+import IAS.Class.JDSLogger;
 
-/**
- *
- * @author Shailendra Mahapatra
- */
+
 public class main extends HttpServlet {
+
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.main");
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -28,169 +25,170 @@ public class main extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String url = null;
-        try {
-            if (action.equalsIgnoreCase("home")) {
+        if (action.equalsIgnoreCase("home")) {
 
-                url = "/jsp/home.jsp";
+            url = "/jsp/home.jsp";
 
-            } else if (action.equalsIgnoreCase("logout")) {
+        } else if (action.equalsIgnoreCase("logout")) {
 
-                request.getSession().invalidate();
-                response.sendRedirect(request.getContextPath() + "/home");
-                //url = "/jsp/login/login.jsp";
+            request.getSession().invalidate();
+            response.sendRedirect(request.getContextPath() + "/home");
+            //url = "/jsp/login/login.jsp";
 
-            } else if (action.equalsIgnoreCase("createinward")) {
+        } else if (action.equalsIgnoreCase("createinward")) {
 
-                url = "/jsp/inward/createinward.jsp";
+            url = "/jsp/inward/createinward.jsp";
 
-            } else if (action.equalsIgnoreCase("searchinward")) {
+        } else if (action.equalsIgnoreCase("searchinward")) {
 
-                url = "/jsp/inward/searchinward.jsp";
+            url = "/jsp/inward/searchinward.jsp";
 
-            } else if (action.equalsIgnoreCase("pendinginwards")) {
+        } else if (action.equalsIgnoreCase("pendinginwards")) {
 
-                url = "/jsp/inward/pendinginwards.jsp";
+            url = "/jsp/inward/pendinginwards.jsp";
 
-            } else if (action.equalsIgnoreCase("gml")) {
+        } else if (action.equalsIgnoreCase("gml")) {
 
-                url = "/jsp/ml/generateml.jsp?list=ml";
+            url = "/jsp/ml/generateml.jsp?list=ml";
 
-            } else if (action.equalsIgnoreCase("gbil")) {
+        } else if (action.equalsIgnoreCase("gbil")) {
 
-                url = "/jsp/ml/generateml.jsp?list=bil";
+            url = "/jsp/ml/generateml.jsp?list=bil";
 
-            } else if (action.equalsIgnoreCase("newsubscription")) {
+        } else if (action.equalsIgnoreCase("newsubscription")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=newsubscription&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/jsp/subscriber/createsubscriber.jsp";
+            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=newsubscription&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/jsp/subscriber/createsubscriber.jsp";
 
-            } else if (action.equalsIgnoreCase("renewsubscription")) {
+        } else if (action.equalsIgnoreCase("renewsubscription")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=renewsubscription&inwardPurpose=Renew Subscription&next=" + request.getContextPath() + "/jsp/subscription/addnewsubscription.jsp";
+            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=renewsubscription&inwardPurpose=Renew Subscription&next=" + request.getContextPath() + "/jsp/subscription/addnewsubscription.jsp";
 
-            } else if (action.equalsIgnoreCase("missingissue")) {
+        } else if (action.equalsIgnoreCase("missingissue")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=missingissue&inwardPurpose=Missing Issue&next=" + request.getContextPath() + "/jsp/missingissue/missingissuelist.jsp";
+            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=missingissue&inwardPurpose=Missing Issue&next=" + request.getContextPath() + "/jsp/missingissue/missingissuelist.jsp";
 
-            } else if (action.equalsIgnoreCase("gcreatesubscriber")) {
+        } else if (action.equalsIgnoreCase("gcreatesubscriber")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/main?action=createsubscriber";
+            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/main?action=createsubscriber";
 
-            } else if (action.equalsIgnoreCase("createsubscriber")) {
+        } else if (action.equalsIgnoreCase("createsubscriber")) {
 
-                url = "/jsp/subscriber/createsubscriber.jsp";
-            }
-            else if (action.equalsIgnoreCase("searchsubscriber")) {
+            url = "/jsp/subscriber/createsubscriber.jsp";
+        } else if (action.equalsIgnoreCase("searchsubscriber")) {
 
-                url = "/jsp/subscriber/searchsubscriber.jsp";
+            url = "/jsp/subscriber/searchsubscriber.jsp";
 
-            } else if (action.equalsIgnoreCase("addresschange")) {
+        } else if (action.equalsIgnoreCase("addresschange")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=addresschange&inwardPurpose=Address Change&next=" + request.getContextPath() + "/jsp/subscriber/editsubscriber.jsp";
+            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=addresschange&inwardPurpose=Address Change&next=" + request.getContextPath() + "/jsp/subscriber/editsubscriber.jsp";
 
-            } else if (action.equalsIgnoreCase("searchSubType")) {
+        } else if (action.equalsIgnoreCase("searchSubType")) {
 
-                url = "/jsp/masterdata/searchSubType.jsp";
+            url = "/jsp/masterdata/searchSubType.jsp";
 
-            } else if (action.equalsIgnoreCase("searchJournal")) {
+        } else if (action.equalsIgnoreCase("searchJournal")) {
 
-                url = "/jsp/masterdata/searchJournal.jsp";
+            url = "/jsp/masterdata/searchJournal.jsp";
 
-            } else if (action.equalsIgnoreCase("searchAgent")) {
+        } else if (action.equalsIgnoreCase("searchAgent")) {
 
-                url = "/jsp/masterdata/searchAgent.jsp";
+            url = "/jsp/masterdata/searchAgent.jsp";
 
-            } else if (action.equalsIgnoreCase("subRate")) {
+        } else if (action.equalsIgnoreCase("subRate")) {
 
-                url = "/jsp/masterdata/annualSubscriptionrates.jsp";
+            url = "/jsp/masterdata/annualSubscriptionrates.jsp";
 
-            }else if (action.equalsIgnoreCase("searchCity")) {
+        } else if (action.equalsIgnoreCase("searchCity")) {
 
-                url = "/jsp/masterdata/searchCity.jsp";
+            url = "/jsp/masterdata/searchCity.jsp";
 
-            } else if (action.equalsIgnoreCase("searchCountry")) {
+        } else if (action.equalsIgnoreCase("searchCountry")) {
 
-                url = "/jsp/masterdata/searchCountry.jsp";
+            url = "/jsp/masterdata/searchCountry.jsp";
 
-            } else if (action.equalsIgnoreCase("searchDistrict")) {
+        } else if (action.equalsIgnoreCase("searchDistrict")) {
 
-                url = "/jsp/masterdata/searchDistirct.jsp";
+            url = "/jsp/masterdata/searchDistirct.jsp";
 
-            } else if (action.equalsIgnoreCase("searchState")) {
+        } else if (action.equalsIgnoreCase("searchState")) {
 
-                url = "/jsp/masterdata/searchState.jsp";
+            url = "/jsp/masterdata/searchState.jsp";
 
-            } else if (action.equalsIgnoreCase("listAgent")) {
+        } else if (action.equalsIgnoreCase("listAgent")) {
 
-                url = "/jsp/reports/listAgent.jsp";
+            url = "/jsp/reports/listAgent.jsp";
 
-            } else if (action.equalsIgnoreCase("listBackissue")) {
+        } else if (action.equalsIgnoreCase("listBackissue")) {
 
-                url = "/jsp/reports/listBackissue.jsp";
+            url = "/jsp/reports/listBackissue.jsp";
 
-            } else if (action.equalsIgnoreCase("listJournals")) {
+        } else if (action.equalsIgnoreCase("listJournals")) {
 
-                url = "/jsp/reports/listJournals.jsp";
+            url = "/jsp/reports/listJournals.jsp";
 
-            } else if (action.equalsIgnoreCase("listReminder")) {
+        } else if (action.equalsIgnoreCase("listReminder")) {
 
-                url = "/jsp/reports/listRenewalReminder.jsp";
+            url = "/jsp/reports/listRenewalReminder.jsp";
 
-            } else if (action.equalsIgnoreCase("listSubType")) {
+        } else if (action.equalsIgnoreCase("listSubType")) {
 
-                url = "/jsp/reports/listSubType.jsp";
+            url = "/jsp/reports/listSubType.jsp";
 
-            } else if (action.equalsIgnoreCase("listSubscriber")) {
+        } else if (action.equalsIgnoreCase("listSubscriber")) {
 
-                url = "/jsp/reports/listSubscriber.jsp";
+            url = "/jsp/reports/listSubscriber.jsp";
 
-            } else if (action.equalsIgnoreCase("listmailinglist")) {
+        } else if (action.equalsIgnoreCase("listmailinglist")) {
 
-                url = "/jsp/reports/listmailinglist.jsp";
+            url = "/jsp/reports/listmailinglist.jsp";
 
-            } else if (action.equalsIgnoreCase("statement")) {
+        } else if (action.equalsIgnoreCase("statement")) {
 
-                url = "/jsp/reports/statement.jsp";
+            url = "/jsp/reports/statement.jsp";
 
-            } else if (action.equalsIgnoreCase("journalRates")) {
+        } else if (action.equalsIgnoreCase("journalRates")) {
 
-                url = "/jsp/reports/journalRates.jsp";
+            url = "/jsp/reports/journalRates.jsp";
 
-            } else if (action.equalsIgnoreCase("circulationFigure")) {
+        } else if (action.equalsIgnoreCase("circulationFigure")) {
 
-                url = "/jsp/reports/circulationFiguresJournal.jsp";
+            url = "/jsp/reports/circulationFiguresJournal.jsp";
 
-            } else if (action.equalsIgnoreCase("listprofarmaInvoice")) {
+        } else if (action.equalsIgnoreCase("listprofarmaInvoice")) {
 
-                url = "/jsp/reports/listprofarmaInvoice.jsp";
+            url = "/jsp/reports/listprofarmaInvoice.jsp";
 
-            } else if (action.equalsIgnoreCase("sendReminders")) {
+        } else if (action.equalsIgnoreCase("sendReminders")) {
 
-                url = "/jsp/reminders/sendReminders.jsp";
+            url = "/jsp/reminders/sendReminders.jsp";
 
-            } else if(action.equalsIgnoreCase("gpi")){
+        } else if (action.equalsIgnoreCase("gpi")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=gpi&inwardPurpose=Request For Invoice&next=" + request.getContextPath() + "/jsp/invoice/proforma.jsp";
+            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=gpi&inwardPurpose=Request For Invoice&next=" + request.getContextPath() + "/jsp/invoice/proforma.jsp";
 
-            } else if (action.equals("urn")) {
+        } else if (action.equals("urn")) {
 
-                url = "/jsp/inward/urn.jsp";
+            url = "/jsp/inward/urn.jsp";
 
-            } else if (action.equals("asf")) {
+        } else if (action.equals("asf")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/jsp/subscriber/asf.jsp";
+            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&purpose=200";
 
-            }else if (action.equals("afs")) {
+        } else if (action.equals("afs")) {
 
-                url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/jsp/subscriber/afs.jsp";
+            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&purpose=100";
 
-            }
-
-
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
-        } catch (Exception e) {
-        } finally {
         }
+
+        if(url == null){
+            url = "/jsp/errors/404.jsp";
+            logger.error("Redirect url was not found, forwarding to 404");
+        }
+
+
+        RequestDispatcher rd = request.getRequestDispatcher(url);
+        rd.forward(request, response);
+
 
     }
 

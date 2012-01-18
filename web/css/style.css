@@ -471,3 +471,11 @@ A:active {
     text-align: center;
     font-size: larger;
 }
+
+#pageNotFoundError{
+    background-image: url("../images/404.png");
+    background-repeat: no-repeat;
+    width: 527px;
+    height: 306px;
+    margin: 0 auto;
+}
