@@ -29,17 +29,27 @@ public class district extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        String district = request.getParameter("district");
+        
         districtFormBean _districtFormBean = new IAS.Bean.masterdata.districtFormBean();
+
         String url = null;
         try{
             _districtModel = new IAS.Model.masterdata.districtModel(request, _districtFormBean);
             if(action.equalsIgnoreCase("save")){
-                _districtModel.Save(request, _districtFormBean);
+                _districtModel.Save();
                 url = "/jsp/masterdata/displayDistrict.jsp";
             }else if(action.equalsIgnoreCase("edit")){
+                _districtModel.editDistrict();
                 url = "/jsp/masterdata/editDistrict.jsp";
             }else if(action.equalsIgnoreCase("view")){
+                _districtModel.viewDistrict();
                 url = "/jsp/masterdata/displayDistrict.jsp";
+            }else if(action.equalsIgnoreCase("search")){
+                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
+                String xml = _districtModel.searchDistrict();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";            
             }
             
             RequestDispatcher rd = request.getRequestDispatcher(url);

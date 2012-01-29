@@ -4,7 +4,6 @@
  */
 package IAS.Controller.masterdata;
 
-import IAS.Controller.*;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,17 +28,27 @@ public class country extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        
+        String country = request.getParameter("country");
+        
         countryFormBean _countryFormBean = new IAS.Bean.masterdata.countryFormBean();
         String url = null;
         try{
             _countryModel = new IAS.Model.masterdata.countryModel(request, _countryFormBean);
             if(action.equalsIgnoreCase("save")){
-                _countryModel.Save(request, _countryFormBean);
+                _countryModel.Save();
                 url = "/jsp/masterdata/displayCountry.jsp";
             }else if(action.equalsIgnoreCase("edit")){
+                _countryModel.editCountry();
                 url = "/jsp/masterdata/editCountry.jsp";
             }else if(action.equalsIgnoreCase("view")){
+                _countryModel.viewCountry();
                 url = "/jsp/masterdata/displayCountry.jsp";
+            }else if(action.equalsIgnoreCase("search")){
+                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
+                String xml = _countryModel.searchCountry();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";            
             }
             
             RequestDispatcher rd = request.getRequestDispatcher(url);

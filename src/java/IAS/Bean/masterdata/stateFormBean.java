@@ -20,7 +20,7 @@ public int getStateId() {
         return (this.stateId);
     }
 
-public void setState(int _StateId) {
+public void setStateId(int _StateId) {
         this.stateId = _StateId;
     }
 

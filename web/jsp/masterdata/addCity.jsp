@@ -20,7 +20,6 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <jsp:useBean class="IAS.Bean.masterdata.cityFormBean" id="cityFormBean" scope="request"></jsp:useBean>
             <form method="post" action="<%=request.getContextPath() + "/city"%>" name="cityForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">

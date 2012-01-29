@@ -34,12 +34,19 @@ public class state extends HttpServlet {
         try{
             _stateModel = new IAS.Model.masterdata.stateModel(request, _stateFormBean);
             if(action.equalsIgnoreCase("save")){
-                _stateModel.Save(request, _stateFormBean);
+                _stateModel.Save();
                 url = "/jsp/masterdata/displayState.jsp";
             }else if(action.equalsIgnoreCase("edit")){
+                _stateModel.editState();
                 url = "/jsp/masterdata/editState.jsp";
             }else if(action.equalsIgnoreCase("view")){
+                _stateModel.viewState();
                 url = "/jsp/masterdata/displayState.jsp";
+            }else if(action.equalsIgnoreCase("search")){
+                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
+                String xml = _stateModel.searchState();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";            
             }
             
             RequestDispatcher rd = request.getRequestDispatcher(url);

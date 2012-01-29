@@ -1,4 +1,4 @@
-
+<jsp:useBean class="IAS.Bean.masterdata.stateFormBean" id="stateFormBean" scope="request"></jsp:useBean>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- State Basic data Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>
@@ -12,7 +12,7 @@
                     <label>State Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="stateId" id="stateId" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="1" type="text" name="stateId" id="stateId" value="<jsp:getProperty name="stateFormBean" property="stateId"/>"/>
                 </span>
             </div>
             <div class="IASFormFieldDiv">
@@ -20,7 +20,7 @@
                     <label>State:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="state" id="state" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="1" type="text" name="state" id="state" value="<jsp:getProperty name="stateFormBean" property="state"/>"/>
                 </span>
             </div>
         </div>

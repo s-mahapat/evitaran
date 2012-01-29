@@ -15,7 +15,7 @@ import IAS.Bean.masterdata.cityFormBean;
 import IAS.Model.masterdata.cityModel;
 /**
  *
- * @author Shailendra Mahapatra
+ * @author Deepali gokhale
  */
 public class city extends HttpServlet {
     private cityModel _cityModel = null;
@@ -37,14 +37,20 @@ public class city extends HttpServlet {
             _cityModel = new IAS.Model.masterdata.cityModel(request, _cityFormBean);
             
             if(action.equalsIgnoreCase("save")){
-                _cityModel.Save(request, _cityFormBean);
+                _cityModel.Save();
                 url = "/jsp/masterdata/displayCity.jsp";
             }else if(action.equalsIgnoreCase("edit")){
+                _cityModel.editCity();
                 url = "/jsp/masterdata/editCity.jsp";
             }else if(action.equalsIgnoreCase("view")){
+                _cityModel.viewCity();
                 url = "/jsp/masterdata/displayCity.jsp";
+            }else if(action.equalsIgnoreCase("search")){
+                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
+                String xml = _cityModel.searchCity();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";            
             }
-            
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }

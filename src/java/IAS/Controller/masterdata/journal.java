@@ -10,12 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import IAS.Bean.masterdata.journalFormBean;
+import IAS.Model.masterdata.journalModel;
 /**
  *
  * @author Shailendra Mahapatra
  */
 public class journal extends HttpServlet {
-
+    private journalModel _journalModel = null;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -26,13 +28,18 @@ public class journal extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        journalFormBean _journalFormBean = new IAS.Bean.masterdata.journalFormBean();
         String url = null;
         try{
+            _journalModel = new IAS.Model.masterdata.journalModel(request, _journalFormBean);
             if(action.equalsIgnoreCase("save")){
+                _journalModel.Save();
                 url = "/jsp/masterdata/displayJournal.jsp";
             }else if(action.equalsIgnoreCase("edit")){
+                 _journalModel.editJournal();
                 url = "/jsp/masterdata/editJournal.jsp";
             }else if(action.equalsIgnoreCase("view")){
+                 _journalModel.viewJournal();
                 url = "/jsp/masterdata/displayJournal.jsp";
             }
             

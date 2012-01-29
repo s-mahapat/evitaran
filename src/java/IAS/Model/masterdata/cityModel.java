@@ -12,7 +12,10 @@ import java.sql.*;
 import IAS.Model.*;
 import java.text.ParseException;
 import IAS.Class.Queries;
-
+import org.apache.commons.dbutils.BeanProcessor;
+import IAS.Class.util;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 /**
  *
  * @author Deepali
@@ -37,16 +40,20 @@ public class cityModel extends JDSModel{
 
     }
     
-        public int Save (HttpServletRequest request, cityFormBean _Bean) throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException{
+    public void Save () throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
 
+        //cityFormBean cityFormBean = new IAS.Bean.masterdata.cityFormBean();
         String sql;
 
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        FillBean(this.request,_Bean);
-        request.setAttribute("cityFormBean", _Bean);
-
-
+        FillBean(this.request, _cityFormBean);    
+        
+        if (_cityFormBean.getCityId() != 0) {
+            
+            this._updateCity();
+            
+        } else {
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("city_insert");
@@ -54,8 +61,111 @@ public class cityModel extends JDSModel{
         PreparedStatement st = conn.prepareStatement(sql);
         int paramIndex = 1;
         st.setString(paramIndex, _cityFormBean.getCity());
-        return db.executeUpdatePreparedStatement(st);
+        db.executeUpdatePreparedStatement(st);
+        
+        sql = Queries.getQuery("get_city_by_name");
+
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        paramIndex = 1;
+        stGet.setString(paramIndex, _cityFormBean.getCity());
+        ResultSet rs = db.executeQueryPreparedStatement(stGet);
+        
+        // populate the bean from the resultset using the beanprocessor class
+        while (rs.next()) {
+            
+            BeanProcessor bProc = new BeanProcessor();
+            Class type = Class.forName("IAS.Bean.masterdata.cityFormBean");
+            this._cityFormBean = (IAS.Bean.masterdata.cityFormBean) bProc.toBean(rs, type);
+        }
+        rs.close(); 
+        
+        request.setAttribute("cityFormBean", this._cityFormBean);
+        }
+    }
+        
+    public String editCity() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
+
+        return this.GetCity();
 
     }
-}
+
+    public String viewCity() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
+
+        return this.GetCity();
+
+    }   
+
+    public String GetCity() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
+
+        String sql;
         
+        //FillBean is defined in the parent class IAS.Model/JDSModel.java
+        FillBean(this.request, _cityFormBean);
+
+        // the query name from the jds_sql properties files in WEB-INF/properties folder
+        sql = Queries.getQuery("get_city_by_id");
+
+        PreparedStatement st = conn.prepareStatement(sql);
+
+        st.setInt(1, _cityFormBean.getCityId());
+
+        ResultSet rs = db.executeQueryPreparedStatement(st);
+        // populate the bean from the resultset using the beanprocessor class
+        while (rs.next()) {
+            BeanProcessor bProc = new BeanProcessor();
+            Class type = Class.forName("IAS.Bean.masterdata.cityFormBean");
+            this._cityFormBean = (IAS.Bean.masterdata.cityFormBean) bProc.toBean(rs, type);
+        }
+        rs.close();
+
+        request.setAttribute("cityFormBean", this._cityFormBean);
+        return _cityFormBean.getCity();
+    }
+    
+    private void _updateCity() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
+
+        // the query name from the jds_sql properties files in WEB-INF/properties folder
+        String sql = Queries.getQuery("update_city");
+
+        PreparedStatement st = conn.prepareStatement(sql);
+
+        int paramIndex = 1;
+        st.setString(paramIndex, _cityFormBean.getCity());
+        st.setInt(++paramIndex, _cityFormBean.getCityId());
+        db.executeUpdatePreparedStatement(st);
+
+        sql = Queries.getQuery("get_city_by_id");
+
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        paramIndex = 1;
+        stGet.setInt(paramIndex, _cityFormBean.getCityId());
+        ResultSet rs = db.executeQueryPreparedStatement(stGet);
+        
+        // populate the bean from the resultset using the beanprocessor class
+        while (rs.next()) {
+            
+            BeanProcessor bProc = new BeanProcessor();
+            Class type = Class.forName("IAS.Bean.masterdata.cityFormBean");
+            this._cityFormBean = (IAS.Bean.masterdata.cityFormBean) bProc.toBean(rs, type);
+        }
+        rs.close(); 
+        
+        request.setAttribute("cityFormBean", this._cityFormBean);
+    }
+
+    public String searchCity() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String xml = null;
+        String sql = Queries.getQuery("search_city");
+        
+        ResultSet rs = this.db.executeQuery(sql);
+
+        xml = util.convertResultSetToXML(rs);
+
+        return xml;
+    }
+}        
+       

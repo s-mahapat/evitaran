@@ -10,12 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import IAS.Bean.masterdata.agentFormBean;
+import IAS.Model.masterdata.agentModel;
 /**
  *
  * @author Shailendra Mahapatra
  */
 public class agent1 extends HttpServlet {
-
+    private agentModel _agentModel = null;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -26,14 +28,24 @@ public class agent1 extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        agentFormBean _agentFormBean = new IAS.Bean.masterdata.agentFormBean();
         String url = null;
         try{
+            _agentModel = new IAS.Model.masterdata.agentModel(request, _agentFormBean);
             if(action.equalsIgnoreCase("save")){
+                _agentModel.Save();
                 url = "/jsp/masterdata/displayAgent.jsp";
             }else if(action.equalsIgnoreCase("edit")){
+                _agentModel.editAgent();
                 url = "/jsp/masterdata/editAgent.jsp";
             }else if(action.equalsIgnoreCase("view")){
+                _agentModel.viewAgent();
                 url = "/jsp/masterdata/displayAgent.jsp";
+            }else if(action.equalsIgnoreCase("search")){
+                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
+                String xml = _agentModel.searchAgent();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";            
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

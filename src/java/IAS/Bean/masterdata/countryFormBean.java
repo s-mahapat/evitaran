@@ -4,23 +4,24 @@
  */
 package IAS.Bean.masterdata;
 
+import IAS.Bean.*;
+
 /**
  *
  * @author Deepali
  */
-public class countryFormBean {
+public class countryFormBean extends JDSBean{
     
         /* fields */
-    private int countryId = 0;
+    private int countryId;
     private String country = "";
     
-
 
 public int getCountryId() {
         return (this.countryId);
     }
 
-public void setCountry(int _CountryId) {
+public void setCountryId(int _CountryId) {
         this.countryId = _CountryId;
     }
 

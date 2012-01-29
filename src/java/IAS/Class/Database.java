@@ -40,7 +40,7 @@ public class Database implements HttpSessionBindingListener {
 
     @Override
     public void valueBound(HttpSessionBindingEvent e) {
-        context.log("Session Bound event");
+        //context.log("Session Bound event");
     }
 
     public Connection getConnection() {

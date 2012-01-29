@@ -75,6 +75,15 @@
 
         <div id="bodyContainer">
             <form method="post" action="" name="listSubscriber">
+               <script>
+                    $(document).ready(function() {
+                        jdsAppend("/JDS/CMasterData?md=city","city","city");
+                        jdsAppend("/JDS/CMasterData?md=country","country","country");
+                        jdsAppend("/JDS/CMasterData?md=state","state","state");
+                        jdsAppend("/JDS/CMasterData?md=district","district","district");
+                        jdsAppend("/JDS/CMasterData?md=sub_type","subtype","subtype");
+                    });   
+                </script>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List and Print Subscribers</legend>

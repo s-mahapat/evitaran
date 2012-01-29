@@ -1,19 +1,16 @@
+<%@page errorPage="../errorHandler"%>
+<%@page import="IAS.Class.util"%>
 
-<%-- Calendar --%>
-<%--------------------------------------------------------------%>
-<script src="<%=request.getContextPath() + "/js/CalendarPopup.js"%>" type="text/javascript"></script>
+<jsp:useBean class="IAS.Bean.masterdata.agentFormBean" id="agentFormBean" scope="request"></jsp:useBean>
 <script type="text/javascript">
-    //var calFrom = new CalendarPopup("dateDiv");
-    //calFrom.showNavigationDropdowns();
-    $(function() {
-		$( "#regDate" ).datepicker({
-			showOn: "button",
-                        dateFormat: 'dd/mm/yy',
-			buttonImage: "images/calendar.gif",
-			buttonImageOnly: true
-		});
-	});
+    $(document).ready(function() {
+        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=country"%>","country","country");
+        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=state"%>","state","state");
+        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=district"%>","district","district");
+        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
+    });
 
+    jQueryCalendar("regDate");
 </script>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Agent Data Basic data Field Set --%>
@@ -28,7 +25,7 @@
                     <label>Agent Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="agentId" id="agentId" value=""/>
+                    <input class="IASTextBox" TABINDEX="1" type="text" name="agentId" id="agentId" value="<jsp:getProperty name="agentFormBean" property="agentId"/>"/>
                 </span>
             </div>
 
@@ -37,7 +34,7 @@
                     <label>Agent Name:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="agentName" id="agentName" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="10" type="text" name="agentName" id="agentName" value="<jsp:getProperty name="agentFormBean" property="agentName"/>"/>
                 </span>
             </div>
         </div>
@@ -45,27 +42,22 @@
 
            <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
-                    <label>Subscriber Type</label>
+                    <label>Registration Date:</label>
                 </span>
+                <%------ From Date Input Box ------%>
                 <span class="IASFormDivSpanInputBox">
-                   <select class="IASComboBox" TABINDEX="6" name="subType" id="subType">
-                        <option value ="AEG">AGENT</option>
-                   </select>
+                     <input type="text" class="IASDateTextBox" readonly size="10" name="regDate" id="${agentFormBean.regDate}"/>
                 </span>
-            </div>
+           </div>
 
            <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
-                    <label>Registration Date:</label>
+                    <label>Discount%:</label>
                 </span>
-                <%---------- Date Division -----------%>
-                    <div class="dateDiv" id="dateDiv"></div>
-
-                    <%------ From Date Input Box ------%>
-                    <span class="IASFormDivSpanInputBox">
-                         <input type="text" class="IASDateTextBox" readonly size="10" name="regDate" id="regDate"/>
-                  </span>
-              </div>
+                <span class="IASFormDivSpanInputBox">
+                    <input class="IASTextBox" TABINDEX="10" type="text" name="discount" id="discount" value="<jsp:getProperty name="agentFormBean" property="discount"/>"/>
+                </span>
+            </div>                    
          </div>
     </div>
 </fieldset>
@@ -83,37 +75,67 @@
                     <label>email Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="emailId" id="emailId" value=""/>
+                    <input class="IASTextBox" TABINDEX="1" type="text" name="emailId" id="emailId" value="${agentFormBean.emailId}"/>
                 </span>
             </div>
 
            <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
-                    <label>Address 1:</label>
+                    <label>Address:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="address1" id="address1" value=""/>
+                    <input class="IASTextBox" TABINDEX="10" type="text" name="address" id="address" value="${agentFormBean.address}"/>
                 </span>
             </div>
 
 
            <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
-                    <label>Address 2:</label>
+                    <label>city:</label>
+                </span>
+            <span class="IASFormDivSpanInputBox">
+                <select class="IASComboBoxMandatory" TABINDEX="4" name="city" id="city">
+                    <option value="0" selected >Select</option>
+                    <%
+                        if (!agentFormBean.getCity().isEmpty()) {
+                            out.println("<option value=" + "\"" + agentFormBean.getCity() + "\"" + " selected >" + agentFormBean.getCity() + "</option>");
+                        }
+                    %>
+                </select>                
+            </span>
+            </div>
+
+           <div class="IASFormFieldDiv">
+                <span class="IASFormDivSpanLabel">
+                    <label>District:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="address2" id="address2" value=""/>
+                    <select class="IASComboBox" TABINDEX="3" name="district" id="district">
+                        <option value="0" selected >Select</option>
+                        <%
+                            if (!agentFormBean.getDistrict().isEmpty()) {
+                                out.println("<option value=" + "\"" + agentFormBean.getDistrict() + "\"" + " selected >" + agentFormBean.getDistrict() + "</option>");
+                            }
+                        %>
+                    </select>
                 </span>
-            </div>
+            </div>                
          </div>
 
          <div class="IASFormRightDiv">
            <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
-                    <label>City:</label>
+                    <label>State:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="city" id="city" value=""/>
+                    <select class="IASComboBox" TABINDEX="3" name="state" id="state">
+                        <option value="0" selected >Select</option>
+                        <%
+                            if (!agentFormBean.getState().isEmpty()) {
+                                out.println("<option value=" + "\"" + agentFormBean.getState() + "\"" + " selected >" + agentFormBean.getState() + "</option>");
+                            }
+                        %>
+                    </select>
                 </span>
             </div>
 
@@ -122,7 +144,14 @@
                     <label>Country:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="country" id="country" value=""/>
+                <select class="IASComboBox" TABINDEX="2" name="country" id="country">
+                    <option value="0" selected >Select</option>
+                    <%
+                        if (!agentFormBean.getCountry().isEmpty()) {
+                            out.println("<option value=" + "\"" + agentFormBean.getCountry() + "\"" + " selected >" + agentFormBean.getCountry() + "</option>");
+                        }
+                    %>
+                </select>
                 </span>
             </div>
 
@@ -131,7 +160,7 @@
                     <label>PIN Code:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="pinCode" id="pinCode" value=""/>
+                    <input class="IASTextBox" TABINDEX="10" type="text" name="pinCode" id="pinCode" value="${agentFormBean.pinCode}"/>
                 </span>
             </div>
          </div>

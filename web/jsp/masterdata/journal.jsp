@@ -1,3 +1,4 @@
+<jsp:useBean class="IAS.Bean.masterdata.journalFormBean" id="journalFormBean" scope="request"></jsp:useBean>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Journal Data Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%> 
@@ -10,7 +11,7 @@
                     <label>Journal Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="journalId" id="journalId" value=""/>
+                    <input class="IASTextBox" TABINDEX="1" type="text" name="journalId" id="journalId" value="<jsp:getProperty name="journalFormBean" property="journalId"/>"/>
                 </span>
             </div>
 
@@ -19,7 +20,7 @@
                     <label>Journal Code:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="journalCode" id="journalCode" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="10" type="text" name="journalCode" id="journalCode" value="<jsp:getProperty name="journalFormBean" property="journalCode"/>"/>
                 </span>
             </div>
 
@@ -28,7 +29,7 @@
                     <label>Journal Name:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="journalName" id="journalName" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="10" type="text" name="journalName" id="journalName" value="<jsp:getProperty name="journalFormBean" property="journalName"/>"/>
                 </span>
             </div>
 
@@ -37,7 +38,7 @@
                     <label>ISSN Number:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="issnNo" id="issnNo" value=""/>
+                    <input class="IASTextBox" TABINDEX="10" type="text" name="issnNo" id="issnNo" value="<jsp:getProperty name="journalFormBean" property="issnNo"/>"/>
                 </span>
             </div>
 
@@ -46,7 +47,7 @@
                     <label>No of Pages:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="noOfPages" id="noOfPages" value=""/>
+                    <input class="IASTextBox" TABINDEX="10" type="text" name="pages" id="pages" value="<jsp:getProperty name="journalFormBean" property="pages"/>"/>
                 </span>
             </div>
 
@@ -55,7 +56,16 @@
                     <label>Start Year:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="startYear" id="startYear" value=""/>
+                    <input class="IASTextBox" TABINDEX="10" type="text" name="startYear" id="startYear" value="<jsp:getProperty name="journalFormBean" property="startYear"/>"/>
+                </span>
+            </div>
+
+            <div class="IASFormFieldDiv">
+                <span class="IASFormDivSpanLabel">
+                    <label>No of Issues:</label>
+                </span>
+                <span class="IASFormDivSpanInputBox">
+                    <input class="IASTextBox" TABINDEX="10" type="text" name="issues" id="issues" value="<jsp:getProperty name="journalFormBean" property="issues"/>"/>
                 </span>
             </div>
          </div>

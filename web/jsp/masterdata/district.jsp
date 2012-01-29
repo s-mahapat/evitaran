@@ -1,4 +1,4 @@
-
+<jsp:useBean class="IAS.Bean.masterdata.districtFormBean" id="districtFormBean" scope="request"></jsp:useBean>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- District Basic data Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>
@@ -12,7 +12,7 @@
                     <label>District Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="districtId" id="districtId" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="1" type="text" name="districtId" id="districtId" value="<jsp:getProperty name="districtFormBean" property="districtId"/>"/>
                 </span>
             </div>
             <div class="IASFormFieldDiv">
@@ -20,7 +20,7 @@
                     <label>District:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="district" id="district" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="1" type="text" name="district" id="district" value="<jsp:getProperty name="districtFormBean" property="district"/>"/>
                 </span>
             </div>
         </div>

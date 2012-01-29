@@ -1,4 +1,4 @@
-
+<jsp:useBean class="IAS.Bean.masterdata.countryFormBean" id="countryFormBean" scope="request"></jsp:useBean>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Country Basic data Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>
@@ -12,7 +12,7 @@
                     <label>Country Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="countryId" id="countryId" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="1" type="text" name="countryId" id="countryId" value="<jsp:getProperty name="countryFormBean" property="countryId"/>"/>
                 </span>
             </div>
             <div class="IASFormFieldDiv">
@@ -20,7 +20,7 @@
                     <label>Country:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="country" id="country" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="2" type="text" name="country" id="country" value="<jsp:getProperty name="countryFormBean" property="country"/>"/>
                 </span>
             </div>
         </div>

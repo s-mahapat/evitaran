@@ -20,7 +20,7 @@ public int getDistrictId() {
         return (this.districtId);
     }
 
-public void setDistrict(int _DistrictId) {
+public void setDistrictId(int _DistrictId) {
         this.districtId = _DistrictId;
     }
 

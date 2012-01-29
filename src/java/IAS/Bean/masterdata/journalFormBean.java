@@ -7,9 +7,9 @@ public class journalFormBean {
     private String journalCode = "";
     private String journalName = "";
     private int issnNo = 0;
-    private int noOfPages = 0;
+    private int pages = 0;
     private int startYear = 0;
-
+    private int issues = 0;
 /* Methods - Getter and Setter */
 public int getJournalId() {
         return (this.journalId);
@@ -43,12 +43,12 @@ public void setIssnNo(int _IssnNo) {
         this.issnNo = _IssnNo;
     }
 
-public int getNoOfPages() {
-        return (this.noOfPages);
+public int getPages() {
+        return (this.pages);
     }
 
-public void setNoOfPages(int _NoOfPages) {
-        this.noOfPages = _NoOfPages;
+public void setPages(int _Pages) {
+        this.pages = _Pages;
     }
 
 public int getStartYear() {
@@ -57,5 +57,13 @@ public int getStartYear() {
 
 public void setStartYear(int _StartYear) {
         this.startYear = _StartYear;
+    }
+
+public int getIssues() {
+        return (this.issues);
+    }
+
+public void setIssues(int _Issues) {
+        this.issues = _Issues;
     }
 }

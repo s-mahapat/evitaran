@@ -1,19 +1,22 @@
 package IAS.Bean.masterdata;
 import IAS.Class.util;
+import java.util.Date;
+import java.text.*;
 
 public class agentFormBean {
     
     /* fields */
     private int agentId = 0;
     private String agentName = "";
-    private String regDate = util.getDateString();
+    private Date regDate = new java.util.Date();
+    private int discount = 0;
     private String emailId = "";
     private String address = "";
-    private int cityId = 0;
-    private int districtId = 0;
-    private int stateId = 0;
-    private int countryId = 0;
-    private int pincode = 0;
+    private String city = "";
+    private String district = "";
+    private String state = "";
+    private String country = "";
+    private int pinCode = 0;
     
     /* Methods getter and setter*/
     
@@ -34,11 +37,20 @@ public void setAgentName(String _AgentName) {
     }
 
 public String getRegDate() {
-        return this.regDate;
+    Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
+        return dtformat.format(this.regDate);
 }
 
-public void setRegDate(String _RegDate) {
+public void setRegDate(Date _RegDate) {
         this.regDate = _RegDate;
+    }
+
+public int getDiscount() {
+        return this.discount;
+    }
+
+public void setDiscount(int _Discount) {
+        this.discount = _Discount;
     }
 
 public String getEmailId() {
@@ -57,43 +69,43 @@ public void setAddress(String _Address) {
         this.address = _Address;
     }
 
-public int getCityId() {
-        return (this.cityId);
+public String getCity() {
+        return (this.city);
     }
 
-public void setCityId(int _CityId) {
-        this.cityId = _CityId;
+public void setCity(String _City) {
+        this.city = _City;
     }
 
-public int getDistrictId() {
-        return (this.districtId);
+public String getDistrict() {
+        return (this.district);
     }
 
-public void setDistrictId(int _DistrictId) {
-        this.districtId = _DistrictId;
+public void setDistrict(String _District) {
+        this.district = _District;
     }
 
-public int getStateId() {
-        return (this.stateId);
+public String getState() {
+        return (this.state);
     }
 
-public void setStateId(int _StateId) {
-        this.stateId = _StateId;
+public void setState(String _State) {
+        this.state = _State;
     }
 
-public int getCountryId() {
-        return (this.countryId);
+public String getCountry() {
+        return (this.country);
     }
 
-public void setCountryId(int _CountryId) {
-        this.countryId = _CountryId;
+public void setCountry(String _Country) {
+        this.country = _Country;
     }
 
-public int getPincode() {
-        return (this.pincode);
+public int getPinCode() {
+        return (this.pinCode);
     }
 
-public void setPincode(int _Pincode) {
-        this.pincode = _Pincode;
+public void setPincode(int _PinCode) {
+        this.pinCode = _PinCode;
     }
 }

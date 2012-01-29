@@ -1,4 +1,5 @@
 
+<jsp:useBean class="IAS.Bean.masterdata.cityFormBean" id="cityFormBean" scope="request"></jsp:useBean>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- City Basic data Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>
@@ -12,7 +13,7 @@
                     <label>City Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="cityId" id="cityId" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="1" type="text" name="cityId" id="cityId" value="<jsp:getProperty name="cityFormBean" property="cityId"/>"/>
                 </span>
             </div>
             <div class="IASFormFieldDiv">
@@ -20,7 +21,7 @@
                     <label>City:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="city" id="city" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="1" type="text" name="city" id="city" value="<jsp:getProperty name="cityFormBean" property="city"/>"/>
                 </span>
             </div>
         </div>

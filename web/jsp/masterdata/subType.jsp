@@ -1,3 +1,5 @@
+<jsp:useBean class="IAS.Bean.masterdata.subTypeFormBean" id="subTypeFormBean" scope="request"></jsp:useBean>
+
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Create New subscriber Type Data Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>
@@ -10,7 +12,7 @@
                     <label>Subscriber Type Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="subScriberTypeId" id="SubScriberTypeId" value=""/>
+                    <input class="IASTextBox" TABINDEX="10" type="text" name="subTypeId" id="subTypeId" value="<jsp:getProperty name="subTypeFormBean" property="subTypeId"/>"/>
                 </span>
             </div>
 
@@ -19,7 +21,7 @@
                     <label>Sub Type Code:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="subScriberTypeCode" id="SubScriberTypeCode" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="10" type="text" name="subTypeCode" id="subTypeCode" value="<jsp:getProperty name="subTypeFormBean" property="subTypeCode"/>"/>
                 </span>
             </div>
 
@@ -28,31 +30,52 @@
                     <label>Subscriber Type:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="subScriberType" id="SubScriberType" value=""/>
+                    <input class="IASTextBoxMandatory" TABINDEX="10" type="text" name="subTypeName" id="subTypeName" value="<jsp:getProperty name="subTypeFormBean" property="subTypeName"/>"/>
                 </span>
             </div>
 
             <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
-                    <label>Free</label>
+                    <label>Free/ Paid</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASOptionButton" TABINDEX="10" type="radio" name="free" id="free" value=""/>
+                    
+                    <select class="IASComboBoxMandatory" TABINDEX="6" name="freePaid" id="freePaid">
+                        <option value ="P">Paid</option>
+                        <option value ="F">Free</option>
+                    </select>
                 </span>
-                <span class="IASFormDivSpanLabelRadio">
-                    <label>Paid</label>
+            </div>
+            
+            <div class="IASFormFieldDiv">
+                <span class="IASFormDivSpanLabel">
+                    <label>Nationality</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASOptionButton" TABINDEX="10" type="radio" name="Paid" id="Paid" value=""/>
+                    <select class="IASComboBoxMandatory" TABINDEX="6" name="nationality" id="nationality">
+                        <option value ="I">Indian</option>
+                        <option value ="F">Foreign</option>
+                    </select>
                 </span>
             </div>
 
-           <div class="IASFormFieldDiv">
+            <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
-                    <label>No of Copies:</label>
+                    <label>Institutional</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="noOfCopies" id="noOfCopies" value=""/>
+                    <select class="IASComboBoxMandatory" TABINDEX="6" name="institutional" id="institutional">
+                        <option value ="I">Institute</option>
+                        <option value ="P">Personal</option>
+                    </select>
+                </span>
+            </div>
+           <div class="IASFormFieldDiv">
+                <span class="IASFormDivSpanLabel">
+                    <label>Free Copies:</label>
+                </span>
+                <span class="IASFormDivSpanInputBox">
+                    <input class="IASTextBoxMandatory" TABINDEX="10" type="text" name="freeCopies" id="freeCopies" value="<jsp:getProperty name="subTypeFormBean" property="freeCopies"/>"/>
                 </span>
             </div>
 
@@ -61,7 +84,7 @@
                     <label>Discount if any %:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="discount" id="discount" value=""/>
+                    <input class="IASTextBox" TABINDEX="10" type="text" name="discount" id="discount" value="<jsp:getProperty name="subTypeFormBean" property="discount"/>"/>
                 </span>
             </div>
          </div>

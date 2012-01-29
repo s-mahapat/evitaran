@@ -8,10 +8,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/masterdata/city.css" />
-
         <title>Search City</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchCity.js"%>"></script> 
         <script type="text/javascript">
-            var selectedCity = 0;
+           // var selectedCity = 0;
             var selectedCityId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
@@ -19,7 +19,7 @@
             $(function(){
 
                 $("#cityTable").jqGrid({
-                    url:'',
+                    url:"<%=request.getContextPath() + "/city?action=search"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -33,8 +33,8 @@
                     loadtext: "Loading...",
                     colNames:['City Id','City','View/Edit'],
                     colModel :[
-                        {name:'CityId', index:'cityId', width:50, align:'center', xmlmap:'cityId'},
-                        {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
+                        {name:'cityId', index:'cityId', width:50, align:'center', xmlmap:'cityId'},
+                        {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
@@ -58,10 +58,10 @@
                             $("#btnNext").removeAttr("disabled");
                         }
                         for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-                            var rowData = jQuery("#cityTable").jqGrid('getLocalRow',cl);
-                            var cityId = rowData['City Id'] || 0;
-                            action = "<a style='color:blue;' href='city?action=view'>View</a><a style='color:blue;' href='city?action=edit&city=" + cityId + "'>Edit</a>";
+                           // var cl = ids[i];
+                           // var rowData = jQuery("#cityTable").jqGrid('getLocalRow',cl);
+                           // var cityId = rowData['City Id'] || 0;
+                            action = "<a style='color:blue;' href='/city?action=view'>View</a><a style='color:blue;' href='/city?action=edit&city=" + cityId + "'>Edit</a>";
                             jQuery("#cityTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -77,13 +77,22 @@
             });
 
             // called when the search button is clicked
+            
+            
+            
+            // called when the search button is clicked
             function searchCity(){
-                isPageLoaded = true;
-                jQuery("#cityTable").trigger("reloadGrid");
-            }
+                    isPageLoaded = true;
+                    jQuery("#cityTable").setGridParam({postData:
+                            {//cityId       : $("#cityId").val(),
+                            city          : $("#city").val()
+                        }});
+                    jQuery("#cityTable").trigger("clearGridData");
+                    jQuery("#cityTable").trigger("reloadGrid");
+                }
 
             // draw the date picker.
-            jQueryDatePicker("from","to");
+            //jQueryDatePicker("from","to");
 
         </script>
 
@@ -92,7 +101,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchCityForm">
+            <form method="post" action="<%=request.getContextPath() + "/city"%>" name="searchCityForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search City</legend>
@@ -120,11 +129,11 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="2" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="2" type="submit" value="search" onclick="searchCity()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="reset" value="Reset"/>
+                                    <input class="IASButton" TABINDEX="3" type="reset" value="reset"/>
                                 </div>
                             </div>
 
