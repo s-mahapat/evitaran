@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import org.apache.log4j.*;
 import IAS.Class.JDSLogger;
-
+import javax.servlet.http.HttpSession;
+import IAS.Class.Database;
 
 public class main extends HttpServlet {
 
@@ -32,8 +33,8 @@ public class main extends HttpServlet {
         } else if (action.equalsIgnoreCase("logout")) {
 
             request.getSession().invalidate();
-            response.sendRedirect(request.getContextPath() + "/home");
-            //url = "/jsp/login/login.jsp";
+            //response.sendRedirect(request.getContextPath() + "/home");
+            url = "/jsp/login/logout.jsp";
 
         } else if (action.equalsIgnoreCase("createinward")) {
 

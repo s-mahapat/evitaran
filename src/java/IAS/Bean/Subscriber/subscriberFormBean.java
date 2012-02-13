@@ -1,5 +1,6 @@
-package IAS.Bean;
+package IAS.Bean.Subscriber;
 
+import IAS.Bean.JDSBean;
 import IAS.Class.util;
 
 public class subscriberFormBean extends JDSBean {
@@ -18,6 +19,9 @@ public class subscriberFormBean extends JDSBean {
     private String department = "";
     private String institution = "";
     private String email = "";
+    private String agent = "";
+    private boolean deactive = false;
+    private String deactivationDate;
 
 
     /* Subscriber ID */
@@ -35,7 +39,7 @@ public class subscriberFormBean extends JDSBean {
         return this.subscriberCreationDate;
     }
 
-    public void setInwardCreationDate(String _SubscriberCreationDate) {
+    public void setSubscriberCreationDate(String _SubscriberCreationDate) {
         this.subscriberCreationDate = _SubscriberCreationDate;
     }
 
@@ -70,7 +74,7 @@ public class subscriberFormBean extends JDSBean {
     /* Subscriber District */
     public String getDistrict() {
         String lclDistrict = "";
-        if (this.district == null || this.district == "0") {
+        if (this.district == null || this.district.equals("0")) {
             lclDistrict = "";
         } else {
             lclDistrict = this.district;
@@ -161,7 +165,28 @@ public class subscriberFormBean extends JDSBean {
         this.email = _email;
     }
 
-    public IAS.Bean.subscriberFormBean Clone() {
-        return this;
+    public void setAgent(String _agent){
+        this.agent = _agent;
     }
+
+    public String getAgent(){
+        return this.agent;
+    }
+
+    public void setDeactive(boolean _deactive){
+        this.deactive = _deactive;
+    }
+
+    public boolean isDeactive(){
+        return this.deactive;
+    }
+
+    public String getDeactivationDate() {
+        return this.deactivationDate;
+    }
+
+    public void setDeactivationDate(String _deactivationDate){
+        this.deactivationDate = _deactivationDate;
+    }
+
 }

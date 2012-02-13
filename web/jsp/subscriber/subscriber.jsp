@@ -1,6 +1,5 @@
-
 <%@page language="java" import="java.util.*" %>
-<jsp:useBean class="IAS.Bean.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
+<jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
 <script>
     $(document).ready(function() {
         $("#subscriberName").focus();
@@ -8,6 +7,7 @@
         jdsAppend("/JDS/CMasterData?md=country","country","country");
         jdsAppend("/JDS/CMasterData?md=state","state","state");
         jdsAppend("/JDS/CMasterData?md=district","district","district");
+        jdsAppend("/JDS/CMasterData?md=agent","agent","agent");
     });
 </script>
 <fieldset class="subMainFieldSet">
@@ -215,8 +215,13 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="13" name="subscriberAgent" id="subscriberAgent">
-                    <option value ="IASAgent">IASAgent</option>
+                <select class="IASComboBox" TABINDEX="13" name="agent" id="agent">
+                    <option value="">Select</option>
+                    <%
+                        if (subscriberFormBean.getAgent() != null && !subscriberFormBean.getAgent().isEmpty()) {
+                            out.println("<option value=" + "\"" + subscriberFormBean.getAgent() + "\"" + " selected >" + subscriberFormBean.getAgent() + "</option>");
+                        }
+                    %>
                 </select>
             </span>
         </div>
@@ -227,7 +232,15 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input type="checkbox" class="IASCheckBox" disabled TABINDEX="14" name="isDeactived" id="isDeactived" onclick="deActivateSubscriber()"/>
+                <input type="checkbox" class="IASCheckBox" disabled TABINDEX="14" name="deactive" id="deactive" onclick="deActivateSubscriber()"
+                       <%
+                           String isEnabled = "enabled";
+                           if (subscriberFormBean.isDeactive() == true) {
+                               out.println(" checked ");
+                               isEnabled = "disabled";
+                           }
+                       %>
+                       />
             </span>
         </div>
 
@@ -237,7 +250,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASDateTextBox" disabled readonly type="text" name="deactivationDate" id="deactivationDate" value=""/>
+                <input class="IASDateTextBox" readonly type="text" name="deactivationDate" id="deactivationDate" value="${subscriberFormBean.deactivationDate}"/>
             </span>
         </div>
 
@@ -253,6 +266,6 @@
         <input onclick="setActionValue('save')" class="IASButton" TABINDEX="16" type="submit" value="Save" id="btnSaveSubscriber" name="btnSubmitAction"/>
         <input onclick="setActionValue('display')" class="IASButton" TABINDEX="17" type="submit" value="View Subscriber" id="btnDisplaySubscriber" name="btnSubmitAction"/>
         <input onclick="setActionValue('view')" class="IASButton" TABINDEX="18" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
-        <input onclick="setActionValue('add')" class="IASButton" TABINDEX="19" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction"/>
+        <input onclick="setActionValue('add')" class="IASButton" TABINDEX="19" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction" <%out.println(isEnabled);%>/>
     </div>
 </fieldset>

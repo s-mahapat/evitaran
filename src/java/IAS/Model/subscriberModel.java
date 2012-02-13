@@ -1,40 +1,31 @@
 package IAS.Model;
 
-import javax.servlet.http.HttpServletRequest;
-import IAS.Bean.subscriberFormBean;
-import java.sql.*;
+import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Class.Queries;
-import IAS.Class.Database;
-import javax.servlet.http.HttpSession;
 import IAS.Class.util;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
-import org.apache.commons.dbutils.BeanProcessor;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.apache.commons.dbutils.BeanProcessor;
 
 public class subscriberModel extends JDSModel {
 
-    private HttpServletRequest request = null;
     private subscriberFormBean _subscriberFormBean = null;
-    private Connection conn = null;
-    private Database db = null;
-    private HttpSession session = null;
 
     public subscriberModel(HttpServletRequest request) throws SQLException {
-        this.request = request;
-        this.session = request.getSession(false);
-        if (this.session == null) {
-            throw (new SQLException("Database connection not found in the session"));
-        }
-        this.db = (Database) session.getAttribute("db_connection");
-        this.conn = db.getConnection();
+        //call the base class constructor
+        super(request);
     }
 
     public int Save() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
-        subscriberFormBean subscriberFormBean = new IAS.Bean.subscriberFormBean();
+        subscriberFormBean subscriberFormBean = new IAS.Bean.Subscriber.subscriberFormBean();
         request.setAttribute("subscriberFormBean", subscriberFormBean);
         String sql;
         String mode = "Create";
@@ -130,7 +121,7 @@ public class subscriberModel extends JDSModel {
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         String sql;
-        subscriberFormBean subscriberFormBean = new IAS.Bean.subscriberFormBean();
+        subscriberFormBean subscriberFormBean = new IAS.Bean.Subscriber.subscriberFormBean();
 
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, subscriberFormBean);
@@ -142,8 +133,8 @@ public class subscriberModel extends JDSModel {
         // populate the bean from the resultset using the beanprocessor class
         while (rs.next()) {
             BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.subscriberFormBean");
-            subscriberFormBean = (IAS.Bean.subscriberFormBean) bProc.toBean(rs, type);
+            Class type = Class.forName("IAS.Bean.Subscriber.subscriberFormBean");
+            subscriberFormBean = (IAS.Bean.Subscriber.subscriberFormBean) bProc.toBean(rs, type);
         }
         rs.close();
         request.setAttribute("subscriberFormBean", subscriberFormBean);
@@ -168,6 +159,8 @@ public class subscriberModel extends JDSModel {
         st.setString(++paramIndex, _subscriberFormBean.getDepartment());
         st.setString(++paramIndex, _subscriberFormBean.getInstitution());
         st.setString(++paramIndex, _subscriberFormBean.getEmail());
+        st.setString(++paramIndex, _subscriberFormBean.getAgent());
+        st.setBoolean(++paramIndex, _subscriberFormBean.isDeactive());
         if (mode.equalsIgnoreCase("Update")) {
             st.setString(++paramIndex, _subscriberFormBean.getSubscriberNumber());
         }

@@ -12,9 +12,14 @@
         <script type="text/javascript" src="js/common.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/addnewsubscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                listSubscription("View");
+            })
+        </script>
         <script>
-            addOnloadEvent(makeAddNewSubscriptionReadOnly);
-            addOnloadEvent(function(){listSubscription("View")});
+            //addOnloadEvent(makeAddNewSubscriptionReadOnly);
+            //addOnloadEvent(function(){listSubscription("View")});
         </script>
     </head>
     <body>
@@ -27,8 +32,16 @@
                         <legend>Add New Subscription</legend>
                         <%@include file="subscriptiondetails.jsp"%>
                         <%@include file="selectjournal.jsp"%>
-                        <%@include file="subscriptionlist.jsp"%>
-                        <%@include file="subscriptionactions.jsp"%>
+                        <%--<%@include file="subscriptionlist.jsp"%>
+                        <%@include file="subscriptionactions.jsp"%>--%>
+                        <fieldset class="subMainFieldSet">
+
+                            <div class="actionBtnDiv">
+                                <input type="hidden" name="action" id="action"/>
+                                <input onclick="saveSubscription()" class="IASButton" TABINDEX="101" type="button" value="Save" id="btnSaveSubscription" name="btnSubmitAction"/>
+                            </div>
+
+                        </fieldset>
                     </fieldset>
                 </div>
             </form>

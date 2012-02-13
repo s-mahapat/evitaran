@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/subscriber.css"%>"/>
         <title>Edit Subscriber</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/subscriber.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/createsubscriber.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/editsubscriber.js"%>"></script>
         <script>
             addOnloadEvent(makeEditSubscriberReadOnly);

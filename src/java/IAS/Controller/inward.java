@@ -1,15 +1,15 @@
 package IAS.Controller;
 
+import IAS.Class.JDSLogger;
+import IAS.Model.Inward.inwardModel;
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
-import IAS.Model.Inward.inwardModel;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.*;
-import IAS.Class.JDSLogger;
+import org.apache.log4j.Logger;
 
 public class inward extends HttpServlet {
 
@@ -80,6 +80,7 @@ public class inward extends HttpServlet {
                 // but id should not change
                 int purposeID = Integer.parseInt(request.getParameter("purpose"));
 
+
                 if (purposeID == 1) {
 
                     if (subscriberNumber != null && !subscriberNumber.isEmpty()) {
@@ -95,10 +96,8 @@ public class inward extends HttpServlet {
                     }
                 } else if (purposeID == 2) {
                     // Renew subscription
-                    IAS.Model.subscriberModel _subscriberModel = new IAS.Model.subscriberModel(request);
-                    if (_subscriberModel.GetSubscriber() != null) {
-                        url = "/subscriber?action=add";
-                    }
+                    //IAS.Model.subscriberModel _subscriberModel = new IAS.Model.subscriberModel(request);
+                    url = "/subscriber?action=add";
                 } else if (purposeID == 3) {
                     //Address change
                     url = "/subscriber?action=edit";

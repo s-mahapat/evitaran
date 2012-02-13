@@ -4,16 +4,17 @@
  */
 package IAS.Model.Inward;
 
-import javax.servlet.http.HttpServletRequest;
 import IAS.Bean.Inward.inwardFormBean;
-import java.sql.*;
 import IAS.Class.Queries;
-import IAS.Class.Database;
-import javax.servlet.http.HttpSession;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -24,22 +25,11 @@ import org.apache.commons.dbutils.BeanProcessor;
  */
 public class inwardModel extends JDSModel {
 
-    private HttpServletRequest request = null;
     private inwardFormBean _inwardFormBean = null;
-    private Connection conn = null;
-    private Database db = null;
-    private HttpSession session = null;
 
     public inwardModel(HttpServletRequest request) throws SQLException {
-        this.request = request;
-        this.session = request.getSession(false);
-        if (this.session == null) {
-            throw (new SQLException("Database connection not found in the session"));
-        }
-
-        this.db = (Database) session.getAttribute("db_connection");
-        this.conn = db.getConnection();
-
+        //call the base class constructor
+        super(request);
     }
 
     public int Save() throws SQLException, ParseException,

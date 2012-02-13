@@ -42,7 +42,10 @@ function isInwardSelected(){
         $("#purpose").val(selectedInwardPurpose);
     }
     $("#inwardNumber").val(selectedInward.toString());
-    $("#subscriberNumber").val(selectedSubscriberId.toString());
+    if(!isEmptyValue(selectedSubscriberId))
+        $("#subscriberNumber").val(selectedSubscriberId.toString());
+    else
+        $("#subscriberNumber").val("");
     return true;
 
 }

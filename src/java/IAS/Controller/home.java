@@ -14,6 +14,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 import javax.servlet.*;
 import java.sql.*;
+
 /**
  *
  * @author Shailendra Mahapatra
@@ -22,22 +23,25 @@ public class home extends HttpServlet {
 
     private ServletContext context = null;
     private static final String jdbcDriver = "com.mysql.jdbc.Driver";
-
     private Connection connection;
 
     @Override
     public void init() throws ServletException {
+
         try {
             this.context = getServletContext();
             Class.forName(jdbcDriver); //set Java database connectivity driver
         } catch (ClassNotFoundException e) {
-            //System.out.println(e.getMessage());
         } catch (Exception e) {
             //System.out.println(e.getMessage());
         }
     }
+
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * Processes requests for both HTTP
+     * <code>GET</code> and
+     * <code>POST</code> methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -48,35 +52,42 @@ public class home extends HttpServlet {
 
         String username = context.getInitParameter("db_user");
         String password = context.getInitParameter("db_password");
-        String dbURL = context.getInitParameter("db_driver") + "://" + context.getInitParameter("db_host") + "/" + context.getInitParameter("db_name");
+        String dbURL =
+                context.getInitParameter("db_driver") + "://"
+                + context.getInitParameter("db_host") + "/"
+                + context.getInitParameter("db_name");
 
-        try {
-            HttpSession session = request.getSession(true);
-            synchronized(session){
-                //get the connection from the session if it exists.
+        String url = null;
+        HttpSession session = request.getSession(true);
+        synchronized (session) {
 
-                Database db = (Database)session.getAttribute("db_connection");
-                if(db == null){
+            //get the connection from the session if it exists.
+            try {
+                Database db = (Database) session.getAttribute("db_connection");
+                if (db == null) {
                     connection = DriverManager.getConnection(dbURL, username, password);
                     connection.setAutoCommit(true);
-                    db = new Database(connection, this.getServletContext());
+                    db = new Database(connection);
                     session.setAttribute("db_connection", db);
                 }
+                url = "jsp/home.jsp";
 
-
+            } catch (SQLException e) {
+                url = "jsp/errors/error.jsp";
+            } finally {
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
             }
 
-        } catch (Exception e) {
-            //System.out.println(e.getMessage());
         }
-        String url = "jsp/home.jsp";
-        RequestDispatcher rd = request.getRequestDispatcher(url);
-        rd.forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP
+     * <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -89,7 +100,9 @@ public class home extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -103,6 +116,7 @@ public class home extends HttpServlet {
 
     /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

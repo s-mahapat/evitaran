@@ -18,7 +18,7 @@
         <%@include file="../templates/style.jsp"%>
         <title>Login</title>
         <script type="text/javascript" src="/js/login.js"></script>
-        <script>
+        <script type="text/javascript">
             $(function() {
                 $( "#loginDiv" ).tabs();
             });

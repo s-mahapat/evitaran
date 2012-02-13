@@ -32,9 +32,9 @@ public final class util {
         return dtformat.format(dt);
     }
 
-    public static java.sql.Date dateStringToSqlDate(String stringDate) throws ParseException{
+    public static java.sql.Date dateStringToSqlDate(String stringDate) throws ParseException {
 
-        if(stringDate == null || stringDate.length() == 0){
+        if (stringDate == null || stringDate.length() == 0) {
             return null;
         }
         DateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
@@ -64,12 +64,38 @@ public final class util {
                 //String columnName = rsmd.getColumnName(i);
                 String columnName = rsmd.getColumnLabel(i);
                 // check if the value is null, then initialize it to a blank string
-                Object value = rs.getObject(i)!= null ? rs.getObject(i) : "";
+                Object value = rs.getObject(i) != null ? rs.getObject(i) : "";
                 Element node = doc.createElement(columnName);
                 node.appendChild(doc.createTextNode(value.toString()));
                 row.appendChild(node);
             }
         }
+        DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.transform(domSource, result);
+        xml = writer.toString();
+
+        return xml;
+
+    }
+
+    public static String convertStringToXML(String errorMsg,String tagName) throws ParserConfigurationException, SQLException, TransformerException {
+
+        String xml = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+
+        Element error = doc.createElement(tagName);
+        results.appendChild(error);
+        error.appendChild(doc.createTextNode(errorMsg));
+
         DOMSource domSource = new DOMSource(doc);
         StringWriter writer = new StringWriter();
         StreamResult result = new StreamResult(writer);

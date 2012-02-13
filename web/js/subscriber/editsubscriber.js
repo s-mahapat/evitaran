@@ -3,9 +3,9 @@ function makeEditSubscriberReadOnly(){
 
     document.getElementById("btnEditSubscriber").disabled = true;
     document.getElementById('btnDisplaySubscriber').disabled = true;
-    document.getElementById("subscriberAgent").options.length=0;
-    document.getElementById("subscriberAgent").disabled = true;
-    document.getElementById("isDeactived").disabled = false;
+    //document.getElementById("subscriberAgent").options.length=0;
+    //document.getElementById("subscriberAgent").disabled = true;
+    document.getElementById("deactive").disabled = false;
 }
 
 function subtypeDescriptionAppend(){
@@ -24,20 +24,27 @@ function subtypeAppend(){
     requestURL = "/JDS/CMasterData?md=subtype_desc&mdvalue=" + subType;
     jdsAppend(requestURL,"subtypedesc","subtypedesc");
 }
+
+
 // called when the deactive user check box is clicked
 function deActivateSubscriber(){
 
-    if(document.getElementById("isDeactived").checked){
+    if(document.getElementById("deactive").checked){
         jdsConfirm("Do you really want to deactivate the subscriber?","",function(ret){
             if(!ret){
-                $("#isDeactived").attr("checked",false);
+                $("#deactive").attr("checked",false);
             }else{
                 $("#btnViewSubscription").attr("disabled",true);
                 $("#btnAddSubscription").attr("disabled",true);
+                //set the deactivation date only in the UI.
+                var now = $.datepicker.formatDate("dd/mm/yy", new Date());
+                $( "#deactivationDate" ).val(now);
             }
         });
     }else{
         $("#btnViewSubscription").attr("disabled",false);
         $("#btnAddSubscription").attr("disabled",false);
+        $( "#deactivationDate" ).val("");
     }
 }
+

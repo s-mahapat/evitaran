@@ -4,22 +4,27 @@
  */
 package IAS.Class;
 
-import javax.servlet.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
+import org.apache.log4j.Logger;
 
 public class Database implements HttpSessionBindingListener {
 
     ServletContext context;
     private Connection connection = null;
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Class.Database");
 
     public Database() {
     }
 
-    public Database(Connection conn, ServletContext context) {
+    public Database(Connection conn) {
         this.connection = conn;
-        this.context = context;
+        //this.context = _context;
     }
 
     public void setConnection(Connection conn) {
@@ -27,20 +32,27 @@ public class Database implements HttpSessionBindingListener {
     }
 
     @Override
-    public void valueUnbound(HttpSessionBindingEvent e) {
+    public void valueUnbound(HttpSessionBindingEvent ev) {
 
         try {
             if (connection != null) {
-                connection.rollback();
+                logger.debug("Closing database connection, session close event");
+                //connection.rollback();
                 connection.close();
             }
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            logger.error(e);
+        } catch (Exception e) {
+            logger.error(e);
         }
+
     }
 
     @Override
-    public void valueBound(HttpSessionBindingEvent e) {
-        //context.log("Session Bound event");
+    public void valueBound(HttpSessionBindingEvent event) {
+
+        logger.debug("Created a new session with id " + event.getSession().getId());
+
     }
 
     public Connection getConnection() {
@@ -48,8 +60,8 @@ public class Database implements HttpSessionBindingListener {
     }
 
     public ResultSet executeQuery(String query) throws SQLException {
-        PreparedStatement st = null;
-        ResultSet rs = null;
+        PreparedStatement st;
+        ResultSet rs;
         st = connection.prepareStatement(query);
         rs = st.executeQuery();
 
@@ -63,7 +75,7 @@ public class Database implements HttpSessionBindingListener {
 
     public ResultSet executeQueryPreparedStatement(PreparedStatement pstatement) throws SQLException {
 
-        ResultSet rs = null;
+        ResultSet rs;
         rs = pstatement.executeQuery();
         if (pstatement == null) {
             return null;

@@ -22,6 +22,7 @@
                         datatype: 'xml',
                         mtype: 'GET',
                         width: '100%',
+                        height: 250,
                         autowidth: true,
                         forceFit: true,
                         sortable: true,
@@ -49,7 +50,7 @@
                             id: "subscriberNumber"
                         },
                         pager: '#pager',
-                        pginput: false,
+                        pginput: true,
                         rowNum:10,
                         rowList:[10,20,30],
                         viewrecords: true,

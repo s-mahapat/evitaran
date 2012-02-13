@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import IAS.Model.subscriberModel;
-import java.sql.SQLException;
+import org.apache.log4j.*;
+import IAS.Class.JDSLogger;
 
 public class subscriber extends HttpServlet {
 
     private subscriberModel _subscriberModel = null;
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.subscriber");
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -52,23 +54,31 @@ public class subscriber extends HttpServlet {
                 url = "/xmlserver";
 
             } else if (action.equalsIgnoreCase("view")) {
-                url = "/jsp/subscription/viewsubscription.jsp";
+
+                //fill in the subscriber bean
+                if (_subscriberModel.GetSubscriber() != null) {
+                    url = "/jsp/subscription/viewsubscription.jsp";
+                }
+
             } else if (action.equalsIgnoreCase("add")) {
-                url = "/jsp/subscription/addnewsubscription.jsp";
+
+                //fill in the subscriber bean
+                if (_subscriberModel.GetSubscriber() != null) {
+                    url = "/jsp/subscription/addnewsubscription.jsp";
+                }
+
             } else if (action.equalsIgnoreCase("gpi")) {
                 url = "/jsp/invoice/proforma.jsp";
             } else if (action.equalsIgnoreCase("mil")) {
                 url = "/jsp/missingissue/missingissuelist.jsp";
             }
         } catch (Exception e) {
-            url = "/jsp/errors/error.jsp";
-            request.setAttribute("exception", e);
+            logger.error(e.getMessage(), e);
+            throw new javax.servlet.ServletException(e);
         } finally {
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
-            if (rd != null) {
+            if (rd != null && url != null) {
                 rd.forward(request, response);
-            } else {
-                url = "/jsp/errors/error.jsp";
             }
         }
     }

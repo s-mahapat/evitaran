@@ -122,6 +122,10 @@
         <servlet-name>inwardGateKeeper</servlet-name>
         <servlet-class>IAS.Controller.inwardGateKeeper</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Subscription</servlet-name>
+        <servlet-class>IAS.Model.Subscription.Subscription</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -206,6 +210,10 @@
         <servlet-name>inwardGateKeeper</servlet-name>
         <url-pattern>/inwardGateKeeper</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Subscription</servlet-name>
+        <url-pattern>/Subscription</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
@@ -228,6 +236,10 @@
     <error-page>
         <error-code>500</error-code>
         <location>/jsp/errors/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/errors/404.jsp</location>
     </error-page>
     <security-constraint>
         <display-name>Authentication</display-name>

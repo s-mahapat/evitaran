@@ -244,6 +244,7 @@ body{
     font-weight: bolder;
     color: black;
     text-transform: capitalize;
+    margin: 0px 10px;
 }
 
 /*
@@ -328,10 +329,10 @@ body{
 
 
 .IASFormDivSpanLabel{
-    margin-left: 15px;
+    margin-left: 10px;
     float: left;
     text-align: right;
-    width: 150px;
+    width: 120px;
 }
 
 .IASFormDivSpanLabelRadio{
@@ -343,6 +344,12 @@ body{
 
 .IASFormDivSpanInputBox{
     margin-left: 15px;
+    float: left;
+}
+
+.IASFormDivSpanInputBoxLessMargin{
+    margin-left: 5px;
+    margin-right: 10px;
     float: left;
 }
 

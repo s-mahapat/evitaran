@@ -1,7 +1,7 @@
 <%--
     Document   : Subscription
 --%>
-<jsp:useBean class="IAS.Bean.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
+<jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
 <fieldset class="subMainFieldSet">
     <legend>Subscription Details</legend>
 
@@ -12,7 +12,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="1" type="text" name="subscriberID" id="subscriberID" value="${subscriberFormBean.subscriberNumber}"/>
+                <input class="IASTextBox" TABINDEX="1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
             </span>
         </div>
 
@@ -23,14 +23,14 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
+                <input class="IASTextBox" TABINDEX="2" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
             </span>
         </div>
     </div>
 
     <div class="IASFormRightDiv">
 
-        <div class="IASFormFieldDiv">
+       <%-- <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Refund(If any):</label>
             </span>
@@ -42,7 +42,7 @@
             <span class="IASFormDivSpanLabel">
                 <input class="IASButton" TABINDEX="14" type="submit" value="Calculate Refund" id="btnSubscriptionRefund" name="btnSubscriptionRefund"/>
             </span>
-        </div>
+        </div>--%>
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
@@ -50,7 +50,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <textarea class="IASTextArea" TABINDEX="12" name="subscriberRemarks" id="subscriberRemarks"></textarea>
+                <textarea class="IASTextArea" TABINDEX="12" name="remarks" id="remarks"></textarea>
             </span>
         </div>
     </div>
