@@ -14,7 +14,7 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script>
             addOnloadEvent(makeAddNewSubscriptionReadOnly);
-            addOnloadEvent(function(){listSubscription("View")});
+            addOnloadEvent(function(){listSubscription("edit")});
         </script>
     </head>
     <body>
@@ -24,8 +24,32 @@
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Edit Subscription</legend>
-                        <%@include file="subscriptiondetails.jsp"%>
-                        <%@include file="selectjournal.jsp"%>
+                        <fieldset class="subMainFieldSet">
+                            <legend>Subscriber Details</legend>
+
+                            <div class="IASFormLeftDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Subscriber ID:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASTextBox" TABINDEX="1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="IASFormRightDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Subscriber Name:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASTextBox" TABINDEX="2" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </fieldset>
                         <%@include file="subscriptionlist.jsp"%>
                         <%@include file="subscriptionactions.jsp"%>
                     </fieldset>

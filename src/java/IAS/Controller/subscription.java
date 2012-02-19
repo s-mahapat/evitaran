@@ -6,6 +6,7 @@ package IAS.Controller;
 
 import IAS.Class.JDSLogger;
 import IAS.Model.Subscription.SubscriptionModel;
+import IAS.Model.Subscriber.subscriberModel;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,11 +30,13 @@ public class subscription extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String oper = request.getParameter("oper");
+        String oper = request.getParameter("oper") != null ? request.getParameter("oper") : "noop";
+        String action = request.getParameter("action")!= null ? request.getParameter("action") : "noop";
         String url = null;
 
         try {
             SubscriptionModel _subscriptionModel = new SubscriptionModel(request);
+            subscriberModel _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
             if (oper.equalsIgnoreCase("view")) {
 
                 url = "/jsp/subscription/viewsubscription.jsp";
@@ -45,9 +48,12 @@ public class subscription extends HttpServlet {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            } else if (oper.equalsIgnoreCase("edit")) {
+            } else if (action != null && action.equalsIgnoreCase("edit")) {
 
-                url = "/jsp/subscription/editsubscription.jsp";
+                if (_subscriberModel.GetSubscriber() != null) {
+                    url = "/jsp/subscription/editsubscription.jsp";
+                }
+
 
             }else if (oper.equalsIgnoreCase("del")) {
 

@@ -7,6 +7,7 @@ public class inwardFormBean extends JDSBean{
     private String from = "";
     private String country = "";
     private String state;
+    private String district;
     private String city = "";
     private int pincode = 0;
     private String inwardNumber = "";
@@ -55,6 +56,14 @@ public class inwardFormBean extends JDSBean{
 
     public void setState(String _State) {
         this.state = _State;
+    }
+
+    public String getDistrict() {
+        return this.district;
+    }
+
+    public void setDistrict(String _district) {
+        this.district = _district;
     }
 
     public String getCity() {

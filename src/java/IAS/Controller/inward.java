@@ -85,7 +85,7 @@ public class inward extends HttpServlet {
 
                     if (subscriberNumber != null && !subscriberNumber.isEmpty()) {
 
-                        IAS.Model.subscriberModel _subscriberModel = new IAS.Model.subscriberModel(request);
+                        IAS.Model.Subscriber.subscriberModel _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
                         if (_subscriberModel.GetSubscriber() != null) {
                             url = "/subscriber?action=add";
                         }

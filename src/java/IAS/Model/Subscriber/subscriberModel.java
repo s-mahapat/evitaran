@@ -1,8 +1,9 @@
-package IAS.Model;
+package IAS.Model.Subscriber;
 
 import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Class.Queries;
 import IAS.Class.util;
+import IAS.Model.JDSModel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

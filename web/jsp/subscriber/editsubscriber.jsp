@@ -19,6 +19,8 @@
         </script>
         <script>
             $(document).ready(function() {
+                //disable the add subscription button
+                $("#btnAddSubscription").attr("disabled","disabled");
                 jdsAppend("/JDS/CMasterData?md=sub_type","subtype","subtype");
             });
         </script>

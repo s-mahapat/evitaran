@@ -159,6 +159,7 @@ public class inwardModel extends JDSModel {
         st.setString(++paramIndex, _inwardFormBean.getFrom());
         st.setString(++paramIndex, _inwardFormBean.getCountry());
         st.setString(++paramIndex, _inwardFormBean.getState());
+        st.setString(++paramIndex, _inwardFormBean.getDistrict());
         st.setString(++paramIndex, _inwardFormBean.getCity());
         st.setInt(++paramIndex, _inwardFormBean.getPincode());
         st.setString(++paramIndex, _inwardFormBean.getEmail());
@@ -186,6 +187,7 @@ public class inwardModel extends JDSModel {
         st.setString(++paramIndex, _inwardFormBean.getFrom());
         st.setString(++paramIndex, _inwardFormBean.getCountry());
         st.setString(++paramIndex, _inwardFormBean.getState());
+        st.setString(++paramIndex, _inwardFormBean.getDistrict());
         st.setString(++paramIndex, _inwardFormBean.getCity());
         st.setInt(++paramIndex, _inwardFormBean.getPincode());
         st.setString(++paramIndex, _inwardFormBean.getEmail());

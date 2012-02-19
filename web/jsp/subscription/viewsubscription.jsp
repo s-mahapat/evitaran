@@ -1,6 +1,7 @@
 <%--
     Document   : View Subscription
 --%>
+<jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -26,12 +27,39 @@
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>View Subscription</legend>
-                        <%@include file="subscriptiondetails.jsp"%>
-                        <%@include file="subscriptionlist.jsp"%>
-                        <%@include file="subscriptionactions.jsp"%>
-                    </fieldset>
+                        <fieldset class="subMainFieldSet">
+                            <legend>Subscription Details</legend>
+
+                            <div class="IASFormLeftDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Subscriber ID:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASTextBox" TABINDEX="1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="IASFormRightDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Subscriber Name:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASTextBox" TABINDEX="2" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </fieldset>
                 </div>
-            </form>
+
+                <%@include file="subscriptionlist.jsp"%>
+                <%@include file="subscriptionactions.jsp"%>
+                </fieldset>
         </div>
-    </body>
+    </form>
+</div>
+</body>
 </html>

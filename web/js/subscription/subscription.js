@@ -9,7 +9,7 @@ function listSubscription(mode){
         hrefText = "View";
         editable = false;
     }else{
-        hrefText = "View/Edit";
+        hrefText = "Edit";
         editable = true;
     }
     $(function(){
@@ -19,16 +19,16 @@ function listSubscription(mode){
             //data: "subscriberNumber=" + $("#subscriberNumber").val(),
             datatype: 'xml',
             mtype: 'GET',
-            height: 230,
+            height: 240,
             autowidth: true,
             forceFit: true,
             sortable: true,
             loadonce: true,
             rownumbers: true,
-            sortname:'subscriptionDate',
+            sortname:'subscriptionID',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Subscription Date','Start Year','End Year','Subscription Value','Amount Paid', 'Balance','Refund','Currency','Details'],
+            colNames:['Subscription Id','Inward No','Subscription Date','Subscription Value','Amount Paid', 'Balance','Refund','Currency','Details'],
             colModel :[
             {
                 name:'subscriptionID',
@@ -51,22 +51,6 @@ function listSubscription(mode){
                 width:30,
                 align:'center',
                 xmlmap:'subscriptionDate'
-            },
-
-            {
-                name:'startYear',
-                index:'startYear',
-                width:20,
-                align:'center',
-                xmlmap:'startYear'
-            },
-
-            {
-                name:'endYear',
-                index:'endYear',
-                width:20,
-                align:'center',
-                xmlmap:'endYear'
             },
             {
                 name:'subscriptionValue',
@@ -163,21 +147,19 @@ function listSubscription(mode){
             caption: '&nbsp;',
             emptyrecords: "No subscription details",
             loadtext: "Loading...",
-            colNames:['Journal Code','Journal Name','Journal Cost','Copies','Discount','Total'],
+            colNames:['Journal Code','Journal Name','Journal Cost','Start Year','End Year','Copies','Discount','Total'],
             colModel: [
             {
                 name:"journalCode",
                 index:"journalCode",
                 align:"center",
-                width:40,
-                key:true,
-                editable:editable,
-                edittype:'text'
+                width:60,
+                key:true
             },
             {
                 name:"journalName",
                 index:"journalName",
-                width:120,
+                width:140,
                 align:"center",
                 xmlmap: 'journalName'
             },
@@ -185,12 +167,27 @@ function listSubscription(mode){
                 name:"journalCost",
                 index:"journalCost",
                 align:"center",
-                width:80
+                width:60
+            },
+            {
+                name:'startYear',
+                index:'startYear',
+                width:60,
+                align:'center',
+                xmlmap:'startYear'
+            },
+
+            {
+                name:'endYear',
+                index:'endYear',
+                width:60,
+                align:'center',
+                xmlmap:'endYear'
             },
             {
                 name:"Copies",
                 index:"Copies",
-                width:80,
+                width:60,
                 align:"center",
                 xmlmap: 'copies',
                 editable:editable,
@@ -204,13 +201,13 @@ function listSubscription(mode){
             {
                 name:"Discount",
                 index:"Discount",
-                width:80,
+                width:60,
                 align:"center"
             },
             {
                 name:"Total",
                 index:"Total",
-                width:80,
+                width:60,
                 align:"center"
             }],
             xmlReader : {
@@ -232,7 +229,7 @@ function listSubscription(mode){
                     url: '',
                     succesfunc: function(){},
                     oneditfunc: function() {
-                        //alert ("edited");
+                    //alert ("edited");
                     },
                     errorfunc: function(id,response){
                         alert("Error is saving subscription details");
@@ -249,7 +246,7 @@ function getSubscriptionDetails(subscriptionId){
 
     jQuery("#subscriptionDetail").setGridParam({
         datatype: 'xml',
-        url: '/JDS/subscription?oper=detail&id=' + subscriptionId
+        url: 'subscription?oper=detail&id=' + subscriptionId
     });
 
     jQuery("#subscriptionDetail").trigger("reloadGrid");

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
-import IAS.Model.subscriberModel;
+import IAS.Model.Subscriber.subscriberModel;
 import org.apache.log4j.*;
 import IAS.Class.JDSLogger;
 
@@ -20,7 +20,10 @@ public class subscriber extends HttpServlet {
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.subscriber");
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * Processes requests for both HTTP
+     * <code>GET</code> and
+     * <code>POST</code> methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -32,7 +35,7 @@ public class subscriber extends HttpServlet {
         String url = null;
         try {
 
-            _subscriberModel = new IAS.Model.subscriberModel(request);
+            _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
 
             if (action.equalsIgnoreCase("save")) {
                 //if the record count saved is 1, it indicates that the record was saved else fail.
@@ -53,13 +56,19 @@ public class subscriber extends HttpServlet {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            } else if (action.equalsIgnoreCase("view")) {
+            } else if (action.equalsIgnoreCase("viewsubscription")) {
 
                 //fill in the subscriber bean
                 if (_subscriberModel.GetSubscriber() != null) {
                     url = "/jsp/subscription/viewsubscription.jsp";
                 }
 
+            } else if (action.equalsIgnoreCase("editsubscription")) {
+
+                //fill in the subscriber bean
+                if (_subscriberModel.GetSubscriber() != null) {
+                    url = "/jsp/subscription/editsubscription.jsp";
+                }
             } else if (action.equalsIgnoreCase("add")) {
 
                 //fill in the subscriber bean
@@ -85,7 +94,9 @@ public class subscriber extends HttpServlet {
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP
+     * <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -98,7 +109,9 @@ public class subscriber extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -112,6 +125,7 @@ public class subscriber extends HttpServlet {
 
     /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

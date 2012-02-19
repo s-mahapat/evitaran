@@ -5,10 +5,12 @@
     $(document).ready(function() {
         jdsAppend("<%=request.getContextPath() + "/CMasterData?md=country"%>","country","country");
         jdsAppend("<%=request.getContextPath() + "/CMasterData?md=state"%>","state","state");
+        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=district"%>","district","district");
         jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
         jdsAppend("<%=request.getContextPath() + "/CMasterData?md=purpose"%>","purpose","inwardPurpose");
         jdsAppend("<%=request.getContextPath() + "/CMasterData?md=payment_mode"%>","payment_mode","paymentMode");
         jdsAppend("<%=request.getContextPath() + "/CMasterData?md=currency"%>","currency","currency");
+
     });
 
     jQueryCalendar("paymentDate");
@@ -39,7 +41,7 @@
                 <select class="IASComboBoxMandatory" TABINDEX="2" name="country" id="country">
                     <option value="0" selected >Select</option>
                     <%
-                        if (!inwardFormBean.getCountry().isEmpty()) {
+                        if (inwardFormBean.getCountry() != null && !inwardFormBean.getCountry().isEmpty()) {
                             out.println("<option value=" + "\"" + inwardFormBean.getCountry() + "\"" + " selected >" + inwardFormBean.getCountry() + "</option>");
                         }
                     %>
@@ -61,6 +63,22 @@
                     %>
                 </select>
                 <%--<input class="IASTextBoxMandatory" TABINDEX="3" name="state" id="state" value="<jsp:getProperty name="inwardFormBean" property="state"/>"--%>
+            </span>
+        </div>
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>District:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <select class="IASComboBox" TABINDEX="4" name="district" id="district">
+                    <option value="" selected >Select</option>
+                    <%
+                        if (inwardFormBean.getDistrict() != null && !inwardFormBean.getDistrict().isEmpty()) {
+                            out.println("<option value=" + "\"" + inwardFormBean.getDistrict() + "\"" + " selected >" + inwardFormBean.getDistrict() + "</option>");
+                        }
+                    %>
+                </select>
+                <%--<input class="IASTextBoxMandatory" TABINDEX="4" name="city" id="city" value="<jsp:getProperty name="inwardFormBean" property="city"/>"--%>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -89,14 +107,7 @@
             </span>
         </div>
 
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Email:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" maxlength="64" TABINDEX="6" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${inwardFormBean.email}"/>
-            </span>
-        </div>
+
     </div>
 
     <%-- Inward Info right div --%>
@@ -152,6 +163,15 @@
             </span>
         </div>
 
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Email:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASEmailTextBox" maxlength="64" TABINDEX="6" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${inwardFormBean.email}"/>
+            </span>
+        </div>
+
     </div>
 </fieldset>
 
@@ -174,7 +194,7 @@
                 <select class="IASComboBoxMandatory" TABINDEX="10" name="inwardPurpose" id="inwardPurpose">
                     <option value="0">Select</option>
                     <%
-                        if (inwardFormBean.getInwardPurpose() != null) {
+                        if (inwardFormBean.getInwardPurpose() != null && !inwardFormBean.getInwardPurpose().isEmpty()) {
                             out.println("<option value=" + "\"" + inwardFormBean.getInwardPurpose() + "\"" + " selected >" + inwardFormBean.getInwardPurpose() + "</option>");
                         }
                     %>
@@ -277,8 +297,9 @@
             <span class="IASFormDivSpanInputBox">
                 <input class="IASCheckBox" TABINDEX="18" type="checkbox" name="chequeDDReturn" id="chequeDDReturn" value="1" disabled
                        <%
-                           if (inwardFormBean.isChequeDDReturn())
+                           if (inwardFormBean.isChequeDDReturn()) {
                                out.println("checked");
+                           }
                        %>
                        />
             </span>
@@ -332,13 +353,14 @@
         <input onclick="setActionValue('edit')" TABINDEX="25" class="IASButton" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
         <input onclick="setActionValue('sendAck')" TABINDEX="26" class="IASButton" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"
                <%
-                //inwardFormBean.isCompleted()== true ? out.println("enabled") : out.println("disabled");
-                if(inwardFormBean.isCompleted() == true)
-                    out.println(" enabled");
-                else
-                    out.println(" disabled");
+                   //inwardFormBean.isCompleted()== true ? out.println("enabled") : out.println("disabled");
+                   if (inwardFormBean.isCompleted() == true) {
+                       out.println(" enabled");
+                   } else {
+                       out.println(" disabled");
+                   }
                %>
-        />
+               />
         <input onclick="setActionValue('sendReturn')" TABINDEX="27" class="IASButton" type="submit" value="Send Return" id="btnSendReturn" name="submitAction"/>
     </div>
 </fieldset>
