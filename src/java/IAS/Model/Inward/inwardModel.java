@@ -30,6 +30,8 @@ public class inwardModel extends JDSModel {
     public inwardModel(HttpServletRequest request) throws SQLException {
         //call the base class constructor
         super(request);
+        //throw (new SQLException("Database connection not found in the session"));
+
     }
 
     public int Save() throws SQLException, ParseException,
@@ -39,13 +41,14 @@ public class inwardModel extends JDSModel {
         request.setAttribute("inwardFormBean", inwardFormBean);
         String sql;
 
+        //throw new SQLException("Generated this exception");
+
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, inwardFormBean);
         this._inwardFormBean = inwardFormBean;
 
-        /* check that the inward number is not present on the screen,
-         * if present means its and edit inward else create new inward.
-         */
+        // check that the inward number is not present on the screen, if present means its and edit inward else create new inward.
+
         if (inwardFormBean.getInwardNumber().isEmpty() == false) {
             return this._updateInward();
         } else {

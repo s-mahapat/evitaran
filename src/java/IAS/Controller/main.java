@@ -185,6 +185,10 @@ public class main extends HttpServlet {
             url = "/jsp/errors/404.jsp";
             logger.error("Redirect url was not found, forwarding to 404");
         }
+        else
+        {
+            logger.debug("Called->" + url);
+        }
 
 
         RequestDispatcher rd = request.getRequestDispatcher(url);

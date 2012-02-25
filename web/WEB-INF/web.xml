@@ -126,6 +126,15 @@
         <servlet-name>Subscription</servlet-name>
         <servlet-class>IAS.Model.Subscription.Subscription</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>JDSLog4JInitServlet</servlet-name>
+        <servlet-class>IAS.Class.JDSLog4JInitServlet</servlet-class>
+        <init-param>
+            <param-name>log4j-properties-location</param-name>
+            <param-value>WEB-INF/classes/log4j.properties</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -213,6 +222,10 @@
     <servlet-mapping>
         <servlet-name>Subscription</servlet-name>
         <url-pattern>/Subscription</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>JDSLog4JInitServlet</servlet-name>
+        <url-pattern>/JDSLog4JInitServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>

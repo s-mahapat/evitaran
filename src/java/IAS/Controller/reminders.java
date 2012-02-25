@@ -5,7 +5,6 @@
 package IAS.Controller;
 
 import java.io.IOException;
-import java.util.EmptyStackException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class reminders extends HttpServlet {
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -34,7 +33,7 @@ public class reminders extends HttpServlet {
                 url = "/jsp/reminders/reminderTemplate.jsp";
             } else if (action.equalsIgnoreCase("print")) {
                 url = "/jsp/reminders/printTemplate.jsp";
-            }  
+            }
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }
@@ -44,7 +43,7 @@ public class reminders extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -57,7 +56,7 @@ public class reminders extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -70,7 +69,7 @@ public class reminders extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */

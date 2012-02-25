@@ -10,6 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+import IAS.Class.msgsend;
+import IAS.Class.util;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import javax.servlet.ServletContext;
 
 public class inward extends HttpServlet {
 
@@ -18,7 +24,7 @@ public class inward extends HttpServlet {
 
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException{
         String action = request.getParameter("action");
         String url = null;
 
@@ -122,6 +128,17 @@ public class inward extends HttpServlet {
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+
+            ServletContext context = getServletContext();
+            String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_email.properties");
+            msgsend smtpMailSender = new msgsend();
+            smtpMailSender.sendMailWithAuthentication(
+                    emailPropertiesFile,
+                    "jds.adm.all@gmail.com", "", "",
+                    "Exception generated in JDS code",
+                    util.getExceptionStackTraceAsString(e),
+                    "JDS", "");
+
             throw new javax.servlet.ServletException(e);
 
         } finally {

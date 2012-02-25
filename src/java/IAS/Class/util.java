@@ -107,4 +107,10 @@ public final class util {
         return xml;
 
     }
+
+    public static String getExceptionStackTraceAsString(Exception exception) {
+        StringWriter sw = new StringWriter();
+        exception.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
+    }
 }
