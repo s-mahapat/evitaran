@@ -13,16 +13,16 @@ import IAS.Bean.*;
 public class countryFormBean extends JDSBean{
     
         /* fields */
-    private int countryId;
+    private int id = 0;
     private String country = "";
     
 
-public int getCountryId() {
-        return (this.countryId);
+public int getId() {
+        return (this.id);
     }
 
-public void setCountryId(int _CountryId) {
-        this.countryId = _CountryId;
+public void setId(int _Id) {
+        this.id = _Id;
     }
 
 public String getCountry() {

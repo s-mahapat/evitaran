@@ -24,7 +24,16 @@ DROP TABLE IF EXISTS `agents`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `agents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `agent` varchar(64) NOT NULL,
+  `agentName` text NOT NULL,
+  `regDate` datetime DEFAULT NULL,
+  `emailId` mediumtext,
+  `address` longtext,
+  `cityId` int(11) DEFAULT NULL,
+  `districtId` int(11) DEFAULT NULL,
+  `stateId` int(11) DEFAULT NULL,
+  `countryId` int(11) DEFAULT NULL,
+  `pinCode` int(11) DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -42,7 +51,7 @@ CREATE TABLE `cities` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `city_UNIQUE` (`city`)
-) ENGINE=InnoDB AUTO_INCREMENT=208 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,7 +67,7 @@ CREATE TABLE `countries` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `country_UNIQUE` (`country`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,11 +94,10 @@ DROP TABLE IF EXISTS `districts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `districts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `districtId` int(11) NOT NULL AUTO_INCREMENT,
   `district` varchar(64) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `district_idx_1` (`district`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=583 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`districtId`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,16 +111,15 @@ CREATE TABLE `inward` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `inwardNumber` varchar(9) NOT NULL,
   `from` varchar(64) NOT NULL,
-  `country` int(11) NOT NULL DEFAULT '0',
-  `state` int(11) DEFAULT '0',
-  `district` int(11) DEFAULT '0',
-  `city` int(11) NOT NULL DEFAULT '0',
+  `country` int(11) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  `city` int(11) NOT NULL,
   `pincode` int(11) DEFAULT NULL,
   `email` varchar(64) DEFAULT NULL,
   `institution` varchar(64) DEFAULT NULL,
   `department` varchar(64) DEFAULT NULL,
   `inwardCreationDate` date NOT NULL,
-  `subscriberId` int(15) unsigned DEFAULT NULL,
+  `subscriberId` varchar(15) DEFAULT NULL,
   `inwardPurpose` int(11) NOT NULL,
   `paymentMode` int(11) DEFAULT NULL,
   `chqddNumber` int(11) DEFAULT NULL,
@@ -133,7 +140,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB AUTO_INCREMENT=1348 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,6 +175,21 @@ CREATE TABLE `inward_return_reasons` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `jds_format_helper`
+--
+
+DROP TABLE IF EXISTS `jds_format_helper`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jds_format_helper` (
+  `year` int(11) NOT NULL,
+  `last_inward_number` int(11) NOT NULL DEFAULT '0',
+  `last_subscriber_number` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`year`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Remembers the last inward number and subscriber number. Helps in generating the next inward & subscriber number';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `journals`
 --
 
@@ -176,14 +198,28 @@ DROP TABLE IF EXISTS `journals`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `journals` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `journalCode` varchar(4) NOT NULL,
-  `journalName` varchar(64) NOT NULL,
-  `issn` varchar(20) DEFAULT NULL,
-  `pages` int(11) NOT NULL DEFAULT '0',
+  `journalCode` text NOT NULL,
+  `journalName` text NOT NULL,
+  `issnNo` text NOT NULL,
+  `pages` int(11) DEFAULT NULL,
   `startYear` int(11) DEFAULT NULL,
-  `price` float NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`,`journalName`,`journalCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+  `issues` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `month`
+--
+
+DROP TABLE IF EXISTS `month`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `month` (
+  `monthid` int(11) NOT NULL AUTO_INCREMENT,
+  `month` text,
+  PRIMARY KEY (`monthid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,7 +234,21 @@ CREATE TABLE `payment_mode` (
   `payment_mode` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `payment_mode_UNIQUE` (`payment_mode`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reason`
+--
+
+DROP TABLE IF EXISTS `reason`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reason` (
+  `reasonId` int(11) NOT NULL AUTO_INCREMENT,
+  `reason` text NOT NULL,
+  PRIMARY KEY (`reasonId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,7 +263,7 @@ CREATE TABLE `states` (
   `state` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `state_UNIQUE` (`state`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -237,102 +287,34 @@ CREATE TABLE `subscriber` (
   `country` int(11) NOT NULL,
   `pincode` varchar(45) DEFAULT NULL,
   `email` varchar(30) DEFAULT NULL,
-  `subtype` int(11) unsigned NOT NULL,
-  `agent` int(11) DEFAULT NULL,
+  `subtype` int(11) DEFAULT NULL,
+  `agent_id` int(11) DEFAULT '0',
   `deactive` tinyint(1) DEFAULT '0',
-  `deactivationDate` date DEFAULT NULL,
+  `deactivation_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `subscriber_id_UNIQUE` (`subscriberNumber`) USING BTREE,
-  KEY `subscriberName` (`subscriberName`),
-  KEY `subscriberCity` (`city`),
-  KEY `subscriberPincode` (`pincode`)
-) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `subscriber_id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = latin1 */ ;
-/*!50003 SET character_set_results = latin1 */ ;
-/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
-    ON jds.subscriber FOR EACH ROW
-BEGIN
-    IF new.deactive = True THEN
-      SET new.deactivationDate = CURRENT_DATE;
-    ELSE
-      SET new.deactivationDate = NULL;
-    END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
--- Table structure for table `subscriber_type`
+-- Table structure for table `subscribertypes`
 --
 
-DROP TABLE IF EXISTS `subscriber_type`;
+DROP TABLE IF EXISTS `subscribertypes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subscriber_type` (
+CREATE TABLE `subscribertypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subtypecode` char(5) DEFAULT NULL,
-  `subtypedesc` char(64) DEFAULT NULL,
-  `subtype` char(32) DEFAULT NULL,
-  `subtypeindian` char(1) DEFAULT NULL,
-  `freejrnl` int(8) DEFAULT NULL,
-  `discount` float(8,3) DEFAULT NULL,
+  `subTypeCode` char(5) NOT NULL,
+  `subTypeName` char(64) NOT NULL,
+  `freePaid` char(1) NOT NULL,
+  `nationality` char(1) NOT NULL,
+  `institutional` char(1) DEFAULT NULL,
+  `freeCopies` int(2) DEFAULT NULL,
+  `discount` float(8,3) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `subscription`
---
-
-DROP TABLE IF EXISTS `subscription`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subscription` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subscriberID` int(11) NOT NULL,
-  `inwardID` int(11) NOT NULL,
-  `active` tinyint(4) NOT NULL DEFAULT '1',
-  `balance` float NOT NULL DEFAULT '0',
-  `refund` float NOT NULL DEFAULT '0',
-  `subscriptionDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `subscriptionTotal` float NOT NULL DEFAULT '0',
-  `remarks` text,
-  PRIMARY KEY (`id`),
-  KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
-  KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `subscriptiondetails`
---
-
-DROP TABLE IF EXISTS `subscriptiondetails`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subscriptiondetails` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subscriptionID` int(11) NOT NULL,
-  `journalID` int(11) NOT NULL,
-  `copies` int(11) NOT NULL DEFAULT '0',
-  `startYear` int(11) DEFAULT NULL,
-  `endYear` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalID`),
-  CONSTRAINT `subscriptionid_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -362,6 +344,20 @@ CREATE TABLE `users` (
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `year`
+--
+
+DROP TABLE IF EXISTS `year`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `year` (
+  `yearId` int(11) NOT NULL AUTO_INCREMENT,
+  `year` text NOT NULL,
+  PRIMARY KEY (`yearId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -372,4 +368,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-02-19 23:54:50
+-- Dump completed on 2012-02-26 12:01:43

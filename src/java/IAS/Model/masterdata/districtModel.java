@@ -49,37 +49,28 @@ public class districtModel extends JDSModel{
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, _districtFormBean);    
         
-        if (_districtFormBean.getDistrictId() != 0) {
+        if (_districtFormBean.getId() != 0) {
             
             this._updateDistrict();
             
         } else {
 
-        // the query name from the jds_sql properties files in WEB-INF/properties folder
-        sql = Queries.getQuery("district_insert");
+            // the query name from the jds_sql properties files in WEB-INF/properties folder
+            sql = Queries.getQuery("district_insert");
 
-        PreparedStatement st = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        st.setString(paramIndex, _districtFormBean.getDistrict());
-        db.executeUpdatePreparedStatement(st);
-        
-        sql = Queries.getQuery("get_district_by_name");
-
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        paramIndex = 1;
-        stGet.setString(paramIndex, _districtFormBean.getDistrict());
-        ResultSet rs = db.executeQueryPreparedStatement(stGet);
-        
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.districtFormBean");
-            this._districtFormBean = (IAS.Bean.masterdata.districtFormBean) bProc.toBean(rs, type);
-        }
-        rs.close(); 
-        
-        request.setAttribute("districtFormBean", this._districtFormBean);
+            PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
+            int paramIndex = 1;
+            st.setString(paramIndex, _districtFormBean.getDistrict());
+            if (db.executeUpdatePreparedStatement(st) == 1) {
+                ResultSet rs = st.getGeneratedKeys();
+                while(rs.next()){
+                    int i = rs.getInt(1);
+                    //set the city id generated at the database
+                    _districtFormBean.setId(i);
+                }
+                rs.close();
+            }
+            request.setAttribute("districtFormBean", this._districtFormBean);
         }
     }
         
@@ -110,7 +101,7 @@ public class districtModel extends JDSModel{
 
         PreparedStatement st = conn.prepareStatement(sql);
 
-        st.setInt(1, _districtFormBean.getDistrictId());
+        st.setInt(1, _districtFormBean.getId());
 
         ResultSet rs = db.executeQueryPreparedStatement(st);
         // populate the bean from the resultset using the beanprocessor class
@@ -135,36 +126,19 @@ public class districtModel extends JDSModel{
 
         int paramIndex = 1;
         st.setString(paramIndex, _districtFormBean.getDistrict());
-        st.setInt(++paramIndex, _districtFormBean.getDistrictId());
-        db.executeUpdatePreparedStatement(st);
-
-        sql = Queries.getQuery("get_district_by_id");
-
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        paramIndex = 1;
-        stGet.setInt(paramIndex, _districtFormBean.getDistrictId());
-        ResultSet rs = db.executeQueryPreparedStatement(stGet);
-        
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.districtFormBean");
-            this._districtFormBean = (IAS.Bean.masterdata.districtFormBean) bProc.toBean(rs, type);
-        }
-        rs.close(); 
-        
+        st.setInt(++paramIndex, _districtFormBean.getId());
+        db.executeUpdatePreparedStatement(st);     
         request.setAttribute("districtFormBean", this._districtFormBean);
     }
     
     public String searchDistrict() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String sql = Queries.getQuery("search_district");
-        
-        ResultSet rs = this.db.executeQuery(sql);
-
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setString(paramIndex, "%" + request.getParameter("district") + "%");
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
-
         return xml;
     }    
 }        

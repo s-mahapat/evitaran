@@ -49,7 +49,7 @@ public class stateModel extends JDSModel{
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, _stateFormBean);    
         
-        if (_stateFormBean.getStateId() != 0) {
+        if (_stateFormBean.getId() != 0) {
             
             this._updateState();
             
@@ -58,28 +58,19 @@ public class stateModel extends JDSModel{
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("state_insert");
 
-        PreparedStatement st = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        st.setString(paramIndex, _stateFormBean.getState());
-        db.executeUpdatePreparedStatement(st);
-        
-        sql = Queries.getQuery("get_state_by_name");
-
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        paramIndex = 1;
-        stGet.setString(paramIndex, _stateFormBean.getState());
-        ResultSet rs = db.executeQueryPreparedStatement(stGet);
-        
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.stateFormBean");
-            this._stateFormBean = (IAS.Bean.masterdata.stateFormBean) bProc.toBean(rs, type);
-        }
-        rs.close(); 
-        
-        request.setAttribute("stateFormBean", this._stateFormBean);
+         PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
+            int paramIndex = 1;
+            st.setString(paramIndex, _stateFormBean.getState());
+            if (db.executeUpdatePreparedStatement(st) == 1) {
+                ResultSet rs = st.getGeneratedKeys();
+                while(rs.next()){
+                    int i = rs.getInt(1);
+                    //set the city id generated at the database
+                    _stateFormBean.setId(i);
+                }
+                rs.close();
+            }
+            request.setAttribute("stateFormBean", this._stateFormBean);
         }
     }
         
@@ -110,7 +101,7 @@ public class stateModel extends JDSModel{
 
         PreparedStatement st = conn.prepareStatement(sql);
 
-        st.setInt(1, _stateFormBean.getStateId());
+        st.setInt(1, _stateFormBean.getId());
 
         ResultSet rs = db.executeQueryPreparedStatement(st);
         // populate the bean from the resultset using the beanprocessor class
@@ -135,36 +126,20 @@ public class stateModel extends JDSModel{
 
         int paramIndex = 1;
         st.setString(paramIndex, _stateFormBean.getState());
-        st.setInt(++paramIndex, _stateFormBean.getStateId());
+        st.setInt(++paramIndex, _stateFormBean.getId());
         db.executeUpdatePreparedStatement(st);
-
-        sql = Queries.getQuery("get_state_by_id");
-
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        paramIndex = 1;
-        stGet.setInt(paramIndex, _stateFormBean.getStateId());
-        ResultSet rs = db.executeQueryPreparedStatement(stGet);
-        
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.stateFormBean");
-            this._stateFormBean = (IAS.Bean.masterdata.stateFormBean) bProc.toBean(rs, type);
-        }
-        rs.close(); 
-        
+       
         request.setAttribute("stateFormBean", this._stateFormBean);
     }
 
     public String searchState() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String sql = Queries.getQuery("search_state");
-        
-        ResultSet rs = this.db.executeQuery(sql);
-
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setString(paramIndex, "%" + request.getParameter("state") + "%");
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
-
         return xml;
     }    
 }        

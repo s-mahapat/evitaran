@@ -49,7 +49,7 @@ public class journalModel extends JDSModel{
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, _journalFormBean);    
         
-        if (_journalFormBean.getJournalId() != 0) {
+        if (_journalFormBean.getId() != 0) {
             
             this._updateJournal();
             
@@ -58,7 +58,7 @@ public class journalModel extends JDSModel{
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("journal_insert");
 
-        PreparedStatement st = conn.prepareStatement(sql);
+        PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
         int paramIndex = 1;
         st.setString(paramIndex, _journalFormBean.getJournalCode());
         st.setString(++paramIndex, _journalFormBean.getJournalName());
@@ -66,29 +66,15 @@ public class journalModel extends JDSModel{
         st.setInt(++paramIndex, _journalFormBean.getPages());
         st.setInt(++paramIndex, _journalFormBean.getStartYear());
         st.setInt(++paramIndex, _journalFormBean.getIssues());
-        db.executeUpdatePreparedStatement(st);
-        
-        sql = Queries.getQuery("get_journal_by_name");
-
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        paramIndex = 1;
-        stGet.setString(paramIndex, _journalFormBean.getJournalCode());
-        stGet.setString(++paramIndex, _journalFormBean.getJournalName());
-        stGet.setInt(++paramIndex, _journalFormBean.getIssnNo());
-        stGet.setInt(++paramIndex, _journalFormBean.getPages());
-        stGet.setInt(++paramIndex, _journalFormBean.getStartYear());
-        stGet.setInt(++paramIndex, _journalFormBean.getIssues());
-        ResultSet rs = db.executeQueryPreparedStatement(stGet);
-        
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.journalFormBean");
-            this._journalFormBean = (IAS.Bean.masterdata.journalFormBean) bProc.toBean(rs, type);
-        }
-        rs.close(); 
-        
+        if (db.executeUpdatePreparedStatement(st) == 1) {
+                ResultSet rs = st.getGeneratedKeys();
+                while(rs.next()){
+                    int i = rs.getInt(1);
+                    //set the city id generated at the database
+                    _journalFormBean.setId(i);
+                }
+                rs.close();
+            }        
         request.setAttribute("journalFormBean", this._journalFormBean);
         }
     }
@@ -120,7 +106,7 @@ public class journalModel extends JDSModel{
 
         PreparedStatement st = conn.prepareStatement(sql);
 
-        st.setInt(1, _journalFormBean.getJournalId());
+        st.setInt(1, _journalFormBean.getId());
 
         ResultSet rs = db.executeQueryPreparedStatement(st);
         // populate the bean from the resultset using the beanprocessor class
@@ -150,24 +136,8 @@ public class journalModel extends JDSModel{
         st.setInt(++paramIndex, _journalFormBean.getPages());
         st.setInt(++paramIndex, _journalFormBean.getStartYear());
         st.setInt(++paramIndex, _journalFormBean.getIssues());
-        st.setInt(++paramIndex, _journalFormBean.getJournalId());
+        st.setInt(++paramIndex, _journalFormBean.getId());
         db.executeUpdatePreparedStatement(st);
-
-        sql = Queries.getQuery("get_journal_by_id");
-
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        paramIndex = 1;
-        stGet.setInt(paramIndex, _journalFormBean.getJournalId());
-        ResultSet rs = db.executeQueryPreparedStatement(stGet);
-        
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.journalFormBean");
-            this._journalFormBean = (IAS.Bean.masterdata.journalFormBean) bProc.toBean(rs, type);
-        }
-        rs.close(); 
         
         request.setAttribute("journalFormBean", this._journalFormBean);
     }
@@ -175,11 +145,11 @@ public class journalModel extends JDSModel{
     public String searchJournal() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String sql = Queries.getQuery("search_journal");
-        
-        ResultSet rs = this.db.executeQuery(sql);
-
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setString(paramIndex, "%" + request.getParameter("journal") + "%");
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
-
         return xml;
     }    
 }        

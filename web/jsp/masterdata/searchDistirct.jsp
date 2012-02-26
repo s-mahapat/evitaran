@@ -10,16 +10,16 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/district.css" />
 
         <title>Search District</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchDistrict.js"%>"></script> 
         <script type="text/javascript">
-            var selectedDistrict = 0;
-            var selectedDistrictId = 0;
+             var selectedId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
             $(function(){
 
                 $("#districtTable").jqGrid({
-                    url:'',
+                    url:"<%=request.getContextPath() + "/district?action=search"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -27,24 +27,24 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    loadonce: false,
                     rownumbers: true,
                     emptyrecords: "No District",
                     loadtext: "Loading...",
                     colNames:['District Id','District','View/Edit'],
                     colModel :[
-                        {name:'DistrictId', index:'districtId', width:50, align:'center', xmlmap:'districtId'},
-                        {name:'District', index:'district', width:80, align:'center', xmlmap:'district'},
+                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
+                        {name:'district', index:'district', width:80, align:'center', xmlmap:'district'},
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
-                        root: "result",
-                        row: "district",
+                        root: "results",
+                        row: "row",
                         page: "district>page",
                         total: "district>total",
                         records : "district>records",
                         repeatitems: false,
-                        id: "districtId"
+                        id: "id"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -54,14 +54,9 @@
                     caption: '&nbsp;',
                     gridComplete: function() {
                         var ids = jQuery("#districtTable").jqGrid('getDataIDs');
-                        if(ids.length > 0){
-                            $("#btnNext").removeAttr("disabled");
-                        }
+                        
                         for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-                            var rowData = jQuery("#districtTable").jqGrid('getLocalRow',cl);
-                            var cityId = rowData['District Id'] || 0;
-                            action = "<a style='color:blue;' href='district?action=view'>View</a><a style='color:blue;' href='district?action=edit&district=" + districtId + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='district?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#districtTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -77,15 +72,29 @@
             });
 
             // called when the search button is clicked
+            
+            
+            
+            // called when the search button is clicked
+// called when the search button is clicked
             function searchDistrict(){
-                isPageLoaded = true;
-                jQuery("#districtTable").trigger("reloadGrid");
-            }
+                    isPageLoaded = true;
+                   
+                    jQuery("#districtTable").setGridParam({postData:
+                            {
+                             district         : $("#district").val()
+                        }});
+                    jQuery("#districtTable").setGridParam({ datatype: "xml" });
+                    jQuery("#districtTable").trigger("clearGridData");
+                    jQuery("#districtTable").trigger("reloadGrid");
+
+                }
 
             // draw the date picker.
-            jQueryDatePicker("from","to");
+            //jQueryDatePicker("from","to");
 
         </script>
+
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -119,7 +128,7 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="2" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="2" type="button" value="search" onclick="searchDistrict()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">

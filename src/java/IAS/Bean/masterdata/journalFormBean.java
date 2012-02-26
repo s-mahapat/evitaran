@@ -3,7 +3,7 @@ package IAS.Bean.masterdata;
 public class journalFormBean {
     
     /* fields */
-    private int journalId = 0;
+    private int id = 0;
     private String journalCode = "";
     private String journalName = "";
     private int issnNo = 0;
@@ -11,12 +11,12 @@ public class journalFormBean {
     private int startYear = 0;
     private int issues = 0;
 /* Methods - Getter and Setter */
-public int getJournalId() {
-        return (this.journalId);
+public int getId() {
+        return (this.id);
     }
 
-public void setJournalId(int _JournalId) {
-        this.journalId = _JournalId;
+public void setId(int _Id) {
+        this.id = _Id;
     }
 
 public String getJournalCode() {

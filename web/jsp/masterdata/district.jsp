@@ -12,7 +12,7 @@
                     <label>District Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="1" type="text" name="districtId" id="districtId" value="<jsp:getProperty name="districtFormBean" property="districtId"/>"/>
+                    <input class="IASTextBox" TABINDEX="1" type="text" readonly="readonly" name="id" id="id" value="<jsp:getProperty name="districtFormBean" property="id"/>"/>
                 </span>
             </div>
             <div class="IASFormFieldDiv">
@@ -20,7 +20,7 @@
                     <label>District:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="1" type="text" name="district" id="district" value="<jsp:getProperty name="districtFormBean" property="district"/>"/>
+                    <input class="IASTextBoxMandatory" TABINDEX="2" type="text" name="district" id="district" value="<jsp:getProperty name="districtFormBean" property="district"/>"/>
                 </span>
             </div>
         </div>
@@ -34,10 +34,10 @@
     <div class="IASFormFieldDiv">
         <input type="hidden" name="action" id="action"/>
         <div id="saveBtnDiv">
-            <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="2" type="submit" value="save" id="btnSave" name="btnSubmitAction"/>
+            <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="3" type="submit" value="save" id="btnSave" name="btnSubmitAction"/>
         </div>
         <div id="editBtnDiv">
-            <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="2" type="submit" value="edit" id="btnEdit" name="btnSubmitAction"/>
+            <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="4" type="submit" value="edit" id="btnEdit" name="btnSubmitAction"/>
         </div>
     </div>
 </fieldset>

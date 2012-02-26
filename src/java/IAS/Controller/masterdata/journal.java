@@ -41,6 +41,11 @@ public class journal extends HttpServlet {
             }else if(action.equalsIgnoreCase("view")){
                  _journalModel.viewJournal();
                 url = "/jsp/masterdata/displayJournal.jsp";
+            }else if(action.equalsIgnoreCase("search")){
+                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
+                String xml = _journalModel.searchJournal();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";            
             }
             
             RequestDispatcher rd = request.getRequestDispatcher(url);

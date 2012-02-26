@@ -11,17 +11,17 @@ package IAS.Bean.masterdata;
 public class stateFormBean {
     
         /* fields */
-    private int stateId = 0;
+    private int id = 0;
     private String state = "";
     
 
 
-public int getStateId() {
-        return (this.stateId);
+public int getId() {
+        return (this.id);
     }
 
-public void setStateId(int _StateId) {
-        this.stateId = _StateId;
+public void setId(int _Id) {
+        this.id = _Id;
     }
 
 public String getState() {

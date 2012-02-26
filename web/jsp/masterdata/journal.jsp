@@ -11,7 +11,7 @@
                     <label>Journal Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="journalId" id="journalId" value="<jsp:getProperty name="journalFormBean" property="journalId"/>"/>
+                    <input class="IASTextBox" TABINDEX="1" type="text" name="id" id="id" value="<jsp:getProperty name="journalFormBean" property="id"/>"/>
                 </span>
             </div>
 
@@ -20,7 +20,7 @@
                     <label>Journal Code:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="10" type="text" name="journalCode" id="journalCode" value="<jsp:getProperty name="journalFormBean" property="journalCode"/>"/>
+                    <input class="IASTextBoxMandatory" TABINDEX="2" type="text" name="journalCode" id="journalCode" value="<jsp:getProperty name="journalFormBean" property="journalCode"/>"/>
                 </span>
             </div>
 
@@ -29,7 +29,7 @@
                     <label>Journal Name:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="10" type="text" name="journalName" id="journalName" value="<jsp:getProperty name="journalFormBean" property="journalName"/>"/>
+                    <input class="IASTextBoxMandatory" TABINDEX="3" type="text" name="journalName" id="journalName" value="<jsp:getProperty name="journalFormBean" property="journalName"/>"/>
                 </span>
             </div>
 
@@ -38,7 +38,7 @@
                     <label>ISSN Number:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="issnNo" id="issnNo" value="<jsp:getProperty name="journalFormBean" property="issnNo"/>"/>
+                    <input class="IASTextBox" TABINDEX="4" type="text" name="issnNo" id="issnNo" value="<jsp:getProperty name="journalFormBean" property="issnNo"/>"/>
                 </span>
             </div>
 
@@ -47,7 +47,7 @@
                     <label>No of Pages:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="pages" id="pages" value="<jsp:getProperty name="journalFormBean" property="pages"/>"/>
+                    <input class="IASTextBox" TABINDEX="5" type="text" name="pages" id="pages" value="<jsp:getProperty name="journalFormBean" property="pages"/>"/>
                 </span>
             </div>
 
@@ -56,7 +56,7 @@
                     <label>Start Year:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="startYear" id="startYear" value="<jsp:getProperty name="journalFormBean" property="startYear"/>"/>
+                    <input class="IASTextBox" TABINDEX="6" type="text" name="startYear" id="startYear" value="<jsp:getProperty name="journalFormBean" property="startYear"/>"/>
                 </span>
             </div>
 
@@ -65,7 +65,7 @@
                     <label>No of Issues:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="issues" id="issues" value="<jsp:getProperty name="journalFormBean" property="issues"/>"/>
+                    <input class="IASTextBox" TABINDEX="7" type="text" name="issues" id="issues" value="<jsp:getProperty name="journalFormBean" property="issues"/>"/>
                 </span>
             </div>
          </div>
@@ -79,10 +79,10 @@
     <div class="IASFormFieldDiv">
         <input type="hidden" name="action" id="action"/>
         <div id="saveBtnDiv">
-            <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="101" type="submit" value="Save" id="btnSave" name="btnSubmitAction"/>
+            <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="8" type="submit" value="Save" id="btnSave" name="btnSubmitAction"/>
         </div>
         <div id="editBtnDiv">
-            <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="101" type="submit" value="Edit" id="btnEdit" name="btnSubmitAction"/>
+            <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="9" type="submit" value="Edit" id="btnEdit" name="btnSubmitAction"/>
         </div>
         
     </div>

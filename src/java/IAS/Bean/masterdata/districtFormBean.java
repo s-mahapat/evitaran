@@ -11,17 +11,17 @@ package IAS.Bean.masterdata;
 public class districtFormBean {
     
         /* fields */
-    private int districtId = 0;
+    private int id = 0;
     private String district = "";
     
 
 
-public int getDistrictId() {
-        return (this.districtId);
+public int getId() {
+        return (this.id);
     }
 
-public void setDistrictId(int _DistrictId) {
-        this.districtId = _DistrictId;
+public void setId(int _Id) {
+        this.id = _Id;
     }
 
 public String getDistrict() {

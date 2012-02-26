@@ -12,7 +12,7 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchCity.js"%>"></script> 
         <script type="text/javascript">
            // var selectedCity = 0;
-            var selectedCityId = 0;
+            var selectedId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
@@ -27,24 +27,24 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    loadonce: false,
                     rownumbers: true,
                     emptyrecords: "No City",
                     loadtext: "Loading...",
                     colNames:['City Id','City','View/Edit'],
                     colModel :[
-                        {name:'cityId', index:'cityId', width:50, align:'center', xmlmap:'cityId'},
+                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
-                        root: "result",
-                        row: "city",
+                        root: "results",
+                        row: "row",
                         page: "city>page",
                         total: "city>total",
                         records : "city>records",
                         repeatitems: false,
-                        id: "cityId"
+                        id: "id"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -54,14 +54,9 @@
                     caption: '&nbsp;',
                     gridComplete: function() {
                         var ids = jQuery("#cityTable").jqGrid('getDataIDs');
-                        if(ids.length > 0){
-                            $("#btnNext").removeAttr("disabled");
-                        }
+                        
                         for (var i = 0; i < ids.length; i++) {
-                           // var cl = ids[i];
-                           // var rowData = jQuery("#cityTable").jqGrid('getLocalRow',cl);
-                           // var cityId = rowData['City Id'] || 0;
-                            action = "<a style='color:blue;' href='/city?action=view'>View</a><a style='color:blue;' href='/city?action=edit&city=" + cityId + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='city?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#cityTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -81,14 +76,18 @@
             
             
             // called when the search button is clicked
+// called when the search button is clicked
             function searchCity(){
                     isPageLoaded = true;
+                   
                     jQuery("#cityTable").setGridParam({postData:
                             {//cityId       : $("#cityId").val(),
                             city          : $("#city").val()
                         }});
+                    jQuery("#cityTable").setGridParam({ datatype: "xml" });
                     jQuery("#cityTable").trigger("clearGridData");
                     jQuery("#cityTable").trigger("reloadGrid");
+
                 }
 
             // draw the date picker.
@@ -129,7 +128,7 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="2" type="submit" value="search" onclick="searchCity()"/>
+                                    <input class="IASButton" TABINDEX="2" type="button" value="search" onclick="searchCity()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">

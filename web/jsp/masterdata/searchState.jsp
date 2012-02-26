@@ -10,16 +10,17 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/state.css" />
 
         <title>Search State</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchState.js"%>"></script> 
         <script type="text/javascript">
-            var selectedState = 0;
-            var selectedSateId = 0;
+           // var selectedState = 0;
+            var selectedId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
             $(function(){
 
                 $("#stateTable").jqGrid({
-                    url:'',
+                    url:"<%=request.getContextPath() + "/state?action=search"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -27,24 +28,24 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    loadonce: false,
                     rownumbers: true,
-                    emptyrecords: "No Country",
+                    emptyrecords: "No State",
                     loadtext: "Loading...",
                     colNames:['State Id','State','View/Edit'],
                     colModel :[
-                        {name:'StateId', index:'stateId', width:50, align:'center', xmlmap:'stateId'},
+                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         {name:'state', index:'state', width:80, align:'center', xmlmap:'state'},
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
-                        root: "result",
-                        row: "state",
+                        root: "results",
+                        row: "row",
                         page: "state>page",
                         total: "state>total",
                         records : "state>records",
                         repeatitems: false,
-                        id: "stateId"
+                        id: "id"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -54,14 +55,9 @@
                     caption: '&nbsp;',
                     gridComplete: function() {
                         var ids = jQuery("#stateTable").jqGrid('getDataIDs');
-                        if(ids.length > 0){
-                            $("#btnNext").removeAttr("disabled");
-                        }
+                        
                         for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-                            var rowData = jQuery("#stateTable").jqGrid('getLocalRow',cl);
-                            var cityId = rowData['State Id'] || 0;
-                            action = "<a style='color:blue;' href='state?action=view'>View</a><a style='color:blue;' href='state?action=edit&state=" + stateId + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='state?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#stateTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -77,15 +73,29 @@
             });
 
             // called when the search button is clicked
+            
+            
+            
+            // called when the search button is clicked
+// called when the search button is clicked
             function searchState(){
-                isPageLoaded = true;
-                jQuery("#stateTable").trigger("reloadGrid");
-            }
+                    isPageLoaded = true;
+                   
+                    jQuery("#stateTable").setGridParam({postData:
+                            {//stateId       : $("#stateId").val(),
+                            state          : $("#state").val()
+                        }});
+                    jQuery("#stateTable").setGridParam({ datatype: "xml" });
+                    jQuery("#stateTable").trigger("clearGridData");
+                    jQuery("#stateTable").trigger("reloadGrid");
+
+                }
 
             // draw the date picker.
-            jQueryDatePicker("from","to");
+            //jQueryDatePicker("from","to");
 
         </script>
+
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -119,7 +129,7 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="2" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="2" type="button" value="search" onclick="searchState()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">

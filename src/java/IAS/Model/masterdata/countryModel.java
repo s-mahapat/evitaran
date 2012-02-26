@@ -49,37 +49,28 @@ public class countryModel extends JDSModel{
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, _countryFormBean);    
         
-        if (_countryFormBean.getCountryId() != 0) {
+        if (_countryFormBean.getId() != 0) {
             
             this._updateCountry();
             
         } else {
 
-        // the query name from the jds_sql properties files in WEB-INF/properties folder
-        sql = Queries.getQuery("country_insert");
+// the query name from the jds_sql properties files in WEB-INF/properties folder
+            sql = Queries.getQuery("country_insert");
 
-        PreparedStatement st = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        st.setString(paramIndex, _countryFormBean.getCountry());
-        db.executeUpdatePreparedStatement(st);
-        
-        sql = Queries.getQuery("get_country_by_name");
-
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        paramIndex = 1;
-        stGet.setString(paramIndex, _countryFormBean.getCountry());
-        ResultSet rs = db.executeQueryPreparedStatement(stGet);
-        
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.countryFormBean");
-            this._countryFormBean = (IAS.Bean.masterdata.countryFormBean) bProc.toBean(rs, type);
-        }
-        rs.close(); 
-        
-        request.setAttribute("countryFormBean", this._countryFormBean);
+            PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
+            int paramIndex = 1;
+            st.setString(paramIndex, _countryFormBean.getCountry());
+            if (db.executeUpdatePreparedStatement(st) == 1) {
+                ResultSet rs = st.getGeneratedKeys();
+                while(rs.next()){
+                    int i = rs.getInt(1);
+                    //set the city id generated at the database
+                    _countryFormBean.setId(i);
+                }
+                rs.close();
+            }
+            request.setAttribute("countryFormBean", this._countryFormBean);
         }
     }
         
@@ -110,7 +101,7 @@ public class countryModel extends JDSModel{
 
         PreparedStatement st = conn.prepareStatement(sql);
 
-        st.setInt(1, _countryFormBean.getCountryId());
+        st.setInt(1, _countryFormBean.getId());
 
         ResultSet rs = db.executeQueryPreparedStatement(st);
         // populate the bean from the resultset using the beanprocessor class
@@ -135,24 +126,8 @@ public class countryModel extends JDSModel{
 
         int paramIndex = 1;
         st.setString(paramIndex, _countryFormBean.getCountry());
-        st.setInt(++paramIndex, _countryFormBean.getCountryId());
-        db.executeUpdatePreparedStatement(st);
-
-        sql = Queries.getQuery("get_country_by_id");
-
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        paramIndex = 1;
-        stGet.setInt(paramIndex, _countryFormBean.getCountryId());
-        ResultSet rs = db.executeQueryPreparedStatement(stGet);
-        
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.countryFormBean");
-            this._countryFormBean = (IAS.Bean.masterdata.countryFormBean) bProc.toBean(rs, type);
-        }
-        rs.close(); 
+        st.setInt(++paramIndex, _countryFormBean.getId());
+        db.executeUpdatePreparedStatement(st); 
         
         request.setAttribute("countryFormBean", this._countryFormBean);
     }
@@ -160,11 +135,11 @@ public class countryModel extends JDSModel{
     public String searchCountry() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String sql = Queries.getQuery("search_country");
-        
-        ResultSet rs = this.db.executeQuery(sql);
-
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setString(paramIndex, "%" + request.getParameter("country") + "%");
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
-
         return xml;
     }    
 }        

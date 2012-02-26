@@ -10,16 +10,17 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/country.css" />
 
         <title>Search Country</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchCountry.js"%>"></script> 
         <script type="text/javascript">
-            var selectedCountry = 0;
-            var selectedCountryId = 0;
+           // var selectedCountry = 0;
+            var selectedId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
             $(function(){
 
                 $("#countryTable").jqGrid({
-                    url:'',
+                    url:"<%=request.getContextPath() + "/country?action=search"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -27,24 +28,24 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    loadonce: false,
                     rownumbers: true,
                     emptyrecords: "No Country",
                     loadtext: "Loading...",
                     colNames:['Country Id','Country','View/Edit'],
                     colModel :[
-                        {name:'CountryId', index:'countryId', width:50, align:'center', xmlmap:'countryId'},
-                        {name:'Country', index:'country', width:80, align:'center', xmlmap:'country'},
+                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
+                        {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
-                        root: "result",
-                        row: "country",
-                        page: "contry>page",
+                        root: "results",
+                        row: "row",
+                        page: "country>page",
                         total: "country>total",
                         records : "country>records",
                         repeatitems: false,
-                        id: "countryId"
+                        id: "id"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -53,15 +54,10 @@
                     gridview: true,
                     caption: '&nbsp;',
                     gridComplete: function() {
-                        var ids = jQuery("#countryTable").jqGrid('getDataIDs');
-                        if(ids.length > 0){
-                            $("#btnNext").removeAttr("disabled");
-                        }
+                        var ids = jQuery("#counryTable").jqGrid('getDataIDs');
+                        
                         for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-                            var rowData = jQuery("#countryTable").jqGrid('getLocalRow',cl);
-                            var cityId = rowData['Country Id'] || 0;
-                            action = "<a style='color:blue;' href='country?action=view'>View</a><a style='color:blue;' href='country?action=edit&country=" + countryId + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='country?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#countryTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -77,13 +73,26 @@
             });
 
             // called when the search button is clicked
+            
+            
+            
+            // called when the search button is clicked
+// called when the search button is clicked
             function searchCountry(){
-                isPageLoaded = true;
-                jQuery("#countryTable").trigger("reloadGrid");
-            }
+                    isPageLoaded = true;
+                   
+                    jQuery("#countryTable").setGridParam({postData:
+                            {//countryId       : $("#countryId").val(),
+                            country          : $("#country").val()
+                        }});
+                    jQuery("#countryTable").setGridParam({ datatype: "xml" });
+                    jQuery("#countryTable").trigger("clearGridData");
+                    jQuery("#countryTable").trigger("reloadGrid");
+
+                }
 
             // draw the date picker.
-            jQueryDatePicker("from","to");
+            //jQueryDatePicker("from","to");
 
         </script>
 
@@ -120,7 +129,7 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="2" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="2" type="button" value="search" onclick="searchCountry()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">

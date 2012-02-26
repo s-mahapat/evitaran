@@ -9,16 +9,17 @@
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/masterdata/journal.css" />
         <title>Search Journal</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchJournal.js"%>"></script> 
         <script type="text/javascript">
-            var selectedJournal = 0;
-            var selectedJournalId = 0;
+           // var selectedJournal = 0;
+            var selectedId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
             $(function(){
 
-                $("#JournalTable").jqGrid({
-                    url:'',
+                $("#journalTable").jqGrid({
+                    url:"<%=request.getContextPath() + "/journal?action=search"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -26,11 +27,11 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    loadonce: false,
                     rownumbers: true,
                     emptyrecords: "No Journal",
                     loadtext: "Loading...",
-                    colNames:['Journal Id','Journal Code','Journal Name','ISSN No', 'View/Edit'],
+                   colNames:['Journal Id','Journal Code','Journal Name','ISSN No', 'View/Edit'],
                     colModel :[
                         {name:'journalId', index:'journalId', width:50, align:'center', xmlmap:'journalId'},
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
@@ -39,13 +40,13 @@
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
-                        root: "result",
-                        row: "JournalName",
-                        page: "journalName>page",
-                        total: "journalName>total",
-                        records : "journalName>records",
+                        root: "results",
+                        row: "row",
+                        page: "journal>page",
+                        total: "journal>total",
+                        records : "journal>records",
                         repeatitems: false,
-                        id: "journalId"
+                        id: "id"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -55,14 +56,9 @@
                     caption: '&nbsp;',
                     gridComplete: function() {
                         var ids = jQuery("#journalTable").jqGrid('getDataIDs');
-                        if(ids.length > 0){
-                            $("#btnNext").removeAttr("disabled");
-                        }
+                        
                         for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-                            var rowData = jQuery("#journalTable").jqGrid('getLocalRow',cl);
-                            var cityId = rowData['Journal Id'] || 0;
-                            action = "<a style='color:blue;' href='journal?action=view'>View</a><a style='color:blue;' href='journal?action=edit&journalId=" + journalId + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='journal?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#journalTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -78,15 +74,28 @@
             });
 
             // called when the search button is clicked
-            function searchCity(){
-                isPageLoaded = true;
-                jQuery("#journalTable").trigger("reloadGrid");
-            }
+            
+            
+            
+            // called when the search button is clicked
+// called when the search button is clicked
+            function searchJournal(){
+                    isPageLoaded = true;
+                   
+                    jQuery("#journalTable").setGridParam({postData:
+                            {journalCode       : $("#journalCode").val(),
+                            journalName          : $("#journalName").val()
+                        }});
+                    jQuery("#journalTable").setGridParam({ datatype: "xml" });
+                    jQuery("#journalTable").trigger("clearGridData");
+                    jQuery("#journalTable").trigger("reloadGrid");
+
+                }
 
             // draw the date picker.
-            jQueryDatePicker("from","to");
+            //jQueryDatePicker("from","to");
 
-        </script>        
+        </script>      
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -130,7 +139,7 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="3" type="button" value="search" onclick="searchCity()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
