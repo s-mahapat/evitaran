@@ -113,4 +113,45 @@ public final class util {
         exception.printStackTrace(new PrintWriter(sw));
         return sw.toString();
     }
+
+    public void printResultSet(ResultSet result) throws SQLException
+    {
+        // Print the data obtained from the query
+        ResultSetMetaData rsmd = result.getMetaData();
+
+        printColTypes(rsmd);
+        System.out.println("");
+
+        int numberOfColumns = rsmd.getColumnCount();
+
+        for (int i = 1; i <= numberOfColumns; i++)
+        {
+            if (i > 1) System.out.print(",  ");
+            String columnName = rsmd.getColumnName(i);
+            System.out.print(columnName);
+        }
+        System.out.println("");
+
+        while (result.next())
+        {
+                for (int i = 1; i <= numberOfColumns; i++) {
+                if (i > 1) System.out.print(",  ");
+                String columnValue = result.getString(i);
+                System.out.print(columnValue);
+            }
+            System.out.println("");
+        }
+        // End of print of data obtained from query
+    }
+
+    public void printColTypes(ResultSetMetaData rsmd)
+                            throws SQLException {
+    int columns = rsmd.getColumnCount();
+    for (int i = 1; i <= columns; i++) {
+      int jdbcType = rsmd.getColumnType(i);
+      String name = rsmd.getColumnTypeName(i);
+      System.out.print("Column " + i + " is JDBC type " + jdbcType);
+      System.out.println(", which the DBMS calls " + name);
+    }
+    }
 }

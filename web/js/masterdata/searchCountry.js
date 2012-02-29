@@ -1,5 +1,5 @@
-function setCityId(cityId){
-    selectedCityId = cityId
+function setCountryId(countryId){
+    selectedCountryId = countryId
  //   selectedSubscriberId = subscriberId || 0;
 
 }

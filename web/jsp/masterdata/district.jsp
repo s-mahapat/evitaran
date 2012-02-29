@@ -12,7 +12,7 @@
                     <label>District Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" readonly="readonly" name="id" id="id" value="<jsp:getProperty name="districtFormBean" property="id"/>"/>
+                    <input class="IASTextBox" TABINDEX="1" readonly="readonly" type="text" name="id" id="id" value="<jsp:getProperty name="districtFormBean" property="id"/>"/>
                 </span>
             </div>
             <div class="IASFormFieldDiv">

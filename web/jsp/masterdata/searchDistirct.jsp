@@ -10,9 +10,10 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/district.css" />
 
         <title>Search District</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchDistrict.js"%>"></script> 
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchDistrict.js"%>"></script>
         <script type="text/javascript">
-             var selectedId = 0;
+            // var selectedDistrict = 0;
+            var selectedId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
@@ -54,7 +55,7 @@
                     caption: '&nbsp;',
                     gridComplete: function() {
                         var ids = jQuery("#districtTable").jqGrid('getDataIDs');
-                        
+
                         for (var i = 0; i < ids.length; i++) {
                             action = "<a style='color:blue;' href='district?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#districtTable").jqGrid('setRowData', ids[i], { Action: action });
@@ -72,14 +73,14 @@
             });
 
             // called when the search button is clicked
-            
-            
-            
+
+
+
             // called when the search button is clicked
 // called when the search button is clicked
             function searchDistrict(){
                     isPageLoaded = true;
-                   
+
                     jQuery("#districtTable").setGridParam({postData:
                             {
                              district         : $("#district").val()
@@ -100,7 +101,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchdistrictForm">
+            <form method="post" action="<%=request.getContextPath() + "/district"%>" name="searchDistrictForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search District</legend>

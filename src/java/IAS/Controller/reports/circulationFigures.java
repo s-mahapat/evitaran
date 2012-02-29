@@ -27,12 +27,12 @@ public class circulationFigures extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-       
+
         cityFormBean _cityFormBean = new IAS.Bean.masterdata.cityFormBean();
-        
+
         String url = null;
         try{
-            _cityModel = new IAS.Model.masterdata.cityModel(request, _cityFormBean);
+            _cityModel = new IAS.Model.masterdata.cityModel(request);
             
             if(action.equalsIgnoreCase("save")){
                 _cityModel.Save();
@@ -42,7 +42,7 @@ public class circulationFigures extends HttpServlet {
             }else if(action.equalsIgnoreCase("view")){
                 url = "/jsp/masterdata/displayCity.jsp";
             }
-            
+
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }

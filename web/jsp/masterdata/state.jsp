@@ -12,7 +12,7 @@
                     <label>State Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" readonly="readonly" name="id" id="id" value="<jsp:getProperty name="stateFormBean" property="id"/>"/>
+                    <input class="IASTextBox" TABINDEX="1" readonly="readonly" type="text" name="id" id="id" value="<jsp:getProperty name="stateFormBean" property="id"/>"/>
                 </span>
             </div>
             <div class="IASFormFieldDiv">
@@ -20,7 +20,7 @@
                     <label>State:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="2" type="text" name="state" id="state" value="<jsp:getProperty name="stateFormBean" property="state"/>"/>
+                    <input class="IASTextBoxMandatory" TABINDEX="2" name="state" type="text" id="state" value="<jsp:getProperty name="stateFormBean" property="state"/>"/>
                 </span>
             </div>
         </div>

@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/country.css" />
 
         <title>Search Country</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchCountry.js"%>"></script> 
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchCountry.js"%>"></script>
         <script type="text/javascript">
            // var selectedCountry = 0;
             var selectedId = 0;
@@ -54,8 +54,8 @@
                     gridview: true,
                     caption: '&nbsp;',
                     gridComplete: function() {
-                        var ids = jQuery("#counryTable").jqGrid('getDataIDs');
-                        
+                        var ids = jQuery("#countryTable").jqGrid('getDataIDs');
+
                         for (var i = 0; i < ids.length; i++) {
                             action = "<a style='color:blue;' href='country?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#countryTable").jqGrid('setRowData', ids[i], { Action: action });
@@ -73,14 +73,14 @@
             });
 
             // called when the search button is clicked
-            
-            
-            
+
+
+
             // called when the search button is clicked
 // called when the search button is clicked
             function searchCountry(){
                     isPageLoaded = true;
-                   
+
                     jQuery("#countryTable").setGridParam({postData:
                             {//countryId       : $("#countryId").val(),
                             country          : $("#country").val()
@@ -101,7 +101,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchCountryForm">
+            <form method="post" action="<%=request.getContextPath() + "/country"%>" name="searchCountryForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Country</legend>

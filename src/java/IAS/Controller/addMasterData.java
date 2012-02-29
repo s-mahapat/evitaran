@@ -1,64 +1,84 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package IAS.Controller;
 
+import IAS.Class.JDSLogger;
+import IAS.Class.msgsend;
+import IAS.Class.util;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import org.apache.log4j.Logger;
 
-/**
- *
- * @author Shailendra Mahapatra
- */
 public class addMasterData extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String url = null;
-        if (action.equalsIgnoreCase("addSubType")) {
 
-            url = "/jsp/masterdata/addNewSubType.jsp";
-        } else if (action.equalsIgnoreCase("addJournal")) {
+        try {
 
-            url = "/jsp/masterdata/addJournal.jsp";
+            if (action.equalsIgnoreCase("addSubType")) {
 
-        } else if (action.equalsIgnoreCase("addAgent")) {
+                url = "/jsp/masterdata/addNewSubType.jsp";
+            } else if (action.equalsIgnoreCase("addJournal")) {
 
-            url = "/jsp/masterdata/addAgent.jsp";
-        } else if (action.equalsIgnoreCase("addCity")) {
+                url = "/jsp/masterdata/addJournal.jsp";
 
-            url = "/jsp/masterdata/addCity.jsp";
+            } else if (action.equalsIgnoreCase("addAgent")) {
 
-        } else if (action.equalsIgnoreCase("addCountry")) {
+                url = "/jsp/masterdata/addAgent.jsp";
+            } else if (action.equalsIgnoreCase("addCity")) {
 
-            url = "/jsp/masterdata/addCountry.jsp";
+                url = "/jsp/masterdata/addCity.jsp";
 
-        } else if (action.equalsIgnoreCase("addDistrict")) {
+            } else if (action.equalsIgnoreCase("addCountry")) {
 
-            url = "/jsp/masterdata/addDistrict.jsp";
+                url = "/jsp/masterdata/addCountry.jsp";
 
-        } else if (action.equalsIgnoreCase("addState")) {
+            } else if (action.equalsIgnoreCase("addDistrict")) {
 
-            url = "/jsp/masterdata/addState.jsp";
+                url = "/jsp/masterdata/addDistrict.jsp";
 
+            } else if (action.equalsIgnoreCase("addState")) {
+
+                url = "/jsp/masterdata/addState.jsp";
+
+            }
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+
+            ServletContext context = getServletContext();
+            String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_email.properties");
+            msgsend smtpMailSender = new msgsend();
+            smtpMailSender.sendMailWithAuthentication(
+                    emailPropertiesFile,
+                    "jds.adm.all@gmail.com", "", "",
+                    "Exception generated in JDS code",
+                    util.getExceptionStackTraceAsString(e),
+                    "JDS", "");
+
+            throw new javax.servlet.ServletException(e);
+
+        } finally {
+            if(url == null){
+                url = "/jsp/errors/404.jsp";
+                logger.error("Redirect url was not found, forwarding to 404");
+            }
+            else
+            {
+                logger.debug("Called->" + url);
+            }
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+            if (rd != null && url != null) {
+                rd.forward(request, response);
+            }
         }
-        RequestDispatcher rd = request.getRequestDispatcher(url);
-        rd.forward(request, response);
-
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

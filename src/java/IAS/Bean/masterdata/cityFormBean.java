@@ -4,12 +4,14 @@
  */
 package IAS.Bean.masterdata;
 
+import IAS.Bean.JDSBean;
+
 /**
  *
  * @author Deepali
  */
-public class cityFormBean {
-    
+public class cityFormBean extends JDSBean{
+
         /* fields */
     private int id = 0;
     private String city = "";

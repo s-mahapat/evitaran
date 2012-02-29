@@ -8,8 +8,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/masterdata/city.css" />
+
         <title>Search City</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchCity.js"%>"></script> 
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchCity.js"%>"></script>
         <script type="text/javascript">
            // var selectedCity = 0;
             var selectedId = 0;
@@ -54,7 +55,7 @@
                     caption: '&nbsp;',
                     gridComplete: function() {
                         var ids = jQuery("#cityTable").jqGrid('getDataIDs');
-                        
+
                         for (var i = 0; i < ids.length; i++) {
                             action = "<a style='color:blue;' href='city?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#cityTable").jqGrid('setRowData', ids[i], { Action: action });
@@ -72,14 +73,14 @@
             });
 
             // called when the search button is clicked
-            
-            
-            
+
+
+
             // called when the search button is clicked
 // called when the search button is clicked
             function searchCity(){
                     isPageLoaded = true;
-                   
+
                     jQuery("#cityTable").setGridParam({postData:
                             {//cityId       : $("#cityId").val(),
                             city          : $("#city").val()

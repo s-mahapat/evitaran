@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/state.css" />
 
         <title>Search State</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchState.js"%>"></script> 
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchState.js"%>"></script>
         <script type="text/javascript">
            // var selectedState = 0;
             var selectedId = 0;
@@ -55,7 +55,7 @@
                     caption: '&nbsp;',
                     gridComplete: function() {
                         var ids = jQuery("#stateTable").jqGrid('getDataIDs');
-                        
+
                         for (var i = 0; i < ids.length; i++) {
                             action = "<a style='color:blue;' href='state?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#stateTable").jqGrid('setRowData', ids[i], { Action: action });
@@ -73,14 +73,14 @@
             });
 
             // called when the search button is clicked
-            
-            
-            
+
+
+
             // called when the search button is clicked
 // called when the search button is clicked
             function searchState(){
                     isPageLoaded = true;
-                   
+
                     jQuery("#stateTable").setGridParam({postData:
                             {//stateId       : $("#stateId").val(),
                             state          : $("#state").val()
@@ -101,7 +101,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchstateForm">
+            <form method="post" action="<%=request.getContextPath() + "/state"%>" name="searchStateForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search State</legend>

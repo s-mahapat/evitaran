@@ -12,9 +12,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import javax.servlet.ServletContext;
 
 public class inward extends HttpServlet {

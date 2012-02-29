@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -87,7 +87,7 @@ CREATE TABLE `countries` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `country_UNIQUE` (`country`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +96,7 @@ CREATE TABLE `countries` (
 
 LOCK TABLES `countries` WRITE;
 /*!40000 ALTER TABLE `countries` DISABLE KEYS */;
-INSERT INTO `countries` VALUES (7,'Canada'),(8,'England1'),(1,'India'),(3,'Japan'),(9,'Koria'),(4,'Pakistan'),(5,'Srilanka'),(6,'Srilankaa'),(2,'USA');
+INSERT INTO `countries` VALUES (10,'Burundi'),(7,'Canada'),(8,'England1'),(1,'India'),(3,'Japan'),(9,'Koria'),(4,'Pakistan'),(5,'Srilanka'),(6,'Srilankaa'),(2,'USA');
 /*!40000 ALTER TABLE `countries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,10 +134,12 @@ DROP TABLE IF EXISTS `districts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `districts` (
-  `districtId` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `district` varchar(64) NOT NULL,
-  PRIMARY KEY (`districtId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `district_UNIQUE` (`district`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,7 +148,7 @@ CREATE TABLE `districts` (
 
 LOCK TABLES `districts` WRITE;
 /*!40000 ALTER TABLE `districts` DISABLE KEYS */;
-INSERT INTO `districts` VALUES (1,'Puri'),(2,'Bhadrak'),(3,'Balasore'),(4,'Jaleshwar'),(5,'Chakradharpur'),(6,'Chaibasa'),(7,'Bikaner'),(8,'Nimar1');
+INSERT INTO `districts` VALUES (3,'Balasore'),(2,'Bhadrak'),(7,'Bikaner'),(6,'Chaibasa'),(5,'Chakradharpur'),(4,'Jaleshwar'),(8,'Nimar1'),(9,'Pune'),(1,'Puri');
 /*!40000 ALTER TABLE `districts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,6 +391,7 @@ CREATE TABLE `states` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `state` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `state_UNIQUE` (`state`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -441,6 +444,36 @@ LOCK TABLES `subscriber` WRITE;
 /*!40000 ALTER TABLE `subscriber` DISABLE KEYS */;
 INSERT INTO `subscriber` VALUES (24,'11L-00001','2011-12-27','Shailendra Mahapatra',NULL,NULL,'# 1075, Sobha Amethyst\r\nKannamangala, Kadugodi, Whitefield',3,1,13,1,'560067',NULL,NULL,0,0,NULL),(25,'11L-00002','2011-12-27','4354353',NULL,NULL,'rewrwrwrw',5,2,1,1,'43224242',NULL,1,0,0,NULL),(26,'11L-00003','2011-12-27','sadadad',NULL,NULL,'dsadadad',123,NULL,4,1,'0',NULL,4,0,0,NULL),(27,'11L-00004','2011-12-27','eweq',NULL,NULL,'eweqqqqqqqqqq',23,NULL,2,1,'0',NULL,1,0,0,NULL),(28,'11L-00005','2011-12-27','eweq',NULL,NULL,'eweqqqqqqqqqq',23,NULL,2,1,'0',NULL,1,0,0,NULL),(29,'11L-00006','2011-12-27',' yrty','ewrwrw','rewrwrwr','ertretet',23,2,1,1,'0','pinki.pachisia@sap.com',1,0,0,NULL),(30,'11L-00007','2011-12-27','ASssdsa','trtetret','rewrwrwr','dgterstret',5,3,5,1,'543534','pinki.pachisia@sap.com',2,0,0,NULL),(31,'11L-00008','2011-12-27','65757','trtetret','ertetre','rewtwtw',123,2,2,1,'0','pinki.pachisia@sap.com',2,0,0,NULL),(32,'11L-00009','2011-12-27',' yrty','trtete','','reeyeye',5,NULL,1,1,'0','',4,0,0,NULL),(33,'11L-00010','2011-12-27','dwaeq','trtete','','jj',93,6,9,1,'4535353','',5,0,0,NULL),(34,'11L-00011','2011-12-27','fdsfds','','','fdssf',5,NULL,5,1,'0','',2,0,0,NULL),(35,'11L-00012','2011-12-27','4354353','','','tftdyt',103,NULL,15,2,'0','',4,0,0,NULL),(36,'11L-00013','2011-12-27','dsafsaf','','','erwreq',80,3,7,1,'0','',4,0,0,NULL),(37,'11L-00014','2011-12-27','df','','','grdtt',103,NULL,10,2,'0','',2,0,0,NULL),(38,'11L-00015','2011-12-28','weqeq','','','ewqeqe',123,NULL,2,1,'0','',5,0,0,NULL),(39,'11L-00016','2011-12-28','weqeq','','','ewqeqe',123,NULL,2,1,'0','',5,0,0,NULL),(40,'11L-00017','2011-12-28','weqeq','','','ewqeqe',123,NULL,2,1,'0','',5,0,0,NULL),(41,'11L-00018','2011-12-28','vfds','','','dsfs',5,NULL,1,1,'0','',2,0,0,NULL),(42,'11L-00019','2011-12-28','ewq','','','ewqe',80,NULL,3,2,'0','',1,0,0,NULL),(43,'11L-00020','2011-12-28','tytryr','etretewt','tertret','ytyr',123,2,2,1,'5433335','pinki.pachisia@sap.com',3,0,0,NULL),(44,'11L-00021','2011-12-28','ferwer','rewrwr','wrwrrw','rewr',123,3,4,1,'42432424','pinki.pachisia@sap.com',2,0,0,NULL),(45,'11L-00022','2011-12-28','r4wetr4535','5435','ertete','543535',5,3,3,1,'543535','pinki.pachisia@sap.com',2,0,0,NULL),(46,'11L-00023','2011-12-28','er435','rewrwr','rewrwrwr','5435435',148,4,2,2,'4333','pinki.pachisia@sap.com',2,0,0,NULL),(47,'11L-00024','2011-12-28','dad','','','546464',148,NULL,10,2,'0','',5,0,0,NULL),(48,'11L-00025','2011-12-28','564','','','rete',103,NULL,12,1,'0','',3,0,0,NULL),(49,'11L-00026','2011-12-28','564','','','432424',80,NULL,10,1,'0','',1,0,0,NULL),(50,'11L-00027','2011-12-28','Deepali Gokhale','IAS','IAS','Kasturinagar',3,NULL,13,1,'560067','hghjg',1,0,0,NULL),(51,'11L-00028','2011-12-28','er435','','','rwqrqr',54,NULL,7,2,'0','',1,0,0,NULL),(52,'11L-00029','2011-12-28','rewrer','','','rewrwr',148,NULL,7,1,'0','',1,0,0,NULL),(53,'11L-00030','2011-12-28','dsada','','','dsada',103,NULL,10,2,'0','',1,0,0,NULL),(54,'11L-00031','2011-12-28','rwetewtw','','','rewrwr',103,NULL,8,1,'0','',2,0,0,NULL),(55,'11L-00032','2011-12-28','43242','','','43',123,NULL,5,1,'0','',3,0,0,NULL),(56,'11L-00033','2011-12-28','grret','','','tret',54,NULL,10,1,'0','',1,0,0,NULL),(57,'11L-00034','2011-12-28','ryr','','','yty',126,NULL,20,1,'0','',3,0,0,NULL),(58,'11L-00035','2011-12-28','rte','','','trete',54,NULL,3,1,'0','',2,0,0,NULL),(59,'11L-00036','2011-12-28','fsdfsfs','','','fdsfds',54,NULL,7,2,'0','',2,0,0,NULL),(60,'11L-00037','2011-12-28','rgtet','','','tret',5,NULL,5,1,'0','',1,0,0,NULL),(61,'11L-00038','2011-12-28','tretet','','','trete',148,NULL,3,1,'0','',1,0,0,NULL),(62,'11L-00039','2011-12-28','ytryr','','','ytryr',123,2,4,1,'0','',1,0,0,NULL),(63,'11L-00040','2011-12-28','fdsfsf','','','fdsff',123,NULL,4,1,'0','',3,0,0,NULL),(64,'11L-00041','2011-12-28','trewt','','','tretet',148,NULL,5,1,'0','',1,0,0,NULL),(65,'11L-00042','2011-12-28','fdsfsfsf','','','sfdsfsfdsf',80,NULL,3,1,'0','',1,0,0,NULL),(66,'11L-00043','2011-12-28','dasda','','','ewqeq',148,4,2,1,'0','',1,0,0,NULL),(67,'11L-00044','2011-12-28','dwaeq','IAS','wrwrrw','jhjkhlkjljlkkl;k;;;;;;hjuhkjjjjjjjjjjjjjjjjjjjjjj',80,1,3,1,'0','pinki.pachisia@sap.com',1,0,0,NULL),(68,'11L-00045','2011-12-28','wqreqewq','','','eeqweqew',123,2,3,1,'0','',1,0,0,NULL),(69,'11L-00046','2011-12-28','43443234','','','weqweqe',123,NULL,4,2,'0','',3,0,0,NULL),(70,'11L-00047','2011-12-28','dwaeq','','','324242',80,3,3,1,'0','',3,0,0,NULL),(71,'11L-00048','2011-12-28','tret','','','tret',123,NULL,5,2,'0','',1,0,0,NULL),(72,'11L-00049','2011-12-28','tret','','','tret',5,NULL,3,1,'0','',4,0,0,NULL),(73,'11L-00050','2011-12-28','ewrwr','','','rewr',54,NULL,3,1,'0','',1,0,0,NULL),(74,'11L-00051','2011-12-28','fd','','','fds',54,NULL,2,2,'0','',1,0,0,NULL),(75,'11L-00052','2011-12-28','tretetetete','','','tretre',103,NULL,5,1,'0','',1,0,0,NULL),(76,'11L-00053','2011-12-28','tretetertet','','','tretet',54,NULL,3,1,'0','',2,0,0,NULL),(77,'11L-00054','2011-12-28','rerwer','','','rewrwrewrwrw',148,NULL,1,1,'0','',1,0,0,NULL),(78,'11L-00055','2011-12-28','trnb','','','nbn',148,NULL,7,2,'0','',1,0,0,NULL),(79,'11L-00056','2011-12-28','54','','','rew',80,NULL,10,1,'0','',1,0,0,NULL),(80,'11L-00057','2011-12-28','dddd','','','dddd',148,NULL,2,1,'0','',3,0,0,NULL),(81,'11L-00058','2011-12-29','fsd','','','sd',5,NULL,3,1,'0','',2,0,0,NULL),(82,'11L-00059','2011-12-29','fa','','','f',123,NULL,8,2,'0','',1,0,0,NULL),(83,'11L-00060','2011-12-29','dsadadadaada','','','dsdad',136,NULL,7,1,'0','',2,0,0,NULL),(84,'11L-00061','2011-12-29','xzczc','','','cxzczc',123,NULL,3,2,'0','',1,0,0,NULL),(85,'11L-00062','2011-12-29','ryr','','','fdf',36,NULL,7,2,'0','',3,0,0,NULL),(86,'11L-00063','2011-12-29','nbv','','','nb',80,NULL,7,1,'0','',3,0,0,NULL),(87,'11L-00064','2011-12-29','mkmk','','','mkmk',170,NULL,26,1,'0','',1,0,0,NULL),(88,'11L-00065','2011-12-29','nnn','','','nnn',54,NULL,8,2,'0','',5,0,0,NULL),(89,'11L-00066','2011-12-29','xzz','','','xzx',80,NULL,28,1,'0','',3,0,0,NULL),(90,'11L-00067','2011-12-29','qqq','','','qqqq',23,2,4,1,'111111','',2,0,0,NULL),(91,'11L-00068','2011-12-29','wwwww','','','wwwwwww',32,4,11,2,'3333333','',1,0,0,NULL),(92,'11L-00069','2011-12-29','xxxxxxxxxxxxxx','','','xxxxxxx',54,NULL,8,2,'0','',3,0,0,NULL),(93,'11L-00070','2011-12-29','zzzzzz','','','zzzzzz',148,4,3,1,'0','',1,0,0,NULL),(94,'11L-00071','2011-12-29','xxxxxxxx','','','xxxx',123,NULL,3,1,'0','',1,0,0,NULL),(95,'11L-00072','2011-12-29','c','','','c',80,NULL,4,2,'0','',3,0,0,NULL),(96,'11L-00073','2011-12-29','uuuu','','','uuu',103,NULL,3,1,'0','',3,0,0,NULL),(97,'11L-00074','2011-12-29','uuuuuuuu','','','uu',80,NULL,10,2,'0','',1,0,0,NULL),(98,'11L-00075','2011-12-29','cxcx','','','cxc',36,NULL,7,1,'0','',2,0,0,NULL),(99,'11L-00076','2011-12-29','sdadadada','','','dsad',36,NULL,4,1,'0','',1,0,0,NULL),(100,'11L-00077','2011-12-29','mmmmmmmmmmm','','','mmmmm',103,NULL,4,1,'0','',2,0,0,NULL),(101,'11L-00078','2011-12-29','jjjjjjj','','','jjjjjjjj',54,NULL,4,2,'0','',1,0,0,NULL),(102,'11L-00079','2011-12-29','vvvvvvvvvvv','','','vvvvvv',54,NULL,7,1,'0','',2,0,0,NULL),(103,'11L-00080','2011-12-29','dddddddd','','','dddd',148,NULL,4,1,'0','',5,0,0,NULL),(104,'11L-00081','2011-12-29','xxxx','','','xxxx',5,NULL,1,2,'0','',5,0,0,NULL),(105,'11L-00082','2011-12-29','zzzz','','','dsds',103,NULL,7,1,'0','',3,0,0,NULL),(106,'11L-00083','2011-12-29','zz','','','zz',36,NULL,16,1,'0','',3,0,0,NULL),(107,'11L-00084','2011-12-29','xxxx','','','xx',5,NULL,3,1,'0','',1,0,0,NULL),(108,'11L-00085','2011-12-29','ssss','','','ssss',148,NULL,4,1,'0','',3,0,0,NULL),(109,'11L-00086','2011-12-29','gfg','','','gfg',148,NULL,3,1,'0','',5,0,0,NULL),(110,'11L-00087','2011-12-29','sd','','','sas',80,NULL,5,1,'0','',4,0,0,NULL),(111,'11L-00088','2011-12-29','ghghhgh','','','llll',80,1,20,1,'0','',2,0,0,NULL),(112,'11L-00089','2011-12-29','xcvc','','','vc',80,NULL,2,1,'0','',1,0,0,NULL),(113,'11L-00090','2011-12-29','ggggg','','','hghhghghg',74,5,24,1,'0','',5,0,0,NULL),(114,'11L-00091','2011-12-29','waeq','','','ewqeqe',103,4,5,2,'0','',3,0,0,NULL),(115,'11L-00092','2011-12-29','43242','','','hgh',23,NULL,1,1,'0','',1,0,0,NULL),(116,'11L-00093','2011-12-30','test','','','hgj',23,NULL,1,1,'0','',1,0,0,NULL);
 /*!40000 ALTER TABLE `subscriber` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `subscriber_type`
+--
+
+DROP TABLE IF EXISTS `subscriber_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subscriber_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subtypecode` char(5) DEFAULT NULL,
+  `subtypedesc` char(64) DEFAULT NULL,
+  `subtype` char(32) DEFAULT NULL,
+  `subtypeindian` char(1) DEFAULT NULL,
+  `freejrnl` int(8) DEFAULT NULL,
+  `discount` float(8,3) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `subscriber_type`
+--
+
+LOCK TABLES `subscriber_type` WRITE;
+/*!40000 ALTER TABLE `subscriber_type` DISABLE KEYS */;
+INSERT INTO `subscriber_type` VALUES (1,'IC','Indian Schools and Colleges','Free','X',NULL,NULL),(2,'II','Indian Institutes','Free','X',NULL,NULL),(3,'IP','Indian Institute of Science','Paid','Y',NULL,NULL),(4,'FELGM','Fellows','Paid','Y',NULL,NULL),(5,'XXX','Summer Fellows','Free','Y',NULL,NULL);
+/*!40000 ALTER TABLE `subscriber_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -554,4 +587,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-02-26 12:01:44
+-- Dump completed on 2012-02-28 17:41:13

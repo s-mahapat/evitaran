@@ -1,13 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package IAS.Model.masterdata;
 
 import javax.servlet.http.HttpServletRequest;
 import IAS.Bean.masterdata.countryFormBean;
-import IAS.Class.Database;
-import javax.servlet.http.HttpSession;
 import java.sql.*;
 import IAS.Model.*;
 import java.text.ParseException;
@@ -16,64 +11,66 @@ import org.apache.commons.dbutils.BeanProcessor;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import IAS.Class.util;
+import org.apache.log4j.Logger;
+import IAS.Class.JDSLogger;
 /**
  *
  * @author Deepali
  */
 public class countryModel extends JDSModel{
-    private HttpServletRequest request = null;
+
     private countryFormBean _countryFormBean = null;
-    private Connection conn = null;
-    private Database db = null;
-    private HttpSession session = null;
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
 
-    public countryModel(HttpServletRequest request, countryFormBean _Bean) throws SQLException{
-        this.request = request;
-        this._countryFormBean = _Bean;
-        this.session = request.getSession(false);
-        if(this.session == null){
-            throw(new SQLException("Database connection not found in the session"));
-        }
+    public countryModel(HttpServletRequest request) throws SQLException{
 
-        this.db = (Database)session.getAttribute("db_connection");
-        this.conn = db.getConnection();
-
+        super(request);
     }
-    
+
     public void Save () throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
 
-        //countryFormBean countryFormBean = new IAS.Bean.masterdata.countryFormBean();
-        String sql;
+        countryFormBean countryFormBean = new IAS.Bean.masterdata.countryFormBean();
+        request.setAttribute("countryFormBean", countryFormBean);
 
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        FillBean(this.request, _countryFormBean);    
-        
+        FillBean(this.request, countryFormBean);
+        this._countryFormBean = countryFormBean;
+
         if (_countryFormBean.getId() != 0) {
-            
+
             this._updateCountry();
-            
+
         } else {
 
-// the query name from the jds_sql properties files in WEB-INF/properties folder
+            String sql;
+
+            // the query name from the jds_sql properties files in WEB-INF/properties folder
             sql = Queries.getQuery("country_insert");
 
             PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
             int paramIndex = 1;
             st.setString(paramIndex, _countryFormBean.getCountry());
-            if (db.executeUpdatePreparedStatement(st) == 1) {
-                ResultSet rs = st.getGeneratedKeys();
-                while(rs.next()){
-                    int i = rs.getInt(1);
-                    //set the city id generated at the database
-                    _countryFormBean.setId(i);
+
+            try
+            {
+                if (db.executeUpdatePreparedStatement(st) == 1) {
+                    try (ResultSet rs = st.getGeneratedKeys()) {
+                        while(rs.next()){
+                            int i = rs.getInt(1);
+                            //set the city id generated at the database
+                            _countryFormBean.setId(i);
+                        }
+                    }
                 }
-                rs.close();
+            }catch (Exception MySQLIntegrityConstraintViolationException)
+            {
+                logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
             }
             request.setAttribute("countryFormBean", this._countryFormBean);
         }
     }
-        
+
     public String editCountry() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
@@ -86,16 +83,19 @@ public class countryModel extends JDSModel{
 
         return this.GetCountry();
 
-    }   
+    }
 
     public String GetCountry() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
-        String sql;
-        
-        //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        FillBean(this.request, _countryFormBean);
+        countryFormBean countryFormBean = new IAS.Bean.masterdata.countryFormBean();
+        request.setAttribute("countryFormBean", countryFormBean);
 
+        //FillBean is defined in the parent class IAS.Model/JDSModel.java
+        FillBean(this.request, countryFormBean);
+        this._countryFormBean = countryFormBean;
+
+        String sql;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("get_country_by_id");
 
@@ -115,7 +115,7 @@ public class countryModel extends JDSModel{
         request.setAttribute("countryFormBean", this._countryFormBean);
         return _countryFormBean.getCountry();
     }
-    
+
     private void _updateCountry() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
@@ -127,11 +127,16 @@ public class countryModel extends JDSModel{
         int paramIndex = 1;
         st.setString(paramIndex, _countryFormBean.getCountry());
         st.setInt(++paramIndex, _countryFormBean.getId());
-        db.executeUpdatePreparedStatement(st); 
-        
+        try
+        {
+            db.executeUpdatePreparedStatement(st);
+        }catch (Exception MySQLIntegrityConstraintViolationException)
+        {
+            logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
+        }
         request.setAttribute("countryFormBean", this._countryFormBean);
     }
-    
+
     public String searchCountry() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String sql = Queries.getQuery("search_country");
@@ -141,6 +146,6 @@ public class countryModel extends JDSModel{
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
         return xml;
-    }    
-}        
-       
+    }
+}
+

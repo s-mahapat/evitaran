@@ -8,5 +8,5 @@ function makeCreateReadOnly(){
 
     document.getElementById("btnEdit").disabled = true;
     //document.getElementById("btnSave").disabled = true;
-    document.getElementById("districtId").disabled = true;
+    document.getElementById("id").disabled = true;
 }
