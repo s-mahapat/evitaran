@@ -12,6 +12,7 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/country.css"/>
         <title>Edit Country</title>
         <script type="text/javascript" src="js/masterdata/editCountry.js"></script>
+        <script type="text/javascript" src="js/masterdata/validateCountry.js"></script>
         <script>
             addOnloadEvent(makeEditReadOnly);
         </script>
@@ -20,7 +21,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/country"%>" name="countryForm">
+            <form method="post" action="<%=request.getContextPath() + "/country"%>" name="countryForm" onsubmit="return validateCountry()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Edit Country</legend>

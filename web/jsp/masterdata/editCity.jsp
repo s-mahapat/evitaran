@@ -12,6 +12,7 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/city.css"/>
         <title>Edit City</title>
         <script type="text/javascript" src="js/masterdata/editCity.js"></script>
+        <script type="text/javascript" src="js/masterdata/validateCity.js"></script>
         <script>
             addOnloadEvent(makeEditReadOnly);
         </script>
@@ -20,7 +21,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/city"%>" name="cityForm">
+            <form method="post" action="<%=request.getContextPath() + "/city"%>" name="cityForm" onsubmit="return validateCity()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Edit City</legend>

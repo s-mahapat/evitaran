@@ -11,6 +11,7 @@
 
         <title>Search District</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchDistrict.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validateDistrict.js"%>"></script>
         <script type="text/javascript">
             // var selectedDistrict = 0;
             var selectedId = 0;
@@ -79,15 +80,18 @@
             // called when the search button is clicked
 // called when the search button is clicked
             function searchDistrict(){
-                    isPageLoaded = true;
+                if(validateDistrict() == true)
+                    {
+                        isPageLoaded = true;
 
-                    jQuery("#districtTable").setGridParam({postData:
-                            {
-                             district         : $("#district").val()
-                        }});
-                    jQuery("#districtTable").setGridParam({ datatype: "xml" });
-                    jQuery("#districtTable").trigger("clearGridData");
-                    jQuery("#districtTable").trigger("reloadGrid");
+                        jQuery("#districtTable").setGridParam({postData:
+                                {
+                                 district         : $("#district").val()
+                            }});
+                        jQuery("#districtTable").setGridParam({ datatype: "xml" });
+                        jQuery("#districtTable").trigger("clearGridData");
+                        jQuery("#districtTable").trigger("reloadGrid");
+                    }
 
                 }
 

@@ -27,7 +27,7 @@ public class districtModel extends JDSModel{
         super(request);
     }
 
-    public void Save () throws SQLException, ParseException,
+    public synchronized void Save () throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
 
         districtFormBean districtFormBean = new IAS.Bean.masterdata.districtFormBean();
@@ -116,7 +116,7 @@ public class districtModel extends JDSModel{
         return _districtFormBean.getDistrict();
     }
 
-    private void _updateDistrict() throws SQLException, ParseException,
+    private synchronized void _updateDistrict() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder

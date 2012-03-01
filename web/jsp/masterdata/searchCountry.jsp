@@ -11,6 +11,7 @@
 
         <title>Search Country</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchCountry.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validateCountry.js"%>"></script>
         <script type="text/javascript">
            // var selectedCountry = 0;
             var selectedId = 0;
@@ -79,16 +80,18 @@
             // called when the search button is clicked
 // called when the search button is clicked
             function searchCountry(){
-                    isPageLoaded = true;
+                if(validateCountry() == true)
+                    {
+                        isPageLoaded = true;
 
-                    jQuery("#countryTable").setGridParam({postData:
-                            {//countryId       : $("#countryId").val(),
-                            country          : $("#country").val()
-                        }});
-                    jQuery("#countryTable").setGridParam({ datatype: "xml" });
-                    jQuery("#countryTable").trigger("clearGridData");
-                    jQuery("#countryTable").trigger("reloadGrid");
-
+                        jQuery("#countryTable").setGridParam({postData:
+                                {//countryId       : $("#countryId").val(),
+                                country          : $("#country").val()
+                            }});
+                        jQuery("#countryTable").setGridParam({ datatype: "xml" });
+                        jQuery("#countryTable").trigger("clearGridData");
+                        jQuery("#countryTable").trigger("reloadGrid");
+                    }
                 }
 
             // draw the date picker.

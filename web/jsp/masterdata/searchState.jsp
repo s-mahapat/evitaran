@@ -11,6 +11,7 @@
 
         <title>Search State</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchState.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validateState.js"%>"></script>
         <script type="text/javascript">
            // var selectedState = 0;
             var selectedId = 0;
@@ -79,15 +80,18 @@
             // called when the search button is clicked
 // called when the search button is clicked
             function searchState(){
-                    isPageLoaded = true;
+                if(validateState() == true)
+                    {
+                        isPageLoaded = true;
 
-                    jQuery("#stateTable").setGridParam({postData:
-                            {//stateId       : $("#stateId").val(),
-                            state          : $("#state").val()
-                        }});
-                    jQuery("#stateTable").setGridParam({ datatype: "xml" });
-                    jQuery("#stateTable").trigger("clearGridData");
-                    jQuery("#stateTable").trigger("reloadGrid");
+                        jQuery("#stateTable").setGridParam({postData:
+                                {//stateId       : $("#stateId").val(),
+                                state          : $("#state").val()
+                            }});
+                        jQuery("#stateTable").setGridParam({ datatype: "xml" });
+                        jQuery("#stateTable").trigger("clearGridData");
+                        jQuery("#stateTable").trigger("reloadGrid");
+                    }
 
                 }
 

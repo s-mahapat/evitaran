@@ -1,10 +1,7 @@
-function setCityId(cityId){
-    selectedCityId = cityId
- //   selectedSubscriberId = subscriberId || 0;
+function setJournalId(journalId){
+    selectedJournalId = journalId
+ //   selectedJournalId = journalId || 0;
 
 }
 
-function validateSearch(){
 
-    return true;
-}

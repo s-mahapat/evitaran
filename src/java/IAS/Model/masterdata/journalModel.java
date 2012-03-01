@@ -1,13 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package IAS.Model.masterdata;
 
 import javax.servlet.http.HttpServletRequest;
 import IAS.Bean.masterdata.journalFormBean;
-import IAS.Class.Database;
-import javax.servlet.http.HttpSession;
 import java.sql.*;
 import IAS.Model.*;
 import java.text.ParseException;
@@ -16,69 +11,72 @@ import org.apache.commons.dbutils.BeanProcessor;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import IAS.Class.util;
+import org.apache.log4j.Logger;
+import IAS.Class.JDSLogger;
 /**
  *
  * @author Deepali
  */
 public class journalModel extends JDSModel{
-    private HttpServletRequest request = null;
+
     private journalFormBean _journalFormBean = null;
-    private Connection conn = null;
-    private Database db = null;
-    private HttpSession session = null;
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
 
-    public journalModel(HttpServletRequest request, journalFormBean _Bean) throws SQLException{
-        this.request = request;
-        this._journalFormBean = _Bean;
-        this.session = request.getSession(false);
-        if(this.session == null){
-            throw(new SQLException("Database connection not found in the session"));
-        }
+    public journalModel(HttpServletRequest request) throws SQLException{
 
-        this.db = (Database)session.getAttribute("db_connection");
-        this.conn = db.getConnection();
+       super(request);
 
     }
-    
-    public void Save () throws SQLException, ParseException,
+
+    public synchronized void Save () throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
 
-        //journalFormBean journalFormBean = new IAS.Bean.masterdata.journalFormBean();
-        String sql;
+        journalFormBean journalFormBean = new IAS.Bean.masterdata.journalFormBean();
+        request.setAttribute("journalFormBean", journalFormBean);
 
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        FillBean(this.request, _journalFormBean);    
-        
+        FillBean(this.request, journalFormBean);
+        this._journalFormBean = journalFormBean;
+
         if (_journalFormBean.getId() != 0) {
-            
+
             this._updateJournal();
-            
+
         } else {
 
-        // the query name from the jds_sql properties files in WEB-INF/properties folder
-        sql = Queries.getQuery("journal_insert");
+            String sql;
 
-        PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
-        int paramIndex = 1;
-        st.setString(paramIndex, _journalFormBean.getJournalCode());
-        st.setString(++paramIndex, _journalFormBean.getJournalName());
-        st.setInt(++paramIndex, _journalFormBean.getIssnNo());
-        st.setInt(++paramIndex, _journalFormBean.getPages());
-        st.setInt(++paramIndex, _journalFormBean.getStartYear());
-        st.setInt(++paramIndex, _journalFormBean.getIssues());
-        if (db.executeUpdatePreparedStatement(st) == 1) {
-                ResultSet rs = st.getGeneratedKeys();
-                while(rs.next()){
-                    int i = rs.getInt(1);
-                    //set the city id generated at the database
-                    _journalFormBean.setId(i);
+            // the query name from the jds_sql properties files in WEB-INF/properties folder
+            sql = Queries.getQuery("journal_insert");
+
+            PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
+            int paramIndex = 1;
+            st.setString(paramIndex, _journalFormBean.getJournalCode());
+            st.setString(++paramIndex, _journalFormBean.getJournalName());
+            st.setString(++paramIndex, _journalFormBean.getIssnNo());
+            st.setInt(++paramIndex, _journalFormBean.getPages());
+            st.setInt(++paramIndex, _journalFormBean.getStartYear());
+            st.setInt(++paramIndex, _journalFormBean.getIssues());
+
+            try
+            {
+            if (db.executeUpdatePreparedStatement(st) == 1) {
+                    try (ResultSet rs = st.getGeneratedKeys()) {
+                        while(rs.next()){
+                            int i = rs.getInt(1);
+                            //set the city id generated at the database
+                            _journalFormBean.setId(i);
+                        }
+                    }
                 }
-                rs.close();
-            }        
-        request.setAttribute("journalFormBean", this._journalFormBean);
+            }catch (Exception MySQLIntegrityConstraintViolationException)
+            {
+                logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
+            }
+            request.setAttribute("journalFormBean", this._journalFormBean);
         }
     }
-        
+
     public String editJournal() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
@@ -91,16 +89,19 @@ public class journalModel extends JDSModel{
 
         return this.GetJournal();
 
-    }   
+    }
 
     public String GetJournal() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
-        String sql;
-        
-        //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        FillBean(this.request, _journalFormBean);
+        journalFormBean journalFormBean = new IAS.Bean.masterdata.journalFormBean();
+        request.setAttribute("journalFormBean", journalFormBean);
 
+        //FillBean is defined in the parent class IAS.Model/JDSModel.java
+        FillBean(this.request, journalFormBean);
+        this._journalFormBean = journalFormBean;
+
+        String sql;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("get_journal_by_id");
 
@@ -120,8 +121,8 @@ public class journalModel extends JDSModel{
         request.setAttribute("journalFormBean", this._journalFormBean);
         return _journalFormBean.getJournalName();
     }
-    
-    private void _updateJournal() throws SQLException, ParseException,
+
+    private synchronized void _updateJournal() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
@@ -132,13 +133,19 @@ public class journalModel extends JDSModel{
         int paramIndex = 1;
         st.setString(paramIndex, _journalFormBean.getJournalCode());
         st.setString(++paramIndex, _journalFormBean.getJournalName());
-        st.setInt(++paramIndex, _journalFormBean.getIssnNo());
+        st.setString(++paramIndex, _journalFormBean.getIssnNo());
         st.setInt(++paramIndex, _journalFormBean.getPages());
         st.setInt(++paramIndex, _journalFormBean.getStartYear());
         st.setInt(++paramIndex, _journalFormBean.getIssues());
         st.setInt(++paramIndex, _journalFormBean.getId());
-        db.executeUpdatePreparedStatement(st);
-        
+
+        try
+        {
+            db.executeUpdatePreparedStatement(st);
+        }catch (Exception MySQLIntegrityConstraintViolationException)
+        {
+            logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
+        }
         request.setAttribute("journalFormBean", this._journalFormBean);
     }
 
@@ -147,10 +154,23 @@ public class journalModel extends JDSModel{
         String sql = Queries.getQuery("search_journal");
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
-        stGet.setString(paramIndex, "%" + request.getParameter("journal") + "%");
+
+        String journalCode = request.getParameter("journalCode");
+        String journalName = request.getParameter("journalName");
+
+        if(!journalCode.isEmpty())
+            stGet.setString(paramIndex++, "%" + journalCode + "%");
+        else
+            stGet.setString(paramIndex++, journalCode);
+
+        if(!journalName.isEmpty())
+            stGet.setString(paramIndex++, "%" + journalName + "%");
+        else
+            stGet.setString(paramIndex++, journalName);
+
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
         return xml;
-    }    
-}        
-       
+    }
+}
+

@@ -27,7 +27,7 @@ public class countryModel extends JDSModel{
         super(request);
     }
 
-    public void Save () throws SQLException, ParseException,
+    public synchronized void Save () throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
 
         countryFormBean countryFormBean = new IAS.Bean.masterdata.countryFormBean();
@@ -116,7 +116,7 @@ public class countryModel extends JDSModel{
         return _countryFormBean.getCountry();
     }
 
-    private void _updateCountry() throws SQLException, ParseException,
+    private synchronized void _updateCountry() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder

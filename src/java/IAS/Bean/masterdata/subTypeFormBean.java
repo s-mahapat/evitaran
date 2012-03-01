@@ -1,50 +1,47 @@
-
 package IAS.Bean.masterdata;
 
 public class subTypeFormBean {
-    
-        /* fields */
 
-    private int  subTypeId = 0;
-    private String subTypeCode = "";            
-    private String subTypeName = "";
-    private String freePaid = "";
+    /* fields */
+    private int  id = 0;
+    private String subtypecode = "";
+    private String subtypedesc = "";
+    private String subtype = "";
     private String nationality = "";
     private String institutional = "";
-    private int freeCopies = 0;
+    private int freejrnl = 0;
     private int discount = 0;
-    
 /*  Methods Getter and Setter*/
-public int getSubTypeId() {
-        return (this.subTypeId);
+public int getId() {
+        return (this.id);
     }
 
-public void setSubTypeId(int _SubTypeId) {
-        this.subTypeId = _SubTypeId;
+public void setId(int _Id) {
+        this.id = _Id;
     }
 
-public String getSubTypeCode() {
-        return (this.subTypeCode);
+public String getSubtypecode() {
+        return (this.subtypecode);
     }
 
-public void setSubTypeCode(String _SubTypeCode) {
-        this.subTypeCode = _SubTypeCode;
+public void setSubtypecode(String _SubTypeCode) {
+        this.subtypecode = _SubTypeCode;
     }
 
-public String getSubTypeName() {
-        return (this.subTypeName);
+public String getSubtypedesc() {
+        return (this.subtypedesc);
     }
 
-public void setSubTypeName(String _SubTypeName) {
-        this.subTypeName = _SubTypeName;
+public void setSubtypedesc(String _SubTypeDesc) {
+        this.subtypedesc = _SubTypeDesc;
     }
 
-public String getFreePaid() {
-        return (this.freePaid);
+public String getSubtype() {
+        return (this.subtype);
     }
 
-public void setFreePaid(String _FreePaid) {
-        this.freePaid = _FreePaid;
+public void setSubtype(String _SubType) {
+        this.subtype = _SubType;
     }
 
 public String getNationality() {
@@ -63,12 +60,12 @@ public void setInstitutional(String _Institutional) {
         this.institutional = _Institutional;
     }
 
-public int getFreeCopies() {
-        return (this.freeCopies);
+public int getFreejrnl() {
+        return (this.freejrnl);
     }
 
-public void setFreeCopies(int _FreeCopies) {
-        this.freeCopies = _FreeCopies;
+public void setFreejrnl(int _FreeJrnl) {
+        this.freejrnl = _FreeJrnl;
     }
 
 public int getDiscount() {

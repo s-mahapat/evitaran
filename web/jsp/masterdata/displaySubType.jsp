@@ -1,6 +1,8 @@
 <%--
     Document   : Display subscriber type
+    Author     : Alok
 --%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

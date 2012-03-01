@@ -12,6 +12,7 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/state.css"/>
         <title>Add State</title>
         <script type="text/javascript" src="js/masterdata/addState.js"></script>
+        <script type="text/javascript" src="js/masterdata/validateState.js"></script>
         <script>
             addOnloadEvent(makeCreateReadOnly);
         </script>
@@ -20,7 +21,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/state"%>" name="stateForm">
+            <form method="post" action="<%=request.getContextPath() + "/state"%>" name="stateForm" onsubmit="return validateState()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Add State</legend>

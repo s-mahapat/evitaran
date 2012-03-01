@@ -1,12 +1,12 @@
 package IAS.Bean.masterdata;
 
 public class journalFormBean {
-    
+
     /* fields */
     private int id = 0;
     private String journalCode = "";
     private String journalName = "";
-    private int issnNo = 0;
+    private String issnNo = "";
     private int pages = 0;
     private int startYear = 0;
     private int issues = 0;
@@ -35,11 +35,11 @@ public void setJournalName(String _JournalName) {
         this.journalName = _JournalName;
     }
 
-public int getIssnNo() {
+public String getIssnNo() {
         return (this.issnNo);
     }
 
-public void setIssnNo(int _IssnNo) {
+public void setIssnNo(String _IssnNo) {
         this.issnNo = _IssnNo;
     }
 

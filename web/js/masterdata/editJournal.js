@@ -8,5 +8,5 @@ function makeEditReadOnly(){
 
     document.getElementById("btnEdit").disabled = true;
     //document.getElementById("btnSave").disabled = true;
-    document.getElementById("journalId").disabled = true;
+    //document.getElementById("journalId").disabled = true;
 }

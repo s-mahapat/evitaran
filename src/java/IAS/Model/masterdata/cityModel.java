@@ -27,7 +27,7 @@ public class cityModel extends JDSModel{
         super(request);
     }
 
-    public void Save () throws SQLException, ParseException,
+    public synchronized void Save () throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
 
         cityFormBean cityFormBean = new IAS.Bean.masterdata.cityFormBean();
@@ -116,7 +116,7 @@ public class cityModel extends JDSModel{
         return _cityFormBean.getCity();
     }
 
-    private void _updateCity() throws SQLException, ParseException,
+    private synchronized void _updateCity() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
@@ -148,39 +148,3 @@ public class cityModel extends JDSModel{
         return xml;
     }
 }
-
-/*
-    public String edit1City() throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
-
-        cityFormBean cityFormBean = new IAS.Bean.masterdata.cityFormBean();
-        cityFormBean.setId(Integer.parseInt(request.getParameter("id")));
-
-        //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        this._cityFormBean = cityFormBean;
-
-        //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        //FillBean(this.request, _cityFormBean);
-
-        String sql;
-        // the query name from the jds_sql properties files in WEB-INF/properties folder
-        sql = Queries.getQuery("get_city_by_id");
-
-        PreparedStatement st = conn.prepareStatement(sql);
-
-        st.setInt(1, _cityFormBean.getId());
-
-        ResultSet rs = db.executeQueryPreparedStatement(st);
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.cityFormBean");
-            this._cityFormBean = (IAS.Bean.masterdata.cityFormBean) bProc.toBean(rs, type);
-        }
-        rs.close();
-
-        request.setAttribute("cityFormBean", this._cityFormBean);
-        return _cityFormBean.getCity();
-
-    }
-*/

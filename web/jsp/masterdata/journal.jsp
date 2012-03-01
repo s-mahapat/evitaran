@@ -1,17 +1,17 @@
 <jsp:useBean class="IAS.Bean.masterdata.journalFormBean" id="journalFormBean" scope="request"></jsp:useBean>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Journal Data Field Set --%>
-<%-----------------------------------------------------------------------------------------------------%> 
+<%-----------------------------------------------------------------------------------------------------%>
 
 <fieldset class="subMainFieldSet">
     <div class="IASFormFieldDiv">
-        <div class="IASFormLeftDiv">    
+        <div class="IASFormLeftDiv">
             <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
                     <label>Journal Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="1" type="text" name="id" id="id" value="<jsp:getProperty name="journalFormBean" property="id"/>"/>
+                    <input class="IASTextBox" TABINDEX="1" readonly="readonly" type="text" name="id" id="id" value="<jsp:getProperty name="journalFormBean" property="id"/>"/>
                 </span>
             </div>
 
@@ -70,10 +70,10 @@
             </div>
          </div>
     </div>
-</fieldset> 
+</fieldset>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Journal Actions Field Set --%>
-<%-----------------------------------------------------------------------------------------------------%> 
+<%-----------------------------------------------------------------------------------------------------%>
 
 <fieldset class="subMainFieldSet">
     <div class="IASFormFieldDiv">
@@ -84,8 +84,8 @@
         <div id="editBtnDiv">
             <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="9" type="submit" value="Edit" id="btnEdit" name="btnSubmitAction"/>
         </div>
-        
+
     </div>
-</fieldset>       
+</fieldset>
 
 

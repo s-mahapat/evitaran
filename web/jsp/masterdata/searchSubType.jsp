@@ -8,18 +8,20 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/masterdata/journal.css" />
-        <title>Search Journal</title>
 
+        <title>Search Subscriber Type</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchSubType.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validateSubType.js"%>"></script>
         <script type="text/javascript">
-            var selectedSubTypeName = 0;
-            var selectedSubTypeId = 0;
+            //var selectedSubTypeName = 0;
+            var selectedId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
             $(function(){
 
                 $("#subTypeTable").jqGrid({
-                    url:'',
+                    url:"<%=request.getContextPath() + "/subType?action=search"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -27,28 +29,28 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    loadonce: false,
                     rownumbers: true,
                     emptyrecords: "No Subscriber Type",
                     loadtext: "Loading...",
-                    colNames:['Subscriber Type Id','Subscriber Type Code','Subscriber Type','Free/Paid', 'Indian/Foreign','Inst/Pers','Action'],
+                    colNames:['Id','Subscriber Type Code','Subscriber Type','Free/Paid', 'Indian/Foreign','Inst/Pers','View/Edit'],
                     colModel :[
-                        {name:'subTypeId', index:'subTypeId', width:50, align:'center', xmlmap:'subTypeId'},
-                        {name:'subTypeCode', index:'subTypeCode', width:80, align:'center', xmlmap:'subTypeCode'},
-                        {name:'subType', index:'subType', width:80, align:'center', xmlmap:'subType'},
-                        {name:'freePaid', index:'freePaid', width:80, align:'center', xmlmap:'freePaid'},
-                        {name:'indFrn', index:'indFrn', width:80, align:'center', xmlmap:'indFrn'},
-                        {name:'instPers', index:'instPers', width:80, align:'center', xmlmap:'instPers'},
+                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
+                        {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
+                        {name:'subtypedesc', index:'subtypedesc', width:80, align:'center', xmlmap:'subtypedesc'},
+                        {name:'subtype', index:'subtype', width:80, align:'center', xmlmap:'subtype'},
+                        {name:'nationality', index:'nationality', width:80, align:'center', xmlmap:'nationality'},
+                        {name:'institutional', index:'institutional', width:80, align:'center', xmlmap:'institutional'},
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
-                        root: "result",
-                        row: "subType",
-                        page: "subType>page",
-                        total: "subType>total",
-                        records : "subType>records",
+                        root: "results",
+                        row: "row",
+                        page: "subtype>page",
+                        total: "subtype>total",
+                        records : "subtype>records",
                         repeatitems: false,
-                        id: "subTypeId"
+                        id: "id"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -58,14 +60,9 @@
                     caption: '&nbsp;',
                     gridComplete: function() {
                         var ids = jQuery("#subTypeTable").jqGrid('getDataIDs');
-                        if(ids.length > 0){
-                            $("#btnNext").removeAttr("disabled");
-                        }
+
                         for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-                            var rowData = jQuery("#subTypeTable").jqGrid('getLocalRow',cl);
-                            var subTypeId = rowData['subTypeId'] || 0;
-                            action = "<a style='color:blue;' href='subType?action=view'>View</a><a style='color:blue;' href='subType?action=edit&subTypeId=" + subTypeId + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='subType?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#subTypeTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -81,25 +78,35 @@
             });
 
             // called when the search button is clicked
-            function searchSubtype(){
-                isPageLoaded = true;
-                jQuery("#subTypeTable").trigger("reloadGrid");
+            function searchSubType(){
+                if(validateSearchSubType() == true)
+                    {
+                        isPageLoaded = true;
+
+                        jQuery("#subTypeTable").setGridParam({postData:
+                                {subtypecode       : $("#subtypecode").val(),
+                                subtype          : $("#subtype").val()
+                            }});
+                        jQuery("#subTypeTable").setGridParam({ datatype: "xml" });
+                        jQuery("#subTypeTable").trigger("clearGridData");
+                        jQuery("#subTypeTable").trigger("reloadGrid");
+                    }
             }
 
             // draw the date picker.
-            jQueryDatePicker("from","to");
+            //jQueryDatePicker("from","to");
 
-        </script>        
+        </script>
 
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/subType"%>" name="subTypeForm">
+            <form method="post" action="" name="searchSubTypeForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Search Journal</legend>
+                        <legend>Search Sub Type</legend>
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
@@ -116,7 +123,7 @@
                                         <label>Sub type Code:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="1" type="text" name="subTypeCode" id="subTypeCode" value=""/>
+                                        <input class="IASTextBox" TABINDEX="1" type="text" name="subtypecode" id="subtypecode" value=""/>
                                     </span>
                                 </div>
                            </div>
@@ -126,18 +133,18 @@
                                         <label>Subscriber Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="2" type="text" name="subTypeName" id="subTypeName" value=""/>
+                                        <input class="IASTextBox" TABINDEX="2" type="text" name="subtype" id="subtype" value=""/>
                                     </span>
                                 </div>
                             </div>
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="3" type="button" value="search" onclick="searchSubType()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
+                                    <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                                 </div>
                             </div>
 
@@ -153,15 +160,6 @@
                             <table class="datatable" id="subTypeTable"></table>
                             <div id="pager"></div>
                         </fieldset>
-
-                        <fieldset class="subMainFieldSet">
-                            <div class="IASFormFieldDiv">
-                                <div class="singleActionBtnDiv">
-                                    <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
-                                </div>
-                            </div>
-                        </fieldset>
-
                     </fieldset>
                 </div>
             </form>

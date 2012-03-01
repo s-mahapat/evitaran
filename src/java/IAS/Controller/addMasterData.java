@@ -25,7 +25,8 @@ public class addMasterData extends HttpServlet {
 
             if (action.equalsIgnoreCase("addSubType")) {
 
-                url = "/jsp/masterdata/addNewSubType.jsp";
+                url = "/jsp/masterdata/addSubType.jsp";
+
             } else if (action.equalsIgnoreCase("addJournal")) {
 
                 url = "/jsp/masterdata/addJournal.jsp";

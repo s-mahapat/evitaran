@@ -4,10 +4,11 @@
  */
 
 
-function makeCreateReadOnly(){
+function makeReadOnly(){
 
-    document.getElementById("btnEdit").disabled = true;
+    document.getCreateElementById("btnEdit").disabled = true;
     //document.getElementById("btnSave").disabled = true;
-    document.getElementById("journalId").disabled = true;
+    document.getCreateElementById("id").disabled = true;
 }
+
 

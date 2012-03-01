@@ -2,6 +2,7 @@
     Document   : Display Journal
     Author     : Deepali
 --%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

@@ -27,7 +27,7 @@ public class stateModel extends JDSModel{
         super(request);
     }
 
-    public void Save () throws SQLException, ParseException,
+    public synchronized void Save () throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
 
         stateFormBean stateFormBean = new IAS.Bean.masterdata.stateFormBean();
@@ -116,7 +116,7 @@ public class stateModel extends JDSModel{
         return _stateFormBean.getState();
     }
 
-    private void _updateState() throws SQLException, ParseException,
+    private synchronized void _updateState() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder

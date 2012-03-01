@@ -12,6 +12,7 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/district.css"/>
         <title>Edit District</title>
         <script type="text/javascript" src="js/masterdata/editDistrict.js"></script>
+        <script type="text/javascript" src="js/masterdata/validateDistrict.js"></script>
         <script>
             addOnloadEvent(makeEditReadOnly);
         </script>
@@ -20,7 +21,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/district"%>" name="districtForm">
+            <form method="post" action="<%=request.getContextPath() + "/district"%>" name="districtForm" onsubmit="return validateDistrict()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Edit District</legend>

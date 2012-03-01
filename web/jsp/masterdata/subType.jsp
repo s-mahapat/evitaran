@@ -12,7 +12,7 @@
                     <label>Subscriber Type Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="subTypeId" id="subTypeId" value="<jsp:getProperty name="subTypeFormBean" property="subTypeId"/>"/>
+                    <input class="IASTextBox" TABINDEX="1" readonly="readonly" type="text" name="id" id="id" value="<jsp:getProperty name="subTypeFormBean" property="id"/>"/>
                 </span>
             </div>
 
@@ -21,7 +21,7 @@
                     <label>Sub Type Code:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="10" type="text" name="subTypeCode" id="subTypeCode" value="<jsp:getProperty name="subTypeFormBean" property="subTypeCode"/>"/>
+                    <input class="IASTextBoxMandatory" TABINDEX="2" type="text" name="subtypecode" id="subtypecode" value="<jsp:getProperty name="subTypeFormBean" property="subtypecode"/>"/>
                 </span>
             </div>
 
@@ -30,7 +30,7 @@
                     <label>Subscriber Type:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="10" type="text" name="subTypeName" id="subTypeName" value="<jsp:getProperty name="subTypeFormBean" property="subTypeName"/>"/>
+                    <input class="IASTextBoxMandatory" TABINDEX="3" type="text" name="subtypedesc" id="subtypedesc" value="<jsp:getProperty name="subTypeFormBean" property="subtypedesc"/>"/>
                 </span>
             </div>
 
@@ -39,20 +39,20 @@
                     <label>Free/ Paid</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    
-                    <select class="IASComboBoxMandatory" TABINDEX="6" name="freePaid" id="freePaid">
-                        <option value ="P">Paid</option>
-                        <option value ="F">Free</option>
+
+                    <select class="IASComboBoxMandatory" TABINDEX="4" name="subtype" id="subtype">
+                        <option value ="Paid">Paid</option>
+                        <option value ="Free">Free</option>
                     </select>
                 </span>
             </div>
-            
+
             <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
                     <label>Nationality</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <select class="IASComboBoxMandatory" TABINDEX="6" name="nationality" id="nationality">
+                    <select class="IASComboBoxMandatory" TABINDEX="5" name="nationality" id="nationality">
                         <option value ="I">Indian</option>
                         <option value ="F">Foreign</option>
                     </select>
@@ -75,7 +75,7 @@
                     <label>Free Copies:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="10" type="text" name="freeCopies" id="freeCopies" value="<jsp:getProperty name="subTypeFormBean" property="freeCopies"/>"/>
+                    <input class="IASTextBoxMandatory" TABINDEX="7" type="text" name="freejrnl" id="freejrnl" value="<jsp:getProperty name="subTypeFormBean" property="freejrnl"/>"/>
                 </span>
             </div>
 
@@ -84,7 +84,7 @@
                     <label>Discount if any %:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="10" type="text" name="discount" id="discount" value="<jsp:getProperty name="subTypeFormBean" property="discount"/>"/>
+                    <input class="IASTextBox" TABINDEX="8" type="text" name="discount" id="discount" value="<jsp:getProperty name="subTypeFormBean" property="discount"/>"/>
                 </span>
             </div>
          </div>
@@ -98,10 +98,10 @@
     <div class="IASFormFieldDiv">
         <input type="hidden" name="action" id="action"/>
         <div id="saveBtnDiv">
-            <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="101" type="submit" value="save" id="btnSave" name="btnSubmitAction"/>
+            <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="9" type="submit" value="save" id="btnSave" name="btnSubmitAction"/>
         </div>
         <div id="editBtnDiv">
-            <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="101" type="submit" value="edit" id="btnEdit" name="btnSubmitAction"/>
+            <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="10" type="submit" value="edit" id="btnEdit" name="btnSubmitAction"/>
         </div>
     </div>
 </fieldset>

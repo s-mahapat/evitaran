@@ -11,6 +11,7 @@
 
         <title>Search City</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchCity.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validateCity.js"%>"></script>
         <script type="text/javascript">
            // var selectedCity = 0;
             var selectedId = 0;
@@ -79,15 +80,18 @@
             // called when the search button is clicked
 // called when the search button is clicked
             function searchCity(){
-                    isPageLoaded = true;
+                if(validateCity() == true)
+                    {
+                        isPageLoaded = true;
 
-                    jQuery("#cityTable").setGridParam({postData:
-                            {//cityId       : $("#cityId").val(),
-                            city          : $("#city").val()
-                        }});
-                    jQuery("#cityTable").setGridParam({ datatype: "xml" });
-                    jQuery("#cityTable").trigger("clearGridData");
-                    jQuery("#cityTable").trigger("reloadGrid");
+                        jQuery("#cityTable").setGridParam({postData:
+                                {//cityId       : $("#cityId").val(),
+                                city          : $("#city").val()
+                            }});
+                        jQuery("#cityTable").setGridParam({ datatype: "xml" });
+                        jQuery("#cityTable").trigger("clearGridData");
+                        jQuery("#cityTable").trigger("reloadGrid");
+                    }
 
                 }
 
