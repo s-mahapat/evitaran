@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `agents`;
 CREATE TABLE `agents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `agentName` text NOT NULL,
-  `regDate` datetime DEFAULT NULL,
+  `regDate` date DEFAULT NULL,
   `emailId` mediumtext,
   `address` longtext,
   `cityId` int(11) DEFAULT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE `agents` (
   `pinCode` int(11) DEFAULT NULL,
   `discount` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `countries` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `country_UNIQUE` (`country`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +99,7 @@ CREATE TABLE `districts` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `district_UNIQUE` (`district`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,6 +192,57 @@ CREATE TABLE `jds_format_helper` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `journal_rate`
+--
+
+DROP TABLE IF EXISTS `journal_rate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_rate` (
+  `journalrateid` int(11) NOT NULL AUTO_INCREMENT,
+  `journalrategroupid` int(11) NOT NULL,
+  `year` year(4) NOT NULL,
+  `volumeno` int(11) DEFAULT NULL,
+  `pricey1` int(11) DEFAULT NULL,
+  `pricey2` int(11) DEFAULT NULL,
+  `pricey3` int(11) DEFAULT NULL,
+  `pricey4` int(11) DEFAULT NULL,
+  `pricey5` int(11) DEFAULT NULL,
+  PRIMARY KEY (`journalrateid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `journal_rate_group`
+--
+
+DROP TABLE IF EXISTS `journal_rate_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_rate_group` (
+  `jrateid` int(11) NOT NULL AUTO_INCREMENT,
+  `rategroupid` int(11) NOT NULL,
+  `journalid` int(11) NOT NULL,
+  PRIMARY KEY (`jrateid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `journal_sub_group`
+--
+
+DROP TABLE IF EXISTS `journal_sub_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_sub_group` (
+  `jsubid` int(11) NOT NULL AUTO_INCREMENT,
+  `subgroupid` int(11) NOT NULL,
+  `journalid` int(11) NOT NULL,
+  PRIMARY KEY (`jsubid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `journals`
 --
 
@@ -256,6 +307,20 @@ CREATE TABLE `print_order` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `rate_group`
+--
+
+DROP TABLE IF EXISTS `rate_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rate_group` (
+  `rategroupid` int(11) NOT NULL AUTO_INCREMENT,
+  `rategroupname` char(32) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`rategroupid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `reason`
 --
 
@@ -282,7 +347,21 @@ CREATE TABLE `states` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `state_UNIQUE` (`state`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sub_group`
+--
+
+DROP TABLE IF EXISTS `sub_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sub_group` (
+  `subgroupid` int(11) NOT NULL AUTO_INCREMENT,
+  `subgroupname` char(32) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`subgroupid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -387,4 +466,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-01  7:01:40
+-- Dump completed on 2012-03-02 12:42:59

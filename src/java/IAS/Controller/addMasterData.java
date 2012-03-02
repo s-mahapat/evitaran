@@ -34,6 +34,7 @@ public class addMasterData extends HttpServlet {
             } else if (action.equalsIgnoreCase("addAgent")) {
 
                 url = "/jsp/masterdata/addAgent.jsp";
+                
             } else if (action.equalsIgnoreCase("addCity")) {
 
                 url = "/jsp/masterdata/addCity.jsp";

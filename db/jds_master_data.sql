@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `agents`;
 CREATE TABLE `agents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `agentName` text NOT NULL,
-  `regDate` datetime DEFAULT NULL,
+  `regDate` date DEFAULT NULL,
   `emailId` mediumtext,
   `address` longtext,
   `cityId` int(11) DEFAULT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE `agents` (
   `pinCode` int(11) DEFAULT NULL,
   `discount` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `agents` (
 
 LOCK TABLES `agents` WRITE;
 /*!40000 ALTER TABLE `agents` DISABLE KEYS */;
-INSERT INTO `agents` VALUES (1,'Deepali','0000-00-00 00:00:00','deepali@ias.in','asdfe',23,1,1,7,123456,12);
+INSERT INTO `agents` VALUES (1,'Deepali','0000-00-00','deepali@ias.in','asdfe',23,1,1,7,123456,12),(2,'Alok','2012-03-19','modak.alok@gmail.com','kasturinagar',NULL,3,1,3,560043,10),(3,'Shail','2011-09-01','shail@gmail.com','whitefield',NULL,3,1,1,560075,50),(4,'modak','2009-03-01','modak.alok@gmail.com','kasturinagar',NULL,3,32,10,0,100),(5,'Aai','2002-11-02','aai@gmail.com','sinhagad road',NULL,3,17,1,560043,10),(6,'Dada','2009-05-25','dada@gmail.com','sinhagad road',NULL,9,17,1,0,1),(7,'test','2012-03-01','test','test',5,3,1,10,0,0),(8,'test','2012-03-02','test@test.com','test',148,3,1,10,560043,10);
 /*!40000 ALTER TABLE `agents` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +87,7 @@ CREATE TABLE `countries` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `country_UNIQUE` (`country`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,7 +139,7 @@ CREATE TABLE `districts` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `district_UNIQUE` (`district`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +270,7 @@ CREATE TABLE `states` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `state_UNIQUE` (`state`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,4 +371,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-01  7:01:41
+-- Dump completed on 2012-03-02 12:42:59

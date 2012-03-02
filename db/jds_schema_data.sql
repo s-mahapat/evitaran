@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `agents`;
 CREATE TABLE `agents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `agentName` text NOT NULL,
-  `regDate` datetime DEFAULT NULL,
+  `regDate` date DEFAULT NULL,
   `emailId` mediumtext,
   `address` longtext,
   `cityId` int(11) DEFAULT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE `agents` (
   `pinCode` int(11) DEFAULT NULL,
   `discount` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `agents` (
 
 LOCK TABLES `agents` WRITE;
 /*!40000 ALTER TABLE `agents` DISABLE KEYS */;
-INSERT INTO `agents` VALUES (1,'Deepali','0000-00-00 00:00:00','deepali@ias.in','asdfe',23,1,1,7,123456,12);
+INSERT INTO `agents` VALUES (1,'Deepali','0000-00-00','deepali@ias.in','asdfe',23,1,1,7,123456,12),(2,'Alok','2012-03-19','modak.alok@gmail.com','kasturinagar',NULL,3,1,3,560043,10),(3,'Shail','2011-09-01','shail@gmail.com','whitefield',NULL,3,1,1,560075,50),(4,'modak','2009-03-01','modak.alok@gmail.com','kasturinagar',NULL,3,32,10,0,100),(5,'Aai','2002-11-02','aai@gmail.com','sinhagad road',NULL,3,17,1,560043,10),(6,'Dada','2009-05-25','dada@gmail.com','sinhagad road',NULL,9,17,1,0,1),(7,'test','2012-03-01','test','test',5,3,1,10,0,0),(8,'test','2012-03-02','test@test.com','test',148,3,1,10,560043,10);
 /*!40000 ALTER TABLE `agents` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +87,7 @@ CREATE TABLE `countries` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `country_UNIQUE` (`country`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,7 +139,7 @@ CREATE TABLE `districts` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `district_UNIQUE` (`district`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,6 +281,84 @@ LOCK TABLES `jds_format_helper` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `journal_rate`
+--
+
+DROP TABLE IF EXISTS `journal_rate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_rate` (
+  `journalrateid` int(11) NOT NULL AUTO_INCREMENT,
+  `journalrategroupid` int(11) NOT NULL,
+  `year` year(4) NOT NULL,
+  `volumeno` int(11) DEFAULT NULL,
+  `pricey1` int(11) DEFAULT NULL,
+  `pricey2` int(11) DEFAULT NULL,
+  `pricey3` int(11) DEFAULT NULL,
+  `pricey4` int(11) DEFAULT NULL,
+  `pricey5` int(11) DEFAULT NULL,
+  PRIMARY KEY (`journalrateid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `journal_rate`
+--
+
+LOCK TABLES `journal_rate` WRITE;
+/*!40000 ALTER TABLE `journal_rate` DISABLE KEYS */;
+/*!40000 ALTER TABLE `journal_rate` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `journal_rate_group`
+--
+
+DROP TABLE IF EXISTS `journal_rate_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_rate_group` (
+  `jrateid` int(11) NOT NULL AUTO_INCREMENT,
+  `rategroupid` int(11) NOT NULL,
+  `journalid` int(11) NOT NULL,
+  PRIMARY KEY (`jrateid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `journal_rate_group`
+--
+
+LOCK TABLES `journal_rate_group` WRITE;
+/*!40000 ALTER TABLE `journal_rate_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `journal_rate_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `journal_sub_group`
+--
+
+DROP TABLE IF EXISTS `journal_sub_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_sub_group` (
+  `jsubid` int(11) NOT NULL AUTO_INCREMENT,
+  `subgroupid` int(11) NOT NULL,
+  `journalid` int(11) NOT NULL,
+  PRIMARY KEY (`jsubid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `journal_sub_group`
+--
+
+LOCK TABLES `journal_sub_group` WRITE;
+/*!40000 ALTER TABLE `journal_sub_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `journal_sub_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `journals`
 --
 
@@ -383,6 +461,29 @@ LOCK TABLES `print_order` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `rate_group`
+--
+
+DROP TABLE IF EXISTS `rate_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rate_group` (
+  `rategroupid` int(11) NOT NULL AUTO_INCREMENT,
+  `rategroupname` char(32) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`rategroupid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rate_group`
+--
+
+LOCK TABLES `rate_group` WRITE;
+/*!40000 ALTER TABLE `rate_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rate_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `reason`
 --
 
@@ -418,7 +519,7 @@ CREATE TABLE `states` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `state_UNIQUE` (`state`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -429,6 +530,29 @@ LOCK TABLES `states` WRITE;
 /*!40000 ALTER TABLE `states` DISABLE KEYS */;
 INSERT INTO `states` VALUES (1,'Andhra Pradesh'),(2,'Arunachal Pradesh'),(32,'asam'),(3,'Assam'),(4,'Bihar'),(5,'Chattisgarh'),(7,'Goa'),(8,'Gujarat'),(10,'Haryana'),(9,'Himachal Pradesh'),(12,'Jammu & Kashmir'),(11,'Jharkhand'),(13,'Karnataka'),(14,'Kerela'),(18,'Madhya Pradesh'),(17,'Maharastra'),(15,'Manipur'),(16,'Meghalaya'),(19,'Mizoram'),(20,'Nagaland'),(6,'New Delhi'),(31,'new1'),(21,'Orissa'),(23,'Pondicherry'),(22,'Punjab'),(24,'Rajasthan'),(25,'Sikkim'),(26,'Tamilnadu'),(27,'Tripura'),(28,'Uttar Pradesh'),(29,'Uttaranchal'),(30,'West Bengal');
 /*!40000 ALTER TABLE `states` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sub_group`
+--
+
+DROP TABLE IF EXISTS `sub_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sub_group` (
+  `subgroupid` int(11) NOT NULL AUTO_INCREMENT,
+  `subgroupname` char(32) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`subgroupid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sub_group`
+--
+
+LOCK TABLES `sub_group` WRITE;
+/*!40000 ALTER TABLE `sub_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sub_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -582,4 +706,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-01  7:01:40
+-- Dump completed on 2012-03-02 12:42:59

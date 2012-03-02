@@ -1,5 +1,5 @@
-function setCityId(cityId){
-    selectedCityId = cityId
+function setAgentId(agentId){
+    selectedAgentId = agentId
  //   selectedSubscriberId = subscriberId || 0;
 
 }

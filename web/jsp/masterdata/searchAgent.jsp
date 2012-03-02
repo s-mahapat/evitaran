@@ -12,14 +12,14 @@
         <title>Search Agent</title>
 
         <script type="text/javascript">
-            var selectedAgentName = 0;
+            //var selectedAgentName = 0;
             var selectedAgentId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
             $(function(){
 
-                $("#AgentTable").jqGrid({
+                $("#agentTable").jqGrid({
                     url:'',
                     datatype: 'xml',
                     mtype: 'GET',
@@ -28,28 +28,28 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    loadonce: false,
                     rownumbers: true,
                     emptyrecords: "No Agent",
                     loadtext: "Loading...",
-                    colNames:['Agent Id','Agent Name','Registriation Date','emailId', 'Address','City','Action'],
+                    colNames:['Agent Id','Agent Name','Registriation Date','emailId', 'Address','City','View/Edit'],
                     colModel :[
-                        {name:'AgentId', index:'agentId', width:50, align:'center', xmlmap:'agentId'},
-                        {name:'AgentName', index:'agentName', width:80, align:'center', xmlmap:'agentName'},
-                        {name:'Registration Date', index:'regDate', width:80, align:'center', xmlmap:'regDate'},
+                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
+                        {name:'agentName', index:'agentName', width:80, align:'center', xmlmap:'agentName'},
+                        {name:'regDate', index:'regDate', width:80, align:'center', xmlmap:'regDate'},
                         {name:'emailId', index:'emailId', width:80, align:'center', xmlmap:'emailId'},
-                        {name:'Address', index:'address', width:80, align:'center', xmlmap:'address'},
-                        {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
+                        {name:'address', index:'address', width:80, align:'center', xmlmap:'address'},
+                        {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
                         root: "result",
-                        row: "AgentName",
+                        row: "agentName",
                         page: "agentName>page",
                         total: "agentName>total",
                         records : "agentName>records",
                         repeatitems: false,
-                        id: "agentId"
+                        id: "id"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -62,11 +62,9 @@
                         if(ids.length > 0){
                             $("#btnNext").removeAttr("disabled");
                         }
+
                         for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-                            var rowData = jQuery("#agentTable").jqGrid('getLocalRow',cl);
-                            var cityId = rowData['Agent Id'] || 0;
-                            action = "<a style='color:blue;' href='agent1?action=view'>View</a><a style='color:blue;' href='agent1?action=edit&agent=" + agentId + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='agent?action=view&agent='>View</a><a style='color:blue;' href='agent?action=edit&agent=" + ids[i] + "'>View/Edit</a>";
                             jQuery("#agentTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -84,23 +82,21 @@
             // called when the search button is clicked
             function searchAgent(){
                 isPageLoaded = true;
+
+                jQuery("#agentTable").setGridParam({postData:
+                        {agentName       : $("#agentName").val(),
+                        city          : $("#city").val()
+                    }});
+                jQuery("#agentTable").setGridParam({ datatype: "xml" });
+                jQuery("#agentTable").trigger("clearGridData");
                 jQuery("#agentTable").trigger("reloadGrid");
             }
 
             // draw the date picker.
-            jQueryDatePicker("from","to");
+            //jQueryDatePicker("from","to");
 
         </script>
-        
-        <%--------------------------------------------------------------%>
-        <%-- Calendar --%>
-        <%--------------------------------------------------------------%>
-        <script src="js/CalendarPopup.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            var calPopup = new CalendarPopup("dateDiv");
-            calPopup.showNavigationDropdowns();
-        </script>    
-    
+
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -119,8 +115,6 @@
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
-
-
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Agent Name:</label>
@@ -129,78 +123,31 @@
                                         <input class="IASTextBox" TABINDEX="1" type="text" name="agentName" id="agentName" value=""/>
                                     </span>
                                 </div>
-
-
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>address:</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="2" type="text" name="address" id="address" value=""/>
-                                    </span>
-                                </div>
-                            </div>
-
-
+                             </div>
                             <%-- Search Criteria right div --%>
                             <div class="IASFormRightDiv">
-
-
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="3" type="text" name="city" id="city" value=""/>
-                                    </span>
-                                </div>
-
-
-                                <div class="IASFormFieldDiv">
-                                    <%------ Date Range Label ------%>
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Reg. Date Range:</label>
-                                    </span>
-
-                                    <%---------- Date Division -----------%>
-                                    <div class="dateDiv" id="dateDiv"></div>
-
-                                    <%------ From Date Input Box ------%>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" value="" id="fromDate"/>
-                                           <a href="#" onClick="calPopup.select(document.searchAgentForm.fromDate,'anchor1','dd/MM/yyyy');
-                                               return false;" NAME="anchor1" ID="anchor1">
-                                            <img class="calendarIcon" alt="select" src="" TABINDEX="4"/>
-                                        </a>
-                                    </span>
-
-                                    <%-- Hyphen between From date and To Date --%>
-                                    <span class="IASFormDivSpanForHyphen">
-                                        <label> - </label>
-                                    </span>
-
-                                    <%--------------- To Date Input Box --------------%>
-                                    <span class="IASFormDivSpanInputBoxForSearchInward">
-                                        <input class="IASDateTextBox" readonly size="10" value="" id="toDate"/>
-                                           <a href="#" onClick="calPopup.select(document.searchAgentForm.toDate,'anchor2','dd/MM/yyyy');
-                                               return false;" NAME="anchor2" ID="anchor2">
-                                            <img class="calendarIcon" alt="select" src="" TABINDEX="5"/>
-                                        </a>
+                                        <input class="IASTextBox" TABINDEX="2" type="text" name="city" id="city" value=""/>
                                     </span>
                                 </div>
                             </div>
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="submit" value="Search"/>
+                                    <input class="IASButton" TABINDEX="3" type="button" value="search" onclick="searchAgent()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
+                                    <input class="IASButton" TABINDEX="4" type="reset" value="reset"/>
                                 </div>
                             </div>
 
                         </fieldset>
+
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
@@ -208,7 +155,7 @@
                         <fieldset class="subMainFieldSet">
                             <legend>Search Result</legend>
 
-                            <table class="datatable" id="AgentTable"></table>
+                            <table class="datatable" id="agentTable"></table>
                             <div id="pager"></div>
                         </fieldset>
                     </fieldset>

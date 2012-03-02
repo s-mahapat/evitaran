@@ -1,15 +1,11 @@
 package IAS.Bean.masterdata;
-import IAS.Class.util;
-import java.util.Date;
-import java.text.*;
 
 public class agentFormBean {
-    
+
     /* fields */
-    private int agentId = 0;
+    private int id = 0;
     private String agentName = "";
-    private Date regDate = new java.util.Date();
-    private int discount = 0;
+    private String regDate = null;
     private String emailId = "";
     private String address = "";
     private String city = "";
@@ -17,15 +13,16 @@ public class agentFormBean {
     private String state = "";
     private String country = "";
     private int pinCode = 0;
-    
+    private int discount = 0;
+
     /* Methods getter and setter*/
-    
-public int getAgentId() {
-        return this.agentId;
+
+public int getId() {
+        return this.id;
     }
 
-public void setAgentId(int _AgentId) {
-        this.agentId = _AgentId;
+public void setId(int _id) {
+        this.id = _id;
     }
 
 public String getAgentName() {
@@ -37,20 +34,11 @@ public void setAgentName(String _AgentName) {
     }
 
 public String getRegDate() {
-    Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
-        return dtformat.format(this.regDate);
-}
+        return this.regDate;
+    }
 
-public void setRegDate(Date _RegDate) {
+public void setRegDate(String _RegDate) {
         this.regDate = _RegDate;
-    }
-
-public int getDiscount() {
-        return this.discount;
-    }
-
-public void setDiscount(int _Discount) {
-        this.discount = _Discount;
     }
 
 public String getEmailId() {
@@ -70,7 +58,7 @@ public void setAddress(String _Address) {
     }
 
 public String getCity() {
-        return (this.city);
+        return this.city;
     }
 
 public void setCity(String _City) {
@@ -78,7 +66,7 @@ public void setCity(String _City) {
     }
 
 public String getDistrict() {
-        return (this.district);
+        return this.district;
     }
 
 public void setDistrict(String _District) {
@@ -86,7 +74,7 @@ public void setDistrict(String _District) {
     }
 
 public String getState() {
-        return (this.state);
+        return this.state;
     }
 
 public void setState(String _State) {
@@ -105,7 +93,15 @@ public int getPinCode() {
         return (this.pinCode);
     }
 
-public void setPincode(int _PinCode) {
+public void setPinCode(int _PinCode) {
         this.pinCode = _PinCode;
+    }
+
+public int getDiscount() {
+        return this.discount;
+    }
+
+public void setDiscount(int _Discount) {
+        this.discount = _Discount;
     }
 }

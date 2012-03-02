@@ -1,8 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package IAS.Controller;
+
+package IAS.Controller.masterdata;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -10,40 +7,80 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import IAS.Model.masterdata.agentModel;
+
+import org.apache.log4j.Logger;
+import IAS.Class.JDSLogger;
+import IAS.Class.msgsend;
+import IAS.Class.util;
+import javax.servlet.ServletContext;
 /**
  *
  * @author Shailendra Mahapatra
  */
 public class agent extends HttpServlet {
+    private agentModel _agentModel = null;
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String url = null;
+
         try{
+
+            _agentModel = new IAS.Model.masterdata.agentModel(request);
+
             if(action.equalsIgnoreCase("save")){
+
+                _agentModel.Save();
                 url = "/jsp/masterdata/displayAgent.jsp";
+
             }else if(action.equalsIgnoreCase("edit")){
+
+                _agentModel.editAgent();
                 url = "/jsp/masterdata/editAgent.jsp";
+
             }else if(action.equalsIgnoreCase("view")){
+
+                _agentModel.viewAgent();
                 url = "/jsp/masterdata/displayAgent.jsp";
+
+            }else if(action.equalsIgnoreCase("search")){
+
+                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
+                String xml = _agentModel.searchAgent();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             }
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
 
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
-        }
-        catch(Exception e){
+            ServletContext context = getServletContext();
+            String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_email.properties");
+            msgsend smtpMailSender = new msgsend();
+            smtpMailSender.sendMailWithAuthentication(
+                    emailPropertiesFile,
+                    "jds.adm.all@gmail.com", "", "",
+                    "Exception generated in JDS code",
+                    util.getExceptionStackTraceAsString(e),
+                    "JDS", "");
 
-        }
-        finally{
+            throw new javax.servlet.ServletException(e);
 
+        } finally {
+            if(url == null){
+                url = "/jsp/errors/404.jsp";
+                logger.error("Redirect url was not found, forwarding to 404");
+            }
+            else
+            {
+                logger.debug("Called->" + url);
+            }
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+            if (rd != null && url != null) {
+                rd.forward(request, response);
+            }
         }
     }
 

@@ -2,6 +2,7 @@
     Document   : Display Agent
     Author     : Deepali
 --%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,14 +14,14 @@
         <script type="text/javascript" src="js/masterdata/displayAgent.js"></script>
         <script>
             addOnloadEvent(makeReadOnly);
-            addOnloadEvent(makeAgentReadOnly);            
+            addOnloadEvent(makeAgentReadOnly);
         </script>
     </head>
     <body>
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/agent1"%>" name="agentForm">
+            <form method="post" action="<%=request.getContextPath() + "/agent"%>" name="agentForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Display Agent</legend>

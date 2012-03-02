@@ -7,7 +7,6 @@ package IAS.Model.masterdata;
 import javax.servlet.http.HttpServletRequest;
 import IAS.Bean.masterdata.agentFormBean;
 import IAS.Class.Database;
-import javax.servlet.http.HttpSession;
 import java.sql.*;
 import IAS.Model.*;
 import java.text.ParseException;
@@ -16,92 +15,76 @@ import org.apache.commons.dbutils.BeanProcessor;
 import IAS.Class.util;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.apache.log4j.Logger;
+import IAS.Class.JDSLogger;
 /**
  *
  * @author Deepali
  */
 public class agentModel extends JDSModel{
-    private HttpServletRequest request = null;
+
     private agentFormBean _agentFormBean = null;
-    private Connection conn = null;
-    private Database db = null;
-    private HttpSession session = null;
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
 
-    public agentModel(HttpServletRequest request, agentFormBean _Bean) throws SQLException{
-        this.request = request;
-        this._agentFormBean = _Bean;
-        this.session = request.getSession(false);
-        if(this.session == null){
-            throw(new SQLException("Database connection not found in the session"));
-        }
+    public agentModel(HttpServletRequest request) throws SQLException{
 
-        this.db = (Database)session.getAttribute("db_connection");
-        this.conn = db.getConnection();
+        super(request);
 
     }
-    
-    public void Save () throws SQLException, ParseException,
+
+    public synchronized void Save () throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
 
-        //agentFormBean agentFormBean = new IAS.Bean.masterdata.agentFormBean();
-        String sql;
+        agentFormBean agentFormBean = new IAS.Bean.masterdata.agentFormBean();
+        request.setAttribute("agentFormBean", agentFormBean);
 
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        FillBean(this.request, _agentFormBean);    
-        
-        if (_agentFormBean.getAgentId() != 0) {
-            
+        FillBean(this.request, agentFormBean);
+        this._agentFormBean = agentFormBean;
+
+        if (_agentFormBean.getId() != 0) {
+
             this._updateAgent();
-            
+
         } else {
 
-        // the query name from the jds_sql properties files in WEB-INF/properties folder
-        sql = Queries.getQuery("agent_insert");
+            String sql;
 
-        PreparedStatement st = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        st.setString(paramIndex, _agentFormBean.getAgentName());
-        st.setString(++paramIndex, _agentFormBean.getRegDate());        
-        st.setString(++paramIndex, _agentFormBean.getEmailId());
-        st.setString(++paramIndex, _agentFormBean.getAddress());
-        st.setString(++paramIndex, _agentFormBean.getCity());
-        st.setString(++paramIndex, _agentFormBean.getDistrict());
-        st.setString(++paramIndex, _agentFormBean.getState());
-        st.setString(++paramIndex, _agentFormBean.getCountry());
-        st.setInt(++paramIndex, _agentFormBean.getPinCode());
-        st.setInt(++paramIndex, _agentFormBean.getDiscount());
-        
-        db.executeUpdatePreparedStatement(st);
-        
-        sql = Queries.getQuery("get_agent_by_name");
+            // the query name from the jds_sql properties files in WEB-INF/properties folder
+            sql = Queries.getQuery("agent_insert");
 
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        paramIndex = 1;
-        stGet.setString(paramIndex, _agentFormBean.getAgentName());
-        stGet.setString(++paramIndex, _agentFormBean.getRegDate());        
-        stGet.setString(++paramIndex, _agentFormBean.getEmailId());
-        stGet.setString(++paramIndex, _agentFormBean.getAddress());
-        stGet.setString(++paramIndex, _agentFormBean.getCity());
-        stGet.setString(++paramIndex, _agentFormBean.getDistrict());
-        stGet.setString(++paramIndex, _agentFormBean.getState());
-        stGet.setString(++paramIndex, _agentFormBean.getCountry());
-        stGet.setInt(++paramIndex, _agentFormBean.getPinCode());
-        stGet.setInt(++paramIndex, _agentFormBean.getDiscount());
-        ResultSet rs = db.executeQueryPreparedStatement(stGet);
-        
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.agentFormBean");
-            this._agentFormBean = (IAS.Bean.masterdata.agentFormBean) bProc.toBean(rs, type);
-        }
-        rs.close(); 
-        
-        request.setAttribute("agentFormBean", this._agentFormBean);
+            PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
+            int paramIndex = 1;
+            st.setString(paramIndex, _agentFormBean.getAgentName());
+            st.setDate(++paramIndex, util.dateStringToSqlDate(_agentFormBean.getRegDate()));
+            st.setString(++paramIndex, _agentFormBean.getEmailId());
+            st.setString(++paramIndex, _agentFormBean.getAddress());
+            st.setString(++paramIndex, _agentFormBean.getCity());
+            st.setString(++paramIndex, _agentFormBean.getDistrict());
+            st.setString(++paramIndex, _agentFormBean.getState());
+            st.setString(++paramIndex, _agentFormBean.getCountry());
+            st.setInt(++paramIndex, _agentFormBean.getPinCode());
+            st.setInt(++paramIndex, _agentFormBean.getDiscount());
+
+            try
+            {
+                if (db.executeUpdatePreparedStatement(st) == 1) {
+                        try (ResultSet rs = st.getGeneratedKeys()) {
+                            while(rs.next()){
+                                int i = rs.getInt(1);
+                                //set the city id generated at the database
+                                _agentFormBean.setId(i);
+                            }
+                        }
+                    }
+            }catch (Exception MySQLIntegrityConstraintViolationException)
+            {
+                logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
+            }
+            request.setAttribute("subTypeFormBean", this._agentFormBean);
         }
     }
-        
+
     public String editAgent() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
@@ -114,22 +97,25 @@ public class agentModel extends JDSModel{
 
         return this.GetAgent();
 
-    }   
+    }
 
     public String GetAgent() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
-        String sql;
-        
-        //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        FillBean(this.request, _agentFormBean);
+        agentFormBean agentFormBean = new IAS.Bean.masterdata.agentFormBean();
+        request.setAttribute("subTypeFormBean", agentFormBean);
 
+        //FillBean is defined in the parent class IAS.Model/JDSModel.java
+        FillBean(this.request, agentFormBean);
+        this._agentFormBean = agentFormBean;
+
+        String sql;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("get_agent_by_id");
 
         PreparedStatement st = conn.prepareStatement(sql);
 
-        st.setInt(1, _agentFormBean.getAgentId());
+        st.setInt(1, _agentFormBean.getId());
 
         ResultSet rs = db.executeQueryPreparedStatement(st);
         // populate the bean from the resultset using the beanprocessor class
@@ -143,8 +129,8 @@ public class agentModel extends JDSModel{
         request.setAttribute("agentFormBean", this._agentFormBean);
         return _agentFormBean.getAgentName();
     }
-    
-    private void _updateAgent() throws SQLException, ParseException,
+
+    private synchronized void _updateAgent() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
@@ -154,46 +140,51 @@ public class agentModel extends JDSModel{
 
         int paramIndex = 1;
         st.setString(paramIndex, _agentFormBean.getAgentName());
-        st.setString(++paramIndex, _agentFormBean.getRegDate());        
-        st.setString(++paramIndex, _agentFormBean.getEmailId());
+        String dateFromDb = _agentFormBean.getRegDate();
+        String convertedFormat = util.changeDateFormat(dateFromDb);
+        st.setDate(++paramIndex, util.dateStringToSqlDate(convertedFormat));
         st.setString(++paramIndex, _agentFormBean.getAddress());
+        st.setString(++paramIndex, _agentFormBean.getEmailId());
         st.setString(++paramIndex, _agentFormBean.getCity());
         st.setString(++paramIndex, _agentFormBean.getDistrict());
         st.setString(++paramIndex, _agentFormBean.getState());
         st.setString(++paramIndex, _agentFormBean.getCountry());
         st.setInt(++paramIndex, _agentFormBean.getPinCode());
         st.setInt(++paramIndex, _agentFormBean.getDiscount());
-        st.setInt(++paramIndex, _agentFormBean.getAgentId());
-        db.executeUpdatePreparedStatement(st);
+        st.setInt(++paramIndex, _agentFormBean.getId());
 
-        sql = Queries.getQuery("get_agent_by_id");
-
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        paramIndex = 1;
-        stGet.setInt(paramIndex, _agentFormBean.getAgentId());
-        ResultSet rs = db.executeQueryPreparedStatement(stGet);
-        
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.agentFormBean");
-            this._agentFormBean = (IAS.Bean.masterdata.agentFormBean) bProc.toBean(rs, type);
+        try
+        {
+            db.executeUpdatePreparedStatement(st);
+        }catch (Exception MySQLIntegrityConstraintViolationException)
+        {
+            logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
         }
-        rs.close(); 
-        
         request.setAttribute("agentFormBean", this._agentFormBean);
     }
-    
+
     public String searchAgent() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String sql = Queries.getQuery("search_agent");
-        
-        ResultSet rs = this.db.executeQuery(sql);
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
 
+        String agentName = request.getParameter("agentName");
+        String city = request.getParameter("city");
+
+         if(!agentName.isEmpty())
+            stGet.setString(paramIndex++, "%" + agentName + "%");
+        else
+            stGet.setString(paramIndex++, agentName);
+
+        if(!city.isEmpty())
+            stGet.setString(paramIndex++, "%" + city + "%");
+        else
+            stGet.setString(paramIndex++, city);
+
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
-
         return xml;
-    }    
-}        
-       
+    }
+}
+

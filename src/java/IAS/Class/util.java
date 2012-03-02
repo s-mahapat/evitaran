@@ -43,6 +43,17 @@ public final class util {
         return sqlDate;
     }
 
+    public static String changeDateFormat(String stringDate) throws ParseException
+    {
+        if (stringDate == null || stringDate.length() == 0) {
+            return null;
+        }
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date parsedUtilDate = formater.parse(stringDate);
+        formater.applyPattern("dd/MM/yyyy");
+        return formater.format(parsedUtilDate);
+    }
+
     public static String convertResultSetToXML(ResultSet rs) throws ParserConfigurationException, SQLException, TransformerException {
 
         String xml = null;
