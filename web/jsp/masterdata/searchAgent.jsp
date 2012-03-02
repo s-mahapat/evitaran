@@ -20,7 +20,7 @@
             $(function(){
 
                 $("#agentTable").jqGrid({
-                    url:'',
+                    url:"<%=request.getContextPath() + "/agent?action=search"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -43,11 +43,11 @@
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
-                        root: "result",
-                        row: "agentName",
-                        page: "agentName>page",
-                        total: "agentName>total",
-                        records : "agentName>records",
+                        root: "results",
+                        row: "row",
+                        page: "agent>page",
+                        total: "agent>total",
+                        records : "agent>records",
                         repeatitems: false,
                         id: "id"
                     },
@@ -64,7 +64,7 @@
                         }
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='agent?action=view&agent='>View</a><a style='color:blue;' href='agent?action=edit&agent=" + ids[i] + "'>View/Edit</a>";
+                            action = "<a style='color:blue;' href='agent?action=view&id=" + ids[i] + "'>View</a><a style='color:blue;' href='agent?action=edit&id=" + ids[i] + "'>/ Edit</a>";
                             jQuery("#agentTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },

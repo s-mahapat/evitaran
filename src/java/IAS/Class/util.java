@@ -43,6 +43,8 @@ public final class util {
         return sqlDate;
     }
 
+    // The date format to be used everywhere is dd/MM/yyyy.
+    // If the date format is of the form yyyy-MM-dd, this function helps to convert back to the correct format
     public static String changeDateFormat(String stringDate) throws ParseException
     {
         if (stringDate == null || stringDate.length() == 0) {
@@ -52,6 +54,24 @@ public final class util {
         java.util.Date parsedUtilDate = formater.parse(stringDate);
         formater.applyPattern("dd/MM/yyyy");
         return formater.format(parsedUtilDate);
+    }
+
+    // The date format to be used everywhere is dd/MM/yyyy.
+    // This function checks if the date is in this format.
+    public static boolean checkDateFormat(String stringDate)
+    {
+        if (stringDate == null || stringDate.length() == 0) {
+            return false;
+        }
+        DateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
+        try
+        {
+            formater.parse(stringDate);
+            return true;
+        }catch(ParseException pe)
+        {
+            return false;
+        }
     }
 
     public static String convertResultSetToXML(ResultSet rs) throws ParserConfigurationException, SQLException, TransformerException {

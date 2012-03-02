@@ -140,9 +140,12 @@ public class agentModel extends JDSModel{
 
         int paramIndex = 1;
         st.setString(paramIndex, _agentFormBean.getAgentName());
+
         String dateFromDb = _agentFormBean.getRegDate();
-        String convertedFormat = util.changeDateFormat(dateFromDb);
-        st.setDate(++paramIndex, util.dateStringToSqlDate(convertedFormat));
+        if(!util.checkDateFormat(dateFromDb))
+        dateFromDb = util.changeDateFormat(dateFromDb);
+
+        st.setDate(++paramIndex, util.dateStringToSqlDate(dateFromDb));
         st.setString(++paramIndex, _agentFormBean.getAddress());
         st.setString(++paramIndex, _agentFormBean.getEmailId());
         st.setString(++paramIndex, _agentFormBean.getCity());
@@ -172,15 +175,15 @@ public class agentModel extends JDSModel{
         String agentName = request.getParameter("agentName");
         String city = request.getParameter("city");
 
-         if(!agentName.isEmpty())
-            stGet.setString(paramIndex++, "%" + agentName + "%");
-        else
-            stGet.setString(paramIndex++, agentName);
-
         if(!city.isEmpty())
             stGet.setString(paramIndex++, "%" + city + "%");
         else
-            stGet.setString(paramIndex++, city);
+            stGet.setString(paramIndex++, "%%");
+
+        if(!agentName.isEmpty())
+            stGet.setString(paramIndex++, "%" + agentName + "%");
+        else
+            stGet.setString(paramIndex++, "%%");
 
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
