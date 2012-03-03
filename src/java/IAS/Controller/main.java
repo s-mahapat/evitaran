@@ -179,6 +179,10 @@ public class main extends HttpServlet {
 
             url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&purpose=100";
 
+        } else if (action.equals("printOrder")) {
+
+            url = "/jsp/masterdata/searchPrintOrder.jsp";
+
         }
 
         if(url == null){

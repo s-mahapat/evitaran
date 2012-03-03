@@ -135,6 +135,10 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>printOrder</servlet-name>
+        <servlet-class>IAS.Controller.masterdata.printOrder</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -226,6 +230,10 @@
     <servlet-mapping>
         <servlet-name>agent</servlet-name>
         <url-pattern>/agent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>printOrder</servlet-name>
+        <url-pattern>/printOrder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>

@@ -9,19 +9,19 @@
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/masterdata/printOrder.css" />
 
-        <title>Search City</title>
+        <title>Print Order</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchPrintOrder.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validatePrintOrder.js"%>"></script>
         <script type="text/javascript">
-           // var selectedCity = 0;
+
             var selectedId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
             $(function(){
 
-                $("#cityTable").jqGrid({
-                    url:"<%=request.getContextPath() + "/city?action=search"%>",
+                $("#yearTable").jqGrid({
+                    url:"<%=request.getContextPath() + "/printOrder?action=searchYear"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -31,22 +31,21 @@
                     sortable: true,
                     loadonce: false,
                     rownumbers: true,
-                    emptyrecords: "No City",
+                    emptyrecords: "No Data",
                     loadtext: "Loading...",
-                    colNames:['City Id','City','View/Edit'],
+                    colNames:['Year','View/Edit/Add'],
                     colModel :[
-                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
-                        {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
+                        {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "city>page",
-                        total: "city>total",
-                        records : "city>records",
+                        page: "year>page",
+                        total: "year>total",
+                        records : "year>records",
                         repeatitems: false,
-                        id: "id"
+                        id: "year"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -55,11 +54,11 @@
                     gridview: true,
                     caption: '&nbsp;',
                     gridComplete: function() {
-                        var ids = jQuery("#cityTable").jqGrid('getDataIDs');
+                        var ids = jQuery("yearTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='city?action=edit&id=" + ids[i] + "'>Edit</a>";
-                            jQuery("#cityTable").jqGrid('setRowData', ids[i], { Action: action });
+                            action = "<a style='color:blue;' href='printOrder?action=view&id=" + ids[i] + "'>View</a> <a style='color:blue;' href='printOrder?action=edit&id=" + ids[i] + "'>Edit</a> <a style='color:blue;' href='printOrder?action=add&id=" + ids[i] + "'>Add</a>";
+                            jQuery("#yearTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
                     beforeRequest: function(){
@@ -79,18 +78,17 @@
 
             // called when the search button is clicked
 // called when the search button is clicked
-            function searchCity(){
-                if(validateCity() == true)
+            function searchYear(){
+                if(validateYear() == true)
                     {
                         isPageLoaded = true;
 
-                        jQuery("#cityTable").setGridParam({postData:
-                                {//cityId       : $("#cityId").val(),
-                                city          : $("#city").val()
+                        jQuery("#yearTable").setGridParam({postData:
+                                {year         : $("#year").val()
                             }});
-                        jQuery("#cityTable").setGridParam({ datatype: "xml" });
-                        jQuery("#cityTable").trigger("clearGridData");
-                        jQuery("#cityTable").trigger("reloadGrid");
+                        jQuery("#yearTable").setGridParam({ datatype: "xml" });
+                        jQuery("#yearTable").trigger("clearGridData");
+                        jQuery("#yearTable").trigger("reloadGrid");
                     }
 
                 }
@@ -105,17 +103,31 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/city"%>" name="searchCityForm">
+            <form method="post" action="<%=request.getContextPath() + "/printOder"%>" name="yearlyPrintOderForm">
                 <div class="MainDiv">
+                    <fieldset class="MainFieldset">
+                        <legend>Print Order For Years</legend>
+                            <fieldset class="subMainFieldSet">
+                            <div class="IASFormFieldDiv">
+                                    <div id="searchBtnDiv">
+                                        <input class="IASButton" TABINDEX="1" type="button" value="search" onclick="searchYear()"/>
+                                    </div>
+
+                                    <div id="resetBtnDiv">
+                                        <input class="IASButton" TABINDEX="2" type="reset" value="Reset"/>
+                                    </div>
+                             </div>
+                             </fieldset>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Search Result</legend>
+                            <legend>Year List</legend>
 
-                            <table class="datatable" id="cityTable"></table>
+                            <table class="datatable" id="yearTable"></table>
                             <div id="pager"></div>
                         </fieldset>
+                      </fieldset>
                   </div>
             </form>
         </div>

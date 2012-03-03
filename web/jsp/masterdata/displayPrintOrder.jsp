@@ -1,5 +1,5 @@
 <%--
-    Document   : Edit Print Order
+    Document   : Display Print Order
     Author     : Deepali
 --%>
 
@@ -11,7 +11,7 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/masterdata/printOrder.css"/>
         <title>Add Print Order</title>
-        <script type="text/javascript" src="js/masterdata/editPrintOrder.js"></script>
+        <script type="text/javascript" src="js/masterdata/displayPrintOrder.js"></script>
         <script type="text/javascript" src="js/masterdata/validatePrintOrder.js"></script>
         <script>
             addOnloadEvent(makeEditReadOnly);
@@ -24,7 +24,7 @@
             <form method="post" action="<%=request.getContextPath() + "/printOrder"%>" name="printOrderForm" onsubmit="return validatePrintOrder()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Edit Print Order</legend>
+                        <legend>Display Print Order</legend>
                         <%@include file="printOrder.jsp"%>
                     </fieldset>
                 </div>

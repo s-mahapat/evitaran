@@ -84,8 +84,7 @@
         <a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addJournal"%>">Add Journal</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=searchJournal"%>">Search Journal</a>
         <a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addAgent"%>">Add Agent</a>
-        <a tabindex="-1" href="<%=contextPath + "/main?action=searchAgent"%>">Search Agent</a>
-        <a tabindex="-1" href="<%=contextPath + "/main?action=subRate"%>">Annual Subscription Rate</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=searchAgent"%>">Search Agent</a>        
         <a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addCity"%>">Add City</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=searchCity"%>">Search City</a>
         <a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addCountry"%>">Add Country</a>
@@ -93,7 +92,11 @@
         <a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addDistrict"%>">Add District</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=searchDistrict"%>">Search District</a>
         <a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addState"%>">Add State</a>
-        <a tabindex="-1" href="<%=contextPath + "/main?action=searchstate"%>">Search State</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=searchstate"%>">Search State</a>        
+        <a tabindex="-1" href="<%=contextPath + "/main?action=jsGroup"%>">Journal Subject Group</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=jpGroup"%>">Journal Price Group</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=subRate"%>">Annual Subscription Rate</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=printOrder"%>">Print Order</a>
     </div>
 
 </div>

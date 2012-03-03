@@ -1,17 +1,6 @@
 <%--
     Document   : Print Order
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <%@include file="../templates/style.jsp" %>
-        <link rel="stylesheet" type="text/css" href="css/masterdata/printOrder.css" />
-
-        <title>Print Order</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/printOrder.js"%>"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validatePrintOrder.js"%>"></script>
         <script type="text/javascript">
            // var selectedJournal = 0;
             var selectedId = 0;
@@ -21,7 +10,7 @@
             $(function(){
 
                 $("#printOrderTable").jqGrid({
-                    url:"<%=request.getContextPath() + "/printOrder?action=search"%>",
+                    url:"<%=request.getContextPath() + "/printOrder?action=searchPrintOrder"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -82,18 +71,18 @@
 
 
             // called when the search button is clicked
-            function searchJournal(){
+            function searchPrintOrder(){
                 if(validateSearchJournal() == true)
                     {
                         isPageLoaded = true;
 
-                        jQuery("#journalTable").setGridParam({postData:
+                        jQuery("#printOrderTable").setGridParam({postData:
                                 {journalCode       : $("#journalCode").val(),
                                 journalName          : $("#journalName").val()
                             }});
-                        jQuery("#journalTable").setGridParam({ datatype: "xml" });
-                        jQuery("#journalTable").trigger("clearGridData");
-                        jQuery("#journalTable").trigger("reloadGrid");
+                        jQuery("#printOrderTable").setGridParam({ datatype: "xml" });
+                        jQuery("#printOrderTable").trigger("clearGridData");
+                        jQuery("#printOrderTable").trigger("reloadGrid");
                     }
                 }
 
@@ -101,71 +90,31 @@
             //jQueryDatePicker("from","to");
 
         </script>
-    </head>
-    <body>
-        <%@include file="../templates/layout.jsp" %>
 
-        <div id="bodyContainer">
-            <form method="post" action="" name="searchJournalForm">
-                <div class="MainDiv">
-                    <fieldset class="MainFieldset">
-                        <legend>Search Journal</legend>
+    <%-----------------------------------------------------------------------------------------------------%>
+    <%-- Search Result Field Set --%>
+    <%-----------------------------------------------------------------------------------------------------%>
+    <fieldset class="subMainFieldSet">
+        <legend>Search Result</legend>
 
-                        <%-----------------------------------------------------------------------------------------------------%>
-                        <%-- Search Criteria Field Set --%>
-                        <%-----------------------------------------------------------------------------------------------------%>
-                        <fieldset class="subMainFieldSet">
-                            <legend>Search Criteria</legend>
-
-                            <%-- Search Criteria left div --%>
-                            <div class="IASFormLeftDiv">
+        <table class="datatable" id="printOrderTable"></table>
+        <div id="pager"></div>
+    </fieldset>
 
 
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Journal Code:</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="1" type="text" name="journalCode" id="journalCode" value=""/>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="IASFormRightDiv">
+    <%-----------------------------------------------------------------------------------------------------%>
+    <%-- Journal Actions Field Set --%>
+    <%-----------------------------------------------------------------------------------------------------%>
 
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Journal Name</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="2" type="text" name="journalName" id="journalName" value=""/>
-                                    </span>
-                                </div>
-                            </div>
+    <fieldset class="subMainFieldSet">
+        <div class="IASFormFieldDiv">
+            <input type="hidden" name="action" id="action"/>
+            <div id="saveBtnDiv">
+                <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="8" type="submit" value="Save" id="btnSave" name="btnSubmitAction"/>
+            </div>
+            <div id="editBtnDiv">
+                <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="9" type="submit" value="Edit" id="btnEdit" name="btnSubmitAction"/>
+            </div>
 
-                            <div class="IASFormFieldDiv">
-                                <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="button" value="search" onclick="searchJournal()"/>
-                                </div>
-
-                                <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
-                                </div>
-                            </div>
-
-                        </fieldset>
-
-                        <%-----------------------------------------------------------------------------------------------------%>
-                        <%-- Search Result Field Set --%>
-                        <%-----------------------------------------------------------------------------------------------------%>
-                        <fieldset class="subMainFieldSet">
-                            <legend>Search Result</legend>
-
-                            <table class="datatable" id="printOrderTable"></table>
-                            <div id="pager"></div>
-                        </fieldset>
-                    </fieldset>
-                </div>
-            </form>
         </div>
-    </body>
-</html>
+    </fieldset>                     
