@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.19
+-- Server version	5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -35,7 +35,7 @@ CREATE TABLE `agents` (
   `pinCode` int(11) DEFAULT NULL,
   `discount` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,6 +291,20 @@ CREATE TABLE `payment_mode` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `price_group`
+--
+
+DROP TABLE IF EXISTS `price_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `price_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `priceGroupName` char(32) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `print_order`
 --
 
@@ -298,25 +312,11 @@ DROP TABLE IF EXISTS `print_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `print_order` (
-  `printOrderId` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `year` year(4) NOT NULL,
   `journalId` int(11) NOT NULL,
   `printOrder` int(11) NOT NULL,
-  PRIMARY KEY (`printOrderId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `rate_group`
---
-
-DROP TABLE IF EXISTS `rate_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rate_group` (
-  `rategroupid` int(11) NOT NULL AUTO_INCREMENT,
-  `rategroupname` char(32) CHARACTER SET latin1 NOT NULL,
-  PRIMARY KEY (`rategroupid`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -351,17 +351,17 @@ CREATE TABLE `states` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `sub_group`
+-- Table structure for table `subject_group`
 --
 
-DROP TABLE IF EXISTS `sub_group`;
+DROP TABLE IF EXISTS `subject_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sub_group` (
-  `subgroupid` int(11) NOT NULL AUTO_INCREMENT,
-  `subgroupname` char(32) CHARACTER SET latin1 DEFAULT NULL,
-  PRIMARY KEY (`subgroupid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `subject_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subGroupName` char(32) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -416,6 +416,27 @@ CREATE TABLE `subscriber_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `subscribertypes`
+--
+
+DROP TABLE IF EXISTS `subscribertypes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subscribertypes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subTypeCode` char(5) NOT NULL,
+  `subTypeName` char(64) NOT NULL,
+  `freePaid` char(1) NOT NULL,
+  `nationality` char(1) NOT NULL,
+  `institutional` char(1) DEFAULT NULL,
+  `freeCopies` int(2) DEFAULT NULL,
+  `discount` float(8,3) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `user_role`
 --
 
@@ -466,4 +487,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-02 17:26:40
+-- Dump completed on 2012-03-04 13:49:16

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
-import IAS.Model.masterdata.subTypeModel;
+import IAS.Model.masterdata.priceGroupModel;
 
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
@@ -16,10 +16,11 @@ import IAS.Class.util;
 import javax.servlet.ServletContext;
 /**
  *
- * @author Shailendra Mahapatra
+ * @author Deepali Gokhale
  */
-public class subType extends HttpServlet {
-    private subTypeModel _subTypeModel = null;
+public class priceGroup extends HttpServlet {
+
+    private priceGroupModel _priceGroupModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -29,33 +30,30 @@ public class subType extends HttpServlet {
 
         try{
 
-            _subTypeModel = new IAS.Model.masterdata.subTypeModel(request);
+            _priceGroupModel = new IAS.Model.masterdata.priceGroupModel(request);
 
             if(action.equalsIgnoreCase("save")){
 
-                _subTypeModel.Save();
-                url = "/jsp/masterdata/displaySubType.jsp";
+                _priceGroupModel.Save();
+                url = "/jsp/masterdata/displayPriceGroup.jsp";
 
             }else if(action.equalsIgnoreCase("edit")){
 
-                _subTypeModel.editSubType();
-                url = "/jsp/masterdata/editSubType.jsp";
+                 _priceGroupModel.editPriceGroup();
+                url = "/jsp/masterdata/editPriceGroup.jsp";
 
             }else if(action.equalsIgnoreCase("view")){
 
-                _subTypeModel.viewSubType();
-                url = "/jsp/masterdata/displaySubType.jsp";
+                 _priceGroupModel.viewPriceGroup();
+                url = "/jsp/masterdata/displayPriceGroup.jsp";
+
+            }else if(action.equalsIgnoreCase("add")){
+                
+                url = "/jsp/masterdata/createPriceGroup.jsp";
 
             }else if(action.equalsIgnoreCase("search")){
 
-                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
-                String xml = _subTypeModel.searchSubType();
-                request.setAttribute("xml", xml);
-                url = "/xmlserver";
-            }else if(action.equalsIgnoreCase("listSubType")){
-
-                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
-                String xml = _subTypeModel.listSubType();
+                String xml = _priceGroupModel.searchPriceGroup();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }

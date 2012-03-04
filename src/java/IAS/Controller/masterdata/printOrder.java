@@ -32,28 +32,7 @@ public class printOrder extends HttpServlet {
 
             _printOrderModel = new IAS.Model.masterdata.printOrderModel(request);
 
-            if(action.equalsIgnoreCase("save")){
-
-                _printOrderModel.Save();
-                url = "/jsp/masterdata/displayPrintOrder.jsp";
-
-            }else if(action.equalsIgnoreCase("edit")){
-
-                 _printOrderModel.editPrintOrder();
-                url = "/jsp/masterdata/editPrintOrder.jsp";
-
-            }else if(action.equalsIgnoreCase("view")){
-
-                 _printOrderModel.viewPrintOrder();
-                url = "/jsp/masterdata/displayPrintOrder.jsp";
-
-            }else if(action.equalsIgnoreCase("searchYear")){
-
-                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
-                String xml = _printOrderModel.searchYear();
-                request.setAttribute("xml", xml);
-                url = "/xmlserver";
-            }
+            
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
 

@@ -183,6 +183,14 @@ public class main extends HttpServlet {
 
             url = "/jsp/masterdata/searchPrintOrder.jsp";
 
+        } else if (action.equals("jsGroup")) {
+
+            url = "/jsp/masterdata/searchJournalSubGroup.jsp";
+
+        }else if (action.equals("jpGroup")) {
+
+            url = "/jsp/masterdata/searchJournalPriceGroup.jsp";
+
         }
 
         if(url == null){

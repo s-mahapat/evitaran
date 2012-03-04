@@ -1,5 +1,5 @@
 <%--
-    Document   : Create Journal Price Group
+    Document   : Edit Journal Subject Group
     Author     : Deepali
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -8,22 +8,22 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
-        <link rel="stylesheet" type="text/css" href="css/masterdata/priceGroup.css"/>
-        <title>Create Journal Price Group</title>
-        <script type="text/javascript" src="js/masterdata/createPriceGroup.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/masterdata/subjectGroup.css"/>
+        <title>Edit Journal Subject Group</title>
+        <script type="text/javascript" src="js/masterdata/editSubjectGroup.js"></script>
         <script>
-            addOnloadEvent(makeCreateReadOnly);
+            addOnloadEvent(makeEditReadOnly);
         </script>
     </head>
     <body>
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/priceGroup"%>" name="priceGroupForm">
+            <form method="post" action="<%=request.getContextPath() + "/subjectGroup"%>" name="subjectGroupForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Add Journal Price Group</legend>
-                        <%@include file="journalPriceGroup.jsp"%>
+                        <legend>Edit Journal Subject Group</legend>
+                        <%@include file="journalSubGroup.jsp"%>
                         </fieldset>
                 </div>
             </form>

@@ -1,5 +1,5 @@
 <%--
-    Document   : Create Journal Price Group
+    Document   : Display Journal Price Group
     Author     : Deepali
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,10 +9,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/masterdata/priceGroup.css"/>
-        <title>Create Journal Price Group</title>
-        <script type="text/javascript" src="js/masterdata/createPriceGroup.js"></script>
+        <title>Display Journal Price Group</title>
+        <script type="text/javascript" src="js/masterdata/displayPriceGroup.js"></script>
         <script>
-            addOnloadEvent(makeCreateReadOnly);
+            addOnloadEvent(makePriceGroupReadOnly);
         </script>
     </head>
     <body>
@@ -22,7 +22,7 @@
             <form method="post" action="<%=request.getContextPath() + "/priceGroup"%>" name="priceGroupForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Add Journal Price Group</legend>
+                        <legend>Display Journal Price Group</legend>
                         <%@include file="journalPriceGroup.jsp"%>
                         </fieldset>
                 </div>

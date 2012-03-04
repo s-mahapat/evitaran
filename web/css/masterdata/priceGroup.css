@@ -1,0 +1,40 @@
+/*
+    Document   : Style for Journal related JSPs are defined here
+*/
+root {
+    display:block;
+}
+
+#updateBtnDiv{
+    float: left;
+    width: 10%;
+}
+
+#saveBtnDiv{
+    float: left;
+    width: 8%;
+    margin-left: 30%;
+}
+
+#editBtnDiv{
+    float: left;
+    width: 10%;
+
+}
+#searchBtnDiv{
+    margin-left: 40%;
+    float: left;
+    width: 10%;
+}
+
+#filterBtnDiv{
+    margin-left: 35%;
+    float: left;
+    width: 10%;
+}
+
+#resetBtnDiv{
+    /*margin-right: 35%;*/
+    float: left;
+    width: 10%;
+}

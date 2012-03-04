@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
-import IAS.Model.masterdata.subTypeModel;
+import IAS.Model.masterdata.subGroupModel;
 
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
@@ -16,10 +16,11 @@ import IAS.Class.util;
 import javax.servlet.ServletContext;
 /**
  *
- * @author Shailendra Mahapatra
+ * @author Deepali Gokhale
  */
-public class subType extends HttpServlet {
-    private subTypeModel _subTypeModel = null;
+public class subGroup extends HttpServlet {
+
+    private subGroupModel _subGroupModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -29,33 +30,30 @@ public class subType extends HttpServlet {
 
         try{
 
-            _subTypeModel = new IAS.Model.masterdata.subTypeModel(request);
+            _subGroupModel = new IAS.Model.masterdata.subGroupModel(request);
 
             if(action.equalsIgnoreCase("save")){
 
-                _subTypeModel.Save();
-                url = "/jsp/masterdata/displaySubType.jsp";
+                _subGroupModel.Save();
+                url = "/jsp/masterdata/displaySubGroup.jsp";
 
             }else if(action.equalsIgnoreCase("edit")){
 
-                _subTypeModel.editSubType();
-                url = "/jsp/masterdata/editSubType.jsp";
+                 _subGroupModel.editSubGroup();
+                url = "/jsp/masterdata/editSubGroup.jsp";
 
             }else if(action.equalsIgnoreCase("view")){
 
-                _subTypeModel.viewSubType();
-                url = "/jsp/masterdata/displaySubType.jsp";
+                 _subGroupModel.viewSubGroup();
+                url = "/jsp/masterdata/displaySubGroup.jsp";
+
+            }else if(action.equalsIgnoreCase("add")){
+                
+                url = "/jsp/masterdata/createSubGroup.jsp";
 
             }else if(action.equalsIgnoreCase("search")){
 
-                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
-                String xml = _subTypeModel.searchSubType();
-                request.setAttribute("xml", xml);
-                url = "/xmlserver";
-            }else if(action.equalsIgnoreCase("listSubType")){
-
-                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
-                String xml = _subTypeModel.listSubType();
+                String xml = _subGroupModel.searchSubGroup();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }

@@ -1,13 +1,14 @@
 
-package IAS.Controller.masterdata;
+package IAS.Controller.reports;
 
+import IAS.Controller.reports.*;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
-import IAS.Model.masterdata.subTypeModel;
+import IAS.Model.Reports.reportModel;
 
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
@@ -16,11 +17,12 @@ import IAS.Class.util;
 import javax.servlet.ServletContext;
 /**
  *
- * @author Shailendra Mahapatra
+ * @author Deepali
  */
-public class subType extends HttpServlet {
-    private subTypeModel _subTypeModel = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
+public class report extends HttpServlet {
+
+    private reportModel _reportModel = null;
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.reports");
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -29,33 +31,17 @@ public class subType extends HttpServlet {
 
         try{
 
-            _subTypeModel = new IAS.Model.masterdata.subTypeModel(request);
+            _reportModel = new IAS.Model.Reports.reportModel(request);
 
-            if(action.equalsIgnoreCase("save")){
+            if(action.equalsIgnoreCase("listJournal")){
 
-                _subTypeModel.Save();
-                url = "/jsp/masterdata/displaySubType.jsp";
-
-            }else if(action.equalsIgnoreCase("edit")){
-
-                _subTypeModel.editSubType();
-                url = "/jsp/masterdata/editSubType.jsp";
-
-            }else if(action.equalsIgnoreCase("view")){
-
-                _subTypeModel.viewSubType();
-                url = "/jsp/masterdata/displaySubType.jsp";
-
-            }else if(action.equalsIgnoreCase("search")){
-
-                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
-                String xml = _subTypeModel.searchSubType();
+                String xml = _reportModel.searchJournal();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+
             }else if(action.equalsIgnoreCase("listSubType")){
 
-                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
-                String xml = _subTypeModel.listSubType();
+                String xml = _reportModel.searchSubType();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }

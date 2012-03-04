@@ -139,6 +139,14 @@
         <servlet-name>printOrder</servlet-name>
         <servlet-class>IAS.Controller.masterdata.printOrder</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>priceGroup</servlet-name>
+        <servlet-class>IAS.Controller.masterdata.priceGroup</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>subGroup</servlet-name>
+        <servlet-class>IAS.Controller.masterdata.subGroup</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -234,6 +242,14 @@
     <servlet-mapping>
         <servlet-name>printOrder</servlet-name>
         <url-pattern>/printOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>priceGroup</servlet-name>
+        <url-pattern>/priceGroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>subGroup</servlet-name>
+        <url-pattern>/subGroup</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
