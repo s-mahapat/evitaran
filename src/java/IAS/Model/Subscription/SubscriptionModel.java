@@ -9,6 +9,7 @@ import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
 import com.mysql.jdbc.Statement;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,7 +43,7 @@ public class SubscriptionModel extends JDSModel {
 
     }
 
-    public String addSubscription() throws ParserConfigurationException, SQLException, TransformerException {
+    public String addSubscription() throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
         String xml = null;
         String journalCodes[] = request.getParameterValues("journalCode");
@@ -102,7 +103,7 @@ public class SubscriptionModel extends JDSModel {
         return db.executeUpdatePreparedStatement(st);
     }
 
-    public String getSubscription() throws ParserConfigurationException, SQLException, TransformerException {
+    public String getSubscription() throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
         String xml = null;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
@@ -120,7 +121,7 @@ public class SubscriptionModel extends JDSModel {
 
     }
 
-    public String getSubscriptionDetails() throws ParserConfigurationException, SQLException, TransformerException {
+    public String getSubscriptionDetails() throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
         String xml = null;
         // the query name from the jds_sql properties files in WEB-INF/properties folder

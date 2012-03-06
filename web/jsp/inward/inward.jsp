@@ -337,7 +337,13 @@
                 <label>Remarks:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <textarea class="IASTextArea" maxlength="100" TABINDEX="23" name="remarks" id="remarks">${inwardFormBean.remarks}</textarea>
+                <textarea class="IASTextArea" maxlength="100" TABINDEX="23" name="remarks" id="remarks">
+                    <%
+                        if (inwardFormBean.getRemarks() != null) {
+                            out.println(inwardFormBean.getRemarks());
+                        }
+                    %>
+                </textarea>
             </span>
         </div>
     </div>

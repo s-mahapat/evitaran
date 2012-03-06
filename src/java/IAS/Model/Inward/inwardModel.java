@@ -8,6 +8,9 @@ import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -18,6 +21,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.dbutils.BeanProcessor;
+import java.lang.Math;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -273,7 +287,7 @@ public class inwardModel extends JDSModel {
 
     }
 
-    public String searchInward() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public String searchInward() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String xml = null;
         String sql = Queries.getQuery("search_inward");
         String inwardNumber = request.getParameter("inwardNumber");
@@ -282,6 +296,12 @@ public class inwardModel extends JDSModel {
         String fromDate = request.getParameter("fromDate");
         String toDate = request.getParameter("toDate");
         String inwardPurpose = request.getParameter("inwardPurpose");
+        int pageNumber = Integer.parseInt(request.getParameter("page"));
+        int pageSize = Integer.parseInt(request.getParameter("rows"));
+        String orderBy = request.getParameter("sidx");
+        String sortOrder = request.getParameter("sord");
+        int totalQueryCount = 0;
+        double totalPages = 0;
 
         if (inwardNumber != null && inwardNumber.length() > 0) {
             sql += " and inwardNumber=" + "'" + inwardNumber + "'";
@@ -303,11 +323,48 @@ public class inwardModel extends JDSModel {
             sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
 
-        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose";
-
-        ResultSet rs = this.db.executeQuery(sql);
-
+        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose order by " + orderBy + " " + sortOrder;
+        ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
         xml = util.convertResultSetToXML(rs);
+
+        sql = "select count(*) from (" + sql + ") as tbl";
+        rs = this.db.executeQuery(sql);
+        while(rs.next()){
+            totalQueryCount = rs.getInt(1);
+        }
+
+        if(totalQueryCount > 0){
+            totalPages = (double)totalQueryCount/(double)pageSize;
+            totalPages = java.lang.Math.ceil(totalPages);
+        }
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        InputSource is = new InputSource(new StringReader(xml));
+        Document doc = builder.parse(is);
+        Element root = doc.getDocumentElement();
+
+        Element page = doc.createElement("page");
+        Element total = doc.createElement("total");
+        Element records = doc.createElement("records");
+
+        root.appendChild(page);
+        page.appendChild(doc.createTextNode(String.valueOf(pageNumber)));
+
+        root.appendChild(total);
+        total.appendChild(doc.createTextNode(String.valueOf(totalPages)));
+
+        root.appendChild(records);
+        records.appendChild(doc.createTextNode(String.valueOf(totalQueryCount)));
+
+        DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.transform(domSource, result);
+        xml = writer.toString();
+        writer.close();
+
 
         return xml;
     }

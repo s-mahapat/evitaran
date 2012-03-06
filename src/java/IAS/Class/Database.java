@@ -85,6 +85,21 @@ public class Database implements HttpSessionBindingListener {
 
     }
 
+    public ResultSet executeQueryPreparedStatementWithPages(String query, int pageNumber, int pageSize) throws SQLException {
+
+        ResultSet rs;
+        int start = (pageNumber - 1) * pageSize;
+        query += " LIMIT " + start + "," + pageSize;
+        PreparedStatement pstatement = connection.prepareStatement(query);
+        rs = pstatement.executeQuery();
+        if (pstatement == null) {
+            return null;
+        } else {
+            return rs;
+        }
+
+    }
+
     public int executeUpdate(String statement) throws SQLException {
 
         PreparedStatement st = null;

@@ -36,21 +36,22 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    sortname: 'inwardCreationDate',
+                    loadonce: false,
                     rownumbers: true,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
                     colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','PurposeID'],
                     colModel :[
-                        {name:'Select', index:'select', width:20, align:'center',xmlmap:'inwardNumber'},
-                        {name:'InwardNo', index:'inward_id', width:50, align:'center', xmlmap:'inwardNumber'},
-                        {name:'SubscriberId', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriberId'},
-                        {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
-                        {name:'ReceivedDate', index:'date', width:80, align:'center', xmlmap:'inwardCreationDate'},
-                        {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
-                        {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'chqddNumber'},
-                        {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'inwardPurpose'},
-                        {name:'PurposeID', index:'purposeid', width:80, align:'center', hidden:true, xmlmap:'inwardPurposeID'}
+                        {name:'Select', index:'select', sortable: false, width:20, align:'center',xmlmap:'inwardNumber'},
+                        {name:'InwardNo', index:'inward_id', sortable: false,key: true, width:50, align:'center', xmlmap:'inwardNumber'},
+                        {name:'SubscriberId', index:'subscriber_id', sortable: false, width:50, align:'center', xmlmap:'subscriberId'},
+                        {name:'From', index:'from', sortable: false, width:80, align:'center', xmlmap:'from'},
+                        {name:'ReceivedDate', index:'inwardCreationDate', sortable: true, width:80, align:'center', xmlmap:'inwardCreationDate'},
+                        {name:'City', index:'city', sortable: false, width:80, align:'center', xmlmap:'city'},
+                        {name:'Cheque', index:'chqddNumber', sortable: false, width:40, align:'center', xmlmap:'chqddNumber'},
+                        {name:'Purpose', index:'purpose', sortable: false, width:80, align:'center', xmlmap:'inwardPurpose'},
+                        {name:'PurposeID', index:'purposeid', sortable: false, width:80, align:'center', hidden:true, xmlmap:'inwardPurposeID'}
                     ],
                     xmlReader : {
                         root: "results",
@@ -101,7 +102,7 @@
                     jQuery("#inwardTable").setGridParam({ datatype: "xml" });
                     jQuery("#inwardTable").setGridParam({postData:
                             {city           : $("#city").val(),
-                            inwardNumber    : $("#inwardNumber").val(),
+                            inwardNumber    : $("#_inwardNumber").val(),
                             chequeNumber    : $("#chequeNumber").val(),
                             fromDate        : $("#from").val(),
                             toDate          : $("#to").val(),
@@ -113,12 +114,6 @@
 
             }
 
-            function next(){
-                alert("here");
-                jQuery("#searchInwardForm").attr("action","");
-                //jQuery("#searchInwardForm").submit();
-
-            }
         </script>
 
     </head>
@@ -126,7 +121,7 @@
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
             <%--<form method="post" action="<%=request.getParameter("next")%>" name="searchInwardForm" onsubmit="return isInwardSelected()">--%>
-            <form method="post" action="<%=request.getContextPath()+"/inward"%>" name="searchInwardForm" onsubmit="return isInwardSelected()">
+            <form method="post" action="<%=request.getContextPath() + "/inward"%>" name="searchInwardForm" onsubmit="return isInwardSelected()">
                 <input type="hidden" id="nextAction" name ="nextAction" value="<%=request.getParameter("nextAction")%>"/>
                 <input type="hidden" id="inwardPurpose" name ="inwardPurpose" value="<%=request.getParameter("inwardPurpose")%>"/>
                 <input type="hidden" id="inwardNumber" name ="inwardNumber" value=""/>
@@ -152,7 +147,7 @@
                                         <label>Inward Number:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="1" type="text" name="inwardNumber" value=""/>
+                                        <input class="IASTextBox" TABINDEX="1" type="text" id="_inwardNumber" name="_inwardNumber" value=""/>
                                     </span>
                                 </div>
 

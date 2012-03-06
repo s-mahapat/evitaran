@@ -127,6 +127,10 @@
         <servlet-class>IAS.Model.Subscription.Subscription</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>Invoice</servlet-name>
+        <servlet-class>IAS.Controller.Invoice.Invoice</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>JDSLog4JInitServlet</servlet-name>
         <servlet-class>IAS.Class.JDSLog4JInitServlet</servlet-class>
         <init-param>
@@ -230,6 +234,10 @@
     <servlet-mapping>
         <servlet-name>Subscription</servlet-name>
         <url-pattern>/Subscription</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Invoice</servlet-name>
+        <url-pattern>/Invoice</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>JDSLog4JInitServlet</servlet-name>

@@ -53,7 +53,7 @@ function isInwardSelected(){
 
 function validateSearch(){
 
-    if(isEmpty(document.getElementById("inwardNumber"))
+    if(isEmpty(document.getElementById("_inwardNumber"))
         && isEmpty(document.getElementById("chequeNumber"))
         && document.getElementById("city").value == "NULL"
         && isEmpty(document.getElementById("from"))

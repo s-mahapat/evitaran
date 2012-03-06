@@ -4,16 +4,18 @@
  */
 package IAS.Controller;
 
+import IAS.Class.Database;
+import IAS.Class.Queries;
+import IAS.Class.util;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.*;
-import java.io.*;
-import java.io.PrintWriter;
-import IAS.Class.Database;
-import IAS.Class.Queries;
-import IAS.Class.util;
 
 /**
  *

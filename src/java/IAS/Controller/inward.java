@@ -106,8 +106,7 @@ public class inward extends HttpServlet {
                     url = "/subscriber?action=edit";
 
                 }else if (purposeID == 4) {
-                    //Request for Invoice
-                    url = "/jsp/invoice/proforma.jsp";
+                    url = "/Invoice?action=new";
 
                 }else if(purposeID == 100){
                     // Add Free Subscriber

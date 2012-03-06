@@ -113,7 +113,7 @@ public final class util {
 
     }
 
-    public static String convertStringToXML(String errorMsg,String tagName) throws ParserConfigurationException, SQLException, TransformerException {
+    public static String convertStringToXML(String errorMsg,String tagName) throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
         String xml = null;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -134,6 +134,7 @@ public final class util {
         Transformer transformer = tf.newTransformer();
         transformer.transform(domSource, result);
         xml = writer.toString();
+        writer.close();
 
         return xml;
 

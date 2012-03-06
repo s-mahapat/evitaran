@@ -34,20 +34,21 @@
                         autowidth: true,
                         forceFit: true,
                         sortable: true,
-                        loadonce: true,
+                        sortname: 'inwardNumber',
+                        loadonce: false,
                         rownumbers: true,
                         emptyrecords: "No inwards to view",
                         loadtext: "Loading...",
                         colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','View/Edit'],
                         colModel :[
-                            {name:'InwardNo', index:'InwardNo', width:50, align:'center', xmlmap:'inwardNumber'},
-                            {name:'SubscriberId', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriberId'},
-                            {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
-                            {name:'ReceivedDate', index:'date', width:80, align:'center', xmlmap:'inwardCreationDate'},
+                            {name:'InwardNo', index:'inwardNumber', width:50, align:'center', xmlmap:'inwardNumber'},
+                            {name:'SubscriberId', index:'subscriberId', width:50, align:'center', xmlmap:'subscriberId'},
+                            {name:'From', index:'from', sortable: false, width:80, align:'center', xmlmap:'from'},
+                            {name:'ReceivedDate', index:'inwardCreationDate', width:80, align:'center', xmlmap:'inwardCreationDate'},
                             {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
-                            {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'chqddNumber'},
-                            {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'inwardPurpose'},
-                            {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
+                            {name:'Cheque', index:'chqddNumber', width:40, align:'center', xmlmap:'chqddNumber'},
+                            {name:'Purpose', index:'inwardPurpose', width:80, align:'center', xmlmap:'inwardPurpose'},
+                            {name:'Action', index:'action', sortable: false, width:80, align:'center',formatter:'showlink'}
                         ],
                         xmlReader : {
                             root: "results",
@@ -58,8 +59,6 @@
                             repeatitems: false,
                             id: "inwardNumber"
                         },
-                        
-                        sortname:'InwardNo',
                         pager: '#pager',
                         rowNum:10,
                         rowList:[10,20,30],
