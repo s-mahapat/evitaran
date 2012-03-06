@@ -151,6 +151,10 @@
         <servlet-name>subGroup</servlet-name>
         <servlet-class>IAS.Controller.masterdata.subGroup</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>reports</servlet-name>
+        <servlet-class>IAS.Controller.reports.reports</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -258,6 +262,10 @@
     <servlet-mapping>
         <servlet-name>subGroup</servlet-name>
         <url-pattern>/subGroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>reports</servlet-name>
+        <url-pattern>/reports</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>

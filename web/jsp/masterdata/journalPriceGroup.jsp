@@ -3,90 +3,95 @@
 <%-- Price Group Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>
 <%@page import="IAS.Class.util"%>
+
 <script type="text/javascript">
-    var journalInfo = {};
-    $(document).ready(function(){
+           // var selectedJournal = 0;
+            var selectedId = 0;
+            //initally set to false, after the first search the flag is set to true
+            var isPageLoaded = false;
 
-        //jdsAppend("CMasterData?md=journals", "journalName", "journalName");
+            $(function(){
 
-        $.ajax({
-            type: "GET",
-            url: "CMasterData?md=journals",
-            dataType: "xml",
-            success: function(xml){
+                $("#journalTable").jqGrid({
+                    url:"<%=request.getContextPath() + "/journal?action=search"%>",
+                    datatype: 'xml',
+                    mtype: 'GET',
+                    width: '100%',
+                    height: 240,
+                    autowidth: true,
+                    forceFit: true,
+                    sortable: true,
+                    loadonce: false,
+                    rownumbers: true,
+                    emptyrecords: "No Journal",
+                    loadtext: "Loading...",
+                    colNames:['Journal Id','Journal Code','Journal Name','ISSN No', 'View/Edit'],
+                    colModel :[
+                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
+                        {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
+                        {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
+                        {name:'issnNo', index:'issnNo', width:80, align:'center', xmlmap:'issnNo'},
+                        {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
+                    ],
+                    xmlReader : {
+                        root: "results",
+                        row: "row",
+                        page: "journal>page",
+                        total: "journal>total",
+                        records : "journal>records",
+                        repeatitems: false,
+                        id: "id"
+                    },
+                    pager: '#pager',
+                    rowNum:10,
+                    rowList:[10,20,30],
+                    viewrecords: true,
+                    gridview: true,
+                    caption: '&nbsp;',
+                    gridComplete: function() {
+                        var ids = jQuery("#journalTable").jqGrid('getDataIDs');
 
-                $(xml).find("row").each(function(){
-                    $(this).find("journalName").each(function(){
-                        journalName = $(this).text();
-                        $("#journalName").append("<option value='" + journalName + "'>" + journalName + "</option");
-                    });
-                    $(this).find("journalCode").each(function(){
-                        journalCode = $(this).text();
-                    });
-                    $(this).find("price").each(function(){
-                        journalPrice = $(this).text();
-                    });
-                    // create an array of objects, indexed by the journal name.
-                    // the object has details like code and price.
-                    journalInfo[journalName] = {code:journalCode,price:journalPrice,discount:10};
+                        for (var i = 0; i < ids.length; i++) {
+                            action = "<a style='color:blue;' href='journal?action=edit&id=" + ids[i] + "'>Edit</a>";
+                            jQuery("#journalTable").jqGrid('setRowData', ids[i], { Action: action });
+                        }
+                    },
+//                    beforeRequest: function(){
+//                        return isPageLoaded;
+//                    },
+                    loadError: function(xhr,status,error){
+                        alert("Failed getting data from server" + status);
+                    }
+
                 });
-            },
-            complete: function(){
-                var html=null;
-            },
-            error: function() {
-                alert("XML File could not be found");
-            }
-        });
 
-        $("#journals").jqGrid({
-            url:'',
-            //data: "subscriberNumber=" + $("#subscriberNumber").val(),
-            datatype: 'local',
-            mtype: 'GET',
-            height: 260,
-            autowidth: true,
-            forceFit: true,
-            sortable: true,
-            loadonce: false,
-            rownumbers: true,
-            sortname:'journalName',
-            emptyrecords: "No journal(s) to view",
-            loadtext: "Loading...",
-            colNames: ['Journal Name','Journal Code','Delete'],
-            colModel: [
-                {
-                    name:"journalName",
-                    index:"journalName",
-                    align:"center",
-                    width:140
+            });
 
-                },
-                {
-                    name:"journalCode",
-                    index:"journalCode",
-                    align:"center",
-                    width:60,
-                    key: true
-                },
-                {
-                    name:"delete",
-                    index:"delete",
-                    width:40,
-                    align:"center"
+            // called when the search button is clicked
+
+
+
+            // called when the search button is clicked
+            function searchJournal(){
+                if(validateSearchJournal() == true)
+                    {
+                        isPageLoaded = true;
+
+                        jQuery("#journalTable").setGridParam({postData:
+                                {journalCode       : $("#journalCode").val(),
+                                journalName          : $("#journalName").val()
+                            }});
+                        jQuery("#journalTable").setGridParam({ datatype: "xml" });
+                        jQuery("#journalTable").trigger("clearGridData");
+                        jQuery("#journalTable").trigger("reloadGrid");
+                    }
                 }
 
-            ],
-            caption: '&nbsp;',
-            viewrecords: true,
-            gridview: true,
-            rowNum:20
-        });
-    });
-
+            // draw the date picker.
+            //jQueryDatePicker("from","to");
 
 </script>
-
+        
 <fieldset class="subMainFieldSet">
     <legend>Group Name</legend>
     <div class="IASFormFieldDiv">
@@ -116,26 +121,8 @@
 <fieldset class="subMainFieldSet">
     <legend>Journals</legend>
     <div class="IASFormFieldDiv">
-        <div class="IASFormLeftDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Journal name:</label>
-            </span>
-
-            <span class="IASFormDivSpanInputBoxLessMargin">
-                <select class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName">
-                </select>
-            </span>
-         </div>
-         <div class="IASFormrightDiv">
-            <div id="addBtnDiv">
-                <input onclick="setActionValue('add')"  class="IASButton" TABINDEX="3" type="submit" value="add" id="btnAdd" name="btnSubmitAction"/>
-            </div>
-         </div>        
-     </div>
-     <div class="IASFormFieldDiv">
-        <table class="datatable" id="journals"></table>
+        <table class="datatable" id="journalTable"></table>
         <div id="pager"></div>
-
      </div>
 </fieldset>
 

@@ -1,7 +1,6 @@
 
 package IAS.Controller.reports;
 
-import IAS.Controller.reports.*;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +18,7 @@ import javax.servlet.ServletContext;
  *
  * @author Deepali
  */
-public class report extends HttpServlet {
+public class reports extends HttpServlet {
 
     private reportModel _reportModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.reports");

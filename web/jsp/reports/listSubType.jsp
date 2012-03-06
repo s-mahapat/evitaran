@@ -9,8 +9,8 @@
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/subType.css" />
         <title>List subscriber type</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchSubType.js"%>"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validateSubType.js"%>"></script>
+        <%-- <script type="text/javascript" src="<%=request.getContextPath() + "/js/reports/searchSubType.js"%>"></script> --%>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/reports/listSubType.js"%>"></script>
         <script type="text/javascript">
             //var selectedSubTypeName = 0;
             var selectedId = 0;
@@ -20,7 +20,7 @@
             $(function(){
 
                 $("#subTypeTable").jqGrid({
-                    url:"<%=request.getContextPath() + "/subType?action=listSubtype"%>",
+                    url:"<%=request.getContextPath() + "/reports?action=listSubType"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -63,7 +63,7 @@
                         var ids = jQuery("#subTypeTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='subType?action=edit&id=" + ids[i] + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='report?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#subTypeTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -85,8 +85,10 @@
                         isPageLoaded = true;
 
                         jQuery("#subTypeTable").setGridParam({postData:
-                                {subtypecode       : $("#subtypecode").val(),
-                                subtype          : $("#subtype").val()
+                                {selall      : $("#selall").val(),
+                                subtype          : $("#subtype").val(),
+                                nationality      :$('#nationality').val(),
+                                institutional    :$('#institutional').val()
                             }});
                         jQuery("#subTypeTable").setGridParam({ datatype: "xml" });
                         jQuery("#subTypeTable").trigger("clearGridData");
@@ -165,7 +167,7 @@
                                         <label>All Subscriber Types</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selAll" value="1"/>
+                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall" value="1"/>
                                     </span>
                                 </div>                                
                             </div>

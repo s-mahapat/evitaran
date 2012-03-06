@@ -52,12 +52,6 @@ public class subType extends HttpServlet {
                 String xml = _subTypeModel.searchSubType();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }else if(action.equalsIgnoreCase("listSubType")){
-
-                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
-                String xml = _subTypeModel.listSubType();
-                request.setAttribute("xml", xml);
-                url = "/xmlserver";
             }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);

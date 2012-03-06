@@ -1,7 +1,6 @@
 
 package IAS.Model.Reports;
 
-import IAS.Model.Reports.*;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import IAS.Model.*;
@@ -51,22 +50,47 @@ public class reportModel extends JDSModel{
     }
     public String searchSubType() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
-        String sql = Queries.getQuery("search_journal");
+        String subType = request.getParameter("subtype");
+        String nationality = request.getParameter("nationality");
+        String institutional = request.getParameter("institutional");
+        String selall = request.getParameter("selAll");
+        String sql;
+        int param = 0;
+        
+        if (selall != null && selall.length() > 0){
+        
+            sql = Queries.getQuery("search_subtype_all");
+        }
+        else {
+            sql = Queries.getQuery("search_subtype_prm");
+        
+            if (subType != null && subType.length() > 0) {
+                sql += " subType=" + "'" + subType + "'";
+                param = 1;
+            }
+
+            if (nationality != null && nationality.length() > 0) {
+                if (param == 0){
+                    sql += " nationality =" + "'" + nationality + "'";
+                    param = 1;
+                }
+                else{
+                    sql += " and nationality =" + "'" + nationality + "'";
+                }
+            }
+            
+            if (institutional != null && institutional.length() > 0) {
+                 if (param == 0){
+                    sql += " institutional =" + "'" + institutional + "'";
+                    param = 1;
+                }
+                else{
+                    sql += " and institutional =" + "'" + institutional + "'";
+                }                
+            }
+        }
+        
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-
-        String journalCode = request.getParameter("journalCode");
-        String journalName = request.getParameter("journalName");
-
-        if(!journalCode.isEmpty())
-            stGet.setString(paramIndex++, "%" + journalCode + "%");
-        else
-            stGet.setString(paramIndex++, journalCode);
-
-        if(!journalName.isEmpty())
-            stGet.setString(paramIndex++, "%" + journalName + "%");
-        else
-            stGet.setString(paramIndex++, journalName);
 
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);

@@ -174,30 +174,6 @@ public class subTypeModel extends JDSModel{
         xml = util.convertResultSetToXML(rs);
         return xml;
     }
-    
-    public String listSubType() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        String xml = null;
-        
-        String sql = Queries.getQuery("search_subType");
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-
-        String subtypecode = request.getParameter("subtypecode");
-        String subtype = request.getParameter("subtype");
-
-         if(!subtypecode.isEmpty())
-            stGet.setString(paramIndex++, "%" + subtypecode + "%");
-        else
-            stGet.setString(paramIndex++, subtypecode);
-
-        if(!subtype.isEmpty())
-            stGet.setString(paramIndex++, "%" + subtype + "%");
-        else
-            stGet.setString(paramIndex++, subtype);
-
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        xml = util.convertResultSetToXML(rs);
-        return xml;
-    }    
+       
 }
 
