@@ -3,67 +3,116 @@ package IAS.Bean.masterdata;
 public class printOrderFormBean {
 
     /* fields */
-    private int id = 0;
-    private String journalCode = "";
-    private String journalName = "";
-    private String issnNo = "";
-    private int pages = 0;
-    private int startYear = 0;
-    private int issues = 0;
+    private int selectedYear;
+    private int[] printOrderId;
+    private String[] journalCode;
+    private String[] journalName;
+    private int[] year;
+    private int[] issues;
+    private int[] printOrder;
+    private int[] annualPrintOrder;
+
 /* Methods - Getter and Setter */
-public int getId() {
-        return (this.id);
+public int getSelectedYear() {
+        return (this.selectedYear);
     }
 
-public void setId(int _Id) {
-        this.id = _Id;
+public void setSelectedYear(int _selectedYear) {
+        this.selectedYear = _selectedYear;
     }
 
-public String getJournalCode() {
-        return (this.journalCode);
+public int[] getPrintOrderId() {
+        return (this.printOrderId);
     }
 
-public void setJournalCode(String _JournalCode) {
-        this.journalCode = _JournalCode;
+public void setPrintOrderId(int[] _printOrderId) {
+    /*
+        if(_printOrderId == null){
+            _printOrderId = new int[0];
+        }
+     */
+        this.printOrderId = _printOrderId;
     }
 
-public String getJournalName() {
-        return (this.journalName);
+public String[] getJournalCode() {
+        return (journalCode);
     }
 
-public void setJournalName(String _JournalName) {
-        this.journalName = _JournalName;
+public void setJournalCode(String[] _journalCode) {
+    /*
+        if(_journalCode == null){
+            _journalCode = new String[0];
+        }
+     */
+        this.journalCode = _journalCode;
     }
 
-public String getIssnNo() {
-        return (this.issnNo);
+public String[] getJournalName() {
+        return (journalName);
     }
 
-public void setIssnNo(String _IssnNo) {
-        this.issnNo = _IssnNo;
+public void setJournalName(String[] _journalName) {
+    /*
+        if(_journalName == null){
+            _journalName = new String[0];
+        }
+     */
+        this.journalName = _journalName;
     }
 
-public int getPages() {
-        return (this.pages);
+public int[] getYear() {
+        return (this.year);
     }
 
-public void setPages(int _Pages) {
-        this.pages = _Pages;
+public void setYear(int[] _year) {
+    /*
+        if(_year == null){
+            _year = new int[0];
+        }
+     */
+        this.year = _year;
     }
 
-public int getStartYear() {
-        return (this.startYear);
-    }
-
-public void setStartYear(int _StartYear) {
-        this.startYear = _StartYear;
-    }
-
-public int getIssues() {
+public int[] getIssues() {
         return (this.issues);
     }
 
-public void setIssues(int _Issues) {
-        this.issues = _Issues;
+public void setIssues(int[] _issues) {
+    /*
+        if(_issues == null){
+            _issues = new int[0];
+        }
+     */
+        this.issues = _issues;
+    }
+
+public int[] getPrintOrder() {
+        return (printOrder);
+    }
+
+public void setPrintOrder(int[] _printOrder) {
+    /*
+        if(_printOrder == null){
+            _printOrder = new int[0];
+        }
+     */
+        this.printOrder = _printOrder;
+    }
+
+public void setPrintOrder(int ndx, int member){
+        printOrder[ndx] = member;
+    }
+
+public int[] getAnnualPrintOrder() {
+        return (annualPrintOrder);
+    }
+
+public void setAnnualPrintOrder(int[] _annualPrintOrder) {
+    /*
+        if(_annualPrintOrder == null){
+            _annualPrintOrder = new int[0];
+        }
+     */
+        this.annualPrintOrder = _annualPrintOrder;
     }
 }

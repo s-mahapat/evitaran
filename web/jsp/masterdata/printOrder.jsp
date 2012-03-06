@@ -7,10 +7,15 @@
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
+            $(document).ready(function(){
+                searchPrintOrder();
+            });
+
             $(function(){
 
                 $("#printOrderTable").jqGrid({
-                    url:"<%=request.getContextPath() + "/printOrder?action=searchPrintOrder"%>",
+                    url:"<%=request.getContextPath()%>/printOrder?action=getPrintOrder&year=<%=request.getParameter("selectedYear")%>",
+                    //data: {selectedYear: 2010 },
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -51,7 +56,7 @@
                         var ids = jQuery("#printOrderTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='journal?action=edit&id=" + ids[i] + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='printOrder?action=edit&id=" + ids[i] + "'>Edit</a>";
                             jQuery("#printOrderTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -66,25 +71,58 @@
 
             });
 
-            // called when the search button is clicked
-
-
+            function getQueryParameter ( parameterName )
+            {
+                var queryString = window.top.location.search.substring(1);
+                //alert('String: ' + queryString + 'search for: ' + parameterName);
+                var parameterName = parameterName + "=";
+                if ( queryString.length > 0 )
+                {
+                    begin = queryString.indexOf ( parameterName );
+                    if ( begin != -1 )
+                    {
+                        begin += parameterName.length;
+                        end = queryString.indexOf ( "&" , begin );
+                        if ( end == -1 )
+                        {
+                            end = queryString.length
+                        }
+                        return unescape ( queryString.substring ( begin, end ) );
+                    }
+                }
+                return "null";
+            }
 
             // called when the search button is clicked
             function searchPrintOrder(){
-                if(validateSearchJournal() == true)
+                //var selectedYear = getQueryParameter("selectedYear");
+                //alert('year: ' + selectedYear);
+
+                //var url = location.search;
+                //alert('year: ' + selectedYear + ' url: ' + url);
+                if(validatePrintOrder() == true)
                     {
                         isPageLoaded = true;
 
                         jQuery("#printOrderTable").setGridParam({postData:
-                                {journalCode       : $("#journalCode").val(),
-                                journalName          : $("#journalName").val()
+                                {//year       : $("#year1").val()
+                                //selectedYear       : $request.getParameter("selectedYear")
+                                //selectedYear    : $("#selectedYear").val()
+                                //selectedYear    :$.query.get('selectedYear')
+                                //selectedYear    :$("#selectedYear").val()
+                                //selectedYear    :"2010"
+                                url               :'<%=request.getContextPath() + "/printOrder?action=getPrintOrder1"%>'
                             }});
+
+                        //jQuery("#printOrderTable").setGridParam({selectedYear: "selectedYear"});
+                        //jQuery("#printOrderTable").setGridParam({url: "<%=request.getContextPath() + "/printOrder?action=getPrintOrder1"%>"});
+                        //alert('year: ' + selectedYear);
                         jQuery("#printOrderTable").setGridParam({ datatype: "xml" });
                         jQuery("#printOrderTable").trigger("clearGridData");
                         jQuery("#printOrderTable").trigger("reloadGrid");
                     }
                 }
+
 
             // draw the date picker.
             //jQueryDatePicker("from","to");
@@ -108,6 +146,7 @@
 
     <fieldset class="subMainFieldSet">
         <div class="IASFormFieldDiv">
+            <input type="hidden" name="selectedYear" id="selectedYear" value="<jsp:getProperty name="printOrderFormBean" property="selectedYear"/>"/>
             <input type="hidden" name="action" id="action"/>
             <div id="saveBtnDiv">
                 <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="8" type="submit" value="Save" id="btnSave" name="btnSubmitAction"/>
@@ -117,4 +156,4 @@
             </div>
 
         </div>
-    </fieldset>                     
+    </fieldset>

@@ -416,12 +416,18 @@ UNLOCK TABLES;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
     ON jds.subscriber FOR EACH ROW
-BEGIN
-    IF new.deactive = True THEN
-      SET new.deactivationDate = CURRENT_DATE;
-    ELSE
-      SET new.deactivationDate = NULL;
-    END IF;
+BEGIN
+
+    IF new.deactive = True THEN
+
+      SET new.deactivationDate = CURRENT_DATE;
+
+    ELSE
+
+      SET new.deactivationDate = NULL;
+
+    END IF;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;

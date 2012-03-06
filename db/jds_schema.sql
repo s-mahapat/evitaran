@@ -229,7 +229,51 @@ CREATE TABLE `payment_mode` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `states`
+<<<<<<< .mine-- Table structure for table `print_order`
+--
+
+DROP TABLE IF EXISTS `print_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `print_order` (
+  `id` int(11) NOT NULL,
+  `year` int(4) NOT NULL,
+  `journalId` int(11) NOT NULL,
+  `printOrder` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `rate_group`
+--
+
+DROP TABLE IF EXISTS `rate_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rate_group` (
+  `rategroupid` int(11) NOT NULL AUTO_INCREMENT,
+  `rategroupname` char(32) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`rategroupid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reason`
+--
+
+DROP TABLE IF EXISTS `reason`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reason` (
+  `reasonId` int(11) NOT NULL AUTO_INCREMENT,
+  `reason` text NOT NULL,
+  PRIMARY KEY (`reasonId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+=======>>>>>>> .theirs-- Table structure for table `states`
 --
 
 DROP TABLE IF EXISTS `states`;
@@ -400,4 +444,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-06 19:11:52
+-- Dump completed on 2012-03-06 20:40:17

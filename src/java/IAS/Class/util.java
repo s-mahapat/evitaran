@@ -146,7 +146,7 @@ public final class util {
         return sw.toString();
     }
 
-    public void printResultSet(ResultSet result) throws SQLException
+    public static void printResultSet(ResultSet result) throws SQLException
     {
         // Print the data obtained from the query
         ResultSetMetaData rsmd = result.getMetaData();
@@ -176,7 +176,7 @@ public final class util {
         // End of print of data obtained from query
     }
 
-    public void printColTypes(ResultSetMetaData rsmd)
+    public static void printColTypes(ResultSetMetaData rsmd)
                             throws SQLException {
     int columns = rsmd.getColumnCount();
     for (int i = 1; i <= columns; i++) {
@@ -186,4 +186,44 @@ public final class util {
       System.out.println(", which the DBMS calls " + name);
     }
     }
+
+    public static String convertResultSetWithoutIDToXML(ResultSet result) throws SQLException
+    {
+        String xml = "";
+        xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n";
+        //System.out.println("<?xml version='1.0' encoding='utf-8'?>\n");
+        xml = xml + "<results>";
+        //System.out.println("<results>");
+
+        ResultSetMetaData rsmd = result.getMetaData();
+        int numberOfColumns = rsmd.getColumnCount();
+
+        int id = 1;
+        while (result.next())
+        {
+            for (int i = 1; i <= numberOfColumns; i++)
+            {
+                String columnValue = result.getString(i);
+
+                if(i == 1)
+                {
+                    xml = xml + "<row>";
+                }
+
+                xml = xml + "<id>" + id + "</id>";
+                xml = xml + "<" + rsmd.getColumnName(i) + ">" + columnValue + "</" + rsmd.getColumnName(i) + ">";
+
+                if(i == numberOfColumns)
+                {
+                    xml = xml + "</row>";
+                }
+            }
+            id++;
+        }
+        xml = xml + "</results>";
+
+        return xml;
+    }
+
+
 }

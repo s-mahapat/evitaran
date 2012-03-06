@@ -10,8 +10,7 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/printOrder.css" />
 
         <title>Print Order</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchPrintOrder.js"%>"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validatePrintOrder.js"%>"></script>
+
         <script type="text/javascript">
 
             var selectedId = 0;
@@ -21,7 +20,7 @@
             $(function(){
 
                 $("#yearTable").jqGrid({
-                    url:"<%=request.getContextPath() + "/printOrder?action=searchYear"%>",
+                    url:"<%=request.getContextPath() + "/printOrder?action=searchPrintOrders"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -33,7 +32,7 @@
                     rownumbers: true,
                     emptyrecords: "No Data",
                     loadtext: "Loading...",
-                    colNames:['Year','View/Edit/Add'],
+                    colNames:['Year','View/ Edit'],
                     colModel :[
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
                         {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
@@ -41,9 +40,9 @@
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "year>page",
-                        total: "year>total",
-                        records : "year>records",
+                        page: "printOrder>page",
+                        total: "printOrder>total",
+                        records : "printOrder>records",
                         repeatitems: false,
                         id: "year"
                     },
@@ -54,10 +53,16 @@
                     gridview: true,
                     caption: '&nbsp;',
                     gridComplete: function() {
-                        var ids = jQuery("yearTable").jqGrid('getDataIDs');
+                        var ids = jQuery("#yearTable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+                            $("#btnNext").removeAttr("disabled");
+                        }
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='printOrder?action=view&id=" + ids[i] + "'>View</a> <a style='color:blue;' href='printOrder?action=edit&id=" + ids[i] + "'>Edit</a> <a style='color:blue;' href='printOrder?action=add&id=" + ids[i] + "'>Add</a>";
+                            var cl = ids[i];
+                            var year = jQuery("#yearTable").jqGrid('getCell',cl,'year').toString();
+                            //action = "<a style='color:blue;' href='printOrder?action=view&year=" + year + "'>View</a><a style='color:blue;' href='printOrder?action=edit&year=" + year + "'>/ Edit</a>";
+                            action = "<a style='color:blue;' href='printOrder?action=view&selectedYear=" + year + "'>View</a><a style='color:blue;' href='printOrder?action=edit&selectedYear=" + year + "'>/ Edit</a>";
                             jQuery("#yearTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -77,19 +82,15 @@
 
 
             // called when the search button is clicked
-// called when the search button is clicked
-            function searchYear(){
-                if(validateYear() == true)
-                    {
-                        isPageLoaded = true;
+            function searchPOs(){
+                    isPageLoaded = true;
 
-                        jQuery("#yearTable").setGridParam({postData:
-                                {year         : $("#year").val()
-                            }});
-                        jQuery("#yearTable").setGridParam({ datatype: "xml" });
-                        jQuery("#yearTable").trigger("clearGridData");
-                        jQuery("#yearTable").trigger("reloadGrid");
-                    }
+                    jQuery("#yearTable").setGridParam({postData:
+                            {year         : $("#year").val()
+                        }});
+                    jQuery("#yearTable").setGridParam({ datatype: "xml" });
+                    jQuery("#yearTable").trigger("clearGridData");
+                    jQuery("#yearTable").trigger("reloadGrid");
 
                 }
 
@@ -103,21 +104,19 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/printOder"%>" name="yearlyPrintOderForm">
-                <div class="MainDiv">
+            <div class="MainDiv">
+                <form method="post" action="<%=request.getContextPath() + "/printOrder"%>" name="yearlyPrintOderForm">
                     <fieldset class="MainFieldset">
                         <legend>Print Order For Years</legend>
                             <fieldset class="subMainFieldSet">
-                            <div class="IASFormFieldDiv">
-                                    <div id="searchBtnDiv">
-                                        <input class="IASButton" TABINDEX="1" type="button" value="search" onclick="searchYear()"/>
+                                <div class="IASFormFieldDiv">
+                                    <div class="actionBtnDiv">
+                                        <input type="hidden" name="action" id="action"/>
+                                        <input class="IASButton" type="button" onclick="searchPOs()" value="Search Print Orders"  TABINDEX="1"/>
+                                        <input onclick="setActionValue('add')" class="IASButton" TABINDEX="2" type="submit" value="Add New Print Order" id="btnAdd" name="btnSubmitAction"/>
                                     </div>
-
-                                    <div id="resetBtnDiv">
-                                        <input class="IASButton" TABINDEX="2" type="reset" value="Reset"/>
-                                    </div>
-                             </div>
-                             </fieldset>
+                                </div>
+                            </fieldset>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -127,9 +126,9 @@
                             <table class="datatable" id="yearTable"></table>
                             <div id="pager"></div>
                         </fieldset>
-                      </fieldset>
-                  </div>
-            </form>
+                    </fieldset>
+                </form>
+            </div>
         </div>
     </body>
 </html>

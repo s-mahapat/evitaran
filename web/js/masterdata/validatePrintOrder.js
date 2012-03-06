@@ -1,0 +1,6 @@
+
+function validatePrintOrder(){
+    return true;
+}
+
+
