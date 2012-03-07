@@ -9,7 +9,9 @@
         <script type="text/javascript" src="js/inward/createinward.js"></script>
 
         <script>
-            addOnloadEvent(makeReadOnly);
+            $(document).ready(function() {
+                makeReadOnly();
+            });
             var myArr = new Array;
         </script>
     </head>

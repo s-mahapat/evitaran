@@ -12,7 +12,9 @@
         <title>Display Journal Subject Group</title>
         <script type="text/javascript" src="js/masterdata/displaySubjectGroup.js"></script>
         <script>
-            addOnloadEvent(makeSubGroupReadOnly);
+            $(document).ready(function() {
+                makeSubGroupReadOnly();
+            });
         </script>
     </head>
     <body>

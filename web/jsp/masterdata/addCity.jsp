@@ -14,7 +14,9 @@
         <script type="text/javascript" src="js/masterdata/addCity.js"></script>
         <script type="text/javascript" src="js/masterdata/validateCity.js"></script>
         <script>
-            addOnloadEvent(makeCreateReadOnly);
+            $(document).ready(function(){
+                makeCreateReadOnly();
+            });
         </script>
     </head>
     <body>
@@ -26,7 +28,7 @@
                     <fieldset class="MainFieldset">
                         <legend>Add City</legend>
                         <%@include file="city.jsp"%>
-                        </fieldset>
+                    </fieldset>
                 </div>
             </form>
         </div>

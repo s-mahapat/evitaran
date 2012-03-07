@@ -13,8 +13,10 @@
         <title>Display City</title>
         <script type="text/javascript" src="js/masterdata/displayCity.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
-            addOnloadEvent(makeCityReadOnly);
+            $(document).ready(function() {
+                makeReadOnly();
+                makeCityReadOnly();
+            });
         </script>
     </head>
     <body>

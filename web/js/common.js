@@ -1,6 +1,6 @@
 /*
  *use this function to add events to the onload event
- */
+
 function addOnloadEvent(fnc){
     if ( typeof window.addEventListener != "undefined" )
         window.addEventListener( "load", fnc, false );
@@ -16,7 +16,7 @@ function addOnloadEvent(fnc){
         } else
             window.onload = fnc;
     }
-}
+}*/
 /*
  * addOnloadEvent(myFunctionName);//
  *  Or to pass argumentsaddOnloadEvent(function(){ myFunctionName('myArgument') });

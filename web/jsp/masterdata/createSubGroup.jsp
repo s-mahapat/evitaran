@@ -12,7 +12,9 @@
         <title>Create Journal Subject Group</title>
         <script type="text/javascript" src="js/masterdata/createSubjectGroup.js"></script>
         <script>
-            addOnloadEvent(makeCreateReadOnly);
+            $(document).ready(function() {
+                makeCreateReadOnly();
+            });
         </script>
     </head>
     <body>

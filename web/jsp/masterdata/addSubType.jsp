@@ -14,7 +14,9 @@
         <script type="text/javascript" src="js/masterdata/addSubType.js"></script>
         <script type="text/javascript" src="js/masterdata/validateSubType.js"></script>
         <script>
-            addOnloadEvent(makeCreateReadOnly);
+            $(document).ready(function(){
+                makeCreateReadOnly();
+            });
         </script>
     </head>
     <body>

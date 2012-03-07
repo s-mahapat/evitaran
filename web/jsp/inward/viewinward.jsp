@@ -11,8 +11,10 @@
         <title>View Inward</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/viewinward.js"%>"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
-            addOnloadEvent(makeInwardReadOnly);
+            $(document).ready(function(){
+                makeReadOnly();
+                makeInwardReadOnly();
+            })
         </script>
     </head>
     <body>

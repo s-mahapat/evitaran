@@ -13,8 +13,10 @@
         <title>Display Country</title>
         <script type="text/javascript" src="js/masterdata/displayCountry.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
-            addOnloadEvent(makeCountryReadOnly);
+            $(document).ready(function() {
+                makeReadOnly();
+                makeCountryReadOnly();
+            });
         </script>
     </head>
     <body>

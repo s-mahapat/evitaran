@@ -14,7 +14,9 @@
         <script type="text/javascript" src="js/masterdata/editCity.js"></script>
         <script type="text/javascript" src="js/masterdata/validateCity.js"></script>
         <script>
-            addOnloadEvent(makeEditReadOnly);
+            $(document).ready(function() {
+                makeEditReadOnly();
+            });
         </script>
     </head>
     <body>

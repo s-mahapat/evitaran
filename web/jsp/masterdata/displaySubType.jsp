@@ -13,8 +13,10 @@
         <title>Display Subscriber Type</title>
         <script type="text/javascript" src="js/masterdata/displaySubType.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
-            addOnloadEvent(makeSubTypeReadOnly);
+            $(document).ready(function() {
+                makeReadOnly();
+                makeSubTypeReadOnly();
+            });
         </script>
     </head>
     <body>

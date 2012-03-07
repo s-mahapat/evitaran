@@ -12,9 +12,11 @@
         <link rel="stylesheet" type="text/css" href="css/masterdata/journal.css"/>
         <title>Create Journal</title>
         <script type="text/javascript" src="js/masterdata/editJournal.js"></script>
-        <script type="text/javascript" src="js/masterdata/validateJournal.js"></script>        
+        <script type="text/javascript" src="js/masterdata/validateJournal.js"></script>
         <script>
-            addOnloadEvent(makeEditReadOnly);
+            $(document).ready(function() {
+                makeEditReadOnly();
+            });
         </script>
     </head>
     <body>

@@ -13,8 +13,11 @@
         <title>Create Agent</title>
         <script type="text/javascript" src="js/masterdata/addAgent.js"></script>
         <script type="text/javascript" src="js/masterdata/validateAgent.js"></script>
+
         <script>
-            addOnloadEvent(makeCreateReadOnly);
+            $(document).ready(function(){
+                makeCreateReadOnly();
+            });
         </script>
     </head>
     <body>

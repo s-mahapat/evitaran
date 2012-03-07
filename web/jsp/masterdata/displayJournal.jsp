@@ -13,8 +13,10 @@
         <title>Create Journal</title>
         <script type="text/javascript" src="js/masterdata/displayJournal.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
-            addOnloadEvent(makeJournalReadOnly);
+            $(document).ready(function() {
+                makeReadOnly();
+                makeJournalReadOnly();
+            });
         </script>
     </head>
     <body>

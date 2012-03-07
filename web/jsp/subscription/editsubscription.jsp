@@ -13,8 +13,10 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/editsubscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script>
-            addOnloadEvent(makeAddNewSubscriptionReadOnly);
-            addOnloadEvent(function(){listSubscription("edit")});
+            $(document).ready(function() {
+                makeAddNewSubscriptionReadOnly();
+                listSubscription("edit");
+            });
         </script>
     </head>
     <body>

@@ -12,10 +12,8 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/subscriber.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/createsubscriber.js"%>"></script>
         <script>
-            addOnloadEvent(makeCreateSubscriberReadOnly);
-        </script>
-        <script>
             $(document).ready(function() {
+                makeCreateSubscriberReadOnly();
                 jdsAppend("/JDS/CMasterData?md=sub_type","subtype","subtype");
             });
         </script>

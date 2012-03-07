@@ -12,7 +12,9 @@
         <title>Edit Journal Subject Group</title>
         <script type="text/javascript" src="js/masterdata/editSubjectGroup.js"></script>
         <script>
-            addOnloadEvent(makeEditReadOnly);
+            $(document).ready(function() {
+                makeEditReadOnly();
+            });
         </script>
     </head>
     <body>

@@ -13,8 +13,10 @@
         <title>Display State</title>
         <script type="text/javascript" src="js/masterdata/displayState.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
-            addOnloadEvent(makeStateReadOnly);
+            $(document).ready(function() {
+                makeReadOnly();
+                makeStateReadOnly();
+            });
         </script>
     </head>
     <body>

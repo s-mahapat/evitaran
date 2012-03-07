@@ -14,7 +14,9 @@
         <script type="text/javascript" src="js/masterdata/addDistrict.js"></script>
         <script type="text/javascript" src="js/masterdata/validateDistrict.js"></script>
         <script>
-            addOnloadEvent(makeCreateReadOnly);
+            $(document).ready(function(){
+                makeCreateReadOnly();
+            });
         </script>
     </head>
     <body>

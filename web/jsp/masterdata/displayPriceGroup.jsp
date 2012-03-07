@@ -12,7 +12,9 @@
         <title>Display Journal Price Group</title>
         <script type="text/javascript" src="js/masterdata/displayPriceGroup.js"></script>
         <script>
-            addOnloadEvent(makePriceGroupReadOnly);
+            $(document).ready(function() {
+                makePriceGroupReadOnly();
+            });
         </script>
     </head>
     <body>

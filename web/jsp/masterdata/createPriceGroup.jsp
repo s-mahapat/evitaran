@@ -12,7 +12,9 @@
         <title>Create Journal Price Group</title>
         <script type="text/javascript" src="js/masterdata/createPriceGroup.js"></script>
         <script>
-            addOnloadEvent(makeCreateReadOnly);
+            $(document).ready(function() {
+                makeCreateReadOnly();
+            });
         </script>
     </head>
     <body>

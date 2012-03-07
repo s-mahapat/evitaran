@@ -17,10 +17,6 @@
                 listSubscription("View");
             })
         </script>
-        <script>
-            //addOnloadEvent(makeAddNewSubscriptionReadOnly);
-            //addOnloadEvent(function(){listSubscription("View")});
-        </script>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>

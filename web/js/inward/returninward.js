@@ -24,8 +24,8 @@ function validate(){
 }
 
 function showChequeDDReturnPrintPreview(){
-    var htmlStr = document.getElementById("returnReasonDiv").outerHTML;
-    $("#printPreview").html(htmlStr);
+    //var htmlStr = document.getElementById("returnReasonDiv").outerHTML;
+    //$("#printPreview").html(htmlStr);
     $("#btnPrintPreview").printPreview();
     return false;
 }

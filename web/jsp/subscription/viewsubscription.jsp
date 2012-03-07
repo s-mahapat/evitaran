@@ -14,9 +14,11 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/viewsubscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
-            addOnloadEvent(makeViewSubscriptionReadOnly);
-            addOnloadEvent(function(){listSubscription("Display")})
+            $(document).ready(function() {
+                makeReadOnly();
+                makeViewSubscriptionReadOnly();
+                listSubscription("Display");
+            });
         </script>
     </head>
     <body>

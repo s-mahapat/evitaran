@@ -16,9 +16,9 @@
         <%--------------------------------------------------------------%>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/editinward.js"%>"></script>
         <script type="text/javascript">
-            //var calFrom = new CalendarPopup("dateDiv");
-            //calFrom.showNavigationDropdowns();
-            addOnloadEvent(makeInwardReadOnly);
+            $(document).ready(function() {
+                makeInwardReadOnly();
+            });
         </script>
 
     </head>

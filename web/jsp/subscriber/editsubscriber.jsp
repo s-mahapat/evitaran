@@ -13,9 +13,11 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/createsubscriber.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/editsubscriber.js"%>"></script>
         <script>
-            addOnloadEvent(makeEditSubscriberReadOnly);
-            addOnloadEvent(subtypeDescriptionAppend);
-            addOnloadEvent(subtypeCodeAppend);
+            $(document).ready(function() {
+                makeEditSubscriberReadOnly();
+                subtypeDescriptionAppend();
+                subtypeCodeAppend();
+            });
         </script>
         <script>
             $(document).ready(function() {

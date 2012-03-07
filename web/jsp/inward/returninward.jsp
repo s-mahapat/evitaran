@@ -31,7 +31,7 @@
             <form name="chequeReturn" action="<%=request.getContextPath() + "/inward"%>" method="post" onsubmit="return validate()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <fieldset class="subMainFieldSet">
+                        <fieldset class="subMainFieldSet" id="chqDDReturnFields">
                             <legend>Cheque/DD Return</legend>
                             <div class="IASFormLeftDiv">
 

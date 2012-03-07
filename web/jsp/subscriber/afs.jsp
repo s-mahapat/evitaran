@@ -12,8 +12,10 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/afs.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/subscriber.js"%>"></script>
         <script>
-            addOnloadEvent(makeCreateSubscriberReadOnly);
-            addOnloadEvent(subtypeCodeAppend);
+            $(document).ready(function(){
+                makeCreateSubscriberReadOnly();
+                subtypeCodeAppend();
+            });
         </script>
         <script>
             $(document).ready(function() {

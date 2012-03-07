@@ -13,8 +13,10 @@
         <title>Display District</title>
         <script type="text/javascript" src="js/masterdata/displayDistrict.js"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
-            addOnloadEvent(makeDistrictReadOnly);
+            $(document).ready(function() {
+                makeReadOnly();
+                makeDistrictReadOnly();
+            });
         </script>
     </head>
     <body>

@@ -21,6 +21,7 @@ body{
     top: 0px;
     height: auto;
     background-color: rgb(255, 237, 202);
+    z-index: 2;
     /*background-image: url("../images/jds.gif");*/
 }
 
@@ -29,6 +30,7 @@ body{
     height: 40px;
     margin-bottom: 1px;
     width: 100%;
+    z-index: 2;
 }
 
 #smalldarksubheader{
@@ -51,6 +53,7 @@ body{
     height: 26px;
     width: 100%;
     margin-bottom: 1px;
+    z-index: 2;
 }
 
 #headertext{
@@ -175,6 +178,13 @@ body{
     font-size: 12px;
 }
 
+.IASDisabledTextBox{
+    width: 120px;
+    font-family: "Cambria",serif;
+    font-size: 12px;
+    background-color: #EEE;
+}
+
 .IASTextBoxWide{
     width: 180px;
     font-family: "Cambria",serif;
@@ -241,10 +251,11 @@ body{
 .IASButton{
     /*height: 20px;*/
     font-size: 10px;
-    font-weight: bolder;
+    /*font-weight: bolder;*/
     color: black;
     text-transform: capitalize;
     margin: 0px 10px;
+    z-index: 0;
 }
 
 /*
@@ -355,7 +366,6 @@ body{
 
 .IASFormDivSpanForHyphen{
     margin-left: 10px;
-    float: inherit;
     text-align: center;
 
 }
@@ -488,10 +498,10 @@ A:active {
 }
 
 #letterhead{
-    
+
     font-style: normal;
     font-weight: bolder;
-    margin: 0 auto;
+    margin: 10px auto;
     width: 80%;
     text-align: center;
     font-size: 20px;
@@ -499,7 +509,7 @@ A:active {
 }
 
 #subletterhead_1{
-    
+
     font-style: normal;
     font-weight: normal;
     margin: 0 auto;
@@ -510,11 +520,45 @@ A:active {
     font-family: cambria,sans-serif,serif;
 }
 
+#letterDiv{
+
+    border-right-style: solid;
+    border-left-style: solid;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    margin: 20px 20px;
+    height: auto;
+    float: left;
+}
+
 #letterDate{
     float: right;
-    width: 10%;
+    width: 95%;
     height: 20px;
     margin-top: 10px;
     margin-right: 40px;
-        
+    text-align: right;
+}
+
+.salutation{
+    margin-left: 10px;
+    font-family: cambria,sans-serif,serif;
+    font-size: 12px;
+    width: 100%;
+    float: left;
+    margin-top: 30px;
+}
+
+.letterBody{
+    margin-left: 5%;
+    font-family: cambria,sans-serif,serif;
+    font-size: 12px;
+    width: 95%;
+    margin-top: 20px;
+    float: right;
+    line-height: 2em;
 }

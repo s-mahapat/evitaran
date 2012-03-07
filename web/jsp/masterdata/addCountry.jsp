@@ -14,7 +14,9 @@
         <script type="text/javascript" src="js/masterdata/addCountry.js"></script>
         <script type="text/javascript" src="js/masterdata/validateCountry.js"></script>
         <script>
-            addOnloadEvent(makeCreateReadOnly);
+            $(document).ready(function(){
+                makeCreateReadOnly();
+            });
         </script>
     </head>
     <body>

@@ -312,7 +312,7 @@ public class inwardModel extends JDSModel {
         }
 
         if (chequeNumber != null && chequeNumber.length() > 0) {
-            sql += " and chequeDDReturn =" + "'" + chequeNumber + "'";
+            sql += " and chqddNumber =" + "'" + chequeNumber + "'";
         }
 
         if (city != null && city.compareToIgnoreCase("NULL") != 0  && city != null && city.length() > 0) {

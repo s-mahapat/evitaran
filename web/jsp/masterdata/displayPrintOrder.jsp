@@ -15,7 +15,9 @@
         <script type="text/javascript" src="js/masterdata/validatePrintOrder.js"></script>
         <script type="text/javascript" src="js/jquery/grid.postext.js"></script>
         <script>
-            addOnloadEvent(makePrintOrderReadOnly);
+            $(document).ready(function() {
+                makePrintOrderReadOnly();
+            });
         </script>
     </head>
     <body>

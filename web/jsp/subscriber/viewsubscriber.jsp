@@ -13,9 +13,11 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/subscriber.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/viewsubscriber.js"%>"></script>
         <script>
-            addOnloadEvent(makeReadOnly);
-            addOnloadEvent(makeViewSubscriberReadOnly);
-            addOnloadEvent(subtypeCodeAppend);
+            $(document).ready(function(){
+                makeReadOnly();
+                makeViewSubscriberReadOnly();
+                subtypeCodeAppend();
+            });
         </script>
     </head>
     <body>
