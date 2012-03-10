@@ -157,7 +157,11 @@ public class main extends HttpServlet {
 
             url = "/jsp/reports/listprofarmaInvoice.jsp";
 
-        } else if (action.equalsIgnoreCase("sendReminders")) {
+        } else if (action.equalsIgnoreCase("listInwards")) {
+
+            url = "/jsp/reports/listInwards.jsp";
+
+        }else if (action.equalsIgnoreCase("sendReminders")) {
 
             url = "/jsp/reminders/sendReminders.jsp";
 

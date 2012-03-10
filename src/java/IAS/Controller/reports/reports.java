@@ -43,7 +43,13 @@ public class reports extends HttpServlet {
                 String xml = _reportModel.searchSubType();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+            }else if(action.equalsIgnoreCase("listInwards")){
+
+                String xml = _reportModel.searchInwards();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             }
+            
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
 

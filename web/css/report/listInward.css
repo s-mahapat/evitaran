@@ -1,0 +1,58 @@
+/*
+    Document   : Style for Inward related JSPs are defined here
+*/
+root {
+    display:block;
+}
+
+#editInwardBtnDiv{
+    float: left;
+    width: 10%;
+    margin-left: 25%;
+}
+
+#saveBtnDiv{
+    float: left;
+    width: 8%;
+}
+
+#sendAckBtnDiv{
+    float: left;
+    width: 15%;
+}
+
+#sendReturnBtnDiv{
+    float: left;
+    width: 10%;
+    margin-right: 25%;
+}
+
+.IASFormDivSpanInputBoxForSearchInward{
+
+}
+
+.JDSFileInputBtn{
+    margin: 0px 4px;
+    font-family: Arial;
+    font-size: 10px;
+
+}
+
+.IASTextBoxInward{
+    width: 120px;
+    font-family: "Cambria",serif;
+    font-size: 12px;
+    background-color: #EEE;
+}
+
+#returnReasonDiv{
+    text-align: left;
+    padding-left: 10px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+#printPreview{
+    display: none;
+    visibility: hidden;
+}

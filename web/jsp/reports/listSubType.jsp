@@ -32,7 +32,7 @@
                     rownumbers: true,
                     emptyrecords: "No Subscriber Type",
                     loadtext: "Loading...",
-                    colNames:['Id','Subscriber Type Code','Subscriber Type','Free/Paid', 'Indian/Foreign','Inst/Pers','Free Journals','discount','View/Edit'],
+                    colNames:['Id','Subscriber Type Code','Subscriber Type','Free/Paid', 'Indian/Foreign','Inst/Pers','Free Journals','discount'],
                     colModel :[
                         {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
@@ -42,7 +42,7 @@
                         {name:'institutional', index:'institutional', width:80, align:'center', xmlmap:'institutional'},
                         {name:'freejrnl', index:'freejrnl', width:80, align:'center', xmlmap:'freejrnl'},
                         {name:'discount', index:'discount', width:80, align:'center', xmlmap:'discount'},
-                        {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
+                        
                     ],
                     xmlReader : {
                         root: "results",
@@ -59,14 +59,7 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-                    gridComplete: function() {
-                        var ids = jQuery("#subTypeTable").jqGrid('getDataIDs');
-
-                        for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='report?action=edit&id=" + ids[i] + "'>Edit</a>";
-                            jQuery("#subTypeTable").jqGrid('setRowData', ids[i], { Action: action });
-                        }
-                    },
+                    
                     beforeRequest: function(){
                         return isPageLoaded;
                     },
@@ -167,7 +160,7 @@
                                         <label>All Subscriber Types</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall" value="1"/>
+                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall"/>
                                     </span>
                                 </div>                                
                             </div>

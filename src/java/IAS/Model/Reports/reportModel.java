@@ -11,6 +11,19 @@ import javax.xml.transform.TransformerException;
 import IAS.Class.util;
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
+import java.io.IOException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import java.io.StringReader;
+import java.io.StringWriter;
 /**
  *
  * @author Deepali
@@ -48,9 +61,10 @@ public class reportModel extends JDSModel{
         xml = util.convertResultSetToXML(rs);
         return xml;
     }
+    
     public String searchSubType() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
-        String subType = request.getParameter("subtype");
+        String subType = request.getParameter("subtype");        
         String nationality = request.getParameter("nationality");
         String institutional = request.getParameter("institutional");
         String selall = request.getParameter("selAll");
@@ -94,6 +108,123 @@ public class reportModel extends JDSModel{
 
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
+        return xml;
+    }   
+    
+     public String searchInwards() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+        String xml = null;
+        String sql = Queries.getQuery("search_inward");
+        String city = request.getParameter("city");
+        String country = request.getParameter("country");
+        String state = request.getParameter("state");
+        String currency = request.getParameter("currency");
+        String language = request.getParameter("language");
+        String fromDate = request.getParameter("fromDate");
+        String toDate = request.getParameter("toDate");
+        String inwardPurpose = request.getParameter("inwardPurpose");
+        String paymentMode = request.getParameter("paymentMode");        
+        int pageNumber = Integer.parseInt(request.getParameter("page"));
+        int pageSize = Integer.parseInt(request.getParameter("rows"));
+        String orderBy = request.getParameter("sidx");
+        String sortOrder = request.getParameter("sord");
+        int totalQueryCount = 0;
+        double totalPages = 0;
+        if ("0".equals(city)) {
+            city = null;
+        }
+        if ("0".equals(country)) {
+            country = null;
+        }
+        if ("0".equals(state)) {
+            state = null;
+        }
+        if ("0".equals(currency)) {
+            currency = null;
+        }
+        if ("0".equals(language)) {
+            language = null;
+        }
+        if ("0".equals(inwardPurpose)) {
+            city = null;
+        }
+        if ("0".equals(paymentMode)) {
+            paymentMode = null;
+        }        
+        if (inwardPurpose != null && inwardPurpose.compareToIgnoreCase("NULL") != 0 && inwardPurpose.length() > 0) {
+            sql += " and t3.purpose =" + "'" + inwardPurpose + "'";
+        }
+
+        if (city != null && city.compareToIgnoreCase("NULL") != 0  && city != null && city.length() > 0) {
+            sql += " and t2.id = t1.city and t2.city = " + "\"" + city + "\"";
+        }
+
+        if (country != null && country.compareToIgnoreCase("NULL") != 0  && country != null && country.length() > 0) {
+            sql += " and t7.id = t1.country and t7.country = " + "\"" + country + "\"";
+        }
+        
+        if (state != null && state.compareToIgnoreCase("NULL") != 0  && state != null && state.length() > 0) {
+            sql += " and t8.id = t1.state and t8.state = " + "\"" + state + "\"";
+        }
+        
+        if (paymentMode != null && paymentMode.compareToIgnoreCase("NULL") != 0  && paymentMode != null && paymentMode.length() > 0) {
+            sql += " and t6.id = t1.paymentMode and t6.paymentMode = " + "\"" + paymentMode + "\"";
+        }
+        
+        if (currency != null && currency.compareToIgnoreCase("NULL") != 0  && currency != null && currency.length() > 0) {
+            sql += " and t5.id = t1.currency and t5.currency = " + "\"" + currency + "\"";
+        }
+             
+        if (language != null && language.compareToIgnoreCase("NULL") != 0  && language != null && language.length() > 0) {
+            sql += " and language = " + "\"" + language + "\"";
+        }
+        
+        if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
+            sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+        }
+
+        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose order by " + orderBy + " " + sortOrder;
+        ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
+        xml = util.convertResultSetToXML(rs);
+
+        sql = "select count(*) from (" + sql + ") as tbl";
+        rs = this.db.executeQuery(sql);
+        while(rs.next()){
+            totalQueryCount = rs.getInt(1);
+        }
+
+        if(totalQueryCount > 0){
+            totalPages = (double)totalQueryCount/(double)pageSize;
+            totalPages = java.lang.Math.ceil(totalPages);
+        }
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        InputSource is = new InputSource(new StringReader(xml));
+        Document doc = builder.parse(is);
+        Element root = doc.getDocumentElement();
+
+        Element page = doc.createElement("page");
+        Element total = doc.createElement("total");
+        Element records = doc.createElement("records");
+
+        root.appendChild(page);
+        page.appendChild(doc.createTextNode(String.valueOf(pageNumber)));
+
+        root.appendChild(total);
+        total.appendChild(doc.createTextNode(String.valueOf(totalPages)));
+
+        root.appendChild(records);
+        records.appendChild(doc.createTextNode(String.valueOf(totalQueryCount)));
+
+        DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.transform(domSource, result);
+        xml = writer.toString();
+        writer.close();
+
+
         return xml;
     }    
 }

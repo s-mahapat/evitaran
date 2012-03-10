@@ -7,63 +7,92 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
-        <link rel="stylesheet" type="text/css" href="css/report/journal.css" />
-        <title>List and Print Journal</title>
-        <script>
+        <link rel="stylesheet" type="text/css" href="css/masterdata/journal.css" />
+
+        <title>Search Journal</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchJournal.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validateJournal.js"%>"></script>
+        <script type="text/javascript">
+           // var selectedJournal = 0;
+            var selectedId = 0;
+            //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
+
             $(function(){
 
-                      $("#datatable").jqGrid({
-                        url:'',
-                        datatype: 'xml',
-                        mtype: 'GET',
-                        width: '100%',
-                        height: 240,
-                        autowidth: true,
-                        forceFit: true,
-                        sortable: true,
-                        loadonce: true,
-                        rownumbers: true,
-                        emptyrecords: "No records to view",
-                        loadtext: "Loading...",
-                        colNames:['Journal ID','Journal Code','Journal Name', 'ISSN NO','No Of Pages','Start Year'],
-                        colModel :[
-                          {name:'JournalId', index:'inward_id', width:50, align:'center', xmlmap:'journal_id'},
-                          {name:'JournalCode', index:'inward_id', width:50, align:'center', xmlmap:'journal_code'},
-                          {name:'JournalName', index:'subscriber_id', width:80, align:'center', xmlmap:'journal_name'},
-                          {name:'ISSNNO', index:'from', width:80, align:'center', xmlmap:'issn_no'},
-                          {name:'PageCount', index:'date', width:80, align:'center',xmlmap:'page_count'},
-                          {name:'StartYear', index:'city', width:80, align:'center', sortable:false, xmlmap:'start_year'},
-                        ],
-                        xmlReader : {
-                          root: "result",
-                          row: "row",
-                          page: "data>page",
-                          total: "data>total",
-                          records : "data>records",
-                          repeatitems: false,
-                          id: "journal_id"
-                       },
-                        pager: '#pager',
-                        rowNum:10,
-                        rowList:[10,20,30],
-                        viewrecords: true,
-                        gridview: true,
-                        caption: '&nbsp;',
-                        beforeRequest: function(){
-                          return isPageLoaded;
-                        },
-                        loadError: function(xhr,status,error){
-                            alert("Failed getting data from server" + status);
-                        }
-               });
+                $("#journalTable").jqGrid({
+                    url:"<%=request.getContextPath() + "/journal?action=search"%>",
+                    datatype: 'xml',
+                    mtype: 'GET',
+                    width: '100%',
+                    height: 240,
+                    autowidth: true,
+                    forceFit: true,
+                    sortable: true,
+                    loadonce: false,
+                    rownumbers: true,
+                    emptyrecords: "No Journal",
+                    loadtext: "Loading...",
+                    colNames:['Journal Id','Journal Code','Journal Name','ISSN No'],
+                    colModel :[
+                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
+                        {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
+                        {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
+                        {name:'issnNo', index:'issnNo', width:80, align:'center', xmlmap:'issnNo'},
+                        
+                    ],
+                    xmlReader : {
+                        root: "results",
+                        row: "row",
+                        page: "journal>page",
+                        total: "journal>total",
+                        records : "journal>records",
+                        repeatitems: false,
+                        id: "id"
+                    },
+                    pager: '#pager',
+                    rowNum:10,
+                    rowList:[10,20,30],
+                    viewrecords: true,
+                    gridview: true,
+                    caption: '&nbsp;',
+                    gridComplete: function() {
+
+                    },
+                    beforeRequest: function(){
+                        return isPageLoaded;
+                    },
+                    loadError: function(xhr,status,error){
+                        alert("Failed getting data from server" + status);
+                    }
+
+                });
 
             });
 
-            function getReport(){
-                isPageLoaded = true;
-                jQuery("#datatable").trigger("reloadGrid");
-            }
+            // called when the search button is clicked
+
+
+
+            // called when the search button is clicked
+            function searchJournal(){
+                if(validateSearchJournal() == true)
+                    {
+                        isPageLoaded = true;
+
+                        jQuery("#journalTable").setGridParam({postData:
+                                {journalCode       : $("#journalCode").val(),
+                                journalName          : $("#journalName").val()
+                            }});
+                        jQuery("#journalTable").setGridParam({ datatype: "xml" });
+                        jQuery("#journalTable").trigger("clearGridData");
+                        jQuery("#journalTable").trigger("reloadGrid");
+                    }
+                }
+
+            // draw the date picker.
+            //jQueryDatePicker("from","to");
+
         </script>
     </head>
     <body>
@@ -119,15 +148,21 @@
                         </fieldset>
 
 
-
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
                             <legend>Search Result</legend>
-                            <table class="datatable" id="datatable"></table>
+
+                            <table class="datatable" id="journalTable"></table>
                             <div id="pager"></div>
                         </fieldset>
+                        
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        <%-- Print Action Field Set --%>
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        
+                        
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">

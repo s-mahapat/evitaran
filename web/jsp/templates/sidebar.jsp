@@ -63,18 +63,19 @@
     </div>
 
     <div class="collapsed">
-        <span>Reports</span>
-        <a tabindex="-1" href="<%=contextPath + "/main?action=statement"%>">Statement</a>
+        <span>Reports</span>        
         <a tabindex="-1" href="<%=contextPath + "/main?action=listJournals"%>">List of Journals</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=listSubType"%>">List of Subscriber types</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=listAgent"%>">List of Agent</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=listSubscriber"%>">List of Subscribers</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=statement"%>">Statement</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation figures for journals</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=listprofarmaInvoice"%>">List of Invoice</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=listBackissue"%>">List of back issue sent</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=listReminder"%>">List of  renewal reminder sent</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=listmailinglist"%>">List of mailing list sent</a>
         <a tabindex="-1" href="<%=contextPath + "/main?action=journalRates"%>">Rates for Journals</a>
+        <a tabindex="-1" href="<%=contextPath + "/main?action=listInwards"%>">Inwards</a>
     </div>
 
     <div class="collapsed">

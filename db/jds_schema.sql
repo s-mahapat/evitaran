@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.19
+-- Server version	5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -160,7 +160,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB AUTO_INCREMENT=1772 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1770 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,6 +195,72 @@ CREATE TABLE `inward_return_reasons` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `jds_format_helper`
+--
+
+DROP TABLE IF EXISTS `jds_format_helper`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jds_format_helper` (
+  `year` int(11) NOT NULL,
+  `last_inward_number` int(11) NOT NULL DEFAULT '0',
+  `last_subscriber_number` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`year`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Remembers the last inward number and subscriber number. Helps in generating the next inward & subscriber number';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `journal_rate`
+--
+
+DROP TABLE IF EXISTS `journal_rate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_rate` (
+  `journalrateid` int(11) NOT NULL AUTO_INCREMENT,
+  `journalrategroupid` int(11) NOT NULL,
+  `year` year(4) NOT NULL,
+  `volumeno` int(11) DEFAULT NULL,
+  `pricey1` int(11) DEFAULT NULL,
+  `pricey2` int(11) DEFAULT NULL,
+  `pricey3` int(11) DEFAULT NULL,
+  `pricey4` int(11) DEFAULT NULL,
+  `pricey5` int(11) DEFAULT NULL,
+  PRIMARY KEY (`journalrateid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `journal_rate_group`
+--
+
+DROP TABLE IF EXISTS `journal_rate_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_rate_group` (
+  `jrateid` int(11) NOT NULL AUTO_INCREMENT,
+  `rategroupid` int(11) NOT NULL,
+  `journalid` int(11) NOT NULL,
+  PRIMARY KEY (`jrateid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `journal_sub_group`
+--
+
+DROP TABLE IF EXISTS `journal_sub_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_sub_group` (
+  `jsubid` int(11) NOT NULL AUTO_INCREMENT,
+  `subgroupid` int(11) NOT NULL,
+  `journalid` int(11) NOT NULL,
+  PRIMARY KEY (`jsubid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `journals`
 --
 
@@ -214,6 +280,20 @@ CREATE TABLE `journals` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `month`
+--
+
+DROP TABLE IF EXISTS `month`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `month` (
+  `monthid` int(11) NOT NULL AUTO_INCREMENT,
+  `month` text,
+  PRIMARY KEY (`monthid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `payment_mode`
 --
 
@@ -229,6 +309,20 @@ CREATE TABLE `payment_mode` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `price_group`
+--
+
+DROP TABLE IF EXISTS `price_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `price_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `priceGroupName` char(32) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `print_order`
 --
 
@@ -236,25 +330,11 @@ DROP TABLE IF EXISTS `print_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `print_order` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `year` int(4) NOT NULL,
+  `id` int(11) NOT NULL,
+  `year` year(4) NOT NULL,
   `journalId` int(11) NOT NULL,
   `printOrder` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `rate_group`
---
-
-DROP TABLE IF EXISTS `rate_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rate_group` (
-  `rategroupid` int(11) NOT NULL AUTO_INCREMENT,
-  `rategroupname` char(32) CHARACTER SET latin1 NOT NULL,
-  PRIMARY KEY (`rategroupid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -288,6 +368,20 @@ CREATE TABLE `states` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `subject_group`
+--
+
+DROP TABLE IF EXISTS `subject_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subject_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subGroupName` char(32) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `subscriber`
 --
 
@@ -317,7 +411,7 @@ CREATE TABLE `subscriber` (
   KEY `subscriberName` (`subscriberName`),
   KEY `subscriberCity` (`city`),
   KEY `subscriberPincode` (`pincode`)
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -368,6 +462,27 @@ CREATE TABLE `subscriber_type` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `subscribertypes`
+--
+
+DROP TABLE IF EXISTS `subscribertypes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subscribertypes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subTypeCode` char(5) NOT NULL,
+  `subTypeName` char(64) NOT NULL,
+  `freePaid` char(1) NOT NULL,
+  `nationality` char(1) NOT NULL,
+  `institutional` char(1) DEFAULT NULL,
+  `freeCopies` int(2) DEFAULT NULL,
+  `discount` float(8,3) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -440,6 +555,20 @@ CREATE TABLE `users` (
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `year`
+--
+
+DROP TABLE IF EXISTS `year`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `year` (
+  `yearId` int(11) NOT NULL AUTO_INCREMENT,
+  `year` text NOT NULL,
+  PRIMARY KEY (`yearId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -450,4 +579,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-10 18:25:42
+-- Dump completed on 2012-03-10 19:12:46
