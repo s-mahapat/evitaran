@@ -28,7 +28,7 @@
                     <fieldset class="MainFieldset">
                         <legend>Add Subscriber Type</legend>
                         <%@include file="subType.jsp"%>
-                        </fieldset>
+                    </fieldset>
                 </div>
             </form>
         </div>

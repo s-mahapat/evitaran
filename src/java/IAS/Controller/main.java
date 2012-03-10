@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import org.apache.log4j.*;
 import IAS.Class.JDSLogger;
-import javax.servlet.http.HttpSession;
-import IAS.Class.Database;
 
 public class main extends HttpServlet {
 
@@ -181,7 +179,7 @@ public class main extends HttpServlet {
 
         } else if (action.equals("printOrder")) {
 
-            url = "/jsp/masterdata/searchPrintOrder.jsp";
+            url = "/jsp/masterdata/displayPrintOrder.jsp";
 
         } else if (action.equals("jsGroup")) {
 

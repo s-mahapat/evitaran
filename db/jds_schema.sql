@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -160,7 +160,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB AUTO_INCREMENT=1770 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1772 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,19 +229,19 @@ CREATE TABLE `payment_mode` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
-<<<<<<< .mine-- Table structure for table `print_order`
+-- Table structure for table `print_order`
 --
 
 DROP TABLE IF EXISTS `print_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `print_order` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `year` int(4) NOT NULL,
   `journalId` int(11) NOT NULL,
   `printOrder` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -273,7 +273,7 @@ CREATE TABLE `reason` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
-=======>>>>>>> .theirs-- Table structure for table `states`
+-- Table structure for table `states`
 --
 
 DROP TABLE IF EXISTS `states`;
@@ -317,7 +317,7 @@ CREATE TABLE `subscriber` (
   KEY `subscriberName` (`subscriberName`),
   KEY `subscriberCity` (`city`),
   KEY `subscriberPincode` (`pincode`)
-) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -328,14 +328,20 @@ CREATE TABLE `subscriber` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
-    ON jds.subscriber FOR EACH ROW
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
+    ON jds.subscriber FOR EACH ROW
 BEGIN
+
     IF new.deactive = True THEN
+
       SET new.deactivationDate = CURRENT_DATE;
+
     ELSE
+
       SET new.deactivationDate = NULL;
+
     END IF;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -444,4 +450,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-06 20:40:17
+-- Dump completed on 2012-03-10 18:25:42

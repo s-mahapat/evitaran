@@ -34,14 +34,17 @@ public class printOrder extends HttpServlet {
 
             if(action.equalsIgnoreCase("add")){
 
-                url = "/jsp/masterdata/addPrintOrder.jsp";
+                String xml = _printOrderModel.addPrintOrder();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+                //url = "/jsp/masterdata/addPrintOrder.jsp";
 
             }else if(action.equalsIgnoreCase("save")){
 
                 _printOrderModel.Save();
                 url = "/jsp/masterdata/displayPrintOrder.jsp";
 
-            }else if(action.equalsIgnoreCase("edit")){
+            }/*else if(action.equalsIgnoreCase("edit")){
 
                  _printOrderModel.editPrintOrder();
                 url = "/jsp/masterdata/editPrintOrder.jsp";
@@ -50,24 +53,13 @@ public class printOrder extends HttpServlet {
 
                 _printOrderModel.viewPrintOrder();
                 url = "/jsp/masterdata/displayPrintOrder.jsp";
-                /*
-                request.setAttribute("xml", xml);
-                url = "/xmlserver";
-                 */
 
-            }else if(action.equalsIgnoreCase("searchPrintOrders")){
+            }*/else if(action.equalsIgnoreCase("searchPrintOrder")){
 
-                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
-                String xml = _printOrderModel.searchPrintOrders();
+                String xml = _printOrderModel.searchPrintOrder();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }else if(action.equalsIgnoreCase("getPrintOrder")){
-
-                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
-                String xml = _printOrderModel.getPrintOrder();
-                request.setAttribute("xml", xml);
-                url = "/xmlserver";
             }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -227,7 +227,7 @@ CREATE TABLE `journals` (
 
 LOCK TABLES `journals` WRITE;
 /*!40000 ALTER TABLE `journals` DISABLE KEYS */;
-INSERT INTO `journals` VALUES (1,'CURR','Current Science','1234',500,1985,12),(2,'RES','Resonanace','1234',578,1990,24),(3,'JB','Journal of Bioscience','1111',1000,1987,6),(4,'JB','Journal of Bioscience','1111',1000,1234,6),(5,'EBS','Environmental science','4567',800,1991,4),(6,'CS','Chemical Science','1579',1200,2000,24),(7,'MAA','Material Science','2468',789,1995,2),(8,'LOK','Lok Prabha','LK-420',50,1980,12),(9,'BI','Business India','0',100,2010,12),(10,'IT','India Today','IT-420',50,2011,52),(11,'LKP','Lokprabha','LK123',200,2010,24),(12,'JB','Journal of Bioscience','1579',500,2001,12),(13,'EC','Economist audio','123',100,2012,52),(14,'BT','Business Today','12',20,100,12);
+INSERT INTO `journals` VALUES (1,'CURR','Current Science','1234',500,1985,12),(2,'RES','Resonanace','1234',578,1990,24),(3,'JB','Journal of Bioscience','1111',1000,1987,6),(4,'JS','Journal of Science','1111',1000,1234,6),(5,'EBS','Environmental science','4567',800,1991,4),(6,'CS','Chemical Science','1579',1200,2000,24),(7,'MAA','Material Science','2468',789,1995,2),(8,'LOK','Lok Prabha','LK-420',50,1980,12),(9,'BI','Business India','0',100,2010,12);
 /*!40000 ALTER TABLE `journals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,7 +356,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES ('admin@ias.com','admin'),('jds@ias.com','user'),('shail@ias.com','user'),('tomcat','manager-script');
+INSERT INTO `user_role` VALUES ('admin@ias.com','admin'),('jds@ias.com','admin'),('shail@ias.com','user'),('tomcat','manager-script');
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -369,4 +369,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-06 20:40:18
+-- Dump completed on 2012-03-10 18:25:43
