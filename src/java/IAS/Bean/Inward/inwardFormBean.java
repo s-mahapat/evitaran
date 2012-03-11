@@ -33,6 +33,7 @@ public class inwardFormBean extends JDSBean{
     private String returnDate;
     private String remarks;
     private boolean completed = false;
+    private String language = "";
 
     public String getFrom() {
         return (this.from);
@@ -274,6 +275,14 @@ public class inwardFormBean extends JDSBean{
 
     public void setCompleted(boolean _completed){
         this.completed = _completed;
+    }
+
+    public String getLanguage(){
+        return this.language;
+    }
+
+    public void setLanguage(String _language){
+        this.language = _language;
     }
 
 

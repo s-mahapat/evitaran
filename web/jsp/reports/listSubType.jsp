@@ -42,7 +42,7 @@
                         {name:'institutional', index:'institutional', width:80, align:'center', xmlmap:'institutional'},
                         {name:'freejrnl', index:'freejrnl', width:80, align:'center', xmlmap:'freejrnl'},
                         {name:'discount', index:'discount', width:80, align:'center', xmlmap:'discount'},
-                        
+
                     ],
                     xmlReader : {
                         root: "results",
@@ -59,7 +59,7 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-                    
+
                     beforeRequest: function(){
                         return isPageLoaded;
                     },
@@ -78,7 +78,7 @@
                         isPageLoaded = true;
 
                         jQuery("#subTypeTable").setGridParam({postData:
-                                {selall      : $("#selall").val(),
+                                {selall      : $("#selall:checked").length,
                                 subtype          : $("#subtype").val(),
                                 nationality      :$('#nationality').val(),
                                 institutional    :$('#institutional').val()
@@ -88,16 +88,6 @@
                         jQuery("#subTypeTable").trigger("reloadGrid");
                     }
             }
-
-            function getChecked(){
-                if (document.getElementById("selall").value == 1 ){
-                    document.getElementById("selall").value = 0;
-                }else {
-                    document.getElementById("selall").value = 1;
-                }
-            }
-            // draw the date picker.
-            //jQueryDatePicker("from","to");
 
         </script>
     </head>
@@ -133,7 +123,7 @@
                                         </select>
                                     </span>
                                 </div>
- 
+
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Nationality</label>
@@ -147,7 +137,7 @@
                                     </span>
                                 </div>
                             </div>
-                            
+
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
@@ -161,15 +151,15 @@
                                         </select>
                                     </span>
                                 </div>
-                                
+
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>All Subscriber Types</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
+                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall"/>
                                     </span>
-                                </div>                                
+                                </div>
                             </div>
 
                             <div class="IASFormFieldDiv">

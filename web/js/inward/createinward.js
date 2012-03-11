@@ -23,5 +23,6 @@ function loadData(){
     jdsAppend("CMasterData?md=purpose","purpose","inwardPurpose");
     jdsAppend("CMasterData?md=payment_mode","payment_mode","paymentMode");
     jdsAppend("CMasterData?md=currency","currency","currency","INR");
+    jdsAppend("CMasterData?md=language","language","language","English");
 
 }

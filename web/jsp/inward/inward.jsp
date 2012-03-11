@@ -262,6 +262,22 @@
             </span>
         </div>
 
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Language:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <select class="IASComboBox" TABINDEX="16" name="language" id="language">
+                    <option value="">Select</option>
+                    <%
+                        if (inwardFormBean.getLanguage() != null && inwardFormBean.getLanguage().length() > 0) {
+                            out.println("<option value=" + "\"" + inwardFormBean.getLanguage() + "\"" + " selected >" + inwardFormBean.getLanguage() + "</option>");
+                        }
+                    %>
+                </select>
+            </span>
+        </div>
+
 
     </div>
 
