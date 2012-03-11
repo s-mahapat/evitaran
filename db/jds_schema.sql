@@ -155,6 +155,7 @@ CREATE TABLE `inward` (
   `bankName` varchar(64) DEFAULT NULL,
   `returnDate` date DEFAULT NULL,
   `completed` tinyint(4) NOT NULL DEFAULT '0',
+  `language` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `inward_no_UNIQUE` (`inwardNumber`),
   KEY `city` (`city`),
@@ -258,6 +259,20 @@ CREATE TABLE `journals` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `languages`
+--
+
+DROP TABLE IF EXISTS `languages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `languages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `language` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `month`
 --
 
@@ -299,20 +314,6 @@ CREATE TABLE `print_order` (
   `journalId` int(11) NOT NULL,
   `printOrder` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `rate_group`
---
-
-DROP TABLE IF EXISTS `rate_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rate_group` (
-  `rategroupid` int(11) NOT NULL AUTO_INCREMENT,
-  `rategroupname` char(32) CHARACTER SET latin1 NOT NULL,
-  PRIMARY KEY (`rategroupid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -582,4 +583,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-11 10:00:59
+-- Dump completed on 2012-03-11 13:41:39

@@ -99,7 +99,14 @@
                         jQuery("#journalTable").trigger("reloadGrid");
                     }
                 }
-
+                
+            function getChecked(){
+                if (document.getElementById("selall").value == 1 ){
+                    document.getElementById("selall").value = 0;
+                }else {
+                    document.getElementById("selall").value = 1;
+                }
+            }
             // draw the date picker.
             //jQueryDatePicker("from","to");
 
@@ -127,7 +134,7 @@
                                         <label>Journal Group:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="group" id="group">
+                                        <select class="IASComboBox" TABINDEX="1" name="journalGroupName" id="journalGroupName">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
@@ -140,7 +147,7 @@
                                         <label>All Journals</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="selall" id="selall"/>
+                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
                                 </div> 
                             </div>

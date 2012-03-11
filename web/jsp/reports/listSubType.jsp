@@ -90,8 +90,11 @@
             }
 
             function getChecked(){
-                document.getElementById("selall").value = 1;
-
+                if (document.getElementById("selall").value == 1 ){
+                    document.getElementById("selall").value = 0;
+                }else {
+                    document.getElementById("selall").value = 1;
+                }
             }
             // draw the date picker.
             //jQueryDatePicker("from","to");
