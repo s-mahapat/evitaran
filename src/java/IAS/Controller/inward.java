@@ -1,33 +1,35 @@
 package IAS.Controller;
 
+import IAS.Bean.Inward.inwardFormBean;
+import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Class.JDSLogger;
+import IAS.Class.msgsend;
+import IAS.Class.util;
 import IAS.Model.Inward.inwardModel;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
-import IAS.Class.msgsend;
-import IAS.Class.util;
-import javax.servlet.ServletContext;
 
 public class inward extends HttpServlet {
 
     private inwardModel _inwardModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.inward");
 
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
+            throws ServletException, IOException {
         String action = request.getParameter("action");
         String url = null;
 
         try {
 
             _inwardModel = new IAS.Model.Inward.inwardModel(request);
+            inwardFormBean _inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
 
             /*
              * If the action is to save the inward
@@ -41,7 +43,9 @@ public class inward extends HttpServlet {
              * If the action is to edit the inward
              */ else if (action.equalsIgnoreCase("edit")) {
 
-                if (_inwardModel.editInward() != null) {
+                _inwardFormBean = _inwardModel.editInward();
+                if (_inwardFormBean != null) {
+                    request.setAttribute("inwardFormBean", _inwardFormBean);
                     url = "/jsp/inward/editinward.jsp";
                 }
 
@@ -49,16 +53,23 @@ public class inward extends HttpServlet {
              * If the action is to view the inward
              */ else if (action.equalsIgnoreCase("view")) {
 
-                if (_inwardModel.viewInward() != null) {
+                _inwardFormBean = _inwardModel.viewInward();
+                if (_inwardFormBean != null) {
+                    request.setAttribute("inwardFormBean", _inwardFormBean);
                     url = "/jsp/inward/viewinward.jsp";
                 }
 
             } else if (action.equalsIgnoreCase("sendAck")) {
+
                 url = "/jsp/inward/ackinward.jsp";
+
             } else if (action.equalsIgnoreCase("sendReturn")) {
-                if (_inwardModel.viewInward() != null) {
+                _inwardFormBean = _inwardModel.viewInward();
+                if (_inwardFormBean != null) {
+                    request.setAttribute("inwardFormBean", _inwardFormBean);
                     url = "/jsp/inward/returninward.jsp";
                 }
+
             } else if (action.equalsIgnoreCase("search")) {
 
                 // searchInward gets all the inwards based on the search criteria entered on screen by the user.
@@ -78,23 +89,36 @@ public class inward extends HttpServlet {
                 String subscriberNumber = request.getParameter("subscriberNumber");
                 HttpSession session = request.getSession(false);
                 session.setAttribute("inwardUnderProcess", inwardNumber);
+                _inwardFormBean = _inwardModel.GetInward();
 
                 // we should use the purpose id rather than the purpose name, it can change in the database
                 // but id should not change
                 int purposeID = Integer.parseInt(request.getParameter("purpose"));
 
-
                 if (purposeID == 1) {
 
                     if (subscriberNumber != null && !subscriberNumber.isEmpty()) {
 
-                        IAS.Model.Subscriber.subscriberModel _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
-                        if (_subscriberModel.GetSubscriber() != null) {
-                            url = "/subscriber?action=add";
-                        }
+                        url = "/subscriber?action=add";
 
                     } else {
 
+                        IAS.Model.Subscriber.subscriberModel _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
+                        if (_subscriberModel.GetSubscriber() != null) {
+                            // create a subscriber form bean and fill the values from the selected inward
+                            subscriberFormBean _subscriberFormBean = new IAS.Bean.Subscriber.subscriberFormBean();
+                            _subscriberFormBean.setSubscriberName(_inwardFormBean.getFrom());
+                            _subscriberFormBean.setCity(_inwardFormBean.getCity());
+                            _subscriberFormBean.setDistrict(_inwardFormBean.getDistrict());
+                            _subscriberFormBean.setState(_inwardFormBean.getState());
+                            _subscriberFormBean.setCountry(_inwardFormBean.getCountry());
+                            _subscriberFormBean.setPincode(_inwardFormBean.getPincode());
+                            _subscriberFormBean.setEmail(_inwardFormBean.getEmail());
+                            _subscriberFormBean.setDepartment(_inwardFormBean.getDepartment());
+                            _subscriberFormBean.setInstitution(_inwardFormBean.getInstitution());
+                            request.setAttribute("subscriberFormBean", _subscriberFormBean);
+
+                        }
                         url = "/main?action=createsubscriber";
                     }
                 } else if (purposeID == 2) {
@@ -105,13 +129,13 @@ public class inward extends HttpServlet {
                     //Address change
                     url = "/subscriber?action=edit";
 
-                }else if (purposeID == 4) {
+                } else if (purposeID == 4) {
                     url = "/Invoice?action=new";
 
-                }else if(purposeID == 100){
+                } else if (purposeID == 100) {
                     // Add Free Subscriber
                     url = "/jsp/subscriber/afs.jsp";
-                }else if(purposeID == 200){
+                } else if (purposeID == 200) {
                     // Add Summer Fellows
                     url = "/jsp/subscriber/asf.jsp";
                 }
@@ -148,7 +172,9 @@ public class inward extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP
+     * <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -161,7 +187,9 @@ public class inward extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -175,6 +203,7 @@ public class inward extends HttpServlet {
 
     /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

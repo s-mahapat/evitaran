@@ -84,6 +84,7 @@ body{
     width: 12%; /*110*/
     float: left;
     position: fixed;
+    overflow: auto;
     height: 100%;
     padding-top: 60px;
     z-index: 2;
@@ -180,6 +181,13 @@ body{
 
 .IASDisabledTextBox{
     width: 120px;
+    font-family: "Cambria",serif;
+    font-size: 12px;
+    background-color: #EEE;
+}
+
+.IASDisabledTextBoxWide{
+    width: 180px;
     font-family: "Cambria",serif;
     font-size: 12px;
     background-color: #EEE;

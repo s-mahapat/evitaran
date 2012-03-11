@@ -1,20 +1,6 @@
 <%@page import="IAS.Class.util"%>
 <jsp:useBean class="IAS.Bean.Inward.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
 <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=country"%>","country","country");
-        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=state"%>","state","state");
-        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=district"%>","district","district");
-        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
-        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=purpose"%>","purpose","inwardPurpose");
-        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=payment_mode"%>","payment_mode","paymentMode");
-        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=currency"%>","currency","currency");
-
-    });
-
-    jQueryCalendar("paymentDate");
-</script>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Inward Info Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>

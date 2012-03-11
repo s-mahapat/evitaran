@@ -10,6 +10,28 @@
 <project name="JDS" default="default" basedir=".">
     <description>Builds, tests, and runs the project JDS.</description>
     <import file="nbproject/build-impl.xml"/>
+	<!--<target name="-pre-dist">    
+        <echo level="info" message="Compressing JavaScript and CSS files...." />
+        <path id="yuicompressor.classpath">
+            <fileset dir="${build.web.dir}/WEB-INF/lib">
+                <include name="yuicompressor-2.4.7.jar"/>
+				<include name="YUIAnt.jar"/>
+            </fileset>
+        </path>
+        <taskdef name="yuicompress" classname="com.yahoo.platform.yui.compressor.YUICompressTask">
+            <classpath>
+                <path refid="yuicompressor.classpath"/>
+            </classpath>
+        </taskdef>
+        <yuicompress linebreak="8000" warn="false" munge="yes" preserveallsemicolons="true"
+                outputfolder="${basedir}/${build.web.dir}" >
+            <fileset dir="${basedir}/web" excludes="/ext-2.1/**/*.js" >
+                <include name="**/*.js" />
+                <include name="**/*.css" />
+            </fileset>
+        </yuicompress> 
+        <echo level="info" message="Compression Complete" />
+	</target>--> 
     <!--
 
     There exist several targets which are by default empty and which can be 

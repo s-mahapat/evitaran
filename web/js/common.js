@@ -106,6 +106,10 @@ function isEmpty(element){
 }
 
 function isEmptyValue(evalue){
+    if(evalue == null){
+        return true;
+    }
+    
     var elValue = evalue.toString();
     if(elValue.length == 0){
         return true;
@@ -303,7 +307,8 @@ function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
      * This function will append the valus to the already existing ones. Mainly helpful
      * to populate drop down lists.
      */
-function jdsAppend(requestURL,xmlRowTag,formElementId){
+function jdsAppend(requestURL,xmlRowTag,formElementId, defaultSelect){
+
 
     var _formElementId = "#" + formElementId;
     var myArr = new Array;
@@ -319,12 +324,8 @@ function jdsAppend(requestURL,xmlRowTag,formElementId){
         complete: function(){
             var html=null;
             for(var i=0;i<myArr.length;i++){
-
                 //set this variable to save the state from the last postback
-                //var isSelected="";
-
                 if($(_formElementId).val() == myArr[i]){
-                    //isSelected = "selected";
                     continue;
                 }
                 if(html==null){
@@ -335,6 +336,9 @@ function jdsAppend(requestURL,xmlRowTag,formElementId){
 
             }
             $(_formElementId).append(html);
+            if(defaultSelect != undefined){
+                $(_formElementId).val(defaultSelect);
+            }
         },
         error: function() {
             alert("XML File could not be found at " + requestURL);

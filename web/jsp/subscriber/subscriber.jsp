@@ -109,7 +109,7 @@
                 <select class="IASComboBoxMandatory" TABINDEX="6" name="country" id="country">
                     <option value="0" selected >Select</option>
                     <%
-                        if (!subscriberFormBean.getCountry().isEmpty()) {
+                        if (subscriberFormBean.getCountry() != null && !subscriberFormBean.getCountry().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getCountry() + "\"" + " selected >" + subscriberFormBean.getCountry() + "</option>");
                         }
                     %>
@@ -138,7 +138,7 @@
                         onchange="subtypeAppend()">
                     <option value="0" selected >Select</option>
                     <%
-                        if (!subscriberFormBean.getSubtype().isEmpty()) {
+                        if (subscriberFormBean.getSubtype() != null && !subscriberFormBean.getSubtype().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getSubtype() + "\"" + " selected >" + subscriberFormBean.getSubtype() + "</option>");
                         }
                     %>
@@ -154,7 +154,7 @@
                         onchange="subtypeCodeAppend()">
                     <option value="0">Select</option>
                     <%
-                        if (!subscriberFormBean.getSubtypedesc().isEmpty()) {
+                        if (subscriberFormBean.getSubtypedesc()!= null && subscriberFormBean.getSubtypedesc().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getSubtypedesc() + "\"" + " selected >" + subscriberFormBean.getSubtypedesc() + "</option>");
                         }
                     %>

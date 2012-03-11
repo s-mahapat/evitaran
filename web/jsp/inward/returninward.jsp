@@ -40,7 +40,7 @@
                                         <label>Inward Number:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxInward" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<jsp:getProperty name="inwardFormBean" property="inwardNumber"/>"/>
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<jsp:getProperty name="inwardFormBean" property="inwardNumber"/>"/>
                                     </span>
                                 </div>
 
@@ -49,7 +49,7 @@
                                         <label>Subscriber ID:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="-1" readonly type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}"/>
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}"/>
                                     </span>
                                 </div>
 
@@ -58,7 +58,7 @@
                                         <label>From:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxMandatoryWide" maxlength="64" readonly TABINDEX="-1" type="text" name="from" id="from" value="<jsp:getProperty name="inwardFormBean" property="from"/>"/>
+                                        <input class="IASDisabledTextBoxWide" maxlength="64" readonly TABINDEX="-1" type="text" name="from" id="from" value="<jsp:getProperty name="inwardFormBean" property="from"/>"/>
                                     </span>
                                 </div>
 
@@ -96,7 +96,7 @@
                                         <label>Cheque/DD No:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" maxlength="11" TABINDEX="-1" readonly type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
+                                        <input class="IASDisabledTextBox" maxlength="11" TABINDEX="-1" readonly type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
                                     </span>
                                 </div>
 
@@ -118,7 +118,7 @@
                                         <label>Amount:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value="${inwardFormBean.amount}"/>
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value="${inwardFormBean.amount}"/>
                                         <label>${inwardFormBean.currency}</label>
                                     </span>
                                 </div>

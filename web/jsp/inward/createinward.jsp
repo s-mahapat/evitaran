@@ -10,17 +10,17 @@
 
         <script>
             $(document).ready(function() {
+                loadData();
+                jQueryCalendar("paymentDate");
                 makeReadOnly();
             });
             var myArr = new Array;
         </script>
     </head>
     <body>
-
         <%@include file="../templates/layout.jsp" %>
-
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/inward"%>" name="inwardForm" onsubmit="return validateNewInward()">
+            <form method="post" action="<%=request.getContextPath()+"/inward"%>" name="inwardForm" onsubmit="return validateNewInward()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Create Inward</legend>

@@ -18,16 +18,15 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.apache.commons.dbutils.BeanProcessor;
-import java.lang.Math;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.commons.dbutils.BeanProcessor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -83,21 +82,21 @@ public class inwardModel extends JDSModel {
 
     }
 
-    public String editInward() throws SQLException, ParseException,
+    public inwardFormBean editInward() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         return this.GetInward();
 
     }
 
-    public String viewInward() throws SQLException, ParseException,
+    public inwardFormBean viewInward() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         return this.GetInward();
 
     }
 
-    public String updateChequeReturn() throws SQLException, ParseException,
+    public inwardFormBean updateChequeReturn() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
 
         inwardFormBean inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
@@ -139,7 +138,7 @@ public class inwardModel extends JDSModel {
 
     }
 
-    public String GetInward() throws SQLException, ParseException,
+    public inwardFormBean GetInward() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         String sql;
@@ -155,19 +154,17 @@ public class inwardModel extends JDSModel {
 
         st.setString(1, inwardFormBean.getInwardNumber());
 
-        ResultSet rs = db.executeQueryPreparedStatement(st);
+        try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
+            while (rs.next()) {
+                BeanProcessor bProc = new BeanProcessor();
+                Class type = Class.forName("IAS.Bean.Inward.inwardFormBean");
+                inwardFormBean = (IAS.Bean.Inward.inwardFormBean) bProc.toBean(rs, type);
 
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.Inward.inwardFormBean");
-            inwardFormBean = (IAS.Bean.Inward.inwardFormBean) bProc.toBean(rs, type);
-
+            }
         }
-        rs.close();
 
-        request.setAttribute("inwardFormBean", inwardFormBean);
-        return inwardFormBean.getInwardNumber();
+        //request.setAttribute("inwardFormBean", inwardFormBean);
+        return inwardFormBean;
     }
 
     private void _setNewInwardStatementParams(PreparedStatement st) throws SQLException, ParseException {

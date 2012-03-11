@@ -17,6 +17,8 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/editinward.js"%>"></script>
         <script type="text/javascript">
             $(document).ready(function() {
+                loadData();
+                jQueryCalendar("paymentDate");
                 makeInwardReadOnly();
             });
         </script>
