@@ -196,21 +196,6 @@ CREATE TABLE `inward_return_reasons` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `jds_format_helper`
---
-
-DROP TABLE IF EXISTS `jds_format_helper`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `jds_format_helper` (
-  `year` int(11) NOT NULL,
-  `last_inward_number` int(11) NOT NULL DEFAULT '0',
-  `last_subscriber_number` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`year`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Remembers the last inward number and subscriber number. Helps in generating the next inward & subscriber number';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `journal_group_contents`
 --
 
@@ -273,20 +258,6 @@ CREATE TABLE `languages` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `month`
---
-
-DROP TABLE IF EXISTS `month`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `month` (
-  `monthid` int(11) NOT NULL AUTO_INCREMENT,
-  `month` text,
-  PRIMARY KEY (`monthid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `payment_mode`
 --
 
@@ -315,20 +286,6 @@ CREATE TABLE `print_order` (
   `printOrder` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `reason`
---
-
-DROP TABLE IF EXISTS `reason`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `reason` (
-  `reasonId` int(11) NOT NULL AUTO_INCREMENT,
-  `reason` text NOT NULL,
-  PRIMARY KEY (`reasonId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -571,7 +528,7 @@ CREATE TABLE `year` (
   `yearId` int(11) NOT NULL AUTO_INCREMENT,
   `year` text NOT NULL,
   PRIMARY KEY (`yearId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -583,4 +540,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-11 13:46:20
+-- Dump completed on 2012-03-11 14:42:48
