@@ -6,8 +6,8 @@
 
 function makeInwardReadOnly(){
 
-    document.getElementById("btnSaveInward").disabled = true;
-    document.getElementById("btnSearchSubscriber").disabled = true;
+    $("#btnSaveInward").button("disable");
+    $("#btnSearchSubscriber").button("disable");
     document.getElementById("paymentDate").setAttribute("readonly",true);
     document.getElementById("chequeDDReturn").disabled = true;
 
@@ -16,9 +16,9 @@ function makeInwardReadOnly(){
     //$(".ui-datepicker-trigger").hide();
 
     if(document.getElementById("chequeDDReturn").checked){
-        document.getElementById("btnSendReturn").disabled = false;
+        $("#btnSendReturn").button("enable");
     }else{
-        document.getElementById("btnSendReturn").disabled = true;
+        $("#btnSendReturn").button("disable");
     }
 
     // dummy function to generate random inward numbers

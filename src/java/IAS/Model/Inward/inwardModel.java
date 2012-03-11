@@ -194,6 +194,7 @@ public class inwardModel extends JDSModel {
         st.setInt(++paramIndex, _inwardFormBean.getReceiptNumber());
         st.setString(++paramIndex, _inwardFormBean.getAckDate());
         st.setString(++paramIndex, _inwardFormBean.getRemarks());
+        st.setString(++paramIndex, _inwardFormBean.getLanguage());
     }
 
     private void _setUpdateInwardStatementParams(PreparedStatement st) throws SQLException, ParseException {
@@ -222,6 +223,7 @@ public class inwardModel extends JDSModel {
         st.setInt(++paramIndex, _inwardFormBean.getReceiptNumber());
         st.setString(++paramIndex, _inwardFormBean.getAckDate());
         st.setString(++paramIndex, _inwardFormBean.getRemarks());
+        st.setString(++paramIndex, _inwardFormBean.getLanguage());
         st.setString(++paramIndex, _inwardFormBean.getInwardNumber());
     }
 

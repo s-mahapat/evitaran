@@ -51,7 +51,7 @@ CREATE TABLE `inward` (
   `bankName` varchar(64) DEFAULT NULL,
   `returnDate` date DEFAULT NULL,
   `completed` tinyint(4) NOT NULL DEFAULT '0',
-  `language` int(11) DEFAULT NULL,
+  `language` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `inward_no_UNIQUE` (`inwardNumber`),
   KEY `city` (`city`),
@@ -216,4 +216,4 @@ CREATE TABLE `subscriptiondetails` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-11 14:42:49
+-- Dump completed on 2012-03-11 23:50:59
