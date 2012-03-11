@@ -29,7 +29,7 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No Journal",
                     loadtext: "Loading...",
@@ -44,9 +44,9 @@
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "journal>page",
-                        total: "journal>total",
-                        records : "journal>records",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
                         id: "id"
                     },
@@ -60,7 +60,7 @@
                         var ids = jQuery("#journalTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='journal?action=edit&id=" + ids[i] + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='journal?action=view&id=" + ids[i] + "'>View</a><a style='color:blue;' href='journal?action=edit&id=" + ids[i] + "'>/ Edit</a>";
                             jQuery("#journalTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },

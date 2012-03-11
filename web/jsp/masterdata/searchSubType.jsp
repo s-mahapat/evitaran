@@ -29,7 +29,7 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No Subscriber Type",
                     loadtext: "Loading...",
@@ -46,9 +46,9 @@
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "subtype>page",
-                        total: "subtype>total",
-                        records : "subtype>records",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
                         id: "id"
                     },
@@ -62,7 +62,7 @@
                         var ids = jQuery("#subTypeTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='subType?action=edit&id=" + ids[i] + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='subType?action=view&id=" + ids[i] + "'>View</a><a style='color:blue;' href='subType?action=edit&id=" + ids[i] + "'>/ Edit</a>";
                             jQuery("#subTypeTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -212,7 +212,7 @@ DROP TABLE IF EXISTS `journals`;
 CREATE TABLE `journals` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `journalCode` varchar(4) NOT NULL,
-  `journalName` varchar(64) NOT NULL,
+  `journalName` varchar(128) NOT NULL,
   `issnNo` text NOT NULL,
   `pages` int(11) NOT NULL DEFAULT '0',
   `startYear` int(11) DEFAULT NULL,
@@ -227,7 +227,7 @@ CREATE TABLE `journals` (
 
 LOCK TABLES `journals` WRITE;
 /*!40000 ALTER TABLE `journals` DISABLE KEYS */;
-INSERT INTO `journals` VALUES (1,'CURR','Current Science','1234',500,1985,12),(2,'RES','Resonanace','1234',578,1990,24),(3,'JB','Journal of Bioscience','1111',1000,1987,6),(4,'JB','Journal of Bioscience','1111',1000,1234,6),(5,'EBS','Environmental science','4567',800,1991,4),(6,'CS','Chemical Science','1579',1200,2000,24),(7,'MAA','Material Science','2468',789,1995,2),(8,'LOK','Lok Prabha','LK-420',50,1980,12),(9,'BI','Business India','0',100,2010,12),(10,'IT','India Today','IT-420',50,2011,52),(11,'LKP','Lokprabha','LK123',200,2010,24),(12,'JB','Journal of Bioscience','1579',500,2001,12),(13,'EC','Economist audio','123',100,2012,52),(14,'BT','Business Today','12',20,100,12);
+INSERT INTO `journals` VALUES (1,'CURR','Current Science','0011-3891',3000,2000,24),(2,'RES','Resonanace - Journal of Science Edn','0971-8044',1200,2000,12),(3,'J','Pramana - Journal of Physics','0304-4289',1800,1987,12),(4,'JAA','Journal of Astrophysics and Astronomy','0250-6335',400,1234,4),(5,'EPS','Journal of Earth System Science (formerly Proc. Earth Planet Sci.)','0253-4126',600,1991,6),(6,'CS','Journal of Chemical Sciences (formerly Proc. Chemical Sci.)','0253-4134',600,2000,6),(7,'BMS','Bulletin of Materials Science','0250-4707',600,1995,6),(8,'S','Sadhana (Engineering Sciences)','0256-2499',600,1980,6),(9,'JB','Journal of Biosciences','0250-5991',500,2010,4),(10,'JG','Journal of Genetics','0022-1333',400,2011,3),(11,'MS','Proceedings (Mathematical Sciences)','0253-4142',400,2010,4);
 /*!40000 ALTER TABLE `journals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,7 +308,7 @@ CREATE TABLE `subscriber_type` (
 
 LOCK TABLES `subscriber_type` WRITE;
 /*!40000 ALTER TABLE `subscriber_type` DISABLE KEYS */;
-INSERT INTO `subscriber_type` VALUES (1,'IC','Indian Schools and Colleges','Free','I','I',NULL,NULL),(2,'II','Indian Institutes','Free','I','I',NULL,NULL),(3,'IP','Indian Institute of Science','Paid','I','I',NULL,NULL),(4,'FELGM','Fellows','Paid','I','P',NULL,NULL),(5,'XXX','Summer Fellows','Free','I','P',NULL,NULL),(6,'JDSD','JDS Developers','Free','I','P',100,100.000),(7,'IITS','IIT Students','Free','I','I',12,0.000),(8,'ITBS','IITB Students','Paid','I','P',12,0.000),(9,'REC','Regional Engg College','Paid','I','I',12,0.000),(10,'EC','Engg College','Free','I','P',12,0.000);
+INSERT INTO `subscriber_type` VALUES (1,'IC','Indian Schools and Colleges','','','',0,0.000),(2,'II','Indian Institutes','Free','I','I',0,10.000),(3,'IP','Indian Institute of Science','Paid','I','I',NULL,NULL),(4,'FELGM','Fellows','Paid','I','P',NULL,NULL),(5,'XXX','Summer Fellows','Paid','I','I',0,0.000),(6,'JDSD','JDS Developers','Free','I','P',100,100.000),(7,'IITS','IIT Students','Free','I','I',12,0.000),(8,'ITBS','IITB Students','Paid','I','P',12,0.000),(9,'REC','Regional Engg College','Paid','I','I',12,0.000),(10,'EC','Engg College','Free','I','P',12,0.000);
 /*!40000 ALTER TABLE `subscriber_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -369,4 +369,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-10 19:12:48
+-- Dump completed on 2012-03-11  9:08:49

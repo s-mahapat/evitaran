@@ -29,7 +29,7 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No Record",
                     loadtext: "Loading...",
@@ -47,7 +47,7 @@
                         records : "results>records",
                         repeatitems: false,
                         id: "id"
-                    },  
+                    },
                     pager: '#pager',
                     rowNum:10,
                     rowList:[10,20,30],
@@ -58,7 +58,7 @@
                         var ids = jQuery("#subGroupTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href= 'subGroup?action=edit&id=" + ids[i] + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='subGroup?action=view&id=" + ids[i] + "'>View</a><a style='color:blue;' href='subGroup?action=edit&id=" + ids[i] + "'>/ Edit</a>";
                             jQuery("#journalTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
@@ -108,15 +108,15 @@
                                 <div class="IASFormLeftDiv">
                                     <div id="searchBtnDiv">
                                         <input class="IASButton" TABINDEX="3" type="button" value="Search Existing Subject Group" onclick="searchPriceGroup()"/>
-                                    </div>                          
+                                    </div>
                                 </div>
 
-                                <div class="IASFormRightDiv">                        
+                                <div class="IASFormRightDiv">
                                     <input type="hidden" name="action" id="action"/>
                                     <div id="saveBtnDiv">
                                         <input onclick="setActionValue('add')"  class="IASButton" TABINDEX="3" type="submit" value="Add New Subject Group" id="btnAdd" name="btnSubmitAction"/>
-                                    </div> 
-                                </div>  
+                                    </div>
+                                </div>
                             </div>
                         </fieldset>
 
@@ -129,7 +129,7 @@
                             <table class="datatable" id="subGroupTable"></table>
                             <div id="pager"></div>
                         </fieldset>
-                         
+
                     </fieldset>
                 </div>
             </form>

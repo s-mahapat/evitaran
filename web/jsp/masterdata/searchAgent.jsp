@@ -28,7 +28,7 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No Agent",
                     loadtext: "Loading...",
@@ -45,9 +45,9 @@
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "agent>page",
-                        total: "agent>total",
-                        records : "agent>records",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
                         id: "id"
                     },

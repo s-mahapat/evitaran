@@ -29,11 +29,11 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No City",
                     loadtext: "Loading...",
-                    colNames:['City Id','City','View/Edit'],
+                    colNames:['City Id','City','View/ Edit'],
                     colModel :[
                         {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
@@ -42,9 +42,9 @@
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "city>page",
-                        total: "city>total",
-                        records : "city>records",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
                         id: "id"
                     },
@@ -58,7 +58,7 @@
                         var ids = jQuery("#cityTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='city?action=edit&id=" + ids[i] + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='city?action=view&id=" + ids[i] + "'>View</a><a style='color:blue;' href='city?action=edit&id=" + ids[i] + "'>/ Edit</a>";
                             jQuery("#cityTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -309,81 +309,50 @@ LOCK TABLES `jds_format_helper` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `journal_rate`
+-- Table structure for table `journal_group_contents`
 --
 
-DROP TABLE IF EXISTS `journal_rate`;
+DROP TABLE IF EXISTS `journal_group_contents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `journal_rate` (
-  `journalrateid` int(11) NOT NULL AUTO_INCREMENT,
-  `journalrategroupid` int(11) NOT NULL,
-  `year` year(4) NOT NULL,
-  `volumeno` int(11) DEFAULT NULL,
-  `pricey1` int(11) DEFAULT NULL,
-  `pricey2` int(11) DEFAULT NULL,
-  `pricey3` int(11) DEFAULT NULL,
-  `pricey4` int(11) DEFAULT NULL,
-  `pricey5` int(11) DEFAULT NULL,
-  PRIMARY KEY (`journalrateid`)
+CREATE TABLE `journal_group_contents` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `journal_group_id` int(11) NOT NULL,
+  `journal_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `journal_rate`
+-- Dumping data for table `journal_group_contents`
 --
 
-LOCK TABLES `journal_rate` WRITE;
-/*!40000 ALTER TABLE `journal_rate` DISABLE KEYS */;
-/*!40000 ALTER TABLE `journal_rate` ENABLE KEYS */;
+LOCK TABLES `journal_group_contents` WRITE;
+/*!40000 ALTER TABLE `journal_group_contents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `journal_group_contents` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `journal_rate_group`
+-- Table structure for table `journal_groups`
 --
 
-DROP TABLE IF EXISTS `journal_rate_group`;
+DROP TABLE IF EXISTS `journal_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `journal_rate_group` (
-  `jrateid` int(11) NOT NULL AUTO_INCREMENT,
-  `rategroupid` int(11) NOT NULL,
-  `journalid` int(11) NOT NULL,
-  PRIMARY KEY (`jrateid`)
+CREATE TABLE `journal_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `journal_group_name` varchar(128) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `journal_rate_group`
+-- Dumping data for table `journal_groups`
 --
 
-LOCK TABLES `journal_rate_group` WRITE;
-/*!40000 ALTER TABLE `journal_rate_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `journal_rate_group` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `journal_sub_group`
---
-
-DROP TABLE IF EXISTS `journal_sub_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `journal_sub_group` (
-  `jsubid` int(11) NOT NULL AUTO_INCREMENT,
-  `subgroupid` int(11) NOT NULL,
-  `journalid` int(11) NOT NULL,
-  PRIMARY KEY (`jsubid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `journal_sub_group`
---
-
-LOCK TABLES `journal_sub_group` WRITE;
-/*!40000 ALTER TABLE `journal_sub_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `journal_sub_group` ENABLE KEYS */;
+LOCK TABLES `journal_groups` WRITE;
+/*!40000 ALTER TABLE `journal_groups` DISABLE KEYS */;
+/*!40000 ALTER TABLE `journal_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -396,7 +365,7 @@ DROP TABLE IF EXISTS `journals`;
 CREATE TABLE `journals` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `journalCode` varchar(4) NOT NULL,
-  `journalName` varchar(64) NOT NULL,
+  `journalName` varchar(128) NOT NULL,
   `issnNo` text NOT NULL,
   `pages` int(11) NOT NULL DEFAULT '0',
   `startYear` int(11) DEFAULT NULL,
@@ -411,7 +380,7 @@ CREATE TABLE `journals` (
 
 LOCK TABLES `journals` WRITE;
 /*!40000 ALTER TABLE `journals` DISABLE KEYS */;
-INSERT INTO `journals` VALUES (1,'CURR','Current Science','1234',500,1985,12),(2,'RES','Resonanace','1234',578,1990,24),(3,'JB','Journal of Bioscience','1111',1000,1987,6),(4,'JB','Journal of Bioscience','1111',1000,1234,6),(5,'EBS','Environmental science','4567',800,1991,4),(6,'CS','Chemical Science','1579',1200,2000,24),(7,'MAA','Material Science','2468',789,1995,2),(8,'LOK','Lok Prabha','LK-420',50,1980,12),(9,'BI','Business India','0',100,2010,12),(10,'IT','India Today','IT-420',50,2011,52),(11,'LKP','Lokprabha','LK123',200,2010,24),(12,'JB','Journal of Bioscience','1579',500,2001,12),(13,'EC','Economist audio','123',100,2012,52),(14,'BT','Business Today','12',20,100,12);
+INSERT INTO `journals` VALUES (1,'CURR','Current Science','0011-3891',3000,2000,24),(2,'RES','Resonanace - Journal of Science Edn','0971-8044',1200,2000,12),(3,'J','Pramana - Journal of Physics','0304-4289',1800,1987,12),(4,'JAA','Journal of Astrophysics and Astronomy','0250-6335',400,1234,4),(5,'EPS','Journal of Earth System Science (formerly Proc. Earth Planet Sci.)','0253-4126',600,1991,6),(6,'CS','Journal of Chemical Sciences (formerly Proc. Chemical Sci.)','0253-4134',600,2000,6),(7,'BMS','Bulletin of Materials Science','0250-4707',600,1995,6),(8,'S','Sadhana (Engineering Sciences)','0256-2499',600,1980,6),(9,'JB','Journal of Biosciences','0250-5991',500,2010,4),(10,'JG','Journal of Genetics','0022-1333',400,2011,3),(11,'MS','Proceedings (Mathematical Sciences)','0253-4142',400,2010,4);
 /*!40000 ALTER TABLE `journals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -464,30 +433,6 @@ INSERT INTO `payment_mode` VALUES (5,'Bank Transfer'),(4,'Cash'),(1,'Cheque'),(2
 UNLOCK TABLES;
 
 --
--- Table structure for table `price_group`
---
-
-DROP TABLE IF EXISTS `price_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `price_group` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `priceGroupName` char(32) CHARACTER SET latin1 NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `price_group`
---
-
-LOCK TABLES `price_group` WRITE;
-/*!40000 ALTER TABLE `price_group` DISABLE KEYS */;
-INSERT INTO `price_group` VALUES (1,'Individual');
-/*!40000 ALTER TABLE `price_group` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `print_order`
 --
 
@@ -511,6 +456,29 @@ LOCK TABLES `print_order` WRITE;
 /*!40000 ALTER TABLE `print_order` DISABLE KEYS */;
 INSERT INTO `print_order` VALUES (1,2011,1,25000),(2,2011,2,24000),(3,2012,3,23000),(4,2010,1,23500),(5,2010,2,24500),(6,2010,3,24000);
 /*!40000 ALTER TABLE `print_order` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rate_group`
+--
+
+DROP TABLE IF EXISTS `rate_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rate_group` (
+  `rategroupid` int(11) NOT NULL AUTO_INCREMENT,
+  `rategroupname` char(32) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`rategroupid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rate_group`
+--
+
+LOCK TABLES `rate_group` WRITE;
+/*!40000 ALTER TABLE `rate_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rate_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -559,30 +527,6 @@ LOCK TABLES `states` WRITE;
 /*!40000 ALTER TABLE `states` DISABLE KEYS */;
 INSERT INTO `states` VALUES (1,'Andhra Pradesh'),(2,'Arunachal Pradesh'),(3,'Assam'),(4,'Bihar'),(5,'Chattisgarh'),(7,'Goa'),(8,'Gujarat'),(10,'Haryana'),(9,'Himachal Pradesh'),(12,'Jammu & Kashmir'),(11,'Jharkhand'),(13,'Karnataka'),(14,'Kerala'),(18,'Madhya Pradesh'),(17,'Maharastra'),(15,'Manipur'),(16,'Meghalaya'),(19,'Mizoram'),(20,'Nagaland'),(6,'New Delhi'),(21,'Odisha'),(23,'Pondicherry'),(22,'Punjab'),(24,'Rajasthan'),(25,'Sikkim'),(26,'Tamilnadu'),(27,'Tripura'),(28,'Uttar Pradesh'),(29,'Uttarakhand'),(30,'West Bengal');
 /*!40000 ALTER TABLE `states` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `subject_group`
---
-
-DROP TABLE IF EXISTS `subject_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subject_group` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subGroupName` char(32) CHARACTER SET latin1 DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `subject_group`
---
-
-LOCK TABLES `subject_group` WRITE;
-/*!40000 ALTER TABLE `subject_group` DISABLE KEYS */;
-INSERT INTO `subject_group` VALUES (1,'Bioscience');
-/*!40000 ALTER TABLE `subject_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -637,18 +581,32 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
+
     ON jds.subscriber FOR EACH ROW
+
 BEGIN
+
+
 
     IF new.deactive = True THEN
 
+
+
       SET new.deactivationDate = CURRENT_DATE;
+
+
 
     ELSE
 
+
+
       SET new.deactivationDate = NULL;
 
+
+
     END IF;
+
+
 
 END */;;
 DELIMITER ;
@@ -684,39 +642,8 @@ CREATE TABLE `subscriber_type` (
 
 LOCK TABLES `subscriber_type` WRITE;
 /*!40000 ALTER TABLE `subscriber_type` DISABLE KEYS */;
-INSERT INTO `subscriber_type` VALUES (1,'IC','Indian Schools and Colleges','Free','I','I',NULL,NULL),(2,'II','Indian Institutes','Free','I','I',NULL,NULL),(3,'IP','Indian Institute of Science','Paid','I','I',NULL,NULL),(4,'FELGM','Fellows','Paid','I','P',NULL,NULL),(5,'XXX','Summer Fellows','Free','I','P',NULL,NULL),(6,'JDSD','JDS Developers','Free','I','P',100,100.000),(7,'IITS','IIT Students','Free','I','I',12,0.000),(8,'ITBS','IITB Students','Paid','I','P',12,0.000),(9,'REC','Regional Engg College','Paid','I','I',12,0.000),(10,'EC','Engg College','Free','I','P',12,0.000);
+INSERT INTO `subscriber_type` VALUES (1,'IC','Indian Schools and Colleges','','','',0,0.000),(2,'II','Indian Institutes','Free','I','I',0,10.000),(3,'IP','Indian Institute of Science','Paid','I','I',NULL,NULL),(4,'FELGM','Fellows','Paid','I','P',NULL,NULL),(5,'XXX','Summer Fellows','Paid','I','I',0,0.000),(6,'JDSD','JDS Developers','Free','I','P',100,100.000),(7,'IITS','IIT Students','Free','I','I',12,0.000),(8,'ITBS','IITB Students','Paid','I','P',12,0.000),(9,'REC','Regional Engg College','Paid','I','I',12,0.000),(10,'EC','Engg College','Free','I','P',12,0.000);
 /*!40000 ALTER TABLE `subscriber_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `subscribertypes`
---
-
-DROP TABLE IF EXISTS `subscribertypes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subscribertypes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subTypeCode` char(5) NOT NULL,
-  `subTypeName` char(64) NOT NULL,
-  `freePaid` char(1) NOT NULL,
-  `nationality` char(1) NOT NULL,
-  `institutional` char(1) DEFAULT NULL,
-  `freeCopies` int(2) DEFAULT NULL,
-  `discount` float(8,3) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `subscribertypes`
---
-
-LOCK TABLES `subscribertypes` WRITE;
-/*!40000 ALTER TABLE `subscribertypes` DISABLE KEYS */;
-INSERT INTO `subscribertypes` VALUES (1,'IC','Indian Schools and Colleges','P','I','I',0,0.000);
-/*!40000 ALTER TABLE `subscribertypes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -750,6 +677,33 @@ LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
 INSERT INTO `subscription` VALUES (1,119,129,1,0,0,'2012-01-24 18:50:19',0,NULL),(2,119,129,1,0,0,'2012-01-25 02:00:50',0,NULL),(3,119,129,0,0,0,'2012-01-25 02:04:25',0,NULL),(4,119,129,0,0,0,'2012-01-25 03:38:54',0,NULL),(5,119,129,0,0,0,'2012-01-25 03:44:55',0,NULL),(6,119,129,0,0,0,'2012-01-26 06:12:07',0,NULL),(7,119,129,0,0,0,'2012-01-26 06:52:20',0,NULL),(8,119,129,0,0,0,'2012-01-26 11:15:15',0,NULL),(9,119,129,1,0,0,'2012-01-26 15:22:51',0,NULL),(10,119,129,1,0,0,'2012-01-26 15:23:29',0,NULL),(11,119,129,1,0,0,'2012-01-26 15:23:30',0,NULL),(12,119,129,1,0,0,'2012-01-26 15:23:31',0,NULL),(13,119,129,1,0,0,'2012-01-26 15:23:31',0,NULL),(14,119,129,1,0,0,'2012-01-26 15:23:32',0,NULL),(15,119,129,0,0,0,'2012-01-26 15:23:32',0,NULL),(16,119,129,0,0,0,'2012-01-26 15:23:33',0,NULL),(17,119,129,0,0,0,'2012-01-26 15:23:33',0,NULL),(18,119,129,0,0,0,'2012-01-26 15:23:33',0,NULL),(19,119,129,1,0,0,'2012-01-26 15:23:33',0,NULL),(20,119,129,0,0,0,'2012-01-26 15:23:33',0,NULL),(21,119,129,1,0,0,'2012-02-11 05:35:31',0,NULL),(22,119,129,1,0,0,'2012-02-11 11:48:48',0,NULL),(23,119,129,1,0,0,'2012-02-11 11:51:03',0,NULL),(24,119,129,1,0,0,'2012-02-12 04:31:04',90,'undefined'),(25,119,129,1,0,0,'2012-02-12 04:31:56',90,''),(26,119,129,1,0,0,'2012-02-12 04:32:41',900,''),(27,119,129,1,0,0,'2012-02-12 04:34:56',135,''),(28,119,129,1,0,0,'2012-02-12 04:35:10',135,''),(29,119,129,1,0,0,'2012-02-12 04:39:48',135,''),(30,119,129,1,0,0,'2012-02-12 04:39:59',135,''),(31,119,129,1,0,0,'2012-02-12 04:44:24',90,''),(32,119,129,1,0,0,'2012-02-12 04:44:34',90,''),(33,119,129,1,0,0,'2012-02-12 04:46:54',90,''),(34,119,129,1,0,0,'2012-02-12 04:53:12',135,''),(35,119,129,1,0,0,'2012-02-12 04:59:03',90,''),(36,119,129,1,0,0,'2012-02-12 05:01:18',135,''),(37,119,129,1,0,0,'2012-02-12 05:02:58',135,'test all journals and remarks'),(38,119,129,1,0,0,'2012-02-12 05:06:15',90,'test munnu'),(39,119,129,1,0,0,'2012-02-12 05:08:22',90,'yt'),(40,24,144,1,0,0,'2012-02-12 05:23:56',90,''),(41,24,144,1,0,0,'2012-02-12 05:24:53',90,''),(42,24,144,1,0,0,'2012-02-12 05:26:02',90,''),(43,24,144,1,0,0,'2012-02-12 05:26:33',90,''),(44,24,144,1,0,0,'2012-02-12 05:27:55',90,''),(45,24,144,1,0,0,'2012-02-12 05:33:37',90,''),(46,24,144,1,0,0,'2012-02-12 05:34:10',90,''),(47,24,144,1,0,0,'2012-02-12 05:34:31',90,''),(48,119,144,1,0,0,'2012-02-12 05:38:30',90,''),(49,119,144,1,0,0,'2012-02-12 05:38:37',90,''),(50,119,144,1,0,0,'2012-02-12 05:38:49',90,''),(51,119,144,1,0,0,'2012-02-12 05:39:34',90,''),(52,119,144,1,0,0,'2012-02-12 05:40:29',90,''),(53,24,144,1,0,0,'2012-02-12 05:48:41',90,''),(54,119,144,1,0,0,'2012-02-12 05:55:30',90,''),(55,119,144,1,0,0,'2012-02-12 05:56:14',90,''),(56,119,144,1,0,0,'2012-02-12 05:56:48',90,''),(57,119,144,1,0,0,'2012-02-12 05:57:11',90,''),(58,119,144,1,0,0,'2012-02-12 06:03:10',90,''),(59,24,144,1,0,0,'2012-02-13 02:09:13',135,''),(60,119,144,1,0,0,'2012-02-13 02:10:39',90,''),(61,119,140,1,0,0,'2012-02-19 06:15:57',90,'');
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `subscription_rates`
+--
+
+DROP TABLE IF EXISTS `subscription_rates`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subscription_rates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `journal_groups_id` int(11) NOT NULL,
+  `subtype_id` int(11) NOT NULL,
+  `year` int(11) NOT NULL,
+  `period` int(11) NOT NULL,
+  `rate` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `subscription_rates`
+--
+
+LOCK TABLES `subscription_rates` WRITE;
+/*!40000 ALTER TABLE `subscription_rates` DISABLE KEYS */;
+/*!40000 ALTER TABLE `subscription_rates` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -862,4 +816,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-10 19:12:47
+-- Dump completed on 2012-03-11  9:08:49

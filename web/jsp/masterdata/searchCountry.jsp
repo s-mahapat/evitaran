@@ -29,11 +29,11 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No Country",
                     loadtext: "Loading...",
-                    colNames:['Country Id','Country','View/Edit'],
+                    colNames:['Country Id','Country','View/ Edit'],
                     colModel :[
                         {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
@@ -42,9 +42,9 @@
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "country>page",
-                        total: "country>total",
-                        records : "country>records",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
                         id: "id"
                     },
@@ -58,7 +58,7 @@
                         var ids = jQuery("#countryTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='country?action=edit&id=" + ids[i] + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='country?action=view&id=" + ids[i] + "'>View</a><a style='color:blue;' href='country?action=edit&id=" + ids[i] + "'>/ Edit</a>";
                             jQuery("#countryTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },

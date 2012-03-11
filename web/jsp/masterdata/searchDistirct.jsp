@@ -29,11 +29,11 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No District",
                     loadtext: "Loading...",
-                    colNames:['District Id','District','View/Edit'],
+                    colNames:['District Id','District','View/ Edit'],
                     colModel :[
                         {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         {name:'district', index:'district', width:80, align:'center', xmlmap:'district'},
@@ -42,9 +42,9 @@
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "district>page",
-                        total: "district>total",
-                        records : "district>records",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
                         id: "id"
                     },
@@ -58,7 +58,7 @@
                         var ids = jQuery("#districtTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='district?action=edit&id=" + ids[i] + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='district?action=view&id=" + ids[i] + "'>View</a><a style='color:blue;' href='district?action=edit&id=" + ids[i] + "'>/ Edit</a>";
                             jQuery("#districtTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },

@@ -40,7 +40,7 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No Print Order for selected Year",
                     loadtext: "Loading...",
@@ -57,9 +57,9 @@
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "printorder>page",
-                        total: "printOrder>total",
-                        records : "printOrder>records",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
                         id: "id"
                     },

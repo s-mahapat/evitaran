@@ -29,7 +29,7 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No State",
                     loadtext: "Loading...",
@@ -42,9 +42,9 @@
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "state>page",
-                        total: "state>total",
-                        records : "state>records",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
                         id: "id"
                     },
@@ -58,7 +58,7 @@
                         var ids = jQuery("#stateTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='state?action=edit&id=" + ids[i] + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='state?action=view&id=" + ids[i] + "'>View</a><a style='color:blue;' href='state?action=edit&id=" + ids[i] + "'>/ Edit</a>";
                             jQuery("#stateTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
