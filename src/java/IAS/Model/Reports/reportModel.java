@@ -36,7 +36,7 @@ public class reportModel extends JDSModel{
 
        super(request);
 
-    }   
+    }
 
     public String searchJournal() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
@@ -46,20 +46,20 @@ public class reportModel extends JDSModel{
 
         if(!group.isEmpty()){
             sql = Queries.getQuery("list_journal_group");
-            sql += "  t2.group =" + "'" + group + "'";            
+            sql += "  t2.group =" + "'" + group + "'";
         }else{
             sql = Queries.getQuery("list_journal_all");
-        }            
-        
+        }
+
         PreparedStatement stGet = conn.prepareStatement(sql);
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
         return xml;
     }
-    
-    public String searchSubType() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+
+    public ResultSet searchSubType() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
-        String subType = request.getParameter("subtype");        
+        String subType = request.getParameter("subtype");
         String nationality = request.getParameter("nationality");
         String institutional = request.getParameter("institutional");
         String selall = request.getParameter("selall");
@@ -67,14 +67,14 @@ public class reportModel extends JDSModel{
         int param = 0;
         if ("0".equals(selall)) {
                 selall = null;
-            }        
+            }
         if (selall != null && selall.length() > 0){
-        
+
             sql = Queries.getQuery("search_subtype_all");
         }
         else {
             sql = Queries.getQuery("search_subtype_prm");
-        
+
             if (subType != null && subType.length() > 0) {
                 sql += " subType=" + "'" + subType + "'";
                 param = 1;
@@ -89,7 +89,7 @@ public class reportModel extends JDSModel{
                     sql += " and nationality =" + "'" + nationality + "'";
                 }
             }
-            
+
             if (institutional != null && institutional.length() > 0) {
                  if (param == 0){
                     sql += " institutional =" + "'" + institutional + "'";
@@ -97,17 +97,19 @@ public class reportModel extends JDSModel{
                 }
                 else{
                     sql += " and institutional =" + "'" + institutional + "'";
-                }                
+                }
             }
+            sql += " order by id";
         }
-        
+
         PreparedStatement stGet = conn.prepareStatement(sql);
 
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        xml = util.convertResultSetToXML(rs);
-        return xml;
-    }   
-    
+        return rs;
+        //xml = util.convertResultSetToXML(rs);
+        //return xml;
+    }
+
      public String searchInwards() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String xml = null;
         String sql = Queries.getQuery("search_inward");
@@ -119,7 +121,7 @@ public class reportModel extends JDSModel{
         String fromDate = request.getParameter("fromDate");
         String toDate = request.getParameter("toDate");
         String inwardPurpose = request.getParameter("inwardPurpose");
-        String paymentMode = request.getParameter("paymentMode");        
+        String paymentMode = request.getParameter("paymentMode");
         int pageNumber = Integer.parseInt(request.getParameter("page"));
         int pageSize = Integer.parseInt(request.getParameter("rows"));
         String orderBy = request.getParameter("sidx");
@@ -146,7 +148,7 @@ public class reportModel extends JDSModel{
         }
         if ("0".equals(paymentMode)) {
             paymentMode = null;
-        }        
+        }
         if (inwardPurpose != null && inwardPurpose.compareToIgnoreCase("NULL") != 0 && inwardPurpose.length() > 0) {
             sql += " and t3.purpose =" + "'" + inwardPurpose + "'";
         }
@@ -158,23 +160,23 @@ public class reportModel extends JDSModel{
         if (country != null && country.compareToIgnoreCase("NULL") != 0  && country.length() > 0) {
             sql += " and t7.id = t1.country and t7.country = " + "\"" + country + "\"";
         }
-        
+
         if (state != null && state.compareToIgnoreCase("NULL") != 0  && state.length() > 0) {
             sql += " and t8.id = t1.state and t8.state = " + "\"" + state + "\"";
         }
-        
+
         if (paymentMode != null && paymentMode.compareToIgnoreCase("NULL") != 0  && paymentMode.length() > 0) {
             sql += " and t6.id = t1.paymentMode and t6.paymentMode = " + "\"" + paymentMode + "\"";
         }
-        
+
         if (currency != null && currency.compareToIgnoreCase("NULL") != 0  && currency.length() > 0) {
             sql += " and t5.id = t1.currency and t5.currency = " + "\"" + currency + "\"";
         }
-             
+
         if (language != null && language.compareToIgnoreCase("NULL") != 0  && language.length() > 0) {
             sql += " and language = " + "\"" + language + "\"";
         }
-        
+
         if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
             sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
@@ -223,8 +225,8 @@ public class reportModel extends JDSModel{
 
 
         return xml;
-    }    
-     
+    }
+
      public String searchAgents() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String xml = null;
         String sql;
@@ -238,7 +240,7 @@ public class reportModel extends JDSModel{
                 selall = null;
             }
         if (selall != null && selall.length() > 0){
-        
+
             sql = Queries.getQuery("list_agent_all");
         }
         else {

@@ -32,7 +32,7 @@
                     rownumbers: true,
                     emptyrecords: "No Subscriber Type",
                     loadtext: "Loading...",
-                    colNames:['Id','Subscriber Type Code','Subscriber Type','Free/Paid', 'Indian/Foreign','Inst/Pers','Free Journals','discount'],
+                    colNames:['Id','Subscriber Type Code','Subscriber Type','Free/Paid', 'Indian/Foreign','Institute/Personal','Free Journals','Discount'],
                     colModel :[
                         {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
@@ -59,7 +59,12 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-
+                    gridComplete: function() {
+                        var ids = jQuery("#subTypeTable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+                            $("#printReportBtn").button("enable");
+                        }
+                    },
                     beforeRequest: function(){
                         return isPageLoaded;
                     },
@@ -186,7 +191,7 @@
                          <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
-                                    <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
+                                    <input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>
                                 </div>
                             </div>
                         </fieldset>

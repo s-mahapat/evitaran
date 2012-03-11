@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
+import java.sql.ResultSet;
 import javax.servlet.ServletContext;
 /**
  *
@@ -40,9 +41,17 @@ public class reports extends HttpServlet {
 
             }else if(action.equalsIgnoreCase("listSubType")){
 
-                String xml = _reportModel.searchSubType();
+                ResultSet rs = _reportModel.searchSubType();
+                String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("listSubTypePrint")){
+
+                ResultSet rs = _reportModel.searchSubType();
+                request.setAttribute("ResultSet", rs);
+                url = "/jsp/reports/listSubTypePrint.jsp";
+
             }else if(action.equalsIgnoreCase("listInwards")){
 
                 String xml = _reportModel.searchInwards();
@@ -54,7 +63,7 @@ public class reports extends HttpServlet {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }
-            
+
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
 
