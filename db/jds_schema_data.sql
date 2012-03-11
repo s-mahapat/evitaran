@@ -319,7 +319,7 @@ DROP TABLE IF EXISTS `journal_group_contents`;
 CREATE TABLE `journal_group_contents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `journalGroupId` int(11) NOT NULL,
-  `journalIid` int(11) NOT NULL,
+  `journalId` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -846,4 +846,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-11 13:41:39
+-- Dump completed on 2012-03-11 13:46:21
