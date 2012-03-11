@@ -7,11 +7,18 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
-        <link rel="stylesheet" type="text/css" href="css/masterdata/journal.css" />
+        <link rel="stylesheet" type="text/css" href="css/report/journal.css" />
 
-        <title>Search Journal</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/searchJournal.js"%>"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validateJournal.js"%>"></script>
+        <title>List and Print Journals</title>
+        
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/reports/listJournal.js"%>"></script>
+        
+        <script type="text/javascript">
+            $(document).ready(function() {
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=group"%>","group","group");
+            });
+
+        </script>  
         <script type="text/javascript">
            // var selectedJournal = 0;
             var selectedId = 0;
@@ -21,7 +28,7 @@
             $(function(){
 
                 $("#journalTable").jqGrid({
-                    url:"<%=request.getContextPath() + "/journal?action=search"%>",
+                    url:"<%=request.getContextPath() + "/reports?action=listJournal"%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -33,12 +40,15 @@
                     rownumbers: true,
                     emptyrecords: "No Journal",
                     loadtext: "Loading...",
-                    colNames:['Journal Id','Journal Code','Journal Name','ISSN No'],
+                    colNames:['Journal Id','Journal Code','Journal Name','ISSN No','No of Pages', 'Start Year','issues'],
                     colModel :[
                         {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
                         {name:'issnNo', index:'issnNo', width:80, align:'center', xmlmap:'issnNo'},
+                        {name:'pages', index:'pages', width:80, align:'center', xmlmap:'pages'},
+                        {name:'startYear', index:'startYear', width:80, align:'center', xmlmap:'startYear'},
+                        {name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},
                         
                     ],
                     xmlReader : {
@@ -51,8 +61,8 @@
                         id: "id"
                     },
                     pager: '#pager',
-                    rowNum:10,
-                    rowList:[10,20,30],
+                    rowNum:15,
+                    rowList:[15,30,45],
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
@@ -81,8 +91,8 @@
                         isPageLoaded = true;
 
                         jQuery("#journalTable").setGridParam({postData:
-                                {journalCode       : $("#journalCode").val(),
-                                journalName          : $("#journalName").val()
+                                {group          : $("#group").val(),
+                                selall          : $("#selall").val()
                             }});
                         jQuery("#journalTable").setGridParam({ datatype: "xml" });
                         jQuery("#journalTable").trigger("clearGridData");
@@ -112,14 +122,14 @@
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
-
-
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Journal Code:</label>
+                                        <label>Journal Group:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="1" type="text" name="journalCode" id="journalCode" value=""/>
+                                        <select class="IASComboBox" TABINDEX="1" name="group" id="group">
+                                            <option value="0" selected>Select</option>
+                                        </select>
                                     </span>
                                 </div>
                             </div>
@@ -127,19 +137,19 @@
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Journal Name</label>
+                                        <label>All Journals</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="2" type="text" name="journalName" id="journalName" value=""/>
+                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="selall" id="selall"/>
                                     </span>
-                                </div>
+                                </div> 
                             </div>
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="button" value="Search" onclick="getReport()"/>
+                                    <input class="IASButton" TABINDEX="3" type="button" onclick="searchJournal()" value="Search"/>
                                 </div>
-
+                                    
                                 <div id="resetBtnDiv">
                                     <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                                 </div>

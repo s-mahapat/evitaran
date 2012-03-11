@@ -40,23 +40,18 @@ public class reportModel extends JDSModel{
 
     public String searchJournal() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
-        String sql = Queries.getQuery("search_journal");
+        String sql;
+        String group = request.getParameter("group");
+        String selall = request.getParameter("selall");
+
+        if(!group.isEmpty()){
+            sql = Queries.getQuery("list_journal_group");
+            sql += "  t2.group =" + "'" + group + "'";            
+        }else{
+            sql = Queries.getQuery("list_journal_all");
+        }            
+        
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-
-        String journalCode = request.getParameter("journalCode");
-        String journalName = request.getParameter("journalName");
-
-        if(!journalCode.isEmpty())
-            stGet.setString(paramIndex++, "%" + journalCode + "%");
-        else
-            stGet.setString(paramIndex++, journalCode);
-
-        if(!journalName.isEmpty())
-            stGet.setString(paramIndex++, "%" + journalName + "%");
-        else
-            stGet.setString(paramIndex++, journalName);
-
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
         return xml;
@@ -67,10 +62,12 @@ public class reportModel extends JDSModel{
         String subType = request.getParameter("subtype");        
         String nationality = request.getParameter("nationality");
         String institutional = request.getParameter("institutional");
-        String selall = request.getParameter("selAll");
+        String selall = request.getParameter("selall");
         String sql;
         int param = 0;
-        
+        if ("0".equals(selall)) {
+                selall = null;
+            }        
         if (selall != null && selall.length() > 0){
         
             sql = Queries.getQuery("search_subtype_all");
@@ -158,23 +155,23 @@ public class reportModel extends JDSModel{
             sql += " and t2.id = t1.city and t2.city = " + "\"" + city + "\"";
         }
 
-        if (country != null && country.compareToIgnoreCase("NULL") != 0  && country != null && country.length() > 0) {
+        if (country != null && country.compareToIgnoreCase("NULL") != 0  && country.length() > 0) {
             sql += " and t7.id = t1.country and t7.country = " + "\"" + country + "\"";
         }
         
-        if (state != null && state.compareToIgnoreCase("NULL") != 0  && state != null && state.length() > 0) {
+        if (state != null && state.compareToIgnoreCase("NULL") != 0  && state.length() > 0) {
             sql += " and t8.id = t1.state and t8.state = " + "\"" + state + "\"";
         }
         
-        if (paymentMode != null && paymentMode.compareToIgnoreCase("NULL") != 0  && paymentMode != null && paymentMode.length() > 0) {
+        if (paymentMode != null && paymentMode.compareToIgnoreCase("NULL") != 0  && paymentMode.length() > 0) {
             sql += " and t6.id = t1.paymentMode and t6.paymentMode = " + "\"" + paymentMode + "\"";
         }
         
-        if (currency != null && currency.compareToIgnoreCase("NULL") != 0  && currency != null && currency.length() > 0) {
+        if (currency != null && currency.compareToIgnoreCase("NULL") != 0  && currency.length() > 0) {
             sql += " and t5.id = t1.currency and t5.currency = " + "\"" + currency + "\"";
         }
              
-        if (language != null && language.compareToIgnoreCase("NULL") != 0  && language != null && language.length() > 0) {
+        if (language != null && language.compareToIgnoreCase("NULL") != 0  && language.length() > 0) {
             sql += " and language = " + "\"" + language + "\"";
         }
         
@@ -227,5 +224,56 @@ public class reportModel extends JDSModel{
 
         return xml;
     }    
+     
+     public String searchAgents() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+        String xml = null;
+        String sql;
+        String city = request.getParameter("city");
+        String country = request.getParameter("country");
+        String state = request.getParameter("state");
+        String fromDate = request.getParameter("fromDate");
+        String toDate = request.getParameter("toDate");
+        String selall = request.getParameter("selAll");
+        if ("0".equals(selall)) {
+                selall = null;
+            }
+        if (selall != null && selall.length() > 0){
+        
+            sql = Queries.getQuery("list_agent_all");
+        }
+        else {
+            sql = Queries.getQuery("list_agent_prm");
+            if ("0".equals(city)) {
+                city = null;
+            }
+            if ("0".equals(country)) {
+                country = null;
+            }
+            if ("0".equals(state)) {
+                state = null;
+            }
+
+            if (city != null && city.compareToIgnoreCase("NULL") != 0  && city != null && city.length() > 0) {
+                sql += " and t2.id = t1.city and t2.city = " + "\"" + city + "\"";
+            }
+
+            if (country != null && country.compareToIgnoreCase("NULL") != 0  && country.length() > 0) {
+                sql += " and t7.id = t1.country and t7.country = " + "\"" + country + "\"";
+            }
+
+            if (state != null && state.compareToIgnoreCase("NULL") != 0  && state.length() > 0) {
+                sql += " and t8.id = t1.state and t8.state = " + "\"" + state + "\"";
+            }
+
+            if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
+                sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+            }
+        }
+        PreparedStatement stGet = conn.prepareStatement(sql);
+
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        xml = util.convertResultSetToXML(rs);
+        return xml;
+    }
 }
 

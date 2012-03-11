@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.19
+-- Server version	5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -317,8 +317,8 @@ DROP TABLE IF EXISTS `journal_group_contents`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `journal_group_contents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `journal_group_id` int(11) NOT NULL,
-  `journal_id` int(11) NOT NULL,
+  `journalGroupId` int(11) NOT NULL,
+  `journalIid` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -341,7 +341,7 @@ DROP TABLE IF EXISTS `journal_groups`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `journal_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `journal_group_name` varchar(128) NOT NULL,
+  `journalGroupName` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -582,9 +582,17 @@ UNLOCK TABLES;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
 
+
+
     ON jds.subscriber FOR EACH ROW
 
+
+
 BEGIN
+
+
+
+
 
 
 
@@ -592,7 +600,15 @@ BEGIN
 
 
 
+
+
+
+
       SET new.deactivationDate = CURRENT_DATE;
+
+
+
+
 
 
 
@@ -600,11 +616,23 @@ BEGIN
 
 
 
+
+
+
+
       SET new.deactivationDate = NULL;
 
 
 
+
+
+
+
     END IF;
+
+
+
+
 
 
 
@@ -688,8 +716,8 @@ DROP TABLE IF EXISTS `subscription_rates`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subscription_rates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `journal_groups_id` int(11) NOT NULL,
-  `subtype_id` int(11) NOT NULL,
+  `journalGroupsId` int(11) NOT NULL,
+  `subtypeIid` int(11) NOT NULL,
   `year` int(11) NOT NULL,
   `period` int(11) NOT NULL,
   `rate` int(11) NOT NULL,
@@ -816,4 +844,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-11  9:08:49
+-- Dump completed on 2012-03-11 10:00:59

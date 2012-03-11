@@ -89,6 +89,10 @@
                     }
             }
 
+            function getChecked(){
+                document.getElementById("selall").value = 1;
+
+            }
             // draw the date picker.
             //jQueryDatePicker("from","to");
 
@@ -160,7 +164,7 @@
                                         <label>All Subscriber Types</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall"/>
+                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
                                 </div>                                
                             </div>

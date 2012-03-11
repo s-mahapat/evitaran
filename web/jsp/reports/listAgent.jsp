@@ -1,5 +1,5 @@
 <%--
-    Document   : List and Print Agents
+    Document   : Search Agent
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -7,68 +7,100 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
-        <link rel="stylesheet" type="text/css" href="css/report/agent.css" />
-        <title>List And Print Agent</title>
+        <link rel="stylesheet" type="text/css" href="css/report/listAgent.css" />
+        <title>List and Print Agent</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/reports/listAgent.js"%>"></script>
         <script type="text/javascript">
+            $(document).ready(function() {
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=country"%>","country","country");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=state"%>","state","state");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
+            });
+        </script>
+        
+        <script type="text/javascript">
+            //var selectedAgentName = 0;
+            var selectedAgentId = 0;
+            //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
-            // draw the date picker.
-            jQueryDatePicker("from","to");
 
             $(function(){
 
-                      $("#datatable").jqGrid({
-                        url:'',
-                        datatype: 'xml',
-                        mtype: 'GET',
-                        width: '100%',
-                        height: 240,
-                        autowidth: true,
-                        forceFit: true,
-                        sortable: true,
-                        loadonce: true,
-                        rownumbers: true,
-                        emptyrecords: "No records to view",
-                        loadtext: "Loading...",
-                        colNames:['Agent ID','Agent Name','Registration Date', 'Address','City','Pin Code','Email'],
-                        colModel :[
-                          {name:'AgentId', index:'inward_id', width:50, align:'center', xmlmap:'agent_id'},
-                          {name:'AgentName', index:'inward_id', width:50, align:'center', xmlmap:'agent_name'},
-                          {name:'RegistrationDate', index:'subscriber_id', width:80, align:'center', xmlmap:'registration_date'},
-                          {name:'Address', index:'from', width:80, align:'center', xmlmap:'address'},
-                          {name:'City', index:'date', width:80, align:'center',xmlmap:'city'},
-                          {name:'PinCode', index:'city', width:80, align:'center', sortable:false, xmlmap:'pincode'},
-                          {name:'Email', index:'city', width:80, align:'center', sortable:false, xmlmap:'email'}
-                        ],
-                        xmlReader : {
-                          root: "result",
-                          row: "row",
-                          page: "data>page",
-                          total: "data>total",
-                          records : "data>records",
-                          repeatitems: false,
-                          id: "agent_id"
-                       },
-                        pager: '#pager',
-                        rowNum:10,
-                        rowList:[10,20,30],
-                        viewrecords: true,
-                        gridview: true,
-                        caption: '&nbsp;',
-                        beforeRequest: function(){
-                          return isPageLoaded;
-                        },
-                        loadError: function(xhr,status,error){
-                            alert("Failed getting data from server" + status);
-                        }
-               });
+                $("#agentTable").jqGrid({
+                    url:"<%=request.getContextPath() + "/reports?action=listAgents"%>",
+                    datatype: 'xml',
+                    mtype: 'GET',
+                    width: '100%',
+                    height: 240,
+                    autowidth: true,
+                    forceFit: true,
+                    sortable: true,
+                    loadonce: false,
+                    rownumbers: true,
+                    emptyrecords: "No Agent",
+                    loadtext: "Loading...",
+                    colNames:['Agent Id','Agent Name','Registriation Date','emailId', 'Address','City'],
+                    colModel :[
+                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
+                        {name:'agentName', index:'agentName', width:80, align:'center', xmlmap:'agentName'},
+                        {name:'regDate', index:'regDate', width:80, align:'center', xmlmap:'regDate'},
+                        {name:'emailId', index:'emailId', width:80, align:'center', xmlmap:'emailId'},
+                        {name:'address', index:'address', width:80, align:'center', xmlmap:'address'},
+                        {name:'city', index:'city', width:80, align:'center', xmlmap:'city'}
+                    ],
+                    xmlReader : {
+                        root: "results",
+                        row: "row",
+                        page: "agent>page",
+                        total: "agent>total",
+                        records : "agent>records",
+                        repeatitems: false,
+                        id: "id"
+                    },
+                    pager: '#pager',
+                    rowNum:10,
+                    rowList:[10,20,30],
+                    viewrecords: true,
+                    gridview: true,
+                    caption: '&nbsp;',
+                    gridComplete: function() {
+                        var ids = jQuery("#agentTable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+                            $("#btnNext").removeAttr("disabled");
+                        }                        
+                    },
+                    beforeRequest: function(){
+                        return isPageLoaded;
+                    },
+                    loadError: function(xhr,status,error){
+                        alert("Failed getting data from server" + status);
+                    }
 
+                });
             });
 
-            function getReport(){
+            // called when the search button is clicked
+            function searchAgents(){
                 isPageLoaded = true;
-                jQuery("#datatable").trigger("reloadGrid");
+
+                jQuery("#agentTable").setGridParam({postData:
+                        {country       : $("#country").val(),
+                        state          : $("#state").val(),
+                        city           : $("#city").val(),
+                        from           : $("#from").val(),
+                        to             : $("#to").val(),
+                        selall         : $("#selall").val()
+                    }});
+                jQuery("#agentTable").setGridParam({ datatype: "xml" });
+                jQuery("#agentTable").trigger("clearGridData");
+                jQuery("#agentTable").trigger("reloadGrid");
             }
+
+            // draw the date picker.
+            jQueryDatePicker("from","to");
+
         </script>
+
 
     </head>
     <body>
@@ -76,18 +108,9 @@
 
         <div id="bodyContainer">
             <form method="post" action="" name="listAgentForm">
-                <script>
-                    $(document).ready(function() {
-                        jdsAppend("/JDS/CMasterData?md=city","city","city");
-                        jdsAppend("/JDS/CMasterData?md=country","country","country");
-                        jdsAppend("/JDS/CMasterData?md=state","state","state");
-                        jdsAppend("/JDS/CMasterData?md=district","district","district");
-                        jdsAppend("/JDS/CMasterData?md=sub_type","subtype","subtype");
-                    });   
-                </script>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>List And Print Agent</legend>
+                        <legend>List and Print Inwards</legend>
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
@@ -97,68 +120,71 @@
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
-
-
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Agent Name:</label>
+                                        <label>Country:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="1" type="text" name="agentName" id="agentName" value=""/>
+                                        <select class="IASComboBox" TABINDEX="2" name="country" id="country">
+                                            <option value="0" selected >Select</option>
+                                        </select>                                        
                                     </span>
                                 </div>
-
-
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>address:</label>
+                                        <label>State:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="2" type="text" name="address" id="address" value=""/>
+                                        <select class="IASComboBox" TABINDEX="3" name="state" id="state">
+                                            <option value="" selected >Select</option>
+                                        </select>
+                                        <%--<input class="IASTextBoxMandatory" TABINDEX="3" name="state" id="state" value="<jsp:getProperty name="inwardFormBean" property="state"/>"--%>
                                     </span>
-                                </div>
-                            </div>
-
-
-                            <%-- Search Criteria right div --%>
-                            <div class="IASFormRightDiv">
-
-
+                                </div>                                     
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="3" type="text" name="city" id="city" value=""/>
+                                        <select class="IASComboBox" TABINDEX="4" name="city" id="city">
+                                            <option value="NULL">Select</option>
+                                        </select>
                                     </span>
-                                </div>
+                                </div>                                    
 
+                            </div>
+
+                            <%-- Search Criteria right div --%>
+                            <div class="IASFormRightDiv">
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Reg. Date Range:</label>
+                                        <label>Date Range:</label>
                                     </span>
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" type="text" id="from" name="from"/>
+                                        <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
                                     </span>
                                     <span class="IASFormDivSpanForHyphen">
                                         <label> to </label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" type="text" id="to" name="to"/>
+                                        <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>All Agents</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="selall" id="selall" value=""/>
+                                    </span>
+                                </div>                                
+                                      
                             </div>
-
-                            <div class="IASFormFieldDiv">
-                                <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="button" onclick="getReport()" value="Search"/>
-                                </div>
-
-                                <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
-                                </div>
+                            <div class="actionBtnDiv">
+                                <input class="IASButton" TABINDEX="10" type="button" value="Search" onclick="searchAgents()"/>
+                                <input class="IASButton" TABINDEX="11" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>
@@ -169,20 +195,24 @@
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Result</legend>
-                            <table class="datatable" id="datatable"></table>
+                            <legend>Search Result</legend>
+
+                            <table class="datatable" id="agentTable"></table>
                             <div id="pager"></div>
-
-                        </fieldset>
-
-                        <fieldset class="subMainFieldSet">
-                            <div class="IASFormFieldDiv">
-                                <div class="singleActionBtnDiv">
-                                    <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
-                                </div>
-                            </div>
                         </fieldset>
                     </fieldset>
+
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        <%-- SPrint Button Field Set --%>
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        
+                     <fieldset class="subMainFieldSet">
+                        <div class="IASFormFieldDiv">
+                            <div class="singleActionBtnDiv">
+                                <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
+                            </div>
+                        </div>
+                    </fieldset>                        
                 </div>
             </form>
         </div>

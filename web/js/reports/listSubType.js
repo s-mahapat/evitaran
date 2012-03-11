@@ -7,7 +7,7 @@ function validateSearchSubType()
     if (isEmpty(document.getElementById("subtype"))
         && isEmpty(document.getElementById("nationality"))
           &&  isEmpty(document.getElementById("institutional"))
-           && isChecked(document.getElementById("selall"))
+           && document.getElementById("selall").checked == false
     ){
         alert("Please select atleast one search criteria");
         return false;

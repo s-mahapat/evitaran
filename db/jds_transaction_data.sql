@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.19
+-- Server version	5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -102,9 +102,17 @@ CREATE TABLE `subscriber` (
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
 
+
+
     ON jds.subscriber FOR EACH ROW
 
+
+
 BEGIN
+
+
+
+
 
 
 
@@ -112,7 +120,15 @@ BEGIN
 
 
 
+
+
+
+
       SET new.deactivationDate = CURRENT_DATE;
+
+
+
+
 
 
 
@@ -120,11 +136,23 @@ BEGIN
 
 
 
+
+
+
+
       SET new.deactivationDate = NULL;
 
 
 
+
+
+
+
     END IF;
+
+
+
+
 
 
 
@@ -187,4 +215,4 @@ CREATE TABLE `subscriptiondetails` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-11  9:08:49
+-- Dump completed on 2012-03-11 10:01:00

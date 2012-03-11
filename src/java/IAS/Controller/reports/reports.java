@@ -32,7 +32,7 @@ public class reports extends HttpServlet {
 
             _reportModel = new IAS.Model.Reports.reportModel(request);
 
-            if(action.equalsIgnoreCase("listJournal")){
+            if(action.equalsIgnoreCase("listJournals")){
 
                 String xml = _reportModel.searchJournal();
                 request.setAttribute("xml", xml);
@@ -46,6 +46,11 @@ public class reports extends HttpServlet {
             }else if(action.equalsIgnoreCase("listInwards")){
 
                 String xml = _reportModel.searchInwards();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }else if(action.equalsIgnoreCase("listAgents")){
+
+                String xml = _reportModel.searchAgents();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }
