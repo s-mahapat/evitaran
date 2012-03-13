@@ -41,7 +41,7 @@
                         {name:'nationality', index:'nationality', width:80, align:'center', xmlmap:'nationality'},
                         {name:'institutional', index:'institutional', width:80, align:'center', xmlmap:'institutional'},
                         {name:'freejrnl', index:'freejrnl', width:80, align:'center', xmlmap:'freejrnl'},
-                        {name:'discount', index:'discount', width:80, align:'center', xmlmap:'discount'},
+                        {name:'discount', index:'discount', width:80, align:'center', xmlmap:'discount'}
 
                     ],
                     xmlReader : {

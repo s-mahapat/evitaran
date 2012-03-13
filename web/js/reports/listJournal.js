@@ -4,7 +4,7 @@
  */
 function validateSearchJournal()
 {
-    if (isEmpty(document.getElementById("group"))
+    if (document.getElementById("journalGroupName").value == 0
         && document.getElementById("selall").checked == false
     ){
         alert("Please select atleast one search criteria");
@@ -12,5 +12,15 @@ function validateSearchJournal()
     }
     else
         return true;
+}
+
+function printReport(){
+    var url = "reports?action=listJournalPrint" +
+        "&selall=" + $("#selall:checked").length +
+        "&journalGroupName=" + $("#journalGroupName").val();
+    var windowName = "popUp";
+    var windowSize = "width=1000,height=600,scrollbars=yes,location=no";
+    window.open(url, windowName, windowSize);
+
 }
 

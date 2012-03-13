@@ -33,11 +33,18 @@ public class reports extends HttpServlet {
 
             _reportModel = new IAS.Model.Reports.reportModel(request);
 
-            if(action.equalsIgnoreCase("listJournals")){
+            if(action.equalsIgnoreCase("listJournal")){
 
-                String xml = _reportModel.searchJournal();
+                ResultSet rs = _reportModel.searchJournal();
+                String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("listJournalPrint")){
+
+                ResultSet rs = _reportModel.searchJournal();
+                request.setAttribute("ResultSet", rs);
+                url = "/jsp/reports/listJournalPrint.jsp";
 
             }else if(action.equalsIgnoreCase("listSubType")){
 

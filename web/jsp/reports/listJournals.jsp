@@ -15,7 +15,7 @@
         
         <script type="text/javascript">
             $(document).ready(function() {
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=group"%>","group","group");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalGroupName"%>","journalGroupName","journalGroupName");
             });
 
         </script>  
@@ -48,7 +48,7 @@
                         {name:'issnNo', index:'issnNo', width:80, align:'center', xmlmap:'issnNo'},
                         {name:'pages', index:'pages', width:80, align:'center', xmlmap:'pages'},
                         {name:'startYear', index:'startYear', width:80, align:'center', xmlmap:'startYear'},
-                        {name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},
+                        {name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'}
                         
                     ],
                     xmlReader : {
@@ -67,7 +67,10 @@
                     gridview: true,
                     caption: '&nbsp;',
                     gridComplete: function() {
-
+                        var ids = jQuery("#journalTable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+                            $("#printReportBtn").button("enable");
+                        }
                     },
                     beforeRequest: function(){
                         return isPageLoaded;
@@ -91,8 +94,8 @@
                         isPageLoaded = true;
 
                         jQuery("#journalTable").setGridParam({postData:
-                                {group          : $("#group").val(),
-                                selall          : $("#selall").val()
+                                {journalGroupName          : $("#journalGroupName").val(),
+                                selall                     : $("#selall:checked").length
                             }});
                         jQuery("#journalTable").setGridParam({ datatype: "xml" });
                         jQuery("#journalTable").trigger("clearGridData");
@@ -183,7 +186,7 @@
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
-                                    <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
+                                    <input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>
                                 </div>
                             </div>
                         </fieldset>

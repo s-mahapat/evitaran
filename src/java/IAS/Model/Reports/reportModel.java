@@ -38,23 +38,24 @@ public class reportModel extends JDSModel{
 
     }
 
-    public String searchJournal() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public ResultSet searchJournal() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String sql;
-        String group = request.getParameter("group");
+        String journalGroupName = request.getParameter("journalGroupName");
         String selall = request.getParameter("selall");
-
-        if(!group.isEmpty()){
+        if ("0".equals(journalGroupName)) {
+            journalGroupName = null;
+        }
+        if(journalGroupName != null && journalGroupName.length() > 0){
             sql = Queries.getQuery("list_journal_group");
-            sql += "  t2.group =" + "'" + group + "'";
+            sql += "  t2.journalGroupName =" + "'" + journalGroupName + "'";
         }else{
             sql = Queries.getQuery("list_journal_all");
         }
 
         PreparedStatement stGet = conn.prepareStatement(sql);
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        xml = util.convertResultSetToXML(rs);
-        return xml;
+        return rs;
     }
 
     public ResultSet searchSubType() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
