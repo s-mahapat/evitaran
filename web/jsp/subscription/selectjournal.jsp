@@ -10,24 +10,18 @@
 
         $.ajax({
             type: "GET",
-            url: "CMasterData?md=journals",
+            url: "CMasterData?md=journal_groups",
             dataType: "xml",
             success: function(xml){
 
                 $(xml).find("row").each(function(){
-                    $(this).find("journalName").each(function(){
+                    $(this).find("id").each(function(){
+                        groupid = $(this).text();
+                    });
+                    $(this).find("journalGroupName").each(function(){
                         journalName = $(this).text();
-                        $("#journalName").append("<option value='" + journalName + "'>" + journalName + "</option");
+                        $("#journalName").append("<option value='" + groupid + "'>" + journalName + "</option");
                     });
-                    $(this).find("journalCode").each(function(){
-                        journalCode = $(this).text();
-                    });
-                    $(this).find("price").each(function(){
-                        journalPrice = $(this).text();
-                    });
-                    // create an array of objects, indexed by the journal name.
-                    // the object has details like code and price.
-                    journalInfo[journalName] = {code:journalCode,price:journalPrice,discount:10};
                 });
             },
             complete: function(){
@@ -52,21 +46,15 @@
             sortname:'subscriptionDate',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames: ['Journal Name','Journal Code','Journal Cost (INR)','Start Year','End Year','Copies','Discount(%)','Total (INR)','Delete'],
+            colNames: ['Journal Name','Journal Cost (INR)','Start Year','End Year','Copies','Total (INR)','Delete'],
             colModel: [
                 {
                     name:"journalName",
                     index:"journalName",
                     align:"center",
+                    key: true,
                     width:140
 
-                },
-                {
-                    name:"journalCode",
-                    index:"journalCode",
-                    align:"center",
-                    width:60,
-                    key: true
                 },
                 {
                     name:"journalCost",
@@ -89,12 +77,6 @@
                 {
                     name:"Copies",
                     index:"Copies",
-                    width:60,
-                    align:"center"
-                },
-                {
-                    name:"Discount",
-                    index:"Discount",
                     width:60,
                     align:"center"
                 },
@@ -156,7 +138,7 @@
         </span>
 
         <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>Journal name:</label>
+            <label>Journal</label>
         </span>
 
         <span class="IASFormDivSpanInputBoxLessMargin">
@@ -164,12 +146,12 @@
             </select>
         </span>
 
-        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+        <!--<span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
             <label>All Journals:</label>
         </span>
         <span class="IASFormDivSpanInputBoxLessMargin">
             <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selalljrnl" id="selAllJrnl" value="1" onclick="disableJrnl()"/>
-        </span>
+        </span>-->
 
 
         <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">

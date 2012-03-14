@@ -16,9 +16,11 @@
             $(document).ready(function(){
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=return_reason"%>","return_reason","chequeDDReturnReason");
                 if(document.getElementById("chequeDDReturnReason").value == "NULL"){
-                    document.getElementById("btnPrintPreview").disabled = true;
+                    $("#btnPrintPreview").button("disable");
+                    //document.getElementById("btnPrintPreview").disabled = true;
                 }else{
-                    document.getElementById("btnPrintPreview").disabled = false;
+                    $("#btnPrintPreview").button("enable");
+                    //document.getElementById("btnPrintPreview").disabled = false;
                 }
             })
 

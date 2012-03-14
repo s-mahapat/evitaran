@@ -69,6 +69,7 @@ public class home extends HttpServlet {
                     connection.setAutoCommit(true);
                     db = new Database(connection);
                     session.setAttribute("db_connection", db);
+                    session.setAttribute("inwardUnderProcess", null);
                 }
                 url = "jsp/home.jsp";
 

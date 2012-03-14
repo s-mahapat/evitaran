@@ -4,15 +4,21 @@
  */
 package IAS.Controller;
 
+import IAS.Class.JDSLogger;
+import IAS.Class.util;
+import IAS.Model.Subscriber.subscriberModel;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
+import java.text.ParseException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
-import IAS.Model.Subscriber.subscriberModel;
-import org.apache.log4j.*;
-import IAS.Class.JDSLogger;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.apache.log4j.Logger;
 
 public class subscriber extends HttpServlet {
 
@@ -80,8 +86,16 @@ public class subscriber extends HttpServlet {
                 url = "/jsp/invoice/proforma.jsp";
             } else if (action.equalsIgnoreCase("mil")) {
                 url = "/jsp/missingissue/missingissuelist.jsp";
+            }else if(action.equalsIgnoreCase("getSubscriberType")){
+                int subType = _subscriberModel.getSubscriberType(request.getParameter("subscriberNumber"));
+                String xml = util.convertStringToXML(String.valueOf(subType), "subtype");
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             }
-        } catch (Exception e) {
+
+        } catch (SQLException | ParseException | InvocationTargetException |
+                IllegalAccessException | ClassNotFoundException | ParserConfigurationException |
+                TransformerException | IOException e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
         } finally {

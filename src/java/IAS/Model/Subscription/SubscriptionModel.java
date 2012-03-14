@@ -138,4 +138,20 @@ public class SubscriptionModel extends JDSModel {
         }
         return xml;
     }
+
+    public float getJournalPrice(int startYear, int numYears, int journalGroupID, int subscriberTypeID) throws SQLException{
+        String sql = Queries.getQuery("get_journal_group_price");
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, journalGroupID);
+        ps.setInt(2, subscriberTypeID);
+        ps.setInt(3, startYear);
+        ps.setInt(4, numYears);
+        float price;
+        try (ResultSet rs = this.db.executeQueryPreparedStatement(ps)) {
+            rs.first();
+            price = rs.getFloat(1);
+            rs.close();
+        }
+        return price;
+    }
 }

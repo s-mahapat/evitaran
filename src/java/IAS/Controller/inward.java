@@ -103,22 +103,19 @@ public class inward extends HttpServlet {
 
                     } else {
 
-                        IAS.Model.Subscriber.subscriberModel _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
-                        if (_subscriberModel.GetSubscriber() != null) {
-                            // create a subscriber form bean and fill the values from the selected inward
-                            subscriberFormBean _subscriberFormBean = new IAS.Bean.Subscriber.subscriberFormBean();
-                            _subscriberFormBean.setSubscriberName(_inwardFormBean.getFrom());
-                            _subscriberFormBean.setCity(_inwardFormBean.getCity());
-                            _subscriberFormBean.setDistrict(_inwardFormBean.getDistrict());
-                            _subscriberFormBean.setState(_inwardFormBean.getState());
-                            _subscriberFormBean.setCountry(_inwardFormBean.getCountry());
-                            _subscriberFormBean.setPincode(_inwardFormBean.getPincode());
-                            _subscriberFormBean.setEmail(_inwardFormBean.getEmail());
-                            _subscriberFormBean.setDepartment(_inwardFormBean.getDepartment());
-                            _subscriberFormBean.setInstitution(_inwardFormBean.getInstitution());
-                            request.setAttribute("subscriberFormBean", _subscriberFormBean);
-
-                        }
+                        //IAS.Model.Subscriber.subscriberModel _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
+                        // create a subscriber form bean and fill the values from the selected inward
+                        subscriberFormBean _subscriberFormBean = new IAS.Bean.Subscriber.subscriberFormBean();
+                        _subscriberFormBean.setSubscriberName(_inwardFormBean.getFrom());
+                        _subscriberFormBean.setCity(_inwardFormBean.getCity());
+                        _subscriberFormBean.setDistrict(_inwardFormBean.getDistrict());
+                        _subscriberFormBean.setState(_inwardFormBean.getState());
+                        _subscriberFormBean.setCountry(_inwardFormBean.getCountry());
+                        _subscriberFormBean.setPincode(_inwardFormBean.getPincode());
+                        _subscriberFormBean.setEmail(_inwardFormBean.getEmail());
+                        _subscriberFormBean.setDepartment(_inwardFormBean.getDepartment());
+                        _subscriberFormBean.setInstitution(_inwardFormBean.getInstitution());
+                        request.setAttribute("subscriberFormBean", _subscriberFormBean);
                         url = "/main?action=createsubscriber";
                     }
                 } else if (purposeID == 2) {

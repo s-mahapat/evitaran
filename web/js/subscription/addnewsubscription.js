@@ -1,12 +1,5 @@
-
-function disableJrnl(){
-    if(document.getElementById("selAllJrnl").checked){
-        document.getElementById("journalName").disabled = true;
-    }else{
-        document.getElementById("journalName").disabled = false;
-    }
-}
-
+var journalNameToCodeMap = {};
+var subscriberType = 0;
 function setEndYear(){
     var startYear = parseInt($("#subscriptionStartYear").val(),10);
     var html;
@@ -17,26 +10,18 @@ function setEndYear(){
 }
 
 function addJournal(){
-    // if the select all is checked
-    if($("#selAllJrnl").attr("checked")){
-        // clear the grid before adding all the journals
-        deleteRow("All");
-        for(strJournal in journalInfo){
-            _addJournal(strJournal);
-        }
-    }else{
-        var selectedJournal = $("#journalName").val();
-        _addJournal(selectedJournal);
+
+    var selectedJournalGroupCode = $("#journalName").val();
+    var selectedJournalGroupName = $("#journalName :selected").text();
+
+
+    journalNameToCodeMap[selectedJournalGroupName] = selectedJournalGroupCode;
+    if(subscriberType == 0){
+        subscriberType = getSubscriberType($("#subscriberNumber").val());
     }
-
-}
-
-function _addJournal(selectedJournal){
     var arrRowIds = $("#newSubscription").getDataIDs();
-    //var selectedJournal = $("#journalName").val();
-    var journalCode = journalInfo[selectedJournal].code;
     if(arrRowIds.length != 0){
-        intIndex = arrRowIds.indexOf(journalCode);
+        intIndex = arrRowIds.indexOf(selectedJournalGroupName);
         /* checks if the journal id bieng added is already existing in the grid.
          * Cannot add the same journal twice.
          */
@@ -45,23 +30,69 @@ function _addJournal(selectedJournal){
             return false;
         }
     }
+
+    //else get the price details from the server
+    startYear = $("#subscriptionStartYear").val();
+    numYears = $("#endYear").val() - startYear + 1; // +1 to include the current year
+    price = getPrice(startYear, numYears, selectedJournalGroupCode, subscriberType);
     var newRowData = {
-        "journalName": selectedJournal,
-        "journalCode": journalCode,
-        "journalCost": journalInfo[selectedJournal].price,
+        "journalName": selectedJournalGroupName,
+        "journalCost": price,
         "startYear": $("#subscriptionStartYear").val(),
         "endYear" : $("#endYear").val(),
         "Copies": $("#copies").val(),
-        "Discount":journalInfo[selectedJournal].discount,
-        "Total":journalInfo[selectedJournal].price - (journalInfo[selectedJournal].discount * journalInfo[selectedJournal].price/100),
-        "delete":"<img src='images/delete.png' onclick=\"deleteRow('" + journalCode + "')\"/>"
+        "Total": price * $("#copies").val(),
+        "delete":"<img src='images/delete.png' onclick=\"deleteRow('" + selectedJournalGroupName + "')\"/>"
     };
     // the journal code is the rowid.
-    bRet = $("#newSubscription").addRowData(journalCode, newRowData,"last");
+    bRet = $("#newSubscription").addRowData(selectedJournalGroupName, newRowData,"last");
     if(bRet == false){
         alert("Failed to add Journal to Subscription");
     }
     return(bRet);
+}
+
+function getSubscriberType(subscriberNumber){
+    var _subscriberType = 0;
+    $.ajax({
+        type: 'GET',
+        dataType: 'xml',
+        async: false,
+        url: "subscriber?action=getSubscriberType&subscriberNumber=" + subscriberNumber,
+        success: function(xmlResponse, textStatus, jqXHR){
+
+            $(xmlResponse).find("results").each(function(){
+                _subscriberType = $(this).find("subtype").text();
+            });
+        },
+        error: function(jqXHR,textStatus,errorThrown){
+            alert("Failed to get subscriber type. " + textStatus + ": "+ errorThrown);
+        }
+
+    });
+    return _subscriberType;
+}
+
+function getPrice(startYear, years, journalGroupID, subscriberTypeID){
+    var _price = 0;
+    $.ajax({
+        type: 'GET',
+        dataType: 'xml',
+        async: false,
+        url: "subscription?oper=getprice&startyear=" + startYear + "&years=" + years +
+            "&journalgroupid=" + journalGroupID + "&subtypeid=" + subscriberTypeID,
+        success: function(xmlResponse, textStatus, jqXHR){
+
+            $(xmlResponse).find("results").each(function(){
+                _price = $(this).find("price").text();
+            });
+        },
+        error: function(jqXHR,textStatus,errorThrown){
+            alert("Failed to get journal price. " + textStatus + ": "+ errorThrown);
+        }
+
+    });
+    return _price;
 }
 
 function deleteRow(rowid){

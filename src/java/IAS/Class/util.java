@@ -113,7 +113,7 @@ public final class util {
 
     }
 
-    public static String convertStringToXML(String errorMsg,String tagName) throws ParserConfigurationException, SQLException, TransformerException, IOException {
+    public static String convertStringToXML(String text,String tagName) throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
         String xml = null;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -125,16 +125,16 @@ public final class util {
 
         Element error = doc.createElement(tagName);
         results.appendChild(error);
-        error.appendChild(doc.createTextNode(errorMsg));
+        error.appendChild(doc.createTextNode(text));
 
         DOMSource domSource = new DOMSource(doc);
-        StringWriter writer = new StringWriter();
-        StreamResult result = new StreamResult(writer);
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.transform(domSource, result);
-        xml = writer.toString();
-        writer.close();
+        try (StringWriter writer = new StringWriter()) {
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            xml = writer.toString();
+        }
 
         return xml;
 

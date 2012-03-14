@@ -5,6 +5,7 @@
 package IAS.Controller;
 
 import IAS.Class.JDSLogger;
+import IAS.Class.util;
 import IAS.Model.Subscription.SubscriptionModel;
 import IAS.Model.Subscriber.subscriberModel;
 import java.io.IOException;
@@ -72,6 +73,16 @@ public class subscription extends HttpServlet {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
+            }else if(oper.equalsIgnoreCase("getPrice")){
+                float price = _subscriptionModel.getJournalPrice(
+                        Integer.parseInt(request.getParameter("startyear")),
+                        Integer.parseInt(request.getParameter("years")),
+                        Integer.parseInt(request.getParameter("journalgroupid")),
+                        Integer.parseInt(request.getParameter("subtypeid"))
+                        );
+                String xml = util.convertStringToXML(String.valueOf(price), "price");
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             }
 
         } catch (Exception e) {

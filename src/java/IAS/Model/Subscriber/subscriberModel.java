@@ -4,6 +4,7 @@ import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import com.mysql.jdbc.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,8 +36,9 @@ public class subscriberModel extends JDSModel {
         FillBean(this.request, subscriberFormBean);
         this._subscriberFormBean = subscriberFormBean;
 
-        /* check that the subscriber number is not present on the screen,
-         * if present means its and edit subscriber else create new subscriber.
+        /*
+         * check that the subscriber number is not present on the screen, if
+         * present means its and edit subscriber else create new subscriber.
          */
         if (subscriberFormBean.getSubscriberNumber().isEmpty() == false) {
             return this._updateSubscriber();
@@ -45,10 +47,28 @@ public class subscriberModel extends JDSModel {
             subscriberFormBean.setSubscriberNumber(getNextSubscriberNumber());
             // the query name from the jds_sql properties files in WEB-INF/properties folder
             sql = Queries.getQuery("subscriber_insert");
-            PreparedStatement st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             // fill in the statement params
             this._setSubscriberStatementParams(st, mode);
-            return db.executeUpdatePreparedStatement(st);
+            int rowsAffected = db.executeUpdatePreparedStatement(st);
+
+            //If the mode was create new user update the inward with the new subscriber that was created
+            if (mode.equalsIgnoreCase("Create")) {
+                ResultSet rs = st.getGeneratedKeys();
+                rs.first();
+                String inwardUnderProcess = (String) this.session.getAttribute("inwardUnderProcess");
+                int _subscriberId = rs.getInt(1);
+
+                if (inwardUnderProcess != null) {
+                    String _sql = Queries.getQuery("update_subscriber_in_inward");
+                    PreparedStatement pst = conn.prepareStatement(_sql);
+                    pst.setInt(1, _subscriberId);
+                    pst.setString(2, inwardUnderProcess);
+                    db.executeUpdatePreparedStatement(pst);
+                }
+            }
+            return rowsAffected;
+
         }
     }
 
@@ -184,7 +204,7 @@ public class subscriberModel extends JDSModel {
             sql += " and subscriberName like " + "'%" + subscriberName + "%'";
         }
 
-        if (city != null && city.compareToIgnoreCase("NULL") != 0 &&  city.length() > 0) {
+        if (city != null && city.compareToIgnoreCase("NULL") != 0 && city.length() > 0) {
             sql += " and t2.id=t1.city and t2.city = " + "\"" + city + "\"";
         }
 
@@ -192,7 +212,7 @@ public class subscriberModel extends JDSModel {
             sql += " and email =" + "'" + email + "'";
         }
 
-        if (pincode != null && pincode.compareToIgnoreCase("NULL") != 0 &&  pincode.length() > 0) {
+        if (pincode != null && pincode.compareToIgnoreCase("NULL") != 0 && pincode.length() > 0) {
             sql += " and pincode =" + "'" + pincode + "'";
         }
 
@@ -203,5 +223,18 @@ public class subscriberModel extends JDSModel {
         xml = util.convertResultSetToXML(rs);
 
         return xml;
+    }
+
+    public int getSubscriberType(String SubscriberNumber) throws SQLException{
+        String sql = Queries.getQuery("get_subscriber_type");
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, SubscriberNumber);
+        int subscriberType;
+        try (ResultSet rs = this.db.executeQueryPreparedStatement(ps)) {
+            rs.first();
+            subscriberType = rs.getInt(1);
+            rs.close();
+        }
+        return subscriberType;
     }
 }
