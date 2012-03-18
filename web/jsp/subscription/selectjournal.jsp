@@ -131,7 +131,7 @@
             <select class="IASComboBoxMandatory" TABINDEX="11" name="endYear" id="endYear">
                 <%
                     for (int j = 0; j <= 4; j++) {
-                        out.println("<option value =\"" + (j+year) + "\">" + (j+year) + "</option>");
+                        out.println("<option value =\"" + (j + year) + "\">" + (j + year) + "</option>");
                     }
                 %>
             </select>
@@ -145,14 +145,6 @@
             <select class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName">
             </select>
         </span>
-
-        <!--<span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>All Journals:</label>
-        </span>
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selalljrnl" id="selAllJrnl" value="1" onclick="disableJrnl()"/>
-        </span>-->
-
 
         <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
             <label>Copies:</label>
@@ -176,6 +168,11 @@
         <table class="datatable" id="newSubscription"></table>
         <div id="pager"></div>
     </div>
+    <div id="subscriptionTotal">
+        <span>Subscription Total(INR):</span>
+        <span id="subscriptionTotalValue">0</span>
+    </div>
+    <div id="journalGroupContents"></div>
 </fieldset>
 
 

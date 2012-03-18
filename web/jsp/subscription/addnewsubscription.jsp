@@ -1,6 +1,7 @@
 <%--
     Document   : Add New Subscription
 --%>
+<jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,8 +13,10 @@
         <script type="text/javascript" src="js/common.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/addnewsubscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/jquery/jquery.blockUI.js"%>"></script>
         <script type="text/javascript">
             $(document).ready(function(){
+                $().ajaxStart($.blockUI).ajaxStop($.unblockUI);
                 listSubscription("View");
             })
         </script>
@@ -21,15 +24,49 @@
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/subscription"%>" name="subscriptionForm">
+            <form name="subscriptionForm">
 
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Add New Subscription</legend>
-                        <%@include file="subscriptiondetails.jsp"%>
+                        <fieldset class="subMainFieldSet">
+                            <legend>Subscription Details</legend>
+
+                            <div class="IASFormLeftDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Subscriber ID:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBox" TABINDEX="1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
+                                    </span>
+                                </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Subscriber Name:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBox" TABINDEX="2" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="IASFormRightDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Remarks</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <textarea class="IASTextArea" TABINDEX="3" cols="20" rows="10" name="remarks" id="remarks"></textarea>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </fieldset>
                         <%@include file="selectjournal.jsp"%>
-                        <%--<%@include file="subscriptionlist.jsp"%>
-                        <%@include file="subscriptionactions.jsp"%>--%>
                         <fieldset class="subMainFieldSet">
 
                             <div class="actionBtnDiv">

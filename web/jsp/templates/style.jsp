@@ -22,7 +22,7 @@
 
 <script>
     $(function() {
-        $( "input:submit, input:button, input:reset, button", "#bodyContainer" ).button();
+        $( "input:submit, input:button, input:reset, button", "#bodyContainer,.subMainDiv" ).button();
 
     });
 </script>

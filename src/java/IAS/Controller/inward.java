@@ -85,11 +85,11 @@ public class inward extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("processinward")) {
 
-                String inwardNumber = request.getParameter("inwardNumber");
+                //String inwardNumber = request.getParameter("inwardNumber");
                 String subscriberNumber = request.getParameter("subscriberNumber");
                 HttpSession session = request.getSession(false);
-                session.setAttribute("inwardUnderProcess", inwardNumber);
                 _inwardFormBean = _inwardModel.GetInward();
+                session.setAttribute("inwardUnderProcess", _inwardFormBean);
 
                 // we should use the purpose id rather than the purpose name, it can change in the database
                 // but id should not change

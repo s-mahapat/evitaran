@@ -1,4 +1,4 @@
-/* 
+/*
     Document   : subscription
     Created on : Nov 12, 2011, 4:39:26 PM
     Author     : I036897
@@ -6,34 +6,17 @@
         Purpose of the stylesheet follows.
 */
 
-/* 
+/*
    TODO customize this sample style
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
-root { 
+root {
     display: block;
 }
 
-/*#displaySubscriptionBtnDiv{
-    float: left;
-    width: 17%;
-    margin-left: 20%; 
-}
-
-#saveSubscriptionBtnDiv{
-    float: left;
-    width: 5%;
-}
-
-#editSubscriptionBtnDiv{
-    float: left;
-    width: 10%;
-    margin-right: 5%; 
-}*/
-
 #btnDeleteLine{
-    
+
 }
 
 #addJournalBtnDiv{
@@ -45,5 +28,18 @@ root {
 #deleteJournalBtnDiv{
     float: left;
     width: 45%;
-    
+
+}
+
+#subscriptionTotal{
+
+    float: right;
+    width: 20%;
+    margin-right: 20px;
+    text-align: right;
+}
+
+#journalGroupContents{
+    float: left;
+    width: 100%;
 }

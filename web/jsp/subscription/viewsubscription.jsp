@@ -10,7 +10,7 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/subscription.css"%>"/>
         <title>View Subscription</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "js/common.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/viewsubscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script>
@@ -25,12 +25,12 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/subscription"%>" name="subscriptionForm">
+            <form name="subscriptionForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>View Subscription</legend>
                         <fieldset class="subMainFieldSet">
-                            <legend>Subscription Details</legend>
+                            <legend>Subscriber Details</legend>
 
                             <div class="IASFormLeftDiv">
                                 <div class="IASFormFieldDiv">
@@ -54,14 +54,13 @@
                                     </span>
                                 </div>
                             </div>
-                        </fieldset>
-                </div>
 
-                <%@include file="subscriptionlist.jsp"%>
-                <%@include file="subscriptionactions.jsp"%>
-                </fieldset>
+                        </fieldset>
+                        <%@include file="subscriptionlist.jsp"%>
+                        <%@include file="subscriptionactions.jsp"%>
+                    </fieldset>
+                </div>
+            </form>
         </div>
-    </form>
-</div>
-</body>
+    </body>
 </html>

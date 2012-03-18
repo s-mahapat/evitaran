@@ -10,7 +10,7 @@
     </div>
 
 </fieldset>
-<fieldset class="subMainFieldSet">
+<!--<fieldset class="subMainFieldSet">
     <a name="subdetails"></a>
     <legend>Subscription Details</legend>
     <div class="IASFormFieldDiv">
@@ -28,4 +28,4 @@
             </span>
         </div>
     </div>
-</fieldset>
+</fieldset>-->

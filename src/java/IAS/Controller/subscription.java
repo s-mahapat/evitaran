@@ -9,6 +9,7 @@ import IAS.Class.util;
 import IAS.Model.Subscription.SubscriptionModel;
 import IAS.Model.Subscriber.subscriberModel;
 import java.io.IOException;
+import java.sql.ResultSet;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -83,6 +84,13 @@ public class subscription extends HttpServlet {
                 String xml = util.convertStringToXML(String.valueOf(price), "price");
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+            }else if(oper.equalsIgnoreCase("getJournalGroupContents")){
+                int groupID = Integer.parseInt(request.getParameter("groupid"));
+                ResultSet rs = _subscriptionModel.getJournalGroupContents(groupID);
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
             }
 
         } catch (Exception e) {

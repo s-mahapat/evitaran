@@ -1,15 +1,5 @@
 <%@page language="java" import="java.util.*" %>
 <jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
-<script>
-    $(document).ready(function() {
-        $("#subscriberName").focus();
-        jdsAppend("/JDS/CMasterData?md=city","city","city");
-        jdsAppend("/JDS/CMasterData?md=country","country","country");
-        jdsAppend("/JDS/CMasterData?md=state","state","state");
-        jdsAppend("/JDS/CMasterData?md=district","district","district");
-        jdsAppend("/JDS/CMasterData?md=agent","agentName","agent");
-    });
-</script>
 <fieldset class="subMainFieldSet">
     <legend>Subscriber</legend>
 
@@ -57,7 +47,7 @@
                 <select class="IASComboBoxMandatory" TABINDEX="3" name="city" id="city">
                     <option value="0" selected >Select</option>
                     <%
-                        if (!subscriberFormBean.getCity().isEmpty()) {
+                        if (subscriberFormBean.getCity() != null && !subscriberFormBean.getCity().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getCity() + "\"" + " selected >" + subscriberFormBean.getCity() + "</option>");
                         }
                     %>

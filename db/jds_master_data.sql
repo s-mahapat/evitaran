@@ -24,18 +24,19 @@ DROP TABLE IF EXISTS `agents`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `agents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `agentName` text NOT NULL,
+  `agentName` varchar(64) NOT NULL,
   `regDate` date DEFAULT NULL,
-  `emailId` mediumtext,
-  `address` longtext,
+  `emailId` varchar(64) DEFAULT NULL,
+  `address` text,
   `cityId` int(11) DEFAULT NULL,
   `districtId` int(11) DEFAULT NULL,
   `stateId` int(11) DEFAULT NULL,
   `countryId` int(11) DEFAULT NULL,
   `pinCode` int(11) DEFAULT NULL,
   `discount` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_agent_name` (`agentName`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +45,7 @@ CREATE TABLE `agents` (
 
 LOCK TABLES `agents` WRITE;
 /*!40000 ALTER TABLE `agents` DISABLE KEYS */;
-INSERT INTO `agents` VALUES (1,'Deepali','0000-00-00','deepali@ias.in','asdfe',23,1,1,7,123456,12),(2,'Alok','2012-03-19','modak.alok@gmail.com','kasturinagar',NULL,3,1,3,560043,10),(3,'Shail','2011-09-01','shail@gmail.com','whitefield',NULL,3,1,1,560075,50),(4,'modak','2009-03-01','modak.alok@gmail.com','kasturinagar',NULL,3,32,10,0,100),(5,'Aai','2002-11-02','aai@gmail.com','sinhagad road',NULL,3,17,1,560043,10),(6,'Dada','2009-05-25','dada@gmail.com','sinhagad road',NULL,9,17,1,0,1),(7,'test','2012-03-01','test','test',5,3,1,10,0,0),(8,'test','2012-03-02','test@test.com','test',148,3,1,10,560043,10);
+INSERT INTO `agents` VALUES (1,'Deepali','0000-00-00','deepali@ias.in','asdfe',23,1,1,7,123456,12),(2,'Alok','2012-03-19','modak.alok@gmail.com','kasturinagar',NULL,3,1,3,560043,10),(3,'Shail','2011-09-01','shail@gmail.com','whitefield',NULL,3,1,1,560075,50),(4,'modak','2009-03-01','modak.alok@gmail.com','kasturinagar',NULL,3,32,10,0,100),(5,'Aai','2002-11-02','aai@gmail.com','sinhagad road',NULL,3,17,1,560043,10),(6,'Dada','2009-05-25','dada@gmail.com','sinhagad road',NULL,9,17,1,0,1);
 /*!40000 ALTER TABLE `agents` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,7 +228,7 @@ CREATE TABLE `journals` (
 
 LOCK TABLES `journals` WRITE;
 /*!40000 ALTER TABLE `journals` DISABLE KEYS */;
-INSERT INTO `journals` VALUES (1,'CURR','Current Science','0011-3891',3000,2000,24),(2,'RES','Resonanace - Journal of Science Edn','0971-8044',1200,2000,12),(3,'J','Pramana - Journal of Physics','0304-4289',1800,1987,12),(4,'JAA','Journal of Astrophysics and Astronomy','0250-6335',400,1234,4),(5,'EPS','Journal of Earth System Science (formerly Proc. Earth Planet Sci.)','0253-4126',600,1991,6),(6,'CS','Journal of Chemical Sciences (formerly Proc. Chemical Sci.)','0253-4134',600,2000,6),(7,'BMS','Bulletin of Materials Science','0250-4707',600,1995,6),(8,'S','Sadhana (Engineering Sciences)','0256-2499',600,1980,6),(9,'JB','Journal of Biosciences','0250-5991',500,2010,4),(10,'JG','Journal of Genetics','0022-1333',400,2011,3),(11,'MS','Proceedings (Mathematical Sciences)','0253-4142',400,2010,4);
+INSERT INTO `journals` VALUES (1,'CURR','Current Science','0011-3891',3000,2000,24),(2,'RES','Resonanace - Journal of Science Education','0971-8044',1200,2000,12),(3,'J','Pramana - Journal of Physics','0304-4289',1800,1987,12),(4,'JAA','Journal of Astrophysics and Astronomy','0250-6335',400,1234,4),(5,'EPS','Journal of Earth System Science (formerly Proc. Earth Planet Sci.)','0253-4126',600,1991,6),(6,'CS','Journal of Chemical Sciences (formerly Proc. Chemical Sci.)','0253-4134',600,2000,6),(7,'BMS','Bulletin of Materials Science','0250-4707',600,1995,6),(8,'S','Sadhana (Engineering Sciences)','0256-2499',600,1980,6),(9,'JB','Journal of Biosciences','0250-5991',500,2010,4),(10,'JG','Journal of Genetics','0022-1333',400,2011,3),(11,'MS','Proceedings (Mathematical Sciences)','0253-4142',400,2010,4);
 /*!40000 ALTER TABLE `journals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -277,7 +278,7 @@ CREATE TABLE `states` (
 
 LOCK TABLES `states` WRITE;
 /*!40000 ALTER TABLE `states` DISABLE KEYS */;
-INSERT INTO `states` VALUES (1,'Andhra Pradesh'),(2,'Arunachal Pradesh'),(3,'Assam'),(4,'Bihar'),(5,'Chattisgarh'),(7,'Goa'),(8,'Gujarat'),(10,'Haryana'),(9,'Himachal Pradesh'),(12,'Jammu & Kashmir'),(11,'Jharkhand'),(13,'Karnataka'),(14,'Kerala'),(18,'Madhya Pradesh'),(17,'Maharastra'),(15,'Manipur'),(16,'Meghalaya'),(19,'Mizoram'),(20,'Nagaland'),(6,'New Delhi'),(21,'Odisha'),(23,'Pondicherry'),(22,'Punjab'),(24,'Rajasthan'),(25,'Sikkim'),(26,'Tamilnadu'),(27,'Tripura'),(28,'Uttar Pradesh'),(29,'Uttarakhand'),(30,'West Bengal');
+INSERT INTO `states` VALUES (1,'Andhra Pradesh'),(2,'Arunachal Pradesh'),(3,'Assam'),(4,'Bihar'),(5,'Chattisgarh'),(7,'Goa'),(8,'Gujarat'),(10,'Haryana'),(9,'Himachal Pradesh'),(12,'Jammu & Kashmir'),(11,'Jharkhand'),(13,'Karnataka'),(14,'Kerala'),(18,'Madhya Pradesh'),(17,'Maharastra'),(15,'Manipur'),(16,'Meghalaya'),(19,'Mizoram'),(20,'Nagaland'),(6,'New Delhi'),(21,'Odisha'),(23,'Pondicherry'),(22,'Punjab'),(24,'Rajasthan'),(25,'Sikkim'),(26,'Tamil Nadu'),(27,'Tripura'),(28,'Uttar Pradesh'),(29,'Uttarakhand'),(30,'West Bengal');
 /*!40000 ALTER TABLE `states` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -369,4 +370,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-14 23:17:09
+-- Dump completed on 2012-03-18 20:21:36

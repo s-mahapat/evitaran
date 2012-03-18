@@ -1,59 +1,126 @@
 <%--
-    Document   : Subscription
+    Document   : Subscription Details
 --%>
-<jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
-<fieldset class="subMainFieldSet">
-    <legend>Subscription Details</legend>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Subscription Details</title>
+        <jsp:include page="../templates/style.jsp"></jsp:include>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#subscriptionDetail").jqGrid({
 
-    <div class="IASFormLeftDiv">
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Subscriber ID:</label>
-            </span>
+                    url : "<%=request.getContextPath()%>/subscription?oper=detail&id=<%=request.getParameter("id")%>",
+                    datatype: 'xml',
+                    mtype: 'GET',
+                    height: 240,
+                    altRows: false,
+                    autowidth: true,
+                    forceFit: true,
+                    sortable: true,
+                    loadonce: true,
+                    rownumbers: true,
+                    viewrecords: true,
+                    gridview: true,
+                    caption: '&nbsp;',
+                    emptyrecords: "No subscription details",
+                    loadtext: "Loading...",
+                    colNames:['Journal Group','Start Year','End Year','Copies','Total'],
+                    colModel: [
+                        {
+                            name:"journalGroupName",
+                            index:"journalGroupName",
+                            align:"center",
+                            width:60,
+                            key:true
+                        },
+                        {
+                            name:'startYear',
+                            index:'startYear',
+                            width:60,
+                            align:'center',
+                            xmlmap:'startYear'
+                        },
 
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
-            </span>
+                        {
+                            name:'endYear',
+                            index:'endYear',
+                            width:60,
+                            align:'center',
+                            xmlmap:'endYear'
+                        },
+                        {
+                            name:"Copies",
+                            index:"Copies",
+                            width:60,
+                            align:"center",
+                            xmlmap: 'copies',
+                            editable:true,
+                            edittype:'text',
+                            editrules:{
+                                required: true,
+                                integer: true,
+                                minValue: 1
+                            }
+                        },
+                        {
+                            name:"total",
+                            index:"total",
+                            width:60,
+                            align:"center"
+                        }],
+                    xmlReader : {
+                        root: "results",
+                        row: "row",
+                        repeatitems: false,
+                        id: "id"
+                    },
+                    pager: '#pager2',
+                    rowNum:15,
+                    rowList:[15,30,60],
+                    beforeRequest:function(){
+                        return true;
+                    },
+                    onSelectRow: function(id){
+                        if(id && id!==lastSel){
+                            jQuery('#subscriptionDetail').restoreRow(lastSel);
+                            lastSel=id;
+                        }
+                        jQuery('#subscriptionDetail').editRow(id,{
+                            keys: true,
+                            url: '',
+                            succesfunc: function(){},
+                            oneditfunc: function() {
+                                //alert ("edited");
+                            },
+                            errorfunc: function(id,response){
+                                alert("Error is saving subscription details");
+                            }
+                        });
+                    }
+                });
+            });
+
+        </script>
+    </head>
+    <body>
+        <div class="subMainDiv">
+            <fieldset class="subMainFieldSet">
+                <div class="IASFormFieldDiv">
+                    <table class="datatable" id="subscriptionDetail"></table>
+                    <div id="pager2"></div>
+                </div>
+            </fieldset>
+            <fieldset class="subMainFieldSet">
+                <div class="actionBtnDiv">
+                    <input onclick="" class="IASButton" TABINDEX="1" type="button" value="Save" id="" name=""/>
+                    <input onclick="javascript:window.close()" class="IASButton" TABINDEX="1" type="button" value="Close" id="" name=""/>
+                </div>
+            </fieldset>
         </div>
 
 
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Subscriber Name:</label>
-            </span>
-
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="2" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
-            </span>
-        </div>
-    </div>
-
-    <div class="IASFormRightDiv">
-
-       <%-- <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Refund(If any):</label>
-            </span>
-
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="13" type="text" name="subscriptionRefund" id="subscriptionRefund" value=""/>
-            </span>
-
-            <span class="IASFormDivSpanLabel">
-                <input class="IASButton" TABINDEX="14" type="submit" value="Calculate Refund" id="btnSubscriptionRefund" name="btnSubscriptionRefund"/>
-            </span>
-        </div>--%>
-
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Remarks</label>
-            </span>
-
-            <span class="IASFormDivSpanInputBox">
-                <textarea class="IASTextArea" TABINDEX="12" name="remarks" id="remarks"></textarea>
-            </span>
-        </div>
-    </div>
-
-</fieldset>
-
+    </body>
+</html>

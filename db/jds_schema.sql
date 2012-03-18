@@ -24,18 +24,19 @@ DROP TABLE IF EXISTS `agents`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `agents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `agentName` text NOT NULL,
+  `agentName` varchar(64) NOT NULL,
   `regDate` date DEFAULT NULL,
-  `emailId` mediumtext,
-  `address` longtext,
+  `emailId` varchar(64) DEFAULT NULL,
+  `address` text,
   `cityId` int(11) DEFAULT NULL,
   `districtId` int(11) DEFAULT NULL,
   `stateId` int(11) DEFAULT NULL,
   `countryId` int(11) DEFAULT NULL,
   `pinCode` int(11) DEFAULT NULL,
   `discount` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_agent_name` (`agentName`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,7 +208,7 @@ CREATE TABLE `journal_group_contents` (
   `journalGroupId` int(11) NOT NULL,
   `journalId` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,7 +221,8 @@ DROP TABLE IF EXISTS `journal_groups`;
 CREATE TABLE `journal_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `journalGroupName` varchar(128) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_group_name` (`journalGroupName`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -313,7 +315,7 @@ DROP TABLE IF EXISTS `subscriber`;
 CREATE TABLE `subscriber` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `subscriberNumber` varchar(20) NOT NULL,
-  `subscriberCreationDate` date NOT NULL,
+  `subscriberCreationDate` date NOT NULL DEFAULT '0000-00-00',
   `subscriberName` varchar(64) NOT NULL,
   `department` varchar(64) DEFAULT NULL,
   `institution` varchar(64) DEFAULT NULL,
@@ -321,10 +323,10 @@ CREATE TABLE `subscriber` (
   `city` int(11) NOT NULL,
   `district` int(11) DEFAULT NULL,
   `state` int(11) NOT NULL,
-  `country` int(11) NOT NULL,
+  `country` int(11) NOT NULL DEFAULT '0',
   `pincode` varchar(45) DEFAULT NULL,
   `email` varchar(30) DEFAULT NULL,
-  `subtype` int(11) unsigned NOT NULL,
+  `subtype` int(11) unsigned NOT NULL DEFAULT '0',
   `agent` int(11) DEFAULT NULL,
   `deactive` tinyint(1) NOT NULL DEFAULT '0',
   `deactivationDate` date DEFAULT NULL,
@@ -333,7 +335,7 @@ CREATE TABLE `subscriber` (
   KEY `subscriberName` (`subscriberName`),
   KEY `subscriberCity` (`city`),
   KEY `subscriberPincode` (`pincode`)
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7287 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -441,14 +443,13 @@ CREATE TABLE `subscription` (
   `inwardID` int(11) NOT NULL,
   `active` tinyint(4) NOT NULL DEFAULT '1',
   `balance` float NOT NULL DEFAULT '0',
-  `refund` float NOT NULL DEFAULT '0',
   `subscriptionDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `subscriptionTotal` float NOT NULL DEFAULT '0',
   `remarks` text,
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -466,7 +467,7 @@ CREATE TABLE `subscription_rates` (
   `period` int(11) NOT NULL,
   `rate` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -479,14 +480,15 @@ DROP TABLE IF EXISTS `subscriptiondetails`;
 CREATE TABLE `subscriptiondetails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriptionID` int(11) NOT NULL,
-  `journalID` int(11) NOT NULL,
+  `journalGroupID` int(11) NOT NULL,
   `copies` int(11) NOT NULL DEFAULT '0',
-  `startYear` int(11) DEFAULT NULL,
-  `endYear` int(11) DEFAULT NULL,
+  `startYear` int(11) NOT NULL,
+  `endYear` int(11) NOT NULL,
+  `total` float DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalID`),
+  UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalGroupID`),
   CONSTRAINT `subscriptionid_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -540,4 +542,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-03-14 23:17:08
+-- Dump completed on 2012-03-18 20:21:35

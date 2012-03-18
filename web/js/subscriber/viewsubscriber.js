@@ -1,5 +1,5 @@
 
 function makeViewSubscriberReadOnly(){
-    document.getElementById("btnDisplaySubscriber").disabled = true;
-    document.getElementById("btnSaveSubscriber").disabled = true;
+    $("#btnDisplaySubscriber").button("disable");
+    $("#btnSaveSubscriber").button("disable");
 }

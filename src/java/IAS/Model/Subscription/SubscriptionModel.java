@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
+import IAS.Bean.Inward.inwardFormBean;
 /**
  *
  * @author Shailendra Mahapatra
@@ -25,6 +26,7 @@ public class SubscriptionModel extends JDSModel {
 
     private String subscriberNumber;
     private String inwardNumber;
+    private inwardFormBean _inwardFormBean;
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.SubscriptionModel");
 
@@ -35,8 +37,10 @@ public class SubscriptionModel extends JDSModel {
         //this.journalName = request.getParameter("journalName");
         //this.copies = 0;
         this.subscriberNumber = request.getParameter("subscriberNumber");
+
         if (session.getAttribute("inwardUnderProcess") != null) {
-            this.inwardNumber = session.getAttribute("inwardUnderProcess").toString();
+            this._inwardFormBean = (inwardFormBean)session.getAttribute("inwardUnderProcess");
+            this.inwardNumber = _inwardFormBean.getInwardNumber();
         } else {
             this.inwardNumber = null;
         }
@@ -46,10 +50,11 @@ public class SubscriptionModel extends JDSModel {
     public String addSubscription() throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
         String xml = null;
-        String journalCodes[] = request.getParameterValues("journalCode");
+        String journalCodes[] = request.getParameterValues("journalGroupID");
         String startYear[] = request.getParameterValues("startYear");
         String endYear[] = request.getParameterValues("endYear");
         String Copies[] = request.getParameterValues("copies");
+        String Total[] = request.getParameterValues("total");
         float subscriptionTotal = Float.parseFloat(request.getParameter("subscriptionTotal"));
         String remarks = request.getParameter("remarks");
         int subscriptionID;
@@ -62,8 +67,10 @@ public class SubscriptionModel extends JDSModel {
             String sql = Queries.getQuery("insert_subscription");
             PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             int paramIndex = 0;
+            float balance = subscriptionTotal - this._inwardFormBean.getAmount();
             st.setString(++paramIndex, this.subscriberNumber);
             st.setString(++paramIndex, this.inwardNumber);
+            st.setFloat(++paramIndex, balance);
             st.setFloat(++paramIndex, subscriptionTotal);
             st.setString(++paramIndex, remarks);
             if (db.executeUpdatePreparedStatement(st) == 1) {
@@ -75,10 +82,11 @@ public class SubscriptionModel extends JDSModel {
                 for(int i=0; i<journalCodes.length ;i++){
                     paramIndex = 0;
                     st.setInt(++paramIndex,subscriptionID);
-                    st.setString(++paramIndex, journalCodes[i]);
+                    st.setInt(++paramIndex, Integer.parseInt(journalCodes[i]));
                     st.setInt(++paramIndex, Integer.parseInt(Copies[i]));
                     st.setInt(++paramIndex, Integer.parseInt(startYear[i]));
                     st.setInt(++paramIndex, Integer.parseInt(endYear[i]));
+                    st.setFloat(++paramIndex, Float.parseFloat(Total[i]));
                     if(db.executeUpdatePreparedStatement(st)!=1){
                         throw(new SQLException("Failed to insert subscription details"));
                     }
@@ -153,5 +161,14 @@ public class SubscriptionModel extends JDSModel {
             rs.close();
         }
         return price;
+    }
+
+    public ResultSet getJournalGroupContents(int journalGroupID) throws SQLException, ParserConfigurationException, TransformerException{
+        String sql = Queries.getQuery("get_journal_groupid_contents");
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, journalGroupID);
+        ResultSet rs = this.db.executeQueryPreparedStatement(ps);
+        return rs;
+
     }
 }

@@ -1,5 +1,6 @@
 package IAS.Model.Subscriber;
 
+import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Class.Queries;
 import IAS.Class.util;
@@ -56,7 +57,8 @@ public class subscriberModel extends JDSModel {
             if (mode.equalsIgnoreCase("Create")) {
                 ResultSet rs = st.getGeneratedKeys();
                 rs.first();
-                String inwardUnderProcess = (String) this.session.getAttribute("inwardUnderProcess");
+                inwardFormBean _inwardFormBean = (inwardFormBean)this.session.getAttribute("inwardUnderProcess");
+                String inwardUnderProcess = _inwardFormBean.getInwardNumber();
                 int _subscriberId = rs.getInt(1);
 
                 if (inwardUnderProcess != null) {
@@ -195,25 +197,31 @@ public class subscriberModel extends JDSModel {
         String email = request.getParameter("email");
         String city = request.getParameter("city");
         String pincode = request.getParameter("pincode");
+        String condition = " where";
 
         if (subscriberNumber != null && subscriberNumber.length() > 0) {
-            sql += " and subscriberNumber=" + "'" + subscriberNumber + "'";
+            sql += condition + " subscriberNumber=" + "'" + subscriberNumber + "'";
+            condition = " and";
         }
 
         if (subscriberName != null && subscriberName.length() > 0) {
-            sql += " and subscriberName like " + "'%" + subscriberName + "%'";
+            sql += condition + " subscriberName like " + "'%" + subscriberName + "%'";
+            condition = " and";
         }
 
         if (city != null && city.compareToIgnoreCase("NULL") != 0 && city.length() > 0) {
-            sql += " and t2.id=t1.city and t2.city = " + "\"" + city + "\"";
+            sql += condition + " t2.id=t1.city and t2.city = " + "\"" + city + "\"";
+            condition = " and";
+
         }
 
         if (email != null && email.length() > 0) {
-            sql += " and email =" + "'" + email + "'";
+            sql += condition + " email =" + "'" + email + "'";
+            condition = " and";
         }
 
         if (pincode != null && pincode.compareToIgnoreCase("NULL") != 0 && pincode.length() > 0) {
-            sql += " and pincode =" + "'" + pincode + "'";
+            sql += condition + " pincode =" + "'" + pincode + "'";
         }
 
         sql += " group by subscriberNumber, subscriberName, city, email, pincode";
