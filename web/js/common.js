@@ -78,11 +78,11 @@ function checkMandatoryFields(){
 }
 
 
-function openModalPopUp(url, parameters){
-    if(parameters == undefined){
-        parameters = "dialogHeight: 500px; dialogWidth: 1100px; center:yes; resizeable: no;status: no;menubar: no;scrollbars: yes;toolbar: no;";
+function openModalPopUp(url, dialogArgs, windowParameters ){
+    if(windowParameters == undefined){
+        windowParameters = "dialogHeight: 500px; dialogWidth: 1100px; center:yes; resizeable: no;status: no;menubar: no;scrollbars: yes;toolbar: no;";
     }
-    result = window.showModalDialog(url, 0, parameters);
+    result = window.showModalDialog(url, dialogArgs, windowParameters);
     return result;
 }
 

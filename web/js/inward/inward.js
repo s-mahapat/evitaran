@@ -6,21 +6,25 @@
 
 function validateSearchSubscriber(){
 
-    /*if(isNaN(document.getElementById("pincode").value)){
-        alert("Invalid Pin Code");
+    var isValidSearch = false;
+    if(!isEmptyValue($("#from").val())){
+        isValidSearch = true;
+    }
+    else if(!isEmptyValue($("#country").val()) && !isEmptyValue($("#state").val())){
+        isValidSearch = true;
+    }
+    else if(!isEmptyValue($("#country").val()) && !isEmptyValue($("#city").val())){
+        isValidSearch = true;
+    }
+
+    if(!isValidSearch){
+        alert("Please fill in Country along with City/State to search for subscriber");
         return;
-    }*/
-    if( document.getElementById("from").value.length == 0
-        && document.getElementById("city").value ==0
-        && document.getElementById("pincode").value == 0
-        && document.getElementById("country").value == 0
-    ){
-            alert("Please fill in the From,City and Pincode to search for subscriber");
-            return;
     }else{
-        var selectedSubscriberFromDialog = searchSubscriber(document.getElementById("city").value
-                                                            ,document.getElementById("from").value
-                                                            ,document.getElementById("pincode").value);
+        var selectedSubscriberFromDialog = searchSubscriber(document.getElementById("country").value
+            ,document.getElementById("state").value
+            ,document.getElementById("city").value
+            ,document.getElementById("from").value);
 
         if(!isEmptyValue(selectedSubscriberFromDialog) && selectedSubscriberFromDialog != 0){
             document.getElementById("subscriberId").value = selectedSubscriberFromDialog;
@@ -28,11 +32,16 @@ function validateSearchSubscriber(){
     }
 }
 
-function searchSubscriber(city, subscriberName, pincode){
-    var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp?"
-            + "city=" + city + "&"
-            + "subscriberName=" + subscriberName + "&"
-            + "pincode=" + pincode, 'Select Subscriber');
+function searchSubscriber(country, state, city, subscriberName){
+    var subscriber = new Object();
+    windowParams = "dialogHeight:500px; dialogWidth:800px; center:yes; resizeable:no; status:no; menubar:no;\n\
+                    scrollbars:yes; toolbar: no;";
+    subscriber.country = country;
+    subscriber.city = city;
+    subscriber.name = subscriberName;
+    var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp"
+                                                    , subscriber
+                                                    , windowParams);
     return selectedSubscriberFromDialog;
 }
 

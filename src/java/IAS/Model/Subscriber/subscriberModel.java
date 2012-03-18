@@ -5,6 +5,7 @@ import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,7 +58,7 @@ public class subscriberModel extends JDSModel {
             if (mode.equalsIgnoreCase("Create")) {
                 ResultSet rs = st.getGeneratedKeys();
                 rs.first();
-                inwardFormBean _inwardFormBean = (inwardFormBean)this.session.getAttribute("inwardUnderProcess");
+                inwardFormBean _inwardFormBean = (inwardFormBean) this.session.getAttribute("inwardUnderProcess");
                 String inwardUnderProcess = _inwardFormBean.getInwardNumber();
                 int _subscriberId = rs.getInt(1);
 
@@ -83,19 +84,15 @@ public class subscriberModel extends JDSModel {
         //get the last subscriber number from subscriber table
         String lastSubscriberSql = Queries.getQuery("get_last_subscriber");
         ResultSet rs = db.executeQuery(lastSubscriberSql);
+        //java.sql.ResultSetMetaData metaData = rs.getMetaData();
         Calendar calendar = Calendar.getInstance();
         String lastSubscriber = null;
-        int lastSubscriberYear = 0;
-        while (rs.next()) {
-            lastSubscriber = rs.getString(1);
-            java.sql.Date dt = rs.getDate(2);
-            Calendar inCal = Calendar.getInstance();
-            inCal.setTime(dt);
-            lastSubscriberYear = inCal.get(Calendar.YEAR);
-        }
 
         //if true there exists a previous subscriber for the year, so just increment the subscriber number.
-        if (lastSubscriberYear == calendar.get(Calendar.YEAR)) {
+        if (rs.first()) {
+            while (rs.next()) {
+                lastSubscriber = rs.getString(1);
+            }
             // get the last subscriber number after the split
             int subscriber = Integer.parseInt(lastSubscriber.substring(6));
             //increment
@@ -197,6 +194,8 @@ public class subscriberModel extends JDSModel {
         String email = request.getParameter("email");
         String city = request.getParameter("city");
         String pincode = request.getParameter("pincode");
+        String country = request.getParameter("country");
+        String state = request.getParameter("state");
         String condition = " where";
 
         if (subscriberNumber != null && subscriberNumber.length() > 0) {
@@ -207,6 +206,18 @@ public class subscriberModel extends JDSModel {
         if (subscriberName != null && subscriberName.length() > 0) {
             sql += condition + " subscriberName like " + "'%" + subscriberName + "%'";
             condition = " and";
+        }
+
+        if (country != null && Integer.parseInt(country) != 0 && country.length() > 0) {
+            sql += condition + " t3.id=t1.country and t3.country = " + "\"" + country + "\"";
+            condition = " and";
+
+        }
+
+        if (state != null && state.compareToIgnoreCase("NULL") != 0 && state.length() > 0) {
+            sql += condition + " t4.id=t1.state and t4.state = " + "\"" + state + "\"";
+            condition = " and";
+
         }
 
         if (city != null && city.compareToIgnoreCase("NULL") != 0 && city.length() > 0) {
@@ -233,7 +244,7 @@ public class subscriberModel extends JDSModel {
         return xml;
     }
 
-    public int getSubscriberType(String SubscriberNumber) throws SQLException{
+    public int getSubscriberType(String SubscriberNumber) throws SQLException {
         String sql = Queries.getQuery("get_subscriber_type");
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, SubscriberNumber);

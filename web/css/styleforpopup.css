@@ -125,9 +125,13 @@ body{
 
 
 .IASButton{
-    height: 20px;
+    /*height: 20px;*/
     font-size: 10px;
-    font-weight: bold;
+    /*font-weight: bolder;*/
+    color: black;
+    text-transform: capitalize;
+    margin: 0px 10px;
+    z-index: 0;
 }
 
 .IASComboBox{

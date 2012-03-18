@@ -3,20 +3,21 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <jsp:include page="../templates/styleforpopup.jsp"></jsp:include>
+        <jsp:include page="../templates/style.jsp"></jsp:include>
         <title>Search Subscriber</title>
         <script>
             window.returnValue=0;
-            var windowShouldReturnValue = dialogArguments[0];
+            var subscriber = window.dialogArguments;
             var selectedSubscriberId = 0;
 
             $(function(){
-                $(".datatable").jqGrid({
+                $("#subscriberList").jqGrid({
                     url:"<%=request.getContextPath() + "/subscriber?action=search"%>",
                     postData:{
-                        city            : "<%=request.getParameter("city")%>",
-                        subscriberName  : "<%=request.getParameter("subscriberName")%>",
-                        pincode         : "<%=request.getParameter("pincode")%>"
+                        city            : subscriber.city,
+                        subscriberName  : subscriber.name,
+                        country         : subscriber.country,
+                        state           : subscriber.state
                     },
                     datatype: 'xml',
                     mtype: 'GET',
@@ -61,18 +62,18 @@
                     caption: '&nbsp;',
 
                     gridComplete: function() {
-                        var ids = jQuery(".datatable").jqGrid('getDataIDs');
+                        var ids = jQuery("#subscriberList").jqGrid('getDataIDs');
                         for (var i = 0; i < ids.length; i++) {
                             var cl = ids[i];
                             action = "<input type='radio' name='selectedSubscriberRadio' id='selectedSubscriberRadio'" + " value=" + "\"" + cl + "\"" + " onclick='selectedSubscriberId=this.value'" + "/>";
-                            jQuery(".datatable").jqGrid('setRowData', ids[i], { Select: action });
+                            jQuery("#subscriberList").jqGrid('setRowData', ids[i], { Select: action });
                         }
                     }
                 });
             });
 
             function CheckReturnValue(){
-                if(windowShouldReturnValue && !window.returnValue){
+                if(!window.returnValue){
                     alert("Please select a subscriber");
                     return false;
                 }
@@ -81,28 +82,24 @@
 
     </head>
     <body onunload="return CheckReturnValue()">
-        <div id="bodyContainer">
             <div class="MainDiv">
-                <fieldset class="MainFieldset">
-                    <legend>Search Subscriber Result</legend>
-                    <fieldset class="subMainFieldSet">
-                        <legend>Subscriber List</legend>
-                        <table class="datatable" id="subscriberList"></table>
-                        <div id="pager"></div>
-                    </fieldset>
+                <div class="subMainDiv">
+                    <fieldset class="MainFieldset">
+                        <legend>Search Subscriber Result</legend>
+                        <fieldset class="subMainFieldSet">
+                            <legend>Subscriber List</legend>
+                            <table class="datatable" id="subscriberList"></table>
+                            <div id="pager"></div>
+                        </fieldset>
 
-                    <fieldset class="subMainFieldSet">
-                        <div class="IASFormFieldDiv">
-                            <div id="okBtnDiv">
-                                <input class="IASButton" TABINDEX="6" type="button" onclick="window.returnValue=selectedSubscriberId;window.close()" value="OK" name="btnOk"/>
+                        <fieldset class="subMainFieldSet">
+                            <div class="actionBtnDiv">
+                                    <input class="IASButton" TABINDEX="6" type="button" onclick="window.returnValue=selectedSubscriberId;window.close()" value="OK" name="btnOk"/>
+                                    <input class="IASButton" TABINDEX="8" type="submit" value="Cancel" name="btnCancel" onclick="window.close()"/>
                             </div>
-                            <div id="cancelBtnDiv">
-                                <input class="IASButton" TABINDEX="8" type="submit" value="Cancel" name="btnCancel" onclick="window.close()"/>
-                            </div>
-                        </div>
+                        </fieldset>
                     </fieldset>
-                </fieldset>
+                </div>
             </div>
-        </div>
     </body>
 </html>
