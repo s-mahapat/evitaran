@@ -18,75 +18,71 @@
 
             $(document).ready(function(){
 
-                $(function(){
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
 
-                    jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
+                // set the default focus to inward text box.
+                $("#inwardNumber").focus();
 
-                    // set the default focus to inward text box.
-                    $("#inwardNumber").focus();
-
-                    $("#inwardTable").jqGrid({
-                        url:"<%=request.getContextPath() + "/inward?action=search"%>",
-                        datatype: 'xml',
-                        mtype: 'GET',
-                        width: '100%',
-                        height: 240,
-                        autowidth: true,
-                        forceFit: true,
-                        sortable: true,
-                        sortname: 'inwardNumber',
-                        loadonce: false,
-                        rownumbers: true,
-                        emptyrecords: "No inwards to view",
-                        loadtext: "Loading...",
-                        colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','View/Edit'],
-                        colModel :[
-                            {name:'InwardNo', index:'inwardNumber', width:50, align:'center', xmlmap:'inwardNumber'},
-                            {name:'SubscriberId', index:'subscriberId', width:50, align:'center', xmlmap:'subscriberId'},
-                            {name:'From', index:'from', sortable: false, width:80, align:'center', xmlmap:'from'},
-                            {name:'ReceivedDate', index:'inwardCreationDate', width:80, align:'center', xmlmap:'inwardCreationDate'},
-                            {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
-                            {name:'Cheque', index:'chqddNumber', width:40, align:'center', xmlmap:'chqddNumber'},
-                            {name:'Purpose', index:'inwardPurpose', width:80, align:'center', xmlmap:'inwardPurpose'},
-                            {name:'Action', index:'action', sortable: false, width:80, align:'center',formatter:'showlink'}
-                        ],
-                        xmlReader : {
-                            root: "results",
-                            row: "row",
-                            page: "results>page",
-                            total: "results>total",
-                            records : "results>records",
-                            repeatitems: false,
-                            id: "inwardNumber"
-                        },
-                        pager: '#pager',
-                        rowNum:10,
-                        rowList:[10,20,30],
-                        viewrecords: true,
-                        gridview: true,
-                        caption: '&nbsp;',
-                        gridComplete: function() {
-                            var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
-                            if(ids.length > 0){
-                                $("#btnNext").removeAttr("disabled");
-                            }
-                            for (var i = 0; i < ids.length; i++) {
-                                var inwardId = ids[i];
-                                //var rowData = jQuery("#inwardTable").jqGrid('getLocalRow',cl);
-                                //var inwardId = cl; //rowData['InwardNo'];
-                                //var subscriberId = rowData['Subscriber Id'] || 0;
-                                action = "<a style='color:blue;' href='inward?action=view&inwardNumber=" + inwardId + "'>View</a><a style='color:blue;' href='inward?action=edit&inwardNumber=" + inwardId + "'>Edit</a>";
-                                jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Action: action });
-                            }
-                        },
-                        beforeRequest: function(){
-                            return isPageLoaded;
-                        },
-                        loadError: function(xhr,status,error){
-                            alert("Failed getting data from server " + status);
+                $("#inwardTable").jqGrid({
+                    url:"<%=request.getContextPath() + "/inward?action=search"%>",
+                    datatype: 'xml',
+                    mtype: 'GET',
+                    width: '100%',
+                    height: 240,
+                    autowidth: true,
+                    forceFit: true,
+                    sortable: true,
+                    sortname: 'inwardNumber',
+                    loadonce: false,
+                    rownumbers: true,
+                    emptyrecords: "No inwards to view",
+                    loadtext: "Loading...",
+                    colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','View/Edit'],
+                    colModel :[
+                        {name:'InwardNo', index:'inwardNumber', width:50, align:'center', xmlmap:'inwardNumber'},
+                        {name:'SubscriberId', index:'subscriberId', width:50, align:'center', xmlmap:'subscriberId'},
+                        {name:'From', index:'from', sortable: false, width:80, align:'center', xmlmap:'from'},
+                        {name:'ReceivedDate', index:'inwardCreationDate', width:80, align:'center', xmlmap:'inwardCreationDate'},
+                        {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
+                        {name:'Cheque', index:'chqddNumber', width:40, align:'center', xmlmap:'chqddNumber'},
+                        {name:'Purpose', index:'inwardPurpose', width:80, align:'center', xmlmap:'inwardPurpose'},
+                        {name:'Action', index:'action', sortable: false, width:80, align:'center',formatter:'showlink'}
+                    ],
+                    xmlReader : {
+                        root: "results",
+                        row: "row",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
+                        repeatitems: false,
+                        id: "inwardNumber"
+                    },
+                    pager: '#pager',
+                    rowNum:10,
+                    rowList:[10,20,30],
+                    viewrecords: true,
+                    gridview: true,
+                    caption: '&nbsp;',
+                    gridComplete: function() {
+                        var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+                            $("#btnNext").removeAttr("disabled");
                         }
-
-                    });
+                        for (var i = 0; i < ids.length; i++) {
+                            var inwardId = ids[i];
+                            //var rowData = jQuery("#inwardTable").jqGrid('getLocalRow',cl);
+                            //var inwardId = cl; //rowData['InwardNo'];
+                            //var subscriberId = rowData['Subscriber Id'] || 0;
+                            action = "<a style='color:blue;' href='inward?action=view&inwardNumber=" + inwardId + "'>View</a><a style='color:blue;' href='inward?action=edit&inwardNumber=" + inwardId + "'>Edit</a>";
+                            jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Action: action });
+                        }
+                    },
+                    beforeRequest: function(){
+                        return isPageLoaded;
+                    },
+                    loadError: function(xhr,status,error){
+                        alert("Failed getting data from server " + status);
+                    }
 
                 });
 

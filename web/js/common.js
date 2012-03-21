@@ -1,27 +1,3 @@
-/*
- *use this function to add events to the onload event
-
-function addOnloadEvent(fnc){
-    if ( typeof window.addEventListener != "undefined" )
-        window.addEventListener( "load", fnc, false );
-    else if ( typeof window.attachEvent != "undefined" ) {
-        window.attachEvent( "onload", fnc );
-    } else {
-        if ( window.onload != null ) {
-            var oldOnload = window.onload;
-            window.onload = function ( e ) {
-                oldOnload( e );
-                window[fnc]();
-            };
-        } else
-            window.onload = fnc;
-    }
-}*/
-/*
- * addOnloadEvent(myFunctionName);//
- *  Or to pass argumentsaddOnloadEvent(function(){ myFunctionName('myArgument') });
- */
-
 function validateEmail(FieldId){
     var isValidEmail = false;
     var str= document.getElementById(FieldId).value;
@@ -349,4 +325,16 @@ function jdsAppend(requestURL,xmlRowTag,formElementId, defaultSelect){
     });
 
 }
+// clears the JQGrid data
+function resetGrid(gridID){
 
+    //var id = "#" + gridID
+    // get IDs of all the rows odf jqGrid
+    var rowIds = $(gridID).jqGrid('getDataIDs');
+    // iterate through the rows and delete each of them
+    for(var i=0,len=rowIds.length;i<len;i++){
+        var currRow = rowIds[i];
+        $(gridID).jqGrid('delRowData', currRow);
+    }
+    jQuery(gridID).clearGridData();
+}

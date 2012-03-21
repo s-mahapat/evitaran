@@ -18,7 +18,7 @@
             var selectedSubscriberId = "";
             var selectedInwardPurpose = "";
             var isPageLoaded = false;
-            $(function(){
+            $(document).ready(function(){
                 $("#btnNext").attr("disabled","disabled");
 
                 // fill in the inward purpose

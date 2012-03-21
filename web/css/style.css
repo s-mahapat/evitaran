@@ -375,6 +375,7 @@ body{
 .IASFormDivSpanForHyphen{
     margin-left: 10px;
     text-align: center;
+    float: left;
 
 }
 

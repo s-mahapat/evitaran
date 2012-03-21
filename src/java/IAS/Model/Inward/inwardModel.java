@@ -299,6 +299,7 @@ public class inwardModel extends JDSModel {
         int pageSize = Integer.parseInt(request.getParameter("rows"));
         String orderBy = request.getParameter("sidx");
         String sortOrder = request.getParameter("sord");
+        String completed = request.getParameter("completed");
         int totalQueryCount = 0;
         double totalPages = 0;
 
@@ -322,6 +323,9 @@ public class inwardModel extends JDSModel {
             sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
 
+        if (completed != null && completed.length() > 0) {
+            sql += " and completed=" + completed;
+        }
         sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose order by " + orderBy + " " + sortOrder;
         ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
         xml = util.convertResultSetToXML(rs);

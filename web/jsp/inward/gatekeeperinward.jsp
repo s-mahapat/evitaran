@@ -23,9 +23,6 @@
                 // draw the date picker.
                 jQueryDatePicker("from","to");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
-            })
-
-            $(function(){
 
                 $("#inwardTable").jqGrid({
                     url:"<%=request.getContextPath() + "/inward?action=search"%>",
@@ -90,7 +87,6 @@
                     loadError: function(xhr,status,error){
                         alert("Failed getting data from server" + status);
                     }
-
                 });
 
             });
@@ -106,7 +102,8 @@
                             chequeNumber    : $("#chequeNumber").val(),
                             fromDate        : $("#from").val(),
                             toDate          : $("#to").val(),
-                            inwardPurpose   : $("#inwardPurpose").val()
+                            inwardPurpose   : $("#inwardPurpose").val(),
+                            completed       : false
                         }});
                     jQuery("#inwardTable").trigger("clearGridData");
                     jQuery("#inwardTable").trigger("reloadGrid");

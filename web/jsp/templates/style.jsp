@@ -21,9 +21,11 @@
 
 
 <script>
-    $(function() {
+    $(document).ready(function(){
         $( "input:submit, input:button, input:reset, button", "#bodyContainer,.subMainDiv" ).button();
-
+        $("input:reset").on("click", function(){
+            resetGrid(".datatable");
+        });
     });
 </script>
 <link href="<%=request.getContextPath() + "/css/style.css"%>" type="text/css" rel="stylesheet"/>

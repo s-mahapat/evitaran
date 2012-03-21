@@ -61,7 +61,12 @@ public class inward extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("sendAck")) {
 
-                url = "/jsp/inward/ackinward.jsp";
+                 _inwardFormBean = _inwardModel.viewInward();
+                if (_inwardFormBean != null) {
+                    request.setAttribute("inwardFormBean", _inwardFormBean);
+                    url = "/jsp/inward/ackinward.jsp";
+                }
+
 
             } else if (action.equalsIgnoreCase("sendReturn")) {
                 _inwardFormBean = _inwardModel.viewInward();
