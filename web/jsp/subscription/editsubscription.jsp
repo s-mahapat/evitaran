@@ -12,12 +12,11 @@
         <title>Edit Subscription</title>
         <script type="text/javascript" src="js/common.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/editsubscription.js"%>"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/jquery/jquery.blockUI.js"%>"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                 $().ajaxStart($.blockUI).ajaxStop($.unblockUI);
-                listSubscription("View");
+                //listSubscription();
             })
         </script>
     </head>
@@ -51,6 +50,15 @@
                                         <input class="IASDisabledTextBox" TABINDEX="2" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
                                     </span>
                                 </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Subscription ID:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBox" TABINDEX="3" readonly type="text" name="subscriptionID" id="subscriptionID" value="<%=request.getParameter("id")%>"/>
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="IASFormRightDiv">
@@ -66,15 +74,7 @@
                             </div>
 
                         </fieldset>
-                        <%@include file="selectjournal.jsp"%>
-                        <fieldset class="subMainFieldSet">
-
-                            <div class="actionBtnDiv">
-                                <input type="hidden" name="action" id="action"/>
-                                <input onclick="saveSubscription()" class="IASButton" TABINDEX="101" type="button" value="Save" id="btnSaveSubscription" name="btnSubmitAction"/>
-                            </div>
-
-                        </fieldset>
+                        <%@include file="editjournal.jsp"%>
                     </fieldset>
                 </div>
             </form>

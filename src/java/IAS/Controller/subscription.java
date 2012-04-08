@@ -43,10 +43,10 @@ public class subscription extends JDSController {
 
             } else if (action != null && action.equalsIgnoreCase("edit")) {
 
+                //fill in the subscriber bean
                 if (_subscriberModel.GetSubscriber() != null) {
                     url = "/jsp/subscription/editsubscription.jsp";
                 }
-
 
             } else if (oper.equalsIgnoreCase("del")) {
 
@@ -56,6 +56,14 @@ public class subscription extends JDSController {
 
                 //get the subscription details for the subscriber and send it back to the UI as xml
                 String xml = _subscriptionModel.getSubscription();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            } else if (oper.equalsIgnoreCase("subid")) {
+
+                //get the subscription details for the subscriber and send it back to the UI as xml
+                ResultSet rs = _subscriptionModel.getSubscriptionByID(Integer.parseInt(request.getParameter("id")));
+                String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 

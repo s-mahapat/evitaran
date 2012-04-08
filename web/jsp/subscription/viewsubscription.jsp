@@ -9,7 +9,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/subscription.css"%>"/>
-        <title>View Subscription</title>
+        <title>Subscription</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/viewsubscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
@@ -28,7 +28,7 @@
             <form name="subscriptionForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>View Subscription</legend>
+                        <legend>Subscription</legend>
                         <fieldset class="subMainFieldSet">
                             <legend>Subscriber Details</legend>
 
@@ -57,7 +57,7 @@
 
                         </fieldset>
                         <%@include file="subscriptionlist.jsp"%>
-                        <%@include file="subscriptionactions.jsp"%>
+                        <%--<%@include file="subscriptionactions.jsp"%>--%>
                     </fieldset>
                 </div>
             </form>

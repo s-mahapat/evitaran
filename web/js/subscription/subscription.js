@@ -3,16 +3,7 @@ function setSubmitButtonValue(button,value){
     button.value = value;
 }
 
-function listSubscription(mode){
-    var lastSel;
-    var editable = false;
-    if (mode=="Display"){
-        hrefText = "View";
-        editable = false;
-    }else{
-        hrefText = "Edit";
-        editable = true;
-    }
+function listSubscription(){
     $(function(){
         //$("#subscriptionDetailDiv").hide();
         $("#subscriptionList").jqGrid({
@@ -29,7 +20,7 @@ function listSubscription(mode){
             sortname:'subscriptionID',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Subscription Date','Subscription Value','Amount Paid', 'Balance', 'Currency','Details'],
+            colNames:['Subscription Id','Inward No','Subscription Date','Subscription Value','Amount Paid', 'Balance', 'Currency','Action'],
             colModel :[
             {
                 name:'subscriptionID',
@@ -106,7 +97,10 @@ function listSubscription(mode){
 
                 var ids = jQuery("#subscriptionList").jqGrid('getDataIDs');
                 for (var i = 0; i < ids.length; i++) {
-                    action = "<a style=\"color:blue\" href=\"#\" onclick=\"getSubscriptionDetails(" + ids[i] + ")\">" + hrefText + "</a>";
+                    action = "<a style=\"color:blue\" href=\"#\" onclick=\"getSubscriptionDetails(" + ids[i] + ")\">" + "Details" + "</a>";
+                    action += "<a style=\"color:blue\" href=\"subscription?action=edit" +
+                        "&subscriberNumber=" + $("#subscriberNumber").val() +
+                        "&id=" + ids[i] + "\">" + "Edit" + "</a>";
                     jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
                         "details": action
                     });
@@ -121,16 +115,8 @@ function listSubscription(mode){
 }
 
 function getSubscriptionDetails(subscriptionId){
-    //$("#subscriptionDetailDiv").show();
    windowParams = "dialogHeight:500px; dialogWidth:800px; center:yes; resizeable:no; status:no; menubar:no;\n\
                     scrollbars:yes; toolbar: no;";
    openModalPopUp("jsp/subscription/subscriptiondetails.jsp?id=" + subscriptionId , "", windowParams);
    return false;
-    /*jQuery("#subscriptionDetail").setGridParam({
-        datatype: 'xml',
-        url: 'subscription?oper=detail&id=' + subscriptionId
-    });
-
-    jQuery("#subscriptionDetail").trigger("reloadGrid");*/
-//alert(subscriptionId);
 }

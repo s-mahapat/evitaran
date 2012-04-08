@@ -74,7 +74,7 @@ public class subscriber extends JDSController {
 
                 //fill in the subscriber bean
                 if (_subscriberModel.GetSubscriber() != null) {
-                    url = "/jsp/subscription/editsubscription.jsp";
+                    url = "/jsp/subscription/viewsubscription.jsp";
                 }
             } else if (action.equalsIgnoreCase("add")) {
 

@@ -136,7 +136,7 @@ public class SubscriptionModel extends JDSModel {
 
         String xml = null;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
-        String sql = Queries.getQuery("search_subscrption");
+        String sql = Queries.getQuery("get_subscription_for_subscriber");
         PreparedStatement st = conn.prepareStatement(sql);
         int paramIndex = 0;
         st.setString(++paramIndex, this.subscriberNumber);
@@ -148,6 +148,15 @@ public class SubscriptionModel extends JDSModel {
         }
         return xml;
 
+    }
+
+    public ResultSet getSubscriptionByID(int _id) throws ParserConfigurationException, SQLException, TransformerException, IOException{
+        // the query name from the jds_sql properties files in WEB-INF/properties folder
+        String sql = Queries.getQuery("get_subscription_by_id");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setInt(1, _id);
+        ResultSet rs = db.executeQueryPreparedStatement(st);
+        return rs;
     }
 
     public String getSubscriptionDetails() throws ParserConfigurationException, SQLException, TransformerException, IOException {
@@ -178,7 +187,7 @@ public class SubscriptionModel extends JDSModel {
         st.setString(++paramIndex, InwardNumber);
         ResultSet rs = db.executeQueryPreparedStatement(st);
         return rs;
-        
+
     }
 
     public float getJournalPrice(int startYear, int numYears, int journalGroupID, int subscriberTypeID) throws SQLException{

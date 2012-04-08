@@ -24,3 +24,7 @@ root {
     display: block;
     margin: 20px 10%;
 }
+
+.IASDateTextBox{
+    background-color: white;
+}

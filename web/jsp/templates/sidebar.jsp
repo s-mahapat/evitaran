@@ -1,7 +1,5 @@
 <link href="<%=request.getContextPath() + "/menu/css/dcaccordion.css"%>" rel="stylesheet" type="text/css"  />
 <link href="<%=request.getContextPath() + "/menu/css/skins/grey.css"%>" rel="stylesheet" type="text/css" />
-<link href="<%=request.getContextPath() + "/menu/css/skins/graphite.css"%>" rel="stylesheet" type="text/css" />
-<link href="<%=request.getContextPath() + "/menu/css/skins/clean.css"%>" rel="stylesheet" type="text/css" />
 <script src="<%=request.getContextPath() + "/menu/js/jquery.dcjqaccordion.2.7.min.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/menu/js/jquery.cookie.js"%>" type="text/javascript"></script>
 <script>

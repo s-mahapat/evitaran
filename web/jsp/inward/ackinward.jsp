@@ -11,6 +11,7 @@
         <title>Acknowledge Inward</title>
         <script type="text/javascript">
             $(document).ready(function(){
+                jQueryCalendar("subscriberletterDate");
                 $.ajax({
                     type: 'GET',
                     dataType: 'xml',
@@ -45,11 +46,13 @@
                         $(".datatable").html(html);
                     },
                     error: function(jqXHR,textStatus,errorThrown){
-                        alert("Failed to get journal price. " + textStatus + ": "+ errorThrown);
+                        alert("Failed to get subscription information for Inward. Error:" + textStatus + " : "+ errorThrown);
                     }
 
                 });
+
             });
+
         </script>
     </head>
     <body>
@@ -61,13 +64,20 @@
                         <div id="letterDiv">
                             <%@include file="../templates/letterhead.jsp" %>
                             <div class="subjectLine">
-                                Subscription No:<span style="padding-left: 5px;" id="subscriptionID"></span>
+                                <strong>Subscription No:</strong><span style="padding-left: 5px;" id="subscriptionID"></span>
                             </div>
                             <div class="subjectLine">
-                                Subject: Regarding subscription of the Journals
+                                <strong>Subject:</strong> Regarding subscription of the Journals
                             </div>
                             <div class="subjectLine">
-                                Your letter no.____ Dated: _____
+                                Your letter no:
+                                <span>
+                                    <input class="IASTextBox" type="text" value="">
+                                </span>
+                                <span>Dated:</span>
+                                <span id="letterDateSpan">
+                                    <input type="text" class="IASDateTextBox" TABINDEX="2" size="10" id="subscriberletterDate"/>
+                                </span>
                             </div>
                             <div class="salutation">
                                 Dear Sir/Madam,

@@ -16,6 +16,7 @@
                     datatype: 'xml',
                     mtype: 'GET',
                     height: 240,
+                    width: '100%',
                     altRows: false,
                     autowidth: true,
                     forceFit: true,
@@ -115,7 +116,6 @@
             </fieldset>
             <fieldset class="subMainFieldSet">
                 <div class="actionBtnDiv">
-                    <input onclick="" class="IASButton" TABINDEX="1" type="button" value="Save" id="" name=""/>
                     <input onclick="javascript:window.close()" class="IASButton" TABINDEX="1" type="button" value="Close" id="" name=""/>
                 </div>
             </fieldset>

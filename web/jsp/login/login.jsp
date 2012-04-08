@@ -85,7 +85,7 @@
                     <div id="login">
                         <div class="authField">
                             <span class="authLabel">User Name</span>
-                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBox" name="j_username" value="jds@ias.com" id="loginFieldId" onblur="validateEmail(this.id)"/></span>
+                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBoxMandatory" name="j_username" value="jds@ias.com" id="loginFieldId" onblur="validateEmail(this.id)"/></span>
                         </div>
                         <div class="authField">
                             <span class="authLabel">Password</span>
