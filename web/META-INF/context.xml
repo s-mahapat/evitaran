@@ -4,7 +4,7 @@
     driverName="com.mysql.jdbc.Driver"
     connectionName="jds"
     connectionPassword="jds"
-    connectionURL="jdbc:mysql://localhost/JDS"
+    connectionURL="jdbc:mysql://localhost/jds"
     userTable="users" userNameCol="username" userCredCol="password"
     userRoleTable="user_role" roleNameCol="role"/>
 </Context>

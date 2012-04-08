@@ -4,7 +4,7 @@
         <div id="headertext">Journal Distribution System  </div>
     </div>
     <div id="lightsubheader">
-        <div id="smalldarksubheader"></div>
+        <!--<div id="smalldarksubheader"></div>-->
         <div id="welcomeUser">
         <%
             String userPrincipal = null;
@@ -18,7 +18,7 @@
             finally{
                 if(userPrincipal != null){
                     out.println("Welcome " + userPrincipal + " !");
-                    out.println("<a href=" + request.getContextPath() + "/main?action=logout" + ">Logout</a>");
+                    out.println("<a href=" + request.getContextPath() + "/main?action=logout" + "><font color=\"white\">Logout</font></a>");
                 }else{
                     response.sendRedirect(request.getContextPath() + "/jsp/login/login.jsp");
                 }

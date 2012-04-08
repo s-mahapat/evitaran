@@ -14,10 +14,7 @@ import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
 import javax.servlet.ServletContext;
-/**
- *
- * @author Shailendra Mahapatra
- */
+
 public class state extends HttpServlet {
 
     private stateModel _stateModel = null;
@@ -47,7 +44,7 @@ public class state extends HttpServlet {
                 url = "/jsp/masterdata/displayState.jsp";
 
             }else if(action.equalsIgnoreCase("search")){
-                
+
                 // searchInward gets all the inwards based on the search criteria entered on screen by the user.
                 String xml = _stateModel.searchState();
                 request.setAttribute("xml", xml);

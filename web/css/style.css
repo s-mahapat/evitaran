@@ -8,10 +8,24 @@ root {
 body{
     margin:0px;
     padding:0px;
-    background-color: rgb(255, 237, 202);
+    background-color: #F6F6F6;/*rgb(255, 237, 202);*/
     font-family: "Cambria",serif;
     font-size: 12px;
     /*width: 100%;*/
+}
+
+A:link {
+    text-decoration: none;
+    color: blue;
+}
+A:visited {
+    text-decoration: none;
+    color: blue;
+}
+
+A:active {
+    text-decoration: none;
+    color: blue;
 }
 
 #header{
@@ -20,13 +34,13 @@ body{
     position: fixed;
     top: 0px;
     height: auto;
-    background-color: rgb(255, 237, 202);
+    background-color: #F6F6F6;/*rgb(255, 237, 202)*/;
     z-index: 2;
     /*background-image: url("../images/jds.gif");*/
 }
 
 #darksubheader{
-    background-color: #cc9b00;
+    background-color: #F6F6F6;/*#cc9b00;*/
     height: 40px;
     margin-bottom: 1px;
     width: 100%;
@@ -34,7 +48,7 @@ body{
 }
 
 #smalldarksubheader{
-    background-color: #cc9b00;
+    background-color: white/*#cc9b00*/;
     height: 26px;
     margin-left: 0px;
     margin-bottom: 1px;
@@ -46,14 +60,25 @@ body{
     background-color: white;
     height: 1px;
     width: 100%;
+    float: right;
+}
+
+#verticalwhiteline{
+    background-color: red;
+    width: 1px;
+    z-index: 10;
 }
 
 #lightsubheader{
-    background-color: #FBDA81;
+    background-color: #335C85;/*#75A3FF;/*#dfeffc;/*#FBDA81*/;
+    margin-left :0%;
     height: 26px;
     width: 100%;
     margin-bottom: 1px;
     z-index: 2;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
 }
 
 #headertext{
@@ -67,26 +92,27 @@ body{
 }
 
 #iaslogo{
-    height: 88px;
-    width: 12%;
+    height: 38px;
+    width: 39px;
     float: left;
     position: fixed;
-    margin-left: 0px;
-    top:15px;
-    background-image: url("../images/logo_main.gif");
+    margin-left: 3%;
+    top:1px;
+    background-image: url("../images/logo_main.png");
     z-index: 3;
     background-repeat: no-repeat;
 }
 
 #sidebar{
-    background-color: #cc9b00;
-    top:68px;
+    background-color: #F6F6F6;/*#cc9b00;*/
+    /*top:68px;*/
+    top: 68px;
     width: 12%; /*110*/
     float: left;
     position: fixed;
     overflow: auto;
     height: 100%;
-    padding-top: 60px;
+    padding-top: 0px;
     z-index: 2;
 }
 
@@ -128,20 +154,21 @@ body{
 }
 
 .MainDiv{
-    background-color: #ECE5B6;
-    padding: 5px 5px;
+    background-color: #F6F6F6;/*#ECE5B6;*/
+    padding: 2px 2px;
     height: auto;
 }
 
 .subMainDiv{
-    background-color: #ECE5B6;
+    /*background-color: #ECE5B6;*/
     padding: 5px;
     height: auto;
 }
 
 
 .MainFieldset{
-    background-color: #ECE5B6;
+    background-color: rgb(232,245,248);/*#F6F6F6; #ECE5B6;*/
+    /*background-image: url("../images/bg.png");*/
     padding: 5px;
 }
 
@@ -152,7 +179,9 @@ body{
 
 
 .subMainFieldSet{
-    background-color: #FBDA81;
+    /*background-color: #FBDA81;*/
+    background: none repeat scroll 0 0 #F6F6F6; /*rgb(232,245,248);
+    background-image: url("../images/bg.png");*/
     padding: 5px 5px 10px 5px;
     margin-bottom: 10px;
 }
@@ -194,7 +223,7 @@ body{
 }
 
 .IASTextBoxWide{
-    width: 180px;
+    width: 250px;
     font-family: "Cambria",serif;
     font-size: 12px;
 }
@@ -213,7 +242,7 @@ body{
 }
 
 .IASTextBoxMandatoryWide{
-    width: 180px;
+    width: 250px;
     font-family: "Cambria",serif;
     font-size: 12px;
     background-color: antiquewhite;
@@ -383,7 +412,7 @@ body{
 .datatable{
     border: 1px solid lightslategray;
     width: 100%;
-    background-color: #FBDA81;
+    /*background-color: #FBDA81;*/
 }
 
 .datatable thead td{
@@ -398,7 +427,7 @@ body{
     text-align: center;
     font-size: 1em;
     font-weight: normal;
-    background-color: #ECE5B6;
+    /*background-color: #ECE5B6;*/
     vertical-align: middle;
     padding: 2px;
 }
@@ -411,18 +440,6 @@ body{
 .jdsLink{
     color: blue;
     text-decoration: none;
-}
-
-A:link {
-    text-decoration: none
-}
-A:visited {
-    text-decoration: none;
-    color: blue;
-}
-
-A:active {
-    text-decoration: none
 }
 
 .calendarIcon{
@@ -488,9 +505,10 @@ A:active {
 #accessdenied{
     background-image: url("../images/403.png");
     background-repeat: no-repeat;
-    width: 528px;
-    height: 315px;
+    width: 284px;
+    height: 232px;
     margin: 0 auto;
+    text-align: center;
 }
 
 #accessdeniedtext{
@@ -501,8 +519,8 @@ A:active {
 #pageNotFoundError{
     background-image: url("../images/404.png");
     background-repeat: no-repeat;
-    width: 527px;
-    height: 306px;
+    width: 314px;
+    height: 203px;
     margin: 0 auto;
 }
 
@@ -542,6 +560,7 @@ A:active {
     margin: 20px 20px;
     height: auto;
     float: left;
+    display: block;
 }
 
 #letterDate{

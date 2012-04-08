@@ -1,0 +1,16 @@
+/* Page */
+#sidebar ul li{
+    list-style: none;
+    border:0;
+    outline:none;
+    margin:0;
+    padding:0;
+}
+.accordion{
+    font-size: 11px;
+    width: 99%;
+}
+/*#sidebar ul.text {margin-bottom: 1em; line-height: 1.5em;}*/
+.text-center {text-align: center;}
+.clear {clear: both;}
+.dcjq-count {float: right;}

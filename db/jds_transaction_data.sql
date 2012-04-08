@@ -57,7 +57,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB AUTO_INCREMENT=1772 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1773 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +90,7 @@ CREATE TABLE `subscriber` (
   KEY `subscriberName` (`subscriberName`),
   KEY `subscriberCity` (`city`),
   KEY `subscriberPincode` (`pincode`)
-) ENGINE=InnoDB AUTO_INCREMENT=124593 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=124594 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -177,13 +177,13 @@ CREATE TABLE `subscription` (
   `inwardID` int(11) NOT NULL,
   `active` tinyint(4) NOT NULL DEFAULT '1',
   `balance` float NOT NULL DEFAULT '0',
-  `subscriptionDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `subscriptionDate` date NOT NULL DEFAULT '0000-00-00',
   `subscriptionTotal` float NOT NULL DEFAULT '0',
   `remarks` text,
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,7 +204,7 @@ CREATE TABLE `subscriptiondetails` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalGroupID`),
   CONSTRAINT `subscriptionid_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -216,4 +216,4 @@ CREATE TABLE `subscriptiondetails` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-07  9:29:19
+-- Dump completed on 2012-04-08 15:28:21

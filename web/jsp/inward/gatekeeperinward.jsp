@@ -36,6 +36,7 @@
                     sortname: 'inwardCreationDate',
                     loadonce: false,
                     rownumbers: true,
+                    scrollOffset: 20,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
                     colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','PurposeID'],

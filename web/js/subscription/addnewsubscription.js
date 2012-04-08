@@ -1,5 +1,6 @@
 var journalNameToGroupIDMap = {};
 var subscriberType = 0;
+var subscriptionSaved = false
 function setEndYear(){
     var startYear = parseInt($("#subscriptionStartYear").val(),10);
     var html;
@@ -125,15 +126,19 @@ function getJournalGroupContents(groupID){
 }
 
 function deleteRow(rowid){
+    // do not allow to delete a row if the subscription is already saved
+    if(subscriptionSaved){
+        return;
+    }
     if(rowid == "All"){
         // clears the entire grid
         $("#newSubscription").clearGridData();
         // reset the total to zero
         updateTotal(-$("#subscriptionTotalValue").text());
     }else{
-        rowTotal = $("#newSubscription").getCell(rowid,"journalName");
+        rowTotal = $("#newSubscription").getCell(rowid,"Total");
         //subbtract row value from total
-        updateTotal(-$("#subscriptionTotalValue").text());
+        updateTotal(-rowTotal);
         // to delete a single row from the grid
         $("#newSubscription").delRowData(rowid);
     }
@@ -184,7 +189,10 @@ function saveSubscription(){
     });
     $.ajax({
         type: 'POST',
-        url: "subscription?oper=add&subscriberNumber=" + $("#subscriberNumber").val() + "&remarks=" + $("#remarks").val(),
+        url: "subscription?oper=add"
+            + "&subscriberNumber=" + $("#subscriberNumber").val()
+            + "&remarks=" + $("#remarks").val()
+            + "&inwardNumber=" + $("#inwardNumber").val(),
         data: $.param(rowRequiredData),
         success: function(xmlResponse, textStatus, jqXHR){
 
@@ -196,8 +204,19 @@ function saveSubscription(){
                 }
                 else if(subscriptionID){
                     alert("Subscription with ID: " + subscriptionID + " created successfully");
+                    $("#subscriptionNumber").val(subscriptionID);
                     $("#btnSaveSubscription").button("disable");
+                    $("#btnAddLine").button("disable");
+                    $("#btnDeleteAll").button("disable");
                     $("#remarks").attr("disabled",true);
+                    subscriptionSaved = true;
+
+                    //ask if we have print inward acknowledgement
+                    if(confirm("Do you want send the inward acknowledgement?")){
+                        //document.subscriptionForm.submit();
+                        window.location.href = "inward?action=sendAck"
+                            + "&inwardNumber="   + $("#inwardNumber").val();
+                    }
                 }
             });
         },

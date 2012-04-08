@@ -1,13 +1,7 @@
-<%--
-    Document   : index
-    Created on : Oct 9, 2011, 8:49:53 PM
-    Author     : Kulu
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     if (request.getRemoteUser() != null) {
-        response.sendRedirect(request.getContextPath() + "/jsp/home.jsp");
+        response.sendRedirect(request.getContextPath() + "/home");
     }
 %>
 
@@ -17,79 +11,17 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <%@include file="../templates/style.jsp"%>
         <title>Login</title>
-        <script type="text/javascript" src="/js/login.js"></script>
         <script type="text/javascript">
             $(function() {
                 $( "#loginDiv" ).tabs();
             });
         </script>
         <style>
-
-            body{
-                margin:0px;
-                padding:0px;
-                background-color: rgb(255, 237, 202);
-                font-family: "Cambria",serif;
-                font-size: 12px;
-                /*width: 100%;*/
-            }
-
-            #header{
-
+            #bodyContainer{
+                margin-top: 68px;
                 width: 100%;
-                position: fixed;
-                top: 0px;
-                height: auto;
-                background-color: rgb(255, 237, 202);
-            }
-            #darksubheader{
-                background-color: #cc9b00;
-                height: 40px;
-                margin-bottom: 1px;
-                width: 100%;
-            }
-
-            #smalldarksubheader{
-                background-color: #cc9b00;
-                height: 26px;
-                margin-left: 0px;
-                margin-bottom: 1px;
-                width: 12%;
+                overflow: auto;
                 float: left;
-            }
-
-            #whitesubheader{
-                background-color: white;
-                height: 1px;
-                width: 100%;
-            }
-
-            #lightsubheader{
-                background-color: #FBDA81;
-                height: 26px;
-                width: 100%;
-                margin-bottom: 1px;
-            }
-
-            #headertext{
-                float: right;
-                font-family:inherit;
-                font-size: x-large;
-                font-weight: bolder;
-                color: #333333;
-                margin-right: 10px;
-                padding: 5px;
-            }
-
-            #sidebar{
-                background-color: #cc9b00;
-                top:68px;
-                width: 12%; /*110*/
-                float: left;
-                position: fixed;
-                height: 100%;
-                padding-top: 60px;
-                z-index: 2;
             }
 
 
@@ -138,19 +70,11 @@
                 float: left;
             }
 
-            /*.IASButton{
-               /* height: 20px;
-                margin: 0px 20px;
-                font-weight: bold;
-                font-size: 12px;
-            }*/
-
-
         </style>
     </head>
     <body>
         <jsp:include page="../templates/header.jsp"></jsp:include>
-        <jsp:include page="../templates/loginsidebar.jsp"></jsp:include>
+        <%--<jsp:include page="../templates/loginsidebar.jsp"></jsp:include>--%>
         <div id="bodyContainer">
             <form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginFieldId','passwordField')">
                 <div id="loginDiv">

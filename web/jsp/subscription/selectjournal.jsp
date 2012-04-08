@@ -37,7 +37,7 @@
             //data: "subscriberNumber=" + $("#subscriberNumber").val(),
             datatype: 'local',
             mtype: 'GET',
-            height: 260,
+            height: 240,
             autowidth: true,
             forceFit: true,
             sortable: true,
@@ -46,7 +46,7 @@
             sortname:'subscriptionDate',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames: ['Journal Name','Journal Cost (INR)','Start Year','End Year','Copies','Total (INR)','Delete'],
+            colNames: ['Journal Group','Journal Cost (INR)','Start Year','End Year','Copies','Total (INR)','Delete'],
             colModel: [
                 {
                     name:"journalName",
@@ -138,7 +138,21 @@
         </span>
 
         <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>Journal</label>
+            <label>Journal Price Year:</label>
+        </span>
+
+        <span class="IASFormDivSpanInputBoxLessMargin">
+            <select class="IASComboBoxMandatory" TABINDEX="11" name="priceYear" id="priceYear">
+                <%
+                    for (int j = 0; j <= 1; j++) {
+                        out.println("<option value =\"" + (year + j) + "\">" + (year + j) + "</option>");
+                    }
+                %>
+            </select>
+        </span>
+
+        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+            <label>Journal Group</label>
         </span>
 
         <span class="IASFormDivSpanInputBoxLessMargin">
@@ -164,7 +178,7 @@
             <input class="IASButton" TABINDEX="15" type="button" value="Delete All" id="btnDeleteAll" name="btnDeleteAll" onclick="deleteRow('All')"/>
         </span>
     </div>
-    <div class="IASFormFieldDiv" style="margin-top: 15px;">
+    <div class="IASFormFieldDiv" id="newSubscriptiondiv" style="margin-top: 15px;">
         <table class="datatable" id="newSubscription"></table>
         <div id="pager"></div>
     </div>

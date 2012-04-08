@@ -25,12 +25,14 @@
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
-                    height: 250,
+                    height: 230,
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    sortname: 'subscriberNumber',
+                    loadonce: false,
                     rownumbers: true,
+                    scrollOffset: 20,
                     emptyrecords: "No subscribers to view",
                     loadtext: "Loading...",
                     colNames:['Subscriber Number','Subscriber Name', 'Department','City','Pin Code','Country', 'Action'],
@@ -39,7 +41,7 @@
                         {name:'Subscriber Name', index:'subscriberName', width:60, align:'center', xmlmap:'subscriberName'},
                         {name:'Department', index:'department', width:60, align:'center', xmlmap:'department'},
                         {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                        {name:'Pin Code', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
+                        {name:'Pin Code', index:'pincode', width:30, align:'center', xmlmap:'pincode'},
                         {name:'Country', index:'country', width:30, align:'center', xmlmap:'country'},
                         {name:'Action', index:'action', width:30, align:'center',formatter:'showlink'}
                     ],
@@ -55,7 +57,7 @@
                     pager: '#pager',
                     pginput: true,
                     rowNum:10,
-                    rowList:[10,20,30],
+                    rowList:[10,30,50,100],
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
@@ -85,11 +87,11 @@
                 if(validateSearchSubscriber() == true){
                     isPageLoaded = true;
                     jQuery("#subscriberTable").setGridParam({postData:
-                            {city           : $("#city").val(),
+                            {city               : $("#city").val(),
                             subscriberNumber    : $("#subscriberNumber").val(),
-                            subscriberName    : $("#subscriberName").val(),
-                            email        : $("#email").val(),
-                            pincode          : $("#pincode").val()
+                            subscriberName      : $("#subscriberName").val(),
+                            email               : $("#email").val(),
+                            pincode             : $("#pincode").val()
                         }});
                     jQuery("#subscriberTable").trigger("clearGridData");
                     jQuery("#subscriberTable").trigger("reloadGrid");

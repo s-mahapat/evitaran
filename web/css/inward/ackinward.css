@@ -11,3 +11,7 @@ root {
     float: left;
     margin-top: 20px;
 }
+
+#subscriptionDetail{
+    width: 50%; float: left; margin: 20px 25%;
+}

@@ -5,17 +5,29 @@ import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
-import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.dbutils.BeanProcessor;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class subscriberModel extends JDSModel {
 
@@ -90,9 +102,9 @@ public class subscriberModel extends JDSModel {
 
         //if true there exists a previous subscriber for the year, so just increment the subscriber number.
         if (rs.first()) {
-            while (rs.next()) {
-                lastSubscriber = rs.getString(1);
-            }
+
+            lastSubscriber = rs.getString(1);
+
             // get the last subscriber number after the split
             int subscriber = Integer.parseInt(lastSubscriber.substring(6));
             //increment
@@ -186,7 +198,8 @@ public class subscriberModel extends JDSModel {
         }
     }
 
-    public String searchSubscriber() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public String searchSubscriber() throws SQLException, ParseException,
+            ParserConfigurationException, TransformerException, IOException, SAXException {
         String xml = null;
         String sql = Queries.getQuery("search_subscriber");
         String subscriberNumber = request.getParameter("subscriberNumber");
@@ -197,6 +210,12 @@ public class subscriberModel extends JDSModel {
         String country = request.getParameter("country");
         String state = request.getParameter("state");
         String condition = " where";
+        int pageNumber = Integer.parseInt(request.getParameter("page"));
+        int pageSize = Integer.parseInt(request.getParameter("rows"));
+        String orderBy = request.getParameter("sidx");
+        String sortOrder = request.getParameter("sord");
+        int totalQueryCount = 0;
+        double totalPages = 0;
 
         if (subscriberNumber != null && subscriberNumber.length() > 0) {
             sql += condition + " subscriberNumber=" + "'" + subscriberNumber + "'";
@@ -235,11 +254,49 @@ public class subscriberModel extends JDSModel {
             sql += condition + " pincode =" + "'" + pincode + "'";
         }
 
-        sql += " group by subscriberNumber, subscriberName, city, email, pincode";
+        sql += " group by subscriberNumber, subscriberName, city, email, pincode order by " + orderBy + " " + sortOrder;
 
-        ResultSet rs = this.db.executeQuery(sql);
-
+        ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
         xml = util.convertResultSetToXML(rs);
+
+        sql = "select count(*) from (" + sql + ") as tbl";
+        rs = this.db.executeQuery(sql);
+        while(rs.next()){
+            totalQueryCount = rs.getInt(1);
+        }
+
+        if(totalQueryCount > 0){
+            totalPages = (double)totalQueryCount/(double)pageSize;
+            totalPages = java.lang.Math.ceil(totalPages);
+        }
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        InputSource is = new InputSource(new StringReader(xml));
+        Document doc = builder.parse(is);
+        Element root = doc.getDocumentElement();
+
+        Element page = doc.createElement("page");
+        Element total = doc.createElement("total");
+        Element records = doc.createElement("records");
+
+        root.appendChild(page);
+        page.appendChild(doc.createTextNode(String.valueOf(pageNumber)));
+
+        root.appendChild(total);
+        total.appendChild(doc.createTextNode(String.valueOf(totalPages)));
+
+        root.appendChild(records);
+        records.appendChild(doc.createTextNode(String.valueOf(totalQueryCount)));
+
+        DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.transform(domSource, result);
+        xml = writer.toString();
+        writer.close();
+
 
         return xml;
     }

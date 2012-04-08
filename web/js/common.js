@@ -122,6 +122,7 @@ function makeReadOnly(){
             || formField.className == "IASCheckBox"
             || formField.className == "IASDateTextBox"
             || formField.className == "IASTextBoxMandatoryWide"
+            || formField.className == "IASTextBoxWide"
             ){
             formField.setAttribute("readonly",true);
             formField.style.backgroundColor = "#EEE";
@@ -148,7 +149,7 @@ function makeReadOnly(){
     for(i=0;i<formFields.length;i++){
         formField = formFields[i];
         if( formField.className == "IASTextArea" ||  formField.className == "IASTextAreaMandatory" ){
-            formField.disabled = true;
+            formField.setAttribute("readonly",true);
             formField.style.backgroundColor = "#EEE";
         }
     }
@@ -337,4 +338,14 @@ function resetGrid(gridID){
         $(gridID).jqGrid('delRowData', currRow);
     }
     jQuery(gridID).clearGridData();
+}
+
+function PrintContent(divID) {
+    var DocumentContainer = document.getElementById(divID);
+    var WindowObject = window.open('', 'PrintWindow', 'width=750,height=650,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes');
+    WindowObject.document.writeln(DocumentContainer.innerHTML);
+    WindowObject.document.close();
+    WindowObject.focus();
+    WindowObject.print();
+    WindowObject.close();
 }

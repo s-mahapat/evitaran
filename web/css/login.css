@@ -1,0 +1,44 @@
+#loginDiv{
+    margin: 15% auto 0 auto;
+    width: 40%;
+    text-align: center;
+    height: 200px;
+}
+
+#loginErrorMsg{
+
+    text-align: center;
+    color: red;
+}
+
+#resetpwdDiv{
+
+    margin: 10% 10%;
+}
+
+.authField{
+
+    width: 100%;
+    margin: 10px auto;
+    float: left;
+}
+
+.authLabel{
+    width: 25%;
+    float: left;
+    margin-left: 10%;
+    text-align: right;
+}
+
+.authInput{
+    float: right;
+    width: 50%;
+    margin-right: 10%;
+}
+
+.authAction{
+
+    margin-left: 45%;
+    margin-top: 10px;
+    float: left;
+}

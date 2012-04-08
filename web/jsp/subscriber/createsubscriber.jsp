@@ -19,8 +19,9 @@
                 jdsAppend("/JDS/CMasterData?md=state","state","state");
                 jdsAppend("/JDS/CMasterData?md=district","district","district");
                 jdsAppend("/JDS/CMasterData?md=agent","agentName","agent");
-                makeCreateSubscriberReadOnly();
                 jdsAppend("/JDS/CMasterData?md=sub_type","subtype","subtype");
+                makeCreateSubscriberReadOnly();
+
             });
         </script>
         </script>

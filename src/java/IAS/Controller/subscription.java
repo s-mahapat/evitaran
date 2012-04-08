@@ -6,34 +6,25 @@ package IAS.Controller;
 
 import IAS.Class.JDSLogger;
 import IAS.Class.util;
-import IAS.Model.Subscription.SubscriptionModel;
 import IAS.Model.Subscriber.subscriberModel;
+import IAS.Model.Subscription.SubscriptionModel;
 import java.io.IOException;
 import java.sql.ResultSet;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
-public class subscription extends HttpServlet {
+public class subscription extends JDSController {
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.subscription");
-    /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String oper = request.getParameter("oper") != null ? request.getParameter("oper") : "noop";
-        String action = request.getParameter("action")!= null ? request.getParameter("action") : "noop";
+        String action = request.getParameter("action") != null ? request.getParameter("action") : "noop";
         String url = null;
 
         try {
@@ -57,37 +48,49 @@ public class subscription extends HttpServlet {
                 }
 
 
-            }else if (oper.equalsIgnoreCase("del")) {
+            } else if (oper.equalsIgnoreCase("del")) {
 
                 _subscriptionModel.deleteSubscription();
 
-            }else if (oper.equalsIgnoreCase("getsubscription")) {
+            } else if (oper.equalsIgnoreCase("getsubscription")) {
 
                 //get the subscription details for the subscriber and send it back to the UI as xml
                 String xml = _subscriptionModel.getSubscription();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }else if (oper.equalsIgnoreCase("detail")){
+            } else if (oper.equalsIgnoreCase("detail")) {
 
                 String xml = _subscriptionModel.getSubscriptionDetails();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }else if(oper.equalsIgnoreCase("getPrice")){
+            } else if (oper.equalsIgnoreCase("getPrice")) {
                 float price = _subscriptionModel.getJournalPrice(
                         Integer.parseInt(request.getParameter("startyear")),
                         Integer.parseInt(request.getParameter("years")),
                         Integer.parseInt(request.getParameter("journalgroupid")),
-                        Integer.parseInt(request.getParameter("subtypeid"))
-                        );
+                        Integer.parseInt(request.getParameter("subtypeid")));
                 String xml = util.convertStringToXML(String.valueOf(price), "price");
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }else if(oper.equalsIgnoreCase("getJournalGroupContents")){
+            } else if (oper.equalsIgnoreCase("getJournalGroupContents")) {
                 int groupID = Integer.parseInt(request.getParameter("groupid"));
                 ResultSet rs = _subscriptionModel.getJournalGroupContents(groupID);
                 String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            } else if (oper.equalsIgnoreCase("getSubscriptionDetalsForInward")) {
+                String inwardNumber = request.getParameter("inwardNumber");
+                ResultSet rs = _subscriptionModel.getSubscriptionDetailsForInward(inwardNumber);
+                String xml = null;
+                if (rs != null) {
+                    xml = util.convertResultSetToXML(rs);
+                } else {
+                    logger.error("Failed to get subscription details for id: " + request.getParameter("inwardNumber"));
+                    xml = util.convertStringToXML("Failed to get subscription details", "error");
+                }
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 

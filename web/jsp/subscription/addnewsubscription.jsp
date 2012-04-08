@@ -1,7 +1,12 @@
 <%--
     Document   : Add New Subscription
 --%>
+<%@page import="IAS.Bean.Inward.inwardFormBean"%>
 <jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
+<%
+    inwardFormBean _inwardFormBean = (inwardFormBean)request.getSession().getAttribute("inwardUnderProcess");
+    String inwardNumber = _inwardFormBean.getInwardNumber();
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -51,16 +56,34 @@
                                         <input class="IASDisabledTextBox" TABINDEX="2" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
                                     </span>
                                 </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Inward Number:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBox" TABINDEX="3" readonly type="text" name="inwardNumber" id="inwardNumber" value="<%=inwardNumber%>"/>
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="IASFormRightDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Subscription Number:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBox" TABINDEX="4" readonly type="text" name="subscriptionNumber" id="subscriptionNumber" value=""/>
+                                    </span>
+                                </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Remarks</label>
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <textarea class="IASTextArea" TABINDEX="3" cols="20" rows="10" name="remarks" id="remarks"></textarea>
+                                        <textarea class="IASTextArea" TABINDEX="5" cols="20" rows="10" name="remarks" id="remarks"></textarea>
                                     </span>
                                 </div>
                             </div>

@@ -1,26 +1,27 @@
-package IAS.Controller;
+package IAS.Controller.Inward;
 
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
+import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
-public class inward extends HttpServlet {
+public class inward extends JDSController {
 
     private inwardModel _inwardModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.inward");
 
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");

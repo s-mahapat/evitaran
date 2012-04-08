@@ -4,18 +4,18 @@ import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
 import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
-public class addMasterData extends HttpServlet {
+public class addMasterData extends JDSController {
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -34,7 +34,7 @@ public class addMasterData extends HttpServlet {
             } else if (action.equalsIgnoreCase("addAgent")) {
 
                 url = "/jsp/masterdata/addAgent.jsp";
-                
+
             } else if (action.equalsIgnoreCase("addCity")) {
 
                 url = "/jsp/masterdata/addCity.jsp";

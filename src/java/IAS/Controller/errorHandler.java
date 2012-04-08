@@ -4,35 +4,43 @@
  */
 package IAS.Controller;
 
+import IAS.Class.JDSLogger;
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author Shailendra Mahapatra
  */
-public class errorHandler extends HttpServlet {
+public class errorHandler extends JDSController {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.errorHandler");
+
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/jsp/errors/error.jsp");
-        rd.forward(request, response);
+
+        if (this.isAjax(request)) {
+            Throwable throwable = (Throwable) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+            logger.fatal(throwable.getMessage());
+            response.setStatus(500);
+            response.getWriter().write("Error in processing request");
+        } else {
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/jsp/errors/error.jsp");
+            rd.forward(request, response);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP
+     * <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -45,7 +53,9 @@ public class errorHandler extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -59,6 +69,7 @@ public class errorHandler extends HttpServlet {
 
     /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

@@ -51,7 +51,7 @@ public class Database implements HttpSessionBindingListener {
     @Override
     public void valueBound(HttpSessionBindingEvent event) {
 
-        logger.debug("Created a new session with id " + event.getSession().getId());
+        logger.debug("Create New session event triggered");
 
     }
 

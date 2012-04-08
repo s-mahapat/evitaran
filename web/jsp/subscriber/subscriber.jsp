@@ -144,7 +144,7 @@
                         onchange="subtypeCodeAppend()">
                     <option value="0">Select</option>
                     <%
-                        if (subscriberFormBean.getSubtypedesc()!= null && subscriberFormBean.getSubtypedesc().isEmpty()) {
+                        if (subscriberFormBean.getSubtypedesc()!= null && !subscriberFormBean.getSubtypedesc().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getSubtypedesc() + "\"" + " selected >" + subscriberFormBean.getSubtypedesc() + "</option>");
                         }
                     %>
@@ -173,7 +173,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="10" type="text" name="department" id="department" value="${subscriberFormBean.department}"/>
+                <input class="IASTextBoxWide" TABINDEX="10" type="text" name="department" id="department" value="${subscriberFormBean.department}"/>
             </span>
         </div>
 
@@ -183,7 +183,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="11" type="text" name="institution" id="institution" value="${subscriberFormBean.institution}"/>
+                <input class="IASTextBoxWide" TABINDEX="11" type="text" name="institution" id="institution" value="${subscriberFormBean.institution}"/>
             </span>
         </div>
 
@@ -257,6 +257,6 @@
         <input onclick="setActionValue('display')" class="IASButton" TABINDEX="17" type="submit" value="View Subscriber" id="btnDisplaySubscriber" name="btnSubmitAction"/>
         <input onclick="setActionValue('viewsubscription')" class="IASButton" TABINDEX="18" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
         <input onclick="setActionValue('editsubscription')" class="IASButton" TABINDEX="19" type="submit" value="Edit Subscription" id="btnEditSubscription" name="btnSubmitAction"/>
-        <input onclick="setActionValue('add')" class="IASButton" TABINDEX="20" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction" <%out.println(isEnabled);%>/>
+        <%--<input onclick="setActionValue('add')" class="IASButton" TABINDEX="20" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction" <%out.println(isEnabled);%>/>--%>
     </div>
 </fieldset>

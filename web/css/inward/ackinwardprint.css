@@ -1,0 +1,26 @@
+root {
+    display: block;
+}
+
+.subjectLine{
+
+    margin-left: 10px;
+    font-family: cambria,sans-serif,serif;
+    font-size: 12px;
+    width: 100%;
+    float: left;
+    margin-top: 20px;
+}
+
+#letterDiv{
+    margin: 0;
+    padding: 1cm 1cm;
+    width: 90%;
+}
+
+#subscriptionDetail{
+    width: 80%;
+    float: left;
+    display: block;
+    margin: 20px 10%;
+}

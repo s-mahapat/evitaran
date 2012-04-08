@@ -1,0 +1,33 @@
+body {
+    border: none;
+    font: 12px Arial, Helvetica,"Lucida Grande", serif; color: #000;
+}
+
+#sidebar, #header, #chqDDReturnFields, #chqDDReturnFields{
+    border: none;
+    display: none;
+ }
+
+ #bodyContainer{
+    margin: 0;
+    padding: 0 1%;
+    width: 98%;
+    float: left;
+}
+
+ .actionBtnDiv{
+     display: none;
+ }
+
+ .MainFieldset, .subMainFieldSet{
+     border: none;
+     margin: 0;
+     padding: 0;
+ }
+
+ .MainDiv{
+     margin: 1cm 1cm;
+     padding: 1cm 1cm;
+     border: none;
+     padding: 0;
+ }

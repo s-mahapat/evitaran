@@ -13,14 +13,14 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
 
-public class subscriber extends HttpServlet {
+public class subscriber extends JDSController {
 
     private subscriberModel _subscriberModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.subscriber");
@@ -35,6 +35,7 @@ public class subscriber extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -46,7 +47,7 @@ public class subscriber extends HttpServlet {
             if (action.equalsIgnoreCase("save")) {
                 //if the record count saved is 1, it indicates that the record was saved else fail.
                 if (_subscriberModel.Save() == 1) {
-                    url = "/jsp/subscriber/viewsubscriber.jsp";
+                    url = "/jsp/subscription/addnewsubscription.jsp";//"/jsp/subscriber/viewsubscriber.jsp";
                 }
             } else if (action.equalsIgnoreCase("edit")) {
                 if (_subscriberModel.editSubscriber() != null) {
@@ -95,7 +96,7 @@ public class subscriber extends HttpServlet {
 
         } catch (SQLException | ParseException | InvocationTargetException |
                 IllegalAccessException | ClassNotFoundException | ParserConfigurationException |
-                TransformerException | IOException e) {
+                TransformerException | SAXException | IOException e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
         } finally {

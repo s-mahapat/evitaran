@@ -1,15 +1,14 @@
 package IAS.Controller;
 
+import IAS.Class.JDSLogger;
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
-import org.apache.log4j.*;
-import IAS.Class.JDSLogger;
+import org.apache.log4j.Logger;
 
-public class main extends HttpServlet {
+public class main extends JDSController {
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.main");
 
@@ -20,6 +19,7 @@ public class main extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -73,7 +73,7 @@ public class main extends HttpServlet {
         } else if (action.equalsIgnoreCase("createsubscriber")) {
 
             url = "/jsp/subscriber/createsubscriber.jsp";
-            
+
         } else if (action.equalsIgnoreCase("searchsubscriber")) {
 
             url = "/jsp/subscriber/searchsubscriber.jsp";

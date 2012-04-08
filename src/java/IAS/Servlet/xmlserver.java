@@ -10,12 +10,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import IAS.Controller.JDSController;
 /**
  *
  * @author Shailendra Mahapatra
  */
-public class xmlserver extends HttpServlet {
+public class xmlserver extends JDSController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -24,6 +24,7 @@ public class xmlserver extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/xml");

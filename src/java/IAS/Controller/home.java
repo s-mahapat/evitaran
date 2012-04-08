@@ -5,25 +5,29 @@
 package IAS.Controller;
 
 import IAS.Class.Database;
+import IAS.Class.JDSLogger;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
-import javax.servlet.*;
-import java.sql.*;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Shailendra Mahapatra
  */
-public class home extends HttpServlet {
+public class home extends JDSController {
 
     private ServletContext context = null;
     private static final String jdbcDriver = "com.mysql.jdbc.Driver";
     private Connection connection;
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.home");
 
     @Override
     public void init() throws ServletException {
@@ -32,8 +36,9 @@ public class home extends HttpServlet {
             this.context = getServletContext();
             Class.forName(jdbcDriver); //set Java database connectivity driver
         } catch (ClassNotFoundException e) {
+            logger.error(e.getMessage());
         } catch (Exception e) {
-            //System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -59,18 +64,20 @@ public class home extends HttpServlet {
 
         String url = null;
         HttpSession session = request.getSession(true);
+        logger.debug("Created a new session with id: " + session.getId());
         synchronized (session) {
 
             //get the connection from the session if it exists.
             try {
                 Database db = (Database) session.getAttribute("db_connection");
-                if (db == null) {
-                    connection = DriverManager.getConnection(dbURL, username, password);
-                    connection.setAutoCommit(true);
-                    db = new Database(connection);
-                    session.setAttribute("db_connection", db);
-                    session.setAttribute("inwardUnderProcess", null);
+                if (db != null) {
+                    db.close(); //close the existing connection, to reopen another one
                 }
+                connection = DriverManager.getConnection(dbURL, username, password);
+                connection.setAutoCommit(true);
+                db = new Database(connection);
+                session.setAttribute("db_connection", db);
+                session.setAttribute("inwardUnderProcess", null);
                 url = "jsp/home.jsp";
 
             } catch (SQLException e) {

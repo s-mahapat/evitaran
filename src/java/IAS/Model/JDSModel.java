@@ -27,7 +27,7 @@ public class JDSModel {
     public JDSModel(HttpServletRequest _request) throws SQLException{
 
         this.request = _request;
-        this.session = _request.getSession(false);
+        this.session = _request.getSession(false); //do not create the session if it does not exist
         if (this.session == null) {
             throw (new SQLException("Session does not exist.Database connection not found in the session"));
         }

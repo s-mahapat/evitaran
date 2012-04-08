@@ -5,22 +5,22 @@
 package IAS.Controller.Invoice;
 
 import IAS.Class.JDSLogger;
+import IAS.Controller.JDSController;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-
 /**
  *
  * @author Shailendra Mahapatra
  */
-public class Invoice extends HttpServlet {
+public class Invoice extends JDSController {
 
     private static final Logger logger = JDSLogger.getJDSLogger(Invoice.class.getName());
 
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

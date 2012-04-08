@@ -35,6 +35,7 @@
                     sortname: 'inwardNumber',
                     loadonce: false,
                     rownumbers: true,
+                    scrollOffset: 20,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
                     colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','View/Edit'],
@@ -70,9 +71,6 @@
                         }
                         for (var i = 0; i < ids.length; i++) {
                             var inwardId = ids[i];
-                            //var rowData = jQuery("#inwardTable").jqGrid('getLocalRow',cl);
-                            //var inwardId = cl; //rowData['InwardNo'];
-                            //var subscriberId = rowData['Subscriber Id'] || 0;
                             action = "<a style='color:blue;' href='inward?action=view&inwardNumber=" + inwardId + "'>View</a><a style='color:blue;' href='inward?action=edit&inwardNumber=" + inwardId + "'>Edit</a>";
                             jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
