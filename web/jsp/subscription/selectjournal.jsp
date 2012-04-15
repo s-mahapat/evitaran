@@ -46,13 +46,21 @@
             sortname:'subscriptionDate',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames: ['Journal Group','Journal Cost (INR)','Start Year','End Year','Copies','Total (INR)','Delete'],
+            colNames: ['Journal Group','Journal Price Group ID','Journal Cost (INR)', 'Start Year','End Year','Copies','Total (INR)','Delete'],
             colModel: [
                 {
                     name:"journalName",
                     index:"journalName",
                     align:"center",
                     key: true,
+                    width:140
+
+                },
+                {
+                    name:"journalPriceGroupID",
+                    index:"journalPriceGroupID",
+                    align:"center",
+                    hidden: true,
                     width:140
 
                 },

@@ -5,12 +5,12 @@
 package IAS.Model.Subscription;
 
 import IAS.Bean.Inward.inwardFormBean;
+import IAS.Bean.Subscription.SubscriptionDetailBean;
+import IAS.Bean.Subscription.SubscriptionFormBean;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
-import IAS.Bean.Subscription.SubscriptionFormBean;
-import IAS.Bean.Subscription.SubscriptionDetailBean;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
+
 /**
  *
  * @author Shailendra Mahapatra
@@ -31,7 +32,6 @@ public class SubscriptionModel extends JDSModel {
     private String subscriberNumber;
     private String inwardNumber;
     private inwardFormBean _inwardFormBean;
-
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.SubscriptionModel");
 
     public SubscriptionModel(HttpServletRequest request) throws SQLException {
@@ -43,7 +43,7 @@ public class SubscriptionModel extends JDSModel {
         this.subscriberNumber = request.getParameter("subscriberNumber");
 
         if (session.getAttribute("inwardUnderProcess") != null) {
-            this._inwardFormBean = (inwardFormBean)session.getAttribute("inwardUnderProcess");
+            this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");
             this.inwardNumber = _inwardFormBean.getInwardNumber();
         } else {
             this.inwardNumber = null;
@@ -51,12 +51,13 @@ public class SubscriptionModel extends JDSModel {
 
     }
 
-    public String addSubscription() throws IllegalAccessException,ParseException,
+    public String addSubscription() throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException {
 
         String xml = null;
         String journalCodes[] = request.getParameterValues("journalGroupID");
+        String journalGroupID[] = request.getParameterValues("journalGroupID");
         String startYear[] = request.getParameterValues("startYear");
         String endYear[] = request.getParameterValues("endYear");
         String Copies[] = request.getParameterValues("copies");
@@ -67,7 +68,7 @@ public class SubscriptionModel extends JDSModel {
 
         //this.inwardNumber = "12A-00001";
         if (this.inwardNumber == null) {
-            xml = util.convertStringToXML("No Inward Under Process. Cannot add a subscription without an Inward","error");
+            xml = util.convertStringToXML("No Inward Under Process. Cannot add a subscription without an Inward", "error");
         } else {
             SubscriptionFormBean _subscriptionBean = new SubscriptionFormBean();
             SubscriptionDetailBean _subscriptionDetailBean = new SubscriptionDetailBean();
@@ -100,26 +101,73 @@ public class SubscriptionModel extends JDSModel {
 
                 sql = Queries.getQuery("insert_subscription_detail");
                 st = conn.prepareStatement(sql);
-                for(int i=0; i<journalCodes.length ;i++){
+                for (int i = 0; i < journalCodes.length; i++) {
                     paramIndex = 0;
-                    st.setInt(++paramIndex,subscriptionID);
+                    st.setInt(++paramIndex, subscriptionID);
                     st.setInt(++paramIndex, Integer.parseInt(journalCodes[i]));
+                    st.setInt(++paramIndex, Integer.parseInt(journalGroupID[i]));
                     st.setInt(++paramIndex, Integer.parseInt(Copies[i]));
                     st.setInt(++paramIndex, Integer.parseInt(startYear[i]));
                     st.setInt(++paramIndex, Integer.parseInt(endYear[i]));
                     st.setFloat(++paramIndex, Float.parseFloat(Total[i]));
-                    if(db.executeUpdatePreparedStatement(st)!=1){
-                        throw(new SQLException("Failed to insert subscription details"));
+                    if (db.executeUpdatePreparedStatement(st) != 1) {
+                        throw (new SQLException("Failed to insert subscription details"));
                     }
                 }
-                xml = util.convertStringToXML(String.valueOf(subscriptionID),"subscriptionID");
+                xml = util.convertStringToXML(String.valueOf(subscriptionID), "subscriptionID");
 
-            }else{
+            } else {
                 //failed to update subscription
-                throw(new SQLException("Failed to insert subscription"));
+                throw (new SQLException("Failed to insert subscription"));
             }
         }
         return xml;
+    }
+
+    public int updateSubscriptionDetail(int id, int startYear, int endYear,
+            boolean active, int copies, int SubscriberTypeID)
+            throws ParserConfigurationException, SQLException, TransformerException {
+
+        int rc;
+        try {
+            conn.setAutoCommit(false);
+            String sql = Queries.getQuery("update_subscription_detail");
+            PreparedStatement st = conn.prepareStatement(sql);
+            int paramIndex = 0;
+            st.setInt(++paramIndex, startYear);
+            st.setInt(++paramIndex, endYear);
+            st.setInt(++paramIndex, copies);
+            st.setBoolean(++paramIndex, active);
+            st.setInt(++paramIndex, id);
+            rc = db.executeUpdatePreparedStatement(st);
+
+            //update the balance and subscription total after update
+            sql = "CALL updateSubscriptionBalance(" + id + ")";
+            db.executeUpdate(sql);
+
+            //update the price group
+            sql = "select journalGroupID from subscriptiondetails where id=" + id;
+            ResultSet rs = db.executeQuery(sql);
+            rs.first();
+            int journalGroupID = rs.getInt(1);
+            rs = this.getJournalPrice(startYear, (endYear - startYear + 1), journalGroupID, SubscriberTypeID);
+            rs.first();
+            sql = "update subscriptiondetails set journalPriceGroupID=? , total = ? where id=?";
+            st = conn.prepareStatement(sql);
+            paramIndex = 0;
+            st.setInt(++paramIndex, rs.getInt(1));
+            st.setFloat(++paramIndex, copies * rs.getFloat(2));
+            st.setInt(++paramIndex, id);
+            rc = db.executeUpdatePreparedStatement(st);
+            conn.commit();
+        } catch (SQLException e) {
+            conn.rollback();
+            throw(e);
+        }finally{
+            conn.setAutoCommit(true);
+        }
+        return rc;
+
     }
 
     public int deleteSubscription() throws ParserConfigurationException, SQLException, TransformerException {
@@ -144,15 +192,26 @@ public class SubscriptionModel extends JDSModel {
         if (rs != null) {
             xml = util.convertResultSetToXML(rs);
         } else {
-            xml = util.convertStringToXML("Failed to get subscription","error");
+            xml = util.convertStringToXML("Failed to get subscription", "error");
         }
         return xml;
 
     }
 
-    public ResultSet getSubscriptionByID(int _id) throws ParserConfigurationException, SQLException, TransformerException, IOException{
+    public ResultSet getSubscriptionByID(int _id) throws ParserConfigurationException,
+            SQLException, TransformerException, IOException {
+
+        String sql = Queries.getQuery("get_subscription_info_by_id");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setInt(1, _id);
+        ResultSet rs = db.executeQueryPreparedStatement(st);
+        return rs;
+    }
+
+    public ResultSet getSubscriptionDetailBySubscriptionID(int _id) throws ParserConfigurationException,
+            SQLException, TransformerException, IOException {
         // the query name from the jds_sql properties files in WEB-INF/properties folder
-        String sql = Queries.getQuery("get_subscription_by_id");
+        String sql = Queries.getQuery("get_subscription_detail_by_subscription_id");
         PreparedStatement st = conn.prepareStatement(sql);
         st.setInt(1, _id);
         ResultSet rs = db.executeQueryPreparedStatement(st);
@@ -172,7 +231,7 @@ public class SubscriptionModel extends JDSModel {
             xml = util.convertResultSetToXML(rs);
         } else {
             logger.error("Failed to get subscription details for id: " + request.getParameter("id"));
-            xml = util.convertStringToXML("Failed to get subscription details","error");
+            xml = util.convertStringToXML("Failed to get subscription details", "error");
         }
         return xml;
     }
@@ -190,23 +249,18 @@ public class SubscriptionModel extends JDSModel {
 
     }
 
-    public float getJournalPrice(int startYear, int numYears, int journalGroupID, int subscriberTypeID) throws SQLException{
+    public ResultSet getJournalPrice(int startYear, int numYears, int journalGroupID, int subscriberTypeID) throws SQLException {
         String sql = Queries.getQuery("get_journal_group_price");
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, journalGroupID);
         ps.setInt(2, subscriberTypeID);
         ps.setInt(3, startYear);
         ps.setInt(4, numYears);
-        float price;
-        try (ResultSet rs = this.db.executeQueryPreparedStatement(ps)) {
-            rs.first();
-            price = rs.getFloat(1);
-            rs.close();
-        }
-        return price;
+        ResultSet rs = this.db.executeQueryPreparedStatement(ps);
+        return rs;
     }
 
-    public ResultSet getJournalGroupContents(int journalGroupID) throws SQLException, ParserConfigurationException, TransformerException{
+    public ResultSet getJournalGroupContents(int journalGroupID) throws SQLException, ParserConfigurationException, TransformerException {
         String sql = Queries.getQuery("get_journal_groupid_contents");
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, journalGroupID);

@@ -14,6 +14,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.log4j.Logger;
 
 public class subscription extends JDSController {
@@ -44,9 +45,41 @@ public class subscription extends JDSController {
             } else if (action != null && action.equalsIgnoreCase("edit")) {
 
                 //fill in the subscriber bean
+                ResultSet rs = _subscriptionModel.getSubscriptionByID(Integer.parseInt(request.getParameter("id")));
+                IAS.Bean.Subscription.SubscriptionFormBean _SubscriptionFormBean = null;
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    Class type = Class.forName("IAS.Bean.Subscription.SubscriptionFormBean");
+                    _SubscriptionFormBean = (IAS.Bean.Subscription.SubscriptionFormBean) bProc.toBean(rs, type);
+
+                }
                 if (_subscriberModel.GetSubscriber() != null) {
+                    request.setAttribute("SubscriptionFormBean", _SubscriptionFormBean);
                     url = "/jsp/subscription/editsubscription.jsp";
                 }
+
+            } else if(action.equalsIgnoreCase("subscriptioninfo")){
+                // gets the subscription info given a subscription id
+                ResultSet rs = _subscriptionModel.getSubscriptionByID(Integer.parseInt(request.getParameter("id")));
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            } else if (oper.equalsIgnoreCase("edit")){
+
+                // we reach here if the existing subscription is being edited
+                int startYear = Integer.parseInt(request.getParameter("startYear"));
+                int endYear = Integer.parseInt(request.getParameter("endYear"));
+                int copies = Integer.parseInt(request.getParameter("copies"));
+                int subTypeID = Integer.parseInt(request.getParameter("subtypeid"));
+                boolean active = Boolean.parseBoolean(request.getParameter("active"));
+                int id = Integer.parseInt(request.getParameter("id"));
+                if(_subscriptionModel.updateSubscriptionDetail(id, startYear, endYear, active, copies, subTypeID) != 1){
+                    String xml = util.convertStringToXML("Error updating subscription details", "error");
+                    request.setAttribute("xml", xml);
+                    url = "/xmlserver";
+                }
+
 
             } else if (oper.equalsIgnoreCase("del")) {
 
@@ -62,7 +95,7 @@ public class subscription extends JDSController {
             } else if (oper.equalsIgnoreCase("subid")) {
 
                 //get the subscription details for the subscriber and send it back to the UI as xml
-                ResultSet rs = _subscriptionModel.getSubscriptionByID(Integer.parseInt(request.getParameter("id")));
+                ResultSet rs = _subscriptionModel.getSubscriptionDetailBySubscriptionID(Integer.parseInt(request.getParameter("id")));
                 String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
@@ -74,12 +107,12 @@ public class subscription extends JDSController {
                 url = "/xmlserver";
 
             } else if (oper.equalsIgnoreCase("getPrice")) {
-                float price = _subscriptionModel.getJournalPrice(
+                ResultSet rs = _subscriptionModel.getJournalPrice(
                         Integer.parseInt(request.getParameter("startyear")),
                         Integer.parseInt(request.getParameter("years")),
                         Integer.parseInt(request.getParameter("journalgroupid")),
                         Integer.parseInt(request.getParameter("subtypeid")));
-                String xml = util.convertStringToXML(String.valueOf(price), "price");
+                String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             } else if (oper.equalsIgnoreCase("getJournalGroupContents")) {

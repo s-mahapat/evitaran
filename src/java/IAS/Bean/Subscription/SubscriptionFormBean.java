@@ -7,6 +7,8 @@ public class SubscriptionFormBean extends JDSBean{
     private String subscriberNumber;
     private String inwardNumber;
     private float subscriptionTotal;
+    private float amount;
+    private float balance;
 
     public int getSubscriptionID(){
         return this.subscriptionID;
@@ -38,6 +40,22 @@ public class SubscriptionFormBean extends JDSBean{
 
     public void setSubscriptionTotal(float _value){
         this.subscriptionTotal = _value;
+    }
+
+    public float getAmount(){
+        return this.amount;
+    }
+
+    public void setAmount(float _value){
+        this.amount = _value;
+    }
+
+    public float getBalance(){
+        return this.balance;
+    }
+
+    public void setBalance(float _value){
+        this.balance = _value;
     }
 
 }

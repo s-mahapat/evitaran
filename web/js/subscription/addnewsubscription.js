@@ -3,7 +3,7 @@ var subscriberType = 0;
 var subscriptionSaved = false
 function setEndYear(){
     var startYear = parseInt($("#subscriptionStartYear").val(),10);
-    var html;
+    var html = undefined;
     for(i=0;i<=4;i++){
         html += "<option value='" + (startYear+i) + "'>" + (startYear+i) + "</option>";
     }
@@ -33,11 +33,13 @@ function addJournal(){
     //else get the price details from the server
     startYear = $("#subscriptionStartYear").val();
     numYears = $("#endYear").val() - startYear + 1; // +1 to include the current year
-    price = getPrice(startYear, numYears, selectedJournalGroupCode, subscriberType);
-    if(price != -1){
+    priceDetails = getPrice(startYear, numYears, selectedJournalGroupCode, subscriberType);
+    var price = priceDetails[1];
+    if(price != -1){ // check if the price group id is -1
         var newRowData = {
             "journalName": '<a color="blue" title="Click here for Journal List" href="#" onclick="getJournalGroupContents(' + selectedJournalGroupCode + ')">' + selectedJournalGroupName + '</a>',
-            "journalCost": price,
+            "journalPriceGroupID":priceDetails[0],
+            "journalCost": price, //get the price
             "startYear": $("#subscriptionStartYear").val(),
             "endYear" : $("#endYear").val(),
             "Copies": $("#copies").val(),
@@ -82,6 +84,8 @@ function getSubscriberType(subscriberNumber){
 
 function getPrice(startYear, years, journalGroupID, subscriberTypeID){
     var _price = -1;
+    var _id = -1;
+    var _priceDetails = new Array();
     $.ajax({
         type: 'GET',
         dataType: 'xml',
@@ -90,16 +94,21 @@ function getPrice(startYear, years, journalGroupID, subscriberTypeID){
         "&journalgroupid=" + journalGroupID + "&subtypeid=" + subscriberTypeID,
         success: function(xmlResponse, textStatus, jqXHR){
 
-            $(xmlResponse).find("results").each(function(){
-                _price = $(this).find("price").text();
+            $(xmlResponse).find("results").find("row").each(function(){
+                _id = $(this).find("id").text();
             });
+            $(xmlResponse).find("results").find("row").each(function(){
+                _price = $(this).find("rate").text();
+            });
+            _priceDetails[0] = _id;
+            _priceDetails[1] = _price;
         },
         error: function(jqXHR,textStatus,errorThrown){
             alert("Failed to get journal price. " + textStatus + ": "+ errorThrown);
         }
 
     });
-    return _price;
+    return _priceDetails;
 }
 
 function getJournalGroupContents(groupID){
@@ -163,6 +172,10 @@ function saveSubscription(){
         rowRequiredData.push({
             name: "journalGroupID",
             value: journalNameToGroupIDMap[ids[intIndex]]
+        });
+        rowRequiredData.push({
+            name: "journalPriceGroupID",
+            value: rowObj.journalPriceGroupID
         });
         rowRequiredData.push({
             name: "startYear",

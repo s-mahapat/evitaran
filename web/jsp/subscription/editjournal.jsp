@@ -4,9 +4,12 @@
 <%@page import="IAS.Class.util"%>
 <script type="text/javascript">
     var journalInfo = {};
+    var lastSel = null;
+    var journalEdited = 0;
+
     $(document).ready(function(){
 
-        //jdsAppend("CMasterData?md=journals", "journalName", "journalName");
+        subscriberType = getSubscriberType($("#subscriberNumber").val());
 
         $.ajax({
             type: "GET",
@@ -32,6 +35,18 @@
             }
         });
 
+        //get the start year and end year key:value pairs for filling the select box
+        var szStartYear = null;
+        var szEndYear = null;
+        $('select#subscriptionStartYear').find('option').each(function() {
+            szStartYear = (szStartYear == null) ? $(this).val() + ":" + $(this).val() : szStartYear + ";" + $(this).val() + ":" + $(this).val();
+        });
+
+        $('select#endYear').find('option').each(function() {
+            szEndYear = (szEndYear == null) ? $(this).val() + ":" + $(this).val() : szEndYear + ";" + $(this).val() + ":" + $(this).val();
+        });
+
+        var selectedRowID = null;
         $("#newSubscription").jqGrid({
             url:'subscription?oper=subid&id=' + $("#subscriptionID").val(),
             datatype: 'xml',
@@ -40,19 +55,34 @@
             autowidth: true,
             forceFit: true,
             sortable: true,
-            loadonce: false,
+            loadonce: true,
             rownumbers: true,
             sortname:'journalGroupName',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames: ['Journal Group','Journal Cost (INR)','Start Year','End Year','Copies','Total (INR)','Delete'],
+            colNames: ['ID','Journal Group','Journal Group ID','Journal Cost (INR)','Start Year','End Year','Copies','Total (INR)','Active'],
             colModel: [
+                {
+                    name:"id",
+                    index:"id",
+                    align:"center",
+                    key: true,
+                    width:40
+
+                },
                 {
                     name:"journalGroupName",
                     index:"journalGroupName",
                     align:"center",
-                    key: true,
                     width:140
+
+                },
+                {
+                    name:"journalGroupID",
+                    index:"journalGroupID",
+                    align:"center",
+                    hidden: true,
+                    width:40
 
                 },
                 {
@@ -65,19 +95,30 @@
                     name:"startYear",
                     index:"startYear",
                     width:60,
-                    align:"center"
+                    align:"center",
+                    //formatter:"select",
+                    editable: true,
+                    edittype:'select',
+                    editoptions:{value: szStartYear}
                 },
                 {
                     name:"endYear",
                     index:"endYear",
                     width:60,
-                    align:"center"
+                    align:"center",
+                    editable: true,
+                    edittype:'select',
+                    editoptions:{value: szEndYear}
+
                 },
                 {
                     name:"copies",
                     index:"copies",
                     width:60,
-                    align:"center"
+                    align:"center",
+                    editable: true,
+                    edittype:'text',
+                    editrules: {required: true, minValue: 1, integer: true }
                 },
                 {
                     name:"total",
@@ -86,10 +127,14 @@
                     align:"center"
                 },
                 {
-                    name:"delete",
-                    index:"delete",
+                    name:"active",
+                    index:"active",
                     width:40,
-                    align:"center"
+                    align:"center",
+                    formatter: "checkbox",
+                    editable: true,
+                    edittype:'checkbox',
+                    editoptions: {value:"true:false"}
                 }
 
             ],
@@ -99,6 +144,9 @@
                 repeatitems: false,
                 id: "journalGroupName"
             },
+            pager: '#pager',
+            rowNum:10,
+            rowList:[10,20,30],
             gridComplete: function(){
 
             },
@@ -107,18 +155,48 @@
             },
             loadComplete: function(xml){
                 var totalSubscriptionValue = 0
-                $(xml).find("results").find("row").find("total").each(function(){
-                    totalSubscriptionValue += parseFloat($(this).text()) ;
+                $(xml).find("results").find("row").find("subscriptionTotal").each(function(){
+                    totalSubscriptionValue = parseFloat($(this).text()) ;
                 });
-                //alert(totalSubscriptionValue);
-                $("#subscriptionTotalValue").text(totalSubscriptionValue);
+                $("#subscriptionTotalValue").val(totalSubscriptionValue);
             },
-            caption: '&nbsp;',
-            viewrecords: true,
-            gridview: true,
-            rowNum:20
-        });
+            onSelectRow: function(id){
+                selectedRowID = id;
+                if(id && id != lastSel){
+                    jQuery('#newSubscription').restoreRow(lastSel);
+                    lastSel=id;
+                }
+                var editparameters = {
+                    "keys" : true,
+                    "oneditfunc" : null,
+                    "successfunc" : null,
+                    "url" : "subscription",
+                    "extraparam" : {subtypeid:subscriberType},
+                    "aftersavefunc" : function(){
+                        jQuery("#newSubscription").setGridParam({ datatype: "xml" });
+                        jQuery("#newSubscription").trigger("reloadGrid");
+                        getSubscriptionInfo();
+                        //$("#newSubscription").jqGrid.trigger("reloadGrid");
+                    },
+                    "errorfunc": function(){alert("Failed to update subscription data")},
+                    "afterrestorefunc" : null,
+                    "restoreAfterError" : true,
+                    "mtype" : "POST"
+                }
+                jQuery('#newSubscription').editRow(id, editparameters);
+
+
+            }
+        }).navGrid('#pager',{add:false, view:true, del:false, edit:false},
+        {}, // use default settings for edit
+        {}, // use default settings for add
+        {},  // delete instead that del:false we need this
+        {multipleSearch : true}, // enable the advanced searching
+        {closeOnEscape:true} /* allow the view dialog to be closed when user press ESC key*/
+    );;
     });
+
+
 
 
 </script>
@@ -194,17 +272,17 @@
         </span>
         <span class="IASFormDivSpanInputBox" style="margin-left:35px;">
             <input class="IASButton" TABINDEX="14" type="button" value="Add" id="btnAddLine" name="btnAddLine" onclick="addJournal()"/>
-            <input class="IASButton" TABINDEX="15" type="button" value="Delete All" id="btnDeleteAll" name="btnDeleteAll" onclick="deleteRow('All')"/>
+            <%--<input class="IASButton" TABINDEX="15" type="button" value="Delete All" id="btnDeleteAll" name="btnDeleteAll" onclick="deleteRow('All')"/>--%>
         </span>
     </div>
     <div class="IASFormFieldDiv" id="newSubscriptiondiv" style="margin-top: 15px;">
         <table class="datatable" id="newSubscription"></table>
         <div id="pager"></div>
     </div>
-    <div id="subscriptionTotal">
+    <%--<div id="subscriptionTotal">
         <span>Subscription Total(INR):</span>
         <span id="subscriptionTotalValue">0</span>
-    </div>
+    </div>--%>
     <div id="journalGroupContents"></div>
 </fieldset>
 

@@ -502,6 +502,15 @@ A:active {
     text-decoration: underline;
 }
 
+#error{
+    background-image: url("../images/error.png");
+    background-repeat: no-repeat;
+    width: 120px;
+    height: 144px;
+    margin: 0 auto;
+    text-align: center;
+}
+
 #accessdenied{
     background-image: url("../images/403.png");
     background-repeat: no-repeat;

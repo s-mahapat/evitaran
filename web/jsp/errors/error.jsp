@@ -14,7 +14,11 @@
             <div class="MainDiv">
                 <fieldset class="MainFieldset">
                     <fieldset class="subMainFieldSet">
-                        <table class="datatable">
+                        <div id="error">&nbsp;</div>
+                        <div style="margin: 10px auto; font-size: 14px; font-weight: bolder; text-align: center">
+                            An Error occurred while processing your request. Please contact your system administrator
+                        </div>
+                        <%--<table class="datatable">
                             <%
                                 if (exception != null) {
                                     out.println("<tr><td>Exception Class</td><td>");
@@ -49,7 +53,7 @@
 
                                 }
                             %>
-                        </p>
+                        </p>--%>
 
                     </fieldset>
                 </fieldset>

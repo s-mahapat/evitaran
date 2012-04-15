@@ -44,6 +44,7 @@
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchsubscriber"%>">Search Subscriber</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=afs"%>">Add Free Subscriber</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=asf"%>">Add Summer Fellows</a></li>
+                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchsubscriber"%>">Subscription</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=newsubscription"%>">New Subscription</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=renewsubscription"%>">Renew Subscription</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=addresschange"%>">Address Change</a></li>

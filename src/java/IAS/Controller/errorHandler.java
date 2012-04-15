@@ -24,9 +24,9 @@ public class errorHandler extends JDSController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        Throwable throwable = (Throwable) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+        logger.fatal(throwable.getMessage());
         if (this.isAjax(request)) {
-            Throwable throwable = (Throwable) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-            logger.fatal(throwable.getMessage());
             response.setStatus(500);
             response.getWriter().write("Error in processing request");
         } else {

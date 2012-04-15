@@ -39,11 +39,11 @@
                     colModel :[
                         {name:'Subscriber Number', index:'subscriberNumber', width:30, align:'center', xmlmap:'subscriberNumber'},
                         {name:'Subscriber Name', index:'subscriberName', width:60, align:'center', xmlmap:'subscriberName'},
-                        {name:'Department', index:'department', width:60, align:'center', xmlmap:'department'},
+                        {name:'Department', index:'department', width:40, align:'center', xmlmap:'department'},
                         {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                        {name:'Pin Code', index:'pincode', width:30, align:'center', xmlmap:'pincode'},
-                        {name:'Country', index:'country', width:30, align:'center', xmlmap:'country'},
-                        {name:'Action', index:'action', width:30, align:'center',formatter:'showlink'}
+                        {name:'Pin Code', index:'pincode', width:20, align:'center', xmlmap:'pincode'},
+                        {name:'Country', index:'country', width:20, align:'center', xmlmap:'country'},
+                        {name:'Action', index:'action', width:40, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
                         root: "results",
@@ -66,7 +66,9 @@
                         var ids = jQuery("#subscriberTable").jqGrid('getDataIDs');
                         for (var i = 0; i < ids.length; i++) {
                             var subscriberId = ids[i];
-                            action = "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "'>View</a><a style='color:blue;' href='subscriber?action=edit&subscriberNumber=" + subscriberId + "'>Edit</a>";
+                            action = "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "'>View</a>" +
+                                        "<a style='color:blue;' href='subscriber?action=edit&subscriberNumber=" + subscriberId + "'>Edit</a>" +
+                                        "<a style='color:blue;' href='subscriber?action=editsubscription&subscriberNumber=" + subscriberId + "'>Subscription</a>";
                             jQuery("#subscriberTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                     },
