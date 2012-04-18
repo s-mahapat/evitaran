@@ -1,26 +1,27 @@
 
 package IAS.Controller.masterdata;
 
+import IAS.Model.masterdata.journalSubscriptionRateGroupModel;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
-import IAS.Model.masterdata.priceGroupModel;
 
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
+
 /**
  *
- * @author Deepali Gokhale
+ * @author aloko
  */
-public class priceGroup extends HttpServlet {
-
-    private priceGroupModel _priceGroupModel = null;
+public class journalSubscriptionRateGroup extends HttpServlet {
+    private journalSubscriptionRateGroupModel _journalSubscriptionRateGroupModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -28,36 +29,24 @@ public class priceGroup extends HttpServlet {
         String action = request.getParameter("action");
         String url = null;
 
-        try{
+        try {
+            _journalSubscriptionRateGroupModel = new IAS.Model.masterdata.journalSubscriptionRateGroupModel(request);
 
-            _priceGroupModel = new IAS.Model.masterdata.priceGroupModel(request);
+            if(action.equalsIgnoreCase("add")){
 
-            if(action.equalsIgnoreCase("save")){
-
-                _priceGroupModel.Save();
-                url = "/jsp/masterdata/displayPriceGroup.jsp";
-
-            }else if(action.equalsIgnoreCase("edit")){
-
-                 _priceGroupModel.editPriceGroup();
-                url = "/jsp/masterdata/editPriceGroup.jsp";
-
-            }else if(action.equalsIgnoreCase("view")){
-
-                 _priceGroupModel.viewPriceGroup();
-                url = "/jsp/masterdata/displayPriceGroup.jsp";
-
-            }else if(action.equalsIgnoreCase("add")){
-                
-                url = "/jsp/masterdata/createPriceGroup.jsp";
+                String xml = _journalSubscriptionRateGroupModel.add();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
 
             }else if(action.equalsIgnoreCase("search")){
 
-                String xml = _priceGroupModel.searchPriceGroup();
+                String xml = _journalSubscriptionRateGroupModel.search();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+
             }
-        }catch (Exception e) {
+
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
 
             ServletContext context = getServletContext();

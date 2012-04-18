@@ -1,0 +1,6 @@
+
+function validateJournalSubjectGroup(){
+    return true;
+}
+
+

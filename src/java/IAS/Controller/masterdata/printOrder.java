@@ -37,24 +37,13 @@ public class printOrder extends HttpServlet {
                 String xml = _printOrderModel.addPrintOrder();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-                //url = "/jsp/masterdata/addPrintOrder.jsp";
 
             }else if(action.equalsIgnoreCase("save")){
 
                 _printOrderModel.Save();
                 url = "/jsp/masterdata/displayPrintOrder.jsp";
 
-            }/*else if(action.equalsIgnoreCase("edit")){
-
-                 _printOrderModel.editPrintOrder();
-                url = "/jsp/masterdata/editPrintOrder.jsp";
-
-            }else if(action.equalsIgnoreCase("view")){
-
-                _printOrderModel.viewPrintOrder();
-                url = "/jsp/masterdata/displayPrintOrder.jsp";
-
-            }*/else if(action.equalsIgnoreCase("searchPrintOrder")){
+            }else if(action.equalsIgnoreCase("searchPrintOrder")){
 
                 String xml = _printOrderModel.searchPrintOrder();
                 request.setAttribute("xml", xml);

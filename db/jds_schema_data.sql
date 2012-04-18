@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -297,9 +297,8 @@ CREATE TABLE `journal_group_contents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `journalGroupId` int(11) NOT NULL,
   `journalId` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `no_duplicate_journal_in_group` (`journalGroupId`,`journalId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,7 +307,7 @@ CREATE TABLE `journal_group_contents` (
 
 LOCK TABLES `journal_group_contents` WRITE;
 /*!40000 ALTER TABLE `journal_group_contents` DISABLE KEYS */;
-INSERT INTO `journal_group_contents` VALUES (1,1,1),(2,2,2);
+INSERT INTO `journal_group_contents` VALUES (1,1,3),(2,2,4),(3,3,11),(4,4,1),(5,4,2),(6,4,3),(7,4,4),(8,4,5),(9,4,6),(10,4,7),(11,4,8),(12,4,9),(13,4,10),(14,4,11),(15,5,2);
 /*!40000 ALTER TABLE `journal_group_contents` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -322,8 +321,8 @@ DROP TABLE IF EXISTS `journal_groups`;
 CREATE TABLE `journal_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `journalGroupName` varchar(128) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_group_name` (`journalGroupName`) USING BTREE
+  `year` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -333,7 +332,7 @@ CREATE TABLE `journal_groups` (
 
 LOCK TABLES `journal_groups` WRITE;
 /*!40000 ALTER TABLE `journal_groups` DISABLE KEYS */;
-INSERT INTO `journal_groups` VALUES (1,'Current Science'),(3,'Prammana'),(2,'Resonance');
+INSERT INTO `journal_groups` VALUES (1,'Pramana - Journal of Physics',2011),(2,'Journal of Astrophysics and Astronomy',2012),(3,'Proceedings (Mathematical Sciences)',2011),(4,'Journals Sl. Nos 1 to 11',2012),(5,'Resonance',2011);
 /*!40000 ALTER TABLE `journal_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -659,7 +658,7 @@ CREATE TABLE `subscription_rates` (
   `period` int(11) NOT NULL,
   `rate` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -668,7 +667,7 @@ CREATE TABLE `subscription_rates` (
 
 LOCK TABLES `subscription_rates` WRITE;
 /*!40000 ALTER TABLE `subscription_rates` DISABLE KEYS */;
-INSERT INTO `subscription_rates` VALUES (1,1,1,2012,1,100),(2,1,1,2012,2,90),(3,1,6,2012,1,120),(4,2,6,2012,1,100);
+INSERT INTO `subscription_rates` VALUES (1,1,1,2011,1,750),(2,2,1,2011,1,300),(3,3,1,2011,1,300),(4,4,1,2011,1,4200),(5,5,1,2011,2,900),(6,5,1,2011,3,1300),(7,5,1,2011,5,2000);
 /*!40000 ALTER TABLE `subscription_rates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -764,7 +763,7 @@ CREATE TABLE `year` (
   `yearId` int(11) NOT NULL AUTO_INCREMENT,
   `year` text NOT NULL,
   PRIMARY KEY (`yearId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -773,7 +772,7 @@ CREATE TABLE `year` (
 
 LOCK TABLES `year` WRITE;
 /*!40000 ALTER TABLE `year` DISABLE KEYS */;
-INSERT INTO `year` VALUES (1,'2005');
+INSERT INTO `year` VALUES (1,'2005'),(2,'2006'),(3,'2007'),(4,'2008'),(5,'2009'),(6,'2010'),(7,'2011'),(8,'2012'),(9,'2013'),(10,'2014'),(11,'2015'),(12,'2016'),(13,'2017'),(14,'2018'),(15,'2019'),(16,'2020'),(17,'2021'),(18,'2022'),(19,'2023'),(20,'2024'),(21,'2025'),(22,'2026'),(23,'2027'),(24,'2028'),(25,'2029'),(41,'2030'),(42,'2031'),(43,'2032'),(44,'2033'),(45,'2034'),(46,'2035'),(47,'2036'),(48,'2037'),(49,'2038'),(50,'2039'),(51,'2040'),(52,'2041'),(53,'2042'),(54,'2043'),(55,'2044'),(56,'2045'),(57,'2046'),(58,'2047'),(59,'2048'),(60,'2049'),(61,'2050');
 /*!40000 ALTER TABLE `year` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -831,4 +830,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-15 21:25:45
+-- Dump completed on 2012-04-18  8:00:58

@@ -13,16 +13,6 @@ public class printOrderFormBean {
     private int annualPrintOrder;
 
 /* Methods - Getter and Setter */
-/*
-public int getYear() {
-        return (this.year);
-    }
-
-public void setYear(int _year) {
-        this.year = _year;
-    }
-*/
-
 public int getId() {
         return (this.id);
     }

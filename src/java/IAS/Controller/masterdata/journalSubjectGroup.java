@@ -1,26 +1,27 @@
 
 package IAS.Controller.masterdata;
 
+import IAS.Model.masterdata.journalSubjectGroupModel;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
-import IAS.Model.masterdata.subGroupModel;
 
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
+
 /**
  *
- * @author Deepali Gokhale
+ * @author aloko
  */
-public class subGroup extends HttpServlet {
-
-    private subGroupModel _subGroupModel = null;
+public class journalSubjectGroup extends HttpServlet {
+    private journalSubjectGroupModel _journalSubjectGroupModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -28,36 +29,28 @@ public class subGroup extends HttpServlet {
         String action = request.getParameter("action");
         String url = null;
 
-        try{
+        try {
+            _journalSubjectGroupModel = new IAS.Model.masterdata.journalSubjectGroupModel(request);
 
-            _subGroupModel = new IAS.Model.masterdata.subGroupModel(request);
+            if(action.equalsIgnoreCase("add")){
 
-            if(action.equalsIgnoreCase("save")){
+                String xml = _journalSubjectGroupModel.add();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
 
-                _subGroupModel.Save();
-                url = "/jsp/masterdata/displaySubGroup.jsp";
+            }if(action.equalsIgnoreCase("save")){
 
-            }else if(action.equalsIgnoreCase("edit")){
-
-                 _subGroupModel.editSubGroup();
-                url = "/jsp/masterdata/editSubGroup.jsp";
-
-            }else if(action.equalsIgnoreCase("view")){
-
-                 _subGroupModel.viewSubGroup();
-                url = "/jsp/masterdata/displaySubGroup.jsp";
-
-            }else if(action.equalsIgnoreCase("add")){
-                
-                url = "/jsp/masterdata/createSubGroup.jsp";
+                _journalSubjectGroupModel.save();
 
             }else if(action.equalsIgnoreCase("search")){
 
-                String xml = _subGroupModel.searchSubGroup();
+                String xml = _journalSubjectGroupModel.search();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+
             }
-        }catch (Exception e) {
+
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
 
             ServletContext context = getServletContext();

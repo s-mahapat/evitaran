@@ -1,6 +1,7 @@
 <%--
-    Document   : Display Print Order
-    Author     : Deepali
+    Document   : journalSubscriptionRateGroup
+    Created on : Mar 12, 2012, 6:01:05 PM
+    Author     : aloko
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,16 +10,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
-        <%--<link rel="stylesheet" type="text/css" href="css/masterdata/printOrder.css"/>--%>
-        <title>Display Print Order</title>
-        <script type="text/javascript" src="js/masterdata/displayPrintOrder.js"></script>
-        <script type="text/javascript" src="js/masterdata/validatePrintOrder.js"></script>
+        <%--<link rel="stylesheet" type="text/css" href="css/masterdata/journalSubscriptionRateGroup.css"/>--%>
+        <title>Subscription Rates</title>
+        <script type="text/javascript" src="js/masterdata/journalSubscriptionRateGroup.js"></script>
+        <script type="text/javascript" src="js/masterdata/validateJournalSubscriptionRateGroup.js"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
         <script type="text/javascript" src="js/jquery/grid.inlinedit.js"></script>
         <script type="text/javascript" src="js/jquery/grid.celledit.js"></script>
         <script>
-            addOnloadEvent(makePrintOrderReadOnly);
+            addOnloadEvent(makeSubscriptionRateGroupReadOnly);
         </script>
+
 
         <script type="text/javascript">
             var selectedId = 0;
@@ -26,13 +28,13 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jQuery("#printOrderTable").jqGrid('navGrid',"#IASFormFieldDiv",{edit:false,add:false,del:false});
+                jQuery("#subscriptionRateTable").jqGrid('navGrid',"#IASFormFieldDiv",{edit:false,add:false,del:false});
              });
 
             $(function(){
 
-                $("#printOrderTable").jqGrid({
-                    url:"<%=request.getContextPath()%>/printOrder",
+                $("#subscriptionRateTable").jqGrid({
+                    url:"<%=request.getContextPath()%>/journalSubscriptionRateGroup",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -42,17 +44,16 @@
                     sortable: true,
                     loadonce: true,
                     rownumbers: true,
-                    emptyrecords: "No Print Order for selected Year",
+                    emptyrecords: "No Subscription Rates found",
                     loadtext: "Loading...",
-                    colNames:['Print Order Id','Journal Code','Journal Name','Year','Issues per Year', 'Print Order', 'Annual Print Order'],
+                    colNames:['Subscription Rates ID','Group Name','Year','Subscriber Type', 'Rate', 'Period'],
                     colModel :[
                         {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
-                        {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
-                        {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
+                        {name:'journalGroupName', index:'journalGroupName', width:80, align:'center', xmlmap:'journalGroupName'},
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
-                        {name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},
-                        {name:'printOrder', index:'printOrder', width:80, align:'center',xmlmap:'printOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {required: true, integer:true, minValue:0 }},
-                        {name:'annualPrintOrder', index:'annualPrintOrder', width:80, align:'center',xmlmap:'annualPrintOrder'}
+                        {name:'subtypedesc', index:'subtypedesc', width:80, align:'center', xmlmap:'subtypedesc'},
+                        {name:'rate', index:'rate', width:80, align:'center',xmlmap:'rate', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {required: true, integer:true, minValue:0 }},
+                        {name:'period', index:'period', width:80, align:'center',xmlmap:'period', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {required: true, integer:true, minValue:0 }}
                     ],
                     xmlReader : {
                         root: "results",
@@ -69,12 +70,12 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-                    editurl:"<%=request.getContextPath()%>/printOrder?action=save",
+                    editurl:"<%=request.getContextPath()%>/journalSubscriptionRateGroup?action=save",
                     gridComplete: function() {
-                        var ids = jQuery("#printOrderTable").jqGrid('getDataIDs');
+                        var ids = jQuery("#subscriptionRateTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            jQuery("#printOrderTable").jqGrid('setRowData', ids[i]);
+                            jQuery("#subscriptionRateTable").jqGrid('setRowData', ids[i]);
                         }
                     },
                     beforeRequest: function(){
@@ -88,29 +89,29 @@
 
             });
 
-            function editPrintOrder(){
-                var ids = jQuery("#printOrderTable").jqGrid('getDataIDs');
+            function edit(){
+                var ids = jQuery("#subscriptionRateTable").jqGrid('getDataIDs');
 
                 for (var i = 0; i < ids.length; i++) {
-                    jQuery("#printOrderTable").jqGrid('editRow',ids[i]);
+                    jQuery("#subscriptionRateTable").jqGrid('editRow',ids[i]);
                 }
                 this.disabled = 'true';
                 jQuery("#btnSave,#btnCancel").attr("disabled",false);
             }
 
             function savePrintOrder(){
-                var ids = jQuery("#printOrderTable").jqGrid('getDataIDs');
+                var ids = jQuery("#subscriptionRateTable").jqGrid('getDataIDs');
 
                 for (var i = 0; i < ids.length; i++) {
-                    jQuery("#printOrderTable").setGridParam({editurl: "<%=request.getContextPath()%>/printOrder?action=save" +
-                                                                        "&year=" + $("#printOrderTable").getCell(ids[i], 'year') +
-                                                                "&journalCode=" + $("#printOrderTable").getCell(ids[i], 'journalCode')
+                    jQuery("#subscriptionRateTable").setGridParam({editurl: "<%=request.getContextPath()%>/journalSubscriptionRateGroup?action=save" +
+                                                                        "&year=" + $("#subscriptionRateTable").getCell(ids[i], 'year') +
+                                                                "&journalCode=" + $("#subscriptionRateTable").getCell(ids[i], 'journalCode')
                                                                 });
-                    jQuery("#printOrderTable").jqGrid('saveRow',ids[i]);
-                    var aPO = $("#printOrderTable").getCell(ids[i], 'issues') * $("#printOrderTable").getCell(ids[i], 'printOrder');
-                    jQuery("#printOrderTable").setCell(ids[i], 'annualPrintOrder', aPO);
+                    jQuery("#subscriptionRateTable").jqGrid('saveRow',ids[i]);
+                    var aPO = $("#subscriptionRateTable").getCell(ids[i], 'issues') * $("#subscriptionRateTable").getCell(ids[i], 'printOrder');
+                    jQuery("#subscriptionRateTable").setCell(ids[i], 'annualPrintOrder', aPO);
                     //setGridParam requires a reload for value to reflect in the cell. Hence using setCell instead
-                    //jQuery("#printOrderTable").setGridParam({annualPrintOrder: aPO});
+                    //jQuery("#subscriptionRateTable").setGridParam({annualPrintOrder: aPO});
                 }
                 jQuery("#btnSave,#btnCancel").attr("disabled",true);
                 jQuery("#btnEdit").attr("disabled",false);
@@ -118,10 +119,10 @@
             }
 
             function cancelPrintOrder(){
-                var ids = jQuery("#printOrderTable").jqGrid('getDataIDs');
+                var ids = jQuery("#subscriptionRateTable").jqGrid('getDataIDs');
 
                 for (var i = 0; i < ids.length; i++) {
-                    jQuery("#printOrderTable").jqGrid('restoreRow',ids[i]);
+                    jQuery("#subscriptionRateTable").jqGrid('restoreRow',ids[i]);
                 }
                 jQuery("#btnSave,#btnCancel").attr("disabled",true);
                 jQuery("#btnEdit").attr("disabled",false);
@@ -132,32 +133,32 @@
                 if(validatePrintOrder() == true)
                     {
                         isPageLoaded = true;
-                        jQuery("#printOrderTable").setGridParam({postData:
+                        jQuery("#subscriptionRateTable").setGridParam({postData:
                                 {year       : $("#year").val(),
                                 action       : "searchPrintOrder"
                             }});
 
-                        jQuery("#printOrderTable").setGridParam({ datatype: "xml" });
-                        jQuery("#printOrderTable").trigger("clearGridData");
-                        jQuery("#printOrderTable").trigger("reloadGrid");
+                        jQuery("#subscriptionRateTable").setGridParam({ datatype: "xml" });
+                        jQuery("#subscriptionRateTable").trigger("clearGridData");
+                        jQuery("#subscriptionRateTable").trigger("reloadGrid");
 
                     }
                 }
 
             function addNewPrintOrder(){
-                var gridData = jQuery("#printOrderTable").getRowData();
+                var gridData = jQuery("#subscriptionRateTable").getRowData();
 
                 if(validatePrintOrder() == true)
                     {
                         isPageLoaded = true;
-                        jQuery("#printOrderTable").setGridParam({postData:
+                        jQuery("#subscriptionRateTable").setGridParam({postData:
                                 {year       : $("#year").val(),
                                 action       : "add"
                             }});
 
-                        jQuery("#printOrderTable").setGridParam({ datatype: "xml" });
-                        jQuery("#printOrderTable").trigger("clearGridData");
-                        jQuery("#printOrderTable").trigger("reloadGrid");
+                        jQuery("#subscriptionRateTable").setGridParam({ datatype: "xml" });
+                        jQuery("#subscriptionRateTable").trigger("clearGridData");
+                        jQuery("#subscriptionRateTable").trigger("reloadGrid");
 
                     }
                 }
@@ -208,7 +209,7 @@
                             <fieldset class="subMainFieldSet">
                                 <legend>Search Result</legend>
 
-                                <table class="datatable" id="printOrderTable"></table>
+                                <table class="datatable" id="subscriptionRateTable"></table>
                                 <div id="pager"></div>
                             </fieldset>
 
@@ -229,3 +230,5 @@
         </div>
     </body>
 </html>
+
+

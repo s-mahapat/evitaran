@@ -88,24 +88,6 @@ public class printOrderModel extends JDSModel{
 
     }
 
-    /*
-    //public String editPrintOrder() throws SQLException, ParseException,
-    public void editPrintOrder() throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException, ParserConfigurationException, TransformerException {
-
-        this.searchPrintOrder();
-
-    }
-
-    //public String viewPrintOrder() throws SQLException, ParseException,
-    public void viewPrintOrder() throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException, ParserConfigurationException, TransformerException {
-
-        this.searchPrintOrder();
-
-    }
-     */
-
     public String searchPrintOrder() throws SQLException, ParseException, ParserConfigurationException, TransformerException, IllegalAccessException, InvocationTargetException {
 
         printOrderFormBean printOrderFormBean = new IAS.Bean.masterdata.printOrderFormBean();

@@ -1,0 +1,6 @@
+
+function validateJournalSibscriptionRateGroup(){
+    return true;
+}
+
+

@@ -96,7 +96,7 @@ public class main extends JDSController {
 
         } else if (action.equalsIgnoreCase("subRate")) {
 
-            url = "/jsp/masterdata/annualSubscriptionrates.jsp";
+            url = "/jsp/masterdata/journalSubscriptionRateGroup.jsp";
 
         } else if (action.equalsIgnoreCase("searchCity")) {
 
@@ -188,11 +188,13 @@ public class main extends JDSController {
 
         } else if (action.equals("jsGroup")) {
 
-            url = "/jsp/masterdata/searchJournalSubGroup.jsp";
+            //url = "/jsp/masterdata/searchJournalSubGroup.jsp";
+            url = "/jsp/masterdata/journalSubjectGroup.jsp";
 
         }else if (action.equals("jpGroup")) {
 
-            url = "/jsp/masterdata/searchJournalPriceGroup.jsp";
+            //url = "/jsp/masterdata/searchJournalPriceGroup.jsp";
+            url = "/jsp/masterdata/journalSubscriptionRateGroup.jsp";
 
         }
 

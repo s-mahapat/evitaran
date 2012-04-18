@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -207,9 +207,8 @@ CREATE TABLE `journal_group_contents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `journalGroupId` int(11) NOT NULL,
   `journalId` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `no_duplicate_journal_in_group` (`journalGroupId`,`journalId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -222,8 +221,8 @@ DROP TABLE IF EXISTS `journal_groups`;
 CREATE TABLE `journal_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `journalGroupName` varchar(128) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_group_name` (`journalGroupName`) USING BTREE
+  `year` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -419,9 +418,9 @@ DROP TABLE IF EXISTS `subscriber_type`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subscriber_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subtypecode` char(5) NOT NULL,
-  `subtypedesc` char(64) NOT NULL,
-  `subtype` char(32) NOT NULL,
+  `subtypecode` char(6) DEFAULT NULL,
+  `subtypedesc` char(64) DEFAULT NULL,
+  `subtype` char(32) DEFAULT NULL,
   `nationality` char(1) NOT NULL,
   `institutional` char(1) NOT NULL,
   `freejrnl` int(8) DEFAULT NULL,
@@ -533,7 +532,7 @@ CREATE TABLE `year` (
   `yearId` int(11) NOT NULL AUTO_INCREMENT,
   `year` text NOT NULL,
   PRIMARY KEY (`yearId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -545,4 +544,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-15 21:25:45
+-- Dump completed on 2012-04-18  8:00:58
