@@ -147,7 +147,6 @@
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addJournal"%>">Add Journal</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchJournal"%>">Search Journal</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=jsGroup"%>">Journal Subject Group</a></li>
-                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=jpGroup"%>">Journal Price Group</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=subRate"%>">Annual Subscription Rate</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=printOrder"%>">Print Order</a></li>
                     </ul>

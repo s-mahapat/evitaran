@@ -65,10 +65,27 @@ public class reports extends HttpServlet {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }else if(action.equalsIgnoreCase("listAgents")){
-
-                String xml = _reportModel.searchAgents();
+                ResultSet rs = _reportModel.searchAgents();
+                String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+            }else if(action.equalsIgnoreCase("listAgentPrint")){
+
+                ResultSet rs = _reportModel.searchSubType();
+                request.setAttribute("ResultSet", rs);
+                url = "/jsp/reports/listAgentPrint.jsp";
+            }else if(action.equalsIgnoreCase("listSubscribers")){
+
+                ResultSet rs = _reportModel.searchSubscriber();
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("listSubscribersPrint")){
+
+                ResultSet rs = _reportModel.searchSubscriber();
+                request.setAttribute("ResultSet", rs);
+                url = "/jsp/reports/listSubscriberPrint.jsp";
             }
 
         }catch (Exception e) {

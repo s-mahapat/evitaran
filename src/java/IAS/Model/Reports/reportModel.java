@@ -69,7 +69,7 @@ public class reportModel extends JDSModel{
         if ("0".equals(selall)) {
                 selall = null;
             }
-        if (selall != null && selall.length() > 0){
+        if (selall != null){
 
             sql = Queries.getQuery("search_subtype_all");
         }
@@ -228,19 +228,20 @@ public class reportModel extends JDSModel{
         return xml;
     }
 
-     public String searchAgents() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+     public ResultSet searchAgents() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String xml = null;
         String sql;
         String city = request.getParameter("city");
         String country = request.getParameter("country");
         String state = request.getParameter("state");
-        String fromDate = request.getParameter("fromDate");
-        String toDate = request.getParameter("toDate");
-        String selall = request.getParameter("selAll");
+        String fromDate = request.getParameter("from");
+        String toDate = request.getParameter("to");
+        String selall = request.getParameter("selall");
+        int param = 0;
         if ("0".equals(selall)) {
                 selall = null;
             }
-        if (selall != null && selall.length() > 0){
+        if (selall != null){
 
             sql = Queries.getQuery("list_agent_all");
         }
@@ -257,26 +258,89 @@ public class reportModel extends JDSModel{
             }
 
             if (city != null && city.compareToIgnoreCase("NULL") != 0  && city != null && city.length() > 0) {
-                sql += " and t2.id = t1.city and t2.city = " + "\"" + city + "\"";
+                sql += " t2.id = t1.cityId and t2.city = " + "'" + city + "'";
+                param = 1;
             }
 
             if (country != null && country.compareToIgnoreCase("NULL") != 0  && country.length() > 0) {
-                sql += " and t7.id = t1.country and t7.country = " + "\"" + country + "\"";
+                if (param == 1) {
+                    sql += " and t7.id = t1.countryId and t7.country = " + "\"" + country + "\"";
+                }else {
+                    sql += " t7.id = t1.countryId and t7.country = " + "\"'" + country + "'\"";
+                    param = 1;
+                }
             }
 
             if (state != null && state.compareToIgnoreCase("NULL") != 0  && state.length() > 0) {
-                sql += " and t8.id = t1.state and t8.state = " + "\"" + state + "\"";
+                if (param == 1) {
+                    sql += " and t8.id = t1.stateId and t8.state = " + "\"" + state + "\"";
+                }else {
+                    sql += " t8.id = t1.stateId and t8.state = " + "\"" + state + "\"";
+                    param = 1;
+                }                
             }
 
             if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
-                sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+                sql += " and regDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
             }
         }
         PreparedStatement stGet = conn.prepareStatement(sql);
 
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        xml = util.convertResultSetToXML(rs);
-        return xml;
+        return rs;
     }
+     
+ public ResultSet searchSubscriber() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String xml = null;
+        String subType = request.getParameter("subtype");
+        String nationality = request.getParameter("nationality");
+        String institutional = request.getParameter("institutional");
+        String selall = request.getParameter("selall");
+        String sql;
+        int param = 0;
+        if ("0".equals(selall)) {
+                selall = null;
+            }
+        if (selall != null){
+
+            sql = Queries.getQuery("search_subtype_all");
+        }
+        else {
+            sql = Queries.getQuery("search_subtype_prm");
+
+            if (subType != null && subType.length() > 0) {
+                sql += " subType=" + "'" + subType + "'";
+                param = 1;
+            }
+
+            if (nationality != null && nationality.length() > 0) {
+                if (param == 0){
+                    sql += " nationality =" + "'" + nationality + "'";
+                    param = 1;
+                }
+                else{
+                    sql += " and nationality =" + "'" + nationality + "'";
+                }
+            }
+
+            if (institutional != null && institutional.length() > 0) {
+                 if (param == 0){
+                    sql += " institutional =" + "'" + institutional + "'";
+                    param = 1;
+                }
+                else{
+                    sql += " and institutional =" + "'" + institutional + "'";
+                }
+            }
+            sql += " order by id";
+        }
+
+        PreparedStatement stGet = conn.prepareStatement(sql);
+
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        return rs;
+        //xml = util.convertResultSetToXML(rs);
+        //return xml;
+    }     
 }
 

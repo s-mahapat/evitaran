@@ -89,13 +89,21 @@
                         city           : $("#city").val(),
                         from           : $("#from").val(),
                         to             : $("#to").val(),
-                        selall         : $("#selall").val()
+                        selall         : $("#selall:checked").length
                     }});
                 jQuery("#agentTable").setGridParam({ datatype: "xml" });
                 jQuery("#agentTable").trigger("clearGridData");
                 jQuery("#agentTable").trigger("reloadGrid");
             }
 
+            function getChecked(){
+                if (document.getElementById("selall").value == 1 ){
+                    document.getElementById("selall").value = 0;
+                }else {
+                    document.getElementById("selall").value = 1;
+                }
+            }
+            
             // draw the date picker.
             jQueryDatePicker("from","to");
 
@@ -177,7 +185,7 @@
                                         <label>All Agents</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="selall" id="selall" value=""/>
+                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
                                 </div>                                
                                       
@@ -209,7 +217,7 @@
                      <fieldset class="subMainFieldSet">
                         <div class="IASFormFieldDiv">
                             <div class="singleActionBtnDiv">
-                                <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
+                                <input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>
                             </div>
                         </div>
                     </fieldset>                        

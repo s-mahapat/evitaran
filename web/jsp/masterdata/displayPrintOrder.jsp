@@ -9,7 +9,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
-        <%--<link rel="stylesheet" type="text/css" href="css/masterdata/printOrder.css"/>--%>
+        <link rel="stylesheet" type="text/css" href="css/masterdata/printOrder.css"/>
         <title>Display Print Order</title>
         <script type="text/javascript" src="js/masterdata/displayPrintOrder.js"></script>
         <script type="text/javascript" src="js/masterdata/validatePrintOrder.js"></script>
@@ -185,28 +185,26 @@
                                                 <input class="IASTextBox" TABINDEX="1" type="text" name="year" id="year" value="<jsp:getProperty name="printOrderFormBean" property="year"/>"/>
                                             </span>
                                         </div>
-                                        <div class="IASFormFieldDiv">
-                                            <div id="searchBtnDiv">
-                                                <input class="IASButton" TABINDEX="2" type="button" value="Search Print Orders" id="btnSearch" name="btnSearch" onclick="searchPrintOrder()"/>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <%-- Search Criteria right div --%>
-                                    <div class="IASFormRightDiv">
-                                        <div class="IASFormFieldDiv">
-                                            <div id="addBtnDiv">
-                                                <input class="IASButton" TABINDEX="3" type="button" value="Add New Print Orders" id="btnAdd" name="btnAdd" onclick="addNewPrintOrder()"/>
-                                            </div>
-                                        </div>
-                                    </div>
+
 
                             </fieldset>
-
+                            <fieldset class="subMainFieldSet">
+                                <legend>Actions: Search/ Add</legend>
+                                <div class="IASFormFieldDiv">
+                                   <div id="searchBtnDiv">
+                                        <input class="IASButton" TABINDEX="2" type="button" value="Search Print Orders" id="btnSearch" name="btnSearch" onclick="searchPrintOrder()"/>
+                                   </div>
+                                   <div id="addBtnDiv">
+                                        <input class="IASButton" TABINDEX="3" type="button" value="Add New Print Orders" id="btnAdd" name="btnAdd" onclick="addNewPrintOrder()"/>
+                                    </div>
+                                </div>                                
+                            </fieldset>
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Search Result Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>
                             <fieldset class="subMainFieldSet">
-                                <legend>Search Result</legend>
+                                <legend>Print Order Details</legend>
 
                                 <table class="datatable" id="printOrderTable"></table>
                                 <div id="pager"></div>
@@ -218,9 +216,15 @@
 
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
+                                    <div id="editBtnDiv">
                                         <input class="IASButton" TABINDEX="4" type="button" value="Edit" onclick="editPrintOrder()" id="btnEdit" name="btnEditAction"/>
+                                    </div>
+                                    <div id="saveBtnDiv">
                                         <input class="IASButton" TABINDEX="5" type="button" value="Save" onclick="savePrintOrder()" id="btnSave" name="btnSaveAction"/>
+                                    </div>
+                                    <div id="cancelBtnDiv">
                                         <input class="IASButton" TABINDEX="6" type="button" value="Cancel" onclick="cancelPrintOrder()" id="btnCancel" name="btnCancelAction"/>
+                                    </div>
                                 </div>
                             </fieldset>
                     </fieldset>

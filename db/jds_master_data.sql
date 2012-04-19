@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.19
+-- Server version	5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -291,9 +291,9 @@ DROP TABLE IF EXISTS `subscriber_type`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subscriber_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subtypecode` char(6) DEFAULT NULL,
-  `subtypedesc` char(64) DEFAULT NULL,
-  `subtype` char(32) DEFAULT NULL,
+  `subtypecode` char(5) NOT NULL,
+  `subtypedesc` char(64) NOT NULL,
+  `subtype` char(32) NOT NULL,
   `nationality` char(1) NOT NULL,
   `institutional` char(1) NOT NULL,
   `freejrnl` int(8) DEFAULT NULL,
@@ -309,7 +309,7 @@ CREATE TABLE `subscriber_type` (
 
 LOCK TABLES `subscriber_type` WRITE;
 /*!40000 ALTER TABLE `subscriber_type` DISABLE KEYS */;
-INSERT INTO `subscriber_type` VALUES (1,'IC','Indian Schools and Colleges','Paid','I','I',0,0.000),(2,'II','Indian Institutes','Paid','I','I',0,0.000),(3,'IP','Indian Personal','Paid','I','I',0,0.000),(4,'IN','Indian Industry Corporate','Paid','I','I',0,0.000),(5,'IF','Foreign Subscribers','Paid','F','I',0,0.000),(6,'FELJM','Fellows','Free','I','P',1,0.000),(7,'SF','Summer Fellows','Free','I','I',1,0.000),(8,'AS','Associates','Free','I','P',1,0.000),(9,'EBALL','Editorial Board Members','Free','I','I',10,0.000),(10,'EI','Indian Exchange','Free','I','P',1,0.000),(11,'EF','Foreign Exchange','Free','F','P',0,0.000),(12,'JGrant','Grant','Free','I','P',0,0.000),(13,'Ath','Authors','Free','I','P',0,0.000);
+INSERT INTO `subscriber_type` VALUES (1,'IC','Indian Schools and Colleges','Paid','I','I',0,0.000),(2,'II','Indian Institutes','Free','I','I',0,10.000),(3,'IP','Indian Institute of Science','Paid','I','I',NULL,NULL),(4,'FELGM','Fellows','Paid','I','P',NULL,NULL),(5,'XXX','Summer Fellows','Paid','I','I',0,0.000),(6,'JDSD','JDS Developers','Free','I','P',100,100.000),(7,'IITS','IIT Students','Free','I','I',12,0.000),(8,'ITBS','IITB Students','Paid','I','P',12,0.000),(9,'REC','Regional Engg College','Paid','I','I',12,0.000),(10,'EC','Engg College','Free','I','P',12,0.000),(11,'FI','Foreign Institutes','Paid','F','I',NULL,NULL);
 /*!40000 ALTER TABLE `subscriber_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,4 +370,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-18  8:00:59
+-- Dump completed on 2012-04-19 18:32:44

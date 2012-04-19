@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.19
+-- Server version	5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -797,19 +797,19 @@ BEGIN
     declare balance float default 0.0;
     declare subscription_id int default 0;
     
-    # Get the subscription ID from the subscription detail ID
+    
     select subscriptionID into subscription_id from subscriptiondetails where id=subscriptionDetailID;
     
-    # Get the amount from the inward table
+    
     select amount into inward_amount 
     from inward 
     where id=(select inwardID from subscription where id=subscription_id);
     
-    # Get the sum of all journal prices
+    
     select sum(total) into subscription_total 
     from subscriptiondetails where subscriptionID=subscription_id and active=True;
     
-    # calculate the balance amount
+    
     set balance = inward_amount - subscription_total;
     
     update subscription set subscriptionTotal=subscription_total, balance=balance
@@ -830,4 +830,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-18  8:00:58
+-- Dump completed on 2012-04-19 18:32:44

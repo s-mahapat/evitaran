@@ -7,32 +7,30 @@ root {
 
 
 #addBtnDiv{
-    margin-left: 40%;
+
     float: left;
     width: 10%;
 }
-
 
 #searchBtnDiv{
     margin-left: 40%;
     float: left;
-    width: 10%;
+    width: 10%; 
 }
 
-#defineRateBtnDiv{
+#editBtnDiv{
+    margin-left: 40%;
     float: left;
-    width: 10%;
+    width   : 8%;
 }
-
 
 #saveBtnDiv{
-    margin-left: 50%;
     float: left;
-    width   : 10%;
+    width   : 8%;
 }
 
 #cancelBtnDiv{
     
     float: left;
-    width: 10%;
+    width: 8%;
 }

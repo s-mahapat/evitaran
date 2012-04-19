@@ -9,7 +9,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
-        <%--<link rel="stylesheet" type="text/css" href="css/masterdata/journalSubjectGroup.css"/>--%>
+        <link rel="stylesheet" type="text/css" href="css/masterdata/subjectGroup.css"/>
         <title>Journal Groups</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/journalSubjectGroup.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validateJournalSubjectGroup.js"%>"></script>
@@ -236,44 +236,53 @@
                     <fieldset class="MainFieldset">
                         <legend>Display Journal Groups</legend>
                             <fieldset class="subMainFieldSet">
-                                <legend>Search/ Add</legend>
+                                <legend>Search Criterion</legend>
                                     <%-- Search Criteria left div --%>
                                     <div class="IASFormLeftDiv">
                                         <div class="IASFormFieldDiv">
-                                            <div class="IASFormFieldDiv">
-                                                <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="1" name="year" id="year" onchange="journalGroupNameAppend()">
-                                                        <option value="0">Select</option>
-                                                    </select>
-                                                </span>
                                                 <span class="IASFormDivSpanLabel">
-                                                    <label>Journal Group:</label>
-                                                </span>
-                                                <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="2" name="journalGroupName" id="journalGroupName" onchange="search()">
-                                                        <option value="0">Select</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                        </div>
+                                                    <label>Year:</label>
+                                                </span>                                            
+                                            <span class="IASFormDivSpanInputBox">
+                                                <select class="IASComboBox" TABINDEX="1" name="year" id="year" onchange="journalGroupNameAppend()">
+                                                    <option value="0">Select</option>
+                                                </select>
+                                            </span>
+                                         </div>
+                                    </div>
+                                    <div class="IASFormRightDiv">
+                                         <div class="IASFormFieldDiv">   
+                                            <span class="IASFormDivSpanLabel">
+                                                <label>Journal Group:</label>
+                                            </span>
+                                            <span class="IASFormDivSpanInputBox">
+                                                <select class="IASComboBox" TABINDEX="2" name="journalGroupName" id="journalGroupName" onchange="search()">
+                                                    <option value="0">Select</option>
+                                                </select>
+                                            </span>
+                                        </div>                                        
                                     </div>
                                     <%-- Search Criteria right div --%>
-                                    <div class="IASFormRightDiv">
+                              </fieldset>
+                              <fieldset class="subMainFieldSet">
+                                  <legend>Action: Add</legend>
+                                    <div id="addBtnDiv">
+                                        <input class="IASButton" TABINDEX="3" type="button" value="Add New Subject Group" id="btnAdd" name="btnAdd" onclick="add()"/>
+                                    </div>
+                              </fieldset>
+                              <fieldset class="subMainFieldSet">
+                                  <legend>Enter New Journal Group Name</legend>
+                                    <div class="IASFormLeftDiv">
                                         <div class="IASFormFieldDiv">
-                                            <div id="addBtnDiv">
-                                                <input class="IASButton" TABINDEX="3" type="button" value="Add New Subject Group" id="btnAdd" name="btnAdd" onclick="add()"/>
-                                            </div>
                                             <span class="IASFormDivSpanLabel">
-                                                <label>Enter New Group Name:</label>
+                                                <label>Journal Group Name:</label>
                                             </span>
                                             <span class="IASFormDivSpanInputBox">
                                                 <input class="IASTextBox" TABINDEX="4" type="text" name="newJournalGroupName" id="newJournalGroupName" value="<jsp:getProperty name="journalSubjectGroupFormBean" property="newJournalGroupName"/>"/>
                                             </span>
                                         </div>
                                     </div>
-
-                            </fieldset>
-
+                             </fieldset>
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Search Result Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>
@@ -283,15 +292,18 @@
                                 <table class="datatable" id="journalGroupTable"></table>
                                 <div id="pager"></div>
                             </fieldset>
-
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Journal Actions Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>
 
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
+                                    <div id="saveBtnDiv">
                                         <input class="IASButton" TABINDEX="5" type="button" value="Save" onclick="save()" id="btnSave" name="btnSaveAction"/>
+                                    </div>
+                                    <div id="cancelBtnDiv">
                                         <input class="IASButton" TABINDEX="6" type="button" value="Cancel" onclick="cancel()" id="btnCancel" name="btnCancelAction"/>
+                                    </div>
                                 </div>
                             </fieldset>
                     </fieldset>

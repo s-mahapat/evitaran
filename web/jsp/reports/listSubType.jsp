@@ -94,6 +94,15 @@
                     }
             }
 
+
+            function getChecked(){
+                if (document.getElementById("selall").value == 1 ){
+                    document.getElementById("selall").value = 0;
+                }else {
+                    document.getElementById("selall").value = 1;
+                }
+            }
+            
         </script>
     </head>
     <body>
@@ -115,32 +124,7 @@
                             <div class="IASFormLeftDiv">
 
 
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Free/ Paid</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-
-                                        <select class="IASComboBoxMandatory" TABINDEX="4" name="subtype" id="subtype">
-                                            <option value ="">Select</option>
-                                            <option value ="Paid">Paid</option>
-                                            <option value ="Free">Free</option>
-                                        </select>
-                                    </span>
-                                </div>
-
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Nationality</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxMandatory" TABINDEX="5" name="nationality" id="nationality">
-                                            <option value ="">Select</option>
-                                            <option value ="I">Indian</option>
-                                            <option value ="F">Foreign</option>
-                                        </select>
-                                    </span>
-                                </div>
+                                
                             </div>
 
                             <div class="IASFormRightDiv">
@@ -162,7 +146,7 @@
                                         <label>All Subscriber Types</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall"/>
+                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
                                 </div>
                             </div>

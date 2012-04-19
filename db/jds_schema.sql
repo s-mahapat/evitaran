@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.19
+-- Server version	5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -418,9 +418,9 @@ DROP TABLE IF EXISTS `subscriber_type`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subscriber_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subtypecode` char(6) DEFAULT NULL,
-  `subtypedesc` char(64) DEFAULT NULL,
-  `subtype` char(32) DEFAULT NULL,
+  `subtypecode` char(5) NOT NULL,
+  `subtypedesc` char(64) NOT NULL,
+  `subtype` char(32) NOT NULL,
   `nationality` char(1) NOT NULL,
   `institutional` char(1) NOT NULL,
   `freejrnl` int(8) DEFAULT NULL,
@@ -467,7 +467,7 @@ CREATE TABLE `subscription_rates` (
   `period` int(11) NOT NULL,
   `rate` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -544,4 +544,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-18  8:00:58
+-- Dump completed on 2012-04-19 18:32:43
