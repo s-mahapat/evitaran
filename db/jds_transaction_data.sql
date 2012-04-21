@@ -57,7 +57,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB AUTO_INCREMENT=1773 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1779 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +90,7 @@ CREATE TABLE `subscriber` (
   KEY `subscriberName` (`subscriberName`),
   KEY `subscriberCity` (`city`),
   KEY `subscriberPincode` (`pincode`)
-) ENGINE=InnoDB AUTO_INCREMENT=166227 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=166229 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -183,7 +183,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +206,7 @@ CREATE TABLE `subscriptiondetails` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -218,4 +218,4 @@ CREATE TABLE `subscriptiondetails` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-19 18:32:44
+-- Dump completed on 2012-04-21  9:22:57

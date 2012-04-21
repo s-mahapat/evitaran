@@ -1,5 +1,6 @@
 package IAS.Controller;
 
+import IAS.Class.Database;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,25 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "JDSController", urlPatterns = {"/JDSController"})
 public class JDSController extends HttpServlet {
 
+    /*protected HttpServletRequest request = null;
+    protected Connection conn = null;
+    protected Database db = null;
+    protected HttpSession session = null;
+    
+    public JDSController(){
+        
+    }
+    
+    public JDSController(HttpServletRequest request) throws ServletException{
+        this.session = request.getSession(false); //do not create the session if it does not exist
+        if (this.session == null) {
+            throw (new ServletException("Session does not exist.Database connection not found in the session"));
+        }
+
+        this.db = (Database) session.getAttribute("db_connection");
+        this.conn = db.getConnection();
+
+    }*/
     public boolean isAjax(HttpServletRequest request) {
         return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
     }

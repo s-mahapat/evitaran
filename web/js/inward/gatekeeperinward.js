@@ -16,7 +16,19 @@ function isInwardSelected(){
         /*
          *  if the dialog is for newsubscription we do not have check for the subscriber id, just show th next screen
          */
-        var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp");
+        
+        /*var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp");
+        if(!isEmptyValue(selectedSubscriberFromDialog) && selectedSubscriberFromDialog != 0){
+            selectedSubscriberId = selectedSubscriberFromDialog;
+            jQuery("#inwardTable").jqGrid('setRowData', selectedInward, {
+                'SubscriberId': selectedSubscriberFromDialog
+            });
+        }*/
+        var selectedSubscriberFromDialog = searchSubscriber($("#country").val()
+                                                            ,$("#state").val()
+                                                            ,$("#city").val()
+                                                            ,$("#from").val());
+
         if(!isEmptyValue(selectedSubscriberFromDialog) && selectedSubscriberFromDialog != 0){
             selectedSubscriberId = selectedSubscriberFromDialog;
             jQuery("#inwardTable").jqGrid('setRowData', selectedInward, {

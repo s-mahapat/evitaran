@@ -1,9 +1,13 @@
 package IAS.Bean.Inward;
+
 import IAS.Bean.JDSBean;
 import IAS.Class.util;
-public class inwardFormBean extends JDSBean{
 
-    /* Inward header fields */
+public class inwardFormBean extends JDSBean {
+
+    /*
+     * Inward header fields
+     */
     private String from = "";
     private String country = "";
     private String state;
@@ -11,14 +15,18 @@ public class inwardFormBean extends JDSBean{
     private String city = "";
     private int pincode = 0;
     private String inwardNumber = "";
+    private int inwardID = 0;
     private String inwardCreationDate = util.getDateString();
-    private String subscriberId="";
+    private String subscriberId = "";
     private String email = "";
-    private String institution="";
+    private String institution = "";
     private String department = "";
 
-    /* Inward details fields */
+    /*
+     * Inward details fields
+     */
     private String inwardPurpose;
+    private int inwardPurposeID;
     private String paymentMode;
     private String bankName;
     private int chqddNumber = 0;
@@ -34,6 +42,14 @@ public class inwardFormBean extends JDSBean{
     private String remarks;
     private boolean completed = false;
     private String language = "";
+
+    public int getInwardID() {
+        return this.inwardID;
+    }
+
+    public void setInwardID(int _inwardID) {
+        this.inwardID = _inwardID;
+    }
 
     public String getFrom() {
         return (this.from);
@@ -80,7 +96,7 @@ public class inwardFormBean extends JDSBean{
     }
 
     public String getPincodeAsText() {
-        return this.pincode==0 ? "" : String.valueOf(this.pincode);
+        return this.pincode == 0 ? "" : String.valueOf(this.pincode);
     }
 
     public void setPincode(int _PinCode) {
@@ -97,7 +113,7 @@ public class inwardFormBean extends JDSBean{
 
     public String getInwardCreationDate() {
         //Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
-        return this.inwardCreationDate ;//!= null ? dtformat.format(this.inwardCreationDate) : "";
+        return this.inwardCreationDate;//!= null ? dtformat.format(this.inwardCreationDate) : "";
     }
 
     public void setInwardCreationDate(String _InwardCreationDate) {
@@ -125,22 +141,30 @@ public class inwardFormBean extends JDSBean{
         this.email = _Email;
     }
 
-    public String getInstitution(){
+    public String getInstitution() {
         return this.institution;
     }
 
-    public void setInstitution(String _institution){
+    public void setInstitution(String _institution) {
 
         this.institution = _institution;
     }
 
-    public String getDepartment(){
+    public String getDepartment() {
         return this.department;
     }
 
-    public void setDepartment(String _department){
+    public void setDepartment(String _department) {
 
         this.department = _department;
+    }
+
+    public int getInwardPurposeID() {
+        return this.inwardPurposeID;
+    }
+
+    public void setInwardPurposeID(int _inwardPurposeID) {
+        this.inwardPurposeID = _inwardPurposeID;
     }
 
     public String getInwardPurpose() {
@@ -172,9 +196,9 @@ public class inwardFormBean extends JDSBean{
     }
 
     public String getChqddNumberAsText() {
-        if(this.chqddNumber==0){
+        if (this.chqddNumber == 0) {
             return "";
-        }else{
+        } else {
             return String.valueOf(this.chqddNumber);
         }
 
@@ -225,7 +249,7 @@ public class inwardFormBean extends JDSBean{
         return this.chequeDDReturn;
     }
 
-    public void  setChequeDDReturn(boolean  _isChequeReturn) {
+    public void setChequeDDReturn(boolean _isChequeReturn) {
         this.chequeDDReturn = _isChequeReturn;
     }
 
@@ -269,21 +293,19 @@ public class inwardFormBean extends JDSBean{
         this.remarks = _Remarks;
     }
 
-    public boolean isCompleted(){
+    public boolean isCompleted() {
         return this.completed;
     }
 
-    public void setCompleted(boolean _completed){
+    public void setCompleted(boolean _completed) {
         this.completed = _completed;
     }
 
-    public String getLanguage(){
+    public String getLanguage() {
         return this.language;
     }
 
-    public void setLanguage(String _language){
+    public void setLanguage(String _language) {
         this.language = _language;
     }
-
-
 }

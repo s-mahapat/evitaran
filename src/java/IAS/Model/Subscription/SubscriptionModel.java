@@ -31,6 +31,7 @@ public class SubscriptionModel extends JDSModel {
 
     private String subscriberNumber;
     private String inwardNumber;
+    private int inwardID;
     private inwardFormBean _inwardFormBean;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.SubscriptionModel");
 
@@ -45,10 +46,10 @@ public class SubscriptionModel extends JDSModel {
         if (session.getAttribute("inwardUnderProcess") != null) {
             this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");
             this.inwardNumber = _inwardFormBean.getInwardNumber();
+            this.inwardID = _inwardFormBean.getInwardID();
         } else {
             this.inwardNumber = null;
         }
-
     }
 
     public String addSubscription() throws IllegalAccessException, ParseException,
@@ -116,9 +117,10 @@ public class SubscriptionModel extends JDSModel {
                 }
                 xml = util.convertStringToXML(String.valueOf(subscriptionID), "subscriptionID");
 
-            } else {
-                //failed to update subscription
-                throw (new SQLException("Failed to insert subscription"));
+                //Update inward with completed flag once the transaction is completed
+                if (super.CompleteInward(this.inwardID) == 1) {
+                    session.setAttribute("inwardUnderProcess", null);
+                }
             }
         }
         return xml;
@@ -162,8 +164,8 @@ public class SubscriptionModel extends JDSModel {
             conn.commit();
         } catch (SQLException e) {
             conn.rollback();
-            throw(e);
-        }finally{
+            throw (e);
+        } finally {
             conn.setAutoCommit(true);
         }
         return rc;

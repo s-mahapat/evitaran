@@ -2,6 +2,7 @@ package IAS.Model.Subscriber;
 
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscriber.subscriberFormBean;
+import IAS.Class.JDSConstants;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
@@ -32,10 +33,22 @@ import org.xml.sax.SAXException;
 public class subscriberModel extends JDSModel {
 
     private subscriberFormBean _subscriberFormBean = null;
+    private String inwardNumber;
+    private int inwardID;
+    private int inwardPurposeID;
+    private inwardFormBean _inwardFormBean;
 
     public subscriberModel(HttpServletRequest request) throws SQLException {
         //call the base class constructor
         super(request);
+        if (session.getAttribute("inwardUnderProcess") != null) {
+            this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");
+            this.inwardNumber = _inwardFormBean.getInwardNumber();
+            this.inwardID = _inwardFormBean.getInwardID();
+            this.inwardPurposeID = _inwardFormBean.getInwardPurposeID();
+        } else {
+            this.inwardNumber = null;
+        }
     }
 
     public int Save() throws SQLException, ParseException,
@@ -54,7 +67,7 @@ public class subscriberModel extends JDSModel {
          * check that the subscriber number is not present on the screen, if
          * present means its and edit subscriber else create new subscriber.
          */
-        if (subscriberFormBean.getSubscriberNumber().isEmpty() == false) {
+        if (!subscriberFormBean.getSubscriberNumber().isEmpty()) {
             return this._updateSubscriber();
         } else {
             //get the next subscriber number
@@ -70,15 +83,15 @@ public class subscriberModel extends JDSModel {
             if (mode.equalsIgnoreCase("Create")) {
                 ResultSet rs = st.getGeneratedKeys();
                 rs.first();
-                inwardFormBean _inwardFormBean = (inwardFormBean) this.session.getAttribute("inwardUnderProcess");
-                String inwardUnderProcess = _inwardFormBean.getInwardNumber();
+                //inwardFormBean _inwardFormBean = (inwardFormBean) this.session.getAttribute("inwardUnderProcess");
+                //String inwardUnderProcess = _inwardFormBean.getInwardNumber();
                 int _subscriberId = rs.getInt(1);
 
-                if (inwardUnderProcess != null) {
+                if (this.inwardNumber != null) {
                     String _sql = Queries.getQuery("update_subscriber_in_inward");
                     PreparedStatement pst = conn.prepareStatement(_sql);
                     pst.setInt(1, _subscriberId);
-                    pst.setString(2, inwardUnderProcess);
+                    pst.setString(2, this.inwardNumber);
                     db.executeUpdatePreparedStatement(pst);
                 }
             }
@@ -146,7 +159,18 @@ public class subscriberModel extends JDSModel {
         PreparedStatement st = conn.prepareStatement(sql);
         // fill in the statement params
         this._setSubscriberStatementParams(st, mode);
-        return db.executeUpdatePreparedStatement(st);
+
+        int dbUpdateFlag = 0;
+        if (db.executeUpdatePreparedStatement(st) == 1) {
+            //Update inward with completed flag once the transaction is completed
+            if ((this.inwardNumber != null) && (this.inwardPurposeID == JDSConstants.INWARD_PURPOSE_ADDRESS_CHANGE)) {
+                if (super.CompleteInward(this.inwardID) == 1) {
+                    session.setAttribute("inwardUnderProcess", null);
+                }
+            }
+            dbUpdateFlag = 1;
+        }
+        return dbUpdateFlag;
     }
 
     public String GetSubscriber() throws SQLException, ParseException,
@@ -227,7 +251,8 @@ public class subscriberModel extends JDSModel {
             condition = " and";
         }
 
-        if (country != null && Integer.parseInt(country) != 0 && country.length() > 0) {
+        //if (country != null && Integer.parseInt(country) != 0 && country.length() > 0) {
+        if (country != null && country.compareToIgnoreCase("NULL") != 0 && country.length() > 0) {
             sql += condition + " t3.id=t1.country and t3.country = " + "\"" + country + "\"";
             condition = " and";
 
@@ -254,19 +279,19 @@ public class subscriberModel extends JDSModel {
             sql += condition + " pincode =" + "'" + pincode + "'";
         }
 
-        sql += " group by subscriberNumber, subscriberName, city, email, pincode order by " + orderBy + " " + sortOrder;
+        sql += " group by subscriberNumber, subscriberName, city, email, pincode";
 
         ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
         xml = util.convertResultSetToXML(rs);
 
         sql = "select count(*) from (" + sql + ") as tbl";
         rs = this.db.executeQuery(sql);
-        while(rs.next()){
+        while (rs.next()) {
             totalQueryCount = rs.getInt(1);
         }
 
-        if(totalQueryCount > 0){
-            totalPages = (double)totalQueryCount/(double)pageSize;
+        if (totalQueryCount > 0) {
+            totalPages = (double) totalQueryCount / (double) pageSize;
             totalPages = java.lang.Math.ceil(totalPages);
         }
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

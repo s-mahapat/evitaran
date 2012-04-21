@@ -4,6 +4,7 @@
  */
 package IAS.Controller;
 
+import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.JDSLogger;
 import IAS.Class.util;
 import IAS.Model.Subscriber.subscriberModel;
@@ -15,40 +16,55 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
+import IAS.Class.JDSConstants;
 
 public class subscriber extends JDSController {
 
     private subscriberModel _subscriberModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.subscriber");
+    private inwardFormBean _inwardFormBean;
 
-    /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String url = null;
+        int inwardPurposeID = 0;
+
+        HttpSession session = request.getSession(false);
+
+
         try {
 
             _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
 
             if (action.equalsIgnoreCase("save")) {
+                url = "/jsp/subscriber/viewsubscriber.jsp";
                 //if the record count saved is 1, it indicates that the record was saved else fail.
                 if (_subscriberModel.Save() == 1) {
-                    url = "/jsp/subscription/addnewsubscription.jsp";//"/jsp/subscriber/viewsubscriber.jsp";
+                    
+                    if (session.getAttribute("inwardUnderProcess") != null) {
+                        this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");
+                        inwardPurposeID = _inwardFormBean.getInwardPurposeID();
+
+                        // if the inward purpose is new subscription then redirect the user to add subscription after
+                        // saving subscriber info, else redirect to view subscriber
+                        if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION) {
+                            url = "/jsp/subscription/addnewsubscription.jsp";
+                            
+                        }
+                    }
+
                 }
+
+
+
+
             } else if (action.equalsIgnoreCase("edit")) {
                 if (_subscriberModel.editSubscriber() != null) {
                     url = "/jsp/subscriber/editsubscriber.jsp";
@@ -87,7 +103,7 @@ public class subscriber extends JDSController {
                 url = "/jsp/invoice/proforma.jsp";
             } else if (action.equalsIgnoreCase("mil")) {
                 url = "/jsp/missingissue/missingissuelist.jsp";
-            }else if(action.equalsIgnoreCase("getSubscriberType")){
+            } else if (action.equalsIgnoreCase("getSubscriberType")) {
                 int subType = _subscriberModel.getSubscriberType(request.getParameter("subscriberNumber"));
                 String xml = util.convertStringToXML(String.valueOf(subType), "subtype");
                 request.setAttribute("xml", xml);

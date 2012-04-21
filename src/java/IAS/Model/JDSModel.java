@@ -5,6 +5,7 @@
 package IAS.Model;
 
 import IAS.Class.Database;
+import IAS.Class.JDSConstants;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Enumeration;
@@ -12,6 +13,10 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.beanutils.BeanUtils;
+import IAS.Class.Queries;
+import java.sql.PreparedStatement;
+import java.text.ParseException;
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  *
@@ -24,14 +29,13 @@ public class JDSModel {
     protected Database db = null;
     protected HttpSession session = null;
 
-    public JDSModel(HttpServletRequest _request) throws SQLException{
+    public JDSModel(HttpServletRequest _request) throws SQLException {
 
         this.request = _request;
         this.session = _request.getSession(false); //do not create the session if it does not exist
         if (this.session == null) {
             throw (new SQLException("Session does not exist.Database connection not found in the session"));
         }
-
         this.db = (Database) session.getAttribute("db_connection");
         this.conn = db.getConnection();
     }
@@ -47,5 +51,21 @@ public class JDSModel {
             paramMap.put(name, request.getParameterValues(name));
         }
         BeanUtils.populate(_bean, paramMap);
+    }
+
+    public int CompleteInward(int inwardID) throws SQLException {
+        //Update inward with completed flag once the transaction is completed
+        int dbInwdUpdat = 0;
+        String sql = Queries.getQuery("update_inward_complete_flag");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st = conn.prepareStatement(sql);
+        st.setInt(JDSConstants.INWARD_COMPLETE, inwardID);
+        if (db.executeUpdatePreparedStatement(st) == 1) {
+            session.setAttribute("inwardUnderProcess", null);
+            dbInwdUpdat = 1;
+        } else {
+            throw (new SQLException("Failed to complete Inward " + inwardID ));
+        }
+        return dbInwdUpdat;
     }
 }
