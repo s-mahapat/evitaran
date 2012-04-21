@@ -6,6 +6,7 @@
 <%
     inwardFormBean _inwardFormBean = (inwardFormBean)request.getSession().getAttribute("inwardUnderProcess");
     String inwardNumber = _inwardFormBean.getInwardNumber();
+    float amount = _inwardFormBean.getAmount();
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -53,7 +54,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="2" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -62,7 +63,16 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="3" readonly type="text" name="inwardNumber" id="inwardNumber" value="<%=inwardNumber%>"/>
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<%=inwardNumber%>"/>
+                                    </span>
+                                </div>
+                                    <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Inward Amount:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value="<%=amount%>"/>
                                     </span>
                                 </div>
                             </div>

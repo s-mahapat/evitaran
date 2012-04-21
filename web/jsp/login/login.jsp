@@ -26,10 +26,10 @@
 
 
             #loginDiv{
-                margin: 15% auto 0 auto;
+                margin: 10% auto 0 auto;
                 width: 40%;
                 text-align: center;
-                height: 200px;
+                height: 250px;
             }
 
             #loginErrorMsg{
@@ -58,15 +58,15 @@
             }
 
             .authInput{
-                float: right;
+                float: left;
                 width: 50%;
                 margin-right: 10%;
             }
 
             .authAction{
 
-                margin-left: 45%;
-                margin-top: 10px;
+                margin-left: 42%;
+                margin-top: 20px;
                 float: left;
             }
 

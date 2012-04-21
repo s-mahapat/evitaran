@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.19
+-- Server version	5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -622,14 +622,10 @@ CREATE TABLE `subscription` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriberID` int(11) NOT NULL,
   `inwardID` int(11) NOT NULL,
-  `active` tinyint(4) NOT NULL DEFAULT '1',
-  `balance` float NOT NULL DEFAULT '0',
   `subscriptionDate` date NOT NULL DEFAULT '0000-00-00',
-  `subscriptionTotal` float NOT NULL DEFAULT '0',
   `remarks` text,
   PRIMARY KEY (`id`),
-  KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
-  KEY `subscription_idx_4` (`active`)
+  KEY `subscription_idx_1` (`subscriberID`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -639,7 +635,7 @@ CREATE TABLE `subscription` (
 
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
-INSERT INTO `subscription` VALUES (123,157059,1771,1,-170,'2012-04-14',1400,''),(124,157059,1771,1,-1110,'2012-04-15',120,''),(125,157059,1771,1,-480,'2012-04-18',750,''),(126,157059,1771,1,-480,'2012-04-18',750,''),(127,157059,1771,1,-480,'2012-04-18',750,''),(128,157059,1771,1,-480,'2012-04-18',750,''),(129,157059,1771,1,-480,'2012-04-18',750,''),(130,157059,1771,1,270,'2012-04-18',1500,''),(131,157059,1771,1,-480,'2012-04-19',750,''),(132,157059,1771,1,-480,'2012-04-19',750,''),(133,157059,1771,1,-480,'2012-04-19',750,''),(134,157059,1771,1,-480,'2012-04-19',750,''),(135,157059,1771,1,-480,'2012-04-19',750,''),(136,166228,1777,1,3000,'2012-04-21',3000,'I want to get this delivered the day after');
+INSERT INTO `subscription` VALUES (123,157059,1771,'2012-04-14',''),(124,157059,1771,'2012-04-15',''),(125,157059,1771,'2012-04-18',''),(126,157059,1771,'2012-04-18',''),(127,157059,1771,'2012-04-18',''),(128,157059,1771,'2012-04-18',''),(129,157059,1771,'2012-04-18',''),(130,157059,1771,'2012-04-18',''),(131,157059,1771,'2012-04-19',''),(132,157059,1771,'2012-04-19',''),(133,157059,1771,'2012-04-19',''),(134,157059,1771,'2012-04-19',''),(135,157059,1771,'2012-04-19',''),(136,166228,1777,'2012-04-21','I want to get this delivered the day after');
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -682,12 +678,11 @@ CREATE TABLE `subscriptiondetails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriptionID` int(11) NOT NULL,
   `journalGroupID` int(11) NOT NULL,
+  `journalPriceGroupID` int(11) NOT NULL DEFAULT '0',
   `copies` int(11) NOT NULL DEFAULT '0',
   `startYear` int(11) NOT NULL,
   `endYear` int(11) NOT NULL,
-  `total` float DEFAULT '0',
   `active` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `journalPriceGroupID` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`)
@@ -700,7 +695,7 @@ CREATE TABLE `subscriptiondetails` (
 
 LOCK TABLES `subscriptiondetails` WRITE;
 /*!40000 ALTER TABLE `subscriptiondetails` DISABLE KEYS */;
-INSERT INTO `subscriptiondetails` VALUES (18,123,1,10,2012,2012,1200,1,3),(19,123,2,2,2012,2012,200,1,4),(20,124,1,1,2012,2012,120,1,1),(21,125,1,1,2012,2012,750,1,1),(22,126,1,1,2012,2012,750,1,1),(23,127,1,1,2012,2012,750,1,1),(24,128,1,1,2012,2012,750,1,1),(25,129,1,1,2012,2012,750,1,1),(26,130,1,2,2012,2012,1500,1,1),(27,131,1,1,2012,2012,750,1,1),(28,132,1,1,2012,2012,750,1,1),(29,133,1,1,2012,2012,750,1,1),(30,134,1,1,2012,2012,750,1,1),(31,135,1,1,2012,2012,750,1,1),(32,136,1,3,2012,2012,3000,1,1);
+INSERT INTO `subscriptiondetails` VALUES (18,123,1,3,10,2012,2012,1),(19,123,2,4,2,2012,2012,1),(20,124,1,1,1,2012,2012,1),(21,125,1,1,1,2012,2012,1),(22,126,1,1,1,2012,2012,1),(23,127,1,1,1,2012,2012,1),(24,128,1,1,1,2012,2012,1),(25,129,1,1,1,2012,2012,1),(26,130,1,1,2,2012,2012,1),(27,131,1,1,1,2012,2012,1),(28,132,1,1,1,2012,2012,1),(29,133,1,1,1,2012,2012,1),(30,134,1,1,1,2012,2012,1),(31,135,1,1,1,2012,2012,1),(32,136,1,1,3,2012,2012,1);
 /*!40000 ALTER TABLE `subscriptiondetails` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -830,4 +825,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-21  9:22:56
+-- Dump completed on 2012-04-21 22:13:53

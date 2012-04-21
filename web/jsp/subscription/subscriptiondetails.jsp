@@ -28,19 +28,19 @@
                     caption: '&nbsp;',
                     emptyrecords: "No subscription details",
                     loadtext: "Loading...",
-                    colNames:['Journal Group','Start Year','End Year','Copies','Total'],
+                    colNames:['Journal Group','Start Year','End Year','Copies','Total','Active'],
                     colModel: [
                         {
                             name:"journalGroupName",
                             index:"journalGroupName",
                             align:"center",
-                            width:60,
+                            width:80,
                             key:true
                         },
                         {
                             name:'startYear',
                             index:'startYear',
-                            width:60,
+                            width:40,
                             align:'center',
                             xmlmap:'startYear'
                         },
@@ -48,14 +48,14 @@
                         {
                             name:'endYear',
                             index:'endYear',
-                            width:60,
+                            width:40,
                             align:'center',
                             xmlmap:'endYear'
                         },
                         {
                             name:"Copies",
                             index:"Copies",
-                            width:60,
+                            width:40,
                             align:"center",
                             xmlmap: 'copies',
                             editable:true,
@@ -69,9 +69,17 @@
                         {
                             name:"total",
                             index:"total",
-                            width:60,
+                            width:40,
                             align:"center"
-                        }],
+                        },
+                        {
+                            name:"active",
+                            index:"active",
+                            width:40,
+                            align:"center",
+                            formatter: "checkbox"
+                        }
+                    ],
                     xmlReader : {
                         root: "results",
                         row: "row",

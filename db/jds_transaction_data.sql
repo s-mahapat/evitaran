@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.19
+-- Server version	5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -175,14 +175,10 @@ CREATE TABLE `subscription` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriberID` int(11) NOT NULL,
   `inwardID` int(11) NOT NULL,
-  `active` tinyint(4) NOT NULL DEFAULT '1',
-  `balance` float NOT NULL DEFAULT '0',
   `subscriptionDate` date NOT NULL DEFAULT '0000-00-00',
-  `subscriptionTotal` float NOT NULL DEFAULT '0',
   `remarks` text,
   PRIMARY KEY (`id`),
-  KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
-  KEY `subscription_idx_4` (`active`)
+  KEY `subscription_idx_1` (`subscriberID`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -197,12 +193,11 @@ CREATE TABLE `subscriptiondetails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriptionID` int(11) NOT NULL,
   `journalGroupID` int(11) NOT NULL,
+  `journalPriceGroupID` int(11) NOT NULL DEFAULT '0',
   `copies` int(11) NOT NULL DEFAULT '0',
   `startYear` int(11) NOT NULL,
   `endYear` int(11) NOT NULL,
-  `total` float DEFAULT '0',
   `active` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `journalPriceGroupID` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`)
@@ -218,4 +213,4 @@ CREATE TABLE `subscriptiondetails` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-21  9:22:57
+-- Dump completed on 2012-04-21 22:13:53

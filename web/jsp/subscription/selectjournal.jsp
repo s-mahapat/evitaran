@@ -160,7 +160,7 @@
         </span>
 
         <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>Journal Group</label>
+            <label>Journal Group:</label>
         </span>
 
         <span class="IASFormDivSpanInputBoxLessMargin">
@@ -181,7 +181,7 @@
                 %>
             </select>
         </span>
-        <span class="IASFormDivSpanInputBox" style="margin-left:35px;">
+        <span class="IASFormDivSpanInputBox" style="margin-left:5px;">
             <input class="IASButton" TABINDEX="14" type="button" value="Add" id="btnAddLine" name="btnAddLine" onclick="addJournal()"/>
             <input class="IASButton" TABINDEX="15" type="button" value="Delete All" id="btnDeleteAll" name="btnDeleteAll" onclick="deleteRow('All')"/>
         </span>

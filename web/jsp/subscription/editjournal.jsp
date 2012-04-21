@@ -51,7 +51,7 @@
             url:'subscription?oper=subid&id=' + $("#subscriptionID").val(),
             datatype: 'xml',
             mtype: 'GET',
-            height: 240,
+            height: 180,
             autowidth: true,
             forceFit: true,
             sortable: true,
@@ -60,7 +60,7 @@
             sortname:'journalGroupName',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames: ['ID','Journal Group','Journal Group ID','Journal Cost (INR)','Start Year','End Year','Copies','Total (INR)','Active'],
+            colNames: ['ID','Journal Group','Journal Group ID','Journal Cost (INR)','Start Year','End Year','Copies','Total (INR)','Active','Action'],
             colModel: [
                 {
                     name:"id",
@@ -135,6 +135,40 @@
                     editable: true,
                     edittype:'checkbox',
                     editoptions: {value:"true:false"}
+                },
+                {
+                    name:"Action",
+                    index:"action",
+                    width:20,
+                    align:"center",
+                    formatter: "actions",
+                    formatoptions: {
+                        delbutton : false,
+                        editformbutton:true,
+                        url:"subscription",
+                        editOptions: {   modal: true,
+                            closeOnEscape: true,
+                            url:"subscription",
+                            editData: {subtypeid:subscriberType},
+                            reloadAfterSubmit: true,
+                            recreateForm: true,
+                            closeAfterEdit: true,
+                            afterSubmit:function(response, postdata){
+                                jQuery("#newSubscription").setGridParam({ datatype: "xml" });
+                                jQuery("#newSubscription").trigger("reloadGrid");
+                                getSubscriptionInfo();
+                                if($(response).find("success").text()==1){
+                                    return(true);
+                                }else{
+                                    return(false,"Failed to edit subscription","");
+                                }
+
+
+                                //return()
+                            },
+                            errorTextFormat:function(){return("Failed to update subscription data");}
+                        }
+                    }
                 }
 
             ],
@@ -158,9 +192,9 @@
                 $(xml).find("results").find("row").find("subscriptionTotal").each(function(){
                     totalSubscriptionValue = parseFloat($(this).text()) ;
                 });
-                $("#subscriptionTotalValue").val(totalSubscriptionValue);
-            },
-            onSelectRow: function(id){
+                //$("#subscriptionTotalValue").val(totalSubscriptionValue);
+            }
+            /*onSelectRow: function(id){
                 selectedRowID = id;
                 if(id && id != lastSel){
                     jQuery('#newSubscription').restoreRow(lastSel);
@@ -183,12 +217,30 @@
                     "restoreAfterError" : true,
                     "mtype" : "POST"
                 }
-                jQuery('#newSubscription').editRow(id, editparameters);
+                //jQuery('#newSubscription').editRow(id, editparameters);
 
 
-            }
-        }).navGrid('#pager',{add:false, view:true, del:false, edit:false},
-        {}, // use default settings for edit
+            }*/
+        }).navGrid('#pager',{add:false, view:false, del:false, edit:true},
+        {   modal: true,
+            closeOnEscape: true,
+            url:"subscription",
+            editData: {subtypeid:subscriberType},
+            reloadAfterSubmit: true,
+            recreateForm: true,
+            closeAfterEdit: true,
+            afterSubmit:function(response, postdata){
+                jQuery("#newSubscription").setGridParam({ datatype: "xml" });
+                jQuery("#newSubscription").trigger("reloadGrid");
+                getSubscriptionInfo();
+                if($(response).find("success").text()==1){
+                    return(true);
+                }else{
+                    return(false,"Failed to edit subscription","");
+                }
+            },
+            errorTextFormat:function(){return("Failed to update subscription data");}
+        }, // use default settings for edit
         {}, // use default settings for add
         {},  // delete instead that del:false we need this
         {multipleSearch : true}, // enable the advanced searching

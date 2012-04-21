@@ -54,18 +54,18 @@ public class SubscriptionModel extends JDSModel {
 
     public String addSubscription() throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
-            IOException, InvocationTargetException {
+            IOException, InvocationTargetException, Exception {
 
         String xml = null;
-        String journalCodes[] = request.getParameterValues("journalGroupID");
         String journalGroupID[] = request.getParameterValues("journalGroupID");
+        String journalPriceGroupID[] = request.getParameterValues("journalPriceGroupID");
         String startYear[] = request.getParameterValues("startYear");
         String endYear[] = request.getParameterValues("endYear");
         String Copies[] = request.getParameterValues("copies");
         String Total[] = request.getParameterValues("total");
         float subscriptionTotal = Float.parseFloat(request.getParameter("subscriptionTotal"));
         String remarks = request.getParameter("remarks");
-        int subscriptionID;
+        int subscriptionID = 0;
 
         //this.inwardNumber = "12A-00001";
         if (this.inwardNumber == null) {
@@ -80,50 +80,98 @@ public class SubscriptionModel extends JDSModel {
             request.setAttribute("subscriptionFormBean", _subscriptionBean);
             request.setAttribute("subscriptionDetailBean", _subscriptionDetailBean);
 
-            // the query name from the jds_sql properties files in WEB-INF/properties folder
-            String sql = Queries.getQuery("insert_subscription");
-            PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            int paramIndex = 0;
-            float balance = subscriptionTotal - this._inwardFormBean.getAmount();
-            st.setString(++paramIndex, this.subscriberNumber);
-            st.setString(++paramIndex, this.inwardNumber);
-            st.setFloat(++paramIndex, balance);
-            st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
-            st.setFloat(++paramIndex, subscriptionTotal);
-            st.setString(++paramIndex, remarks);
-            if (db.executeUpdatePreparedStatement(st) == 1) {
-                ResultSet rs = st.getGeneratedKeys();
-                rs.first();
-                subscriptionID = rs.getInt(1);
-
-                //set the subscription id and total in the bean
-                _subscriptionBean.setSubscriptionID(subscriptionID);
+            // start transaction here.
+            conn.setAutoCommit(false);
+            try {
+                // the query name from the jds_sql properties files in WEB-INF/properties folder
+                String sql = Queries.getQuery("insert_subscription");
+                PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                int paramIndex = 0;
+                float balance = subscriptionTotal - this._inwardFormBean.getAmount();
 
 
-                sql = Queries.getQuery("insert_subscription_detail");
-                st = conn.prepareStatement(sql);
-                for (int i = 0; i < journalCodes.length; i++) {
-                    paramIndex = 0;
-                    st.setInt(++paramIndex, subscriptionID);
-                    st.setInt(++paramIndex, Integer.parseInt(journalCodes[i]));
-                    st.setInt(++paramIndex, Integer.parseInt(journalGroupID[i]));
-                    st.setInt(++paramIndex, Integer.parseInt(Copies[i]));
-                    st.setInt(++paramIndex, Integer.parseInt(startYear[i]));
-                    st.setInt(++paramIndex, Integer.parseInt(endYear[i]));
-                    st.setFloat(++paramIndex, Float.parseFloat(Total[i]));
-                    if (db.executeUpdatePreparedStatement(st) != 1) {
-                        throw (new SQLException("Failed to insert subscription details"));
+                st.setString(++paramIndex, this.subscriberNumber);
+                st.setString(++paramIndex, this.inwardNumber);
+                //st.setFloat(++paramIndex, balance);
+                st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+                //st.setFloat(++paramIndex, subscriptionTotal);
+                st.setString(++paramIndex, remarks);
+                if (db.executeUpdatePreparedStatement(st) == 1) {
+                    ResultSet rs = st.getGeneratedKeys();
+                    rs.first();
+                    subscriptionID = rs.getInt(1);
+
+                    //set the subscription id and total in the bean
+                    _subscriptionBean.setSubscriptionID(subscriptionID);
+
+                    this.__addSubscriptionDetail(subscriptionID,
+                            util.convertStringArraytoIntArray(journalGroupID),
+                            util.convertStringArraytoIntArray(startYear),
+                            util.convertStringArraytoIntArray(endYear),
+                            util.convertStringArraytoIntArray(Copies),
+                            util.convertStringArraytoFloatArray(Total),
+                            util.convertStringArraytoIntArray(journalPriceGroupID));
+
+                    //Update inward with completed flag once the transaction is completed
+                    if (this.CompleteInward(this.inwardID) == 1) {
+                        session.setAttribute("inwardUnderProcess", null);
                     }
+                    conn.commit(); // complete the transaction here.
                 }
-                xml = util.convertStringToXML(String.valueOf(subscriptionID), "subscriptionID");
-
-                //Update inward with completed flag once the transaction is completed
-                if (super.CompleteInward(this.inwardID) == 1) {
-                    session.setAttribute("inwardUnderProcess", null);
-                }
+            } catch (SQLException | ParseException | NumberFormatException e) {
+                conn.rollback();
+            } finally {
+                conn.setAutoCommit(true);
             }
+            xml = util.convertStringToXML(String.valueOf(subscriptionID), "subscriptionID");
         }
         return xml;
+    }
+
+
+
+    private int[] __addSubscriptionDetail(
+            int subscriptionID, int[] journalGroupID,
+            int[] startYear, int[] endYear, int[] copies,
+            float[] total, int[] journalPriceGroupID) throws SQLException {
+
+        String sql = Queries.getQuery("insert_subscription_detail");
+        PreparedStatement st = conn.prepareStatement(sql);
+        int paramIndex = 0;
+        for (int i = 0; i < journalGroupID.length; i++) {
+            paramIndex = 0;
+            st.setInt(++paramIndex, subscriptionID);
+            st.setInt(++paramIndex, journalGroupID[i]);
+            st.setInt(++paramIndex, journalPriceGroupID[i]);
+            st.setInt(++paramIndex, copies[i]);
+            st.setInt(++paramIndex, startYear[i]);
+            st.setInt(++paramIndex, endYear[i]);
+            //st.setFloat(++paramIndex, total[i]);
+            st.addBatch();
+        }
+        int res[] = st.executeBatch();
+        return res;
+
+    }
+
+    public int[] addNewSubscriptionDetail(int subscriptionID, int journalGroupID,
+            int startYear, int endYear, int copies,
+            float total, int journalPriceGroupID) throws SQLException{
+
+        int[] _journalGroupID = {journalGroupID};
+        int[] _journalPriceGroupID = {journalPriceGroupID};
+        int[] _startYear = {startYear};
+        int[] _endYear = {endYear};
+        int[] _copies = {copies};
+        float[] _total = {total};
+
+
+        int res[] = this.__addSubscriptionDetail(
+                    subscriptionID, _journalGroupID,
+                    _startYear, _endYear,
+                    _copies, _total,
+                    _journalPriceGroupID);
+        return res;
     }
 
     public int updateSubscriptionDetail(int id, int startYear, int endYear,
@@ -132,43 +180,105 @@ public class SubscriptionModel extends JDSModel {
 
         int rc;
         try {
+
+            /*
+             * The logic used here is first get the old journalgroupid, active
+             * and total value from subscription details table for the row being
+             * edited. Get the new journal group id then calculate the new total
+             * price for the row Get the sum(total) of all active transactions.
+             * if newactive = True and oldactive=True then subscriptionValue =
+             * subscriptionValue - old total value + new Total value if
+             * newactive = True and oldactive=False then subscriptionValue =
+             * subscriptionValue + new Total value if newactive = False and
+             * oldactive=True then subscriptionValue = subscriptionValue - new
+             * Total value update the database
+             */
+
+            //set autocommit(false) to start transaction
             conn.setAutoCommit(false);
-            String sql = Queries.getQuery("update_subscription_detail");
+
+            //get journal journal grpid,active,subscriptionid and total from subscriptiondetails table
+            String sql = "select journalGroupID,active,subscriptionID from subscriptiondetails where id=" + id;
+            ResultSet rs = db.executeQuery(sql);
+            rs.first();
+            int journalGroupID = rs.getInt(1);
+            boolean oldactiveFlag = rs.getBoolean(2);
+            //float oldTotal = rs.getFloat(3);
+            int subscriptionID = rs.getInt(3);
+
+            if ((oldactiveFlag || active) == false) {
+                return (0); //if old and new active flag is the same, do not go further
+            }
+
+            // get the new price group id and price
+            rs = this.getJournalPrice(startYear, (endYear - startYear + 1), journalGroupID, SubscriberTypeID);
+            rs.first();
+
+            int newPriceGroupID = rs.getInt(1);
+            //float total = copies * rs.getInt(2);
+
+            /*// get the amount from the inward table
+            sql = Queries.getQuery("get_active_subscription_total_amount");
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, subscriptionID);
+            rs = st.executeQuery();
+            rs.first();
+            float oldSubscriptionTotal = rs.getFloat(1);
+            float amount = rs.getFloat(2);
+
+            float newSubscriptionTotal = 0;
+            float newBalance = 0;
+
+            if (oldactiveFlag == true && active == true) {
+                newSubscriptionTotal = oldSubscriptionTotal - oldTotal + total;
+            } else if (oldactiveFlag == true && active == false) {
+                newSubscriptionTotal = oldSubscriptionTotal - oldTotal;
+            } else if (oldactiveFlag == false && active == true) {
+                newSubscriptionTotal = oldSubscriptionTotal + total;
+            }
+
+            //calculate the new balance
+            newBalance = newSubscriptionTotal - amount;
+            *
+            */
+
+
+
+
+
+            sql = Queries.getQuery("update_subscription_detail");
             PreparedStatement st = conn.prepareStatement(sql);
             int paramIndex = 0;
             st.setInt(++paramIndex, startYear);
             st.setInt(++paramIndex, endYear);
+            st.setInt(++paramIndex, newPriceGroupID);
+            //st.setFloat(++paramIndex, total);
             st.setInt(++paramIndex, copies);
             st.setBoolean(++paramIndex, active);
             st.setInt(++paramIndex, id);
-            rc = db.executeUpdatePreparedStatement(st);
+            rc = st.executeUpdate();
 
-            //update the balance and subscription total after update
-            sql = "CALL updateSubscriptionBalance(" + id + ")";
-            db.executeUpdate(sql);
-
-            //update the price group
-            sql = "select journalGroupID from subscriptiondetails where id=" + id;
-            ResultSet rs = db.executeQuery(sql);
-            rs.first();
-            int journalGroupID = rs.getInt(1);
-            rs = this.getJournalPrice(startYear, (endYear - startYear + 1), journalGroupID, SubscriberTypeID);
-            rs.first();
-            sql = "update subscriptiondetails set journalPriceGroupID=? , total = ? where id=?";
+            /*sql = Queries.getQuery("update_subscription_balance");
             st = conn.prepareStatement(sql);
             paramIndex = 0;
-            st.setInt(++paramIndex, rs.getInt(1));
-            st.setFloat(++paramIndex, copies * rs.getFloat(2));
-            st.setInt(++paramIndex, id);
-            rc = db.executeUpdatePreparedStatement(st);
+            st.setFloat(++paramIndex, newSubscriptionTotal);
+            st.setFloat(++paramIndex, newBalance);
+            st.setInt(++paramIndex, subscriptionID);
+            rc = st.executeUpdate();*/
+
+            //update the balance and subscription total after update
+            //sql = "CALL updateSubscriptionBalance(" + id + ")";
+            //rc = db.executeUpdate(sql);
             conn.commit();
+            return rc;
+
         } catch (SQLException e) {
             conn.rollback();
             throw (e);
         } finally {
             conn.setAutoCommit(true);
         }
-        return rc;
+
 
     }
 

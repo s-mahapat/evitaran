@@ -164,7 +164,7 @@ public class subscriberModel extends JDSModel {
         if (db.executeUpdatePreparedStatement(st) == 1) {
             //Update inward with completed flag once the transaction is completed
             if ((this.inwardNumber != null) && (this.inwardPurposeID == JDSConstants.INWARD_PURPOSE_ADDRESS_CHANGE)) {
-                if (super.CompleteInward(this.inwardID) == 1) {
+                if (this.CompleteInward(this.inwardID) == 1) {
                     session.setAttribute("inwardUnderProcess", null);
                 }
             }

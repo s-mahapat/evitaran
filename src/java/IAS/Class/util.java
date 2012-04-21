@@ -225,5 +225,27 @@ public final class util {
         return xml;
     }
 
+    public static int[] convertStringArraytoIntArray(String[] sarray) throws Exception {
+        if (sarray != null) {
+            int intarray[] = new int[sarray.length];
+            for (int i = 0; i < sarray.length; i++) {
+                intarray[i] = Integer.parseInt(sarray[i]);
+            }
+            return intarray;
+        }
+        return null;
+    }
+
+    public static float[] convertStringArraytoFloatArray(String[] sarray) throws Exception {
+        if (sarray != null) {
+            float floatarray[] = new float[sarray.length];
+            for (int i = 0; i < sarray.length; i++) {
+                floatarray[i] = Float.parseFloat(sarray[i]);
+            }
+            return floatarray;
+        }
+        return null;
+    }
+
 
 }

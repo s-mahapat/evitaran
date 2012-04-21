@@ -1,14 +1,6 @@
 var journalNameToGroupIDMap = {};
 var subscriberType = 0;
 var subscriptionSaved = false
-function setEndYear(){
-    var startYear = parseInt($("#subscriptionStartYear").val(),10);
-    var html = undefined;
-    for(i=0;i<=4;i++){
-        html += "<option value='" + (startYear+i) + "'>" + (startYear+i) + "</option>";
-    }
-    $("#endYear").html(html);
-}
 
 function addJournal(){
 
@@ -50,6 +42,7 @@ function addJournal(){
         bRet = $("#newSubscription").addRowData(selectedJournalGroupName, newRowData,"last");
         updateTotal(price * $("#copies").val());
     }else{
+        alert("Failed to add subscription!!! No price defined for the selected Year and Journal Group");
         bRet = false;
     }
     return(bRet);
@@ -61,28 +54,9 @@ function updateTotal(val){
     $("#subscriptionTotalValue").text(newTotal);
 }
 
-function getSubscriberType(subscriberNumber){
-    var _subscriberType = 0;
-    $.ajax({
-        type: 'GET',
-        dataType: 'xml',
-        async: false,
-        url: "subscriber?action=getSubscriberType&subscriberNumber=" + subscriberNumber,
-        success: function(xmlResponse, textStatus, jqXHR){
 
-            $(xmlResponse).find("results").each(function(){
-                _subscriberType = $(this).find("subtype").text();
-            });
-        },
-        error: function(jqXHR,textStatus,errorThrown){
-            alert("Failed to get subscriber type. " + textStatus + ": "+ errorThrown);
-        }
 
-    });
-    return _subscriberType;
-}
-
-function getPrice(startYear, years, journalGroupID, subscriberTypeID){
+/*function getPrice(startYear, years, journalGroupID, subscriberTypeID){
     var _price = -1;
     var _id = -1;
     var _priceDetails = new Array();
@@ -104,12 +78,12 @@ function getPrice(startYear, years, journalGroupID, subscriberTypeID){
             _priceDetails[1] = _price;
         },
         error: function(jqXHR,textStatus,errorThrown){
-            alert("Failed to get journal price. " + textStatus + ": "+ errorThrown);
+            alert("Failed to get Journal Group price. " + textStatus + ": "+ errorThrown);
         }
 
     });
     return _priceDetails;
-}
+}*/
 
 function getJournalGroupContents(groupID){
     var html = '<ol>';

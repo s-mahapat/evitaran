@@ -2,7 +2,6 @@
     Document   : Add New Subscription
 --%>
 <jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
-<jsp:useBean class="IAS.Bean.Subscription.SubscriptionFormBean" id="SubscriptionFormBean" scope="request"></jsp:useBean>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,11 +12,12 @@
         <title>Edit Subscription</title>
         <script type="text/javascript" src="js/common.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/editsubscription.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/jquery/jquery.blockUI.js"%>"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                 $().ajaxStart($.blockUI).ajaxStop($.unblockUI);
-                //listSubscription();
+                getSubscriptionInfo();
             })
         </script>
     </head>
@@ -48,7 +48,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="2" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
+                                        <input class="IASDisabledTextBoxWide" TABINDEX="2" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -78,7 +78,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="${SubscriptionFormBean.inwardNumber}"/>
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value=""/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -87,7 +87,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="amountPaid" id="amountPaid" value="${SubscriptionFormBean.amount}"/>
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value=""/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -96,7 +96,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriptionTotalValue" id="subscriptionTotalValue" value="${SubscriptionFormBean.subscriptionTotal}"/>
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriptionTotalValue" id="subscriptionTotalValue" value=""/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -105,14 +105,20 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="2" type="text" name="balance" id="balance" value="${SubscriptionFormBean.balance}"/>
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="balance" id="balance" value=""/>
                                     </span>
                                 </div>
 
                             </div>
 
                         </fieldset>
+
                         <%@include file="editjournal.jsp"%>
+                         <fieldset class="subMainFieldSet">
+                            <div class="actionBtnDiv">
+                                <input onclick="saveSubscription()" class="IASButton" TABINDEX="101" type="button" value="Save" id="btnSaveSubscription" name="btnSubmitAction"/>
+                            </div>
+                        </fieldset>
                     </fieldset>
                 </div>
             </form>

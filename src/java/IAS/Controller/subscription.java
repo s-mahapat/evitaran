@@ -42,6 +42,27 @@ public class subscription extends JDSController {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
+            } else if (oper.equalsIgnoreCase("adddetail")) {
+
+                String xml = null;
+                int subscriptionID = Integer.parseInt(request.getParameter("subid"));
+                int journalGroupID = Integer.parseInt(request.getParameter("journalGroupID"));
+                int startYear = Integer.parseInt(request.getParameter("startYear"));
+                int endYear = Integer.parseInt(request.getParameter("endYear"));
+                int copies = Integer.parseInt(request.getParameter("copies"));
+                float total = Float.parseFloat(request.getParameter("total"));
+                int journalPriceGroupID = Integer.parseInt(request.getParameter("journalPriceGroupID"));
+
+                //save the subscription details sent from the UI
+                int[] res = _subscriptionModel.addNewSubscriptionDetail(
+                        subscriptionID, journalGroupID, startYear, endYear,
+                        copies, total, journalPriceGroupID);
+                if(res.length == 1){
+                    xml = util.convertStringToXML(String.valueOf(res[0]), "success");
+                }
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
             } else if (action != null && action.equalsIgnoreCase("edit")) {
 
                 //fill in the subscriber bean
@@ -68,6 +89,7 @@ public class subscription extends JDSController {
             } else if (oper.equalsIgnoreCase("edit")){
 
                 // we reach here if the existing subscription is being edited
+                String xml = null;
                 int startYear = Integer.parseInt(request.getParameter("startYear"));
                 int endYear = Integer.parseInt(request.getParameter("endYear"));
                 int copies = Integer.parseInt(request.getParameter("copies"));
@@ -75,10 +97,12 @@ public class subscription extends JDSController {
                 boolean active = Boolean.parseBoolean(request.getParameter("active"));
                 int id = Integer.parseInt(request.getParameter("id"));
                 if(_subscriptionModel.updateSubscriptionDetail(id, startYear, endYear, active, copies, subTypeID) != 1){
-                    String xml = util.convertStringToXML("Error updating subscription details", "error");
-                    request.setAttribute("xml", xml);
-                    url = "/xmlserver";
+                    xml = util.convertStringToXML("Error updating subscription details", "error");
+                }else{
+                    xml = util.convertStringToXML("1","success");
                 }
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
 
 
             } else if (oper.equalsIgnoreCase("del")) {

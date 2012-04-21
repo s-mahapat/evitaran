@@ -5,18 +5,15 @@
 package IAS.Model;
 
 import IAS.Class.Database;
-import IAS.Class.JDSConstants;
+import IAS.Class.Queries;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.beanutils.BeanUtils;
-import IAS.Class.Queries;
-import java.sql.PreparedStatement;
-import java.text.ParseException;
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  *
@@ -55,17 +52,14 @@ public class JDSModel {
 
     public int CompleteInward(int inwardID) throws SQLException {
         //Update inward with completed flag once the transaction is completed
-        int dbInwdUpdat = 0;
         String sql = Queries.getQuery("update_inward_complete_flag");
         PreparedStatement st = conn.prepareStatement(sql);
         st = conn.prepareStatement(sql);
-        st.setInt(JDSConstants.INWARD_COMPLETE, inwardID);
+        st.setInt(1, inwardID);
         if (db.executeUpdatePreparedStatement(st) == 1) {
             session.setAttribute("inwardUnderProcess", null);
-            dbInwdUpdat = 1;
-        } else {
-            throw (new SQLException("Failed to complete Inward " + inwardID ));
+            return (1);
         }
-        return dbInwdUpdat;
+        return (0);
     }
 }
