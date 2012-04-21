@@ -19,7 +19,7 @@
 </head>
 <body onload="init()">
 <jsp:include page="../templates/header.jsp"></jsp:include>
-<jsp:include page="../templates/loginsidebar.jsp"></jsp:include>
+<%--<jsp:include page="../templates/loginsidebar.jsp"></jsp:include>--%>
 <div id="bodyContainer">
     <div id="loginDiv" class="MainDiv">
           <fieldset class="subMainFieldSet">

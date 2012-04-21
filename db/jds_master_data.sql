@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
