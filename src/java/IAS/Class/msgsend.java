@@ -7,17 +7,25 @@ package IAS.Class;
  * For sending mail using authentication: http://dunithd.wordpress.com/2009/10/22/send-email-using-javamail-api-and-your-gmail-account/
  * http://www.vipan.com/htdocs/javamail.html
  */
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.servlet.ServletContext;
 import org.apache.log4j.Logger;
-
-import javax.mail.*;
-import javax.mail.internet.*;
 
 public class msgsend
 {
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.inward");
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Class.msgsend");
 
     public boolean sendMailWithoutAuthentication(String propertiesFile, String to, String cc, String bcc, String subject,
                             String message, String from, String file)
@@ -94,6 +102,18 @@ public class msgsend
             logger.error(e.getMessage(), e);
             return false;
         }
+    }
+
+    public void sendExceptionMail(String exceptionMsg) throws IOException{
+        ServletContext context = ServletContextInfo.getServletContext();
+        String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_email.properties");
+        //msgsend smtpMailSender = new msgsend();
+        this.sendMailWithAuthentication(
+                emailPropertiesFile,
+                "jds.adm.all@gmail.com", "", "",
+                "Exception generated in JDS code",
+                exceptionMsg,
+                "JDS", "");
     }
 
     public boolean sendMailWithAuthentication(String propertiesFile, String to, String cc, String bcc, String subject,

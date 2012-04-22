@@ -9,7 +9,7 @@
             autoClose: true,
             saveState: true,
             disableLink: true,
-            speed: 'slow',
+            speed: 'fast',
             showCount: false,
             autoExpand: true,
             cookie	: 'dcjq-accordion-1',
@@ -61,7 +61,7 @@
 
         </li>
         <li class="menu">
-            <a tabindex="-1" href="#">Reminders</a>
+            <a href="#">Reminders</a>
             <ul>
                 <li class="menuitem">
                     <a tabindex="-1" href="<%=contextPath + "/main?action=sendReminders"%>">Send Reminders</a>

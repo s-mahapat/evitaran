@@ -15,11 +15,11 @@ public class JDSController extends HttpServlet {
     protected Connection conn = null;
     protected Database db = null;
     protected HttpSession session = null;
-    
+
     public JDSController(){
-        
+
     }
-    
+
     public JDSController(HttpServletRequest request) throws ServletException{
         this.session = request.getSession(false); //do not create the session if it does not exist
         if (this.session == null) {

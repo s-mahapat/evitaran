@@ -377,10 +377,10 @@ A:active {
 
 
 .IASFormDivSpanLabel{
-    margin-left: 10px;
+    margin-left: 0px;
     float: left;
     text-align: right;
-    width: 120px;
+    width: 150px;
 }
 
 .IASFormDivSpanLabelRadio{

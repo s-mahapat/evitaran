@@ -5,8 +5,14 @@
 package IAS.Controller;
 
 import IAS.Class.JDSLogger;
+import IAS.Class.msgsend;
+import IAS.Class.util;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +31,27 @@ public class errorHandler extends JDSController {
             throws ServletException, IOException {
 
         Throwable throwable = (Throwable) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+        StackTraceElement elements[] = throwable.getStackTrace();
+        String exceptionMessage = throwable.getClass().getCanonicalName();
+        exceptionMessage += "\n" + throwable.getMessage();
+        exceptionMessage += "\n---------------------------------\n";
+
+        for (int i = 0, n = elements.length; i < n; i++) {
+
+            exceptionMessage += "\nClass: " + elements[i].getClassName() + "\n";
+            exceptionMessage += "Method Name: " + elements[i].getMethodName() + "\n";
+            exceptionMessage += "Line Number: " + elements[i].getLineNumber() + "\n";
+            exceptionMessage += "File Name: " + elements[i].getFileName() + "\n";
+            exceptionMessage += "---------------------------------------------\n";
+        }
+
+        //String exceptionMessage = throwable.getMessage();
+        //StackTraceElement[] trace = throwable.getStackTrace();
         logger.fatal(throwable.getMessage());
+        msgsend smtpMailSender = new msgsend();
+
+        smtpMailSender.sendExceptionMail(exceptionMessage);
+
         if (this.isAjax(request)) {
             response.setStatus(500);
             response.getWriter().write("Error in processing request");

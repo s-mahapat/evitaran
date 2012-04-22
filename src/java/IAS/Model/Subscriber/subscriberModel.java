@@ -282,47 +282,15 @@ public class subscriberModel extends JDSModel {
         sql += " group by subscriberNumber, subscriberName, city, email, pincode";
 
         ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
-        xml = util.convertResultSetToXML(rs);
+
+        //xml = util.convertResultSetToXML(rs);
 
         sql = "select count(*) from (" + sql + ") as tbl";
-        rs = this.db.executeQuery(sql);
-        while (rs.next()) {
-            totalQueryCount = rs.getInt(1);
-        }
+        ResultSet rs_count = this.db.executeQuery(sql);
+        rs_count.first();
+        totalQueryCount = rs_count.getInt(1);
 
-        if (totalQueryCount > 0) {
-            totalPages = (double) totalQueryCount / (double) pageSize;
-            totalPages = java.lang.Math.ceil(totalPages);
-        }
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        InputSource is = new InputSource(new StringReader(xml));
-        Document doc = builder.parse(is);
-        Element root = doc.getDocumentElement();
-
-        Element page = doc.createElement("page");
-        Element total = doc.createElement("total");
-        Element records = doc.createElement("records");
-
-        root.appendChild(page);
-        page.appendChild(doc.createTextNode(String.valueOf(pageNumber)));
-
-        root.appendChild(total);
-        total.appendChild(doc.createTextNode(String.valueOf(totalPages)));
-
-        root.appendChild(records);
-        records.appendChild(doc.createTextNode(String.valueOf(totalQueryCount)));
-
-        DOMSource domSource = new DOMSource(doc);
-        StringWriter writer = new StringWriter();
-        StreamResult result = new StreamResult(writer);
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.transform(domSource, result);
-        xml = writer.toString();
-        writer.close();
-
-
+        xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
         return xml;
     }
 

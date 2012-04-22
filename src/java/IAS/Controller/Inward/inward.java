@@ -151,17 +151,6 @@ public class inward extends JDSController {
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-
-            ServletContext context = getServletContext();
-            String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_email.properties");
-            msgsend smtpMailSender = new msgsend();
-            smtpMailSender.sendMailWithAuthentication(
-                    emailPropertiesFile,
-                    "jds.adm.all@gmail.com", "", "",
-                    "Exception generated in JDS code",
-                    util.getExceptionStackTraceAsString(e),
-                    "JDS", "");
-
             throw new javax.servlet.ServletException(e);
 
         } finally {

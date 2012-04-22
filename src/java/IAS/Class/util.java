@@ -74,6 +74,65 @@ public final class util {
         }
     }
 
+    public static String convertResultSetToXML(ResultSet rs, int pageNumber,
+                                                    int pageSize, int totalQueryCount)
+            throws ParserConfigurationException, SQLException, TransformerException {
+
+        String xml = null;
+        double totalPages = 0;
+        if (totalQueryCount > 0) {
+            totalPages = (double) totalQueryCount / (double) pageSize;
+            totalPages = java.lang.Math.ceil(totalPages);
+        }
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+
+        Element page = doc.createElement("page");
+        results.appendChild(page);
+        page.appendChild(doc.createTextNode(String.valueOf(pageNumber)));
+
+        Element total = doc.createElement("total");
+        results.appendChild(total);
+        total.appendChild(doc.createTextNode(String.valueOf(totalPages)));
+
+        Element records = doc.createElement("records");
+        results.appendChild(records);
+        records.appendChild(doc.createTextNode(String.valueOf(totalQueryCount)));
+
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int colCount = rsmd.getColumnCount();
+
+        while (rs.next()) {
+            Element row = doc.createElement("row");
+            results.appendChild(row);
+
+            for (int i = 1; i <= colCount; i++) {
+                //String columnName = rsmd.getColumnName(i);
+                String columnName = rsmd.getColumnLabel(i);
+                // check if the value is null, then initialize it to a blank string
+                Object value = rs.getObject(i) != null ? rs.getObject(i) : "";
+                Element node = doc.createElement(columnName);
+                node.appendChild(doc.createTextNode(value.toString()));
+                row.appendChild(node);
+            }
+        }
+        DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.transform(domSource, result);
+        xml = writer.toString();
+
+        return xml;
+
+    }
+
     public static String convertResultSetToXML(ResultSet rs) throws ParserConfigurationException, SQLException, TransformerException {
 
         String xml = null;

@@ -13,10 +13,10 @@ function listSubscription(){
             height: 235,
             autowidth: true,
             forceFit: true,
-            sortable: true,
+            sortable: false,
             loadonce: true,
             rownumbers: true,
-            sortname:'subscriptionID',
+            //sortname:'subscriptionID',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
             colNames:['Subscription Id','Inward No','Subscription Date','Amount Paid','Subscription Value', 'Balance', 'Currency','Action'],
@@ -27,7 +27,8 @@ function listSubscription(){
                 width:25,
                 align:'center',
                 xmlmap:'id',
-                sortable: true,
+                sortable: false,
+                sorttype:'integer',
                 key: true
             },
             {
@@ -35,6 +36,7 @@ function listSubscription(){
                 index:'inwardNumber',
                 width:20,
                 align:'center',
+                sortable: false,
                 xmlmap:'inwardNumber'
             },
 
@@ -43,6 +45,7 @@ function listSubscription(){
                 index:'subscriptionDate',
                 width:30,
                 align:'center',
+                sortable: true,
                 xmlmap:'subscriptionDate'
             },
             {
@@ -50,6 +53,7 @@ function listSubscription(){
                 index:'amountPaid',
                 width:20,
                 align:'center',
+                sortable: false,
                 xmlmap:'amount'
             },
             {
@@ -57,6 +61,7 @@ function listSubscription(){
                 index:'subscriptionValue',
                 width:30,
                 align:'center',
+                sortable: false,
                 xmlmap:'subscriptionTotal'
             },
             {
@@ -64,6 +69,7 @@ function listSubscription(){
                 index:'balance',
                 width:20,
                 align:'center',
+                sortable: false,
                 xmlmap:'balance'
             },
             {
@@ -71,13 +77,15 @@ function listSubscription(){
                 index:'currency',
                 width:15,
                 align:'center',
+                sortable: false,
                 xmlmap:'currency'
             },
             {
                 name:'details',
                 index:'details',
                 width:15,
-                align:'center'
+                align:'center',
+                sortable: false
             }],
             xmlReader : {
                 root: "results",

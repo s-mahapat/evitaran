@@ -3,7 +3,9 @@
  * and open the template in the editor.
  */
 package IAS.Class;
-import javax.servlet.*;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 /**
  *
  * @author Shailendra Mahapatra
@@ -13,7 +15,9 @@ public class JDSServletContext implements ServletContextListener{
     @Override
     public void contextInitialized(ServletContextEvent event){
 
-        
+        ServletContext context = event.getServletContext();
+        ServletContextInfo.setServletContext(context);
+        ServletContextInfo.setContextPath(context.getContextPath());
     }
 
     @Override

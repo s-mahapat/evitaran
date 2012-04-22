@@ -60,7 +60,7 @@
                                         <input class="IASDisabledTextBox" TABINDEX="3" readonly type="text" name="subscriptionID" id="subscriptionID" value="<%=request.getParameter("id")%>"/>
                                     </span>
                                 </div>
-                                <div class="IASFormFieldDiv">
+                                <%--<div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Remarks:</label>
                                     </span>
@@ -68,7 +68,7 @@
                                     <span class="IASFormDivSpanInputBox">
                                         <textarea class="IASTextArea" TABINDEX="3" cols="20" rows="10" name="remarks" id="remarks"></textarea>
                                     </span>
-                                </div>
+                                </div>--%>
                             </div>
 
                             <div class="IASFormRightDiv">
@@ -114,11 +114,11 @@
                         </fieldset>
 
                         <%@include file="editjournal.jsp"%>
-                         <fieldset class="subMainFieldSet">
+                         <%--<fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv">
                                 <input onclick="saveSubscription()" class="IASButton" TABINDEX="101" type="button" value="Save" id="btnSaveSubscription" name="btnSubmitAction"/>
                             </div>
-                        </fieldset>
+                        </fieldset>--%>
                     </fieldset>
                 </div>
             </form>

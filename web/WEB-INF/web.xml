@@ -28,6 +28,9 @@
     <listener>
         <listener-class>IAS.Class.Database</listener-class>
     </listener>
+    <listener>
+        <listener-class>IAS.Class.JDSServletContext</listener-class>
+    </listener>
     <servlet>
         <servlet-name>main</servlet-name>
         <servlet-class>IAS.Controller.main</servlet-class>
