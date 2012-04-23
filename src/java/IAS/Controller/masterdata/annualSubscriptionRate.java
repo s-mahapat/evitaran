@@ -1,7 +1,7 @@
 
 package IAS.Controller.masterdata;
 
-import IAS.Model.masterdata.journalSubjectGroupModel;
+import IAS.Model.masterdata.annualSubscriptionRateModel;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -20,8 +20,8 @@ import javax.servlet.ServletContext;
  *
  * @author aloko
  */
-public class journalSubjectGroup extends HttpServlet {
-    private journalSubjectGroupModel _journalSubjectGroupModel = null;
+public class annualSubscriptionRate extends HttpServlet {
+    private annualSubscriptionRateModel _annualSubscriptionRateModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -30,23 +30,23 @@ public class journalSubjectGroup extends HttpServlet {
         String url = null;
 
         try {
-            _journalSubjectGroupModel = new IAS.Model.masterdata.journalSubjectGroupModel(request);
+            _annualSubscriptionRateModel = new IAS.Model.masterdata.annualSubscriptionRateModel(request);
 
             if(action.equalsIgnoreCase("add")){
 
-                String xml = _journalSubjectGroupModel.add();
+                String xml = _annualSubscriptionRateModel.add();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }if(action.equalsIgnoreCase("save")){
-
-                _journalSubjectGroupModel.save();
-                url = "/jsp/masterdata/journalSubjectGroup.jsp";
-                
-
             }else if(action.equalsIgnoreCase("search")){
 
-                String xml = _journalSubjectGroupModel.search();
+                String xml = _annualSubscriptionRateModel.search();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("addAndSearch")){
+
+                String xml = _annualSubscriptionRateModel.addAndSearch();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 

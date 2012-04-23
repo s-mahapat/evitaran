@@ -282,12 +282,12 @@ DROP TABLE IF EXISTS `print_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `print_order` (
-  `id` int(11) NOT NULL,
-  `year` year(4) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `year` int(11) NOT NULL,
   `journalId` int(11) NOT NULL,
   `printOrder` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -441,10 +441,14 @@ CREATE TABLE `subscription` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriberID` int(11) NOT NULL,
   `inwardID` int(11) NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
+  `balance` float NOT NULL DEFAULT '0',
   `subscriptionDate` date NOT NULL DEFAULT '0000-00-00',
+  `subscriptionTotal` float NOT NULL DEFAULT '0',
   `remarks` text,
   PRIMARY KEY (`id`),
-  KEY `subscription_idx_1` (`subscriberID`) USING BTREE
+  KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
+  KEY `subscription_idx_4` (`active`)
 ) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -463,7 +467,7 @@ CREATE TABLE `subscription_rates` (
   `period` int(11) NOT NULL,
   `rate` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -477,11 +481,12 @@ CREATE TABLE `subscriptiondetails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriptionID` int(11) NOT NULL,
   `journalGroupID` int(11) NOT NULL,
-  `journalPriceGroupID` int(11) NOT NULL DEFAULT '0',
   `copies` int(11) NOT NULL DEFAULT '0',
   `startYear` int(11) NOT NULL,
   `endYear` int(11) NOT NULL,
+  `total` float DEFAULT '0',
   `active` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `journalPriceGroupID` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`)
@@ -539,4 +544,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-21 22:13:52
+-- Dump completed on 2012-04-23  6:58:37

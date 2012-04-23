@@ -104,7 +104,8 @@
                 for (var i = 0; i < ids.length; i++) {
                     jQuery("#printOrderTable").setGridParam({editurl: "<%=request.getContextPath()%>/printOrder?action=save" +
                                                                         "&year=" + $("#printOrderTable").getCell(ids[i], 'year') +
-                                                                "&journalCode=" + $("#printOrderTable").getCell(ids[i], 'journalCode')
+                                                                "&journalCode=" + $("#printOrderTable").getCell(ids[i], 'journalCode') +
+                                                                "&id=" + $("#printOrderTable").getCell(ids[i], 'id')
                                                                 });
                     jQuery("#printOrderTable").jqGrid('saveRow',ids[i]);
                     var aPO = $("#printOrderTable").getCell(ids[i], 'issues') * $("#printOrderTable").getCell(ids[i], 'printOrder');
@@ -129,6 +130,12 @@
 
             // called when the search button is clicked
             function searchPrintOrder(){
+                if($("#year").val() == 0)
+                {
+                    alert("Select year");
+                }
+                else
+                {
                 if(validatePrintOrder() == true)
                     {
                         isPageLoaded = true;
@@ -143,10 +150,15 @@
 
                     }
                 }
+                }
 
             function addNewPrintOrder(){
-                var gridData = jQuery("#printOrderTable").getRowData();
-
+                if($("#year").val() == 0)
+                {
+                    alert("Select year");
+                }
+                else
+                {
                 if(validatePrintOrder() == true)
                     {
                         isPageLoaded = true;
@@ -160,6 +172,7 @@
                         jQuery("#printOrderTable").trigger("reloadGrid");
 
                     }
+                }
                 }
 
         </script>

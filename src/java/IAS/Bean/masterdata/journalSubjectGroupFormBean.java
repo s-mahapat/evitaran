@@ -8,7 +8,7 @@ public class journalSubjectGroupFormBean {
     private String newJournalGroupName;
     private String journalName;
     private int year;
-    //private int select;
+    private int select;
 
 /*
 public int getId() {
@@ -54,14 +54,13 @@ public void setYear(int _year) {
 
         this.year = _year;
     }
-/*
+
 public int getSelect() {
         return (this.select);
     }
 
 public void setSelect(int _select) {
 
-        this.id = _select;
+        this.select = _select;
     }
-*/
 }

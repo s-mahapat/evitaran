@@ -36,7 +36,12 @@ public class journalSubjectGroupModel extends JDSModel {
         FillBean(this.request, journalSubjectGroupFormBean);
         this._journalSubjectGroupFormBean = journalSubjectGroupFormBean;
         request.setAttribute("journalSubjectGroupFormBean", this._journalSubjectGroupFormBean);
-
+        
+        int year = _journalSubjectGroupFormBean.getYear();
+        String journalName = _journalSubjectGroupFormBean.getJournalName();
+        String journalGroupName =_journalSubjectGroupFormBean.getNewJournalGroupName();
+        int select = _journalSubjectGroupFormBean.getSelect();
+        /*
         // Step1: Check if the journalGroupName and year exist in the table
         String sql = Queries.getQuery("checkIfJournalGroupExists");
         PreparedStatement st = conn.prepareStatement(sql);
@@ -80,6 +85,8 @@ public class journalSubjectGroupModel extends JDSModel {
         st.setInt(1, groupId);
         st.setInt(2, journalId);
         rs = this.db.executeQueryPreparedStatement(st);
+         * *
+         */
     }
 
     public String search() throws IllegalAccessException, InvocationTargetException, SQLException, ParserConfigurationException, TransformerException{
@@ -137,6 +144,7 @@ public class journalSubjectGroupModel extends JDSModel {
         ResultSet rs = this.db.executeQueryPreparedStatement(st);
         String xml = null;
         xml = convertResultSetToXMLForJournalSubjectGroup(rs, false);
+        //xml = util.convertResultSetToXML(rs);
         return xml;
     }
 
@@ -168,9 +176,9 @@ public class journalSubjectGroupModel extends JDSModel {
                 if(i == numberOfColumns)
                 {
                     if(checked)
-                        xml = xml + "<select>" + "Yes" + "</select>";
+                        xml = xml + "<select>" + "1" + "</select>";
                     else
-                        xml = xml + "<select>" + "No" + "</select>";
+                        xml = xml + "<select>" + "0" + "</select>";
                     xml = xml + "</row>";
                 }
             }

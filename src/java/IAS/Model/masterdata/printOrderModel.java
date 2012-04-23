@@ -38,31 +38,35 @@ public class printOrderModel extends JDSModel{
         FillBean(this.request, printOrderFormBean);
         this._printOrderFormBean = printOrderFormBean;
 
-        String sql = Queries.getQuery("update_printOrder");
-
+        // Get the ID if present in the print_order table
+        String sql = Queries.getQuery("get_print_order_id");
         PreparedStatement st = conn.prepareStatement(sql);
-
         int paramIndex = 1;
-
-        st.setInt(paramIndex, _printOrderFormBean.getPrintOrder());
-        st.setInt(++paramIndex, _printOrderFormBean.getYear());
+        st.setInt(paramIndex, _printOrderFormBean.getYear());
         st.setString(++paramIndex, _printOrderFormBean.getJournalCode());
-
-        try
-        {
+        ResultSet rs = db.executeQueryPreparedStatement(st);
+        // Update the print_order if it exists, else it means it is a new print_order
+        if(rs.next()){
+            int printOrderId = rs.getInt(1);
+            sql = Queries.getQuery("update_printOrder");
+            st = conn.prepareStatement(sql);
+            paramIndex = 1; 
+            st.setInt(paramIndex, _printOrderFormBean.getPrintOrder());
+            st.setInt(++paramIndex, printOrderId);
             int success = db.executeUpdatePreparedStatement(st);
-            if(success == 0)
+        }
+        else
+        {
+            // Since the print order does not exist in the table add a new entry
+            // Check if the print_order is >0, if it is then it means that it is anew entry, else ignore it
+            if(this._printOrderFormBean.getPrintOrder()>0)
             {
-                // Since we reached here means that this is a new entry into the printOrder table
-                // Check if the print_order is >0, if it is then it means that it is anew entry, else ignore it
-                if(this._printOrderFormBean.getPrintOrder()>0)
-                {
                     // First get the journalID
                     int journalId=0;
                     String query = Queries.getQuery("get_journal_id");
                     PreparedStatement pst = conn.prepareStatement(query);
                     pst.setString(1, _printOrderFormBean.getJournalCode());
-                    ResultSet rs = db.executeQueryPreparedStatement(pst);
+                    rs = db.executeQueryPreparedStatement(pst);
                     while(rs.next()){
                             journalId = rs.getInt(1);
                         }
@@ -76,16 +80,10 @@ public class printOrderModel extends JDSModel{
                     pst.setInt(++index, _printOrderFormBean.getPrintOrder());
 
                     //db.executeQueryPreparedStatement(pst);
-                    db.executeUpdatePreparedStatement(pst);
-                }
-
+                    db.executeUpdatePreparedStatement(pst);                
             }
-        }catch (Exception MySQLIntegrityConstraintViolationException)
-        {
-            logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
         }
         request.setAttribute("printOrderFormBean", this._printOrderFormBean);
-
     }
 
     public String searchPrintOrder() throws SQLException, ParseException, ParserConfigurationException, TransformerException, IllegalAccessException, InvocationTargetException {

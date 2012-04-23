@@ -5,7 +5,7 @@
 
 function makeSubjectGroupReadOnly(){
 
-    document.getElementById("btnCancel").disabled = true;
+    //document.getElementById("btnCancel").disabled = true;
     document.getElementById("btnSave").disabled = true;
 
 }

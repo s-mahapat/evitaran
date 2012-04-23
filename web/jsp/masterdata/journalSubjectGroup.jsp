@@ -11,14 +11,13 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/masterdata/subjectGroup.css"/>
         <title>Journal Groups</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/journalSubjectGroup.js"%>"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validateJournalSubjectGroup.js"%>"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
+        <script type="text/javascript" src="/js/masterdata/journalSubjectGroup.js"></script>
+        <script type="text/javascript" src="/js/masterdata/validateJournalSubjectGroup.js"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
         <script type="text/javascript" src="js/jquery/grid.inlinedit.js"></script>
-        <script type="text/javascript" src="js/jquery/grid.celledit.js"></script>
+        <script type="text/javascript" src="js/jquery/grid.celledit.js"></script>      
         <script>
-            //addOnloadEvent(makeSubjectGroupReadOnly);
+            addOnloadEvent(makeSubjectGroupReadOnly);
         </script>
 
 
@@ -28,11 +27,11 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jQuery("#journalGroupTable").jqGrid('navGrid',"#IASFormFieldDiv",{add:false,del:false});
+                jQuery("#journalGroupTable").jqGrid('navGrid',"#IASFormFieldDiv",{edit:false,add:false,del:false});
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
                 jQuery("#newJournalGroupName").attr("disabled",true);
                 jQuery("#yearNew").attr("disabled",true);
-                jQuery("#btnSave,#btnCancel").attr("disabled",true);
+                jQuery("#btnSave,#btnCancel,#btnEdit").attr("disabled",true);
              });
 
             $(function(){
@@ -56,7 +55,8 @@
                         //{name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         //{name:'journalGroupName', index:'journalGroupName', width:50, align:'center', xmlmap:'journalGroupName'},
                         {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
-                        {name:'select', index:'select', width:80, align:'center',xmlmap:'select', editable: true, edittype:'checkbox', editoptions: {value:"Yes:No"}, formatter: "checkbox", formatoptions: {disabled : false}}
+                        {name:'select', index:'select', width:80, align:'center',xmlmap:'select', editable: true, edittype:'checkbox', editoptions: {value:"Yes:1,No:0"}, formatter: "checkbox", formatoptions: {disabled : false}}
+                        //{name:'select', index:'select', width:80, align:'center',xmlmap:'select', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {required: true, integer:true, minValue:0 }},
                     ],
                     xmlReader : {
                         root: "results",
@@ -91,6 +91,16 @@
                 });
 
             });
+            
+            function edit(){
+                var ids = jQuery("#journalGroupTable").jqGrid('getDataIDs');
+
+                for (var i = 0; i < ids.length; i++) {
+                    jQuery("#journalGroupTable").jqGrid('editRow',ids[i]);
+                }
+                this.disabled = 'true';
+                jQuery("#btnSave,#btnCancel").attr("disabled",false);
+            }            
 
             function save(){
 
@@ -104,23 +114,22 @@
                 }
                 else
                 {
-                    alert("Save called");
 
                     var ids = jQuery("#journalGroupTable").jqGrid('getDataIDs');
-
-                    for (var i = 0; i < ids.length; i++) {
+                    for (var i = 0; i < ids.length; i++) 
+                    {
                         jQuery("#journalGroupTable").setGridParam({editurl: "<%=request.getContextPath()%>/journalSubjectGroup?action=save" +
-                                                                            "&journalName=" + $("#journalGroupTable").getCell(ids[i], 'journalName') +
-                                                                            "&year=" + $("#yearNew").val()
-                                                                            //"&journalGroupName=" + jQuery("#journalGroupName").val()
-                                                                            //"&journalGroupName=" + $("#journalGroupName").getCell(ids[i], 'journalGroupName')
-                                                                    });
+                                                    "&year=" + $("#yearNew").val() +
+                                                    "&newJournalGroupName=" + $("#newJournalGroupName").val() +
+                                            "&journalName=" + $("#journalGroupTable").getCell(ids[i], 'journalName')
+                                            //"&select=" + $("#journalGroupTable").getCell(ids[i], 'select') 
+                                            });
                         jQuery("#journalGroupTable").jqGrid('saveRow',ids[i]);
-                        //setGridParam requires a reload for value to reflect in the cell. Hence using setCell instead
-                        //jQuery("#journalGroupTable").setGridParam({annualPrintOrder: aPO});
-                    }
+                    }             
 
                     jQuery("#btnSave,#btnCancel").attr("disabled",true);
+                    jQuery("#btnEdit").attr("disabled",false);
+                    
                     // Enable select of journal group name from the list box
                     jQuery("#journalGroupName").attr("disabled",false);
                     jQuery("#year").attr("disabled",false);
@@ -130,21 +139,20 @@
             }
 
             function cancel(){
-                /*
                 var ids = jQuery("#journalGroupTable").jqGrid('getDataIDs');
 
                 for (var i = 0; i < ids.length; i++) {
                     jQuery("#journalGroupTable").jqGrid('restoreRow',ids[i]);
                 }
-                */
                 jQuery("#btnSave,#btnCancel").attr("disabled",true);
-                // Enable select of journal group name from the list box
+                jQuery("#btnEdit").attr("disabled",false);
+
                 jQuery("#journalGroupName").attr("disabled",false);
                 jQuery("#year").attr("disabled",false);
-                jQuery("#newJournalGroupName").val("");
+                //jQuery("#newJournalGroupName").val("");
                 jQuery("#newJournalGroupName").attr("disabled",true);
                 jQuery("#yearNew").attr("disabled",true);
-                jQuery("#journalGroupTable").clearGridData();
+                //jQuery("#journalGroupTable").clearGridData();
             }
 
             // Called when the user clicks on Add new subject group
@@ -157,28 +165,30 @@
 
                 // Load the new year
                 jQuery("#yearNew").attr("disabled",false);
-                //requestURL = "/JDS/CMasterData?md=year";
-                //jdsAppend(requestURL,"yearNew","yearNew");
+
+                //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journal_name"%>","journalName","journalsList");             
+                
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","yearNew");
 
                 // Disable select of journal group name from the list box
                 jQuery("#journalGroupName").attr("disabled",true);
                 jQuery("#year").attr("disabled",true);
+                
                 // Enable save and cancel buttons
-                jQuery("#btnSave,#btnCancel").attr("disabled",false);
-
+                jQuery("#btnEdit").attr("disabled",false);
+                jQuery("#btnSave,#btnCancel").attr("disabled",true);
+                
+                // Get the list of journals
                 jQuery("#journalGroupTable").setGridParam({postData:
                                 {action       : "add"
-                                //year          : $("#year").val()
                             }});
-                //jQuery("#journalGroupTable").setGridParam({editurl: "<%=request.getContextPath()%>/journalGroupName?action=add"});
                 jQuery("#journalGroupTable").setGridParam({ datatype: "xml" });
                 jQuery("#journalGroupTable").trigger("clearGridData");
                 jQuery("#journalGroupTable").trigger("reloadGrid");
 
                 /*
+                // For all the journals allow selection
                 var ids = jQuery("#journalGroupTable").jqGrid('getDataIDs');
-
                 for (var i = 0; i < ids.length; i++) {
                     //jQuery("#journalTable").jqGrid('setRowData', ids[i], { select: {disabled : false} });
                     $("#jqg_"+ids[i],"#journalGroupTable").attr("disabled",false);
@@ -188,18 +198,35 @@
 
             // Called when the journal group is selected from the list box
             function search(){
-                if(jQuery("#journalGroupName").val != "Select")
+                var jgn = $("#journalGroupName").val();
+                if($("#year").val() == 0)
+                alert("Select year");
+                else if( jgn == "value")
+                {
+                    alert("Select Journal Group Name");
+                }else
                     {
-                        isPageLoaded = true;
-                        jQuery("#journalGroupTable").setGridParam({postData:
-                                {journalGroupName       : $("#journalGroupName").val(),
-                                action       : "search"
-                            }});
+                    if(jQuery("#journalGroupName").val != "Select")
+                        {
+                            isPageLoaded = true;
+                            jQuery("#journalGroupTable").setGridParam({postData:
+                                    {journalGroupName       : $("#journalGroupName").val(),
+                                    action       : "search"
+                                }});
 
-                        jQuery("#journalGroupTable").setGridParam({ datatype: "xml" });
-                        jQuery("#journalGroupTable").trigger("clearGridData");
-                        jQuery("#journalGroupTable").trigger("reloadGrid");
+                            jQuery("#journalGroupTable").setGridParam({ datatype: "xml" });
+                            jQuery("#journalGroupTable").trigger("clearGridData");
+                            jQuery("#journalGroupTable").trigger("reloadGrid");
 
+                        }
+                        /*
+                        // For all the journals do not allow selection
+                        var ids = jQuery("#journalGroupTable").jqGrid('getDataIDs');
+                        for (var i = 0; i < ids.length; i++) {
+                            //jQuery("#journalTable").jqGrid('setRowData', ids[i], { select: {disabled : false} });
+                            $("#jqg_"+ids[i],"#journalGroupTable").attr("disabled",true);
+                        }
+                        */
                     }
                 }
 
@@ -250,7 +277,7 @@
                                                 <label>Journal Group:</label>
                                             </span>
                                             <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox" TABINDEX="2" name="journalGroupName" id="journalGroupName" onchange="search()">
+                                                <select class="IASComboBox" TABINDEX="2" name="journalGroupName" id="journalGroupName">
                                                     <option value="0">Select</option>
                                                 </select>
                                             </span>
@@ -258,12 +285,27 @@
                                     </div>
                                     <%-- Search Criteria right div --%>
                               </fieldset>
+                                    <%--
                               <fieldset class="subMainFieldSet">
                                   <legend>Action: Add</legend>
                                     <div id="addBtnDiv">
                                         <input class="IASButton" TABINDEX="3" type="button" value="Add New Subject Group" id="btnAdd" name="btnAdd" onclick="add()"/>
                                     </div>
                               </fieldset>
+                                    --%>
+
+                            <fieldset class="subMainFieldSet">
+                                <legend>Actions - Search / Add</legend>
+                                    <div class="IASFormFieldDiv">
+                                        <div id="searchBtnDiv">
+                                             <input class="IASButton" TABINDEX="4" type="button" value="Display Group Contents" id="btnSearch" name="btnSearch" onclick="search()"/>
+                                        </div>                                          
+                                        <div id="defineRateBtnDiv">
+                                             <input class="IASButton" TABINDEX="5" type="button" value="Add New Subject Group" id="btnAdd" name="btnAdd" onclick="add()"/>
+                                        </div>   
+                                     </div>
+                            </fieldset>                              
+                              
                               <fieldset class="subMainFieldSet">
                                   <legend>Enter New Journal Group Name</legend>
                                     <div class="IASFormLeftDiv">
@@ -287,6 +329,18 @@
                                                 </select>
                                             </span>
                                         </div>
+                                         <%--
+                                        <div class="IASFormFieldDiv">
+                                            <span class="IASFormDivSpanLabel">
+                                                <label>Journals:</label>
+                                            </span>
+                                            <span class="IASFormDivSpanInputBox">
+                                                <select class="IASComboBox" TABINDEX="6" name="journalsList" id="journalsList">
+                                                    <option value="0">Select</option>
+                                                </select>
+                                            </span>
+                                        </div>                                        
+                                         --%>
                                     </div>
                              </fieldset>
                             <%-----------------------------------------------------------------------------------------------------%>
@@ -304,12 +358,15 @@
 
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
+                                    <div id="editBtnDiv">
+                                        <input class="IASButton" TABINDEX="7" type="button" value="Edit" onclick="edit()" id="btnEdit" name="btnEditAction"/>
+                                    </div>
                                     <div id="saveBtnDiv">
-                                        <input class="IASButton" TABINDEX="6" type="button" value="Save" onclick="save()" id="btnSave" name="btnSaveAction"/>
+                                        <input class="IASButton" TABINDEX="8" type="button" value="Save" onclick="save()" id="btnSave" name="btnSaveAction"/>
                                     </div>
                                     <div id="cancelBtnDiv">
-                                        <input class="IASButton" TABINDEX="7" type="button" value="Cancel" onclick="cancel()" id="btnCancel" name="btnCancelAction"/>
-                                    </div>
+                                        <input class="IASButton" TABINDEX="9" type="button" value="Cancel" onclick="cancel()" id="btnCancel" name="btnCancelAction"/>
+                                    </div>                                    
                                 </div>
                             </fieldset>
                     </fieldset>

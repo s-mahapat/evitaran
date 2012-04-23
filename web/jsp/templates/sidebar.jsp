@@ -72,7 +72,7 @@
             <a tabindex="-1" href="#">Reports</a>
             <ul>
                 <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=sendReminders"%>">List of Journals</a>
+                    <a tabindex="-1" href="<%=contextPath + "/main?action=listJournals"%>">List of Journals</a>
                 </li>
                 <li class="menuitem">
                     <a tabindex="-1" href="<%=contextPath + "/main?action=listSubType"%>">List of Subscriber types</a>

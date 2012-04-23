@@ -422,12 +422,12 @@ DROP TABLE IF EXISTS `print_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `print_order` (
-  `id` int(11) NOT NULL,
-  `year` year(4) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `year` int(11) NOT NULL,
   `journalId` int(11) NOT NULL,
   `printOrder` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -436,7 +436,7 @@ CREATE TABLE `print_order` (
 
 LOCK TABLES `print_order` WRITE;
 /*!40000 ALTER TABLE `print_order` DISABLE KEYS */;
-INSERT INTO `print_order` VALUES (1,2011,1,25000),(2,2011,2,24000),(3,2012,3,23000),(4,2010,1,23500),(5,2010,2,24500),(6,2010,3,24000);
+INSERT INTO `print_order` VALUES (1,2011,1,2000),(2,2011,2,2000),(3,2012,3,10000),(4,2010,1,23500),(5,2010,2,24500),(6,2010,3,24000),(7,2011,3,1000),(11,2011,11,1000),(13,2012,1,2400),(14,2012,2,100);
 /*!40000 ALTER TABLE `print_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -622,10 +622,14 @@ CREATE TABLE `subscription` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriberID` int(11) NOT NULL,
   `inwardID` int(11) NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
+  `balance` float NOT NULL DEFAULT '0',
   `subscriptionDate` date NOT NULL DEFAULT '0000-00-00',
+  `subscriptionTotal` float NOT NULL DEFAULT '0',
   `remarks` text,
   PRIMARY KEY (`id`),
-  KEY `subscription_idx_1` (`subscriberID`) USING BTREE
+  KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
+  KEY `subscription_idx_4` (`active`)
 ) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -635,7 +639,7 @@ CREATE TABLE `subscription` (
 
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
-INSERT INTO `subscription` VALUES (123,157059,1771,'2012-04-14',''),(124,157059,1771,'2012-04-15',''),(125,157059,1771,'2012-04-18',''),(126,157059,1771,'2012-04-18',''),(127,157059,1771,'2012-04-18',''),(128,157059,1771,'2012-04-18',''),(129,157059,1771,'2012-04-18',''),(130,157059,1771,'2012-04-18',''),(131,157059,1771,'2012-04-19',''),(132,157059,1771,'2012-04-19',''),(133,157059,1771,'2012-04-19',''),(134,157059,1771,'2012-04-19',''),(135,157059,1771,'2012-04-19',''),(136,166228,1777,'2012-04-21','I want to get this delivered the day after');
+INSERT INTO `subscription` VALUES (123,157059,1771,1,-170,'2012-04-14',1400,''),(124,157059,1771,1,-1110,'2012-04-15',120,''),(125,157059,1771,1,-480,'2012-04-18',750,''),(126,157059,1771,1,-480,'2012-04-18',750,''),(127,157059,1771,1,-480,'2012-04-18',750,''),(128,157059,1771,1,-480,'2012-04-18',750,''),(129,157059,1771,1,-480,'2012-04-18',750,''),(130,157059,1771,1,270,'2012-04-18',1500,''),(131,157059,1771,1,-480,'2012-04-19',750,''),(132,157059,1771,1,-480,'2012-04-19',750,''),(133,157059,1771,1,-480,'2012-04-19',750,''),(134,157059,1771,1,-480,'2012-04-19',750,''),(135,157059,1771,1,-480,'2012-04-19',750,''),(136,166228,1777,1,3000,'2012-04-21',3000,'I want to get this delivered the day after');
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -654,7 +658,7 @@ CREATE TABLE `subscription_rates` (
   `period` int(11) NOT NULL,
   `rate` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -663,7 +667,7 @@ CREATE TABLE `subscription_rates` (
 
 LOCK TABLES `subscription_rates` WRITE;
 /*!40000 ALTER TABLE `subscription_rates` DISABLE KEYS */;
-INSERT INTO `subscription_rates` VALUES (1,1,6,2012,1,750),(2,2,1,2011,1,300),(3,3,1,2011,1,300),(4,4,1,2011,1,4200),(5,5,1,2011,2,900),(6,5,1,2011,3,1300),(7,5,1,2011,5,2000),(8,1,1,2012,1,1000);
+INSERT INTO `subscription_rates` VALUES (1,1,10,2011,1,750),(2,2,2,2011,1,300),(3,3,1,2011,1,300),(4,4,3,2011,1,4200),(5,5,1,2011,2,900),(6,5,2,2011,3,1300),(7,5,1,2011,5,2000),(8,3,10,2011,1,750),(10,1,10,2011,2,500),(11,1,10,2011,3,750),(12,1,1,2011,1,500),(13,1,10,2011,4,600),(14,2,10,2012,12,2300),(15,2,7,2012,1,670);
 /*!40000 ALTER TABLE `subscription_rates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -678,11 +682,12 @@ CREATE TABLE `subscriptiondetails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriptionID` int(11) NOT NULL,
   `journalGroupID` int(11) NOT NULL,
-  `journalPriceGroupID` int(11) NOT NULL DEFAULT '0',
   `copies` int(11) NOT NULL DEFAULT '0',
   `startYear` int(11) NOT NULL,
   `endYear` int(11) NOT NULL,
+  `total` float DEFAULT '0',
   `active` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `journalPriceGroupID` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`)
@@ -695,7 +700,7 @@ CREATE TABLE `subscriptiondetails` (
 
 LOCK TABLES `subscriptiondetails` WRITE;
 /*!40000 ALTER TABLE `subscriptiondetails` DISABLE KEYS */;
-INSERT INTO `subscriptiondetails` VALUES (18,123,1,3,10,2012,2012,1),(19,123,2,4,2,2012,2012,1),(20,124,1,1,1,2012,2012,1),(21,125,1,1,1,2012,2012,1),(22,126,1,1,1,2012,2012,1),(23,127,1,1,1,2012,2012,1),(24,128,1,1,1,2012,2012,1),(25,129,1,1,1,2012,2012,1),(26,130,1,1,2,2012,2012,1),(27,131,1,1,1,2012,2012,1),(28,132,1,1,1,2012,2012,1),(29,133,1,1,1,2012,2012,1),(30,134,1,1,1,2012,2012,1),(31,135,1,1,1,2012,2012,1),(32,136,1,1,3,2012,2012,1);
+INSERT INTO `subscriptiondetails` VALUES (18,123,1,10,2012,2012,1200,1,3),(19,123,2,2,2012,2012,200,1,4),(20,124,1,1,2012,2012,120,1,1),(21,125,1,1,2012,2012,750,1,1),(22,126,1,1,2012,2012,750,1,1),(23,127,1,1,2012,2012,750,1,1),(24,128,1,1,2012,2012,750,1,1),(25,129,1,1,2012,2012,750,1,1),(26,130,1,2,2012,2012,1500,1,1),(27,131,1,1,2012,2012,750,1,1),(28,132,1,1,2012,2012,750,1,1),(29,133,1,1,2012,2012,750,1,1),(30,134,1,1,2012,2012,750,1,1),(31,135,1,1,2012,2012,750,1,1),(32,136,1,3,2012,2012,3000,1,1);
 /*!40000 ALTER TABLE `subscriptiondetails` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -825,4 +830,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-21 22:13:53
+-- Dump completed on 2012-04-23  6:58:38

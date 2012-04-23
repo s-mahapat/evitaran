@@ -163,8 +163,8 @@
         <servlet-class>IAS.Controller.masterdata.journalSubjectGroup</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>journalSubscriptionRateGroup</servlet-name>
-        <servlet-class>IAS.Controller.masterdata.journalSubscriptionRateGroup</servlet-class>
+        <servlet-name>annualSubscriptionRate</servlet-name>
+        <servlet-class>IAS.Controller.masterdata.annualSubscriptionRate</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
@@ -283,8 +283,8 @@
         <url-pattern>/journalSubjectGroup</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>journalSubscriptionRateGroup</servlet-name>
-        <url-pattern>/journalSubscriptionRateGroup</url-pattern>
+        <servlet-name>annualSubscriptionRate</servlet-name>
+        <url-pattern>/annualSubscriptionRate</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
