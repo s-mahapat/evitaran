@@ -28,7 +28,7 @@ function isInwardSelected(){
             if(selectedInwardPurpose.toString().toLowerCase() != 1){
                 city = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'City').toString();
                 subscriberName = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'From').toString();
-                var selectedSubscriberId = searchSubscriber("", "", city, subscriberName);
+                selectedSubscriberId = searchSubscriber("", "", city, subscriberName);
                 jQuery("#inwardTable").jqGrid('setRowData', selectedInward, {
                     'SubscriberId': selectedSubscriberId
                 });

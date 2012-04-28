@@ -13,54 +13,14 @@
         <script type="text/javascript">
             //initally set to false, after the first search the flag is set to true
 
-            /* this can take 3 values
-             * 0 = page is loading for the first time, but not loaded
-             * 1 = page will get data from last serach session
-             * 2 = New search session loaded
-             */
-            var isPageLoaded = 0;
-            var url = "subscriber?action=search";
-            var request = url;
+            var isPageLoaded = false;
             $(document).ready(function (){
-                /*$("input:reset").on("click", function(){
-                    resetGrid("subscriberTable");
-                });*/
-                if($.cookie("search_subscriber") != null){
-                    page = GetCookieValue("search_subscriber","page");
-                    rowNum = GetCookieValue("search_subscriber","rowNum");
-                    sidx = GetCookieValue("search_subscriber","sidx");
-                    subscriberNumber = GetCookieValue("search_subscriber","subscriberNumber");
-                    subscriberName = GetCookieValue("search_subscriber","subscriberName");
-                    sord = GetCookieValue("search_subscriber","sord");
-                    city = GetCookieValue("search_subscriber","city");
-                    email = GetCookieValue("search_subscriber","email");
-                    pincode = GetCookieValue("search_subscriber","pincode");
 
-                    jQuery("#subscriberTable").jqGrid('setColProp','index',sidx);
-                    jQuery("#subscriberTable").jqGrid('setGridParam','page',page);
-                    jQuery("#subscriberTable").jqGrid('setGridParam','rowNum',rowNum);
-                    jQuery("#subscriberTable").jqGrid('setGridParam','sortorder',sord);
-
-
-
-                    existing_search_url = url + "&subscriberNumber=" + subscriberNumber
-                                        + "&subscriberName=" + subscriberName
-                                        + "&city=" + city
-                                        + "&email=" + email
-                                        + "&pincode=" + pincode;
-
-                    // since its the cookie being used send the request immediately
-                    isPageLoaded = 1;
-                }
-                //alert(url);
-                //jQuery("#subscriberTable").jqGrid('setGridParam','url',url);
-
-
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
+                jdsAppend("CMasterData?md=city","city","city");
                 $("#subscriberNumber").focus()
 
                 $("#subscriberTable").jqGrid({
-                    url:url,
+                    url:"subscriber?action=search",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -106,43 +66,53 @@
                         for (var i = 0; i < ids.length; i++) {
                             var subscriberId = ids[i];
                             action = "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "'>View</a>" +
-                                        "<a style='color:blue;' href='subscriber?action=edit&subscriberNumber=" + subscriberId + "'>Edit</a>" +
-                                        "<a style='color:blue;' href='subscriber?action=editsubscription&subscriberNumber=" + subscriberId + "'>Subscription</a>";
+                                "<a style='color:blue;' href='subscriber?action=edit&subscriberNumber=" + subscriberId + "'>Edit</a>" +
+                                "<a style='color:blue;' href='subscriber?action=editsubscription&subscriberNumber=" + subscriberId + "'>Subscription</a>";
                             jQuery("#subscriberTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
-
-                        var rowNum = jQuery("#subscriberTable").jqGrid('getGridParam','rowNum');
-                        var page = jQuery("#subscriberTable").jqGrid('getGridParam','page');
-
-                        var json = {"rowNum": rowNum,
-                                    "page": page,
-                                    "sidx": "subscriberNumber",
-                                    "subscriberNumber":$("#subscriberNumber").val(),
-                                    "sord": "asc",
-                                    "city": $("#city").val(),
-                                    "subscriberName": $("#subscriberName").val(),
-                                    "email": $("#email").val(),
-                                    "pincode": $("#pincode").val()
-
-                                };
-                        //set the cookie
-                        $.cookie("search_subscriber", JSON.stringify(json));
-                        jQuery("#subscriberTable").jqGrid('setGridParam','url',request);
+                        updateCookie();
 
                     },
                     beforeRequest: function(){
-                        if(isPageLoaded == 1){
-                            jQuery("#subscriberTable").jqGrid('setGridParam','url',existing_search_url);
-                            isPageLoaded = 2;
-                            return true;
+                        if($.cookie("search_subscriber") != null && isPageLoaded == false){
+                            page = GetCookieValue("search_subscriber","page");
+                            totalpages = GetCookieValue("search_subscriber","totalpages");
+                            rowNum = GetCookieValue("search_subscriber","rowNum");
+                            sidx = GetCookieValue("search_subscriber","sidx");
+                            subscriberNumber = GetCookieValue("search_subscriber","subscriberNumber");
+                            subscriberName = GetCookieValue("search_subscriber","subscriberName");
+                            sord = GetCookieValue("search_subscriber","sord");
+                            city = GetCookieValue("search_subscriber","city");
+                            email = GetCookieValue("search_subscriber","email");
+                            pincode = GetCookieValue("search_subscriber","pincode");
+                            //alert(totalpages);
+
+                            //jQuery("#subscriberTable").jqGrid('prmNames',{'page':page});
+
+                            jQuery("#subscriberTable").jqGrid('setColProp','index',sidx);
+                            jQuery("#subscriberTable").jqGrid('setGridParam','pgtext',parseInt(page), totalpages);
+
+                            //alert(jQuery("#subscriberTable").jqGrid('getGridParam','page'));
+                            jQuery("#subscriberTable").jqGrid('setGridParam','rowNum',rowNum);
+                            jQuery("#subscriberTable").jqGrid('setGridParam','sortorder',sord);
+
+                            $("#subscriberNumber").val(subscriberNumber);
+                            $("#subscriberName").val(subscriberName);
+                            $("#city").append("<option value=" + city + " selected>" + city + "</option>");
+                            $("#email").val(email);
+                            $("#pincode").val(pincode);
+
+                            searchSubscriber();
+                            isPageLoaded = true;
+
                         }
-                        else if(isPageLoaded == 2){
-                            return true;
-                        }
-                        return false;
+                        return isPageLoaded;
                     },
                     loadError: function(xhr,status,error){
                         alert("Failed getting data from server " + status);
+                    },
+                    onPaging: function(btn){
+                        //updateCookie();
                     }
                 });
             });
@@ -165,6 +135,26 @@
                     jQuery("#subscriberTable").trigger("reloadGrid");
                 }
 
+            }
+
+            function updateCookie(){
+                var rowNum = jQuery("#subscriberTable").jqGrid('getGridParam','rowNum');
+                var page = jQuery("#subscriberTable").jqGrid('getGridParam','page');
+
+                var json = {"rowNum": rowNum,
+                    "page": page,
+                    "totalpages": jQuery("#subscriberTable").jqGrid('getGridParam','lastpage'),
+                    "sidx": "subscriberNumber",
+                    "subscriberNumber":$("#subscriberNumber").val(),
+                    "sord": "asc",
+                    "city": $("#city").val(),
+                    "subscriberName": $("#subscriberName").val(),
+                    "email": $("#email").val(),
+                    "pincode": $("#pincode").val()
+
+                };
+                //set the cookie
+                $.cookie("search_subscriber", JSON.stringify(json));
             }
         </script>
     </head>

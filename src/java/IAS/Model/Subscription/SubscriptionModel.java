@@ -67,6 +67,9 @@ public class SubscriptionModel extends JDSModel {
         String remarks = request.getParameter("remarks");
         int subscriptionID = 0;
 
+        //create object of Back issue list model
+        BackIssueListModel _backIssueListModel = new BackIssueListModel(this.conn);
+
         //this.inwardNumber = "12A-00001";
         if (this.inwardNumber == null) {
             xml = util.convertStringToXML("No Inward Under Process. Cannot add a subscription without an Inward", "error");
@@ -111,6 +114,9 @@ public class SubscriptionModel extends JDSModel {
                             util.convertStringArraytoIntArray(Copies),
                             util.convertStringArraytoFloatArray(Total),
                             util.convertStringArraytoIntArray(journalPriceGroupID));
+
+                    //add to back issue list
+                    
 
                     //Update inward with completed flag once the transaction is completed
                     if (this.CompleteInward(this.inwardID) == 1) {
