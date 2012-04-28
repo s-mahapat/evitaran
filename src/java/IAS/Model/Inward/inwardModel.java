@@ -97,7 +97,7 @@ public class inwardModel extends JDSModel {
     }
 
     public inwardFormBean updateChequeReturn() throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         inwardFormBean inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
         request.setAttribute("inwardFormBean", inwardFormBean);
@@ -228,7 +228,8 @@ public class inwardModel extends JDSModel {
     }
 
     /*
-     * This method is a synchronized method so that no two get the same inward number
+     * This method is a synchronized method so that no two get the same inward
+     * number
      */
     private synchronized String getNextInwardNumber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
@@ -315,7 +316,7 @@ public class inwardModel extends JDSModel {
             sql += " and chqddNumber =" + "'" + chequeNumber + "'";
         }
 
-        if (city != null && city.compareToIgnoreCase("NULL") != 0  && city != null && city.length() > 0) {
+        if (city != null && city.compareToIgnoreCase("NULL") != 0 && city != null && city.length() > 0) {
             sql += " and t2.id=t1.city and t2.city = " + "\"" + city + "\"";
         }
 
@@ -332,12 +333,12 @@ public class inwardModel extends JDSModel {
 
         sql = "select count(*) from (" + sql + ") as tbl";
         rs = this.db.executeQuery(sql);
-        while(rs.next()){
+        while (rs.next()) {
             totalQueryCount = rs.getInt(1);
         }
 
-        if(totalQueryCount > 0){
-            totalPages = (double)totalQueryCount/(double)pageSize;
+        if (totalQueryCount > 0) {
+            totalPages = (double) totalQueryCount / (double) pageSize;
             totalPages = java.lang.Math.ceil(totalPages);
         }
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -372,7 +373,39 @@ public class inwardModel extends JDSModel {
         return xml;
     }
 
-    public String getPendngInwards() throws SQLException, ParseException, ParserConfigurationException, TransformerException{
+    public String subscriberInward() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+        String xml = null;
+        String sql = Queries.getQuery("search_subscriber_inward");
+        String subscriberNumber = request.getParameter("subscriberNumber");
+        int pageNumber = Integer.parseInt(request.getParameter("page"));
+        int pageSize = Integer.parseInt(request.getParameter("rows"));
+        String orderBy = request.getParameter("sidx");
+        String sortOrder = request.getParameter("sord");
+
+        int totalQueryCount = 0;
+        double totalPages = 0;
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, subscriberNumber);
+        ResultSet rs = pst.executeQuery();
+
+        sql = "select count(*) from (" + sql + ") as tbl";
+        pst = conn.prepareStatement(sql);
+        pst.setString(1, subscriberNumber);
+        ResultSet rs_count = pst.executeQuery();
+        rs_count.first();
+        totalQueryCount = rs_count.getInt(1);
+        if (totalQueryCount > 0) {
+            totalPages = (double) totalQueryCount / (double) pageSize;
+            totalPages = java.lang.Math.ceil(totalPages);
+        }
+
+
+        xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+
+        return xml;
+    }
+
+    public String getPendngInwards() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
         String xml = null;
 

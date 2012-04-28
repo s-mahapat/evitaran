@@ -83,7 +83,14 @@ public class inward extends JDSController {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            } else if (action.equalsIgnoreCase("pendinginwards")) {
+            } else if (action.equalsIgnoreCase("subscriberInward")) {
+
+                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
+                String xml = _inwardModel.subscriberInward();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if (action.equalsIgnoreCase("pendinginwards")) {
                 // searchInward gets all the inwards based on the search criteria entered on screen by the user.
                 String xml = _inwardModel.getPendngInwards();
                 request.setAttribute("xml", xml);

@@ -71,7 +71,7 @@ public class subscriber extends JDSController {
                 }
             } else if (action.equalsIgnoreCase("display")) {
                 if (_subscriberModel.viewSubscriber() != null) {
-                    url = "/jsp/subscriber/viewsubscriber.jsp";
+                    url = "/jsp/subscriber/viewdetailsubscriber.jsp";
                 }
             } else if (action.equalsIgnoreCase("search")) {
 
