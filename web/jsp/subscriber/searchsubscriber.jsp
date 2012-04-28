@@ -85,17 +85,13 @@
                             city = GetCookieValue("search_subscriber","city");
                             email = GetCookieValue("search_subscriber","email");
                             pincode = GetCookieValue("search_subscriber","pincode");
-                            //alert(totalpages);
-
-                            //jQuery("#subscriberTable").jqGrid('prmNames',{'page':page});
-
                             jQuery("#subscriberTable").jqGrid('setColProp','index',sidx);
-                            jQuery("#subscriberTable").jqGrid('setGridParam','pgtext',parseInt(page), totalpages);
+                            jQuery("#subscriberTable").setGridParam({
+                                'rowNum': rowNum,
+                                'sortorder': sord,
+                                'page':page
 
-                            //alert(jQuery("#subscriberTable").jqGrid('getGridParam','page'));
-                            jQuery("#subscriberTable").jqGrid('setGridParam','rowNum',rowNum);
-                            jQuery("#subscriberTable").jqGrid('setGridParam','sortorder',sord);
-
+                            });
                             $("#subscriberNumber").val(subscriberNumber);
                             $("#subscriberName").val(subscriberName);
                             $("#city").append("<option value=" + city + " selected>" + city + "</option>");
@@ -112,7 +108,7 @@
                         alert("Failed getting data from server " + status);
                     },
                     onPaging: function(btn){
-                        //updateCookie();
+                        updateCookie();
                     }
                 });
             });
@@ -121,7 +117,6 @@
 
             // called when the search button is clicked
             function searchSubscriber(){
-                jQuery("#subscriberTable").setGridParam({ datatype: "xml" });
                 if(validateSearchSubscriber() == true){
                     isPageLoaded = true;
                     jQuery("#subscriberTable").setGridParam({postData:
@@ -131,7 +126,7 @@
                             email               : $("#email").val(),
                             pincode             : $("#pincode").val()
                         }});
-                    jQuery("#subscriberTable").trigger("clearGridData");
+                    //jQuery("#subscriberTable").trigger("clearGridData");
                     jQuery("#subscriberTable").trigger("reloadGrid");
                 }
 

@@ -2,7 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
+var selectedInward = 0;
+var selectedSubscriberId = 0;
+var selectedInwardRowIndex = -1;
+var selectedInwardPurpose = "";
 
 function validateSearchSubscriber(){
 
@@ -40,8 +43,8 @@ function searchSubscriber(country, state, city, subscriberName){
     subscriber.city = city;
     subscriber.name = subscriberName;
     var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp"
-                                                    , subscriber
-                                                    , windowParams);
+        , subscriber
+        , windowParams);
     return selectedSubscriberFromDialog;
 }
 
@@ -88,4 +91,61 @@ function validateNewInward(){
     }
 
     return isInwardValid;
+}
+
+function subscriberlink(cellvalue, options, rowObject){
+    rowid = options.rowId;
+    var subscriberId = rowObject.childNodes[1].textContent;
+    var subscriberName = rowObject.childNodes[2].textContent;
+    var city = rowObject.childNodes[4].textContent;
+    var inwardid = rowObject.childNodes[0].textContent
+    if(isEmptyValue(subscriberId)){
+        var link = "<a href=\"#\" onclick=" + "\"" + "selectSubscriber('" + city + "','" + subscriberName + "','" + inwardid + "')" + "\"" + ">Select Subscriber</a>";
+        return link;
+    }
+    return "";
+}
+
+function selectInwardFormatter(cellvalue, options, rowObject){
+    rowid = options.rowId;
+    console.log(rowObject);
+    var purpose = rowObject.childNodes[7].textContent;
+    var inwardId = rowObject.childNodes[0].textContent;
+    var subscriberId = rowObject.childNodes[1].textContent;
+    action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + rowid + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purpose + "')" + "\"" + "/>";
+    return action;
+}
+
+function isInwardSelected(){
+    var _JDSConstants = new JDSConstants();
+    //var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
+
+    if(selectedInward == 0){
+        alert("Please select an Inward");
+        return false;
+
+    }else if(selectedSubscriberId == null && selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION){
+        // if its not a new subscription then we need a subscriber id, search for the subscriber id
+        city = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'City').toString();
+        subscriberName = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'From').toString();
+        selectSubscriber(city, subscriberName, selectedInward);
+        return false;
+    }else if(selectedSubscriberId == null && selectedInwardPurpose != _JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION){
+        if(confirm("Do you want to continue without selecting subscriber ?") == false){
+            return false;
+        }
+    }
+
+    document.processInwardForm.action = "inward?action=processinward&" +
+    "inwardNumber=" + selectedInward + "&" +
+    "subscriberNumber=" + selectedSubscriberId + "&" +
+    "purpose=" + selectedInwardPurpose
+    return true;
+}
+
+function selectSubscriber(city, subscriberName, rowid){
+    selectedSubscriberId = searchSubscriber("", "", city, subscriberName);
+    jQuery("#inwardTable").jqGrid('setRowData', rowid, {
+        'SubscriberId': selectedSubscriberId
+    });
 }

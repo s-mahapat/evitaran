@@ -1,11 +1,11 @@
 function makeCreateSubscriberReadOnly(){
 
-    document.getElementById("btnEditSubscriber").disabled = true;
-    document.getElementById("btnDisplaySubscriber").disabled = true;
-    document.getElementById("btnViewSubscription").disabled = true;
-    document.getElementById("btnAddSubscription").disabled = true;
-    //document.getElementById("subscriberAgent").options.length=0;
-    //document.getElementById("subscriberAgent").disabled = true;
+    $("#btnEditSubscriber").button("disable");
+    $("#btnEditSubscriber").button("disable");
+    $("#btnDisplaySubscriber").button("disable");
+    $("#btnViewSubscription").button("disable");
+    //$("#btnAddSubscription").button("disable");
+
 }
 
 function validateNewSubscriber(){

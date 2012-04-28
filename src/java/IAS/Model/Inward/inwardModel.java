@@ -9,8 +9,6 @@ import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -18,18 +16,9 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.dbutils.BeanProcessor;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -333,8 +322,8 @@ public class inwardModel extends JDSModel {
         sql = "select count(*) from (" + sql + ") as tbl";
         ResultSet rs_count = this.db.executeQuery(sql);
         rs_count.first();
-        totalQueryCount = rs.getInt(1);
-        xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);     
+        totalQueryCount = rs_count.getInt(1);
+        xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
         return xml;
     }
 
@@ -359,12 +348,6 @@ public class inwardModel extends JDSModel {
         ResultSet rs_count = pst.executeQuery();
         rs_count.first();
         totalQueryCount = rs_count.getInt(1);
-        if (totalQueryCount > 0) {
-            totalPages = (double) totalQueryCount / (double) pageSize;
-            totalPages = java.lang.Math.ceil(totalPages);
-        }
-
-
         xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
 
         return xml;
@@ -378,6 +361,10 @@ public class inwardModel extends JDSModel {
         String inwardPurpose = request.getParameter("inwardPurpose");
         String fromDate = request.getParameter("fromDate");
         String toDate = request.getParameter("toDate");
+        int pageNumber = Integer.parseInt(request.getParameter("page"));
+        int pageSize = Integer.parseInt(request.getParameter("rows"));
+        String orderBy = request.getParameter("sidx");
+        String sortOrder = request.getParameter("sord");
 
         if (inwardPurpose.compareToIgnoreCase("NULL") != 0 && inwardPurpose != null && inwardPurpose.length() > 0) {
             sql += " and t3.purpose =" + "'" + inwardPurpose + "'";
@@ -387,12 +374,15 @@ public class inwardModel extends JDSModel {
             sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
 
-        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose";
+        sql += " order by sortdate " + sortOrder;
 
         ResultSet rs = this.db.executeQuery(sql);
 
-        xml = util.convertResultSetToXML(rs);
-
+        sql = "select count(*) from (" + sql + ") as tbl";
+        ResultSet rs_count = this.db.executeQuery(sql);
+        rs_count.first();
+        int totalQueryCount = rs_count.getInt(1);
+        xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
         return xml;
     }
 }

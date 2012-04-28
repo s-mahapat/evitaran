@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+import IAS.Class.JDSConstants;
 
 public class inward extends JDSController {
 
@@ -108,9 +109,10 @@ public class inward extends JDSController {
                 // but id should not change
                 int purposeID = Integer.parseInt(request.getParameter("purpose"));
 
-                if (purposeID == 1) {
+                if (    purposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION ||
+                        purposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
 
-                    if (subscriberNumber != null && !subscriberNumber.isEmpty()) {
+                    if (subscriberNumber != null && !subscriberNumber.equalsIgnoreCase("null") && !subscriberNumber.isEmpty()) {
 
                         url = "/subscriber?action=add";
 
@@ -131,16 +133,13 @@ public class inward extends JDSController {
                         request.setAttribute("subscriberFormBean", _subscriberFormBean);
                         url = "/main?action=createsubscriber";
                     }
-                } else if (purposeID == 2) {
+                } else if (purposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION) {
                     // Renew subscription
                     //IAS.Model.subscriberModel _subscriberModel = new IAS.Model.subscriberModel(request);
                     url = "/subscriber?action=add";
-                } else if (purposeID == 3) {
+                } else if (purposeID == JDSConstants.INWARD_PURPOSE_ADDRESS_CHANGE) {
                     //Address change
                     url = "/subscriber?action=edit";
-
-                } else if (purposeID == 4) {
-                    url = "/Invoice?action=new";
 
                 } else if (purposeID == 100) {
                     // Add Free Subscriber

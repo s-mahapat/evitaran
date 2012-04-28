@@ -4,6 +4,7 @@
 <link rel="icon" href="<%=request.getContextPath() + "/images/favicon.ico"%>" type="image/x-icon" />
 <link rel="shortcut icon" href="<%=request.getContextPath() + "/images/favicon.ico"%>" type="image/x-icon" />
 <script src="<%=request.getContextPath() + "/js/common.js"%>" type="text/javascript"></script>
+<script src="<%=request.getContextPath() + "/js/jdsconstants.js"%>" type="text/javascript"></script>
 
 <%-- jquery Core --%>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery-1.7.2.min.js"%>" type="text/javascript"></script>

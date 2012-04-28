@@ -6,7 +6,7 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <title>Search Subscriber</title>
         <script>
-            window.returnValue=0;
+            window.returnValue=null;
             var subscriber = window.dialogArguments;
             var selectedSubscriberId = 0;
 

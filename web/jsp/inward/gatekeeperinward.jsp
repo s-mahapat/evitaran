@@ -12,10 +12,7 @@
         <script src="js/inward/gatekeeperinward.js" type="text/javascript"></script>
         <script src="js/inward/inward.js" type="text/javascript"></script>
         <script type="text/javascript">
-            var selectedInward = 0;
-            var selectedSubscriberId = 0;
-            var selectedInwardRowIndex = -1;
-            var selectedInwardPurpose = "";
+
             var isPageLoaded = false;
 
             $(document).ready(function(){
@@ -39,9 +36,16 @@
                     scrollOffset: 20,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','PurposeID'],
+                    colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','PurposeID','Action'],
                     colModel :[
-                        {name:'Select', index:'select', sortable: false, width:20, align:'center',xmlmap:'inwardNumber'},
+                        {
+                            name:'Select',
+                            index:'select',
+                            width:50,
+                            align:'center',
+                            xmlmap:'inwardNumber',
+                            formatter: selectInwardFormatter
+                        },
                         {name:'InwardNo', index:'inward_id', sortable: false,key: true, width:50, align:'center', xmlmap:'inwardNumber'},
                         {name:'SubscriberId', index:'subscriber_id', sortable: false, width:50, align:'center', xmlmap:'subscriberId'},
                         {name:'From', index:'from', sortable: false, width:80, align:'center', xmlmap:'from'},
@@ -49,7 +53,15 @@
                         {name:'City', index:'city', sortable: false, width:80, align:'center', xmlmap:'city'},
                         {name:'Cheque', index:'chqddNumber', sortable: false, width:40, align:'center', xmlmap:'chqddNumber'},
                         {name:'Purpose', index:'purpose', sortable: false, width:80, align:'center', xmlmap:'inwardPurpose'},
-                        {name:'PurposeID', index:'purposeid', sortable: false, width:80, align:'center', hidden:true, xmlmap:'inwardPurposeID'}
+                        {name:'PurposeID', index:'purposeid', sortable: false, width:80, align:'center', hidden:true, xmlmap:'inwardPurposeID'},
+                        {
+                            name:'action',
+                            index:'',
+                            width:80,
+                            align:'center',
+                            xmlmap:'',
+                            formatter: subscriberlink
+                        }
                     ],
                     xmlReader : {
                         root: "results",
@@ -71,7 +83,7 @@
                         if(ids.length > 0){
                             $("#btnNext").removeAttr("disabled");
                         }
-                        for (var i = 0; i < ids.length; i++) {
+                        /*for (var i = 0; i < ids.length; i++) {
                             var cl = ids[i];
 
                             var inwardId = jQuery("#inwardTable").jqGrid('getCell',cl,'InwardNo').toString();
@@ -80,7 +92,7 @@
                             //var purpose = jQuery("#inwardTable").jqGrid('getCell',cl,'Purpose').toString();
                             action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + cl + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purpose + "')" + "\"" + "/>";
                             jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Select: action });
-                        }
+                        }*/
                     },
                     beforeRequest: function(){
                         return isPageLoaded;
@@ -119,7 +131,7 @@
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
             <%--<form method="post" action="<%=request.getParameter("next")%>" name="searchInwardForm" onsubmit="return isInwardSelected()">--%>
-            <form method="post" action="<%=request.getContextPath() + "/inward"%>" name="searchInwardForm" onsubmit="return isInwardSelected()">
+            <form method="post" action="<%=request.getContextPath() + "/inward"%>" name="processInwardForm" onsubmit="return isInwardSelected()">
                 <input type="hidden" id="nextAction" name ="nextAction" value="<%=request.getParameter("nextAction")%>"/>
                 <input type="hidden" id="inwardPurpose" name ="inwardPurpose" value="<%=request.getParameter("inwardPurpose")%>"/>
                 <input type="hidden" id="inwardNumber" name ="inwardNumber" value=""/>

@@ -14,18 +14,16 @@
         <script type="text/javascript">
             //var calPopup = new CalendarPopup("dateDiv");
             //calPopup.showNavigationDropdowns();
-            var selectedInward = 0;
-            var selectedSubscriberId = "";
-            var selectedInwardPurpose = "";
+
             var isPageLoaded = false;
             $(document).ready(function(){
-                $("#btnNext").attr("disabled","disabled");
+                $("#btnNext").button("disable");
 
                 // fill in the inward purpose
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=purpose"%>","purpose","inwardPurpose");
+                jdsAppend("CMasterData?md=purpose","purpose","inwardPurpose");
 
                 $("#inwardTable").jqGrid({
-                    url:"<%=request.getContextPath() + "/inward?action=pendinginwards"%>",
+                    url:"inward?action=pendinginwards",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -33,21 +31,54 @@
                     height: 240,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    loadonce: false,
                     rownumbers: true,
+                    sortname: 'inwardCreationDate',
+                    sortorder: 'desc',
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','PurposeID'],
+                    colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','PurposeID','Action'],
                     colModel :[
-                        {name:'Select', index:'select', width:50, align:'center',xmlmap:'inwardNumber'},
-                        {name:'InwardNo', index:'inward_id', width:50, align:'center', xmlmap:'inwardNumber'},
-                        {name:'SubscriberId', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriberId'},
+                        {
+                            name:'Select',
+                            index:'select',
+                            width:50,
+                            align:'center',
+                            xmlmap:'inwardNumber',
+                            sortable: false,
+                            formatter: selectInwardFormatter
+                        },
+                        {name:'InwardNo', sortable: false, index:'inward_id', width:50, align:'center', xmlmap:'inwardNumber'},
+                        {name:'SubscriberId'
+                            , index:'subscriber_id'
+                            , width:50
+                            , align:'center'
+                            , sortable: false
+                            , xmlmap:'subscriberId'
+                            //,formatter: subscriberlink
+                        },
                         {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
-                        {name:'ReceivedDate', index:'date', width:80, align:'center', xmlmap:'inwardCreationDate'},
-                        {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
-                        {name:'Cheque', index:'cheque', width:40, align:'center', xmlmap:'chqddNumber'},
-                        {name:'Purpose', index:'purpose', width:80, align:'center', xmlmap:'inwardPurpose'},
-                        {name:'PurposeID', index:'purposeid', width:80, align:'center', hidden:true, xmlmap:'inwardPurposeID'}
+                        {
+                            name:'ReceivedDate',
+                            index:'inwardCreationDate',
+                            width:80,
+                            align:'center',
+                            xmlmap:'inwardCreationDate'
+                            //formatter:'date',
+
+                        },
+                        {name:'City', index:'city', sortable: false, width:80, align:'center', xmlmap:'city'},
+                        {name:'Cheque', index:'cheque', sortable: false, width:40, align:'center', xmlmap:'chqddNumber'},
+                        {name:'Purpose', index:'purpose', sortable: false, width:80, align:'center', xmlmap:'inwardPurpose'},
+                        {name:'PurposeID', index:'purposeid', sortable: false, width:80, align:'center', hidden:true, xmlmap:'inwardPurposeID'},
+                        {
+                            name:'action',
+                            index:'',
+                            width:80,
+                            align:'center',
+                            xmlmap:'',
+                            formatter: subscriberlink
+                        }
                     ],
                     xmlReader : {
                         root: "results",
@@ -67,9 +98,9 @@
                     gridComplete: function() {
                         var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
-                            $("#btnNext").removeAttr("disabled");
+                            $("#btnNext").button("enable");
                         }
-                        for (var i = 0; i < ids.length; i++) {
+                        /*for (var i = 0; i < ids.length; i++) {
                             var cl = ids[i];
                             var purpose = jQuery("#inwardTable").jqGrid('getCell',cl,'PurposeID').toString();
                             var inwardId = jQuery("#inwardTable").jqGrid('getCell',cl,'InwardNo').toString();
@@ -78,7 +109,7 @@
                             //jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Purpose: action });
                             action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + cl + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purpose + "')" + "\"" + "/>";
                             jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Select: action });
-                        }
+                        }*/
                     },
                     beforeRequest: function(){
                         return isPageLoaded;
@@ -109,6 +140,29 @@
                 }
 
             }
+
+            /*function subscriberlink(cellvalue, options, rowObject){
+                rowid = options.rowId;
+                var subscriberId = rowObject.childNodes[1].textContent;
+                var subscriberName = rowObject.childNodes[2].textContent;
+                var city = rowObject.childNodes[4].textContent;
+                var inwardid = rowObject.childNodes[0].textContent
+                if(isEmptyValue(subscriberId)){
+                    var link = "<a href=\"#\" onclick=" + "\"" + "selectSubscriber('" + city + "','" + subscriberName + "','" + inwardid + "')" + "\"" + ">Select Subscriber</a>";
+                    return link;
+                }
+                return "";
+            }
+
+            function selectInwardFormatter(cellvalue, options, rowObject){
+                rowid = options.rowId;
+                //console.log(rowObject);
+                var purpose = rowObject.childNodes[7].textContent;
+                var inwardId = rowObject.childNodes[0].textContent;
+                var subscriberId = rowObject.childNodes[1].textContent;
+                action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + rowid + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purpose + "')" + "\"" + "/>";
+                return action;
+            }*/
 
         </script>
 
