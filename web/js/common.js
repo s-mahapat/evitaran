@@ -349,3 +349,19 @@ function PrintContent(divID) {
     WindowObject.print();
     WindowObject.close();
 }
+
+function GetCookieValue(cookieName, keyName){
+
+    var json = JSON.parse($.cookie(cookieName));
+    var _value = null;
+    $.each(json, function(key,value){
+       if(key == keyName){
+           _value = value;
+           return;
+       }
+    });
+    return _value;
+
+
+
+}

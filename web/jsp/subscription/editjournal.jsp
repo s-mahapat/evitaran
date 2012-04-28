@@ -286,7 +286,7 @@
             </select>
         </span>
 
-        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+        <%--<span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
             <label>Journal Price Year:</label>
         </span>
 
@@ -298,7 +298,7 @@
                     }
                 %>
             </select>
-        </span>
+        </span>--%>
 
         <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
             <label>Journal Group</label>
