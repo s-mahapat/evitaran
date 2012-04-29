@@ -5,6 +5,7 @@
 package IAS.Model.Inward;
 
 import IAS.Bean.Inward.inwardFormBean;
+import IAS.Class.JDSConstants;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
@@ -266,16 +267,15 @@ public class inwardModel extends JDSModel {
         return nextInward;
     }
 
-    private String getMonthToCharacterMap(int _month) {
-
-        char[] alphabet = "abcdefghijkl".toCharArray();
-
-        // the calendar objects month starts from 0
-        String monthChar = Character.toString(alphabet[_month]);
-        return monthChar.toUpperCase();
-
-    }
-
+//    private String getMonthToCharacterMap(int _month) {
+//
+//        char[] alphabet = "abcdefghijkl".toCharArray();
+//
+//        // the calendar objects month starts from 0
+//        String monthChar = Character.toString(alphabet[_month]);
+//        return monthChar.toUpperCase();
+//
+//    }
     public String searchInward() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String xml = null;
         String sql = Queries.getQuery("search_inward");
@@ -384,5 +384,17 @@ public class inwardModel extends JDSModel {
         int totalQueryCount = rs_count.getInt(1);
         xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
         return xml;
+    }
+
+    public int processFollowOnDocs() {
+        //this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");
+        int inwardPurposeID = Integer.parseInt(request.getParameter("purpose"));
+        int followOnDocID = 0;
+        if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
+            followOnDocID = JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE;
+        } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION) {
+            followOnDocID = JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION;
+        }
+        return followOnDocID;
     }
 }

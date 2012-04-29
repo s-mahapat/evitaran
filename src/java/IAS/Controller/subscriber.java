@@ -22,6 +22,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
+import IAS.Class.JDSConstants;
 
 public class subscriber extends JDSController {
 
@@ -56,15 +57,9 @@ public class subscriber extends JDSController {
                         // saving subscriber info, else redirect to view subscriber
                         if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION) {
                             url = "/jsp/subscription/addnewsubscription.jsp";
-
                         }
                     }
-
                 }
-
-
-
-
             } else if (action.equalsIgnoreCase("edit")) {
                 if (_subscriberModel.editSubscriber() != null) {
                     url = "/jsp/subscriber/editsubscriber.jsp";

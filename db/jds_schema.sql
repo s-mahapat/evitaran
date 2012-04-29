@@ -40,27 +40,6 @@ CREATE TABLE `agents` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `back_issue_list`
---
-
-DROP TABLE IF EXISTS `back_issue_list`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `back_issue_list` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subscription_detail_id` int(11) NOT NULL,
-  `journal_id` int(11) NOT NULL,
-  `copies` int(11) NOT NULL,
-  `month` int(11) NOT NULL,
-  `year` int(11) NOT NULL,
-  `in_mailing_list` tinyint(4) NOT NULL DEFAULT '0',
-  `active` tinyint(4) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  KEY `subscription_detail_idx` (`subscription_detail_id`,`journal_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `cities`
 --
 
@@ -142,6 +121,22 @@ CREATE TABLE `ias_info` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `invoice`
+--
+
+DROP TABLE IF EXISTS `invoice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `invoice` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `invoiceNumber` varchar(32) NOT NULL,
+  `subscriptionId` int(15) DEFAULT NULL,
+  `invoiceCreationDate` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `inward`
 --
 
@@ -183,7 +178,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB AUTO_INCREMENT=1781 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1804 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,23 +276,6 @@ CREATE TABLE `languages` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `mailing_list_summary`
---
-
-DROP TABLE IF EXISTS `mailing_list_summary`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `mailing_list_summary` (
-  `month` int(11) NOT NULL,
-  `year` int(11) NOT NULL,
-  `generation_date` date DEFAULT NULL,
-  `generated` tinyint(4) NOT NULL DEFAULT '0',
-  `generated_by` varchar(64) DEFAULT NULL,
-  UNIQUE KEY `mail_list_summary_idx` (`month`,`year`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `payment_mode`
 --
 
@@ -320,12 +298,12 @@ DROP TABLE IF EXISTS `print_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `print_order` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `year` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `year` year(4) NOT NULL,
   `journalId` int(11) NOT NULL,
   `printOrder` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -487,7 +465,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -505,7 +483,7 @@ CREATE TABLE `subscription_rates` (
   `period` int(11) NOT NULL,
   `rate` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -528,27 +506,8 @@ CREATE TABLE `subscriptiondetails` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = latin1 */ ;
-/*!50003 SET character_set_results = latin1 */ ;
-/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_to_back_issue_list` AFTER INSERT
-    ON jds.subscriptiondetails FOR EACH ROW
-BEGIN
-    
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `user_role`
@@ -601,4 +560,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-29  0:13:05
+-- Dump completed on 2012-04-30  0:13:07

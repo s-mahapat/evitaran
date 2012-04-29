@@ -4,10 +4,12 @@
  */
 package IAS.Controller;
 
+import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.JDSLogger;
 import IAS.Class.util;
 import IAS.Model.Subscriber.subscriberModel;
 import IAS.Model.Subscription.SubscriptionModel;
+import IAS.Bean.Subscription.SubscriptionFormBean;
 import java.io.IOException;
 import java.sql.ResultSet;
 import javax.servlet.RequestDispatcher;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.log4j.Logger;
+import IAS.Class.JDSConstants;
 
 public class subscription extends JDSController {
 
@@ -31,6 +34,7 @@ public class subscription extends JDSController {
         try {
             SubscriptionModel _subscriptionModel = new SubscriptionModel(request);
             subscriberModel _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
+            SubscriptionFormBean _subscriptionFormBean = new IAS.Bean.Subscription.SubscriptionFormBean();
             if (oper.equalsIgnoreCase("view")) {
 
                 url = "/jsp/subscription/viewsubscription.jsp";
@@ -57,7 +61,7 @@ public class subscription extends JDSController {
                 int[] res = _subscriptionModel.addNewSubscriptionDetail(
                         subscriptionID, journalGroupID, startYear, endYear,
                         copies, total, journalPriceGroupID);
-                if(res.length == 1){
+                if (res.length == 1) {
                     xml = util.convertStringToXML(String.valueOf(res[0]), "success");
                 }
                 request.setAttribute("xml", xml);
@@ -79,14 +83,14 @@ public class subscription extends JDSController {
                     url = "/jsp/subscription/editsubscription.jsp";
                 }
 
-            } else if(action.equalsIgnoreCase("subscriptioninfo")){
+            } else if (action.equalsIgnoreCase("subscriptioninfo")) {
                 // gets the subscription info given a subscription id
                 ResultSet rs = _subscriptionModel.getSubscriptionByID(Integer.parseInt(request.getParameter("id")));
                 String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            } else if (oper.equalsIgnoreCase("edit")){
+            } else if (oper.equalsIgnoreCase("edit")) {
 
                 // we reach here if the existing subscription is being edited
                 String xml = null;
@@ -96,10 +100,10 @@ public class subscription extends JDSController {
                 int subTypeID = Integer.parseInt(request.getParameter("subtypeid"));
                 boolean active = Boolean.parseBoolean(request.getParameter("active"));
                 int id = Integer.parseInt(request.getParameter("id"));
-                if(_subscriptionModel.updateSubscriptionDetail(id, startYear, endYear, active, copies, subTypeID) != 1){
+                if (_subscriptionModel.updateSubscriptionDetail(id, startYear, endYear, active, copies, subTypeID) != 1) {
                     xml = util.convertStringToXML("Error updating subscription details", "error");
-                }else{
-                    xml = util.convertStringToXML("1","success");
+                } else {
+                    xml = util.convertStringToXML("1", "success");
                 }
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
@@ -158,9 +162,7 @@ public class subscription extends JDSController {
                 }
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-
             }
-
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);

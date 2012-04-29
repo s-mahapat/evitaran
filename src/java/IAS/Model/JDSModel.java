@@ -62,4 +62,11 @@ public class JDSModel {
         }
         return (0);
     }
+
+    public String getMonthToCharacterMap(int _month) {
+        char[] alphabet = "abcdefghijkl".toCharArray();
+        // the calendar objects month starts from 0
+        String monthChar = Character.toString(alphabet[_month]);
+        return monthChar.toUpperCase();
+    }
 }

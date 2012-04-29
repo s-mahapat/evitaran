@@ -63,7 +63,7 @@ public class inward extends JDSController {
 
             } else if (action.equalsIgnoreCase("sendAck")) {
 
-                 _inwardFormBean = _inwardModel.viewInward();
+                _inwardFormBean = _inwardModel.viewInward();
                 if (_inwardFormBean != null) {
                     request.setAttribute("inwardFormBean", _inwardFormBean);
                     url = "/jsp/inward/ackinward.jsp";
@@ -91,7 +91,7 @@ public class inward extends JDSController {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }else if (action.equalsIgnoreCase("pendinginwards")) {
+            } else if (action.equalsIgnoreCase("pendinginwards")) {
                 // searchInward gets all the inwards based on the search criteria entered on screen by the user.
                 String xml = _inwardModel.getPendngInwards();
                 request.setAttribute("xml", xml);
@@ -109,8 +109,8 @@ public class inward extends JDSController {
                 // but id should not change
                 int purposeID = Integer.parseInt(request.getParameter("purpose"));
 
-                if (    purposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION ||
-                        purposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
+                if (purposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
+                        || purposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
 
                     if (subscriberNumber != null && !subscriberNumber.equalsIgnoreCase("null") && !subscriberNumber.isEmpty()) {
 
@@ -154,6 +154,18 @@ public class inward extends JDSController {
                 if (_inwardModel.updateChequeReturn() != null) {
                     url = "/jsp/inward/returninward.jsp";
                 }
+            } else if (action.equalsIgnoreCase("followOnProcess")) {
+                _inwardFormBean = _inwardModel.viewInward();
+                if (_inwardFormBean != null) {
+                    request.setAttribute("inwardFormBean", _inwardFormBean);
+                    int followOnProcessID = _inwardModel.processFollowOnDocs();
+                    if (followOnProcessID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION) {
+                        url = "/jsp/inward/ackinward.jsp";
+                    } else if (followOnProcessID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
+                        url = "/jsp/invoice/proforma.jsp";
+                    }
+                }
+
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

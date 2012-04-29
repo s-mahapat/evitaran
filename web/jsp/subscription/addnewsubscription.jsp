@@ -7,6 +7,7 @@
     inwardFormBean _inwardFormBean = (inwardFormBean)request.getSession().getAttribute("inwardUnderProcess");
     String inwardNumber = _inwardFormBean.getInwardNumber();
     float amount = _inwardFormBean.getAmount();
+
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -21,6 +22,7 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/jquery/jquery.blockUI.js"%>"></script>
         <script type="text/javascript">
+            var inwardPurpose = <%=request.getParameter("purpose")%>;
             $(document).ready(function(){
                 $().ajaxStart($.blockUI).ajaxStop($.unblockUI);
                 listSubscription("View");

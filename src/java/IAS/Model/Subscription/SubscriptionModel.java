@@ -5,8 +5,10 @@
 package IAS.Model.Subscription;
 
 import IAS.Bean.Inward.inwardFormBean;
+import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Bean.Subscription.SubscriptionDetailBean;
 import IAS.Bean.Subscription.SubscriptionFormBean;
+import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
@@ -22,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
+import IAS.Class.JDSConstants;
+import java.util.Calendar;
+import java.text.*;
 
 /**
  *
@@ -32,13 +37,16 @@ public class SubscriptionModel extends JDSModel {
     private String subscriberNumber;
     private String inwardNumber;
     private int inwardID;
+    private int inwardPurposeID = 0;
     private inwardFormBean _inwardFormBean;
+    private InvoiceFormBean _invoiceFormBean;
+    private SubscriptionFormBean _subscriptionBean;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.SubscriptionModel");
 
     public SubscriptionModel(HttpServletRequest request) throws SQLException {
         // call the base class constructor.
         super(request);
-
+        _subscriptionBean = new SubscriptionFormBean();
         //this.journalName = request.getParameter("journalName");
         //this.copies = 0;
         this.subscriberNumber = request.getParameter("subscriberNumber");
@@ -47,6 +55,7 @@ public class SubscriptionModel extends JDSModel {
             this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");
             this.inwardNumber = _inwardFormBean.getInwardNumber();
             this.inwardID = _inwardFormBean.getInwardID();
+            this.inwardPurposeID = _inwardFormBean.getInwardPurposeID();
         } else {
             this.inwardNumber = null;
         }
@@ -74,9 +83,8 @@ public class SubscriptionModel extends JDSModel {
         if (this.inwardNumber == null) {
             xml = util.convertStringToXML("No Inward Under Process. Cannot add a subscription without an Inward", "error");
         } else {
-            SubscriptionFormBean _subscriptionBean = new SubscriptionFormBean();
-            SubscriptionDetailBean _subscriptionDetailBean = new SubscriptionDetailBean();
 
+            SubscriptionDetailBean _subscriptionDetailBean = new SubscriptionDetailBean();
             FillBean(this.request, _subscriptionBean);
             FillBean(this.request, _subscriptionDetailBean);
             _subscriptionBean.setSubscriptionTotal(subscriptionTotal);
@@ -116,7 +124,12 @@ public class SubscriptionModel extends JDSModel {
                             util.convertStringArraytoIntArray(journalPriceGroupID));
 
                     //add to back issue list
-                    
+
+
+                    // Update the Performa Invoice
+                    if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
+                        int invoiceID = this.updateInvoice();
+                    }
 
                     //Update inward with completed flag once the transaction is completed
                     if (this.CompleteInward(this.inwardID) == 1) {
@@ -133,8 +146,6 @@ public class SubscriptionModel extends JDSModel {
         }
         return xml;
     }
-
-
 
     private int[] __addSubscriptionDetail(
             int subscriptionID, int[] journalGroupID,
@@ -162,7 +173,7 @@ public class SubscriptionModel extends JDSModel {
 
     public int[] addNewSubscriptionDetail(int subscriptionID, int journalGroupID,
             int startYear, int endYear, int copies,
-            float total, int journalPriceGroupID) throws SQLException{
+            float total, int journalPriceGroupID) throws SQLException {
 
         int[] _journalGroupID = {journalGroupID};
         int[] _journalPriceGroupID = {journalPriceGroupID};
@@ -173,10 +184,10 @@ public class SubscriptionModel extends JDSModel {
 
 
         int res[] = this.__addSubscriptionDetail(
-                    subscriptionID, _journalGroupID,
-                    _startYear, _endYear,
-                    _copies, _total,
-                    _journalPriceGroupID);
+                subscriptionID, _journalGroupID,
+                _startYear, _endYear,
+                _copies, _total,
+                _journalPriceGroupID);
         return res;
     }
 
@@ -223,30 +234,27 @@ public class SubscriptionModel extends JDSModel {
             int newPriceGroupID = rs.getInt(1);
             //float total = copies * rs.getInt(2);
 
-            /*// get the amount from the inward table
-            sql = Queries.getQuery("get_active_subscription_total_amount");
-            PreparedStatement st = conn.prepareStatement(sql);
-            st.setInt(1, subscriptionID);
-            rs = st.executeQuery();
-            rs.first();
-            float oldSubscriptionTotal = rs.getFloat(1);
-            float amount = rs.getFloat(2);
-
-            float newSubscriptionTotal = 0;
-            float newBalance = 0;
-
-            if (oldactiveFlag == true && active == true) {
-                newSubscriptionTotal = oldSubscriptionTotal - oldTotal + total;
-            } else if (oldactiveFlag == true && active == false) {
-                newSubscriptionTotal = oldSubscriptionTotal - oldTotal;
-            } else if (oldactiveFlag == false && active == true) {
-                newSubscriptionTotal = oldSubscriptionTotal + total;
-            }
-
-            //calculate the new balance
-            newBalance = newSubscriptionTotal - amount;
-            *
-            */
+            /*
+             * // get the amount from the inward table sql =
+             * Queries.getQuery("get_active_subscription_total_amount");
+             * PreparedStatement st = conn.prepareStatement(sql); st.setInt(1,
+             * subscriptionID); rs = st.executeQuery(); rs.first(); float
+             * oldSubscriptionTotal = rs.getFloat(1); float amount =
+             * rs.getFloat(2);
+             *
+             * float newSubscriptionTotal = 0; float newBalance = 0;
+             *
+             * if (oldactiveFlag == true && active == true) {
+             * newSubscriptionTotal = oldSubscriptionTotal - oldTotal + total; }
+             * else if (oldactiveFlag == true && active == false) {
+             * newSubscriptionTotal = oldSubscriptionTotal - oldTotal; } else if
+             * (oldactiveFlag == false && active == true) { newSubscriptionTotal
+             * = oldSubscriptionTotal + total; }
+             *
+             * //calculate the new balance newBalance = newSubscriptionTotal -
+             * amount;
+             *
+             */
 
 
 
@@ -264,13 +272,13 @@ public class SubscriptionModel extends JDSModel {
             st.setInt(++paramIndex, id);
             rc = st.executeUpdate();
 
-            /*sql = Queries.getQuery("update_subscription_balance");
-            st = conn.prepareStatement(sql);
-            paramIndex = 0;
-            st.setFloat(++paramIndex, newSubscriptionTotal);
-            st.setFloat(++paramIndex, newBalance);
-            st.setInt(++paramIndex, subscriptionID);
-            rc = st.executeUpdate();*/
+            /*
+             * sql = Queries.getQuery("update_subscription_balance"); st =
+             * conn.prepareStatement(sql); paramIndex = 0;
+             * st.setFloat(++paramIndex, newSubscriptionTotal);
+             * st.setFloat(++paramIndex, newBalance); st.setInt(++paramIndex,
+             * subscriptionID); rc = st.executeUpdate();
+             */
 
             //update the balance and subscription total after update
             //sql = "CALL updateSubscriptionBalance(" + id + ")";
@@ -385,5 +393,68 @@ public class SubscriptionModel extends JDSModel {
         ResultSet rs = this.db.executeQueryPreparedStatement(ps);
         return rs;
 
+    }
+
+    private synchronized String getNextInvoiceNumber() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
+
+        String nextInvoice;
+        // Invoice Type to be tagged in the invoice number similar to subscriber and inward
+        String invoiceType = "I";
+        //get the last invoice number from invoice table
+        String lastInvoiceSql = Queries.getQuery("get_last_invoice");
+        ResultSet rs = db.executeQuery(lastInvoiceSql);
+        Calendar calendar = Calendar.getInstance();
+        String lastInvoice = null;
+        //if true there exists a previous invoice for the year, so just increment the invoice number.
+        if (rs.first()) {
+            lastInvoice = rs.getString(1);
+            // get the last invoice number after the split
+            int invoice = Integer.parseInt(lastInvoice.substring(6));
+            //increment
+            ++invoice;
+            //apend the year, month character and new invoice number.
+            nextInvoice = lastInvoice.substring(0, 2) + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + invoiceType + "-" + String.format("%05d", invoice);
+        } else {
+            // there is no previous record for the year, so start the numbering afresh
+            String year = String.valueOf(calendar.get(Calendar.YEAR)).substring(2);
+            nextInvoice = year + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + invoiceType + "-" + String.format("%05d", 1);
+        }
+        return nextInvoice;
+    }
+
+    private int updateInvoice() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
+
+        InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
+        request.setAttribute("invoiceFormBean", invoiceFormBean);
+        String sql;
+        int paramIndex = 0;
+        int invoiceID = 0;
+        //get the next invoice number and fill the bean
+        String invoiceNumber = getNextInvoiceNumber();
+        invoiceFormBean.setInvoiceNumber(invoiceNumber);
+
+        //subscription ID
+        int SubscriptionID = _subscriptionBean.getSubscriptionID();
+        invoiceFormBean.setSubscriptionID(SubscriptionID);
+
+        //upadte _invoiceFormBean
+        this._invoiceFormBean = invoiceFormBean;
+
+        // the query name from the jds_sql properties files in WEB-INF/properties folder
+        sql = Queries.getQuery("invoice_insert");
+        PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        // fill in the statement params
+        st.setString(++paramIndex, invoiceNumber);
+        st.setInt(++paramIndex, SubscriptionID);
+        st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+
+        if (db.executeUpdatePreparedStatement(st) == 1) {
+            ResultSet rs = st.getGeneratedKeys();
+            rs.first();
+            invoiceID = rs.getInt(1);
+        }
+        return invoiceID;
     }
 }

@@ -199,11 +199,11 @@ function saveSubscription(){
                     subscriptionSaved = true;
 
                     //ask if we have print inward acknowledgement
-                    if(confirm("Do you want send the inward acknowledgement?")){
+                    //if(confirm("Do you want send the inward acknowledgement?")){
                         //document.subscriptionForm.submit();
-                        window.location.href = "inward?action=sendAck"
-                            + "&inwardNumber="   + $("#inwardNumber").val();
-                    }
+                        window.location.href = "inward?action=followOnProcess"
+                            + "&inwardNumber="   + $("#inwardNumber").val() + "&purpose=" + inwardPurpose;
+                    //}
                 }
             });
         },

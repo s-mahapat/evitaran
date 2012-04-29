@@ -132,12 +132,12 @@ public class subscriberModel extends JDSModel {
         return nextSubscriber;
     }
 
-    private String getMonthToCharacterMap(int _month) {
-        char[] alphabet = "abcdefghijkl".toCharArray();
-        // the calendar objects month starts from 0
-        String monthChar = Character.toString(alphabet[_month]);
-        return monthChar.toUpperCase();
-    }
+//    private String getMonthToCharacterMap(int _month) {
+//        char[] alphabet = "abcdefghijkl".toCharArray();
+//        // the calendar objects month starts from 0
+//        String monthChar = Character.toString(alphabet[_month]);
+//        return monthChar.toUpperCase();
+//    }
 
     public String editSubscriber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
