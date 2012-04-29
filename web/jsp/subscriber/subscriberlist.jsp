@@ -8,7 +8,7 @@
         <script>
             window.returnValue=null;
             var subscriber = window.dialogArguments;
-            var selectedSubscriberId = 0;
+            var selectedSubscriberId = null;
 
             $(function(){
                 $("#subscriberList").jqGrid({
@@ -22,11 +22,11 @@
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
-                    height: 240,
+                    height: 350,
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    loadonce: false,
                     rownumbers: true,
                     emptyrecords: "No subscribers to view",
                     loadtext: "Loading...",
@@ -37,13 +37,13 @@
                                 return '<input onclick="selectedSubscriberId=this.value" type="radio" id="selectedSubscriberRadio" name="selectedSubscriberRadio" value="' + cellvalue + '"/>';
                             }*/
                         },
-                        {name:'Subscriber Number', index:'subscriberNumber', width:40, align:'center', xmlmap:'subscriberNumber'},
-                        {name:'Subscriber Name', index:'subscriberName', width:40, align:'center', xmlmap:'subscriberName'},
-                        {name:'Department', index:'department', width:40, align:'center', xmlmap:'department'},
+                        {name:'Subscriber Number', index:'subscriberNumber', width:30, align:'center', sortable:false, xmlmap:'subscriberNumber'},
+                        {name:'Subscriber Name', index:'subscriberName', width:40, align:'center', sortable:false, xmlmap:'subscriberName'},
+                        {name:'Department', index:'department', width:60, align:'center', sortable:false, xmlmap:'department'},
                         {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
                         {name:'Pin Code', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
-                        {name:'Country', index:'country', width:30, align:'center', xmlmap:'country'},
-                        {name:'Action', index:'action', width:40, align:'center',formatter:'showlink'}
+                        {name:'Country', index:'country', width:30, align:'center', sortable:false, xmlmap:'country'},
+                        {name:'Action', index:'action', width:40, align:'center',sortable:false}
                     ],
                     xmlReader : {
                         root: "results",
@@ -55,8 +55,8 @@
                         id: "subscriberNumber"
                     },
                     pager: '#pager',
-                    rowNum:10,
-                    rowList:[10,20,30],
+                    rowNum:15,
+                    rowList:[15,30, 50],
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
@@ -73,10 +73,11 @@
             });
 
             function CheckReturnValue(){
-                if(!window.returnValue){
-                    alert("Please select a subscriber");
-                    return false;
-                }
+                window.returnValue = selectedSubscriberId;
+//                if(!window.returnValue){
+//                    alert("Please select a subscriber");
+//                    return false;
+//                }
             }
         </script>
 

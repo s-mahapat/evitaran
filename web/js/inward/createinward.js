@@ -6,10 +6,10 @@
 
 function makeReadOnly(){
 
-    document.getElementById("btnEditInward").disabled = true;
-    document.getElementById("btnSendAck").disabled = true;
-    document.getElementById("btnSendReturn").disabled = true;
-    document.getElementById("receiptNumber").disabled = true;
+    $("#btnEditInward").button("disable");
+    $("#btnSendAck").button("disable");
+    $("#btnSendReturn").button("disable");
+    $("#btnEditInward").button("disable");
     document.getElementById("chequeDDReturn").disabled = true;
     document.getElementById("chequeDDReturnReason").disabled = true;
     document.getElementById("chequeDDReturnReasonOther").disabled = true;

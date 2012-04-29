@@ -252,20 +252,20 @@ public class subscriberModel extends JDSModel {
         }
 
         //if (country != null && Integer.parseInt(country) != 0 && country.length() > 0) {
-        if (country != null && country.compareToIgnoreCase("NULL") != 0 && country.length() > 0) {
-            sql += condition + " t3.id=t1.country and t3.country = " + "\"" + country + "\"";
-            condition = " and";
-
-        }
-
-        if (state != null && state.compareToIgnoreCase("NULL") != 0 && state.length() > 0) {
-            sql += condition + " t4.id=t1.state and t4.state = " + "\"" + state + "\"";
-            condition = " and";
-
-        }
+//        if (country != null && country.compareToIgnoreCase("NULL") != 0 && country.length() > 0) {
+//            sql += condition + " t3.country = " + "\"" + country + "\"";
+//            condition = " or";
+//
+//        }
+//
+//        if (state != null && state.compareToIgnoreCase("NULL") != 0 && state.length() > 0) {
+//            sql += condition + " t4.state = " + "\"" + state + "\"";
+//            condition = " or";
+//
+//        }
 
         if (city != null && city.compareToIgnoreCase("NULL") != 0 && city.length() > 0) {
-            sql += condition + " t2.id=t1.city and t2.city = " + "\"" + city + "\"";
+            sql += condition + " t2.city = " + "\"" + city + "\"";
             condition = " and";
 
         }
@@ -279,7 +279,6 @@ public class subscriberModel extends JDSModel {
             sql += condition + " pincode =" + "'" + pincode + "'";
         }
 
-        sql += " group by subscriberNumber, subscriberName, city, email, pincode";
 
         ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
 

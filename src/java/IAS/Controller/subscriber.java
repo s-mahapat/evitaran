@@ -5,6 +5,7 @@
 package IAS.Controller;
 
 import IAS.Bean.Inward.inwardFormBean;
+import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
 import IAS.Class.util;
 import IAS.Model.Subscriber.subscriberModel;
@@ -21,7 +22,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
-import IAS.Class.JDSConstants;
 
 public class subscriber extends JDSController {
 
@@ -47,7 +47,7 @@ public class subscriber extends JDSController {
                 url = "/jsp/subscriber/viewsubscriber.jsp";
                 //if the record count saved is 1, it indicates that the record was saved else fail.
                 if (_subscriberModel.Save() == 1) {
-                    
+
                     if (session.getAttribute("inwardUnderProcess") != null) {
                         this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");
                         inwardPurposeID = _inwardFormBean.getInwardPurposeID();
@@ -56,7 +56,7 @@ public class subscriber extends JDSController {
                         // saving subscriber info, else redirect to view subscriber
                         if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION) {
                             url = "/jsp/subscription/addnewsubscription.jsp";
-                            
+
                         }
                     }
 

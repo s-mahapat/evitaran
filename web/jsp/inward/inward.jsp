@@ -1,6 +1,24 @@
 <%@page import="IAS.Class.util"%>
 <jsp:useBean class="IAS.Bean.Inward.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
 <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
+<script>
+    $(function() {
+        $( "#btnSearchSubscriber" )
+        .button()
+        .click(function() {
+            validateSearchSubscriber();
+            return false;
+        })
+        .next()
+        .button()
+        .click(function() {
+            clearSubscriber();
+            return false;
+        })
+        .parent()
+        .buttonset();
+    });
+</script>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Inward Info Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>
@@ -124,10 +142,13 @@
                 <label>Subscriber ID:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="-1" readonly type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}"/>
+                <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}"/>
             </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
+            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
+                <button id="btnSearchSubscriber">Search Subscriber</button>
+                <button id="btnResetSubscriber">Reset</button>
+                <%--<input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
+                <input class="IASButton" TABINDEX="-1" type="button" name="btnResetSubscriber" id="btnResetSubscriber" value="Reset" onclick="clearSubscriber()"/>--%>
             </span>
 
         </div>

@@ -37,7 +37,7 @@ function validateSearchSubscriber(){
 
 function searchSubscriber(country, state, city, subscriberName){
     var subscriber = new Object();
-    windowParams = "dialogHeight:500px; dialogWidth:800px; center:yes; resizeable:no; status:no; menubar:no;\n\
+    windowParams = "dialogHeight:600px; dialogWidth:1000px; center:yes; resizeable:no; status:no; menubar:no;\n\
                     scrollbars:yes; toolbar: no;";
     subscriber.country = country;
     subscriber.city = city;
@@ -46,6 +46,10 @@ function searchSubscriber(country, state, city, subscriberName){
         , subscriber
         , windowParams);
     return selectedSubscriberFromDialog;
+}
+
+function clearSubscriber(){
+    $("#subscriberId").val("");
 }
 
 
@@ -90,16 +94,33 @@ function validateNewInward(){
         isInwardValid = false;
     }
 
+    // since selecting the subscriber is not mandatory, check if he is ok to proceed without
+    // selecting subscriber. The inward should be alreay valid before we make this check
+    if(isInwardValid && confirm("Do you want to save the inward without selecting a subscriber?")){
+        isInwardValid = true;
+    }else{
+        isInwardValid = false;
+    }
+
     return isInwardValid;
 }
 
 function subscriberlink(cellvalue, options, rowObject){
     rowid = options.rowId;
-    var subscriberId = rowObject.childNodes[1].textContent;
-    var subscriberName = rowObject.childNodes[2].textContent;
-    var city = rowObject.childNodes[4].textContent;
-    var inwardid = rowObject.childNodes[0].textContent
-    if(isEmptyValue(subscriberId)){
+    var tagnames = ["subscriberId", "from", "city", "inwardNumber"];
+    var tagvalues = new Array();
+
+    for(i=0; i<tagnames.length; i++){
+        var obj = rowObject.getElementsByTagName(tagnames[i])[0];
+        if(obj.hasChildNodes()){
+            tagvalues[i] = obj.childNodes[0].nodeValue;
+        }
+    }
+    var subscriberID = tagvalues[0];
+    var subscriberName = tagvalues[1];
+    var city = tagvalues[2];
+    var inwardid = tagvalues[3];
+    if(isEmptyValue(subscriberID)){
         var link = "<a href=\"#\" onclick=" + "\"" + "selectSubscriber('" + city + "','" + subscriberName + "','" + inwardid + "')" + "\"" + ">Select Subscriber</a>";
         return link;
     }
@@ -108,11 +129,20 @@ function subscriberlink(cellvalue, options, rowObject){
 
 function selectInwardFormatter(cellvalue, options, rowObject){
     rowid = options.rowId;
-    console.log(rowObject);
-    var purpose = rowObject.childNodes[7].textContent;
-    var inwardId = rowObject.childNodes[0].textContent;
-    var subscriberId = rowObject.childNodes[1].textContent;
-    action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + rowid + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purpose + "')" + "\"" + "/>";
+    //console.log(rowObject);
+    var tagnames = ["inwardPurposeID", "inwardNumber", "subscriberId"];
+    var tagvalues = new Array();
+
+    for(i=0; i<tagnames.length; i++){
+        var obj = rowObject.getElementsByTagName(tagnames[i])[0];
+        if(obj.hasChildNodes()){
+            tagvalues[i] = obj.childNodes[0].nodeValue;
+        }
+    }
+    var purposeId = tagvalues[0];
+    var inwardId = tagvalues[1];
+    var subscriberId = tagvalues[2];
+    action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + rowid + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purposeId + "')" + "\"" + "/>";
     return action;
 }
 
@@ -134,6 +164,9 @@ function isInwardSelected(){
         if(confirm("Do you want to continue without selecting subscriber ?") == false){
             return false;
         }
+    }
+    if(selectedSubscriberId=="undefined"){
+        selectedSubscriberId = "";
     }
 
     document.processInwardForm.action = "inward?action=processinward&" +
