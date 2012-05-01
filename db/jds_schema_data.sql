@@ -516,62 +516,118 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
-
-
-
-    ON jds.subscriber FOR EACH ROW
-
-
-
-BEGIN
-
-
-
-
-
-
-
-    IF new.deactive = True THEN
-
-
-
-
-
-
-
-      SET new.deactivationDate = CURRENT_DATE;
-
-
-
-
-
-
-
-    ELSE
-
-
-
-
-
-
-
-      SET new.deactivationDate = NULL;
-
-
-
-
-
-
-
-    END IF;
-
-
-
-
-
-
-
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
+
+
+
+
+
+
+
+    ON jds.subscriber FOR EACH ROW
+
+
+
+
+
+
+
+BEGIN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    IF new.deactive = True THEN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      SET new.deactivationDate = CURRENT_DATE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ELSE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      SET new.deactivationDate = NULL;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    END IF;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -657,7 +713,7 @@ CREATE TABLE `subscription_rates` (
   `period` int(11) NOT NULL,
   `rate` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -666,7 +722,7 @@ CREATE TABLE `subscription_rates` (
 
 LOCK TABLES `subscription_rates` WRITE;
 /*!40000 ALTER TABLE `subscription_rates` DISABLE KEYS */;
-INSERT INTO `subscription_rates` VALUES (1,1,10,2011,1,750),(2,2,2,2011,1,300),(3,3,1,2011,1,300),(4,4,3,2011,1,4200),(5,5,1,2011,2,900),(6,5,2,2011,3,1300),(7,5,1,2011,5,2000),(8,3,10,2011,1,750),(10,1,10,2011,2,500),(11,1,10,2011,3,750),(12,1,1,2011,1,500),(13,1,10,2011,4,600),(14,2,10,2012,12,2300),(15,2,7,2012,1,670);
+INSERT INTO `subscription_rates` VALUES (1,1,10,2011,1,750),(2,2,2,2011,1,300),(3,3,1,2011,1,300),(4,4,3,2011,1,4200),(5,5,1,2011,2,900),(6,5,2,2011,3,1300),(7,5,1,2011,5,2000),(8,3,10,2011,1,750),(10,1,10,2011,2,500),(11,1,10,2011,3,750),(12,1,1,2011,1,500),(13,1,10,2011,4,600),(14,2,10,2012,12,2300),(15,2,7,2012,1,670),(16,2,10,2012,5,5000);
 /*!40000 ALTER TABLE `subscription_rates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -789,30 +845,50 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `updateSubscriptionBalance`(IN subscriptionDetailID INT)
-BEGIN
-    declare inward_amount float default 0.0;
-    declare inward_id int;
-    declare subscription_total float;
-    declare balance float default 0.0;
-    declare subscription_id int default 0;
-    
+BEGIN
+
+    declare inward_amount float default 0.0;
+
+    declare inward_id int;
+
+    declare subscription_total float;
+
+    declare balance float default 0.0;
+
+    declare subscription_id int default 0;
+
     
-    select subscriptionID into subscription_id from subscriptiondetails where id=subscriptionDetailID;
-    
+
     
-    select amount into inward_amount 
-    from inward 
-    where id=(select inwardID from subscription where id=subscription_id);
-    
+    select subscriptionID into subscription_id from subscriptiondetails where id=subscriptionDetailID;
+
     
-    select sum(total) into subscription_total 
-    from subscriptiondetails where subscriptionID=subscription_id and active=True;
-    
+
     
-    set balance = inward_amount - subscription_total;
-    
-    update subscription set subscriptionTotal=subscription_total, balance=balance
-    where id=subscription_id;
+    select amount into inward_amount 
+
+    from inward 
+
+    where id=(select inwardID from subscription where id=subscription_id);
+
+    
+
+    
+    select sum(total) into subscription_total 
+
+    from subscriptiondetails where subscriptionID=subscription_id and active=True;
+
+    
+
+    
+    set balance = inward_amount - subscription_total;
+
+    
+
+    update subscription set subscriptionTotal=subscription_total, balance=balance
+
+    where id=subscription_id;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -829,4 +905,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-05-01 10:17:01
+-- Dump completed on 2012-05-01 11:05:40

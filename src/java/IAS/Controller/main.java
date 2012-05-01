@@ -96,7 +96,7 @@ public class main extends JDSController {
 
         } else if (action.equalsIgnoreCase("subRate")) {
 
-            url = "/jsp/masterdata/annualSubscriptionRates.jsp";
+            url = "/jsp/masterdata/annualSubscriptionrates.jsp";
 
         } else if (action.equalsIgnoreCase("searchCity")) {
 

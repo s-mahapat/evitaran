@@ -19,15 +19,13 @@ root {
     width: 10%;
 }
 
-#defineRateBtnDiv{
+#addRateBtnDiv{
     float: left;
     width: 10%;
 }
 
 
-
 #cancelBtnDiv{
-    
     margin-left: 45%;
     float: left;
     width: 10%;

@@ -11,7 +11,7 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/masterdata/rate.css"/>
         <title>Journal Subscription Rate</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/journalSubjectGroup.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/annualSubscriptionRate.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/masterdata/validateJournalSubjectGroup.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
@@ -28,17 +28,19 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jQuery("#journalGroupTable").jqGrid('navGrid',"#IASFormFieldDiv",{add:false,del:false});
+                jQuery("#annualSubscriptionRateTable").jqGrid('navGrid',"#IASFormFieldDiv",{add:false,del:false});
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalGroupName"%>","journalGroupName","journalGroupName");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");
-                jQuery("#newJournalGroupName").attr("disabled",true);
-                jQuery("#btnSave,#btnCancel").attr("disabled",true);
+                jQuery("#noofYear").attr("disabled",true);
+                jQuery("#rate").attr("disabled",true);
+                jQuery("#btnSave,#btnCancel,#btnAdd").attr("disabled",true);
              });
 
             $(function(){
 
-                $("#journalGroupTable").jqGrid({
-                    url:"<%=request.getContextPath()%>/journalSubjectGroup",
+                $("#annualSubscriptionRateTable").jqGrid({
+                    url:"<%=request.getContextPath()%>/annualSubscriptionRate",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -51,13 +53,15 @@
                     emptyrecords: "No Journal Groups Found",
                     loadtext: "Loading...",
                     //colNames:['Journal Group Id','Journal Group Name','Journal Name','Select'],
-                    colNames:['Journal Group Name','Subscriber Type', 'No of Years', 'Rate'],
+                    colNames:['Id','Journal Group Name','Subscriber Type', 'Years', 'Period','Rate'],
                     colModel :[
                         //{name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         //{name:'journalGroupName', index:'journalGroupName', width:50, align:'center', xmlmap:'journalGroupName'},
-                        {name:'journalGroup', index:'journalGroup', width:80, align:'center', xmlmap:'journalGroup'},
-                        {name:'subsTypeCode', index:'subsTypeCode', width:80, align:'center', xmlmap:'subsTypeCode'},
+                        {name:'id', index:'id', width:80, align:'center', xmlmap:'id'},
+                        {name:'journalGroupName', index:'journalGroupName', width:80, align:'center', xmlmap:'journalGroupName'},
+                        {name:'subtypedesc', index:'subtypedesc', width:80, align:'center', xmlmap:'subtypedesc'},
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
+                        {name:'period', index:'period', width:80, align:'center', xmlmap:'period'},
                         {name:'rate', index:'rate', width:80, align:'center', xmlmap:'rate'},
                         
                     ],
@@ -76,12 +80,12 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-                    editurl:"<%=request.getContextPath()%>/journalSubjectGroup?action=save",
+                    editurl:"<%=request.getContextPath()%>/annualSubscriptionRate?action=save",
                     gridComplete: function() {
-                        var ids = jQuery("#journalGroupTable").jqGrid('getDataIDs');
+                        var ids = jQuery("#annualSubscriptionRateTable").jqGrid('getDataIDs');
 
                         for (var i = 0; i < ids.length; i++) {
-                            jQuery("#journalGroupTable").jqGrid('setRowData', ids[i]);
+                            jQuery("#annualSubscriptionRateTable").jqGrid('setRowData', ids[i]);
                         }
                     },
                     beforeRequest: function(){
@@ -95,137 +99,116 @@
 
             });
 
-            function save(){
-                if(jQuery("#newJournalGroupName").val != "")
-                {
-                    alert("Add a new Journal Group Name");
+            function addRate(){
+                //check if search criteria is initial, raise alert else enable the data entry
+                if ($("#year").val() == 0) {
+                    alert("Select Year");
                 }
-                else
-                {
-                    alert("Save called");
 
-                    var ids = jQuery("#journalGroupTable").jqGrid('getDataIDs');
+                else if ($("#journalGroupName").val() == 0){
+                    alert("Select Journal Group Name");
+                }
 
-                    for (var i = 0; i < ids.length; i++) {
-                        jQuery("#journalGroupTable").setGridParam({editurl: "<%=request.getContextPath()%>/journalSubjectGroup?action=save" +
-                                                                            "&journalName=" + $("#journalGroupTable").getCell(ids[i], 'journalName') +
-                                                                            "&year=" + $("#year").val()
-                                                                            //"&journalGroupName=" + jQuery("#journalGroupName").val()
-                                                                            //"&journalGroupName=" + $("#journalGroupName").getCell(ids[i], 'journalGroupName')
-                                                                    });
-                        jQuery("#journalGroupTable").jqGrid('saveRow',ids[i]);
-                        //setGridParam requires a reload for value to reflect in the cell. Hence using setCell instead
-                        //jQuery("#journalGroupTable").setGridParam({annualPrintOrder: aPO});
-                    }
+                else if ($("#subscriberType").val() == 0){
+                    alert("Select Subscriber Type");
+                }
 
-                    jQuery("#btnSave,#btnCancel").attr("disabled",true);
-                    // Enable select of journal group name from the list box
-                    jQuery("#journalGroupName").attr("disabled",false);
-                    jQuery("#year").attr("disabled",false);
-                    jQuery("#newJournalGroupName").attr("disabled",true);
+                else {
+                    //make the entry fields enabled
+                    jQuery("#noofYear").attr("disabled",false);
+                    jQuery("#rate").attr("disabled",false);
+                    jQuery("#btnSave,#btnCancel,#btnAdd").attr("disabled",false);
+                    //Make the selection fields disable
+                    jQuery("#year").attr("disabled",true);
+                    jQuery("#journalGroupName").attr("disabled",true);
+                    jQuery("#subscriberType").attr("disabled",true);
                 }
             }
-
+            
             function cancel(){
-                var ids = jQuery("#journalGroupTable").jqGrid('getDataIDs');
+                //Clear the content of the table
+                var ids = jQuery("#annualSubscriptionRateTable").jqGrid('getDataIDs');
 
                 for (var i = 0; i < ids.length; i++) {
-                    jQuery("#journalGroupTable").jqGrid('restoreRow',ids[i]);
+                    jQuery("#annualSubscriptionRateTable").jqGrid('restoreRow',ids[i]);
                 }
-                jQuery("#btnSave,#btnCancel").attr("disabled",true);
-                // Enable select of journal group name from the list box
-                jQuery("#journalGroupName").attr("disabled",false);
+                //make the entry fields disabled
+                jQuery("#noofYear").attr("disabled",true);
+                jQuery("#rate").attr("disabled",true);
+                jQuery("#btnSave,#btnCancel,#btnAdd").attr("disabled",true);
+                //Make the selection fields enable
                 jQuery("#year").attr("disabled",false);
-                jQuery("#newJournalGroupName").val("");
-                jQuery("#newJournalGroupName").attr("disabled",true);
+                jQuery("#journalGroupName").attr("disabled",false);
+                jQuery("#subscriberType").attr("disabled",false);
             }
 
             // Called when the user clicks on Add new subject group
             function add(){
-                isPageLoaded = true;
-                // Check if year is selected
-
-                //var year1 = jQuery("#year").text;
-                //var year2 = jQuery("#year").val("value");
-                var year2 = $("#year").val();
-                //var year3 = jQuery("#year").value;
-                //var selIndex = document.journalSubjectGroupFormBean.year.selectedIndex;
-                //var year4 = document.journalSubjectGroupFormBean.year.options[selIndex].text;
-                //alert("Year1: ", year1);
-                alert("Year2: ", year2);
-                //alert("Year3: ", year3);
-                //alert("Year4: ", year4);
-                if(!year2)
-                {
-                    alert('Select year');
+                //check if search criteria is initial, raise alert else enable search for Records
+                if ($("#noofYear").val() == 0) {
+                    alert("Enter Period");
                 }
+
+                else if ($("#rate").val() == 0){
+                    alert("Enter Rate");
+                }
+
                 else {
-
-                // Clear if there are any existing data in the grid
-                //jQuery("#journalGroupTable").clearGridData();
-                // Enable the text box where the new group name can be added
-
-                jQuery("#newJournalGroupName").val("");
-                jQuery("#newJournalGroupName").attr("disabled",false);
-                // Disable select of journal group name from the list box
-                jQuery("#journalGroupName").attr("disabled",true);
-                jQuery("#year").attr("disabled",true);
-                // Enable save and cancel buttons
-                jQuery("#btnSave,#btnCancel").attr("disabled",false);
-
-                jQuery("#journalGroupTable").setGridParam({postData:
-                                {action       : "add",
-                                year          : $("#year").val()
+                        isPageLoaded = true;
+                        jQuery("#annualSubscriptionRateTable").setGridParam({postData:
+                                {year                   : $("#year").val(),
+                                journalGroupName        : $("#journalGroupName").val(),
+                                subscriberType          : $("#subscriberType").val(),
+                                noofYear                  : $("#noofYear").val(),
+                                rate                    : $("#rate").val(),
+                                action                  : "addAndSearch"
                             }});
-                //jQuery("#journalGroupTable").setGridParam({editurl: "<%=request.getContextPath()%>/journalGroupName?action=add"});
-                jQuery("#journalGroupTable").setGridParam({ datatype: "xml" });
-                jQuery("#journalGroupTable").trigger("clearGridData");
-                jQuery("#journalGroupTable").trigger("reloadGrid");
 
-                /*
-                var ids = jQuery("#journalGroupTable").jqGrid('getDataIDs');
-
-                for (var i = 0; i < ids.length; i++) {
-                    //jQuery("#journalTable").jqGrid('setRowData', ids[i], { select: {disabled : false} });
-                    $("#jqg_"+ids[i],"#journalGroupTable").attr("disabled",false);
-                }
-                */
-               }
+                        jQuery("#annualSubscriptionRateTable").setGridParam({ datatype: "xml" });
+                        jQuery("#annualSubscriptionRateTable").trigger("clearGridData");
+                        jQuery("#annualSubscriptionRateTable").trigger("reloadGrid");
+                        
+                        //make the entry fields disabled
+                        jQuery("#noofYear").attr("disabled",true);
+                        jQuery("#rate").attr("disabled",true);
+                        jQuery("#btnSave,#btnCancel,#btnAdd").attr("disabled",true);
+                        //Make the selection fields enable
+                        jQuery("#year").attr("disabled",false);
+                        jQuery("#journalGroupName").attr("disabled",false);
+                        jQuery("#subscriberType").attr("disabled",false);
+                    }               
             }
 
-            // Called when the journal group is selected from the list box
+
             function search(){
-                if(jQuery("#journalGroupName").val != "Select")
-                    {
+                //check if search criteria is initial, raise alert else enable search for Records
+                if ($("#year").val() == 0) {
+                    alert("Select Year");
+                }
+
+                else if ($("#journalGroupName").val() == 0){
+                    alert("Select Journal Group Name");
+                }
+
+                else if ($("#subscriberType").val() == 0){
+                    alert("Select Subscriber Type");
+                }
+
+                else {
                         isPageLoaded = true;
-                        jQuery("#journalGroupTable").setGridParam({postData:
-                                {journalGroupName       : $("#journalGroupName").val(),
-                                action       : "search"
+                        jQuery("#annualSubscriptionRateTable").setGridParam({postData:
+                                {year       : $("#year").val(),
+                                journalGroupName        : $("#journalGroupName").val(),
+                                subscriberType          : $("#subscriberType").val(),
+                                action                  : "search"
                             }});
 
-                        jQuery("#journalGroupTable").setGridParam({ datatype: "xml" });
-                        jQuery("#journalGroupTable").trigger("clearGridData");
-                        jQuery("#journalGroupTable").trigger("reloadGrid");
+                        jQuery("#annualSubscriptionRateTable").setGridParam({ datatype: "xml" });
+                        jQuery("#annualSubscriptionRateTable").trigger("clearGridData");
+                        jQuery("#annualSubscriptionRateTable").trigger("reloadGrid");
 
                     }
                 }
-
-            function journalGroupNameAppend(){
-                //if(jQuery("#year").val != "Select" & jQuery("#journalGroupName").val != "value")
-                    //{
-                jQuery("#journalGroupTable").clearGridData();
-                $("#journalGroupName").empty();
-                $("#journalGroupName").text("");
-
-                var newOption = new Option("Select", "value");
-                $(newOption).html("Select");
-                $("#journalGroupName").append(newOption);
-
-                var year = document.journalSubjectGroupFormBean.year.options[document.journalSubjectGroupFormBean.year.selectedIndex].text;
-                requestURL = "/JDS/CMasterData?md=journalGroupName&mdvalue=" + year;
-                jdsAppend(requestURL,"journalGroupName","journalGroupName");
-                    //}
-            }
 
 
         </script>
@@ -234,8 +217,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <jsp:useBean class="IAS.Bean.masterdata.journalSubjectGroupFormBean" id="journalSubjectGroupFormBean" scope="request"></jsp:useBean>
-            <form method="post" action="" name="journalSubjectGroupFormBean" onsubmit="return validatePrintOrder()">
+            <form method="post" action="">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Journal Subscription Rates</legend>
@@ -249,7 +231,7 @@
                                                 <span class="IASFormDivSpanLabel">
                                                     <label>Year:</label>
                                                 </span>
-                                                <select class="IASComboBox" TABINDEX="1" name="year" id="year" onchange="journalGroupNameAppend()">
+                                                <select class="IASComboBox" TABINDEX="1" name="year" id="year">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
@@ -259,7 +241,7 @@
                                                     <label>Journal Group:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="2" name="journalGroupName" id="journalGroupName" onchange="search()">
+                                                    <select class="IASComboBox" TABINDEX="2" name="journalGroupName" id="journalGroupName">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
@@ -331,7 +313,7 @@
                             <fieldset class="subMainFieldSet">
                                 <legend>Rates Table</legend>
 
-                                <table class="datatable" id="journalGroupTable"></table>
+                                <table class="datatable" id="annualSubscriptionRateTable"></table>
                                 <div id="pager"></div>
                             </fieldset>
 
@@ -341,9 +323,6 @@
 
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
-                                    <div id="saveBtnDiv">
-                                        <input class="IASButton" TABINDEX="5" type="button" value="Save" onclick="save()" id="btnSave" name="btnSaveAction"/>
-                                     </div>
                                     <div id="cancelBtnDiv">
                                         <input class="IASButton" TABINDEX="6" type="button" value="Cancel" onclick="cancel()" id="btnCancel" name="btnCancelAction"/>
                                     </div>
@@ -355,4 +334,3 @@
         </div>
     </body>
 </html>
-

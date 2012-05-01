@@ -64,9 +64,9 @@ public class annualSubscriptionRateModel extends JDSModel {
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("journalGroupName"));
-        stGet.setString(++paramIndex, request.getParameter("subtypedesc"));
+        stGet.setString(++paramIndex, request.getParameter("subscriberType"));
         stGet.setString(++paramIndex, request.getParameter("year"));
-        stGet.setString(++paramIndex, request.getParameter("period"));
+        stGet.setString(++paramIndex, request.getParameter("noofYear"));
         //stGet.setString(++paramIndex, request.getParameter("rate"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         // If the entry does not exist, then add to the db
@@ -76,9 +76,9 @@ public class annualSubscriptionRateModel extends JDSModel {
             PreparedStatement stAdd = conn.prepareStatement(sql);
             paramIndex = 1;
             stAdd.setString(paramIndex, request.getParameter("journalGroupName"));
-            stAdd.setString(++paramIndex, request.getParameter("subtypedesc"));
+            stAdd.setString(++paramIndex, request.getParameter("subscriberType"));
             stAdd.setString(++paramIndex, request.getParameter("year"));
-            stAdd.setString(++paramIndex, request.getParameter("period"));
+            stAdd.setString(++paramIndex, request.getParameter("noofYear"));
             stAdd.setString(++paramIndex, request.getParameter("rate"));
             int success = db.executeUpdatePreparedStatement(stAdd);
             //rs = this.db.executeQueryPreparedStatement(stAdd);
@@ -95,14 +95,9 @@ public class annualSubscriptionRateModel extends JDSModel {
         String sql = Queries.getQuery("search_subRate");
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
-        /*
-        stGet.setString(paramIndex, "%" + request.getParameter("year") + "%");
-        stGet.setString(++paramIndex, "%" + request.getParameter("journalGroupName") + "%");
-        stGet.setString(++paramIndex, "%" + request.getParameter("subscriberType") + "%");
-        */
         stGet.setString(paramIndex, request.getParameter("year"));
         stGet.setString(++paramIndex, request.getParameter("journalGroupName"));
-        stGet.setString(++paramIndex, request.getParameter("subtypedesc"));
+        stGet.setString(++paramIndex, request.getParameter("subscriberType"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
         return xml;
