@@ -7,8 +7,8 @@ public class journalSubjectGroupFormBean {
     // This variable will be used to store the newly created group
     private String newJournalGroupName;
     private String journalName;
-    private int year;
-    private int select;
+    //private int select;
+    private String select;
 
 /*
 public int getId() {
@@ -46,20 +46,23 @@ public String getJournalName() {
 public void setJournalName(String _journalName) {
         this.journalName = _journalName;
     }
-public int getYear() {
-        return (this.year);
-    }
-
-public void setYear(int _year) {
-
-        this.year = _year;
-    }
-
+/*
 public int getSelect() {
         return (this.select);
     }
 
 public void setSelect(int _select) {
+
+        this.select = _select;
+    }
+}
+ *
+ */
+public String getSelect() {
+        return (select);
+    }
+
+public void setSelect(String _select) {
 
         this.select = _select;
     }

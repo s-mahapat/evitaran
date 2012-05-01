@@ -5,7 +5,18 @@ root {
     display:block;
 }
 
+#searchBtnDiv{
+    float: left;
+    width: 20%;
+    margin-left: 35%;
+}
+
 #addBtnDiv{
+    float: left;
+    width: 20%;
+}
+
+#editBtnDiv{
     float: left;
     width: 10%;
     margin-left: 40%;
@@ -14,7 +25,6 @@ root {
 #saveBtnDiv{
     float: left;
     width: 10%;
-    margin-left: 40%;
 }
 
 #cancelBtnDiv{

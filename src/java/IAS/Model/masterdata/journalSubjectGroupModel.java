@@ -36,57 +36,51 @@ public class journalSubjectGroupModel extends JDSModel {
         FillBean(this.request, journalSubjectGroupFormBean);
         this._journalSubjectGroupFormBean = journalSubjectGroupFormBean;
         request.setAttribute("journalSubjectGroupFormBean", this._journalSubjectGroupFormBean);
-        
-        int year = _journalSubjectGroupFormBean.getYear();
+
         String journalName = _journalSubjectGroupFormBean.getJournalName();
-        String journalGroupName =_journalSubjectGroupFormBean.getNewJournalGroupName();
-        int select = _journalSubjectGroupFormBean.getSelect();
-        /*
+        String newJournalGroupName =_journalSubjectGroupFormBean.getNewJournalGroupName();
+        //int select = _journalSubjectGroupFormBean.getSelect();
+        String select = _journalSubjectGroupFormBean.getSelect();
+
+
         // Step1: Check if the journalGroupName and year exist in the table
         String sql = Queries.getQuery("checkIfJournalGroupExists");
         PreparedStatement st = conn.prepareStatement(sql);
         int paramIndex = 1;
-        st.setString(paramIndex++, _journalSubjectGroupFormBean.getNewJournalGroupName());
-        st.setInt(paramIndex++, _journalSubjectGroupFormBean.getYear());
+        st.setString(paramIndex++, newJournalGroupName);
         ResultSet rs = this.db.executeQueryPreparedStatement(st);
-        if(rs == null)
+        // If the entry does not exist, then add to the db
+        if(!rs.next())
         {
             // Step2: If the group and year does not exist, then add to the table
             sql = Queries.getQuery("createNewJournalGroup");
             st = conn.prepareStatement(sql);
             paramIndex = 1;
-            st.setString(paramIndex++, _journalSubjectGroupFormBean.getNewJournalGroupName());
-            st.setInt(paramIndex++, _journalSubjectGroupFormBean.getYear());
-            rs = this.db.executeQueryPreparedStatement(st);
+            st.setString(paramIndex++, newJournalGroupName);
+            int success = this.db.executeUpdatePreparedStatement(st);
         }
 
         // Now that the new group is created, now add the journals belonging to the group to the group contents table
         // We will reach here when a new group is being created or when journals are being added to the group
 
-        // Step1: Get the group id
-        sql = Queries.getQuery("getJournalGroupId");
-        st = conn.prepareStatement(sql);
-        st.setString(1, this._journalSubjectGroupFormBean.getJournalGroupName());
-        rs = this.db.executeQueryPreparedStatement(st);
-        rs.next();
-        int groupId = rs.getInt(1);
-
-        // Step2: Now get the journalId
-        sql = Queries.getQuery("getJournalId");
-        st = conn.prepareStatement(sql);
-        st.setString(1, this._journalSubjectGroupFormBean.getJournalName());
-        rs = this.db.executeQueryPreparedStatement(st);
-        rs.next();
-        int journalId = rs.getInt(1);
-
-        // Step3: Now that the groupId and journalId is present, add to the group contents table
-        sql = Queries.getQuery("addToJournalGroupContents");
-        st = conn.prepareStatement(sql);
-        st.setInt(1, groupId);
-        st.setInt(2, journalId);
-        rs = this.db.executeQueryPreparedStatement(st);
-         * *
-         */
+        if(select.equals("Yes"))
+        {
+            sql = Queries.getQuery("checkIfJournalGroupContentExists");
+            st = conn.prepareStatement(sql);
+            st.setString(1, newJournalGroupName);
+            st.setString(2, journalName);
+            rs = this.db.executeQueryPreparedStatement(st);
+            // If the entry does not exist, then add to the db. This is just extra protection
+            if(!rs.next())
+            {
+                // Step2: Now that the groupId and journalId is present, add to the group contents table
+                sql = Queries.getQuery("addToJournalGroupContents");
+                st = conn.prepareStatement(sql);
+                st.setString(1, newJournalGroupName);
+                st.setString(2, journalName);
+                int success = this.db.executeUpdatePreparedStatement(st);
+            }
+        }
     }
 
     public String search() throws IllegalAccessException, InvocationTargetException, SQLException, ParserConfigurationException, TransformerException{
@@ -143,8 +137,8 @@ public class journalSubjectGroupModel extends JDSModel {
 
         ResultSet rs = this.db.executeQueryPreparedStatement(st);
         String xml = null;
-        xml = convertResultSetToXMLForJournalSubjectGroup(rs, false);
-        //xml = util.convertResultSetToXML(rs);
+        //xml = convertResultSetToXMLForJournalSubjectGroup(rs, false);
+        xml = util.convertResultSetToXML(rs);
         return xml;
     }
 
