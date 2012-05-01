@@ -8,26 +8,15 @@ import IAS.Class.util;
 import IAS.Model.JDSModel;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.dbutils.BeanProcessor;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class subscriberModel extends JDSModel {
@@ -263,8 +252,9 @@ public class subscriberModel extends JDSModel {
 //            condition = " or";
 //
 //        }
+        //city.compareToIgnoreCase("Select") != 0 &&
 
-        if (city != null && city.compareToIgnoreCase("NULL") != 0 && city.length() > 0) {
+        if (city != null && city.compareToIgnoreCase("Select") != 0 && city.length() > 0) {
             sql += condition + " t2.city = " + "\"" + city + "\"";
             condition = " and";
 
@@ -304,5 +294,33 @@ public class subscriberModel extends JDSModel {
             rs.close();
         }
         return subscriberType;
+    }
+
+    public String subscriberInvoices()throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException{
+       String xml = null;
+        String sql = Queries.getQuery("search_subscriber_invoice");
+        String ajax_sql = sql + " LIMIT ?, ?";
+
+        String subscriberNumber = request.getParameter("subscriberNumber");
+        int pageNumber = Integer.parseInt(request.getParameter("page"));
+        int pageSize = Integer.parseInt(request.getParameter("rows"));
+        String orderBy = request.getParameter("sidx");
+        String sortOrder = request.getParameter("sord");
+        int totalQueryCount = 0;
+        PreparedStatement pst = conn.prepareStatement(ajax_sql);
+        pst.setString(1, subscriberNumber);
+        pst.setInt(2, (pageSize * (pageNumber - 1 )));
+        pst.setInt(3, pageSize);
+        ResultSet rs = pst.executeQuery();
+
+        sql = "select count(*) from (" + sql + ") as tbl";
+        pst = conn.prepareStatement(sql);
+        pst.setString(1, subscriberNumber);
+        ResultSet rs_count = pst.executeQuery();
+        rs_count.first();
+        totalQueryCount = rs_count.getInt(1);
+        xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+
+        return xml;
     }
 }

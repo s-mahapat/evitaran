@@ -13,9 +13,14 @@ import IAS.Class.util;
 public class InvoiceFormBean {
 
     private int invoiceID = 0;
+    private int inwardID = 0;
+    private String inwardNumber = "";
+    private int subscriptionID = 0;
+    private int subscriberID = 0;
     private String invoiceNumber = "";
     private String invoiceCreationDate = util.getDateString();
-    private int subscriptionID = 0;
+    private int subscriptionTotal = 0;
+    private String subscriberAddress = "";
 
     /*
      * -----------------------------------------------------------------------
@@ -25,8 +30,56 @@ public class InvoiceFormBean {
         return this.invoiceID;
     }
 
-    public void setInvoiceID(int _id) {
-        this.invoiceID = _id;
+    public void setInvoiceID(int _invoiceID) {
+        this.invoiceID = _invoiceID;
+    }
+    /*
+     * -----------------------------------------------------------------------
+     * Inward ID
+     */
+
+    public int getInwardID() {
+        return this.inwardID;
+    }
+
+    public void setInwardID(int _inwardID) {
+        this.inwardID = _inwardID;
+    }
+
+    /*
+     * -----------------------------------------------------------------------
+     * Inward Number
+     */
+    public String getInwardNumber() {
+        return this.inwardNumber;
+    }
+
+    public void setInwardNumber(String _inwardNumber) {
+        this.inwardNumber = _inwardNumber;
+    }
+
+    /*
+     * -----------------------------------------------------------------------
+     * Subscription ID
+     */
+    public int getSubscriptionID() {
+        return this.subscriptionID;
+    }
+
+    public void setSubscriptionID(int _id) {
+        this.subscriptionID = _id;
+    }
+
+    /*
+     * -----------------------------------------------------------------------
+     * Subscriber ID
+     */
+    public int getSubscriberID() {
+        return this.subscriberID;
+    }
+
+    public void setSubscriberID(int _subscriberID) {
+        this.subscriberID = _subscriberID;
     }
 
     /*
@@ -43,14 +96,38 @@ public class InvoiceFormBean {
 
     /*
      * -----------------------------------------------------------------------
-     * Subscription ID
+     * Invoice Creation Date
      */
-    public int getSubscriptionID() {
-        return this.subscriptionID;
+    public String getInvoiceCreationDate() {
+        return this.invoiceCreationDate;
     }
 
-    public void setSubscriptionID(int _id) {
-        this.subscriptionID = _id;
+    public void setInvoiceCreationDate(String _invoiceCreationDate) {
+        this.invoiceCreationDate = _invoiceCreationDate;
+    }
+
+    /*
+     * -----------------------------------------------------------------------
+     * Subscription Total
+     */
+    public int getSubscriptionTotal() {
+        return this.subscriptionTotal;
+    }
+
+    public void setSubscriptionTotal(int _subscriptionTotal) {
+        this.subscriptionTotal = _subscriptionTotal;
+    }
+
+    /*
+     * -----------------------------------------------------------------------
+     * Subscriber Address
+     */
+    public String getSubscriberAddress() {
+        return this.subscriberAddress;
+    }
+
+    public void setSubscriberAddress(String _subscriberAddress) {
+        this.subscriberAddress = _subscriberAddress;
     }
     /*
      * -----------------------------------------------------------------------

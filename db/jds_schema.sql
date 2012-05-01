@@ -121,6 +121,22 @@ CREATE TABLE `ias_info` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `invoice`
+--
+
+DROP TABLE IF EXISTS `invoice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `invoice` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `invoiceNumber` varchar(32) NOT NULL,
+  `subscriptionId` int(15) DEFAULT NULL,
+  `invoiceCreationDate` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `inward`
 --
 
@@ -162,7 +178,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB AUTO_INCREMENT=1779 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1832 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -345,118 +361,62 @@ CREATE TABLE `subscriber` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
-
-
-
-
-
-
-
-    ON jds.subscriber FOR EACH ROW
-
-
-
-
-
-
-
-BEGIN
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    IF new.deactive = True THEN
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      SET new.deactivationDate = CURRENT_DATE;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ELSE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      SET new.deactivationDate = NULL;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    END IF;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
+
+
+
+    ON jds.subscriber FOR EACH ROW
+
+
+
+BEGIN
+
+
+
+
+
+
+
+    IF new.deactive = True THEN
+
+
+
+
+
+
+
+      SET new.deactivationDate = CURRENT_DATE;
+
+
+
+
+
+
+
+    ELSE
+
+
+
+
+
+
+
+      SET new.deactivationDate = NULL;
+
+
+
+
+
+
+
+    END IF;
+
+
+
+
+
+
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -504,7 +464,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -545,7 +505,7 @@ CREATE TABLE `subscriptiondetails` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -599,4 +559,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-05-01 11:05:39
+-- Dump completed on 2012-05-01 12:05:57

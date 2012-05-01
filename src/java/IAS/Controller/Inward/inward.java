@@ -2,6 +2,7 @@ package IAS.Controller.Inward;
 
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscriber.subscriberFormBean;
+import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
@@ -154,17 +155,22 @@ public class inward extends JDSController {
                 if (_inwardModel.updateChequeReturn() != null) {
                     url = "/jsp/inward/returninward.jsp";
                 }
+
             } else if (action.equalsIgnoreCase("followOnProcess")) {
-                _inwardFormBean = _inwardModel.viewInward();
-                if (_inwardFormBean != null) {
-                    request.setAttribute("inwardFormBean", _inwardFormBean);
-                    int followOnProcessID = _inwardModel.processFollowOnDocs();
-                    if (followOnProcessID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION) {
+                int inwardPurposeID = Integer.parseInt(request.getParameter("purpose"));
+
+                if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION) {
+                    _inwardFormBean = _inwardModel.viewInward();
+                    if (_inwardFormBean != null) {
+                        request.setAttribute("inwardFormBean", _inwardFormBean);
                         url = "/jsp/inward/ackinward.jsp";
-                    } else if (followOnProcessID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
-                        url = "/jsp/invoice/proforma.jsp";
                     }
+                } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
+                    InvoiceFormBean _invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
+                    _invoiceFormBean = _inwardModel.getInvoiceDetail();
+                    url = "/jsp/invoice/proforma.jsp";
                 }
+
 
             }
         } catch (Exception e) {

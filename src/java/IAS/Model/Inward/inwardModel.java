@@ -5,6 +5,7 @@
 package IAS.Model.Inward;
 
 import IAS.Bean.Inward.inwardFormBean;
+import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Class.JDSConstants;
 import IAS.Class.Queries;
 import IAS.Class.util;
@@ -330,6 +331,7 @@ public class inwardModel extends JDSModel {
     public String subscriberInward() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String xml = null;
         String sql = Queries.getQuery("search_subscriber_inward");
+        String ajax_sql = sql + " LIMIT ?, ?";
         String subscriberNumber = request.getParameter("subscriberNumber");
         int pageNumber = Integer.parseInt(request.getParameter("page"));
         int pageSize = Integer.parseInt(request.getParameter("rows"));
@@ -338,8 +340,10 @@ public class inwardModel extends JDSModel {
 
         int totalQueryCount = 0;
         double totalPages = 0;
-        PreparedStatement pst = conn.prepareStatement(sql);
+        PreparedStatement pst = conn.prepareStatement(ajax_sql);
         pst.setString(1, subscriberNumber);
+        pst.setInt(2, (pageSize * (pageNumber - 1 )));
+        pst.setInt(3, pageSize);
         ResultSet rs = pst.executeQuery();
 
         sql = "select count(*) from (" + sql + ") as tbl";
@@ -386,15 +390,19 @@ public class inwardModel extends JDSModel {
         return xml;
     }
 
-    public int processFollowOnDocs() {
-        //this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");
-        int inwardPurposeID = Integer.parseInt(request.getParameter("purpose"));
-        int followOnDocID = 0;
-        if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
-            followOnDocID = JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE;
-        } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION) {
-            followOnDocID = JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION;
+    public InvoiceFormBean getInvoiceDetail() throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
+        String sql;
+        InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
+        sql = Queries.getQuery("get_invoice_detail");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setString(1, request.getParameter("inwardNumber"));
+        try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
+            while (rs.next()) {
+                BeanProcessor bProc = new BeanProcessor();
+                Class type = Class.forName("IAS.Bean.Invoice.InvoiceFormBean");
+                invoiceFormBean = (IAS.Bean.Invoice.InvoiceFormBean) bProc.toBean(rs, type);            }
         }
-        return followOnDocID;
+        request.setAttribute("invoiceFormBean", invoiceFormBean);
+        return invoiceFormBean;
     }
 }

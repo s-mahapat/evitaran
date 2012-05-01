@@ -287,7 +287,7 @@ function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
      * This function will append the valus to the already existing ones. Mainly helpful
      * to populate drop down lists.
      */
-function jdsAppend(requestURL,xmlRowTag,formElementId, defaultSelect){
+function jdsAppend(requestURL,xmlRowTag,formElementId, defaultSelect, callback){
 
 
     var _formElementId = "#" + formElementId;
@@ -319,6 +319,9 @@ function jdsAppend(requestURL,xmlRowTag,formElementId, defaultSelect){
             if(defaultSelect != undefined){
                 $(_formElementId).val(defaultSelect);
             }
+            if(callback != undefined){
+                callback();
+            };
         },
         error: function() {
             alert("XML File could not be found at " + requestURL);

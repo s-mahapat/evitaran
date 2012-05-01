@@ -556,6 +556,15 @@ A:active {
     font-family: cambria,sans-serif,serif;
 }
 
+#letterTel{
+    font-style: normal;
+    font-weight: normal;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
 #letterDiv{
 
     border-right-style: solid;

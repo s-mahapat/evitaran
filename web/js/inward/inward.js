@@ -96,10 +96,13 @@ function validateNewInward(){
 
     // since selecting the subscriber is not mandatory, check if he is ok to proceed without
     // selecting subscriber. The inward should be alreay valid before we make this check
-    if(isInwardValid && confirm("Do you want to save the inward without selecting a subscriber?")){
-        isInwardValid = true;
-    }else{
-        isInwardValid = false;
+    if(isInwardValid && isEmptyValue($("#subscriberId").val())){
+        if(confirm("Do you want to save the inward without selecting a subscriber?")){
+            isInwardValid = true;
+        }else{
+            isInwardValid = false;
+        }
+
     }
 
     return isInwardValid;
@@ -150,7 +153,7 @@ function isInwardSelected(){
     var _JDSConstants = new JDSConstants();
     //var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
 
-    if(selectedInward == 0){
+    if(parseInt(selectedInward) == 0){
         alert("Please select an Inward");
         return false;
 

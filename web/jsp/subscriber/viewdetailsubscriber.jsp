@@ -14,10 +14,12 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/viewdtlssubscriber.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/subscriberinward.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/invoice/subscriberInvoice.js"%>"></script>
         <script>
             $(document).ready(function(){
                 inwardGridCreated = false;
                 subscriptionGridCreated = false;
+                invoiceGridCreated = false;
                 var tab_cookie_id = parseInt($.cookie("the_tab_cookie")) || 0;
                 $("#subscriberDtlsTabs").tabs({
                     selected:-1,
@@ -29,13 +31,15 @@
                         if(selected_index == 1 && inwardGridCreated==false){
                             drawInwardTable();
                             inwardGridCreated=true;
-
                         }
                         if(selected_index == 2 && subscriptionGridCreated==false){
                             listSubscription();
                             subscriptionGridCreated=true;
                             //$("#subscriptionList").jqGrid('setCaption','').trigger("reloadGrid");
-
+                        }
+                         if(selected_index == 3 && invoiceGridCreated==false){
+                            drawInvoiceTable();
+                            invoiceGridCreated=true;
                         }
 
                     }
@@ -121,7 +125,8 @@
                                 </div>
 
                                 <div id="invoices">
-
+                                    <table id="invoiceTable" class="datatable"></table>
+                                    <div id="pager_invoice"></div>
                                 </div>
 
                                 <div id="reminders">

@@ -94,6 +94,11 @@ public class subscriber extends JDSController {
                     url = "/jsp/subscription/addnewsubscription.jsp";
                 }
 
+            } else if (action.equalsIgnoreCase("subscriberInvoice")) {
+                // searchInvoice gets all the invoices based on the search criteria entered on screen by the user.
+                String xml = _subscriberModel.subscriberInvoices();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             } else if (action.equalsIgnoreCase("gpi")) {
                 url = "/jsp/invoice/proforma.jsp";
             } else if (action.equalsIgnoreCase("mil")) {

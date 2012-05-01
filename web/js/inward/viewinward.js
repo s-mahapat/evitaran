@@ -8,6 +8,7 @@ function makeInwardReadOnly(){
 
     $("#btnSaveInward").button("disable");
     $("#btnSearchSubscriber").button("disable");
+    $("#btnResetSubscriber").button("disable");
     document.getElementById("paymentDate").setAttribute("readonly",true);
     document.getElementById("chequeDDReturn").disabled = true;
 

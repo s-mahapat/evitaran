@@ -63,6 +63,9 @@
                     <fieldset class="subMainFieldSet">
                         <div id="letterDiv">
                             <%@include file="../templates/letterhead.jsp" %>
+                            <div style="float: right; margin-right: 10px">
+                                Date: <%=util.getDateString()%>
+                            </div>
                             <div class="subjectLine">
                                 <strong>Subscription No:</strong><span style="padding-left: 5px;" id="subscriptionID"></span>
                             </div>
