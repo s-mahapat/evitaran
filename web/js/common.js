@@ -356,6 +356,9 @@ function PrintContent(divID) {
 function GetCookieValue(cookieName, keyName){
 
     var json = JSON.parse($.cookie(cookieName));
+    if(json == null){
+        return null;
+    }
     var _value = null;
     $.each(json, function(key,value){
        if(key == keyName){
