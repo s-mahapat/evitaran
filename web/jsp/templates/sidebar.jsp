@@ -68,48 +68,36 @@
                 </li>
             </ul>
         </li>
-        <li class="menu">
-            <a tabindex="-1" href="#">Reports</a>
+
+        <li class="menu"><a href="#">Reports</a>
             <ul>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=listJournals"%>">List of Journals</a>
+                <li class="menu"><a href="#">Master Data</a>
+                    <ul>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listJournals"%>">List of Journals</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listSubType"%>">List of Subscriber types</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listAgent"%>">List of Agent</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=journalRates"%>">Rates for Journals</a></li>
+                    </ul>
                 </li>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=listSubType"%>">List of Subscriber types</a>
+                <li class="menu"><a href="#">Subscriber/ Subscription</a>
+                    <ul>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listSubscriber"%>">List of Subscribers</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listprofarmaInvoice"%>">List of Invoice</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listBackissue"%>">List of back issue sent</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listReminder"%>">List of  renewal reminder sent</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listmailinglist"%>">List of mailing list sent</a></li>
+                    </ul>
                 </li>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=listAgent"%>">List of Agent</a>
-                </li>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=listSubscriber"%>">List of Subscribers</a>
-                </li>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=statement"%>">Statement</a>
-                </li>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation figures for journals</a>
-                </li>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=listprofarmaInvoice"%>">List of Invoice</a>
-                </li>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=listBackissue"%>">List of back issue sent</a>
-                </li>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=listReminder"%>">List of  renewal reminder sent</a>
-                </li>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=listmailinglist"%>">List of mailing list sent</a>
-                </li>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=journalRates"%>">Rates for Journals</a>
-                </li>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=listInwards"%>">Inwards</a>
+                <li class="menu"><a href="#">Others</a>
+                    <ul>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=statement"%>">Statement</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation figures for journals</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listInwards"%>">Inwards</a></li>
+                    </ul>
                 </li>
             </ul>
-
         </li>
+
         <li class="menu"><a href="#">Master Data</a>
             <ul>
                 <li class="menu"><a href="#">Country</a>

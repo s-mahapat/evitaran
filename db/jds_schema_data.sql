@@ -88,7 +88,7 @@ CREATE TABLE `countries` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `country_UNIQUE` (`country`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +97,7 @@ CREATE TABLE `countries` (
 
 LOCK TABLES `countries` WRITE;
 /*!40000 ALTER TABLE `countries` DISABLE KEYS */;
-INSERT INTO `countries` VALUES (4,'China'),(1,'India'),(3,'Japan'),(5,'Sri Lanka'),(2,'USA');
+INSERT INTO `countries` VALUES (4,'China'),(1,'India'),(3,'Japan'),(6,'Pakistan'),(5,'Sri Lanka'),(2,'USA');
 /*!40000 ALTER TABLE `countries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -410,7 +410,7 @@ CREATE TABLE `journals` (
 
 LOCK TABLES `journals` WRITE;
 /*!40000 ALTER TABLE `journals` DISABLE KEYS */;
-INSERT INTO `journals` VALUES (1,'CURR','Current Science','0011-3891',3000,2000,24),(2,'RES','Resonanace - Journal of Science Education','0971-8044',1200,2000,12),(3,'J','Pramana - Journal of Physics','0304-4289',1800,1987,12),(4,'JAA','Journal of Astrophysics and Astronomy','0250-6335',400,1234,4),(5,'EPS','Journal of Earth System Science (formerly Proc. Earth Planet Sci.)','0253-4126',600,1991,6),(6,'CS','Journal of Chemical Sciences (formerly Proc. Chemical Sci.)','0253-4134',600,2000,6),(7,'BMS','Bulletin of Materials Science','0250-4707',600,1995,6),(8,'S','Sadhana (Engineering Sciences)','0256-2499',600,1980,6),(9,'JB','Journal of Biosciences','0250-5991',500,2010,4),(10,'JG','Journal of Genetics','0022-1333',400,2011,3),(11,'MS','Proceedings (Mathematical Sciences)','0253-4142',400,2010,4);
+INSERT INTO `journals` VALUES (1,'CURR','Current Science','0011-3891',3000,2000,24),(2,'RES','Resonanace - Journal of Science Education','0971-8044',1200,2000,12),(3,'P','Pramana - Journal of Physics','0304-4289',1800,1987,12),(4,'JAA','Journal of Astrophysics and Astronomy','0250-6335',800,1980,4),(5,'EPS','Journal of Earth System Science (formerly Proc. Earth Planet Sci.)','0253-4126',600,1991,6),(6,'CS','Journal of Chemical Sciences (formerly Proc. Chemical Sci.)','0253-4134',600,2000,6),(7,'BMS','Bulletin of Materials Science','0250-4707',600,1995,6),(8,'S','Sadhana (Engineering Sciences)','0256-2499',600,1980,6),(9,'JB','Journal of Biosciences','0250-5991',500,1988,4),(10,'JG','Journal of Genetics','0022-1333',400,1987,3),(11,'MS','Proceedings (Mathematical Sciences)','0253-4142',800,1985,4);
 /*!40000 ALTER TABLE `journals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -590,118 +590,62 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
-
-
-
-
-
-
-
-    ON jds.subscriber FOR EACH ROW
-
-
-
-
-
-
-
-BEGIN
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    IF new.deactive = True THEN
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      SET new.deactivationDate = CURRENT_DATE;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ELSE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      SET new.deactivationDate = NULL;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    END IF;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
+
+
+
+    ON jds.subscriber FOR EACH ROW
+
+
+
+BEGIN
+
+
+
+
+
+
+
+    IF new.deactive = True THEN
+
+
+
+
+
+
+
+      SET new.deactivationDate = CURRENT_DATE;
+
+
+
+
+
+
+
+    ELSE
+
+
+
+
+
+
+
+      SET new.deactivationDate = NULL;
+
+
+
+
+
+
+
+    END IF;
+
+
+
+
+
+
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -919,50 +863,30 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `updateSubscriptionBalance`(IN subscriptionDetailID INT)
-BEGIN
-
-    declare inward_amount float default 0.0;
-
-    declare inward_id int;
-
-    declare subscription_total float;
-
-    declare balance float default 0.0;
-
-    declare subscription_id int default 0;
-
+BEGIN
+    declare inward_amount float default 0.0;
+    declare inward_id int;
+    declare subscription_total float;
+    declare balance float default 0.0;
+    declare subscription_id int default 0;
+    
     
-
+    select subscriptionID into subscription_id from subscriptiondetails where id=subscriptionDetailID;
+    
     
-    select subscriptionID into subscription_id from subscriptiondetails where id=subscriptionDetailID;
-
+    select amount into inward_amount 
+    from inward 
+    where id=(select inwardID from subscription where id=subscription_id);
+    
     
-
+    select sum(total) into subscription_total 
+    from subscriptiondetails where subscriptionID=subscription_id and active=True;
+    
     
-    select amount into inward_amount 
-
-    from inward 
-
-    where id=(select inwardID from subscription where id=subscription_id);
-
-    
-
-    
-    select sum(total) into subscription_total 
-
-    from subscriptiondetails where subscriptionID=subscription_id and active=True;
-
-    
-
-    
-    set balance = inward_amount - subscription_total;
-
-    
-
-    update subscription set subscriptionTotal=subscription_total, balance=balance
-
-    where id=subscription_id;
-
+    set balance = inward_amount - subscription_total;
+    
+    update subscription set subscriptionTotal=subscription_total, balance=balance
+    where id=subscription_id;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1026,4 +950,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-05-01 15:50:53
+-- Dump completed on 2012-05-01 16:05:36
