@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author aloko
  */
-public class reminders extends HttpServlet {
+public class reminders extends JDSController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

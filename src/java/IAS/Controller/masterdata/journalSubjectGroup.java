@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
+import IAS.Controller.JDSController;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 
@@ -20,7 +21,7 @@ import javax.servlet.ServletContext;
  *
  * @author aloko
  */
-public class journalSubjectGroup extends HttpServlet {
+public class journalSubjectGroup extends JDSController {
     private journalSubjectGroupModel _journalSubjectGroupModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
@@ -54,17 +55,6 @@ public class journalSubjectGroup extends HttpServlet {
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-
-            ServletContext context = getServletContext();
-            String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_email.properties");
-            msgsend smtpMailSender = new msgsend();
-            smtpMailSender.sendMailWithAuthentication(
-                    emailPropertiesFile,
-                    "jds.adm.all@gmail.com", "", "",
-                    "Exception generated in JDS code",
-                    util.getExceptionStackTraceAsString(e),
-                    "JDS", "");
-
             throw new javax.servlet.ServletException(e);
 
         } finally {

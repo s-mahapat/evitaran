@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.19, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.19
+-- Server version	5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -313,6 +313,30 @@ INSERT INTO `inward_return_reasons` VALUES (3,'Cheque/ DD not in favour of India
 UNLOCK TABLES;
 
 --
+-- Table structure for table `issues`
+--
+
+DROP TABLE IF EXISTS `issues`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `issues` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `issueNumber` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `issues`
+--
+
+LOCK TABLES `issues` WRITE;
+/*!40000 ALTER TABLE `issues` DISABLE KEYS */;
+INSERT INTO `issues` VALUES (1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),(9,9),(10,10),(11,11),(12,12),(13,13),(14,14),(15,15),(16,16),(17,17),(18,18),(19,19),(20,20),(21,21),(22,22),(23,23),(24,24);
+/*!40000 ALTER TABLE `issues` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `journal_group_contents`
 --
 
@@ -324,7 +348,7 @@ CREATE TABLE `journal_group_contents` (
   `journalGroupId` int(11) NOT NULL,
   `journalId` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -333,7 +357,7 @@ CREATE TABLE `journal_group_contents` (
 
 LOCK TABLES `journal_group_contents` WRITE;
 /*!40000 ALTER TABLE `journal_group_contents` DISABLE KEYS */;
-INSERT INTO `journal_group_contents` VALUES (1,1,3),(2,2,4),(3,3,11),(4,4,1),(5,4,2),(6,4,3),(7,4,4),(8,4,5),(9,4,6),(10,4,7),(11,4,8),(12,4,9),(13,4,10),(14,4,11),(15,5,2),(25,16,8),(26,16,1);
+INSERT INTO `journal_group_contents` VALUES (1,1,3),(2,2,4),(3,3,11),(4,4,1),(5,4,2),(6,4,3),(7,4,4),(8,4,5),(9,4,6),(10,4,7),(11,4,8),(12,4,9),(13,4,10),(14,4,11),(15,5,2),(25,16,8),(26,16,1),(27,17,4),(28,17,6),(29,17,8),(30,17,10);
 /*!40000 ALTER TABLE `journal_group_contents` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,7 +372,7 @@ CREATE TABLE `journal_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `journalGroupName` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -357,7 +381,7 @@ CREATE TABLE `journal_groups` (
 
 LOCK TABLES `journal_groups` WRITE;
 /*!40000 ALTER TABLE `journal_groups` DISABLE KEYS */;
-INSERT INTO `journal_groups` VALUES (1,'Pramana - Journal of Physics'),(2,'Journal of Astrophysics and Astronomy'),(3,'Proceedings (Mathematical Sciences)'),(4,'Journals Sl. Nos 1 to 11'),(5,'Resonance'),(16,'test12');
+INSERT INTO `journal_groups` VALUES (1,'Pramana - Journal of Physics'),(2,'Journal of Astrophysics and Astronomy'),(3,'Proceedings (Mathematical Sciences)'),(4,'Journals Sl. Nos 1 to 11'),(5,'Resonance'),(16,'test12'),(17,'test');
 /*!40000 ALTER TABLE `journal_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -412,6 +436,30 @@ LOCK TABLES `languages` WRITE;
 /*!40000 ALTER TABLE `languages` DISABLE KEYS */;
 INSERT INTO `languages` VALUES (1,'English'),(2,'Hindi'),(3,'Others');
 /*!40000 ALTER TABLE `languages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `months`
+--
+
+DROP TABLE IF EXISTS `months`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `months` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `month` char(10) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `months`
+--
+
+LOCK TABLES `months` WRITE;
+/*!40000 ALTER TABLE `months` DISABLE KEYS */;
+INSERT INTO `months` VALUES (1,'January'),(2,'February'),(3,'March'),(4,'April'),(5,'May'),(6,'June'),(7,'July'),(8,'August'),(9,'September'),(10,'October'),(11,'November'),(12,'December');
+/*!40000 ALTER TABLE `months` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -542,62 +590,118 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
-
-
-
-    ON jds.subscriber FOR EACH ROW
-
-
-
-BEGIN
-
-
-
-
-
-
-
-    IF new.deactive = True THEN
-
-
-
-
-
-
-
-      SET new.deactivationDate = CURRENT_DATE;
-
-
-
-
-
-
-
-    ELSE
-
-
-
-
-
-
-
-      SET new.deactivationDate = NULL;
-
-
-
-
-
-
-
-    END IF;
-
-
-
-
-
-
-
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
+
+
+
+
+
+
+
+    ON jds.subscriber FOR EACH ROW
+
+
+
+
+
+
+
+BEGIN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    IF new.deactive = True THEN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      SET new.deactivationDate = CURRENT_DATE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ELSE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      SET new.deactivationDate = NULL;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    END IF;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -815,30 +919,50 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `updateSubscriptionBalance`(IN subscriptionDetailID INT)
-BEGIN
-    declare inward_amount float default 0.0;
-    declare inward_id int;
-    declare subscription_total float;
-    declare balance float default 0.0;
-    declare subscription_id int default 0;
-    
+BEGIN
+
+    declare inward_amount float default 0.0;
+
+    declare inward_id int;
+
+    declare subscription_total float;
+
+    declare balance float default 0.0;
+
+    declare subscription_id int default 0;
+
     
-    select subscriptionID into subscription_id from subscriptiondetails where id=subscriptionDetailID;
-    
+
     
-    select amount into inward_amount 
-    from inward 
-    where id=(select inwardID from subscription where id=subscription_id);
-    
+    select subscriptionID into subscription_id from subscriptiondetails where id=subscriptionDetailID;
+
     
-    select sum(total) into subscription_total 
-    from subscriptiondetails where subscriptionID=subscription_id and active=True;
-    
+
     
-    set balance = inward_amount - subscription_total;
-    
-    update subscription set subscriptionTotal=subscription_total, balance=balance
-    where id=subscription_id;
+    select amount into inward_amount 
+
+    from inward 
+
+    where id=(select inwardID from subscription where id=subscription_id);
+
+    
+
+    
+    select sum(total) into subscription_total 
+
+    from subscriptiondetails where subscriptionID=subscription_id and active=True;
+
+    
+
+    
+    set balance = inward_amount - subscription_total;
+
+    
+
+    update subscription set subscriptionTotal=subscription_total, balance=balance
+
+    where id=subscription_id;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -902,4 +1026,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-05-01 13:05:15
+-- Dump completed on 2012-05-01 15:50:53

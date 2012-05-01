@@ -1,26 +1,27 @@
+package IAS.Controller.MailingList;
 
-package IAS.Controller.masterdata;
-
+import IAS.Model.ml.mlModel;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
-import IAS.Model.masterdata.subTypeModel;
 
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
 import IAS.Controller.JDSController;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
+
 /**
  *
- * @author Shailendra Mahapatra
+ * @author aloko
  */
-public class subType extends JDSController {
-    private subTypeModel _subTypeModel = null;
+public class generateml extends JDSController {
+    private mlModel _mlModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -28,33 +29,31 @@ public class subType extends JDSController {
         String action = request.getParameter("action");
         String url = null;
 
-        try{
+        try {
+            _mlModel = new IAS.Model.ml.mlModel(request);
 
-            _subTypeModel = new IAS.Model.masterdata.subTypeModel(request);
+            if(action.equalsIgnoreCase("search")){
 
-            if(action.equalsIgnoreCase("save")){
-
-                _subTypeModel.Save();
-                url = "/jsp/masterdata/displaySubType.jsp";
-
-            }else if(action.equalsIgnoreCase("edit")){
-
-                _subTypeModel.editSubType();
-                url = "/jsp/masterdata/editSubType.jsp";
-
-            }else if(action.equalsIgnoreCase("view")){
-
-                _subTypeModel.viewSubType();
-                url = "/jsp/masterdata/displaySubType.jsp";
-
-            }else if(action.equalsIgnoreCase("search")){
-
-                // searchInward gets all the inwards based on the search criteria entered on screen by the user.
-                String xml = _subTypeModel.searchSubType();
+                String xml = _mlModel.search();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("generate")){
+
+                String xml = _mlModel.generate();
+                
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+                
+            }else if(action.equalsIgnoreCase("print")){
+
+                String xml = _mlModel.print();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+                
             }
-        }catch (Exception e) {
+
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
 

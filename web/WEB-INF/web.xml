@@ -166,6 +166,10 @@
         <servlet-name>annualSubscriptionRate</servlet-name>
         <servlet-class>IAS.Controller.masterdata.annualSubscriptionRate</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>generateml</servlet-name>
+        <servlet-class>IAS.Controller.MailingList.generateml</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -285,6 +289,10 @@
     <servlet-mapping>
         <servlet-name>annualSubscriptionRate</servlet-name>
         <url-pattern>/annualSubscriptionRate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>generateml</servlet-name>
+        <url-pattern>/generateml</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

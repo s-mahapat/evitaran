@@ -13,13 +13,14 @@ import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
+import IAS.Controller.JDSController;
 import java.sql.ResultSet;
 import javax.servlet.ServletContext;
 /**
  *
  * @author Deepali
  */
-public class reports extends HttpServlet {
+public class reports extends JDSController {
 
     private reportModel _reportModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.reports");
@@ -90,17 +91,6 @@ public class reports extends HttpServlet {
 
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
-
-            ServletContext context = getServletContext();
-            String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_email.properties");
-            msgsend smtpMailSender = new msgsend();
-            smtpMailSender.sendMailWithAuthentication(
-                    emailPropertiesFile,
-                    "jds.adm.all@gmail.com", "", "",
-                    "Exception generated in JDS code",
-                    util.getExceptionStackTraceAsString(e),
-                    "JDS", "");
-
             throw new javax.servlet.ServletException(e);
 
         } finally {
