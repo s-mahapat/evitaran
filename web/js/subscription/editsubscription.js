@@ -26,6 +26,7 @@ function addJournal(){
                 subid: $("#subscriptionID").val(),
                 journalGroupID: selectedJournalGroupCode,
                 startYear: startYear,
+                startMonth: $("#startMonth").val(),
                 endYear: $("#endYear").val(),
                 copies: $("#copies").val(),
                 total: price * $("#copies").val(),

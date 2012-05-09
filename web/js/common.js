@@ -361,13 +361,28 @@ function GetCookieValue(cookieName, keyName){
     }
     var _value = null;
     $.each(json, function(key,value){
-       if(key == keyName){
-           _value = value;
-           return;
-       }
+        if(key == keyName){
+            _value = value;
+            return;
+        }
     });
     return _value;
+}
 
+function jdsPost(form_id, url){
+    form_id = "#" + form_id;
+    //$(form_id).attr("action", url);
+    $(form_id).get(0).setAttribute('action', url);
+    alert($(form_id).attr("action"));
+    $(form_id).submit();
+}
 
+function monthNameToNumber(cellvalue, options, cell){
+    var _JDSConstants = new JDSConstants();
+    return(_JDSConstants.monthNames.indexOf(cellvalue) + 1);
+}
 
+function monthNumberToName(cellvalue, options, rowObj){
+    var _JDSConstants = new JDSConstants();
+    return(_JDSConstants.monthNames[cellvalue - 1]);
 }

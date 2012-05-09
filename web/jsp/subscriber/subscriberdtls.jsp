@@ -218,11 +218,11 @@
 
 <fieldset class="subMainFieldSet">
     <div class="actionBtnDiv">
-        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="15" type="submit" value="Edit Subscriber" id="btnEditSubscriber" name="btnSubmitAction"/>
+        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="15" type="submit" value="Edit" id="btnEditSubscriber" name="btnSubmitAction"/>
         <input onclick="setActionValue('save')" class="IASButton" TABINDEX="16" type="submit" value="Save" id="btnSaveSubscriber" name="btnSubmitAction"/>
         <input onclick="setActionValue('display')" class="IASButton" TABINDEX="17" type="submit" value="View Subscriber" id="btnDisplaySubscriber" name="btnSubmitAction"/>
-        <%--<input onclick="setActionValue('viewsubscription')" class="IASButton" TABINDEX="18" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>--%>
-        <input onclick="setActionValue('editsubscription')" class="IASButton" TABINDEX="19" type="submit" value="Subscription" id="btnEditSubscription" name="btnSubmitAction"/>
+        <%--<input onclick="setActionValue('viewsubscription')" class="IASButton" TABINDEX="18" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
+        <input onclick="setActionValue('editsubscription')" class="IASButton" TABINDEX="19" type="submit" value="Subscription" id="btnEditSubscription" name="btnSubmitAction"/>--%>
         <%--<input onclick="setActionValue('add')" class="IASButton" TABINDEX="20" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction" <%out.println(isEnabled);%>/>--%>
     </div>
 </fieldset>

@@ -4,12 +4,11 @@
  */
 package IAS.Controller;
 
-import IAS.Bean.Inward.inwardFormBean;
+import IAS.Bean.Subscription.SubscriptionFormBean;
 import IAS.Class.JDSLogger;
 import IAS.Class.util;
 import IAS.Model.Subscriber.subscriberModel;
 import IAS.Model.Subscription.SubscriptionModel;
-import IAS.Bean.Subscription.SubscriptionFormBean;
 import java.io.IOException;
 import java.sql.ResultSet;
 import javax.servlet.RequestDispatcher;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.log4j.Logger;
-import IAS.Class.JDSConstants;
 
 public class subscription extends JDSController {
 
@@ -52,6 +50,7 @@ public class subscription extends JDSController {
                 int subscriptionID = Integer.parseInt(request.getParameter("subid"));
                 int journalGroupID = Integer.parseInt(request.getParameter("journalGroupID"));
                 int startYear = Integer.parseInt(request.getParameter("startYear"));
+                int startMonth = Integer.parseInt(request.getParameter("startMonth"));
                 int endYear = Integer.parseInt(request.getParameter("endYear"));
                 int copies = Integer.parseInt(request.getParameter("copies"));
                 float total = Float.parseFloat(request.getParameter("total"));
@@ -59,8 +58,8 @@ public class subscription extends JDSController {
 
                 //save the subscription details sent from the UI
                 int[] res = _subscriptionModel.addNewSubscriptionDetail(
-                        subscriptionID, journalGroupID, startYear, endYear,
-                        copies, total, journalPriceGroupID);
+                        subscriptionID, journalGroupID, startYear, startMonth,
+                        endYear, copies, total, journalPriceGroupID);
                 if (res.length == 1) {
                     xml = util.convertStringToXML(String.valueOf(res[0]), "success");
                 }
@@ -95,12 +94,13 @@ public class subscription extends JDSController {
                 // we reach here if the existing subscription is being edited
                 String xml = null;
                 int startYear = Integer.parseInt(request.getParameter("startYear"));
+                int startMonth = Integer.parseInt(request.getParameter("startMonth"));
                 int endYear = Integer.parseInt(request.getParameter("endYear"));
                 int copies = Integer.parseInt(request.getParameter("copies"));
                 int subTypeID = Integer.parseInt(request.getParameter("subtypeid"));
                 boolean active = Boolean.parseBoolean(request.getParameter("active"));
                 int id = Integer.parseInt(request.getParameter("id"));
-                if (_subscriptionModel.updateSubscriptionDetail(id, startYear, endYear, active, copies, subTypeID) != 1) {
+                if (_subscriptionModel.updateSubscriptionDetail(id, startYear, startMonth, endYear, active, copies, subTypeID) != 1) {
                     xml = util.convertStringToXML("Error updating subscription details", "error");
                 } else {
                     xml = util.convertStringToXML("1", "success");

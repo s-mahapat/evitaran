@@ -22,7 +22,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
-import IAS.Class.JDSConstants;
 
 public class subscriber extends JDSController {
 

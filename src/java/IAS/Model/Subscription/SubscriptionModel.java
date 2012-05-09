@@ -4,11 +4,11 @@
  */
 package IAS.Model.Subscription;
 
+import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
-import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Bean.Subscription.SubscriptionDetailBean;
 import IAS.Bean.Subscription.SubscriptionFormBean;
-import IAS.Bean.Invoice.InvoiceFormBean;
+import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
@@ -20,13 +20,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
-import IAS.Class.JDSConstants;
-import java.util.Calendar;
-import java.text.*;
 
 /**
  *
@@ -69,6 +67,7 @@ public class SubscriptionModel extends JDSModel {
         String journalGroupID[] = request.getParameterValues("journalGroupID");
         String journalPriceGroupID[] = request.getParameterValues("journalPriceGroupID");
         String startYear[] = request.getParameterValues("startYear");
+        String startMonth[] = request.getParameterValues("startMonth");
         String endYear[] = request.getParameterValues("endYear");
         String Copies[] = request.getParameterValues("copies");
         String Total[] = request.getParameterValues("total");
@@ -76,8 +75,7 @@ public class SubscriptionModel extends JDSModel {
         String remarks = request.getParameter("remarks");
         int subscriptionID = 0;
 
-        //create object of Back issue list model
-        BackIssueListModel _backIssueListModel = new BackIssueListModel(this.conn);
+
 
         //this.inwardNumber = "12A-00001";
         if (this.inwardNumber == null) {
@@ -115,15 +113,16 @@ public class SubscriptionModel extends JDSModel {
                     //set the subscription id and total in the bean
                     _subscriptionBean.setSubscriptionID(subscriptionID);
 
-                    this.__addSubscriptionDetail(subscriptionID,
+                    int[] res = this.__addSubscriptionDetail(subscriptionID,
                             util.convertStringArraytoIntArray(journalGroupID),
                             util.convertStringArraytoIntArray(startYear),
+                            util.convertStringArraytoIntArray(startMonth),
                             util.convertStringArraytoIntArray(endYear),
                             util.convertStringArraytoIntArray(Copies),
                             util.convertStringArraytoFloatArray(Total),
                             util.convertStringArraytoIntArray(journalPriceGroupID));
 
-                    //add to back issue list
+                    //if(res.length > 0)
 
 
                     // Update the Performa Invoice
@@ -135,6 +134,7 @@ public class SubscriptionModel extends JDSModel {
                     if (this.CompleteInward(this.inwardID) == 1) {
                         session.setAttribute("inwardUnderProcess", null);
                     }
+                    xml = util.convertStringToXML(String.valueOf(subscriptionID), "subscriptionID");
                     conn.commit(); // complete the transaction here.
                 }
             } catch (SQLException | ParseException | NumberFormatException e) {
@@ -142,14 +142,14 @@ public class SubscriptionModel extends JDSModel {
             } finally {
                 conn.setAutoCommit(true);
             }
-            xml = util.convertStringToXML(String.valueOf(subscriptionID), "subscriptionID");
+
         }
         return xml;
     }
 
     private int[] __addSubscriptionDetail(
             int subscriptionID, int[] journalGroupID,
-            int[] startYear, int[] endYear, int[] copies,
+            int[] startYear, int[] startMonth, int[] endYear, int[] copies,
             float[] total, int[] journalPriceGroupID) throws SQLException {
 
         String sql = Queries.getQuery("insert_subscription_detail");
@@ -162,22 +162,34 @@ public class SubscriptionModel extends JDSModel {
             st.setInt(++paramIndex, journalPriceGroupID[i]);
             st.setInt(++paramIndex, copies[i]);
             st.setInt(++paramIndex, startYear[i]);
+            st.setInt(++paramIndex, startMonth[i]);
             st.setInt(++paramIndex, endYear[i]);
             //st.setFloat(++paramIndex, total[i]);
             st.addBatch();
         }
         int res[] = st.executeBatch();
+//        ResultSet rs = st.getGeneratedKeys();
+//        while (rs.next()) {
+//            int subscription_detail_id = rs.getInt(1);
+//            //create object of Back issue list model
+//            BackIssueListModel _backIssueListModel = new BackIssueListModel(this.conn);
+//            for (int i = 0; i < res.length; i++) {
+//                _backIssueListModel.addToBackIssueList(subscription_detail_id, journalGroupID[i], copies[i]);
+//            }
+//        }
+
         return res;
 
     }
 
     public int[] addNewSubscriptionDetail(int subscriptionID, int journalGroupID,
-            int startYear, int endYear, int copies,
+            int startYear, int startMonth, int endYear, int copies,
             float total, int journalPriceGroupID) throws SQLException {
 
         int[] _journalGroupID = {journalGroupID};
         int[] _journalPriceGroupID = {journalPriceGroupID};
         int[] _startYear = {startYear};
+        int[] _startMonth = {startMonth};
         int[] _endYear = {endYear};
         int[] _copies = {copies};
         float[] _total = {total};
@@ -185,14 +197,14 @@ public class SubscriptionModel extends JDSModel {
 
         int res[] = this.__addSubscriptionDetail(
                 subscriptionID, _journalGroupID,
-                _startYear, _endYear,
-                _copies, _total,
-                _journalPriceGroupID);
+                _startYear, _startMonth,
+                _endYear, _copies,
+                _total, _journalPriceGroupID);
         return res;
     }
 
-    public int updateSubscriptionDetail(int id, int startYear, int endYear,
-            boolean active, int copies, int SubscriberTypeID)
+    public int updateSubscriptionDetail(int id, int startYear, int startMonth,
+            int endYear, boolean active, int copies, int SubscriberTypeID)
             throws ParserConfigurationException, SQLException, TransformerException {
 
         int rc;
@@ -224,7 +236,7 @@ public class SubscriptionModel extends JDSModel {
             int subscriptionID = rs.getInt(3);
 
             if ((oldactiveFlag || active) == false) {
-                return (0); //if old and new active flag is the same, do not go further
+                return (0); //if old and new active flag is the same and its inactive, do not go further
             }
 
             // get the new price group id and price
@@ -256,14 +268,11 @@ public class SubscriptionModel extends JDSModel {
              *
              */
 
-
-
-
-
             sql = Queries.getQuery("update_subscription_detail");
             PreparedStatement st = conn.prepareStatement(sql);
             int paramIndex = 0;
             st.setInt(++paramIndex, startYear);
+            st.setInt(++paramIndex, startMonth);
             st.setInt(++paramIndex, endYear);
             st.setInt(++paramIndex, newPriceGroupID);
             //st.setFloat(++paramIndex, total);

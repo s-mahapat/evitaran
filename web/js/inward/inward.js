@@ -171,11 +171,14 @@ function isInwardSelected(){
     if(selectedSubscriberId=="undefined"){
         selectedSubscriberId = "";
     }
+    $("#inwardNumber").val(selectedInward);
+    $("#subscriberNumber").val(selectedSubscriberId);
+    $("#purpose").val(selectedInwardPurpose);
 
-    document.processInwardForm.action = "inward?action=processinward&" +
-    "inwardNumber=" + selectedInward + "&" +
-    "subscriberNumber=" + selectedSubscriberId + "&" +
-    "purpose=" + selectedInwardPurpose
+//    document.processInwardForm.action = "inward?action=processinward&" +
+//    "inwardNumber=" + selectedInward + "&" +
+//    "subscriberNumber=" + selectedSubscriberId + "&" +
+//    "purpose=" + selectedInwardPurpose
     return true;
 }
 

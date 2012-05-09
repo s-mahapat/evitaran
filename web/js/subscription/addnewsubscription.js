@@ -6,6 +6,7 @@ function addJournal(){
 
     var selectedJournalGroupCode = $("#journalName").val();
     var selectedJournalGroupName = $("#journalName :selected").text();
+    var _JDSConstants = new JDSConstants();
     journalNameToGroupIDMap[selectedJournalGroupName] = selectedJournalGroupCode;
     if(subscriberType == 0){
         subscriberType = getSubscriberType($("#subscriberNumber").val());
@@ -33,6 +34,7 @@ function addJournal(){
             "journalPriceGroupID":priceDetails[0],
             "journalCost": price, //get the price
             "startYear": $("#subscriptionStartYear").val(),
+            "startMonth": _JDSConstants.monthNames[$("#startMonth").val() - 1],
             "endYear" : $("#endYear").val(),
             "Copies": $("#copies").val(),
             "Total": price * $("#copies").val(),
@@ -156,6 +158,10 @@ function saveSubscription(){
             value: rowObj.startYear
         });
         rowRequiredData.push({
+            name: "startMonth",
+            value: rowObj.startMonth
+        });
+        rowRequiredData.push({
             name: "endYear",
             value: rowObj.endYear
         });
@@ -198,11 +204,13 @@ function saveSubscription(){
                     $("#remarks").attr("disabled",true);
                     subscriptionSaved = true;
 
+                    document.subscriptionForm.submit();
+
                     //ask if we have print inward acknowledgement
                     //if(confirm("Do you want send the inward acknowledgement?")){
-                        //document.subscriptionForm.submit();
-                        window.location.href = "inward?action=followOnProcess"
-                            + "&inwardNumber="   + $("#inwardNumber").val() + "&purpose=" + inwardPurpose;
+                        //
+                        //window.location.href = "inward?action=followOnProcess"
+                            //+ "&inwardNumber="   + $("#inwardNumber").val() + "&purpose=" + inwardPurpose;
                     //}
                 }
             });

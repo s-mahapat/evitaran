@@ -131,13 +131,17 @@
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
             <%--<form method="post" action="<%=request.getParameter("next")%>" name="searchInwardForm" onsubmit="return isInwardSelected()">--%>
-            <form method="post" action="<%=request.getContextPath() + "/inward"%>" name="processInwardForm" onsubmit="return isInwardSelected()">
-                <input type="hidden" id="nextAction" name ="nextAction" value="<%=request.getParameter("nextAction")%>"/>
+            <form method="post" action="inward?action=processinward" name="processInwardForm" onsubmit="return isInwardSelected()">
+                <%--<input type="hidden" id="nextAction" name ="nextAction" value="<%=request.getParameter("nextAction")%>"/>
                 <input type="hidden" id="inwardPurpose" name ="inwardPurpose" value="<%=request.getParameter("inwardPurpose")%>"/>
-                <input type="hidden" id="inwardNumber" name ="inwardNumber" value=""/>
-                <input type="hidden" id="purpose" name ="purpose" value="<%=request.getParameter("purpose") != null ? request.getParameter("purpose") : ""%>"/>
+
+
                 <input type="hidden" id="" name ="action" value="processinward"/>
+                --%>
+                <input type="hidden" id="inwardNumber" name ="inwardNumber" value=""/>
                 <input type="hidden" id="subscriberNumber" name ="subscriberNumber" value=""/>
+                <input type="hidden" id="inwardPurpose" name ="inwardPurpose" value="<%=request.getParameter("inwardPurpose")%>"/>
+                <input type="hidden" id="purpose" name ="purpose" value="<%=request.getParameter("purpose") != null ? request.getParameter("purpose") : ""%>"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Inward</legend>

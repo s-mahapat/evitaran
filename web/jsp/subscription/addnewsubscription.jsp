@@ -1,12 +1,11 @@
-<%--
-    Document   : Add New Subscription
---%>
+
 <%@page import="IAS.Bean.Inward.inwardFormBean"%>
 <jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
 <%
     inwardFormBean _inwardFormBean = (inwardFormBean)request.getSession().getAttribute("inwardUnderProcess");
     String inwardNumber = _inwardFormBean.getInwardNumber();
     float amount = _inwardFormBean.getAmount();
+    String inwardPurpose = request.getParameter("purpose");
 
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -22,17 +21,18 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/jquery/jquery.blockUI.js"%>"></script>
         <script type="text/javascript">
-            var inwardPurpose = <%=request.getParameter("purpose")%>;
             $(document).ready(function(){
                 $().ajaxStart($.blockUI).ajaxStop($.unblockUI);
                 listSubscription("View");
+                $("#purpose").val(<%=request.getParameter("purpose")%>);
             })
         </script>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form name="subscriptionForm">
+            <form name="subscriptionForm" action="inward?action=followOnProcess" method="POST">
+                <input type="hidden" name="purpose" id="purpose"/>
 
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">

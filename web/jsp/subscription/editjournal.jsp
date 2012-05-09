@@ -38,12 +38,17 @@
         //get the start year and end year key:value pairs for filling the select box
         var szStartYear = null;
         var szEndYear = null;
+        var szStartMonth = null;
         $('select#subscriptionStartYear').find('option').each(function() {
             szStartYear = (szStartYear == null) ? $(this).val() + ":" + $(this).val() : szStartYear + ";" + $(this).val() + ":" + $(this).val();
         });
 
         $('select#endYear').find('option').each(function() {
             szEndYear = (szEndYear == null) ? $(this).val() + ":" + $(this).val() : szEndYear + ";" + $(this).val() + ":" + $(this).val();
+        });
+
+        $('select#startMonth').find('option').each(function() {
+            szStartMonth = (szStartMonth == null) ? $(this).val() + ":" + $(this).text() : szStartMonth + ";" + $(this).val() + ":" + $(this).text();
         });
 
         var selectedRowID = null;
@@ -60,7 +65,7 @@
             sortname:'journalGroupName',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames: ['ID','Journal Group','Journal Group ID','Journal Cost (INR)','Start Year','End Year','Copies','Total (INR)','Active','Action'],
+            colNames: ['ID','Journal Group','Journal Group ID','Journal Cost (INR)','Start Year','Start Month','End Year','Copies','Total (INR)','Active','Action'],
             colModel: [
                 {
                     name:"id",
@@ -94,7 +99,7 @@
                 {
                     name:"startYear",
                     index:"startYear",
-                    width:60,
+                    width:40,
                     align:"center",
                     //formatter:"select",
                     editable: true,
@@ -102,9 +107,20 @@
                     editoptions:{value: szStartYear}
                 },
                 {
+                    name:"startMonth",
+                    index:"startMonth",
+                    width:40,
+                    align:"center",
+                    formatter: monthNumberToName,
+                    unformat: monthNameToNumber,
+                    editable: true,
+                    edittype:'select',
+                    editoptions:{value: szStartMonth}
+                },
+                {
                     name:"endYear",
                     index:"endYear",
-                    width:60,
+                    width:40,
                     align:"center",
                     editable: true,
                     edittype:'select',
@@ -114,7 +130,7 @@
                 {
                     name:"copies",
                     index:"copies",
-                    width:60,
+                    width:40,
                     align:"center",
                     editable: true,
                     edittype:'text',
@@ -269,6 +285,18 @@
                         out.println("<option value=\"" + i + "\">" + i + "</option>");
                     }
                 %>
+            </select>
+        </span>
+
+        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+            <label>Start Month:</label>
+        </span>
+
+        <span class="IASFormDivSpanInputBoxLessMargin">
+            <select class="IASComboBoxMandatory" TABINDEX="11" name="startMonth" id="startMonth">
+                <option value="1" selected>Jan</option>
+                <option value="6">Jun</option>
+
             </select>
         </span>
 

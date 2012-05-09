@@ -37,7 +37,7 @@
             //data: "subscriberNumber=" + $("#subscriberNumber").val(),
             datatype: 'local',
             mtype: 'GET',
-            height: 240,
+            height: 210,
             autowidth: true,
             forceFit: true,
             sortable: true,
@@ -46,7 +46,7 @@
             sortname:'subscriptionDate',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames: ['Journal Group','Journal Price Group ID','Journal Cost (INR)', 'Start Year','End Year','Copies','Total (INR)','Delete'],
+            colNames: ['Journal Group','Journal Price Group ID','Journal Cost (INR)', 'Start Year','Start Month','End Year','Copies','Total (INR)','Delete'],
             colModel: [
                 {
                     name:"journalName",
@@ -75,6 +75,13 @@
                     index:"startYear",
                     width:60,
                     align:"center"
+                },
+                {
+                    name:"startMonth",
+                    index:"startMonth",
+                    width:40,
+                    align:"center",
+                    unformat: monthNameToNumber
                 },
                 {
                     name:"endYear",
@@ -132,6 +139,18 @@
         </span>
 
         <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+            <label>Start Month:</label>
+        </span>
+
+        <span class="IASFormDivSpanInputBoxLessMargin">
+            <select class="IASComboBoxMandatory" TABINDEX="11" name="startMonth" id="startMonth">
+                <option value="1" selected>Jan</option>
+                <option value="6">Jun</option>
+
+            </select>
+        </span>
+
+        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
             <label>End Year:</label>
         </span>
 
@@ -145,19 +164,7 @@
             </select>
         </span>
 
-        <%--<span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>Journal Price Year:</label>
-        </span>
 
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="priceYear" id="priceYear">
-                <%
-                    for (int j = 0; j <= 1; j++) {
-                        out.println("<option value =\"" + (year + j) + "\">" + (year + j) + "</option>");
-                    }
-                %>
-            </select>
-        </span>--%>
 
         <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
             <label>Journal Group:</label>

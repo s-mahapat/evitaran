@@ -30,8 +30,6 @@ public class main extends JDSController {
 
         } else if (action.equalsIgnoreCase("logout")) {
 
-            request.getSession().invalidate();
-            //response.sendRedirect(request.getContextPath() + "/home");
             url = "/jsp/login/logout.jsp";
 
         } else if (action.equalsIgnoreCase("createinward")) {
@@ -56,7 +54,7 @@ public class main extends JDSController {
 
         } else if (action.equalsIgnoreCase("newsubscription")) {
 
-            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=newsubscription&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/jsp/subscriber/createsubscriber.jsp";
+            url = "/jsp/inward/gatekeeperinward.jsp?inwardPurpose=New Subscription";
 
         } else if (action.equalsIgnoreCase("renewsubscription")) {
 
@@ -205,6 +203,9 @@ public class main extends JDSController {
         else
         {
             logger.debug("Called->" + url);
+            if(request.getSession(false).getAttribute("inwardUnderProcess")!=null){
+               request.getSession(false).setAttribute("inwardUnderProcess", null);
+            }
         }
 
 

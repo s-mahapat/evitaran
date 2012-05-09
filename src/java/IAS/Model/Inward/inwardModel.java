@@ -279,7 +279,7 @@ public class inwardModel extends JDSModel {
 //    }
     public String searchInward() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String xml = null;
-        String sql = Queries.getQuery("search_inward");
+        String sql = Queries.getQuery("search_inwards");
         String inwardNumber = request.getParameter("inwardNumber");
         String chequeNumber = request.getParameter("chequeNumber");
         String city = request.getParameter("city");
@@ -317,7 +317,7 @@ public class inwardModel extends JDSModel {
         if (completed != null && completed.length() > 0) {
             sql += " and completed=" + completed;
         }
-        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose order by " + orderBy + " " + sortOrder;
+        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose order by inwardID " + sortOrder;
         ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
 
         sql = "select count(*) from (" + sql + ") as tbl";
