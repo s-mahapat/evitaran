@@ -61,7 +61,7 @@
         <div id="bodyContainer">
             <form method="post" action="<%=request.getContextPath() + "/subscriber"%>" name="subscriberForm">
                 <div class="MainDiv">
-                    <fieldset class="MainFieldset">
+                    <fieldset class="MainFieldset" style="max-height: 100%;">
                         <legend>View Subscriber</legend>
                         <fieldset class="subMainFieldSet">
 
@@ -100,7 +100,7 @@
                                 </div>
                             </div>
                         </fieldset>
-                        <fieldset class="subMainFieldSet" style="border: none">
+                        <fieldset class="subMainFieldSet" style="border: none;">
                             <div id="subscriberDtlsTabs" style="font-size: 12px; font-family: cambria,serif" >
                                 <ul>
                                     <li><a href="#subDtls">Subscriber Details</a></li>
@@ -109,7 +109,7 @@
                                     <li><a href="#invoices">Invoices</a></li>
                                     <li><a href="#reminders">Reminders</a></li>
                                 </ul>
-                                <div id="subDtls" style="font-size: 12px; font-family: cambria,serif">
+                                <div id="subDtls" style="height: 100%; font-size: 12px; font-family: cambria,serif">
                                     <%@include file="subscriberdtls.jsp"%>
                                 </div>
 

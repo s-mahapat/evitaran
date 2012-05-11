@@ -121,6 +121,7 @@ A:active {
     width: 88%;
     overflow: auto;
     float: right;
+    height: available;
 }
 
 #watermark{
