@@ -34,7 +34,7 @@ function addJournal(){
             "journalPriceGroupID":priceDetails[0],
             "journalCost": price, //get the price
             "startYear": $("#subscriptionStartYear").val(),
-            "startMonth": _JDSConstants.monthNames[$("#startMonth").val() - 1],
+            "startMonth": $("#startMonth").val(), //_JDSConstants.monthNames[$("#startMonth").val() - 1],
             "endYear" : $("#endYear").val(),
             "Copies": $("#copies").val(),
             "Total": price * $("#copies").val(),

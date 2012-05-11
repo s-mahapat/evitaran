@@ -81,6 +81,7 @@
                     index:"startMonth",
                     width:40,
                     align:"center",
+                    formatter: monthNumberToName,
                     unformat: monthNameToNumber
                 },
                 {
