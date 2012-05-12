@@ -4,6 +4,7 @@
  */
 package IAS.Controller;
 
+import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
@@ -37,10 +38,7 @@ public class subscriber extends JDSController {
         int inwardPurposeID = 0;
 
         HttpSession session = request.getSession(false);
-
-
         try {
-
             _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
 
             if (action.equalsIgnoreCase("save")) {
@@ -98,8 +96,12 @@ public class subscriber extends JDSController {
                 String xml = _subscriberModel.subscriberInvoices();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            } else if (action.equalsIgnoreCase("gpi")) {
+
+            } else if (action.equalsIgnoreCase("printInvoice")) {
+                InvoiceFormBean _invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
+                _invoiceFormBean = _subscriberModel.getInvoiceDetail();
                 url = "/jsp/invoice/proforma.jsp";
+
             } else if (action.equalsIgnoreCase("mil")) {
                 url = "/jsp/missingissue/missingissuelist.jsp";
             } else if (action.equalsIgnoreCase("getSubscriberType")) {

@@ -1,5 +1,6 @@
 package IAS.Model.Subscriber;
 
+import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Class.JDSConstants;
@@ -322,5 +323,21 @@ public class subscriberModel extends JDSModel {
         xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
 
         return xml;
+    }
+
+        public InvoiceFormBean getInvoiceDetail() throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
+        String sql;
+        InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
+        sql = Queries.getQuery("get_invoice_detail_usng_invno");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setString(1, request.getParameter("invoiceNo"));
+        try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
+            while (rs.next()) {
+                BeanProcessor bProc = new BeanProcessor();
+                Class type = Class.forName("IAS.Bean.Invoice.InvoiceFormBean");
+                invoiceFormBean = (IAS.Bean.Invoice.InvoiceFormBean) bProc.toBean(rs, type);            }
+        }
+        request.setAttribute("invoiceFormBean", invoiceFormBean);
+        return invoiceFormBean;
     }
 }

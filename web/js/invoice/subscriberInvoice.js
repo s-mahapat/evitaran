@@ -18,7 +18,7 @@ function drawInvoiceTable(){
             scrollOffset: 20,
             emptyrecords: "No invoice to view",
             loadtext: "Loading...",
-            colNames:['Invoice No','Invoice Date','Subscription Number','Invoice Amount','Print'],
+            colNames:['Invoice No','Invoice Date','Subscription Number','Invoice Amount','Action'],
             colModel :[
                 {name:'InvoiceNo', index:'invoiceNumber', width:50, align:'center', xmlmap:'invoiceNumber'},
                 {name:'InvoiceDate', index:'invoiceCreationDate', width:60, align:'center', xmlmap:'invoiceCreationDate'},
@@ -42,12 +42,12 @@ function drawInvoiceTable(){
             gridview: true,
             //caption: '&nbsp;',
             gridComplete: function() {
-                /*var ids = jQuery("#invoiceTable").jqGrid('getDataIDs');
+                var ids = jQuery("#invoiceTable").jqGrid('getDataIDs');
                 for (var i = 0; i < ids.length; i++) {
                     var invoiceId = ids[i];
-                    action = "<a style='color:blue;' href='inward?action=view&inwardNumber=" + invoiceNumber + "'>Print</a>";
+                    action = "<a style='color:blue;' href='subscriber?action=printInvoice&invoiceNo=" + invoiceId + "'>Print</a>";
                     jQuery("#invoiceTable").jqGrid('setRowData', ids[i], { Action: action });
-                }*/
+                }
             },
             beforeRequest: function(){
                 return true;
@@ -55,8 +55,5 @@ function drawInvoiceTable(){
             loadError: function(xhr,status,error){
                 alert("Failed getting data from server " + status);
             }
-
         });
-
-
 }

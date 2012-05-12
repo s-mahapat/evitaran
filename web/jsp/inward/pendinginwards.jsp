@@ -171,7 +171,10 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="processInwardForm" onsubmit="return isInwardSelected()">
+            <form method="post" action="inward?action=processinward" name="processInwardForm" onsubmit="return isInwardSelected()">
+                <input type="hidden" id="inwardNumber" name ="inwardNumber" value=""/>
+                <input type="hidden" id="subscriberNumber" name ="subscriberNumber" value=""/>
+                <input type="hidden" id="purpose" name ="purpose" value=""/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Pending Inwards</legend>
