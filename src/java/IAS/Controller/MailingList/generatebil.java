@@ -20,7 +20,7 @@ import javax.servlet.ServletContext;
  *
  * @author aloko
  */
-public class generateml extends JDSController {
+public class generatebil extends JDSController {
     private mlModel _mlModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
@@ -47,9 +47,9 @@ public class generateml extends JDSController {
                 
             }else if(action.equalsIgnoreCase("print")){
 
-                String xml = _mlModel.print(response);
+                //String xml = _mlModel.print();
                 //request.setAttribute("xml", xml);
-                //url = "/xmlserver";
+                url = "/xmlserver";
                 
             }
 

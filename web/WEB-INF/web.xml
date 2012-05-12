@@ -170,6 +170,14 @@
         <servlet-name>generateml</servlet-name>
         <servlet-class>IAS.Controller.MailingList.generateml</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>generatebil</servlet-name>
+        <servlet-class>IAS.Controller.MailingList.generatebil</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>generatePdf</servlet-name>
+        <servlet-class>IAS.Servlet.generatePdf</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -293,6 +301,14 @@
     <servlet-mapping>
         <servlet-name>generateml</servlet-name>
         <url-pattern>/generateml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>generatebil</servlet-name>
+        <url-pattern>/generatebil</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>generatePdf</servlet-name>
+        <url-pattern>/generatePdf</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

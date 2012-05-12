@@ -50,7 +50,7 @@ public class main extends JDSController {
 
         } else if (action.equalsIgnoreCase("gbil")) {
 
-            url = "/jsp/ml/generateml.jsp?list=bil";
+            url = "/jsp/ml/generatebil.jsp?list=bil";
 
         } else if (action.equalsIgnoreCase("newsubscription")) {
 
