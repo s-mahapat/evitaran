@@ -34,74 +34,100 @@ public class mlModel extends JDSModel {
 
     }
 
-    public String search()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-
-        String xml = null;
-        return xml;
-    }
-    
-    public String generate() throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
-        
-        String xml = null;
-        String url = null;
-        String sql = Queries.getQuery("insert_ml");
-        PreparedStatement st = conn.prepareStatement(sql);
+    public int searchMl()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String sql = Queries.getQuery("check_ml");
+        PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
-        st.setString(paramIndex, request.getParameter("journalName"));
-        st.setString(++paramIndex, request.getParameter("issue"));
-        st.setString(++paramIndex, request.getParameter("year"));        
-        st.setString(++paramIndex, request.getParameter("month"));
-        st.setString(++paramIndex, request.getParameter("mlCreationDate"));
-        try
-            {
-                if (db.executeUpdatePreparedStatement(st) == 1) {
-                        try (ResultSet rs = st.getGeneratedKeys()) {
-                            while(rs.next()){
-                                int i = rs.getInt(1);
-                                String sqlgetml = Queries.getQuery("generate_ml");
-                                PreparedStatement stgetml = conn.prepareStatement(sqlgetml);
-                                paramIndex = 1;
-                                stgetml.setString(paramIndex, request.getParameter("journalName"));
-                                stgetml.setString(++paramIndex, request.getParameter("issue"));
-                                stgetml.setString(paramIndex, request.getParameter("year"));        
-                                stgetml.setString(++paramIndex, request.getParameter("month"));
-                                stgetml.setString(++paramIndex, request.getParameter("mlCreationDate"));
-                                ResultSet rsgetml = db.executeQueryPreparedStatement(stgetml);
-                                xml = util.convertResultSetToXML(rsgetml);
-                                request.setAttribute("xml", xml);
-                                url = "/xmlserver";                                
-                                while (rsgetml.next()) {
-                                    String sqlmldtl = Queries.getQuery("insert_mldtl");
-                                    PreparedStatement stmldtl = conn.prepareStatement(sqlmldtl);
-                                    paramIndex = 1;
-                                    stmldtl.setString(paramIndex, request.getParameter("i"));
-                                    Object value = null;
-                                    for (int j = 1; j <= 15; i++) {
-                                        value = rsgetml.getObject(i);
-                                        stmldtl.setString(++paramIndex, value.toString());
-                                    }
-                                    stmldtl.setString(++paramIndex, request.getParameter("year"));        
-                                    stmldtl.setString(++paramIndex, request.getParameter("month"));
-                                    db.executeUpdatePreparedStatement(stmldtl);
-                                }
-                                rs.close();                               
-                            }
+        stGet.setString(paramIndex, request.getParameter("journalName"));       
+        stGet.setString(++paramIndex, request.getParameter("issue"));           
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        if(rs.next())
+            return rs.getInt(1);
+        else
+            return 0;
+    }
+
+    public String getMlDtl(int mlId)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String xml = null;
+        String sql = Queries.getQuery("search_mldtl");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setInt(paramIndex, mlId);    
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);     
+        xml = util.convertResultSetToXML(rs);
+        return xml;
+    }
+        
+    public String generate() throws SQLException, ParseException, ParserConfigurationException, TransformerException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
+        //  Declare Variables        
+        String xml = null;
+        int i = 0;
+        int mlid = 0;
+        mlid = this.searchMl(); 
+        // Check if the record exists in mialing_list for that journal and issue.
+        // If record deosnot exists insert record first to mailing list
+        // Then retried id for current iserted record
+        //Fetch the mailing list
+        // Inster the mailing_list_detail into mailing list table with mailing_list Id as reference.
+        if (mlid == 0) {
+            String sql = Queries.getQuery("insert_ml");
+            PreparedStatement st = conn.prepareStatement(sql);
+            int paramIndex = 1;
+            st.setString(paramIndex, request.getParameter("journalName"));
+            st.setString(++paramIndex, request.getParameter("issue"));
+            st.setString(++paramIndex, request.getParameter("year"));        
+            st.setString(++paramIndex, request.getParameter("month"));
+            if (db.executeUpdatePreparedStatement(st) == 1) {
+                String sqlml = Queries.getQuery("get_ml_id");
+                PreparedStatement stml = conn.prepareStatement(sqlml);
+                paramIndex = 1;
+                stml.setString(paramIndex, request.getParameter("journalName"));
+                stml.setString(++paramIndex, request.getParameter("issue"));
+                stml.setString(++paramIndex, request.getParameter("year"));        
+                stml.setString(++paramIndex, request.getParameter("month")); 
+                ResultSet rsml = this.db.executeQueryPreparedStatement(stml);
+                if(rsml.next()){
+                    i = rsml.getInt(1);
+                    String sqlgetml = Queries.getQuery("select_generateml");
+                    PreparedStatement stgetml = conn.prepareStatement(sqlgetml);
+                    paramIndex = 1;
+                    stgetml.setString(paramIndex, request.getParameter("journalName"));
+                    stgetml.setString(++paramIndex, request.getParameter("year"));
+                    stgetml.setString(++paramIndex, request.getParameter("year"));   
+                    //stgetml.setString(++paramIndex, request.getParameter("month"));
+                    //stgetml.setString(++paramIndex, request.getParameter("month"));
+                    ResultSet rsgetml = db.executeQueryPreparedStatement(stgetml);
+                    while (rsgetml.next()) {
+                        String sqlmldtl = Queries.getQuery("insert_mldtl");
+                        PreparedStatement stmldtl = conn.prepareStatement(sqlmldtl);
+                        paramIndex = 1;
+                        stmldtl.setInt(paramIndex, i );
+                        Object value = null;
+                        for (int j = 1; j <= 21; j++) {
+                            value = rsgetml.getObject(j);
+                            stmldtl.setString(++paramIndex, value.toString());
                         }
+                        stmldtl.setString(++paramIndex, request.getParameter("issue"));
+                        stmldtl.setString(++paramIndex, request.getParameter("month"));
+                        stmldtl.setString(++paramIndex, request.getParameter("year"));  
+                        db.executeUpdatePreparedStatement(stmldtl);
                     }
-            }catch (Exception MySQLIntegrityConstraintViolationException)
-            {
-                logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
+                }                       
             }
-       
-         
+        }
+        else{
+            i = mlid;
+        }        
+        xml = this.getMlDtl(i);
         return xml;
     }
     
-    public String print(HttpServletResponse response) throws IOException, DocumentException
+    public String print(HttpServletResponse response) throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException, DocumentException
     {
         //Query whatever you want here
         String xml = null;
+       // int stat = this.search();
         ResultSet rs = null;
         
         //Now convert to pdf here

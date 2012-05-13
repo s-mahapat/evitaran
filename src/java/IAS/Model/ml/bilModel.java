@@ -31,7 +31,7 @@ public class bilModel extends JDSModel {
     public String search()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         
         String xml = null;        
-        /*
+
         String sql = Queries.getQuery("BackIssueMailingList");
         String year = request.getParameter("year");
         String subscriberNumber = request.getParameter("subscriberNumber");
@@ -49,15 +49,13 @@ public class bilModel extends JDSModel {
         PreparedStatement stGet = conn.prepareStatement(sql);
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);   
-         * *
-         */
+
         return xml;
     }
     
     public String generate() throws SQLException, ParserConfigurationException, TransformerException
     {
-        String xml = null;
-        
+        String xml = null;        
         String sql = Queries.getQuery("generateMailingList");
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
@@ -67,8 +65,7 @@ public class bilModel extends JDSModel {
         stGet.setString(++paramIndex, request.getParameter("mlCreationDate"));
         stGet.setString(++paramIndex, request.getParameter("issue"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        xml = util.convertResultSetToXML(rs);
-         
+        xml = util.convertResultSetToXML(rs);         
         return xml;
     }
     

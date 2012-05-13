@@ -41,17 +41,32 @@
                     sortable: true,
                     loadonce: true,
                     rownumbers: true,
-                    emptyrecords: "No Mailing List Found",
+                    emptyrecords: "No Mailing List Found\Generated",
                     loadtext: "Loading...",
-                    colNames:['Id','Journal Name','Month', 'Year', 'Issue','Print'],
+                    colNames:['id', 'journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'department', 'institution', 'address', 'city', 'district', 
+                                'state', 'country', 'pincode', 'copies', 'issue', 'month', '`year`', 'startYear', 'startMonth', 'endYear', 'endMonth'],
                     colModel :[
                         {name:'id', index:'id', width:80, align:'center', xmlmap:'id'},
-                        {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
+                        {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
+                        {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
+                        {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
+                        {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
+                        {name:'department', index:'department', width:80, align:'center', xmlmap:'department'},
+                        {name:'institution', index:'institution', width:80, align:'center', xmlmap:'institution'},
+                        {name:'address', index:'address', width:80, align:'center', xmlmap:'address'},
+                        {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
+                        {name:'district', index:'district', width:80, align:'center', xmlmap:'district'},
+                        {name:'state', index:'state', width:80, align:'center', xmlmap:'state'},
+                        {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
+                        {name:'pincode', index:'pincode', width:80, align:'center', xmlmap:'pincode'},
+                        {name:'copies', index:'copies', width:80, align:'copies', xmlmap:'copies'},
+                        {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
                         {name:'month', index:'month', width:80, align:'center', xmlmap:'month'},
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
-                        {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
-                        {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}
-                        
+                        {name:'startYear', index:'startYear', width:80, align:'center', xmlmap:'startYear'},
+                        {name:'startMonth', index:'startMonth', width:80, align:'center', xmlmap:'startMonth'},
+                        {name:'endYear', index:'endYear', width:80, align:'center', xmlmap:'endYear'},
+                        {name:'endMonth', index:'endMonth', width:80, align:'center', xmlmap:'endMonth'},
                     ],
                     xmlReader : {
                         root: "results",
@@ -286,9 +301,9 @@
                             <fieldset class="subMainFieldSet">
                                 <legend>Actions - Search / Generate</legend>
                                     <div class="IASFormFieldDiv">
-                                        <div id="searchBtnDiv">
+                                        <%--<div id="searchBtnDiv">
                                              <input class="IASButton" TABINDEX="5" type="button" value="Display Mailing List" id="btnSearch" name="btnSearch" onclick="search()"/>
-                                        </div>                                          
+                                        </div> --%>                                          
                                         <div id="addBtnDiv">
                                              <input class="IASButton" TABINDEX="6" type="button" value="Generate Mailing lis" id="btnAdd" name="btnAddRate" onclick="generate()"/>
                                         </div>   
@@ -311,9 +326,12 @@
 
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
-                                    <div id="cancelBtnDiv">
-                                        <%--<input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>--%>
+                                    <div id="printBtnDiv">
                                         <input class="IASButton" TABINDEX="4" type="button" value="Print" id="btnPrint" name="btnPrint" onclick="print()"/>
+                                    </div>
+                                    
+                                    <div id="cancelBtnDiv">
+                                        <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>                                        
                                     </div>
                                 </div>
                             </fieldset>
