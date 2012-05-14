@@ -34,10 +34,6 @@ public class generateml extends JDSController {
 
             if(action.equalsIgnoreCase("search")){
 
-                String xml = _mlModel.search();
-                request.setAttribute("xml", xml);
-                url = "/xmlserver";
-
             }else if(action.equalsIgnoreCase("generate")){
 
                 String xml = _mlModel.generate();

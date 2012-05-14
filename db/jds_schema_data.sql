@@ -76,7 +76,7 @@ CREATE TABLE `back_issue_list` (
 
 LOCK TABLES `back_issue_list` WRITE;
 /*!40000 ALTER TABLE `back_issue_list` DISABLE KEYS */;
-INSERT INTO `back_issue_list` VALUES (1,1,1,2011,1,1,5,'','2012-05-21 18:30:00');
+INSERT INTO `back_issue_list` VALUES (1,3,1,2012,1,34,5,'x','2012-05-13 18:30:00');
 /*!40000 ALTER TABLE `back_issue_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -524,17 +524,17 @@ CREATE TABLE `mailing_list_detail` (
   `country` varchar(45) DEFAULT NULL,
   `pincode` int(11) DEFAULT NULL,
   `copies` int(11) NOT NULL,
-  `issue` int(11) NOT NULL,
-  `month` int(11) NOT NULL,
-  `year` int(11) NOT NULL,
-  `bilid` int(11) DEFAULT NULL,
-  `bildate` int(11) DEFAULT NULL,
   `startYear` int(11) DEFAULT NULL,
   `startMonth` int(11) DEFAULT NULL,
   `endYear` int(11) DEFAULT NULL,
+  `issue` int(11) NOT NULL,
   `endMonth` int(11) DEFAULT NULL,
+  `month` int(11) NOT NULL,
+  `year` int(11) NOT NULL,
+  `bilid` int(11) DEFAULT NULL,
+  `bildate` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -543,7 +543,7 @@ CREATE TABLE `mailing_list_detail` (
 
 LOCK TABLES `mailing_list_detail` WRITE;
 /*!40000 ALTER TABLE `mailing_list_detail` DISABLE KEYS */;
-INSERT INTO `mailing_list_detail` VALUES (1,1,166227,217,34,3,'J','IITS','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,5,1,1,2012,NULL,NULL,2012,1,2012,0),(2,1,166227,218,36,3,'J','IITS','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,1,1,2012,NULL,NULL,2012,1,2012,0),(3,1,166227,219,37,3,'J','IITS','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,1,1,2012,NULL,NULL,2012,6,2012,0),(4,1,166227,220,38,3,'J','IITS','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,1,1,2012,NULL,NULL,2012,1,2012,0);
+INSERT INTO `mailing_list_detail` VALUES (1,1,166227,217,34,3,'J','IITS','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,5,2012,1,2012,1,0,1,2012,NULL,NULL),(2,1,166227,218,36,3,'J','IITS','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL),(3,1,166227,219,37,3,'J','IITS','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,6,2012,1,0,1,2012,NULL,NULL),(4,1,166227,220,38,3,'J','IITS','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL),(5,1,166227,217,34,3,'J','IITS','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,5,2012,1,2012,1,0,1,2012,1,'2012-05-14');
 /*!40000 ALTER TABLE `mailing_list_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1586,4 +1586,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-05-13 16:15:10
+-- Dump completed on 2012-05-14 17:20:23

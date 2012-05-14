@@ -13,8 +13,13 @@ root {
 }
 
 
-#printBtnDiv{
-    margin-left: 40%;
+#printLabelBtnDiv{
+    margin-left: 30%;
+    float: left;
+    width: 15%;
+}
+
+#printStickerBtnDiv{
     float: left;
     width: 15%;
 }

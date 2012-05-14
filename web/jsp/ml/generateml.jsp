@@ -326,10 +326,12 @@
 
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
-                                    <div id="printBtnDiv">
-                                        <input class="IASButton" TABINDEX="4" type="button" value="Print" id="btnPrint" name="btnPrint" onclick="print()"/>
-                                    </div>
-                                    
+                                    <div id="printLabelBtnDiv">
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
+                                    </div>   
+                                    <div id="printStickerBtnDiv">
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
+                                    </div>                                     
                                     <div id="cancelBtnDiv">
                                         <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>                                        
                                     </div>

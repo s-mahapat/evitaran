@@ -22,8 +22,7 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=month"%>","month","month");
+                jQuery("#btnSearch,#btnPrint").attr("disabled",true);
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberNumber"%>","subscriberNumber","subscriberNumber");
 
              });
@@ -31,7 +30,7 @@
             $(function(){
 
                 $("#bilTable").jqGrid({
-                    url:"<%=request.getContextPath()%>/generateml",
+                    url:"<%=request.getContextPath()%>/generatebil",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -43,15 +42,30 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found",
                     loadtext: "Loading...",
-                    colNames:['Id','subscriberNumber','Journal Name','Month', 'Year', 'Issue','Print'],
+                    colNames:['id', 'journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'department', 'institution', 'address', 'city', 'district', 
+                                'state', 'country', 'pincode', 'copies', 'issue', 'month', '`year`', 'startYear', 'startMonth', 'endYear', 'endMonth'],
                     colModel :[
                         {name:'id', index:'id', width:80, align:'center', xmlmap:'id'},
-                        {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},                       
-                        {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
+                        {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
+                        {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
+                        {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
+                        {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
+                        {name:'department', index:'department', width:80, align:'center', xmlmap:'department'},
+                        {name:'institution', index:'institution', width:80, align:'center', xmlmap:'institution'},
+                        {name:'address', index:'address', width:80, align:'center', xmlmap:'address'},
+                        {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
+                        {name:'district', index:'district', width:80, align:'center', xmlmap:'district'},
+                        {name:'state', index:'state', width:80, align:'center', xmlmap:'state'},
+                        {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
+                        {name:'pincode', index:'pincode', width:80, align:'center', xmlmap:'pincode'},
+                        {name:'copies', index:'copies', width:80, align:'copies', xmlmap:'copies'},
+                        {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
                         {name:'month', index:'month', width:80, align:'center', xmlmap:'month'},
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
-                        {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
-                        {name:'Action', index:'action', width:80, align:'center',formatter:'showlink'}                        
+                        {name:'startYear', index:'startYear', width:80, align:'center', xmlmap:'startYear'},
+                        {name:'startMonth', index:'startMonth', width:80, align:'center', xmlmap:'startMonth'},
+                        {name:'endYear', index:'endYear', width:80, align:'center', xmlmap:'endYear'},
+                        {name:'endMonth', index:'endMonth', width:80, align:'center', xmlmap:'endMonth'},
                     ],
                     xmlReader : {
                         root: "results",
@@ -68,12 +82,12 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-                    editurl:"<%=request.getContextPath()%>/generateml?action=search",
+                    editurl:"<%=request.getContextPath()%>/generatebil?action=search",
                     gridComplete: function() {
                         var ids = jQuery("#bilTable").jqGrid('getDataIDs');
                         for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='generateml?action=print&id=" + ids[i] + "'>Print</a>";
-                            jQuery("#generateml").jqGrid('setRowData', ids[i], { Action: action });
+                            action = "<a style='color:blue;' href='generatebil?action=print&id=" + ids[i] + "'>Print</a>";
+                            jQuery("#generatebil").jqGrid('setRowData', ids[i], { Action: action });
                         }                        
                     },
                     beforeRequest: function(){
@@ -105,7 +119,8 @@
                         jQuery("#bilTable").setGridParam({ datatype: "xml" });
                         jQuery("#bilTable").trigger("clearGridData");
                         jQuery("#bilTable").trigger("reloadGrid");
-                    }               
+                    }
+                jQuery("#btnPrint").attr("disabled",false);
             }
 
 
@@ -129,23 +144,44 @@
                         jQuery("#bilTable").trigger("reloadGrid");
 
                     }
-                }
+                jQuery("#btnPrint").attr("disabled",false);
+            }
                 
-            function getChecked(){
-                if (document.getElementById("selall").value == 1 ){
-                    document.getElementById("selall").value = 0;
-                }else {
-                    document.getElementById("selall").value = 1;
-                }
+            function searchEnable(){
+                jQuery("#btnSearch, #btnPrint").attr("disabled",false);
+                jQuery("#btnGenerate, #btnPrint").attr("disabled",true);
+                reloadSubscriberNumber('s')
             }                
-                           
+
+            function generateEnable(){
+                jQuery("#btnSearch, #btnPrint").attr("disabled",true);
+                jQuery("#btnGenerate, #btnPrint").attr("disabled",false);
+                reloadSubscriberNumber('g')
+            }
+            
+            function reloadSubscriberNumber( mode ){
+
+                $("#subscriberNumber").empty();
+                $("#subscriberNumber").text("");
+
+                var newOption = new Option("Select", "value");
+                $(newOption).html("Select");
+                $("#subscriberNumber").append(newOption);
+                if (mode == 'g')
+                    requestURL = "/JDS/CMasterData?md=subscribernumber";
+                else
+                    requestURL = "/JDS/CMasterData?md=subscribernumberbil";
+                
+                jdsAppend(requestURL,"subscriberNumber","subscriberNumber");
+
+            }
         </script>
     </head>
     <body>
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/generateml"%>" name="mlForm">
+            <form method="post" action="<%=request.getContextPath() + "/generatebil"%>" name="mlForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Generate and Print Back Issue List</legend>
@@ -153,11 +189,11 @@
                             <fieldset class="subMainFieldSet">
                                 <legend>Actions - Search / Generate Back Issue list</legend>
                                     <div class="IASFormFieldDiv">
-                                        <div id="searchBtnDiv">
-                                             <input class="IASButton" TABINDEX="5" type="button" value="Display/ Print Back Issue List" id="btnSearchEnable" name="btnSearchEnable" onclick="search()"/>
+                                        <div id="searchEnableBtnDiv">
+                                             <input class="IASButton" TABINDEX="5" type="button" value="Display/ Print Back Issue List" id="btnSearchEnable" name="btnSearchEnable" onclick="searchEnable()"/>
                                         </div>                                          
-                                        <div id="addBtnDiv">
-                                             <input class="IASButton" TABINDEX="6" type="button" value="Generate/ Print Back Issue List" id="btnGenerateEnable" name="btnGenerateEnable" onclick="generate()"/>
+                                        <div id="generateEnableBtnDiv">
+                                             <input class="IASButton" TABINDEX="6" type="button" value="Generate/ Print Back Issue List" id="btnGenerateEnable" name="btnGenerateEnable" onclick="generateEnable()"/>
                                         </div>   
                                      </div>
                             </fieldset>                        
@@ -165,7 +201,6 @@
                                 <legend>Selection Criteria</legend>
                                     <%-- Search Criteria left div --%>
                                     <div class="IASFormLeftDiv">
-                                        <div class="IASFormFieldDiv">
                                             <div class="IASFormFieldDiv">
                                                 <span class="IASFormDivSpanLabel">
                                                     <label>Subscriber Number</label>
@@ -175,40 +210,11 @@
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
-                                            </div>
-                                            <div class="IASFormFieldDiv">                                                
-                                                <span class="IASFormDivSpanLabel">
-                                                    <label>Year:</label>
-                                                </span>
-                                                <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox" TABINDEX="3" name="year" id="year">
-                                                        <option value="0">Select</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                            <div class="IASFormFieldDiv">                                                
-                                                <span class="IASFormDivSpanLabel">
-                                                    <label>Month:</label>
-                                                </span>
-                                                <span class="IASFormDivSpanInputBox">   
-                                                <select class="IASComboBox" TABINDEX="4" name="month" id="month">
-                                                        <option value="0">Select</option>
-                                                    </select>
-                                                </span>
-                                            </div>                                              
-                                        </div>                                  
+                                            </div>                                                                                                               
                                     </div>
                                     <%-- Search Criteria right div --%>
                                     <div class="IASFormRightDiv">
                                         <div class="IASFormFieldDiv">
-                                            <div class="IASFormFieldDiv">
-                                                <span class="IASFormDivSpanLabel">
-                                                    <label>All Pending Back Issues</label>
-                                                </span>
-                                                <span class="IASFormDivSpanInputBox">
-                                                    <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
-                                                </span>
-                                            </div>
                                             <div class="IASFormFieldDiv">
                                                 <span class="IASFormDivSpanLabel">
                                                     <label>Creation Date:</label>
@@ -247,6 +253,12 @@
 
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
+                                    <div id="printLabelBtnDiv">
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
+                                    </div>   
+                                    <div id="printStickerBtnDiv">
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
+                                    </div>                                      
                                     <div id="cancelBtnDiv">
                                         <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                                     </div>

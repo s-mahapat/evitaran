@@ -1,13 +1,13 @@
 package IAS.Controller.MailingList;
 
-import IAS.Model.ml.mlModel;
+import IAS.Model.ml.bilModel;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+    
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
@@ -21,7 +21,7 @@ import javax.servlet.ServletContext;
  * @author aloko
  */
 public class generatebil extends JDSController {
-    private mlModel _mlModel = null;
+    private bilModel _bilModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -30,24 +30,24 @@ public class generatebil extends JDSController {
         String url = null;
 
         try {
-            _mlModel = new IAS.Model.ml.mlModel(request);
+            _bilModel = new IAS.Model.ml.bilModel(request);
 
             if(action.equalsIgnoreCase("search")){
 
-                String xml = _mlModel.search();
+                String xml = _bilModel.search();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
             }else if(action.equalsIgnoreCase("generate")){
 
-                String xml = _mlModel.generate();
+                String xml = _bilModel.generate();
                 
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
                 
             }else if(action.equalsIgnoreCase("print")){
 
-                //String xml = _mlModel.print();
+                //String xml = _bilModel.print();
                 //request.setAttribute("xml", xml);
                 url = "/xmlserver";
                 
