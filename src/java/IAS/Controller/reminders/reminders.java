@@ -1,44 +1,71 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package IAS.Controller;
-
+package IAS.Controller.reminders;
+import IAS.Controller.reminders.*;
+import IAS.Model.reminders.reminderModel;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import IAS.Class.JDSLogger;
+import IAS.Class.msgsend;
+import IAS.Class.util;
+import IAS.Controller.JDSController;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 
 /**
  *
  * @author aloko
  */
 public class reminders extends JDSController {
+    private reminderModel _reminderModel = null;
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String url = null;
+
         try {
-            if (action.equalsIgnoreCase("next")) {
-                url = "/jsp/reminders/reminderTemplate.jsp";
-            } else if (action.equalsIgnoreCase("print")) {
-                url = "/jsp/reminders/printTemplate.jsp";
+            _reminderModel = new IAS.Model.reminders.reminderModel(request);
+
+            if(action.equalsIgnoreCase("search")){
+
+            }else if(action.equalsIgnoreCase("generate")){
+
+                String xml = _reminderModel.generate();
+                
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+                
+            }else if(action.equalsIgnoreCase("print")){
+
+                String xml = _reminderModel.print(response);
+                //request.setAttribute("xml", xml);
+                //url = "/xmlserver";
+                
             }
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
-        }
-        catch (Exception e) {
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new javax.servlet.ServletException(e);
+
         } finally {
+            if(url == null){
+                url = "/jsp/errors/404.jsp";
+                logger.error("Redirect url was not found, forwarding to 404");
+            }
+            else
+            {
+                logger.debug("Called->" + url);
+            }
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+            if (rd != null && url != null) {
+                rd.forward(request, response);
+            }
         }
     }
 

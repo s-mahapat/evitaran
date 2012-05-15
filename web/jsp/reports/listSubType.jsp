@@ -122,9 +122,32 @@
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Free/ Paid</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
 
+                                        <select class="IASComboBoxMandatory" TABINDEX="4" name="subtype" id="subtype">
+                                            <option value ="">Select</option>
+                                            <option value ="Paid">Paid</option>
+                                            <option value ="Free">Free</option>
+                                        </select>
+                                    </span>
+                                </div>
 
-                                
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Nationality</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <select class="IASComboBoxMandatory" TABINDEX="5" name="nationality" id="nationality">
+                                            <option value ="">Select</option>
+                                            <option value ="I">Indian</option>
+                                            <option value ="F">Foreign</option>
+                                        </select>
+                                    </span>
+                                </div>                                
                             </div>
 
                             <div class="IASFormRightDiv">

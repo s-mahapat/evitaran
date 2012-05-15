@@ -14,15 +14,15 @@ import IAS.Class.util;
  */
 public class bilFormBean extends JDSBean {
     
-    private String mlCreationDate = util.getDateString();
+    private String bilCreationDate = util.getDateString();
     
-        public String getMlCreationDate() {
+        public String getbilCreationDate() {
         //Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
-        return this.mlCreationDate;//!= null ? dtformat.format(this.inwardCreationDate) : "";
+        return this.bilCreationDate;//!= null ? dtformat.format(this.inwardCreationDate) : "";
     }
 
-    public void setMlCreationDate(String _mlCreationDate) {
-        this.mlCreationDate = _mlCreationDate;
+    public void setbilCreationDate(String _bilCreationDate) {
+        this.bilCreationDate = _bilCreationDate;
     }
 
 }

@@ -145,6 +145,10 @@ public class inward extends JDSController {
                 } else if (purposeID == 200) {
                     // Add Summer Fellows
                     url = "/jsp/subscriber/asf.jsp";
+                }else if (purposeID == JDSConstants.INWARD_PURPOSE_MISSING_ISSUE) {
+                    //Address change
+                    url = "/subscriber?action=missingissuelist.jsp";
+
                 }
 
             } else if (action.equalsIgnoreCase("saveReturn")) {

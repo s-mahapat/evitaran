@@ -14,9 +14,13 @@
 
         <title>Send Reminders</title>
 
-
         <script>
             var isPageLoaded = false;
+            $(document).ready(function(){
+                 jQuery("#btnSearch, #btnPrintSend").attr("disabled",true);            
+
+             });
+             
             $(function(){
 
                       $("#datatable").jqGrid({
@@ -76,6 +80,17 @@
                 isPageLoaded = true;
                 jQuery("#datatable").trigger("reloadGrid");
             }
+            
+            function searchEnable(){
+                jQuery("#btnSearch, #btnPrintSend").attr("disabled",false);
+                jQuery("#btnRemind,").attr("disabled",true);
+            }                
+
+            function remindEnable(){
+                jQuery("#btnSearch").attr("disabled",true);
+                jQuery("#btnRemind, #btnPrintSend").attr("disabled",false);             
+            }
+            
         </script>
 
     </head>
@@ -84,63 +99,75 @@
 
         <div id="bodyContainer">
             <form method="post" action="<%=request.getContextPath() + "/reminders"%>" name="reminderForm">
-                <div class="MainDiv">
+                <div class="MainDiv">                    
                     <fieldset class="MainFieldset">
-                        <legend>Selection Criteria - Reminders</legend>
-
+                        <legend>Check and Send Reminders</legend>
+                        <jsp:useBean class="IAS.Bean.reminder.reminderFormBean" id="reminderFormBean" scope="request"></jsp:useBean>
+                        <fieldset class="subMainFieldSet">
+                            <legend>Actions - Search / Send Reminders</legend>
+                                <div class="IASFormFieldDiv">
+                                    <div id="searchEnableBtnDiv">
+                                         <input class="IASButton" TABINDEX="5" type="button" value="Display Sent Reminders" id="btnSearchEnable" name="btnSearchEnable" onclick="searchEnable()"/>
+                                    </div>                                          
+                                    <div id="reminderEnableBtnDiv">
+                                         <input class="IASButton" TABINDEX="6" type="button" value="Send New Reminders" id="btnReminderEnable" name="btnReminderEnable" onclick="remindEnable()"/>
+                                    </div>   
+                                 </div>
+                        </fieldset>                        
+                        
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                      <fieldset class="subMainFieldSet">
+                         <legend>Selection Criteria - Reminders</legend>
                         <div class="IASFormLeftDiv">
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Subscriber Type</label>
-                                </span>
-                                <span class="IASFormDivSpanInputBox">
-                                 <select class="IASComboBox" TABINDEX="6" name="subType" id="subType">
-                                    <option value ="IC">Indian Schools and colleges</option>
-                                    <option value ="II">Indian institutes</option>
-                                    <option value ="IP">Indian Personnel</option>
-                                    <option value ="IN">Indian Industry Corporate</option>
-                                    <option value ="FI">Foreign Institute</option>
-                                    <option value ="FP">Foreign Personnel</option>
-                                    <option value ="AGE">Agent</option>
-                                    <option value ="KVPY">Kishore Vaigyanik Pariyojana</option>
-                                 </select>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="IASFormRightDiv">
-
                             <div class="IASFormFieldDiv">
                                 <span class="IASFormDivSpanLabel">
                                     <label>Reminder Type</label>
                                 </span>
                                 <span class="IASFormDivSpanInputBox">
                                  <select class="IASComboBox" TABINDEX="6" name="remType" id="remType">
-                                    <option value ="G">Gentle Reminder</option>
-                                    <option value ="S">Strong Reminder</option>
-                                    <option value ="S">Harsh Reminder</option>
+                                    <option value ="1">Type 1 Reminder - Gentle</option>
+                                    <option value ="2">Type 2 Reminder - Strong</option>
+                                    <option value ="3">Type 3 Reminder - Harsh</option>
+                                 </select>
+                                </span>                                
+                            </div>     
+                            <div class="IASFormFieldDiv">
+                                <span class="IASFormDivSpanLabel">
+                                    <label>Reminder Date:</label>
+                                </span>
+                                <span class="IASFormDivSpanInputBox">
+                                    <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="reminderDate" id="reminderDate" value="<jsp:getProperty name="reminderFormBean" property="reminderDate"/>"
+                                </span>
+                            </div>  
+                        </div>
+                        <div class="IASFormRightDiv">
+                            <div class="IASFormFieldDiv">
+                                <span class="IASFormDivSpanLabel">
+                                    <label>Medium</label>
+                                </span>
+                                <span class="IASFormDivSpanInputBox">
+                                 <select class="IASComboBox" TABINDEX="6" name="remType" id="remType">
+                                    <option value ="E">Email Only</option>
+                                    <option value ="P">Print Only</option>
+                                    <option value ="A">Print All</option>
                                  </select>
                                 </span>
                             </div>
-
                         </div>
-
-                        <div class="IASFormFieldDiv">
-                            <div id="searchBtnDiv">
-                                <input class="IASButton" TABINDEX="6" type="submit" value="Search"/>
-                            </div>
-
-                            <div id="resetBtnDiv">
-                                <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
-                            </div>
-                         </div>
-
                       </fieldset>
-
+                        <fieldset class="subMainFieldSet">
+                            <legend>Actions - Search / Send</legend>
+                                <div class="IASFormFieldDiv">
+                                    <div id="searchBtnDiv">
+                                         <input class="IASButton" TABINDEX="5" type="button" value="Display" id="btnSearch" name="btnSearch" onclick="search()"/>
+                                    </div>                                          
+                                    <div id="remindBtnDiv">
+                                         <input class="IASButton" TABINDEX="6" type="button" value="Generate" id="btnRemind" name="btnRemind" onclick="remind()"/>
+                                    </div>   
+                                 </div>
+                        </fieldset> 
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
@@ -154,13 +181,14 @@
                        
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
-                                <input type="hidden" name="action" id="action"/>
-                                <div class="singleActionBtnDiv">
-                                    <input onclick="setActionValue('next')"  class="IASButton" TABINDEX="101" type="submit" value="next" id="btnNext" name="btnSubmitAction"/>
+                                <div id="printSendBtnDiv">
+                                    <input class="IASButton" TABINDEX="4" type="button" value="Sent/ Print Reminder" id="btnPrintSend" name="btnPrintSend" onclick="printLabel()"/>
+                                </div>                                       
+                                <div id="cancelBtnDiv">
+                                    <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                                 </div>
                             </div>
                         </fieldset>
-
 
                     </fieldset>
                 </div>

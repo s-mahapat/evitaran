@@ -181,11 +181,11 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/generatebil"%>" name="mlForm">
+            <form method="post" action="<%=request.getContextPath() + "/generatebil"%>" name="bilForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Generate and Print Back Issue List</legend>
-                        <jsp:useBean class="IAS.Bean.MailingList.mlFormBean" id="mlFormBean" scope="request"></jsp:useBean>
+                        <jsp:useBean class="IAS.Bean.MailingList.bilFormBean" id="bilFormBean" scope="request"></jsp:useBean>
                             <fieldset class="subMainFieldSet">
                                 <legend>Actions - Search / Generate Back Issue list</legend>
                                     <div class="IASFormFieldDiv">
@@ -220,7 +220,7 @@
                                                     <label>Creation Date:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="bilCreationDate" id="bilCreationDate" value="<jsp:getProperty name="mlFormBean" property="mlCreationDate"/>"
+                                                    <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="bilCreationDate" id="bilCreationDate" value="<jsp:getProperty name="bilFormBean" property="bilCreationDate"/>"
                                                 </span>
                                             </div>                                                  
                                         </div>

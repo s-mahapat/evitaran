@@ -56,10 +56,6 @@
         <servlet-class>IAS.Controller.missingissue</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>reminders</servlet-name>
-        <servlet-class>IAS.Controller.reminders</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>journal</servlet-name>
         <servlet-class>IAS.Controller.masterdata.journal</servlet-class>
     </servlet>
@@ -178,6 +174,10 @@
         <servlet-name>generatePdf</servlet-name>
         <servlet-class>IAS.Servlet.generatePdf</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>reminders</servlet-name>
+        <servlet-class>IAS.Controller.reminders.reminders</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -197,10 +197,6 @@
     <servlet-mapping>
         <servlet-name>subscription</servlet-name>
         <url-pattern>/subscription</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>reminders</servlet-name>
-        <url-pattern>/reminders</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>journal</servlet-name>
@@ -309,6 +305,10 @@
     <servlet-mapping>
         <servlet-name>generatePdf</servlet-name>
         <url-pattern>/generatePdf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>reminders</servlet-name>
+        <url-pattern>/reminders</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

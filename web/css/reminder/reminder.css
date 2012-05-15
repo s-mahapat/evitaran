@@ -1,18 +1,39 @@
 /*
-    Document   : Style for Journal related JSPs are defined here
+    Document   : Style for Subtype related JSPs are defined here
 */
 root {
     display:block;
 }
 
-#searchBtnDiv{
-    margin-left: 40%;
+#remindBtnDiv{
     float: left;
     width: 10%;
 }
 
-#resetBtnDiv{
-    /*margin-right: 35%;*/
+#searchBtnDiv{
+    margin-left: 45%;
+    float: left;
+    width: 10%;
+}
+
+#reminderEnableBtnDiv{
+    float: left;
+    width: 15%;
+}
+
+#searchEnableBtnDiv{
+    margin-left: 40%;
+    float: left;
+    width: 15%;
+}
+
+#printSendBtnDiv{
+    margin-left: 45%;
+    float: left;
+    width: 10%;
+}
+
+#cancelBtnDiv{
     float: left;
     width: 10%;
 }
