@@ -36,28 +36,37 @@ public class bilModel extends JDSModel {
 
      public String search()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
-        String sql = Queries.getQuery("search_bil");
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("subscriberNumber"));    
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+
+        ResultSet rs = getBILDtl();
+
         xml = util.convertResultSetToXML(rs);
         return xml;
     }
-        
-    public String generate() throws SQLException, ParseException, ParserConfigurationException, TransformerException,
+
+    public ResultSet getBILDtl() throws SQLException
+    {
+        String sql = Queries.getQuery("search_bil");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+
+        return rs;
+    }
+
+    public synchronized String generate() throws SQLException, ParseException, ParserConfigurationException, TransformerException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException
     {
        String xml = null;
         int i = 0;
 
-        
-       // Get the records from back_issue_list where bil is not generated. 
+
+       // Get the records from back_issue_list where bil is not generated.
        // Prepare insert string string for bil to ml_dtl
        // get ml id for the record and associate wil bil insert
        // insert bil to ML
        // modify corresponding bil with generated tag and date
-       // get bil        
+       // get bil
 
         String sql = Queries.getQuery("generate_bil");
         PreparedStatement stGet = conn.prepareStatement(sql);
@@ -71,13 +80,13 @@ public class bilModel extends JDSModel {
             PreparedStatement stInsMlBil = conn.prepareStatement(sqlInsBil);
             paramIndex = 0;
             Object value = null;
-            for (int j = 1; j <= 26; j++) {                    
+            for (int j = 1; j <= 26; j++) {
                 value = rs.getObject(j);
                 stInsMlBil.setString(++paramIndex, value.toString());
                 if (j == 26)
-                    bilid = value.toString();                    
+                    bilid = value.toString();
             }
-            stInsMlBil.setDate(++paramIndex, util.dateStringToSqlDate(request.getParameter("bilCreationDate")));                
+            stInsMlBil.setDate(++paramIndex, util.dateStringToSqlDate(request.getParameter("bilCreationDate")));
             db.executeUpdatePreparedStatement(stInsMlBil);
             String sqlUpdBil = Queries.getQuery("update_bil");
             PreparedStatement stUpdBil = conn.prepareStatement(sqlUpdBil);
@@ -88,11 +97,34 @@ public class bilModel extends JDSModel {
         xml = this.search();
         return xml;
     }
-    
-    public String print()
-    {
-        String xml = null;
-        return xml;
-    }    
 
+    public synchronized String printbil(HttpServletResponse response, String type) throws DocumentException, IOException, SQLException
+    {
+        logger.debug("Start of label printing");
+
+        //Query whatever you want here
+        ResultSet rs = getBILDtl();
+
+        OutputStream os = response.getOutputStream();
+
+        if(type.equals("LABEL"))
+            convertToPdf.addLabelContent(rs, os);
+        if(type.equals("STICKER"))
+            convertToPdf.addStickerContent(rs, os);
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition", "attachment; filename=ml.pdf");
+
+        os.flush();
+        os.close();
+
+        String pdf = null;
+        //pdf = baos.toString();
+        //pdf = new String(baos.toByteArray());
+        //pdf = util.toString(baos);
+
+        logger.debug("End of label printing");
+
+        return pdf;
+    }
 }

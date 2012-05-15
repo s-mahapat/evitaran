@@ -5,7 +5,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>,
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
@@ -42,7 +42,7 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found",
                     loadtext: "Loading...",
-                    colNames:['id', 'journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'department', 'institution', 'address', 'city', 'district', 
+                    colNames:['id', 'journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'department', 'institution', 'address', 'city', 'district',
                                 'state', 'country', 'pincode', 'copies', 'issue', 'month', '`year`', 'startYear', 'startMonth', 'endYear', 'endMonth'],
                     colModel :[
                         {name:'id', index:'id', width:80, align:'center', xmlmap:'id'},
@@ -88,7 +88,7 @@
                         for (var i = 0; i < ids.length; i++) {
                             action = "<a style='color:blue;' href='generatebil?action=print&id=" + ids[i] + "'>Print</a>";
                             jQuery("#generatebil").jqGrid('setRowData', ids[i], { Action: action });
-                        }                        
+                        }
                     },
                     beforeRequest: function(){
                         return isPageLoaded;
@@ -102,7 +102,7 @@
             });
 
             function generate(){
-            
+
                 if (($("#subscriberNumber").val() == 0) || ($("#selall:checked").val()) == 0 ){
                     alert("Select Subscriber Number or All pending Back isuses");
                 }
@@ -133,7 +133,7 @@
                         isPageLoaded = true;
                         jQuery("#bilTable").setGridParam({postData:
                                 {subscriberNumber       : $("#subscriberNumber").val(),
-                                year                    : $("#year").val(),                                
+                                year                    : $("#year").val(),
                                 month                   : $("#month").val(),
                                 bilCreationDate         : $("#bilCreationDate").val(),
                                 action                  : "search"
@@ -146,19 +146,19 @@
                     }
                 jQuery("#btnPrint").attr("disabled",false);
             }
-                
+
             function searchEnable(){
                 jQuery("#btnSearch, #btnPrint").attr("disabled",false);
                 jQuery("#btnGenerate, #btnPrint").attr("disabled",true);
                 reloadSubscriberNumber('s')
-            }                
+            }
 
             function generateEnable(){
                 jQuery("#btnSearch, #btnPrint").attr("disabled",true);
                 jQuery("#btnGenerate, #btnPrint").attr("disabled",false);
                 reloadSubscriberNumber('g')
             }
-            
+
             function reloadSubscriberNumber( mode ){
 
                 $("#subscriberNumber").empty();
@@ -171,9 +171,21 @@
                     requestURL = "/JDS/CMasterData?md=subscribernumber";
                 else
                     requestURL = "/JDS/CMasterData?md=subscribernumberbil";
-                
+
                 jdsAppend(requestURL,"subscriberNumber","subscriberNumber");
 
+            }
+
+            function printLabel()
+            {
+                var x = "printLabel";
+                $('#action').val(x);
+            }
+
+            function printSticker()
+            {
+                var x = "printSticker";
+                $('#action').val(x);
             }
         </script>
     </head>
@@ -181,7 +193,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/generatebil"%>" name="bilForm">
+            <form method="get" action="<%=request.getContextPath() + "/generatebil"%>" name="mlForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Generate and Print Back Issue List</legend>
@@ -190,13 +202,13 @@
                                 <legend>Actions - Search / Generate Back Issue list</legend>
                                     <div class="IASFormFieldDiv">
                                         <div id="searchEnableBtnDiv">
-                                             <input class="IASButton" TABINDEX="5" type="button" value="Display/ Print Back Issue List" id="btnSearchEnable" name="btnSearchEnable" onclick="searchEnable()"/>
-                                        </div>                                          
+                                             <input class="IASButton" TABINDEX="1" type="button" value="Display/ Print Back Issue List" id="btnSearchEnable" name="btnSearchEnable" onclick="searchEnable()"/>
+                                        </div>
                                         <div id="generateEnableBtnDiv">
-                                             <input class="IASButton" TABINDEX="6" type="button" value="Generate/ Print Back Issue List" id="btnGenerateEnable" name="btnGenerateEnable" onclick="generateEnable()"/>
-                                        </div>   
+                                             <input class="IASButton" TABINDEX="2" type="button" value="Generate/ Print Back Issue List" id="btnGenerateEnable" name="btnGenerateEnable" onclick="generateEnable()"/>
+                                        </div>
                                      </div>
-                            </fieldset>                        
+                            </fieldset>
                             <fieldset class="subMainFieldSet">
                                 <legend>Selection Criteria</legend>
                                     <%-- Search Criteria left div --%>
@@ -206,11 +218,11 @@
                                                     <label>Subscriber Number</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="1" name="subscriberNumber" id="subscriberNumber">
+                                                    <select class="IASComboBox" TABINDEX="3" name="subscriberNumber" id="subscriberNumber">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
-                                            </div>                                                                                                               
+                                            </div>
                                     </div>
                                     <%-- Search Criteria right div --%>
                                     <div class="IASFormRightDiv">
@@ -220,9 +232,9 @@
                                                     <label>Creation Date:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="bilCreationDate" id="bilCreationDate" value="<jsp:getProperty name="bilFormBean" property="bilCreationDate"/>"
+                                                    <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="bilCreationDate" id="bilCreationDate" value="<jsp:getProperty name="bilFormBean" property="bilCreationDate"/>"/>
                                                 </span>
-                                            </div>                                                  
+                                            </div>
                                         </div>
                                     </div>
                             </fieldset>
@@ -230,13 +242,13 @@
                                 <legend>Actions - Search / Generate</legend>
                                     <div class="IASFormFieldDiv">
                                         <div id="searchBtnDiv">
-                                             <input class="IASButton" TABINDEX="5" type="button" value="Display" id="btnSearch" name="btnSearch" onclick="search()"/>
-                                        </div>                                          
+                                             <input class="IASButton" TABINDEX="4" type="button" value="Display" id="btnSearch" name="btnSearch" onclick="search()"/>
+                                        </div>
                                         <div id="addBtnDiv">
-                                             <input class="IASButton" TABINDEX="6" type="button" value="Generate" id="btnGenerate" name="btnGenerate" onclick="generate()"/>
-                                        </div>   
+                                             <input class="IASButton" TABINDEX="5" type="button" value="Generate" id="btnGenerate" name="btnGenerate" onclick="generate()"/>
+                                        </div>
                                      </div>
-                            </fieldset>                              
+                            </fieldset>
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Search Result Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>
@@ -251,16 +263,18 @@
                             <%-- Journal Actions Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>
 
+                            <input type="hidden" name="action" id="action"/>
+
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
                                     <div id="printLabelBtnDiv">
-                                        <input class="IASButton" TABINDEX="4" type="button" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
-                                    </div>   
+                                        <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
+                                    </div>
                                     <div id="printStickerBtnDiv">
-                                        <input class="IASButton" TABINDEX="4" type="button" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
-                                    </div>                                      
+                                        <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
+                                    </div>
                                     <div id="cancelBtnDiv">
-                                        <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
+                                        <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
                                     </div>
                                 </div>
                             </fieldset>

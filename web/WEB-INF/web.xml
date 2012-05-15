@@ -171,8 +171,8 @@
         <servlet-class>IAS.Controller.MailingList.generatebil</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>generatePdf</servlet-name>
-        <servlet-class>IAS.Servlet.generatePdf</servlet-class>
+        <servlet-name>pdfserver</servlet-name>
+        <servlet-class>IAS.Servlet.pdfserver</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>reminders</servlet-name>
@@ -303,8 +303,8 @@
         <url-pattern>/generatebil</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>generatePdf</servlet-name>
-        <url-pattern>/generatePdf</url-pattern>
+        <servlet-name>pdfserver</servlet-name>
+        <url-pattern>/pdfserver</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>reminders</servlet-name>

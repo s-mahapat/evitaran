@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-    
+
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
@@ -32,7 +32,7 @@ public class generatebil extends JDSController {
         try {
             _bilModel = new IAS.Model.ml.bilModel(request);
 
-            if(action.equalsIgnoreCase("search")){
+                if(action.equalsIgnoreCase("search")){
 
                 String xml = _bilModel.search();
                 request.setAttribute("xml", xml);
@@ -41,16 +41,22 @@ public class generatebil extends JDSController {
             }else if(action.equalsIgnoreCase("generate")){
 
                 String xml = _bilModel.generate();
-                
+
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-                
-            }else if(action.equalsIgnoreCase("print")){
 
-                //String xml = _bilModel.print();
-                //request.setAttribute("xml", xml);
-                url = "/xmlserver";
-                
+            }else if(action.equalsIgnoreCase("printLabel")){
+
+                String pdf = _bilModel.printbil(response, "LABEL");
+                //request.setAttribute("pdf", pdf);
+                url = "/pdfserver";
+                //url = "";
+            }else if(action.equalsIgnoreCase("printSticker")){
+
+                String pdf = _bilModel.printbil(response, "STICKER");
+                //request.setAttribute("pdf", pdf);
+                url = "/pdfserver";
+                //url = "";
             }
 
         } catch (Exception e) {

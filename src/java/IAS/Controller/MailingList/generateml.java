@@ -2,19 +2,14 @@ package IAS.Controller.MailingList;
 
 import IAS.Model.ml.mlModel;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
-import IAS.Class.msgsend;
-import IAS.Class.util;
 import IAS.Controller.JDSController;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 
 /**
  *
@@ -32,21 +27,24 @@ public class generateml extends JDSController {
         try {
             _mlModel = new IAS.Model.ml.mlModel(request);
 
-            if(action.equalsIgnoreCase("search")){
-
-            }else if(action.equalsIgnoreCase("generate")){
+            if(action.equalsIgnoreCase("generate")){
 
                 String xml = _mlModel.generate();
-                
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-                
-            }else if(action.equalsIgnoreCase("print")){
 
-                String xml = _mlModel.print(response);
-                //request.setAttribute("xml", xml);
-                //url = "/xmlserver";
-                
+            }else if(action.equalsIgnoreCase("printLabel")){
+
+                String pdf = _mlModel.printml(response, "LABEL");
+                //request.setAttribute("pdf", pdf);
+                url = "/pdfserver";
+                //url = "";
+            }else if(action.equalsIgnoreCase("printSticker")){
+
+                String pdf = _mlModel.printml(response, "STICKER");
+                //request.setAttribute("pdf", pdf);
+                url = "/pdfserver";
+                //url = "";
             }
 
         } catch (Exception e) {
