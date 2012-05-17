@@ -264,7 +264,6 @@
                             <%-----------------------------------------------------------------------------------------------------%>
 
                             <input type="hidden" name="action" id="action"/>
-
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
                                     <div id="printLabelBtnDiv">

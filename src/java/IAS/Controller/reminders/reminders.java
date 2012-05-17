@@ -34,7 +34,7 @@ public class reminders extends JDSController {
 
             if(action.equalsIgnoreCase("search")){
 
-            }else if(action.equalsIgnoreCase("generate")){
+            }else if(action.equalsIgnoreCase("resendReminders")){
 
                 String xml = _reminderModel.generate();
                 

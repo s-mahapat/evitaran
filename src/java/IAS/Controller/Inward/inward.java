@@ -147,7 +147,7 @@ public class inward extends JDSController {
                     url = "/jsp/subscriber/asf.jsp";
                 }else if (purposeID == JDSConstants.INWARD_PURPOSE_MISSING_ISSUE) {
                     //Address change
-                    url = "/subscriber?action=missingissuelist.jsp";
+                    url = "/missingissue?action=missingissuelist.jsp";
 
                 }
 

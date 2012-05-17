@@ -53,7 +53,7 @@
     </servlet>
     <servlet>
         <servlet-name>missingissue</servlet-name>
-        <servlet-class>IAS.Controller.missingissue</servlet-class>
+        <servlet-class>IAS.Controller.missingissue.missingissue</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>journal</servlet-name>
@@ -309,6 +309,10 @@
     <servlet-mapping>
         <servlet-name>reminders</servlet-name>
         <url-pattern>/reminders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>missingissue</servlet-name>
+        <url-pattern>/missingissue</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
