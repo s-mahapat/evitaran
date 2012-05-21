@@ -7,6 +7,18 @@ var selectedSubscriberId = 0;
 var selectedInwardRowIndex = -1;
 var selectedInwardPurpose = "";
 
+function enableSubscriptionID(value){
+    if(value){
+        $( "#btnSearchSubscription" ).button("enable");
+        $( "#btnResetSubscription" ).button("enable");
+        $("#subscriptionid").removeAttr("disabled"); 
+    }else{
+        $( "#btnSearchSubscription" ).button("disable");
+        $( "#btnResetSubscription" ).button("disable");
+        $("#subscriptionid").attr("disabled","disabled");
+    }
+}
+
 function validateSearchSubscriber(){
 
     var isValidSearch = false;
@@ -35,6 +47,16 @@ function validateSearchSubscriber(){
     }
 }
 
+function validateSearchSubscription(){
+    if(isEmptyValue($("#subscriberId").val())){
+        alert("Please select subscriber to search for subscription");
+        return false;
+    }
+    var subscriptionID = searchSubscription($("#subscriberId").val());
+    $("#subscriptionid").val(subscriptionID);
+    return true;
+}
+
 function searchSubscriber(country, state, city, subscriberName){
     var subscriber = new Object();
     windowParams = "dialogHeight:600px; dialogWidth:1000px; center:yes; resizeable:no; status:no; menubar:no;\n\
@@ -48,8 +70,24 @@ function searchSubscriber(country, state, city, subscriberName){
     return selectedSubscriberFromDialog;
 }
 
+function searchSubscription(subscriberNumber){
+    var subscriber = new Object();
+    subscriber.Number = subscriberNumber;
+    windowParams = "dialogHeight:600px; dialogWidth:1000px; center:yes; resizeable:no; status:no; menubar:no;\n\
+                    scrollbars:yes; toolbar: no;";
+    var selectedSubscriptionFromDialog = openModalPopUp("jsp/subscription/subscriptionforsubscriber.jsp"
+        , subscriber
+        , windowParams);
+    return selectedSubscriptionFromDialog;
+    
+}
+
 function clearSubscriber(){
     $("#subscriberId").val("");
+}
+
+function clearSubscription(){
+    $("#subscriptionid").val("");
 }
 
 
@@ -68,6 +106,7 @@ function validateNewInward(){
 
     // check the inward purpose field
     var InwardPurpose = document.getElementById("inwardPurpose").value.toLowerCase();
+    //alert(parseFloat($("#amount").val()) <= 0);
 
     if(checkMandatoryFields() == false){
         isInwardValid = false;
@@ -80,6 +119,14 @@ function validateNewInward(){
 
         alert("Since you have created a miscellaneous inward, please fill in the remarks section");
         isInwardValid = false;
+    }
+    else if(InwardPurpose == 'payment' && isEmptyValue($("#subscriptionid").val())){
+        alert("Payment Inward cannot be saved without subscription.Please select a subscription to save the Inward.");
+        return false;
+    }
+    else if(InwardPurpose == 'payment' &&  ((parseFloat($("#amount").val()) <= 0) || isEmptyValue($("#paymentMode").val()))){
+        alert("Payment Inward cannot be saved without amount and payment mode.\nPlease enter the amount and payment mode to save the Inward.");
+        return false;
     }
 
     // if the payment mode is selected then ensure that the payment date and currency is also filled in
@@ -175,10 +222,10 @@ function isInwardSelected(){
     $("#subscriberNumber").val(selectedSubscriberId);
     $("#purpose").val(selectedInwardPurpose);
 
-//    document.processInwardForm.action = "inward?action=processinward&" +
-//    "inwardNumber=" + selectedInward + "&" +
-//    "subscriberNumber=" + selectedSubscriberId + "&" +
-//    "purpose=" + selectedInwardPurpose
+    //    document.processInwardForm.action = "inward?action=processinward&" +
+    //    "inwardNumber=" + selectedInward + "&" +
+    //    "subscriberNumber=" + selectedSubscriberId + "&" +
+    //    "purpose=" + selectedInwardPurpose
     return true;
 }
 

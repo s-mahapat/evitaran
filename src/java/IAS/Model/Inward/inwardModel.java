@@ -10,6 +10,7 @@ import IAS.Class.JDSConstants;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import com.mysql.jdbc.Statement;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,6 +45,7 @@ public class inwardModel extends JDSModel {
         inwardFormBean inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
         request.setAttribute("inwardFormBean", inwardFormBean);
         String sql;
+        int rc = 0;
 
         //throw new SQLException("Generated this exception");
 
@@ -52,24 +54,42 @@ public class inwardModel extends JDSModel {
         this._inwardFormBean = inwardFormBean;
 
         // check that the inward number is not present on the screen, if present means its and edit inward else create new inward.
-
+        //start of transaction
+        conn.setAutoCommit(false);
         if (inwardFormBean.getInwardNumber().isEmpty() == false) {
-            return this._updateInward();
+            rc = this._updateInward();
         } else {
 
             //get the next inward number
             inwardFormBean.setInwardNumber(getNextInwardNumber());
 
+
             // the query name from the jds_sql properties files in WEB-INF/properties folder
             sql = Queries.getQuery("insert_inward");
 
-            PreparedStatement st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             // fill in the statement params
             this._setNewInwardStatementParams(st);
 
-            return db.executeUpdatePreparedStatement(st);
+            rc = st.executeUpdate();
+            int subscriptionID = inwardFormBean.getSubscriptionID();
+            //update the payment info if subscription id is not null
+            if (subscriptionID != 0 && rc == 1) {
+                sql = Queries.getQuery("insert_payment");
+                PreparedStatement pst = conn.prepareStatement(sql);
+                ResultSet rs = st.getGeneratedKeys();
+                rs.first();
+                int inwardID = rs.getInt(1);
+                pst.setInt(1, inwardID);
+                pst.setInt(2, subscriptionID);
+                rc = pst.executeUpdate();
+
+            }
         }
+        conn.commit();
+        conn.setAutoCommit(true);
+        return rc;
 
     }
 
@@ -117,15 +137,23 @@ public class inwardModel extends JDSModel {
     private int _updateInward() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
+        int rc = 0;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("update_inward");
 
         PreparedStatement st = conn.prepareStatement(sql);
-
         // fill in the statement params
         this._setUpdateInwardStatementParams(st);
-
-        return db.executeUpdatePreparedStatement(st);
+        rc = st.executeUpdate();
+        int subscriptionID = this._inwardFormBean.getSubscriptionID();
+        if(subscriptionID > 0){
+            sql = Queries.getQuery("update_payment_info");
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setInt(1, subscriptionID);
+            pst.setString(2, this._inwardFormBean.getInwardNumber());
+            rc = pst.executeUpdate();
+        }
+        return rc;
 
     }
 
@@ -342,7 +370,7 @@ public class inwardModel extends JDSModel {
         double totalPages = 0;
         PreparedStatement pst = conn.prepareStatement(ajax_sql);
         pst.setString(1, subscriberNumber);
-        pst.setInt(2, (pageSize * (pageNumber - 1 )));
+        pst.setInt(2, (pageSize * (pageNumber - 1)));
         pst.setInt(3, pageSize);
         ResultSet rs = pst.executeQuery();
 
@@ -400,7 +428,8 @@ public class inwardModel extends JDSModel {
             while (rs.next()) {
                 BeanProcessor bProc = new BeanProcessor();
                 Class type = Class.forName("IAS.Bean.Invoice.InvoiceFormBean");
-                invoiceFormBean = (IAS.Bean.Invoice.InvoiceFormBean) bProc.toBean(rs, type);            }
+                invoiceFormBean = (IAS.Bean.Invoice.InvoiceFormBean) bProc.toBean(rs, type);
+            }
         }
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         return invoiceFormBean;

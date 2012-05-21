@@ -13,13 +13,15 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/subscriber.js"%>"></script>
         <script>
             $(document).ready(function(){
+                jdsAppend("CMasterData?md=city","city","city");
+                jdsAppend("CMasterData?md=country","country","country");
+                jdsAppend("CMasterData?md=state","state","state");
+                jdsAppend("CMasterData?md=district","district","district");
+                jdsAppend("CMasterData?md=agent","agentName","agent");
+                jdsAppend("CMasterData?md=subtype_free","subtype","subtype");
                 makeCreateSubscriberReadOnly();
                 subtypeCodeAppend();
-            });
-        </script>
-        <script>
-            $(document).ready(function() {
-                jdsAppend("/JDS/CMasterData?md=subtype_free","subtype","subtype");
+                
             });
         </script>
     </head>

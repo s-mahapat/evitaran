@@ -65,8 +65,8 @@ public class main extends JDSController {
             url = "/jsp/inward/gatekeeperinward.jsp?nextAction=missingissue&inwardPurpose=Missing Issue&next=" + request.getContextPath() + "/jsp/missingissue/missingissuelist.jsp";
 
         } else if (action.equalsIgnoreCase("gcreatesubscriber")) {
-
-            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/main?action=createsubscriber";
+            url = "/jsp/inward/gatekeeperinward.jsp?inwardPurpose=New Subscription";
+            //url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&next=" + request.getContextPath() + "/main?action=createsubscriber";
 
         } else if (action.equalsIgnoreCase("createsubscriber")) {
 
@@ -174,11 +174,11 @@ public class main extends JDSController {
 
         } else if (action.equals("asf")) {
 
-            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&purpose=200";
+            url = "/jsp/inward/gatekeeperinward.jsp?inwardPurpose=New Subscription&asf=1";
 
         } else if (action.equals("afs")) {
 
-            url = "/jsp/inward/gatekeeperinward.jsp?nextAction=createsubscriber&inwardPurpose=New Subscription&purpose=100";
+            url = "/jsp/inward/gatekeeperinward.jsp?inwardPurpose=New Subscription&afs=1";
 
         } else if (action.equals("printOrder")) {
 
@@ -203,6 +203,8 @@ public class main extends JDSController {
         else
         {
             logger.debug("Called->" + url);
+            // if the user clicks on the left menu reset the inwardunderprocess
+            // else he may be able to add subscription/edit address without selecting an inward
             if(request.getSession(false).getAttribute("inwardUnderProcess")!=null){
                request.getSession(false).setAttribute("inwardUnderProcess", null);
             }

@@ -40,8 +40,10 @@ public class subscriber extends JDSController {
         HttpSession session = request.getSession(false);
         try {
             _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
-
-            if (action.equalsIgnoreCase("save")) {
+            if (action.equalsIgnoreCase("createsubscriber")){
+                url = "/jsp/subscriber/createsubscriber.jsp";
+            }
+            else if (action.equalsIgnoreCase("save")) {
                 url = "/jsp/subscriber/viewdetailsubscriber.jsp";
                 //if the record count saved is 1, it indicates that the record was saved else fail.
                 if (_subscriberModel.Save() == 1) {

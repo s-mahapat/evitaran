@@ -100,8 +100,8 @@
                                 </div>
                             </div>
                         </fieldset>
-                        <fieldset class="subMainFieldSet" style="height: 550px; border: none">
-                            <div id="subscriberDtlsTabs" style="height: 550px; font-size: 12px; font-family: cambria,serif" >
+                        <fieldset class="subMainFieldSet" style="border: none">
+                            <div id="subscriberDtlsTabs" style="padding-left: 0px;font-size: 12px; font-family: cambria,serif" >
                                 <ul>
                                     <li><a href="#subDtls">Subscriber Details</a></li>
                                     <li><a href="#inwards">Inwards</a></li>
@@ -109,22 +109,22 @@
                                     <li><a href="#invoices">Invoices</a></li>
                                     <li><a href="#reminders">Reminders</a></li>
                                 </ul>
-                                <div id="subDtls" style="font-size: 12px; font-family: cambria,serif">
+                                <div id="subDtls" style="font-size: 12px;">
                                     <%@include file="subscriberdtls.jsp"%>
                                 </div>
 
-                                <div id="inwards" style="width: 97%;margin-right: 5px;">
-                                    <table id="inwardTable" class="datatable"></table>
+                                <div id="inwards" style="font-size: 11px;width: auto;padding: 3px;overflow-x: hidden">
+                                    <table id="inwardTable" class="datatable" style="padding-bottom: 3px;"></table>
                                     <div id="pager"></div>
 
                                 </div>
 
-                                <div id="subscriptions">
+                                <div id="subscriptions" style="font-size: 11px;width: auto;padding: 3px;overflow-x: hidden">
                                     <table id="subscriptionList" class="datatable"></table>
                                     <div id="pager"></div>
                                 </div>
 
-                                <div id="invoices">
+                                <div id="invoices" style="font-size: 11px;width: auto;padding: 3px;overflow-x: hidden">
                                     <table id="invoiceTable" class="datatable"></table>
                                     <div id="pager_invoice"></div>
                                 </div>

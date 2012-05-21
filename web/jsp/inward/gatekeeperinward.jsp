@@ -142,6 +142,8 @@
                 <input type="hidden" id="subscriberNumber" name ="subscriberNumber" value=""/>
                 <input type="hidden" id="inwardPurpose" name ="inwardPurpose" value="<%=request.getParameter("inwardPurpose")%>"/>
                 <input type="hidden" id="purpose" name ="purpose" value="<%=request.getParameter("purpose") != null ? request.getParameter("purpose") : ""%>"/>
+                <input type="hidden" id="asf" name ="asf" value="<%=request.getParameter("asf") != null ? request.getParameter("asf") : 0%>"/>
+                <input type="hidden" id="afs" name ="afs" value="<%=request.getParameter("afs") != null ? request.getParameter("afs") : 0%>"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Inward</legend>

@@ -45,7 +45,7 @@ function checkMandatoryFields(){
         }
     }
     if (isMandatoryFilledFlag == false){
-        alert("Please fill in all Mandatory fields");
+        alert("Please fill in all Mandatory fields marked in red");
     }
     else{
         return true;
@@ -316,7 +316,7 @@ function jdsAppend(requestURL,xmlRowTag,formElementId, defaultSelect, callback){
 
             }
             $(_formElementId).append(html);
-            if(defaultSelect != undefined){
+            if(defaultSelect != undefined && defaultSelect.length > 0){
                 $(_formElementId).val(defaultSelect);
             }
             if(callback != undefined){

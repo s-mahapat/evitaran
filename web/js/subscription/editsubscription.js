@@ -4,6 +4,7 @@ var subscriptionSaved = false
 
 function addJournal(){
 
+    var bRet = false;
     var selectedJournalGroupCode = $("#journalName").val();
     var selectedJournalGroupName = $("#journalName :selected").text();
     journalNameToGroupIDMap[selectedJournalGroupName] = selectedJournalGroupCode;
@@ -38,6 +39,7 @@ function addJournal(){
                 jQuery("#newSubscription").setGridParam({ datatype: "xml" });
                 jQuery("#newSubscription").trigger("reloadGrid");
                 getSubscriptionInfo();
+                bRet = true;
             },
             error: function(jqXHR,textStatus,errorThrown){
                 alert("Failed to add new subscription information. " + textStatus + ": "+ errorThrown);

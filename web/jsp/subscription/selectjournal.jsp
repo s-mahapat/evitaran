@@ -122,78 +122,87 @@
 
 <fieldset class="subMainFieldSet">
     <legend>Select Journal</legend>
+    <div class="IASFormLeftDiv">
+        <div class="IASFormFieldDiv">       
 
-    <div class="IASFormFieldDiv">
-        <span class="IASFormDivSpanLabel" style="width:auto;">
-            <label>Start Year:</label>
-        </span>
+            <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+                <label>Journal Group:</label>
+            </span>
 
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="subscriptionStartYear" id="subscriptionStartYear" onchange="setEndYear()">
-                <%
-                    int year = Integer.parseInt(util.getDateString("yyyy"));
-                    for (int i = year; i <= year + 4; i++) {
-                        out.println("<option value=\"" + i + "\">" + i + "</option>");
-                    }
-                %>
-            </select>
-        </span>
-
-        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>Start Month:</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="startMonth" id="startMonth">
-                <option value="1" selected>Jan</option>
-                <option value="6">Jun</option>
-
-            </select>
-        </span>
-
-        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>End Year:</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="endYear" id="endYear">
-                <%
-                    for (int j = 0; j <= 4; j++) {
-                        out.println("<option value =\"" + (j + year) + "\">" + (j + year) + "</option>");
-                    }
-                %>
-            </select>
-        </span>
+            <span class="IASFormDivSpanInputBoxLessMargin">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName">
+                </select>
+            </span>
 
 
-
-        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>Journal Group:</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName">
-            </select>
-        </span>
-
-        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>Copies:</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="copies" id="copies">
-                <%
-                    for (int i = 1; i <= 10; i++) {
-                        out.println("<option value =\"" + i + "\">" + i + "</option>");
-                    }
-                %>
-            </select>
-        </span>
-        <span class="IASFormDivSpanInputBox" style="margin-left:5px;">
-            <input class="IASButton" TABINDEX="14" type="button" value="Add" id="btnAddLine" name="btnAddLine" onclick="addJournal()"/>
-            <input class="IASButton" TABINDEX="15" type="button" value="Delete All" id="btnDeleteAll" name="btnDeleteAll" onclick="deleteRow('All')"/>
-        </span>
+        </div>
     </div>
+
+    <div class="IASFormRightDiv">
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel" style="width:auto;">
+                <label>Start Year:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBoxLessMargin">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="subscriptionStartYear" id="subscriptionStartYear" onchange="setEndYear()">
+                    <%
+                        int year = Integer.parseInt(util.getDateString("yyyy"));
+                        for (int i = year; i <= year + 4; i++) {
+                            out.println("<option value=\"" + i + "\">" + i + "</option>");
+                        }
+                    %>
+                </select>
+            </span>
+            <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+                <label>Start Month:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBoxLessMargin">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="startMonth" id="startMonth">
+                    <option value="1" selected>Jan</option>
+                    <option value="6">Jun</option>
+
+                </select>
+            </span>
+
+            <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+                <label>End Year:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBoxLessMargin">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="endYear" id="endYear">
+                    <%
+                        for (int j = 0; j <= 4; j++) {
+                            out.println("<option value =\"" + (j + year) + "\">" + (j + year) + "</option>");
+                        }
+                    %>
+                </select>
+            </span>
+            <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+                <label>Copies:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBoxLessMargin">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="copies" id="copies">
+                    <%
+                        for (int i = 1; i <= 10; i++) {
+                            out.println("<option value =\"" + i + "\">" + i + "</option>");
+                        }
+                    %>
+                </select>
+            </span>
+        </div>
+        <div class="IASFormFieldDiv">
+
+        </div>
+    </div>
+    
+    <span class="actionBtnDiv" style="margin-left:5px;">
+        <input class="IASButton" TABINDEX="14" type="button" value="Add" id="btnAddLine" name="btnAddLine" onclick="addJournal()"/>
+        <input class="IASButton" TABINDEX="15" type="button" value="Delete All" id="btnDeleteAll" name="btnDeleteAll" onclick="deleteRow('All')"/>
+    </span>
+
     <div class="IASFormFieldDiv" id="newSubscriptiondiv" style="margin-top: 15px;">
         <table class="datatable" id="newSubscription"></table>
         <div id="pager"></div>

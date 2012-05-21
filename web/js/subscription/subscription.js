@@ -10,7 +10,7 @@ function listSubscription(){
             url:'subscription?oper=getsubscription&subscriberNumber=' + $("#subscriberNumber").val(),
             datatype: 'xml',
             mtype: 'GET',
-            height: 235,
+            height: 300,
             autowidth: true,
             forceFit: true,
             sortable: false,

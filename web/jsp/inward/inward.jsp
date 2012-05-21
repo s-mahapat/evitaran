@@ -2,22 +2,57 @@
 <jsp:useBean class="IAS.Bean.Inward.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
 <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
 <script>
-    $(function() {
-        $( "#btnSearchSubscriber" )
-        .button()
-        .click(function() {
-            validateSearchSubscriber();
-            return false;
-        })
-        .next()
-        .button()
-        .click(function() {
-            clearSubscriber();
-            return false;
-        })
-        .parent()
-        .buttonset();
+    $(document).ready(function(){
+        $(function() {
+            $( "#btnSearchSubscriber" )
+            .button()
+            .click(function() {
+                validateSearchSubscriber();
+                return false;
+            })
+            .next()
+            .button()
+            .click(function() {
+                clearSubscriber();
+                return false;
+            })
+            .parent()
+            .buttonset();
+        });
+    
+        $(function() {
+            $( "#btnSearchSubscription" )
+            .button("disable")
+            .click(function() {
+                validateSearchSubscription();
+                return false;
+            })
+            .next()
+            .button("disable")
+            .click(function() {
+                clearSubscription();
+                return false;
+            })
+            .parent()
+            .buttonset();
+        });
+        
+        
+    
+        $("#inwardPurpose").change(function(){
+            var inward_purpose = $("#inwardPurpose").val();
+            if(inward_purpose.toLowerCase() == "payment"){
+                enableSubscriptionID(true);
+            }
+            else{
+                enableSubscriptionID(false);
+            }
+        });
     });
+    
+    
+    
+    
 </script>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Inward Info Field Set --%>
@@ -27,6 +62,22 @@
 
     <%-- Inward Info left div --%>
     <div class="IASFormLeftDiv">
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Purpose:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <select class="IASComboBoxMandatory" TABINDEX="10" name="inwardPurpose" id="inwardPurpose">
+                    <option value="0">Select</option>
+                    <%
+                        if (inwardFormBean.getInwardPurpose() != null && !inwardFormBean.getInwardPurpose().isEmpty()) {
+                            out.println("<option value=" + "\"" + inwardFormBean.getInwardPurpose() + "\"" + " selected >" + inwardFormBean.getInwardPurpose() + "</option>");
+                        }
+                    %>
+                </select>
+            </span>
+        </div>
 
 
         <div class="IASFormFieldDiv">
@@ -145,13 +196,28 @@
                 <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}"/>
             </span>
             <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
-                <button id="btnSearchSubscriber">Search Subscriber</button>
+                <button id="btnSearchSubscriber">Search Subscriber&nbsp;&nbsp;&nbsp;</button>
                 <button id="btnResetSubscriber">Reset</button>
                 <%--<input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
                 <input class="IASButton" TABINDEX="-1" type="button" name="btnResetSubscriber" id="btnResetSubscriber" value="Reset" onclick="clearSubscriber()"/>--%>
             </span>
-
         </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Subscription ID:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASDisabledTextBox" TABINDEX="-1" disabled type="text" name="subscriptionID" id="subscriptionid" value="${inwardFormBean.subscriptionIDAsText}"/>
+            </span>
+            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
+                <button id="btnSearchSubscription">Search Subscription</button>
+                <button id="btnResetSubscription">Reset</button>
+                <%--<input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
+                <input class="IASButton" TABINDEX="-1" type="button" name="btnResetSubscriber" id="btnResetSubscriber" value="Reset" onclick="clearSubscriber()"/>--%>
+            </span>
+        </div>
+
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Institution:</label>
@@ -193,7 +259,7 @@
     <div class="IASFormLeftDiv">
 
 
-        <div class="IASFormFieldDiv">
+        <%--<div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Purpose:</label>
             </span>
@@ -207,7 +273,7 @@
                     %>
                 </select>
             </span>
-        </div>
+        </div>--%>
 
 
         <div class="IASFormFieldDiv">
@@ -332,10 +398,10 @@
                 <label>Reason For Return:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="19" type="text" name="chequeDDReturnReason" id="chequeDDReturnReason" value="${inwardFormBean.chequeDDReturnReason}" readonly>
+                <input class="IASDisabledTextBox" TABINDEX="19" type="text" name="chequeDDReturnReason" id="chequeDDReturnReason" value="${inwardFormBean.chequeDDReturnReason}" readonly>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="20" type="text" name="chequeDDReturnReasonOther" id="chequeDDReturnReasonOther" value="${inwardFormBean.chequeDDReturnReasonOther}" readonly/>
+                <input class="IASDisabledTextBox" TABINDEX="20" type="text" name="chequeDDReturnReasonOther" id="chequeDDReturnReasonOther" value="${inwardFormBean.chequeDDReturnReasonOther}" readonly/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -343,7 +409,7 @@
                 <label>Return Date:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="21" disabled type="text" name="returnDate" id="returnDate" value="${inwardFormBean.returnDate}"/>
+                <input class="IASDateTextBox" TABINDEX="21" disabled type="text" name="returnDate" id="returnDate" value="${inwardFormBean.returnDate}"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -351,7 +417,7 @@
                 <label>Acknowledgement Date:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="22" disabled type="text" name="ackDate" id="ackDate" value="${inwardFormBean.ackDate}"/>
+                <input class="IASDateTextBox" TABINDEX="22" disabled type="text" name="ackDate" id="ackDate" value="${inwardFormBean.ackDate}"/>
             </span>
         </div>
 

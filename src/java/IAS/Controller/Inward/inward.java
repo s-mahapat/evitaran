@@ -24,7 +24,7 @@ public class inward extends JDSController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        String url = null;
+        String url = "/jsp/errors/404.jsp";
 
         try {
 
@@ -106,9 +106,18 @@ public class inward extends JDSController {
                 // we should use the purpose id rather than the purpose name, it can change in the database
                 // but id should not change
                 int purposeID = Integer.parseInt(request.getParameter("purpose"));
+                
+                // check if the flow is from add free subscriber/summer fellow.
+                int isFreeSubscriber = Integer.parseInt(request.getParameter("afs"));
+                int isSummerFellow = Integer.parseInt(request.getParameter("asf"));
+                
 
-                if (purposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
-                        || purposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
+                // Get into this if block for only new subscription and request for invoice
+                // if its add free subscribers or add summer fellows move on
+                if (isFreeSubscriber == 0 &&
+                    isSummerFellow == 0 &&
+                    (purposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION ||
+                    purposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE)) {
 
                     if (subscriberNumber != null && !subscriberNumber.equalsIgnoreCase("null") && !subscriberNumber.isEmpty()) {
 
@@ -129,7 +138,7 @@ public class inward extends JDSController {
                         _subscriberFormBean.setDepartment(_inwardFormBean.getDepartment());
                         _subscriberFormBean.setInstitution(_inwardFormBean.getInstitution());
                         request.setAttribute("subscriberFormBean", _subscriberFormBean);
-                        url = "/main?action=createsubscriber";
+                        url = "/subscriber?action=createsubscriber";
                     }
                 } else if (purposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION) {
                     // Renew subscription
@@ -139,10 +148,10 @@ public class inward extends JDSController {
                     //Address change
                     url = "/subscriber?action=edit";
 
-                } else if (purposeID == 100) {
+                } else if (purposeID == 1 && isFreeSubscriber == 1) {
                     // Add Free Subscriber
                     url = "/jsp/subscriber/afs.jsp";
-                } else if (purposeID == 200) {
+                } else if (purposeID == 1 && isSummerFellow == 1) {
                     // Add Summer Fellows
                     url = "/jsp/subscriber/asf.jsp";
                 }else if (purposeID == JDSConstants.INWARD_PURPOSE_MISSING_ISSUE) {
