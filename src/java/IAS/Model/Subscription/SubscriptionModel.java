@@ -96,7 +96,7 @@ public class SubscriptionModel extends JDSModel {
                 String sql = Queries.getQuery("insert_subscription");
                 PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 int paramIndex = 0;
-                float balance = subscriptionTotal - this._inwardFormBean.getAmount();
+                //float balance = subscriptionTotal - this._inwardFormBean.getAmount();
 
 
                 st.setString(++paramIndex, this.subscriberNumber);

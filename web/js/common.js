@@ -379,7 +379,8 @@ function jdsPost(form_id, url){
 
 function monthNameToNumber(cellvalue, options, cell){
     var _JDSConstants = new JDSConstants();
-    return(_JDSConstants.monthNames.indexOf(cellvalue) + 1);
+    var monthIndex = $.inArray(cellvalue, _JDSConstants.monthNames);
+    return(monthIndex + 1);
 }
 
 function monthNumberToName(cellvalue, options, rowObj){

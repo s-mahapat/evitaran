@@ -32,7 +32,7 @@
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
             <form name="subscriptionForm" action="inward?action=followOnProcess" method="POST">
-                <input type="hidden" name="purpose" id="purpose"/>
+                <input type="hidden" name="purpose" id="purpose" value="<%=request.getParameter("purpose")%>"/>
 
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">

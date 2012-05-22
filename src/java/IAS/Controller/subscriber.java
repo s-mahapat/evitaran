@@ -54,8 +54,10 @@ public class subscriber extends JDSController {
 
                         // if the inward purpose is new subscription then redirect the user to add subscription after
                         // saving subscriber info, else redirect to view subscriber
-                        if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION) {
-                            url = "/jsp/subscription/addnewsubscription.jsp";
+                        if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION ||
+                            inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE
+                            ) {
+                            url = "/jsp/subscription/addnewsubscription.jsp?purpose=" + inwardPurposeID;
                         }
                     }
                 }

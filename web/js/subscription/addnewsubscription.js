@@ -6,7 +6,6 @@ function addJournal(){
 
     var selectedJournalGroupCode = $("#journalName").val();
     var selectedJournalGroupName = $("#journalName :selected").text();
-    var _JDSConstants = new JDSConstants();
     journalNameToGroupIDMap[selectedJournalGroupName] = selectedJournalGroupCode;
     if(subscriberType == 0){
         subscriberType = getSubscriberType($("#subscriberNumber").val());
@@ -56,36 +55,6 @@ function updateTotal(val){
     $("#subscriptionTotalValue").text(newTotal);
 }
 
-
-
-/*function getPrice(startYear, years, journalGroupID, subscriberTypeID){
-    var _price = -1;
-    var _id = -1;
-    var _priceDetails = new Array();
-    $.ajax({
-        type: 'GET',
-        dataType: 'xml',
-        async: false,
-        url: "subscription?oper=getprice&startyear=" + startYear + "&years=" + years +
-        "&journalgroupid=" + journalGroupID + "&subtypeid=" + subscriberTypeID,
-        success: function(xmlResponse, textStatus, jqXHR){
-
-            $(xmlResponse).find("results").find("row").each(function(){
-                _id = $(this).find("id").text();
-            });
-            $(xmlResponse).find("results").find("row").each(function(){
-                _price = $(this).find("rate").text();
-            });
-            _priceDetails[0] = _id;
-            _priceDetails[1] = _price;
-        },
-        error: function(jqXHR,textStatus,errorThrown){
-            alert("Failed to get Journal Group price. " + textStatus + ": "+ errorThrown);
-        }
-
-    });
-    return _priceDetails;
-}*/
 
 function getJournalGroupContents(groupID){
     var html = '<ol>';
@@ -203,15 +172,8 @@ function saveSubscription(){
                     $("#btnDeleteAll").button("disable");
                     $("#remarks").attr("disabled",true);
                     subscriptionSaved = true;
-
                     document.subscriptionForm.submit();
 
-                    //ask if we have print inward acknowledgement
-                    //if(confirm("Do you want send the inward acknowledgement?")){
-                        //
-                        //window.location.href = "inward?action=followOnProcess"
-                            //+ "&inwardNumber="   + $("#inwardNumber").val() + "&purpose=" + inwardPurpose;
-                    //}
                 }
             });
         },
