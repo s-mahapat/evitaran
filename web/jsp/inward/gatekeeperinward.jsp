@@ -30,6 +30,7 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
+                    sortorder: 'desc',
                     sortname: 'inwardCreationDate',
                     loadonce: false,
                     rownumbers: true,

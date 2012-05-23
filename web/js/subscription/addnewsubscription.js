@@ -158,6 +158,10 @@ function saveSubscription(){
         data: $.param(rowRequiredData),
         success: function(xmlResponse, textStatus, jqXHR){
 
+            if(xmlResponse == null){
+                alert("Failed to Save subscription");
+                return false;
+            }
             $(xmlResponse).find("results").each(function(){
                 var error = $(this).find("error").text();
                 var subscriptionID = $(this).find("subscriptionID").text();
