@@ -4,20 +4,10 @@ import IAS.Bean.JDSBean;
 
 public class missingissueFormBean extends JDSBean{
 
-    private int subscriptionID;
     private String subscriberNumber;
+    private String subscriberName;
     private String inwardNumber;
-    private float subscriptionTotal;
-    private float amount;
-    private float balance;
 
-    public int getSubscriptionID(){
-        return this.subscriptionID;
-    }
-
-    public void setSubscriptionID(int _id){
-        this.subscriptionID = _id;
-    }
 
     public String getSubscriberNumber(){
         return this.subscriberNumber;
@@ -27,6 +17,14 @@ public class missingissueFormBean extends JDSBean{
         this.subscriberNumber = _subscriberNumber;
     }
 
+    public String getSubscriberName(){
+        return this.subscriberName;
+    }
+
+    public void setSubscriberName(String _subscriberName){
+        this.subscriberName = _subscriberName;
+    }
+
     public String getInwardNumber(){
         return this.inwardNumber;
     }
@@ -34,29 +32,5 @@ public class missingissueFormBean extends JDSBean{
     public void setInwardNumber(String _inwardNumber){
         this.inwardNumber = _inwardNumber;
     }
-
-    public float getSubscriptionTotal(){
-        return this.subscriptionTotal;
-    }
-
-    public void setSubscriptionTotal(float _value){
-        this.subscriptionTotal = _value;
-    }
-
-    public float getAmount(){
-        return this.amount;
-    }
-
-    public void setAmount(float _value){
-        this.amount = _value;
-    }
-
-    public float getBalance(){
-        return this.balance;
-    }
-
-    public void setBalance(float _value){
-        this.balance = _value;
-    }
-
+    
 }

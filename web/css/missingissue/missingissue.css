@@ -1,0 +1,45 @@
+/*
+    Document   : subscription
+    Created on : Nov 12, 2011, 4:39:26 PM
+    Author     : I036897
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/*
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root {
+    display: block;
+}
+
+#btnDeleteLine{
+
+}
+
+#addJournalBtnDiv{
+    float: left;
+    width: 45%;
+    margin-left: 10%;
+}
+
+#deleteJournalBtnDiv{
+    float: left;
+    width: 45%;
+
+}
+
+#subscriptionTotal{
+
+    float: right;
+    width: 20%;
+    margin-right: 20px;
+    text-align: right;
+}
+
+#journalGroupContents{
+    float: left;
+    width: 100%;
+}

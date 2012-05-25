@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+import IAS.Bean.missingissue.missingissueFormBean;
 
 public class inward extends JDSController {
 
@@ -155,8 +156,12 @@ public class inward extends JDSController {
                     // Add Summer Fellows
                     url = "/jsp/subscriber/asf.jsp";
                 }else if (purposeID == JDSConstants.INWARD_PURPOSE_MISSING_ISSUE) {
-                    //Address change
-                    url = "/missingissue?action=missingissuelist.jsp";
+                    missingissueFormBean _missingissueFormBean = new IAS.Bean.missingissue.missingissueFormBean();
+                    _missingissueFormBean.setSubscriberNumber(_inwardFormBean.getSubscriberId());
+                    _missingissueFormBean.setInwardNumber(_inwardFormBean.getInwardNumber());
+                    _missingissueFormBean.setSubscriberName(_inwardFormBean.getFrom());
+                    request.setAttribute("missingissueFormBean", _missingissueFormBean);
+                    url = "/missingissue?action=addInfo";
 
                 }
 

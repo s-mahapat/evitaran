@@ -659,13 +659,12 @@ DROP TABLE IF EXISTS `reminders`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reminders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subscriberId` int(11) NOT NULL,
   `subscriptionId` int(11) NOT NULL,
   `balance` double NOT NULL,
   `reminderType` int(11) NOT NULL,
   `email` varchar(40) DEFAULT NULL,
   `medium` char(1) DEFAULT NULL,
-  `language` int(11) DEFAULT NULL,
+  `language` char(1) DEFAULT NULL,
   `reminderDate` date NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -677,6 +676,7 @@ CREATE TABLE `reminders` (
 
 LOCK TABLES `reminders` WRITE;
 /*!40000 ALTER TABLE `reminders` DISABLE KEYS */;
+INSERT INTO `reminders` VALUES (1,217,5800,1,NULL,'E','E','2012-05-17'),(2,217,5800,1,NULL,'E','E','2012-05-17'),(3,218,500,1,NULL,'E','E','2012-05-17'),(4,219,1000,1,NULL,'E','E','2012-05-17'),(5,220,1000,1,NULL,'E','E','2012-05-17'),(6,217,5800,1,NULL,'E','E','2012-05-17'),(7,218,500,1,NULL,'E','E','2012-05-17'),(8,219,1000,1,NULL,'E','E','2012-05-17'),(9,220,1000,1,NULL,'E','E','2012-05-17'),(10,217,5800,2,NULL,'E','E','2012-05-17'),(11,218,500,2,NULL,'E','E','2012-05-17'),(12,219,1000,2,NULL,'E','E','2012-05-17'),(13,220,1000,2,NULL,'E','E','2012-05-17');
 /*!40000 ALTER TABLE `reminders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -961,7 +961,7 @@ CREATE TABLE `subscription_rates` (
 
 LOCK TABLES `subscription_rates` WRITE;
 /*!40000 ALTER TABLE `subscription_rates` DISABLE KEYS */;
-INSERT INTO `subscription_rates` VALUES (1,1,8,2011,1,3000),(2,1,8,2011,2,7500),(3,1,8,2011,3,10000),(4,1,8,2011,5,12000),(5,1,8,2012,1,3000),(6,1,8,2012,2,7500),(7,1,8,2012,3,10000),(8,1,8,2012,5,12000),(9,1,9,2011,1,1000),(10,1,9,2011,2,2250),(11,1,9,2011,3,3500),(12,1,9,2011,5,6000),(13,1,9,2012,1,1000),(14,1,9,2012,2,2250),(15,1,9,2012,3,3500),(16,1,9,2012,5,6000),(17,1,11,2011,1,1000),(18,1,11,2011,2,2000),(19,1,11,2012,1,1000),(20,1,11,2012,2,2000),(21,1,10,2011,1,3000),(22,1,10,2011,2,7500),(23,1,10,2011,3,10000),(24,1,10,2011,5,12000),(25,1,10,2012,1,3000),(26,1,10,2012,2,7500),(27,1,10,2012,3,10000),(28,1,10,2012,5,12000),(29,2,8,2011,1,500),(30,2,8,2011,2,900),(31,2,8,2011,3,1300),(32,2,8,2011,5,2000),(33,2,8,2012,1,500),(34,2,8,2012,2,900),(35,2,8,2012,3,1300),(36,2,8,2012,5,2000),(37,2,10,2011,1,500),(38,2,10,2011,2,900),(39,2,10,2011,3,1300),(40,2,10,2011,5,2000),(41,2,10,2012,1,500),(42,2,10,2012,2,900),(43,2,10,2012,3,1300),(44,2,10,2012,5,2000),(45,2,9,2011,1,500),(46,2,9,2011,2,900),(47,2,9,2011,3,1300),(48,2,9,2011,5,2000),(49,2,9,2012,1,500),(50,2,9,2012,2,900),(51,2,9,2012,3,1300),(52,2,9,2012,5,2000),(53,2,11,2011,1,400),(54,2,11,2011,2,800),(55,2,11,2012,1,400),(56,2,11,2012,2,800),(57,3,9,2011,1,750),(58,3,8,2011,1,750),(59,3,10,2011,1,750),(60,3,11,2011,1,700),(61,3,9,2012,1,750),(62,3,8,2012,1,750),(63,3,10,2012,1,750),(64,3,11,2012,1,700),(65,4,9,2011,1,300),(66,4,8,2011,1,300),(67,4,10,2011,1,300),(68,4,11,2011,1,400),(69,4,9,2012,1,300),(70,4,8,2012,1,300),(71,4,10,2012,1,300),(72,4,11,2012,1,400),(73,5,9,2011,1,400),(74,5,8,2011,1,400),(75,5,10,2011,1,400),(76,5,11,2011,1,500),(77,5,9,2012,1,400),(78,5,8,2012,1,400),(79,5,10,2012,1,400),(80,5,11,2012,1,500),(81,6,9,2011,1,400),(82,6,8,2011,1,400),(83,6,10,2011,1,400),(84,6,11,2011,1,500),(85,6,9,2012,1,400),(86,6,8,2012,1,400),(87,6,10,2012,1,400),(88,6,11,2012,1,500),(89,7,9,2011,1,400),(90,7,8,2011,1,400),(91,7,10,2011,1,400),(92,7,11,2011,1,500),(93,7,9,2012,1,400),(94,7,8,2012,1,400),(95,7,10,2012,1,400),(96,7,11,2012,1,500),(97,8,9,2011,1,400),(98,8,8,2011,1,400),(99,8,10,2011,1,400),(100,8,11,2011,1,500),(101,8,9,2012,1,400),(102,8,8,2012,1,400),(103,8,10,2012,1,400),(104,8,11,2012,1,500),(105,9,9,2011,1,400),(106,9,8,2011,1,400),(107,9,10,2011,1,400),(108,9,11,2011,1,500),(109,9,9,2012,1,400),(110,9,8,2012,1,400),(111,9,10,2012,1,400),(112,9,11,2012,1,500),(113,10,9,2011,1,300),(114,10,8,2011,1,300),(115,10,10,2011,1,300),(116,10,11,2011,1,400),(117,10,9,2012,1,300),(118,10,8,2012,1,300),(119,10,10,2012,1,300),(120,10,11,2012,1,400),(121,11,9,2011,1,300),(122,11,8,2011,1,300),(123,11,10,2011,1,300),(124,11,11,2011,1,400),(125,11,9,2012,1,300),(126,11,8,2012,1,300),(127,11,10,2012,1,300),(128,11,11,2012,1,400),(129,12,9,2011,1,4800),(130,13,9,2011,1,3300),(131,12,9,2012,1,4800),(132,13,9,2012,1,3300),(133,12,8,2011,1,7000),(134,13,8,2011,1,3300),(135,12,8,2012,1,7000),(136,13,8,2012,1,3300),(137,12,10,2011,1,7000),(138,13,10,2011,1,3300),(139,12,10,2012,1,7000),(140,13,10,2012,1,3300);
+INSERT INTO `subscription_rates` VALUES (1,1,8,2011,1,3000),(2,1,8,2011,2,7500),(3,1,8,2011,3,10000),(4,1,8,2011,5,12000),(5,1,8,2012,1,3000),(6,1,8,2012,2,7500),(7,1,8,2012,3,10000),(8,1,8,2012,5,12000),(9,1,9,2011,1,1000),(10,1,9,2011,2,2250),(11,1,9,2011,3,3500),(12,1,9,2011,5,6000),(13,1,9,2012,1,1000),(14,1,9,2012,2,2250),(15,1,9,2012,3,3500),(16,1,9,2012,5,6000),(17,1,11,2011,1,1000),(18,1,11,2011,2,2000),(19,1,11,2012,1,1000),(20,1,11,2012,2,2000),(21,1,10,2011,1,3000),(22,1,10,2011,2,7500),(23,1,10,2011,3,10000),(24,1,10,2011,5,12000),(25,1,10,2012,1,3000),(26,1,10,2012,2,7500),(27,1,10,2012,3,10000),(28,1,10,2012,5,12000),(29,2,8,2011,1,500),(30,2,8,2011,2,900),(31,2,8,2011,3,1300),(32,2,8,2011,5,2000),(33,2,8,2012,1,500),(34,2,8,2012,2,900),(35,2,8,2012,3,1300),(36,2,8,2012,5,2000),(37,2,10,2011,1,500),(38,2,10,2011,2,900),(39,2,10,2011,3,1300),(40,2,10,2011,5,2000),(41,2,10,2012,1,500),(42,2,10,2012,2,900),(43,2,10,2012,3,1300),(44,2,10,2012,5,2000),(45,2,9,2011,1,500),(46,2,9,2011,2,900),(47,2,9,2011,3,1300),(48,2,9,2011,5,2000),(49,2,9,2012,1,500),(50,2,9,2012,2,900),(51,2,9,2012,3,1300),(52,2,9,2012,5,2000),(53,2,11,2011,1,400),(54,2,11,2011,2,800),(55,2,11,2012,1,400),(56,2,11,2012,2,800),(57,3,9,2011,1,750),(58,3,8,2011,1,750),(59,3,10,2011,1,750),(60,3,11,2011,1,700),(61,3,9,2012,1,750),(62,3,8,2012,1,750),(63,3,10,2012,1,750),(64,3,11,2012,1,700),(65,4,9,2011,1,300),(66,4,8,2011,1,300),(67,4,10,2011,1,300),(68,4,11,2011,1,400),(69,4,9,2012,1,300),(70,4,8,2012,1,300),(71,4,10,2012,1,300),(72,4,11,2012,1,400),(73,5,9,2011,1,400),(74,5,8,2011,1,400),(75,5,10,2011,1,400),(76,5,11,2011,1,500),(77,5,9,2012,1,400),(78,5,8,2012,1,400),(79,5,10,2012,1,400),(80,5,11,2012,1,500),(81,6,9,2011,1,400),(82,6,8,2011,1,400),(83,6,10,2011,1,400),(84,6,11,2011,1,500),(85,6,9,2012,1,400),(86,6,8,2012,1,400),(87,6,10,2012,1,400),(88,6,11,2012,1,500),(89,7,9,2011,1,400),(90,7,8,2011,1,400),(91,7,10,2011,1,400),(92,7,11,2011,1,500),(93,7,9,2012,1,400),(94,7,8,2012,1,400),(95,7,10,2012,1,400),(96,7,11,2012,1,500),(97,8,9,2011,1,400),(98,8,8,2011,1,400),(99,8,10,2011,1,400),(100,8,11,2011,1,500),(101,8,9,2012,1,400),(102,8,8,2012,1,400),(103,8,10,2012,1,400),(104,8,11,2012,1,500),(105,9,9,2011,1,400),(106,9,8,2011,1,400),(107,9,10,2011,1,400),(108,9,11,2011,1,500),(109,9,9,2012,1,400),(110,9,8,2012,1,400),(111,9,10,2012,1,400),(112,9,11,2012,1,500),(113,10,9,2011,1,300),(114,10,8,2011,1,300),(115,10,10,2011,1,300),(116,10,11,2011,1,400),(117,10,9,2012,1,300),(118,10,8,2012,1,300),(119,10,10,2012,1,300),(120,10,11,2012,1,400),(121,11,9,2011,1,300),(122,11,8,2011,1,300),(123,11,10,2011,1,300),(124,11,11,2011,1,400),(125,11,9,2012,1,300),(126,11,8,2012,1,300),(127,11,10,2012,1,300),(128,11,11,2012,1,400),(129,12,9,2011,1,4800),(130,13,9,2011,1,3300),(131,12,9,2012,1,4800),(132,13,9,2012,1,3300),(133,12,8,2011,1,7000),(134,13,8,2011,1,3300),(135,12,8,2012,1,7000),(136,13,8,2012,1,3300),(137,12,10,2011,1,7000),(138,13,10,2011,1,3300),(139,12,10,2012,1,7000),(140,13,10,2012,1,3300),(141,12,11,2012,50,50000),(142,12,9,2012,5,20000);
 /*!40000 ALTER TABLE `subscription_rates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1611,6 +1611,690 @@ BEGIN
 
   CLOSE cur1;
   END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;/*!50003 DROP PROCEDURE IF EXISTS `create_reminder_type1` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `create_reminder_type1`(IN remtype   int,
+
+                                       IN medium    char,
+
+                                       IN lang      char)
+BEGIN
+
+      DECLARE subid                int;
+
+      DECLARE subscription_total   float;
+
+      DECLARE payment_total        float;
+
+      DECLARE balance              float;
+
+
+
+      DECLARE
+
+         cur1 CURSOR FOR SELECT distinct subscription.id
+
+                           FROM subscriber,
+
+                                subscription,
+
+                                subscriptiondetails,
+
+                                subscriber_type
+
+                          WHERE     subscriptiondetails.subscriptionID =
+
+                                       subscription.id
+
+                                AND subscription.subscriberID = subscriber.id
+
+                                AND subscriptiondetails.endYear >=
+
+                                       year(CURDATE())
+
+                                AND subscriber.subtype = subscriber_type.id
+
+                                AND subscriber_type.subtype = 'Paid';
+
+
+
+
+
+      OPEN cur1;
+
+
+
+     read_loop:
+
+      LOOP
+
+         FETCH cur1 INTO subid;
+
+
+
+         IF done
+
+         THEN
+
+            LEAVE read_loop;
+
+         END IF;
+
+
+
+         SELECT (sum(subscription_rates.rate * subscriptiondetails.copies))
+
+           INTO subscription_total
+
+           FROM subscriptiondetails,
+
+                journal_groups,
+
+                subscription_rates,
+
+                subscription,
+
+                subscriber
+
+          WHERE     subscriptiondetails.journalGroupID = journal_groups.id
+
+                AND subscription_rates.journalGroupId = journal_groups.id
+
+                AND subscription_rates.`year` = subscriptiondetails.startYear
+
+                AND (  subscriptiondetails.endYear
+
+                     - subscriptiondetails.startYear
+
+                     + 1) = subscription_rates.period
+
+                AND subscriptiondetails.subscriptionID = subscription.id
+
+                AND subscription.subscriberID = subscriber.id
+
+                AND subscriber.subtype = subscription_rates.subtypeId
+
+                AND subscription.id = subid
+
+         GROUP BY subscription.id;
+
+
+
+
+
+         SELECT sum(inward.amount)
+
+           INTO payment_total
+
+           FROM payment,
+
+                inward,
+
+                subscription,
+
+                inward_purpose
+
+          WHERE     payment.inwardId = inward.id
+
+                AND payment.subscriptionId = subscription.id
+
+                AND (   inward_purpose.purpose = 'New Subscription'
+
+                     OR inward_purpose.purpose = 'Renew Subscription'
+
+                     OR inward_purpose.purpose = 'Payment'
+
+                     OR inward_purpose.purpose = 'Request For Invoice')
+
+                AND inward.inwardPurpose = inward_purpose.id
+
+                AND subscription.id = subid
+
+         GROUP BY subscription.id, inward.id;
+
+
+
+         SET balance = subscription_total - payment_total;
+
+
+
+         IF balance > 0
+
+         THEN
+
+            INSERT INTO reminders(subscriptionId,
+
+                                  balance,
+
+                                  reminderType,
+
+                                  medium,
+
+                                  language,
+
+                                  reminderDate)
+
+            VALUES (subid,
+
+                    balance,
+
+                    remtype,
+
+                    medium,
+
+                    lang,
+
+                    curdate());
+
+         END IF;
+
+      END LOOP;
+
+   END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `create_reminder_type2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `create_reminder_type2`(IN remtype   int,
+
+                                       IN medium    char,
+
+                                       IN lang      char)
+BEGIN
+
+      DECLARE subid                int;
+
+      DECLARE subscription_total   float;
+
+      DECLARE payment_total        float;
+
+      DECLARE balance              float;
+
+
+
+      DECLARE
+
+         cur1 CURSOR FOR SELECT distinct subscription.id
+
+                           FROM subscriber,
+
+                                subscription,
+
+                                subscriptiondetails,
+
+                                subscriber_type,
+
+                                reminders
+
+                          WHERE     subscriptiondetails.subscriptionID =
+
+                                       subscription.id
+
+                                AND subscription.subscriberID = subscriber.id
+
+                                AND subscriptiondetails.endYear >=
+
+                                       year(CURDATE())
+
+                                AND subscriber.subtype = subscriber_type.id
+
+                                AND subscriber_type.subtype = 'Paid'
+
+                                 AND reminders.subscriptionId = subscription.id
+
+                                and reminders.reminderType = '1'
+
+                                and reminders.reminderType <> '2'
+
+                                and reminders.reminderType <> '3';
+
+
+
+
+
+      OPEN cur1;
+
+
+
+     read_loop:
+
+      LOOP
+
+         FETCH cur1 INTO subid;
+
+
+
+         SELECT (sum(subscription_rates.rate * subscriptiondetails.copies))
+
+           INTO subscription_total
+
+           FROM subscriptiondetails,
+
+                journal_groups,
+
+                subscription_rates,
+
+                subscription,
+
+                subscriber
+
+          WHERE     subscriptiondetails.journalGroupID = journal_groups.id
+
+                AND subscription_rates.journalGroupId = journal_groups.id
+
+                AND subscription_rates.`year` = subscriptiondetails.startYear
+
+                AND (  subscriptiondetails.endYear
+
+                     - subscriptiondetails.startYear
+
+                     + 1) = subscription_rates.period
+
+                AND subscriptiondetails.subscriptionID = subscription.id
+
+                AND subscription.subscriberID = subscriber.id
+
+                AND subscriber.subtype = subscription_rates.subtypeId
+
+                AND subscription.id = subid
+
+         GROUP BY subscription.id;
+
+
+
+
+
+         SELECT sum(inward.amount)
+
+           INTO payment_total
+
+           FROM payment,
+
+                inward,
+
+                subscription,
+
+                inward_purpose
+
+          WHERE     payment.inwardId = inward.id
+
+                AND payment.subscriptionId = subscription.id
+
+                AND (   inward_purpose.purpose = 'New Subscription'
+
+                     OR inward_purpose.purpose = 'Renew Subscription'
+
+                     OR inward_purpose.purpose = 'Payment'
+
+                     OR inward_purpose.purpose = 'Request For Invoice')
+
+                AND inward.inwardPurpose = inward_purpose.id
+
+                AND subscription.id = subid
+
+         GROUP BY subscription.id, inward.id;
+
+
+
+         SET balance = subscription_total - payment_total;
+
+
+
+         IF balance > 0
+
+         THEN
+
+            INSERT INTO reminders(subscriptionId,
+
+                                  balance,
+
+                                  reminderType,
+
+                                  medium,
+
+                                  language,
+
+                                  reminderDate)
+
+            VALUES (subid,
+
+                    balance,
+
+                    remtype,
+
+                    medium,
+
+                    lang,
+
+                    curdate());
+
+         END IF;
+
+      END LOOP;
+
+   END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `create_reminder_type3` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `create_reminder_type3`(IN remtype   int,
+
+                                       IN medium    char,
+
+                                       IN lang      char)
+BEGIN
+
+      DECLARE subid                int;
+
+      DECLARE subscription_total   float;
+
+      DECLARE payment_total        float;
+
+      DECLARE balance              float;
+
+
+
+      DECLARE
+
+         cur1 CURSOR FOR SELECT distinct subscription.id
+
+                           FROM subscriber,
+
+                                subscription,
+
+                                subscriptiondetails,
+
+                                subscriber_type,
+
+                                reminders
+
+                          WHERE     subscriptiondetails.subscriptionID =
+
+                                       subscription.id
+
+                                AND subscription.subscriberID = subscriber.id
+
+                                AND subscriptiondetails.endYear >=
+
+                                       year(CURDATE())
+
+                                AND subscriber.subtype = subscriber_type.id
+
+                                AND subscriber_type.subtype = 'Paid'
+
+                                 AND reminders.subscriptionId = subscription.id
+
+                                and reminders.reminderType = '2'
+
+                                and reminders.reminderType <> '3';
+
+
+
+
+
+      OPEN cur1;
+
+
+
+     read_loop:
+
+      LOOP
+
+         FETCH cur1 INTO subid;
+
+
+
+         SELECT (sum(subscription_rates.rate * subscriptiondetails.copies))
+
+           INTO subscription_total
+
+           FROM subscriptiondetails,
+
+                journal_groups,
+
+                subscription_rates,
+
+                subscription,
+
+                subscriber
+
+          WHERE     subscriptiondetails.journalGroupID = journal_groups.id
+
+                AND subscription_rates.journalGroupId = journal_groups.id
+
+                AND subscription_rates.`year` = subscriptiondetails.startYear
+
+                AND (  subscriptiondetails.endYear
+
+                     - subscriptiondetails.startYear
+
+                     + 1) = subscription_rates.period
+
+                AND subscriptiondetails.subscriptionID = subscription.id
+
+                AND subscription.subscriberID = subscriber.id
+
+                AND subscriber.subtype = subscription_rates.subtypeId
+
+                AND subscription.id = subid
+
+         GROUP BY subscription.id;
+
+
+
+
+
+         SELECT sum(inward.amount)
+
+           INTO payment_total
+
+           FROM payment,
+
+                inward,
+
+                subscription,
+
+                inward_purpose
+
+          WHERE     payment.inwardId = inward.id
+
+                AND payment.subscriptionId = subscription.id
+
+                AND (   inward_purpose.purpose = 'New Subscription'
+
+                     OR inward_purpose.purpose = 'Renew Subscription'
+
+                     OR inward_purpose.purpose = 'Payment'
+
+                     OR inward_purpose.purpose = 'Request For Invoice')
+
+                AND inward.inwardPurpose = inward_purpose.id
+
+                AND subscription.id = subid
+
+         GROUP BY subscription.id, inward.id;
+
+
+
+         SET balance = subscription_total - payment_total;
+
+
+
+         IF balance > 0
+
+         THEN
+
+            INSERT INTO reminders(subscriptionId,
+
+                                  balance,
+
+                                  reminderType,
+
+                                  medium,
+
+                                  language,
+
+                                  reminderDate)
+
+            VALUES (subid,
+
+                    balance,
+
+                    remtype,
+
+                    medium,
+
+                    lang,
+
+                    curdate());
+
+         END IF;
+
+      END LOOP;
+
+   END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `updateSubscriptionBalance` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `updateSubscriptionBalance`(IN subscriptionDetailID INT)
+BEGIN
+
+    declare inward_amount float default 0.0;
+
+    declare inward_id int;
+
+    declare subscription_total float;
+
+    declare balance float default 0.0;
+
+    declare subscription_id int default 0;
+
+    
+
+    
+    select subscriptionID into subscription_id from subscriptiondetails where id=subscriptionDetailID;
+
+    
+
+    
+    select amount into inward_amount 
+
+    from inward 
+
+    where id=(select inwardID from subscription where id=subscription_id);
+
+    
+
+    
+    select sum(total) into subscription_total 
+
+    from subscriptiondetails where subscriptionID=subscription_id and active=True;
+
+    
+
+    
+    set balance = inward_amount - subscription_total;
+
+    
+
+    update subscription set subscriptionTotal=subscription_total, balance=balance
+
+    where id=subscription_id;
+
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_back_issue` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `update_back_issue`()
+begin
+
+  declare current_month int default MONTH(CURRENT_DATE());
+
+  declare current_year int default YEAR(CURRENT_DATE());
+
+  declare is_mailing_list_generated_for_month tinyint default 0;
+
+  
+
+  
+
+  select generated into is_mailing_list_generated_for_month 
+
+  from mailing_list_summary 
+
+  where mailing_list_summary.month=current_month and mailing_list_summary.year=current_year;
+
+  
+
+  if is_mailing_list_generated_for_month = 0 then
+
+    select is_mailing_list_generated_for_month;
+
+  end if;
+
+  
+
+  
+
+end */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;

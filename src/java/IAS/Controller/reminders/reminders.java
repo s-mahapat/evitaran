@@ -1,5 +1,5 @@
 package IAS.Controller.reminders;
-import IAS.Controller.reminders.*;
+
 import IAS.Model.reminders.reminderModel;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.sql.*;
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
@@ -32,23 +32,21 @@ public class reminders extends JDSController {
         try {
             _reminderModel = new IAS.Model.reminders.reminderModel(request);
 
-            if(action.equalsIgnoreCase("search")){
+                if(action.equalsIgnoreCase("search")){
 
-            }else if(action.equalsIgnoreCase("resendReminders")){
-
-                String xml = _reminderModel.generate();
-                
+                ResultSet rs = _reminderModel.search();
+                String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-                
-            }else if(action.equalsIgnoreCase("print")){
 
-                String xml = _reminderModel.print(response);
-                //request.setAttribute("xml", xml);
-                //url = "/xmlserver";
-                
+            }else if(action.equalsIgnoreCase("generate")){
+
+                String xml = _reminderModel.generate();
+
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
             }
-
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);

@@ -23,7 +23,7 @@
              
             $(function(){
 
-                      $("#datatable").jqGrid({
+                      $("#reminderTable").jqGrid({
                         url:'',
                         datatype: 'xml',
                         mtype: 'GET',
@@ -49,7 +49,6 @@
                           {name:'country', index:'subscriber_id', width:50, align:'center', xmlmap:'country'},
                           {name:'pinCode', index:'subscriber_id', width:50, align:'center', xmlmap:'pin_code'},
                           {name:'emailId', index:'subscriber_id', width:50, align:'center', xmlmap:'email_id'}
-
                         ],
                         xmlReader : {
                           root: "result",
@@ -78,7 +77,7 @@
 
             function getReport(){
                 isPageLoaded = true;
-                jQuery("#datatable").trigger("reloadGrid");
+                jQuery("#reminderTable").trigger("reloadGrid");
             }
             
             function searchEnable(){
@@ -89,6 +88,30 @@
             function remindEnable(){
                 jQuery("#btnSearch").attr("disabled",true);
                 jQuery("#btnRemind, #btnPrintSend").attr("disabled",false);             
+            }
+            
+            function remind(){
+
+                if ($("#reminderType").val() == 0) {
+                    alert("Select Reminder Type");
+                }
+
+                else if($("reminderDate").val() == "") {
+                    alert("Please try again after logging in again ");
+                }
+
+                else {
+                        isPageLoaded = true;
+                        jQuery("#reminderTable").setGridParam({postData:
+                                {
+                                reminderType            : $("#reminderType").val(),
+                                reminderDate            : $("#reminderDate").val(),
+                                action                  : "generate"
+                            }});
+                        jQuery("#reminderTable").setGridParam({ datatype: "xml" });
+                        jQuery("#reminderTable").trigger("clearGridData");
+                        jQuery("#reminderTable").trigger("reloadGrid");
+                    }
             }
             
         </script>
@@ -126,7 +149,7 @@
                                     <label>Reminder Type</label>
                                 </span>
                                 <span class="IASFormDivSpanInputBox">
-                                 <select class="IASComboBox" TABINDEX="6" name="remType" id="remType">
+                                 <select class="IASComboBox" TABINDEX="6" name="reminderType" id="reminderType">
                                     <option value ="1">Type 1 Reminder - Gentle</option>
                                     <option value ="2">Type 2 Reminder - Strong</option>
                                     <option value ="3">Type 3 Reminder - Harsh</option>
@@ -175,7 +198,7 @@
                        <fieldset class="subMainFieldSet">
                             <legend>Result</legend>
 
-                            <table class="datatable" id="datatable"></table>
+                            <table class="reminderTable" id="reminderTable"></table>
                             <div id="pager"></div>
                         </fieldset>
                        
