@@ -107,10 +107,11 @@ public class bilModel extends JDSModel {
 
         OutputStream os = response.getOutputStream();
 
+        convertToPdf c2Pdf = new convertToPdf();
         if(type.equals("LABEL"))
-            convertToPdf.addLabelContent(rs, os);
+            c2Pdf.addLabelContent(rs, os);
         if(type.equals("STICKER"))
-            convertToPdf.addStickerContent(rs, os);
+            c2Pdf.addStickerContent(rs, os);
 
         response.setContentType("application/pdf");
         response.setHeader("Content-disposition", "attachment; filename=ml.pdf");

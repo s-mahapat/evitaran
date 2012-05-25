@@ -8,6 +8,7 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +23,10 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.mysql.jdbc.ResultSetMetaData;
+import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.util.Properties;
+import javax.servlet.ServletContext;
 
 
 /**
@@ -32,17 +36,14 @@ import java.io.OutputStream;
 public class convertToPdf {
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Class.convertToPdf");
+    float leading = 10.0f;
+    int textAlignment = 1;
+    Font.FontFamily fontType;
+    int fontSize    = 10;
+    int fontStyle;
 
-    public static void addLabelContent(ResultSet rs, OutputStream os) throws DocumentException, IOException, SQLException
+    public void addLabelContent(ResultSet rs, OutputStream os) throws DocumentException, IOException, SQLException
     {
-        /** Definition of two columns */
-        // llx (lower-left x), lly (lower-left y), urx (upper-right x), ury (upper-right y), leading, alignment
-        // (6, 5, 15, 9), (6, 20.4, 15, 24.4)
-        // 2.54cm = 72 points
-        float[][] COLUMNS = {
-            {170.1f, 141.7f, 425.2f, 255.12f} , {170.1f, 578.27f, 425.2f, 691.65f}
-        };
-
         // step 1
         Document document = new Document(PageSize.A4);
         document.addAuthor("JDS");
@@ -55,6 +56,17 @@ public class convertToPdf {
 
         // step 3
         document.open();
+        Properties properties = getMailingListProperties();
+        float[][] COLUMNS = new float[2][4];
+        COLUMNS[0][0] = Float.valueOf(properties.getProperty("llx1").trim()).floatValue();
+        COLUMNS[0][1] = Float.valueOf(properties.getProperty("lly1").trim()).floatValue();
+        COLUMNS[0][2] = Float.valueOf(properties.getProperty("urx1").trim()).floatValue();
+        COLUMNS[0][3] = Float.valueOf(properties.getProperty("ury1").trim()).floatValue();
+
+        COLUMNS[1][0] = Float.valueOf(properties.getProperty("llx2").trim()).floatValue();
+        COLUMNS[1][1] = Float.valueOf(properties.getProperty("lly2").trim()).floatValue();
+        COLUMNS[1][2] = Float.valueOf(properties.getProperty("urx2").trim()).floatValue();
+        COLUMNS[1][3] = Float.valueOf(properties.getProperty("ury2").trim()).floatValue();
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
         int numberOfColumns = 2, count=0;
@@ -91,7 +103,24 @@ public class convertToPdf {
         }
     }
 
-    public static void addStickerContent(ResultSet rs, OutputStream os) throws DocumentException, IOException, SQLException
+    public Properties getMailingListProperties() throws FileNotFoundException, IOException
+    {
+        ServletContext context = ServletContextInfo.getServletContext();
+        String mlPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_mailinglist.properties");
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(mlPropertiesFile));
+
+        // Read common information
+        leading         = Float.valueOf(properties.getProperty("leading").trim()).floatValue();
+        textAlignment   = Integer.parseInt(properties.getProperty("textAlignment"));
+        fontType        = Font.getFamily(properties.getProperty("fontFamily"));
+        fontSize        = Integer.parseInt(properties.getProperty("fontSize"));
+        fontStyle       = Font.getStyleValue(properties.getProperty("fontStyle"));
+
+        return properties;
+    }
+
+    public void addStickerContent(ResultSet rs, OutputStream os) throws DocumentException, IOException, SQLException
     {
         // step 1
         Document document = new Document(PageSize.A4);
@@ -107,24 +136,27 @@ public class convertToPdf {
         // step 3
         document.open();
 
-        int stickerColumns  = 2;
-        int stickerRows     = 8;
+        Properties properties = getMailingListProperties();
 
-        float leftMargin    = 4.9f;     //4.9mm
-        float stickerWidth  = 99.1f;    //9.91cms
-        float rightMargin   = 4.9f;     //4.9mm
-        float gapAcrossStickers = 2.0f; //2mm
+        int stickerColumns = Integer.parseInt(properties.getProperty("stickerColumns"));
+        //int stickerRows  = Integer.getInteger(properties.getProperty("stickerRows"));
+        int stickerRows     = Integer.parseInt(properties.getProperty("stickerRows"));
+
+        float leftMargin    = Float.valueOf(properties.getProperty("leftMargin").trim()).floatValue();     //4.9mm
+        float stickerWidth  = Float.valueOf(properties.getProperty("stickerWidth").trim()).floatValue();   //9.91cms
+        float rightMargin   = Float.valueOf(properties.getProperty("rightMargin").trim()).floatValue();    //4.9mm
+        float gapAcrossStickers = Float.valueOf(properties.getProperty("gapAcrossStickers").trim()).floatValue(); //2mm
         //Total Width = 4.9 + 99.1*2 + 4.9 + 2.0 = 206
 
-        float topMargin     = 12.9f;    //12.9cms
-        float stickerHeight = 33.9f;    //3.39cms
-        float bottomMargin  = 12.9f;    //12.9mm
+        float topMargin     = Float.valueOf(properties.getProperty("topMargin").trim()).floatValue();    //12.9cms
+        float stickerHeight = Float.valueOf(properties.getProperty("stickerHeight").trim()).floatValue();    //3.39cms
+        float bottomMargin  = Float.valueOf(properties.getProperty("bottomMargin").trim()).floatValue();    //12.9mm
         // Total Height = 12.9 + 33.9*8 + 12.9 = 297
 
-        float header        = 1.0f;     // This is the space to be left on top of sticker
+        float header        = Float.valueOf(properties.getProperty("header").trim()).floatValue();     // This is the space to be left on top of sticker
 
-        float pageHeight    = 297.0f;   //297mm
-        float pageWidth     = 210.0f;   //210mm
+        float pageHeight    = Float.valueOf(properties.getProperty("pageHeight").trim()).floatValue();   //297mm
+        float pageWidth     = Float.valueOf(properties.getProperty("pageWidth").trim()).floatValue();;   //210mm
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
 
@@ -184,7 +216,7 @@ public class convertToPdf {
         }
     }
 
-    public static Paragraph getContent(ResultSet rs) throws SQLException
+    public Paragraph getContent(ResultSet rs) throws SQLException
     {
         /*
         String subscriberNumber = "36207";
@@ -254,9 +286,10 @@ public class convertToPdf {
 
 
             info = new Paragraph();
-            info.setLeading(10.0f);
-            info.setAlignment(Element.ALIGN_CENTER);
-            Font font = new Font(FontFamily.COURIER, 10, Font.BOLD, BaseColor.BLACK);
+            info.setLeading(leading);
+            info.setAlignment(textAlignment);
+
+            Font font = new Font(fontType, fontSize, fontStyle, BaseColor.BLACK);
             String firstLine = subscriberNumber +
                     " " + journalCode +
                     " " + subtypecode +

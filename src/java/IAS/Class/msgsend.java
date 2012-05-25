@@ -7,7 +7,6 @@ package IAS.Class;
  * For sending mail using authentication: http://dunithd.wordpress.com/2009/10/22/send-email-using-javamail-api-and-your-gmail-account/
  * http://www.vipan.com/htdocs/javamail.html
  */
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -27,13 +26,218 @@ public class msgsend
 {
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Class.msgsend");
 
-    public boolean sendMailWithoutAuthentication(String propertiesFile, String to, String cc, String bcc, String subject,
-                            String message, String from, String file)
+    public void sendExceptionMail(String exceptionMsg) throws IOException{
+        ServletContext context = ServletContextInfo.getServletContext();
+        String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_email.properties");
+        //String from           = properties.getProperty("FROM");
+        this.sendMailWithAuthenticationUseSSL(
+                emailPropertiesFile, "jds.adm.all@gmail.com", "", "", "Exception generated in JDS code",
+                exceptionMsg, "JDS", "");
+    }
+
+    // This can be used for gmail
+    public boolean sendMailWithAuthenticationUseSSL(String propertiesFile, String to, String cc, String bcc, String subject,
+                            String msg, String from, String file)
     {
-        try
-        {
+        try {
+            // Read properties file.
             Properties properties = new Properties();
             properties.load(new FileInputStream(propertiesFile));
+            String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
+            String SMTP_AUTH_USER = properties.getProperty("SMTP_AUTH_USER");
+            String SMTP_AUTH_PWD  = properties.getProperty("SMTP_AUTH_PWD");
+            String PORTFORSSL     = properties.getProperty("PORTFORSSL");
+            //String STARTTLS       = properties.getProperty("STARTTLS");
+            String AUTH           = properties.getProperty("AUTH");
+            String SOCKET_FACTORY = properties.getProperty("SOCKET_FACTORY");
+            String mail_debug     = properties.getProperty("mail.debug");
+            String session_debug  = properties.getProperty("session.debug");
+
+            //Use Properties object to set environment properties
+            Properties props = new Properties();
+            props.put("mail.smtp.host", SMTP_HOST_NAME);
+            props.put("mail.smtp.port", PORTFORSSL);
+            props.put("mail.smtp.user", SMTP_AUTH_USER);
+            props.put("mail.smtp.auth", AUTH);
+            // Most SMTP servers support SSL (Secure Socket Layer) connections which can be used for secure login to the server.
+            // They use STARTTLS command (see RFC 2487 and RFC 3501) to switch the connection to be secured by TLS.
+            // Use of the STARTTLS command is preferred in cases where the server supports both SSL and non-SSL connections.
+            //props.put("mail.smtp.starttls.enable", STARTTLS);
+            props.put("mail.smtp.debug", mail_debug);
+            props.put("mail.smtp.socketFactory.port", PORTFORSSL);
+            props.put("mail.smtp.socketFactory.class", SOCKET_FACTORY);
+            props.put("mail.smtp.socketFactory.fallback", "false");
+
+            //Obtain the default mail session
+            Session session = Session.getDefaultInstance(props, null);
+            if (session_debug.equals("true"))
+            session.setDebug(true);
+
+            //Construct the mail message
+            MimeMessage message = new MimeMessage(session);
+
+            if(!from.isEmpty())
+                message.setFrom(new InternetAddress(from));
+            else
+                message.setFrom();
+
+            if (!to.isEmpty())
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
+            // To send mail to multiple people, comma separated
+            // message.addRecipients(RecipientType.TO, TO);
+            // Parse a comma-separated list of email addresses. Be strict.
+            if (!cc.isEmpty())
+            message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(cc, false));
+            // Parse comma/space-separated list. Cut some slack.
+            if (!bcc.isEmpty())
+            message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(bcc, false));
+
+            message.setSubject(subject);            // Setting the Subject
+
+            if (!file.isEmpty())
+            {
+                // Attach the specified file.
+                // We need a multipart message to hold the attachment.
+                MimeBodyPart mbp1 = new MimeBodyPart();
+                mbp1.setText(msg);
+                MimeBodyPart mbp2 = new MimeBodyPart();
+
+                mbp2.attachFile(file);
+                MimeMultipart mp = new MimeMultipart();
+                mp.addBodyPart(mbp1);
+                mp.addBodyPart(mbp2);
+                message.setContent(mp);
+            }
+            else
+            {
+                // This will send messages as text
+                //message.setContent(msg, "text/plain");  // Setting the content type
+                // To send html links in mail
+                message.setText(msg, "UTF-8", "html");
+            }
+
+            message.setHeader("X-Mailer", "msgSend");
+            message.setSentDate(new Date());
+
+            message.saveChanges();
+
+            //Use Transport to deliver the message
+            Transport transport = session.getTransport("smtp");
+            transport.connect(SMTP_HOST_NAME, SMTP_AUTH_USER, SMTP_AUTH_PWD);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+        } catch (IOException | MessagingException ex) {
+            return false;
+        }
+        return true;
+    }
+
+    // Even this method can be used for gmail
+    public boolean sendMailWithAuthenticationUseTLS(String propertiesFile, String to, String cc, String bcc, String subject,
+                            String msg, String from, String file) throws MessagingException, IOException
+    {
+        try {
+            // Read properties file.
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(propertiesFile));
+            String SMTP_HOST_NAME           = properties.getProperty("SMTP_HOST_NAME");
+            String SMTP_AUTH_USER           = properties.getProperty("SMTP_AUTH_USER");
+            String SMTP_AUTH_PWD            = properties.getProperty("SMTP_AUTH_PWD");
+            String PORTFOR_TLS_STARTTLS     = properties.getProperty("PORTFOR_TLS_STARTTLS");
+            String STARTTLS       = properties.getProperty("STARTTLS");
+
+            String AUTH           = properties.getProperty("AUTH");
+            String SOCKET_FACTORY = properties.getProperty("SOCKET_FACTORY");
+            String mail_debug     = properties.getProperty("mail.debug");
+            String session_debug  = properties.getProperty("session.debug");
+
+
+            //Use Properties object to set environment properties
+            Properties props = new Properties();
+            props.put("mail.smtp.host", SMTP_HOST_NAME);
+            props.put("mail.smtp.port", PORTFOR_TLS_STARTTLS);
+            props.put("mail.smtp.user", SMTP_AUTH_USER);
+            props.put("mail.smtp.auth", AUTH);
+            // Most SMTP servers support SSL (Secure Socket Layer) connections which can be used for secure login to the server.
+            // They use STARTTLS command (see RFC 2487 and RFC 3501) to switch the connection to be secured by TLS.
+            // Use of the STARTTLS command is preferred in cases where the server supports both SSL and non-SSL connections.
+            props.put("mail.smtp.starttls.enable", STARTTLS);
+            props.put("mail.smtp.debug", mail_debug);
+            //props.put("mail.smtp.socketFactory.port", PORTFORSSL);
+            //props.put("mail.smtp.socketFactory.class", SOCKET_FACTORY);
+            //props.put("mail.smtp.socketFactory.fallback", "false");
+
+            //Obtain the default mail session
+            Session session = Session.getDefaultInstance(props, null);
+            if (session_debug.equals("true"))
+            session.setDebug(true);
+
+            //Construct the mail message
+            MimeMessage message = new MimeMessage(session);
+
+            if(!from.isEmpty())
+                message.setFrom(new InternetAddress(from));
+            else
+                message.setFrom();
+
+            if (!to.isEmpty())
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
+            // To send mail to multiple people, comma separated
+            // message.addRecipients(RecipientType.TO, TO);
+            // Parse a comma-separated list of email addresses. Be strict.
+            if (!cc.isEmpty())
+            message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(cc, false));
+            // Parse comma/space-separated list. Cut some slack.
+            if (!bcc.isEmpty())
+            message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(bcc, false));
+
+            message.setSubject(subject);            // Setting the Subject
+
+            if (!file.isEmpty())
+            {
+                // Attach the specified file.
+                // We need a multipart message to hold the attachment.
+                MimeBodyPart mbp1 = new MimeBodyPart();
+                mbp1.setText(msg);
+                MimeBodyPart mbp2 = new MimeBodyPart();
+                mbp2.attachFile(file);
+                MimeMultipart mp = new MimeMultipart();
+                mp.addBodyPart(mbp1);
+                mp.addBodyPart(mbp2);
+                message.setContent(mp);
+            }
+            else
+            {
+                // This will send messages as text
+                message.setContent(msg, "text/plain");  // Setting the content type
+                // To send html links in mail
+                // message.setText(msg, "UTF-8", "html");
+            }
+
+            message.setHeader("X-Mailer", "msgSend");
+            message.setSentDate(new Date());
+
+            message.saveChanges();
+
+            //Use Transport to deliver the message
+            Transport transport = session.getTransport("smtp");
+            transport.connect(SMTP_HOST_NAME, SMTP_AUTH_USER, SMTP_AUTH_PWD);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+        }catch (IOException | MessagingException ex) {
+            return false;
+        }
+        return true;
+    }
+
+    // Servers that do not require any authentication. This should be used for sending emails from IAS
+    public boolean sendMailWithoutAuthentication(String propertiesFile, String to, String cc, String bcc, String subject,
+                            String msg, String from, String file) throws MessagingException, IOException
+    {
+        try {
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(propertiesFile));
+
             String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
             String mail_debug     = properties.getProperty("mail.debug");
             String session_debug  = properties.getProperty("session.debug");
@@ -51,104 +255,81 @@ public class msgsend
             session.setDebug(true);
 
             // Construct the message and send it.
-            Message msg = new MimeMessage(session);
+            Message message = new MimeMessage(session);
             if (!from.isEmpty())
-                msg.setFrom(new InternetAddress(from));
+                message.setFrom(new InternetAddress(from));
             else
-                msg.setFrom();
+                message.setFrom();
 
             if (!to.isEmpty())
-            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
 
             if (!cc.isEmpty())
-            msg.setRecipients(Message.RecipientType.CC, InternetAddress.parse(cc, false));
+            message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(cc, false));
 
             if (!bcc.isEmpty())
-            msg.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(bcc, false));
+            message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(bcc, false));
 
-            msg.setSubject(subject);
+            message.setSubject(subject);
 
             if (!file.isEmpty())
             {
                 // Attach the specified file.
                 // We need a multipart message to hold the attachment.
                 MimeBodyPart mbp1 = new MimeBodyPart();
-                mbp1.setText(message);
+                mbp1.setText(msg);
                 MimeBodyPart mbp2 = new MimeBodyPart();
                 mbp2.attachFile(file);
                 MimeMultipart mp = new MimeMultipart();
                 mp.addBodyPart(mbp1);
                 mp.addBodyPart(mbp2);
-                msg.setContent(mp);
+                message.setContent(mp);
             }
             else
             {
                 // If the desired charset is known, you can use
                 // setText(text, charset)
-                msg.setText(message);
+                //message.setText(msg);
+                // This will send messages as text
+                message.setContent(msg, "text/plain");  // Setting the content type
+                // To send html links in mail
+                //message.setText(msg, "UTF-8", "html");
             }
 
-            msg.setHeader("X-Mailer", "msgSend");
-            msg.setSentDate(new Date());
+            message.setHeader("X-Mailer", "msgSend");
+            message.setSentDate(new Date());
 
             // send the thing off
-            Transport.send(msg);
-
-            return true;
-        } catch (MessagingException e) {
-            logger.error(e.getMessage(), e);
-            return false;
-        } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            Transport.send(message);
+        }catch (IOException | MessagingException ex) {
             return false;
         }
+        return true;
+
     }
 
-    public void sendExceptionMail(String exceptionMsg) throws IOException{
-        ServletContext context = ServletContextInfo.getServletContext();
-        String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_email.properties");
-        //msgsend smtpMailSender = new msgsend();
-        this.sendMailWithAuthentication(
-                emailPropertiesFile,
-                "jds.adm.all@gmail.com", "", "",
-                "Exception generated in JDS code",
-                exceptionMsg,
-                "JDS", "");
-    }
-
-    public boolean sendMailWithAuthentication(String propertiesFile, String to, String cc, String bcc, String subject,
-                            String msg, String from, String file)
+    // For corporate email which require authentication but no SSL or TTLS required
+    public boolean sendMailWithAuthenticationNoSSLNoTLS(String propertiesFile, String to, String cc, String bcc, String subject,
+                            String msg, String from, String file) throws IOException, MessagingException
     {
-        try
-        {
+        try {
         // Read properties file.
         Properties properties = new Properties();
         properties.load(new FileInputStream(propertiesFile));
+
         String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
         String SMTP_AUTH_USER = properties.getProperty("SMTP_AUTH_USER");
         String SMTP_AUTH_PWD  = properties.getProperty("SMTP_AUTH_PWD");
-        String PORTFORSSL     = properties.getProperty("PORTFORSSL");
-        String STARTTLS       = properties.getProperty("STARTTLS");
         String AUTH           = properties.getProperty("AUTH");
-        String SOCKET_FACTORY = properties.getProperty("SOCKET_FACTORY");
         String mail_debug     = properties.getProperty("mail.debug");
         String session_debug  = properties.getProperty("session.debug");
-
 
         //Use Properties object to set environment properties
         Properties props = new Properties();
         props.put("mail.smtp.host", SMTP_HOST_NAME);
-        props.put("mail.smtp.port", PORTFORSSL);
         props.put("mail.smtp.user", SMTP_AUTH_USER);
         props.put("mail.smtp.auth", AUTH);
-        // Most SMTP servers support SSL (Secure Socket Layer) connections which can be used for secure login to the server.
-        // They use STARTTLS command (see RFC 2487 and RFC 3501) to switch the connection to be secured by TLS.
-        // Use of the STARTTLS command is preferred in cases where the server supports both SSL and non-SSL connections.
-        props.put("mail.smtp.starttls.enable", STARTTLS);
         props.put("mail.smtp.debug", mail_debug);
-        props.put("mail.smtp.socketFactory.port", PORTFORSSL);
-        props.put("mail.smtp.socketFactory.class", SOCKET_FACTORY);
-        props.put("mail.smtp.socketFactory.fallback", "false");
 
         //Obtain the default mail session
         Session session = Session.getDefaultInstance(props, null);
@@ -192,9 +373,9 @@ public class msgsend
         else
         {
             // This will send messages as text
-            message.setContent(msg, "text/plain");  // Setting the content type
+            //message.setContent(msg, "text/plain");  // Setting the content type
             // To send html links in mail
-            // message.setText(msg, "UTF-8", "html");
+            message.setText(msg, "UTF-8", "html");
         }
 
         message.setHeader("X-Mailer", "msgSend");
@@ -207,14 +388,10 @@ public class msgsend
         transport.connect(SMTP_HOST_NAME, SMTP_AUTH_USER, SMTP_AUTH_PWD);
         transport.sendMessage(message, message.getAllRecipients());
         transport.close();
-
-        return true;
-        }catch (MessagingException e) {
-            logger.error(e.getMessage(), e);
-            return false;
-        } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+        }catch (IOException | MessagingException ex) {
             return false;
         }
+        return true;
+
     }
 }

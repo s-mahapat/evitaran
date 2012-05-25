@@ -19,7 +19,7 @@ public class addMasterData extends JDSController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        String url = null;
+        String url = "/jsp/errors/404.jsp";
 
         try {
 
@@ -54,28 +54,9 @@ public class addMasterData extends JDSController {
             }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
-
-            ServletContext context = getServletContext();
-            String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_email.properties");
-            msgsend smtpMailSender = new msgsend();
-            smtpMailSender.sendMailWithAuthentication(
-                    emailPropertiesFile,
-                    "jds.adm.all@gmail.com", "", "",
-                    "Exception generated in JDS code",
-                    util.getExceptionStackTraceAsString(e),
-                    "JDS", "");
-
             throw new javax.servlet.ServletException(e);
 
         } finally {
-            if(url == null){
-                url = "/jsp/errors/404.jsp";
-                logger.error("Redirect url was not found, forwarding to 404");
-            }
-            else
-            {
-                logger.debug("Called->" + url);
-            }
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
             if (rd != null && url != null) {
                 rd.forward(request, response);
