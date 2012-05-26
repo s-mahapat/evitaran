@@ -103,6 +103,16 @@ A:active {
     background-repeat: no-repeat;
 }
 
+#iasletterheadlogo{
+    height: 38px;
+    width: 39px;
+    float: left;
+    top:1px;
+    background-image: url("../images/logo_main.png");
+    z-index: 3;
+    background-repeat: no-repeat;
+}
+
 #sidebar{
     background-color: #F6F6F6;/*#cc9b00;*/
     /*top:68px;*/
@@ -598,6 +608,16 @@ A:active {
     width: 100%;
     float: left;
     margin-top: 30px;
+}
+
+.subjectLine{
+
+    margin-left: 10px;
+    font-family: cambria,sans-serif,serif;
+    font-size: 12px;
+    width: 100%;
+    float: left;
+    margin-top: 20px;
 }
 
 .letterBody{

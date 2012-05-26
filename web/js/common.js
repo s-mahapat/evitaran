@@ -387,3 +387,22 @@ function monthNumberToName(cellvalue, options, rowObj){
     var _JDSConstants = new JDSConstants();
     return(_JDSConstants.monthNames[cellvalue - 1]);
 }
+
+function jdsEmail(url){
+    
+    alert(url);
+    $.ajax({
+        type: "GET",
+        url: url, // change to full path of file on server
+        dataType: "xml",
+        success: function(xml){
+            
+        },
+        complete: function(){
+            
+        },
+        error: function() {
+            alert("XML File could not be found at " + requestURL);
+        }
+    });
+}

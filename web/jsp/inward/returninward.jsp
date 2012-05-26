@@ -30,7 +30,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form name="chequeReturn" action="<%=request.getContextPath() + "/inward"%>" method="post" onsubmit="return validate()">
+            <form name="chequeReturn" id="chequeReturn" action="<%=request.getContextPath() + "/inward"%>" method="post" onsubmit="return validate()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <fieldset class="subMainFieldSet" id="chqDDReturnFields">
@@ -95,6 +95,14 @@
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
+                                        <label>Inward ID:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardID" id="inwardID" value="${inwardFormBean.inwardID}"/>
+                                    </span>
+                                </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
                                         <label>Cheque/DD No:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
@@ -125,48 +133,31 @@
                                     </span>
                                 </div>
 
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Email:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="email" id="email" value="${inwardFormBean.email}"/>
+                                    </span>
+                                </div>
+
 
                             </div>
                         </fieldset>
-                        <fieldset class="subMainFieldSet" style="border: solid black;border-width: thin;">
-                            <div id="returnReasonDiv">
-                                <p>
-                                    Dear Sir,
-                                </p>
-                                <p>
-                                    Sub No: ${inwardFormBean.subscriberIdAsText}
-                                </p>
-                                <p>
-                                    Ref:
-                                </p>
-                                <p>
-                                    The Cheque/DD No: ${inwardFormBean.chqddNumberAsText} dated ${inwardFormBean.paymentDate} for ${inwardFormBean.currency} ${inwardFormBean.amount} is returned herewith for want of the following information
-                                </p>
-                                <ul>
-                                    <li id="reasonText">
-                                        <%
-                                            if (inwardFormBean.getChequeDDReturnReason() != null && !inwardFormBean.getChequeDDReturnReason().isEmpty()) {
-                                                out.println(inwardFormBean.getChequeDDReturnReason());
-                                            }
-                                        %>
-                                    </li>
-                                </ul>
-                                <p>&nbsp;</p>
-                                <p>
-                                    Inward No: ${inwardFormBean.inwardNumber}
-                                </p>
-                                <p>&nbsp;</p>
-                                <p style="margin-left: 70%;">
-                                    Your's Truly
-                                </p>
-
-                            </div>
-
-                        </fieldset>
+                        <%--<%@include file="chequereturnbody.jsp" %>--%>
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv" style="margin-top: 20px;">
                                 <input onclick="setActionValue('saveReturn')" TABINDEX="2" class="IASButton" type="submit" value="Save" id="btnSaveReturn" name="btnSaveReturn"/>
-                                <input TABINDEX="3" class="IASButton" type="button" value="Print" id="btnPrintPreview" name="btnPrintPreview" onclick="showChequeDDReturnPrintPreview()"/>
+                                <input TABINDEX="3" class="IASButton" type="button" value="Print" id="btnPrintPreview" name="btnPrintPreview" onclick="showChequeDDReturnPrintPreview('Email/inward/${inwardFormBean.inwardNumber}/return')"/>
+                                <%
+                                    String email = inwardFormBean.getEmail();
+                                    String bEmail = "enabled";
+                                    if (email == null || email.isEmpty()) {
+                                        bEmail = "disabled";
+                                    }
+                                %>
+                                <input TABINDEX="4" class="IASButton" type="button" value="Email" id="btnEmail" name="btnEmail" <%=bEmail%> onclick="jdsEmail('Email/inward/${inwardFormBean.inwardNumber}/return')"/>
                             </div>
                             <div class="actionBtnDiv" style="margin-top: 15px;color: green">
                                 <%

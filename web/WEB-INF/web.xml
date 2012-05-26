@@ -178,6 +178,10 @@
         <servlet-name>reminders</servlet-name>
         <servlet-class>IAS.Controller.reminders.reminders</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Email</servlet-name>
+        <servlet-class>IAS.Controller.Email.Email</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -313,6 +317,10 @@
     <servlet-mapping>
         <servlet-name>missingissue</servlet-name>
         <url-pattern>/missingissue</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Email</servlet-name>
+        <url-pattern>/Email/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

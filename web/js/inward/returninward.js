@@ -23,9 +23,11 @@ function validate(){
     return true;
 }
 
-function showChequeDDReturnPrintPreview(){
+function showChequeDDReturnPrintPreview(url){
     //var htmlStr = document.getElementById("returnReasonDiv").outerHTML;
     //$("#printPreview").html(htmlStr);
-    $("#btnPrintPreview").printPreview();
-    return false;
+    //$("#btnPrintPreview").printPreview();
+    $("#chequeReturn").attr("action",url);
+    $("#chequeReturn").submit();
+    return true;
 }

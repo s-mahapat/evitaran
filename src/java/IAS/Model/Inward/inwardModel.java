@@ -185,6 +185,35 @@ public class inwardModel extends JDSModel {
         //request.setAttribute("inwardFormBean", inwardFormBean);
         return inwardFormBean;
     }
+    
+    public inwardFormBean GetInward(String inwardNumber) throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
+
+        String sql;
+        inwardFormBean inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
+
+        //FillBean is defined in the parent class IAS.Model/JDSModel.java
+        FillBean(this.request, inwardFormBean);
+
+        // the query name from the jds_sql properties files in WEB-INF/properties folder
+        sql = Queries.getQuery("get_inward_by_number");
+
+        PreparedStatement st = conn.prepareStatement(sql);
+
+        st.setString(1, inwardNumber);
+
+        try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
+            while (rs.next()) {
+                BeanProcessor bProc = new BeanProcessor();
+                Class type = Class.forName("IAS.Bean.Inward.inwardFormBean");
+                inwardFormBean = (IAS.Bean.Inward.inwardFormBean) bProc.toBean(rs, type);
+
+            }
+        }
+
+        //request.setAttribute("inwardFormBean", inwardFormBean);
+        return inwardFormBean;
+    }
 
     private void _setNewInwardStatementParams(PreparedStatement st) throws SQLException, ParseException {
         int paramIndex = 0;
