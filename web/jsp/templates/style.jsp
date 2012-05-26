@@ -1,8 +1,8 @@
 
-<%--<link href="<%=request.getContextPath() + "/css/sdmenu.css"%>" rel="stylesheet" type="text/css"  />
-<script src="<%=request.getContextPath() + "/js/sdmenu/sdmenu.js"%>" type="text/javascript"></script>--%>
 <link rel="icon" href="<%=request.getContextPath() + "/images/favicon.ico"%>" type="image/x-icon" />
+
 <link rel="shortcut icon" href="<%=request.getContextPath() + "/images/favicon.ico"%>" type="image/x-icon" />
+
 <script src="<%=request.getContextPath() + "/js/common.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/js/jdsconstants.js"%>" type="text/javascript"></script>
 

@@ -47,7 +47,7 @@ public class Email extends JDSController {
                 String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                 response.reset(); // Some JSF component library or some Filter might have set some headers in the buffer beforehand. We want to get rid of them, else it may collide.
                 response.setContentType("application/pdf"); // Check http://www.w3schools.com/media/media_mimeref.asp for all types. Use if necessary ServletContext#getMimeType() for auto-detection based on filename.
-                response.setHeader("Content-disposition", "attachment; filename=" + fileName); // The Save As popup magic is done here. You can give it any filename you want, this only won't work in MSIE, it will use current request URL as filename instead.
+                response.setHeader("Content-disposition", "inline; filename=" + fileName); // The Save As popup magic is done here. You can give it any filename you want, this only won't work in MSIE, it will use current request URL as filename instead.
 
                 // Write file to response.
                 OutputStream output = response.getOutputStream();
