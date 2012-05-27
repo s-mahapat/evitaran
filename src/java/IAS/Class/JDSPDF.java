@@ -6,10 +6,8 @@ package IAS.Class;
 
 import com.itextpdf.text.*;
 import java.io.IOException;
-/**
- *
- * @author Newton
- */
+import javax.servlet.ServletContext;
+
 public class JDSPDF {
     
     public static int OUTER_PARAGRAPH_SPACE  = 10;
@@ -28,8 +26,12 @@ public class JDSPDF {
         Paragraph paragraph = new Paragraph();
         paragraph.setAlignment(Element.ALIGN_CENTER);
         
-        //Image _logo = Image.getInstance("logo_main.png");
-        //paragraph.add(_logo);
+        ServletContext context = ServletContextInfo.getServletContext();
+        String logo = context.getRealPath("/images/pdflogo.jpg");        
+        
+        Image _logo = Image.getInstance(logo);
+        _logo.setAlignment(Element.ALIGN_CENTER);
+        paragraph.add(_logo);
         
         Font _IASFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);        
         Chunk HeaderIAS = new Chunk(JDSConstants.IAS_LETTERHEAD);

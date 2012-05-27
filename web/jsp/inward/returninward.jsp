@@ -149,7 +149,7 @@
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv" style="margin-top: 20px;">
                                 <input onclick="setActionValue('saveReturn')" TABINDEX="2" class="IASButton" type="submit" value="Save" id="btnSaveReturn" name="btnSaveReturn"/>
-                                <input TABINDEX="3" class="IASButton" type="button" value="Print" id="btnPrintPreview" name="btnPrintPreview" onclick="showChequeDDReturnPrintPreview('Email/inward/${inwardFormBean.inwardNumber}/return')"/>
+                                <input TABINDEX="3" class="IASButton" type="button" value="Print" id="btnPrintPreview" name="btnPrintPreview" onclick="showChequeDDReturnPrintPreview('print/inward/${inwardFormBean.inwardNumber}/return')"/>
                                 <%
                                     String email = inwardFormBean.getEmail();
                                     String bEmail = "enabled";

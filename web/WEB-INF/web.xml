@@ -181,6 +181,16 @@
     <servlet>
         <servlet-name>Email</servlet-name>
         <servlet-class>IAS.Controller.Email.Email</servlet-class>
+        <run-as>
+            <role-name>user</role-name>
+        </run-as>
+    </servlet>
+    <servlet>
+        <servlet-name>Print</servlet-name>
+        <servlet-class>IAS.Controller.Print.Print</servlet-class>
+        <run-as>
+            <role-name>user</role-name>
+        </run-as>
     </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
@@ -319,8 +329,14 @@
         <url-pattern>/missingissue</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>Print</servlet-name>
+        <url-pattern>/print/*</url-pattern>
+        <url-pattern>/Print/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>Email</servlet-name>
         <url-pattern>/Email/*</url-pattern>
+        <url-pattern>/email/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

@@ -1,4 +1,8 @@
-package IAS.Controller.Email;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package IAS.Controller.Print;
 
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.ChequeReturnPDF;
@@ -13,16 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
-public class Email extends JDSController {
+public class Print extends JDSController {
 
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.Email");
+
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.Print");
     
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String requestURI = request.getRequestURI();
-        requestURI = requestURI.replaceFirst("/JDS/Email/", "");
+        requestURI = requestURI.replaceFirst("(?i)/JDS/Print/", "");
         String[] requestParams = requestURI.split("/");
 
         String document = requestParams[0];
@@ -44,33 +49,21 @@ public class Email extends JDSController {
                                                                 , _inwardFormBean.getChequeDDReturnReason());
                 byte pdfData[] = baos.toByteArray();
                 String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
-                response.reset(); // Some JSF component library or some Filter might have set some headers in the buffer beforehand. We want to get rid of them, else it may collide.
-                response.setContentType("application/pdf"); // Check http://www.w3schools.com/media/media_mimeref.asp for all types. Use if necessary ServletContext#getMimeType() for auto-detection based on filename.
-                response.setHeader("Content-disposition", "inline; filename=" + fileName); // The Save As popup magic is done here. You can give it any filename you want, this only won't work in MSIE, it will use current request URL as filename instead.
-
+                response.reset();
+                response.setContentType("application/pdf");
+                response.setHeader("Content-disposition", "inline; filename=" + fileName);
                 // Write file to response.
-                OutputStream output = response.getOutputStream();
-                
+                OutputStream output = response.getOutputStream();               
                 output.write(pdfData);
                 output.close();
-
-//                RequestDispatcher rd = getServletContext().getRequestDispatcher("/jsp/inward/chequereturnbody.jsp");
-//                CustomResponse _customResponse = new CustomResponse(response);
-//                rd.forward(request, _customResponse);
-//                String html = _customResponse.getOutput();
-//                //IAS.Class.msgsend mailer = new msgsend();
-//                //mailer.sendHTMLEmailWithAuthentication("jds.adm.all@gmail.com", 
-//                    //                                    "shailendra.mahapatra@gmail.com", "Test", html);
-//                convertToPdf _pdfconverter = new convertToPdf();
-//                _pdfconverter.htmlChequeReturnToPDF(html);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
         }
     }
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.

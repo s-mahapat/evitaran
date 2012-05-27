@@ -69,9 +69,11 @@ public class ChequeReturnPDF extends JDSPDF{
                         + " is returned herewith for want of the following information";
         Chunk _bodychunk = new Chunk(_body);
         paragraph2.add(_bodychunk);
-        
-        
+                
+        paragraph2.add(Chunk.NEWLINE);
+        paragraph2.add(Chunk.NEWLINE);
         List orderedList = new List(List.UNORDERED);
+        //orderedList.setListSymbol("*");
         orderedList.add(new ListItem(Reason));
         paragraph2.add(orderedList);
         paragraph.add(paragraph2);                
