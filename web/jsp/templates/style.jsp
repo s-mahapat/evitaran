@@ -23,13 +23,18 @@
 <%-- Block UI --%>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.blockUI.js"%>" type="text/javascript"></script>
 
-
 <script>
     $(document).ready(function(){
         $( "input:submit, input:button, input:reset, button", "#bodyContainer,.subMainDiv" ).button();
         $("input:reset").on("click", function(){
             resetGrid(".datatable");
-        });
+        });        
+    });
+    $(document).ajaxStart(function(){        
+        $('#ajaxBusy').show();
+    });
+    $(document).ajaxStop(function(){
+        $('#ajaxBusy').hide();
     });
 </script>
 <link href="<%=request.getContextPath() + "/css/style.css"%>" type="text/css" rel="stylesheet"/>

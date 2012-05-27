@@ -19,9 +19,8 @@ import org.apache.log4j.Logger;
 
 public class Print extends JDSController {
 
-
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.Print");
-    
+
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,22 +39,19 @@ public class Print extends JDSController {
                 inwardFormBean _inwardFormBean = new inwardFormBean();
                 _inwardFormBean = _inwardModel.GetInward(documentID);
                 request.setAttribute("inwardFormBean", _inwardFormBean);
-                ChequeReturnPDF _chequePdf = new ChequeReturnPDF();
-                ByteArrayOutputStream baos =  _chequePdf.getPDF(_inwardFormBean.getSubscriberIdAsText()
-                                                                , _inwardFormBean.getInwardNumber()
-                                                                , _inwardFormBean.getChqddNumber()
-                                                                , _inwardFormBean.getPaymentDate()
-                                                                , _inwardFormBean.getAmount()
-                                                                , _inwardFormBean.getChequeDDReturnReason());
-                byte pdfData[] = baos.toByteArray();
-                String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
-                response.reset();
-                response.setContentType("application/pdf");
-                response.setHeader("Content-disposition", "inline; filename=" + fileName);
-                // Write file to response.
-                OutputStream output = response.getOutputStream();               
-                output.write(pdfData);
-                output.close();
+                if (action.equalsIgnoreCase("chqreturn")) {
+                    ChequeReturnPDF _chequePdf = new ChequeReturnPDF();
+                    ByteArrayOutputStream baos = _chequePdf.getPDF(_inwardFormBean.getSubscriberIdAsText(), _inwardFormBean.getInwardNumber(), _inwardFormBean.getChqddNumber(), _inwardFormBean.getPaymentDate(), _inwardFormBean.getAmount(), _inwardFormBean.getChequeDDReturnReason());
+                    byte pdfData[] = baos.toByteArray();
+                    String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
+                    response.reset();
+                    response.setContentType("application/pdf");
+                    response.setHeader("Content-disposition", "inline; filename=" + fileName);
+                    try (OutputStream output = response.getOutputStream()) {
+                        output.write(pdfData);
+                    }
+                }
+
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

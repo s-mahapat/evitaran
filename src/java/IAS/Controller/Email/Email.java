@@ -3,20 +3,25 @@ package IAS.Controller.Email;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.ChequeReturnPDF;
 import IAS.Class.JDSLogger;
+import IAS.Class.msgsend;
+import IAS.Class.util;
 import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import javax.activation.DataSource;
+import javax.mail.util.ByteArrayDataSource;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
 
 public class Email extends JDSController {
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.Email");
-    
+
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -28,45 +33,51 @@ public class Email extends JDSController {
         String document = requestParams[0];
         String documentID = requestParams[1];
         String action = requestParams[2];
+        boolean success = false;
+        String url = "/jsp/errors/404.jsp";
 
         try {
+            // for all inwards
             if (document.equalsIgnoreCase("inward")) {
                 inwardModel _inwardModel = new inwardModel(request);
                 inwardFormBean _inwardFormBean = new inwardFormBean();
                 _inwardFormBean = _inwardModel.GetInward(documentID);
                 request.setAttribute("inwardFormBean", _inwardFormBean);
-                ChequeReturnPDF _chequePdf = new ChequeReturnPDF();
-                ByteArrayOutputStream baos =  _chequePdf.getPDF(_inwardFormBean.getSubscriberIdAsText()
-                                                                , _inwardFormBean.getInwardNumber()
-                                                                , _inwardFormBean.getChqddNumber()
-                                                                , _inwardFormBean.getPaymentDate()
-                                                                , _inwardFormBean.getAmount()
-                                                                , _inwardFormBean.getChequeDDReturnReason());
-                byte pdfData[] = baos.toByteArray();
-                String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
-                response.reset(); // Some JSF component library or some Filter might have set some headers in the buffer beforehand. We want to get rid of them, else it may collide.
-                response.setContentType("application/pdf"); // Check http://www.w3schools.com/media/media_mimeref.asp for all types. Use if necessary ServletContext#getMimeType() for auto-detection based on filename.
-                response.setHeader("Content-disposition", "inline; filename=" + fileName); // The Save As popup magic is done here. You can give it any filename you want, this only won't work in MSIE, it will use current request URL as filename instead.
 
-                // Write file to response.
-                OutputStream output = response.getOutputStream();
-                
-                output.write(pdfData);
-                output.close();
+                // for inward cheque return
+                if (action.equalsIgnoreCase("chqreturn")) {
+                    ChequeReturnPDF _chequePdf = new ChequeReturnPDF();
+                    ByteArrayOutputStream baos = _chequePdf.getPDF(_inwardFormBean.getSubscriberIdAsText(), _inwardFormBean.getInwardNumber(), _inwardFormBean.getChqddNumber(), _inwardFormBean.getPaymentDate(), _inwardFormBean.getAmount(), _inwardFormBean.getChequeDDReturnReason());
+                    byte pdfData[] = baos.toByteArray();
+                    String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
+                    msgsend _mailer = new msgsend();
+                    success = _mailer.sendEmailToSubscriberWithAttachment(  _inwardFormBean.getEmail(),
+                                                                            "Cheque Return",
+                                                                            "Cheque return Body",
+                                                                            fileName,
+                                                                            pdfData,
+                                                                            "application/pdf");
+                    
+                }
 
-//                RequestDispatcher rd = getServletContext().getRequestDispatcher("/jsp/inward/chequereturnbody.jsp");
-//                CustomResponse _customResponse = new CustomResponse(response);
-//                rd.forward(request, _customResponse);
-//                String html = _customResponse.getOutput();
-//                //IAS.Class.msgsend mailer = new msgsend();
-//                //mailer.sendHTMLEmailWithAuthentication("jds.adm.all@gmail.com", 
-//                    //                                    "shailendra.mahapatra@gmail.com", "Test", html);
-//                convertToPdf _pdfconverter = new convertToPdf();
-//                _pdfconverter.htmlChequeReturnToPDF(html);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
+        } finally{            
+            String xml = null;
+            try{
+                // convert true/false to 1/0
+                String successValue = (success == true) ? "1" : "0";
+                xml = util.convertStringToXML(successValue, "success");
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+                RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+                rd.forward(request, response);
+            }catch(Exception ex){
+                throw new ServletException(ex.getMessage());
+            }
+            
         }
     }
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -37,7 +37,7 @@ function checkMandatoryFields(){
                     //document.getElementById(elementID).style.backgroundColor = 'pink';
                     document.getElementById(elementID).focus();
                     isMandatoryFilledFlag = false;
-                //break;
+                    //break;
                 } else {
                     continue;
                 }
@@ -123,7 +123,7 @@ function makeReadOnly(){
             || formField.className == "IASDateTextBox"
             || formField.className == "IASTextBoxMandatoryWide"
             || formField.className == "IASTextBoxWide"
-            ){
+    ){
             formField.setAttribute("readonly",true);
             formField.style.backgroundColor = "#EEE";
         }
@@ -138,7 +138,7 @@ function makeReadOnly(){
             || formField.className == "IASComboBoxMediumMandatory"
             || formField.className == "IASComboBoxSmallMandatory"
             || formField.className == "IASComboBoxMandatory"
-            ){
+    ){
             formField.disabled = true;
             formField.style.backgroundColor = "#EEE";
         }
@@ -227,10 +227,10 @@ function jQueryDatePicker(fromDiv, toDiv){
                 //var option = this.id == "from" ? "minDate" : "maxDate",
                 instance = $( this ).data( "datepicker" ),
                 date = $.datepicker.parseDate(
-                    instance.settings.dateFormat ||
+                instance.settings.dateFormat ||
                     $.datepicker._defaults.dateFormat,
-                    selectedDate, instance.settings );
-            //dates.not( this ).datepicker( "option", option, date );
+                selectedDate, instance.settings );
+                //dates.not( this ).datepicker( "option", option, date );
             }
         });
     });
@@ -280,13 +280,13 @@ function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
 }
 
 /*
-     * This function makes an ajax call to get data from server.
-     * requesturl = request url
-     * xmlrowTag = the tag name in the xml output that has the data value
-     * formelementid= id of the element where the autocomplete should be displayed.
-     * This function will append the valus to the already existing ones. Mainly helpful
-     * to populate drop down lists.
-     */
+ * This function makes an ajax call to get data from server.
+ * requesturl = request url
+ * xmlrowTag = the tag name in the xml output that has the data value
+ * formelementid= id of the element where the autocomplete should be displayed.
+ * This function will append the valus to the already existing ones. Mainly helpful
+ * to populate drop down lists.
+ */
 function jdsAppend(requestURL,xmlRowTag,formElementId, defaultSelect, callback){
 
 
@@ -389,20 +389,25 @@ function monthNumberToName(cellvalue, options, rowObj){
 }
 
 function jdsEmail(url){
-    
-    alert(url);
     $.ajax({
         type: "GET",
         url: url, // change to full path of file on server
         dataType: "xml",
-        success: function(xml){
-            
+        success: function(xmlResponse){
+            $(xmlResponse).find("results").each(function(){
+                var isSucess = $(this).find("success").text();
+                if(parseInt(isSucess) == 1){
+                    alert("Email sent successfully");                    
+                }else{
+                    alert("Failed to send Email");
+                }
+            });
         },
         complete: function(){
             
         },
-        error: function() {
-            alert("XML File could not be found at " + requestURL);
-        }
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert("Failed to send Email. "  + textStatus + ": "+ errorThrown);
+        }        
     });
 }
