@@ -446,16 +446,16 @@
     <div class="actionBtnDiv">
         <input onclick="setActionValue('save')" TABINDEX="24" class="IASButton" type="submit" value="Save" id="btnSaveInward" name="submitAction"/>
         <input onclick="setActionValue('edit')" TABINDEX="25" class="IASButton" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
-        <input onclick="setActionValue('sendAck')" TABINDEX="26" class="IASButton" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"
-               <%
+        <input onclick="setActionValue('sendAck')" TABINDEX="26" class="IASButton" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>
+               <%--
                    //inwardFormBean.isCompleted()== true ? out.println("enabled") : out.println("disabled");
                    if (inwardFormBean.isCompleted() == true) {
                        out.println(" enabled");
                    } else {
                        out.println(" disabled");
                    }
-               %>
-               />
+               --%>
+               
         <input onclick="setActionValue('sendReturn')" TABINDEX="27" class="IASButton" type="submit" value="Send Return" id="btnSendReturn" name="submitAction"/>
     </div>
 </fieldset>

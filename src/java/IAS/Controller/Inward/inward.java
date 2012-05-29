@@ -25,7 +25,7 @@ public class inward extends JDSController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        String url = "/jsp/errors/404.jsp";
+        String url = "/jsp/errors/error.jsp";
 
         try {
 

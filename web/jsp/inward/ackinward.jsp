@@ -1,3 +1,4 @@
+<%@page import="IAS.Class.util"%>
 <jsp:useBean class="IAS.Bean.Inward.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -8,14 +9,16 @@
         <link rel="stylesheet" type="text/css" href="css/inward/ackinward.css"/>
         <link rel="stylesheet" media="print" type="text/css" href="css/inward/ackinwardprint.css"/>
         <link rel="stylesheet" media="print" type="text/css" href="css/print.css"/>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/ackinward.js"%>"></script>
         <title>Acknowledge Inward</title>
         <script type="text/javascript">
+            var subscriptionID = 0;
             $(document).ready(function(){
                 jQueryCalendar("subscriberletterDate");
                 $.ajax({
                     type: 'GET',
                     dataType: 'xml',
-                    url: "subscription?oper=getSubscriptionDetalsForInward&inwardNumber=" + "${inwardFormBean.inwardNumber}",
+                    url: "subscription?oper=getSubscriptionDetailsForInward&inwardNumber=" + "${inwardFormBean.inwardNumber}",
                     success: function(xmlResponse, textStatus, jqXHR){
                         var html = "<tbody>";
                         $(xmlResponse).find("results").find("row").each(function(){
@@ -67,7 +70,8 @@
                                 Date: <%=util.getDateString()%>
                             </div>
                             <div class="subjectLine">
-                                <strong>Subscription No:</strong><span style="padding-left: 5px;" id="subscriptionID"></span>
+                                <strong>Subscription No:</strong>
+                                <span style="padding-left: 5px;" id="subscriptionID"></span>
                             </div>
                             <div class="subjectLine">
                                 <strong>Subject:</strong> Regarding subscription of the Journals
@@ -75,7 +79,7 @@
                             <div class="subjectLine">
                                 Your letter no:
                                 <span>
-                                    <input class="IASTextBox" type="text" value="">
+                                    <input class="IASTextBox" name="lno" id="letterNumber" type="text" value="">
                                 </span>
                                 <span>Dated:</span>
                                 <span id="letterDateSpan">
@@ -103,7 +107,11 @@
                     </fieldset>
                     <fieldset class="subMainFieldSet">
                         <div class="actionBtnDiv">
-                            <input class="IASButton" id="btnPrint" value="Print" type="button" onclick="javascript:window.print()"/>
+                            <!--onclick="javascript:window.print()"-->
+                            <input class="IASButton" id="btnPrint" value="Print" type="button" onclick="printInwardAcknowledgement('print/subscription/' 
+                                                                                                                                    + subscriptionID + '/ack?lno=' 
+                                                                                                                                    + $('#letterNumber').val() 
+                                                                                                                                    + '&ldate=' + $('#subscriberletterDate').val() + '&inwardNumber=${inwardFormBean.inwardNumber}')"/>
                             <%
                                 String email = inwardFormBean.getEmail();
                                 String bEmail = "enabled";

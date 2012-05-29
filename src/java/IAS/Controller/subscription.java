@@ -150,7 +150,7 @@ public class subscription extends JDSController {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            } else if (oper.equalsIgnoreCase("getSubscriptionDetalsForInward")) {
+            } else if (oper.equalsIgnoreCase("getSubscriptionDetailsForInward")) {
                 String inwardNumber = request.getParameter("inwardNumber");
                 ResultSet rs = _subscriptionModel.getSubscriptionDetailsForInward(inwardNumber);
                 String xml = null;

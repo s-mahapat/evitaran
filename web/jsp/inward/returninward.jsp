@@ -17,9 +17,11 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=return_reason"%>","return_reason","chequeDDReturnReason");
                 if(document.getElementById("chequeDDReturnReason").value == "NULL"){
                     $("#btnPrintPreview").button("disable");
+                    $("#btnEmail").button("disable");
                     //document.getElementById("btnPrintPreview").disabled = true;
                 }else{
                     $("#btnPrintPreview").button("enable");
+                    $("#btnEmail").button("enable");
                     //document.getElementById("btnPrintPreview").disabled = false;
                 }
             })
@@ -86,7 +88,7 @@
                                         <label>Other Reason:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxWide" TABINDEX="-1" disabled type="text" name="chequeDDReturnReasonOther" id="chequeDDReturnReasonOther" value="${inwardFormBean.chequeDDReturnReasonOther}" onblur="setOtherReturnReason()"/>
+                                        <input class="IASTextBoxWide" TABINDEX="-1" maxlength="64" disabled type="text" name="chequeDDReturnReasonOther" id="chequeDDReturnReasonOther" value="${inwardFormBean.chequeDDReturnReasonOther}" onblur="setOtherReturnReason()"/>
                                     </span>
                                 </div>
 

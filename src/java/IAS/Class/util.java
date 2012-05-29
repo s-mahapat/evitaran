@@ -31,6 +31,11 @@ public final class util {
         java.util.Date dt = new java.util.Date();
         return dtformat.format(dt);
     }
+    
+    public static String getDateString(Date dt, String dateFormat) {
+        Format dtformat = new SimpleDateFormat(dateFormat);
+        return dtformat.format(dt);
+    }
 
     public static java.sql.Date dateStringToSqlDate(String stringDate) throws ParseException {
 

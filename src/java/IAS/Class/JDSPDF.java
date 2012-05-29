@@ -12,6 +12,12 @@ public class JDSPDF {
     
     public static int OUTER_PARAGRAPH_SPACE  = 10;
     public static int INNER_PARAGRAPH_SPACE  = 30;
+    public static int LEFT_INDENTATION_LESS = 25;
+    public static int LEFT_INDENTATION_MORE = 50;
+    public static Font JDS_BOLD_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
+    public static Font JDS_FONT_NORMAL_SMALL = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
+    
+    
     public Document getPDFDocument(){
         com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4);        
         document.addAuthor("Indian Academy Of Sciences");
@@ -24,7 +30,10 @@ public class JDSPDF {
     
     public Paragraph getLetterHead() throws BadElementException, java.net.MalformedURLException, IOException{
         Paragraph paragraph = new Paragraph();
+        Paragraph paragraphDate = new Paragraph();
+        
         paragraph.setAlignment(Element.ALIGN_CENTER);
+        paragraphDate.setAlignment(Element.ALIGN_RIGHT);
         
         ServletContext context = ServletContextInfo.getServletContext();
         String logo = context.getRealPath("/images/pdflogo.jpg");        
@@ -39,12 +48,17 @@ public class JDSPDF {
         
         Chunk HeaderIASAddress = new Chunk(JDSConstants.IAS_LETTERHEAD_ADDRESS);
         Chunk HeaderIASTel = new Chunk(JDSConstants.IAS_LETTERHEAD_TELEPHONE);
+        Chunk LetterDate = new Chunk("Date: " + util.getDateString());
+        paragraphDate.add(LetterDate);
         
         paragraph.add(HeaderIAS);
         paragraph.add(Chunk.NEWLINE);
         paragraph.add(HeaderIASAddress);
         paragraph.add(Chunk.NEWLINE);
         paragraph.add(HeaderIASTel);
+        
+        paragraphDate.setSpacingBefore(INNER_PARAGRAPH_SPACE);
+        paragraph.add(paragraphDate);
         
         return paragraph;
     }
@@ -63,7 +77,7 @@ public class JDSPDF {
         
         Paragraph paragraph = new Paragraph();
         paragraph.setAlignment(Element.ALIGN_RIGHT);
-        paragraph.setSpacingBefore(60);
+        paragraph.setSpacingBefore(70);
         
         paragraph.add(new Chunk(JDSConstants.IAS_LETTERFOOT_CLOSING));
         paragraph.add(Chunk.NEWLINE);

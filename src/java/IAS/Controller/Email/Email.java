@@ -9,13 +9,10 @@ import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import javax.activation.DataSource;
-import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
 
 public class Email extends JDSController {
@@ -27,14 +24,14 @@ public class Email extends JDSController {
             throws ServletException, IOException {
 
         String requestURI = request.getRequestURI();
-        requestURI = requestURI.replaceFirst("/JDS/Email/", "");
+        requestURI = requestURI.replaceFirst("(?i)/?\\w+/Email/", "");
         String[] requestParams = requestURI.split("/");
 
         String document = requestParams[0];
         String documentID = requestParams[1];
         String action = requestParams[2];
         boolean success = false;
-        String url = "/jsp/errors/404.jsp";
+        String url = "/jsp/errors/error.jsp";
 
         try {
             // for all inwards
@@ -47,7 +44,18 @@ public class Email extends JDSController {
                 // for inward cheque return
                 if (action.equalsIgnoreCase("chqreturn")) {
                     ChequeReturnPDF _chequePdf = new ChequeReturnPDF();
-                    ByteArrayOutputStream baos = _chequePdf.getPDF(_inwardFormBean.getSubscriberIdAsText(), _inwardFormBean.getInwardNumber(), _inwardFormBean.getChqddNumber(), _inwardFormBean.getPaymentDate(), _inwardFormBean.getAmount(), _inwardFormBean.getChequeDDReturnReason());
+                    
+                    // if the reason is other, then the reason for return should be from the 'others' field
+                    String returnReason = _inwardFormBean.getChequeDDReturnReason();
+                    if(returnReason.equalsIgnoreCase("others")){
+                        returnReason = _inwardFormBean.getChequeDDReturnReasonOther();
+                    }
+                    ByteArrayOutputStream baos = _chequePdf.getPDF( _inwardFormBean.getSubscriberIdAsText(), 
+                                                                    _inwardFormBean.getInwardNumber(), 
+                                                                    _inwardFormBean.getChqddNumber(), 
+                                                                    _inwardFormBean.getPaymentDate(), 
+                                                                    _inwardFormBean.getAmount(), 
+                                                                    returnReason);
                     byte pdfData[] = baos.toByteArray();
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     msgsend _mailer = new msgsend();

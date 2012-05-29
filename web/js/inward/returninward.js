@@ -8,6 +8,8 @@ function enableOtherReason(){
         document.getElementById("chequeDDReturnReasonOther").disabled = true;
         document.getElementById("reasonText").innerHTML = document.getElementById("chequeDDReturnReason").value;
     }
+    $("#btnPrintPreview").button("disable");
+    $("#btnEmail").button("disable");
 }
 
 function setOtherReturnReason(){
