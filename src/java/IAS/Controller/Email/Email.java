@@ -1,14 +1,12 @@
 package IAS.Controller.Email;
 
 import IAS.Bean.Inward.inwardFormBean;
-import IAS.Class.ChequeReturnPDF;
-import IAS.Class.JDSLogger;
-import IAS.Class.msgsend;
-import IAS.Class.util;
+import IAS.Class.*;
 import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -59,9 +57,49 @@ public class Email extends JDSController {
                     byte pdfData[] = baos.toByteArray();
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     msgsend _mailer = new msgsend();
+                    String emailBody = _inwardModel.getChequeReturnEmailBody(_inwardFormBean.getChqddNumber(),
+                                                                            _inwardFormBean.getAmount(),  
+                                                                            _inwardFormBean.getPaymentDate(),
+                                                                            returnReason);
+                    
                     success = _mailer.sendEmailToSubscriberWithAttachment(  _inwardFormBean.getEmail(),
-                                                                            "Cheque Return",
-                                                                            "Cheque return Body",
+                                                                            "Cheque/DD No: " + _inwardFormBean.getChqddNumber() + " Return",
+                                                                            emailBody,
+                                                                            fileName,
+                                                                            pdfData,
+                                                                            "application/pdf");
+                    
+                }
+                // for inward acknowledgement
+                else if (action.equalsIgnoreCase("ack")) {
+                    String _inwardNumber = request.getParameter("inwardNumber");
+                    String letterNumber = request.getParameter("lno");
+                    String letterDate = request.getParameter("ldate");
+                    //inwardModel _inwardModel = new inwardModel(request);
+                    //inwardFormBean _inwardFormBean = new inwardFormBean();
+                    _inwardFormBean = _inwardModel.GetInward(_inwardNumber);
+                    int subid = Integer.parseInt(documentID);
+                    Database db = (Database)request.getSession(false).getAttribute("db_connection");
+                    Connection conn = db.getConnection();
+                    InwardAckPDF _inwardAckPdf = new InwardAckPDF(conn);
+                    ByteArrayOutputStream baos = _inwardAckPdf.getPDF(subid,
+                                                                    _inwardNumber,
+                                                                    _inwardFormBean.getChqddNumber(),
+                                                                    _inwardFormBean.getAmount(),
+                                                                    letterNumber,
+                                                                    letterDate);
+                    byte pdfData[] = baos.toByteArray();
+                    String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
+                    msgsend _mailer = new msgsend();
+                    String emailBody = _inwardModel.getInwardAckEmailBody(_inwardFormBean.getChqddNumber(),
+                                                                            _inwardFormBean.getAmount(),  
+                                                                            _inwardFormBean.getPaymentDate(),
+                                                                            _inwardFormBean.getBankName()
+                                                                            );
+                    
+                    success = _mailer.sendEmailToSubscriberWithAttachment(  _inwardFormBean.getEmail(),
+                                                                            "Acknowledgement of receipt of payment",
+                                                                            emailBody,
                                                                             fileName,
                                                                             pdfData,
                                                                             "application/pdf");

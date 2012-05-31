@@ -12,12 +12,15 @@ import IAS.Class.util;
 import IAS.Model.JDSModel;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Properties;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -31,11 +34,15 @@ import org.xml.sax.SAXException;
 public class inwardModel extends JDSModel {
 
     private inwardFormBean _inwardFormBean = null;
+    Properties props = null;
 
-    public inwardModel(HttpServletRequest request) throws SQLException {
+    public inwardModel(HttpServletRequest request) throws SQLException, IOException {
         //call the base class constructor
         super(request);
         //throw (new SQLException("Database connection not found in the session"));
+        InputStream is = request.getServletContext().getResourceAsStream("/WEB-INF/classes/email_templates.properties");
+        props = new Properties();
+        props.load(is);
 
     }
 
@@ -462,5 +469,24 @@ public class inwardModel extends JDSModel {
         }
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         return invoiceFormBean;
+    }
+    
+    public String getChequeReturnEmailBody(int chqDDNumber, float amount, String chqDate, String reason) throws IOException{
+                
+        String template = props.getProperty("cheque_return_email_body");
+        return String.format(   template, 
+                                String.valueOf(chqDDNumber),
+                                chqDate,
+                                String.valueOf(amount),
+                                reason);
+    }
+    
+    public String getInwardAckEmailBody(int chqDDNumber, float amount, String chqDate, String bank){
+        String template = props.getProperty("inward_ack_email_body");
+        return String.format(   template, 
+                                String.valueOf(chqDDNumber),
+                                chqDate,
+                                bank,
+                                String.valueOf(amount));
     }
 }

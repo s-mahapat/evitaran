@@ -8,7 +8,10 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.Properties;
+import javax.servlet.ServletContext;
 
 /**
  *
@@ -16,8 +19,12 @@ import java.net.MalformedURLException;
  */
 public class ChequeReturnPDF extends JDSPDF{
     
+    private InputStream pdfTemplatesFile = null;
+    
     public ChequeReturnPDF(){
         super();
+        ServletContext context = ServletContextInfo.getServletContext();
+        pdfTemplatesFile = context.getResourceAsStream("/WEB-INF/classes/pdf_templates.properties");
     }
     
     public ByteArrayOutputStream getPDF( String SubscriberNumber, String InwardNumber, 
@@ -43,7 +50,7 @@ public class ChequeReturnPDF extends JDSPDF{
     
     private Paragraph getChequeReturnLetterBody( String SubscriberNumber, String InwardNumber, 
                                                 int ChequeNumber, String ChequeDate,
-                                                float Amount, String Reason){
+                                                float Amount, String Reason) throws IOException{
         Paragraph paragraph = new Paragraph();
         Paragraph paragraph2 = new Paragraph();        
         Paragraph paragraph3 = new Paragraph();
@@ -61,12 +68,18 @@ public class ChequeReturnPDF extends JDSPDF{
         paragraph3.setIndentationLeft(50);
         //paragraph2.setFont(_IASFont);
         paragraph3.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
+        
+        Properties props = new Properties();
+        props.load(pdfTemplatesFile);
+        String template = props.getProperty("cheque_return");
+        String _body = String.format(template, String.valueOf(ChequeNumber),
+                                     ChequeDate, String.valueOf(Amount));
                 
-        String _body =  "The Cheque/DD No: " + String.valueOf(ChequeNumber) + " dated " 
-                        + ChequeDate 
-                        + " for INR " 
-                        + String.valueOf(Amount) 
-                        + " is returned herewith for want of the following information";
+//        String _body =  "The Cheque/DD No: " + String.valueOf(ChequeNumber) + " dated " 
+//                        + ChequeDate 
+//                        + " for INR " 
+//                        + String.valueOf(Amount) 
+//                        + " is returned herewith for want of the following information";
         Chunk _bodychunk = new Chunk(_body);
         paragraph2.add(_bodychunk);
                 

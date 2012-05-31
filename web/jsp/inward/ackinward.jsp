@@ -108,7 +108,7 @@
                     <fieldset class="subMainFieldSet">
                         <div class="actionBtnDiv">
                             <!--onclick="javascript:window.print()"-->
-                            <input class="IASButton" id="btnPrint" value="Print" type="button" onclick="printInwardAcknowledgement('print/subscription/' 
+                            <input class="IASButton" id="btnPrint" value="Print" type="button" onclick="printInwardAcknowledgement('print/inward/' 
                                                                                                                                     + subscriptionID + '/ack?lno=' 
                                                                                                                                     + $('#letterNumber').val() 
                                                                                                                                     + '&ldate=' + $('#subscriberletterDate').val() + '&inwardNumber=${inwardFormBean.inwardNumber}')"/>
@@ -119,8 +119,11 @@
                                     bEmail = "disabled";
                                 }
                             %>
-                            <input class="IASButton" id="btnEmail" value="Email" type="button" <%=bEmail%>/>
-                        </div>
+                            <input class="IASButton" id="btnEmail" value="Email" type="button" onclick="jdsEmail('email/inward/' 
+                                                                                                                + subscriptionID + '/ack?lno=' 
+                                                                                                                + $('#letterNumber').val() 
+                                                                                                                + '&ldate=' + $('#subscriberletterDate').val() + '&inwardNumber=${inwardFormBean.inwardNumber}')"/>
+    </div>
                     </fieldset>
                 </fieldset>
             </div>

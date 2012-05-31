@@ -43,7 +43,7 @@
                         {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
                         {name:'Pin Code', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
                         {name:'Country', index:'country', width:30, align:'center', sortable:false, xmlmap:'country'},
-                        {name:'Action', index:'action', width:40, align:'center',sortable:false}
+                        {name:'Email', index:'email', width:40, align:'center',sortable:false, xmlmap:'email'}
                     ],
                     xmlReader : {
                         root: "results",

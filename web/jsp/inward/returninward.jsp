@@ -24,6 +24,10 @@
                     $("#btnEmail").button("enable");
                     //document.getElementById("btnPrintPreview").disabled = false;
                 }
+                
+                if(isEmptyValue($("#email").val())){
+                    $("#btnEmail").button("disable");
+                }
             })
 
         </script>
@@ -151,15 +155,8 @@
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv" style="margin-top: 20px;">
                                 <input onclick="setActionValue('saveReturn')" TABINDEX="2" class="IASButton" type="submit" value="Save" id="btnSaveReturn" name="btnSaveReturn"/>
-                                <input TABINDEX="3" class="IASButton" type="button" value="Print" id="btnPrintPreview" name="btnPrintPreview" onclick="showChequeDDReturnPrintPreview('print/inward/${inwardFormBean.inwardNumber}/chqreturn')"/>
-                                <%
-                                    String email = inwardFormBean.getEmail();
-                                    String bEmail = "enabled";
-                                    if (email == null || email.isEmpty()) {
-                                        bEmail = "disabled";
-                                    }
-                                %>
-                                <input TABINDEX="4" class="IASButton" type="button" value="Email" id="btnEmail" name="btnEmail" <%=bEmail%> onclick="jdsEmail('Email/inward/${inwardFormBean.inwardNumber}/chqreturn')"/>
+                                <input TABINDEX="3" class="IASButton" type="button" value="Print" id="btnPrintPreview" name="btnPrintPreview" onclick="showChequeDDReturnPrintPreview('print/inward/${inwardFormBean.inwardNumber}/chqreturn')"/>                               
+                                <input TABINDEX="4" class="IASButton" type="button" value="Email" id="btnEmail" name="btnEmail" onclick="jdsEmail('Email/inward/${inwardFormBean.inwardNumber}/chqreturn')"/>
                             </div>
                             <div class="actionBtnDiv" style="margin-top: 15px;color: green">
                                 <%

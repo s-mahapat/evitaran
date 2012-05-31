@@ -63,19 +63,14 @@ public class Print extends JDSController {
 //                        output.write(pdfData);
 //                    }
                 }
-
-            } // for all subscription
-            else if (document.equalsIgnoreCase("subscription")) {
-
-
                 // for inward acknowledgement
-                if (action.equalsIgnoreCase("ack")) {
+                else if (action.equalsIgnoreCase("ack")) {
 
                     String _inwardNumber = request.getParameter("inwardNumber");
                     String letterNumber = request.getParameter("lno");
                     String letterDate = request.getParameter("ldate");
-                    inwardModel _inwardModel = new inwardModel(request);
-                    inwardFormBean _inwardFormBean = new inwardFormBean();
+                    //inwardModel _inwardModel = new inwardModel(request);
+                    //inwardFormBean _inwardFormBean = new inwardFormBean();
                     _inwardFormBean = _inwardModel.GetInward(_inwardNumber);
                     int subid = Integer.parseInt(documentID);
                     Database db = (Database)request.getSession(false).getAttribute("db_connection");
@@ -92,6 +87,12 @@ public class Print extends JDSController {
                     this.sendResponse(baos, fileName, response);
 
                 }
+
+            } // for all subscription
+            else if (document.equalsIgnoreCase("subscription")) {
+
+
+                
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
