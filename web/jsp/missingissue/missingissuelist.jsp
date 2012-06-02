@@ -36,7 +36,7 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
-                    colNames:['id', 'subscription Detail id', 'Journal Group', 'journalCode', 'journal Name', 'Sub Copies', 
+                    colNames:['id', 'subscription Detail id', 'Journal Group', 'journalCode', 'journal Name', 'Sub Copies',
                                 'startYear', 'startMonth', 'endMonth', 'endYear', 'month', '`year`', 'Missing Copies'],
                     colModel :[
                         {name:'id', index:'id', width:80, align:'center', xmlmap:'id'},
@@ -46,8 +46,8 @@
                         {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
                         {name:'copies', index:'copies', width:80, align:'copies', xmlmap:'copies'},
                         {name:'startYear', index:'startYear', width:80, align:'center', xmlmap:'startYear'},
-                        {name:'startMonth', index:'startMonth', width:80, align:'center', xmlmap:'startMonth'},                        
-                        {name:'endMonth', index:'endMonth', width:80, align:'center', xmlmap:'endMonth'},   
+                        {name:'startMonth', index:'startMonth', width:80, align:'center', xmlmap:'startMonth'},
+                        {name:'endMonth', index:'endMonth', width:80, align:'center', xmlmap:'endMonth'},
                         {name:'endYear', index:'endYear', width:80, align:'center', xmlmap:'endYear'},
                         {name:'month', index:'month', width:80, align:'center', xmlmap:'month'},
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
@@ -74,7 +74,7 @@
                         for (var i = 0; i < ids.length; i++) {
                             action = "<a style='color:blue;' href='generateml?action=print&id=" + ids[i] + "'>Print</a>";
                             jQuery("#generateml").jqGrid('setRowData', ids[i], { Action: action });
-                        }                        
+                        }
                     },
                     beforeRequest: function(){
                         return isPageLoaded;
@@ -86,17 +86,15 @@
                 });
 
             });
-            
+
             $(document).ready(function(){
                 search();
-
-             });            
+             });
 
             function search(){
                 //check if search criteria is initial, raise alert else enable search for Records
-                
+
                 isPageLoaded = true;
-                alert("In search");
                 jQuery("#msTable").setGridParam({postData:
                     {
                         miId                   : $("#miId").val(),
@@ -106,11 +104,10 @@
                 jQuery("#msTable").setGridParam({ datatype: "xml" });
                 jQuery("#msTable").trigger("clearGridData");
                 jQuery("#msTable").trigger("reloadGrid");
-                alert("Going out of search");
                 }
-                
+
             function print(){
-                
+
                 $.get("<%=request.getContextPath()%>/generateml",
                         {year                   : $("#year").val(),
                         journalName             : $("#journalName").val(),
@@ -119,20 +116,20 @@
                         issue                   : $("#issue").val(),
                         action                  : "print"
                     });
-            
-                
-                isPageLoaded = true;
-            }      
-                
 
-            
+
+                isPageLoaded = true;
+            }
+
+
+
         </script>
     </head>
     <body>
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/missingissue"%>" name="missingissueForm">
+            <form method="post" action="<%=request.getContextPath() + "/missingissue?action=generateMlForMi"%>" name="missingissueForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Missing Issue List</legend>
@@ -148,7 +145,7 @@
                                         <span class="IASFormDivSpanInputBox">
                                             <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="miId" id="miId" value="${missingissueFormBean.miId}"/>
                                         </span>
-                                    </div>                                
+                                    </div>
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
                                             <label>Inward Number:</label>
@@ -168,7 +165,7 @@
                                         <span class="IASFormDivSpanInputBox">
                                             <input class="IASDisabledTextBox" TABINDEX="1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${missingissueFormBean.subscriberNumber}"/>
                                         </span>
-                                    </div>                                
+                                    </div>
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
                                             <label>Subscriber Name:</label>
@@ -176,7 +173,7 @@
                                         <span class="IASFormDivSpanInputBox">
                                             <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="subscriberName" id="subscriberName" value="${missingissueFormBean.subscriberName}"/>
                                         </span>
-                                    </div>                                
+                                    </div>
                                 </div>
                             </fieldset>
                             <fieldset class="subMainFieldSet">
@@ -197,7 +194,7 @@
                                         <span class="IASFormDivSpanInputBox">
                                             <input class="IASDisabledTextBoxWide" TABINDEX="2" name="city" id="city" value="${missingissueFormBean.city}"/>
                                         </span>
-                                    </div>   
+                                    </div>
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
                                             <label>District:</label>
@@ -205,7 +202,7 @@
                                         <span class="IASFormDivSpanInputBox">
                                             <input class="IASDisabledTextBoxWide" TABINDEX="2" name="district" id="district" value="${missingissueFormBean.district}"/>
                                         </span>
-                                    </div>   
+                                    </div>
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
                                             <label>State:</label>
@@ -221,9 +218,9 @@
                                         <span class="IASFormDivSpanInputBox">
                                             <input class="IASDisabledTextBoxWide" TABINDEX="2" name="country" id="country" value="${missingissueFormBean.country}"/>
                                         </span>
-                                    </div>                                        
+                                    </div>
                                 </div>
-                                
+
                                 <div class="IASFormRightDiv">
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
@@ -240,7 +237,7 @@
                                         <span class="IASFormDivSpanInputBox">
                                             <input class="IASDisabledTextBoxWide" TABINDEX="2" name="department" id="department" value="${missingissueFormBean.department}"/>
                                         </span>
-                                    </div>   
+                                    </div>
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
                                             <label>institution:</label>
@@ -248,7 +245,7 @@
                                         <span class="IASFormDivSpanInputBox">
                                             <input class="IASDisabledTextBoxWide" TABINDEX="2" name="institution" id="institution" value="${missingissueFormBean.institution}"/>
                                         </span>
-                                    </div>   
+                                    </div>
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
                                             <label>email:</label>
@@ -257,7 +254,7 @@
                                             <input class="IASDisabledTextBoxWide" TABINDEX="2" name="email" id="email" value="${missingissueFormBean.email}"/>
                                         </span>
                                     </div>
-                                    
+
                                 </div>
                             </fieldset>
                             <%-----------------------------------------------------------------------------------------------------%>
@@ -277,17 +274,17 @@
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
                                     <div id="gMiBtnDiv">
-                                        <input class="IASButton" TABINDEX="4" type="button" value="Print Label" id="btngMi" name="btngMi" onclick="gMiList()"/>
-                                    </div>   
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Generate Mailing List" id="btngMi" name="btngMi" onclick="gMiList()"/>
+                                    </div>
                                     <div id="reprintBtnDiv">
-                                        <input class="IASButton" TABINDEX="4" type="button" value="Print Sticker" id="btnReprint" name="btnReprint" onclick="reprint()"/>
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Re-print Mailing List" id="btnReprint" name="btnReprint" onclick="reprint()"/>
                                     </div>
                                     <div id="noCopyBtnDiv">
                                         <input class="IASButton" TABINDEX="4" type="button" value="No Copy" id="btnNoCopy" name="btnNoCopy" onclick="noCopies()"/>
-                                    </div>   
+                                    </div>
                                     <div id="sentMsgBtnDiv">
                                         <input class="IASButton" TABINDEX="4" type="button" value="Already Sent" id="btnSentMsg" name="btnSentMsg" onclick="alreadySent()"/>
-                                    </div>                                    
+                                    </div>
                                 </div>
                             </fieldset>
                     </fieldset>

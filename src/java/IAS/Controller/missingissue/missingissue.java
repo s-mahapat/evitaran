@@ -23,7 +23,7 @@ import IAS.Model.missingissue.missingissueModel;
  */
 public class missingissue extends JDSController {
 
-    
+
     private missingissueModel _missingissueModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.missingissue");
 
@@ -44,11 +44,11 @@ public class missingissue extends JDSController {
         try {
             _missingissueModel = new IAS.Model.missingissue.missingissueModel(request);
             if (action.equalsIgnoreCase("addInfo")) {
-                
+
                 url = "/jsp/missingissue/missingissueAddInfo.jsp";
             }
             else if (action.equalsIgnoreCase("save")) {
-                
+
                 //save the subscription details sent from the UI
                 String xml = _missingissueModel.save();
                 request.setAttribute("xml", xml);
@@ -61,37 +61,42 @@ public class missingissue extends JDSController {
                 url = "/jsp/missingissue/missingissuelist.jsp";
             }
             else if (action.equalsIgnoreCase("getList")) {
-                
+
                 String xml = _missingissueModel.getList();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }
             else if (action.equalsIgnoreCase("getCopies")) {
-                
+
                 String xml = _missingissueModel.getCopies();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }
             else if (action.equalsIgnoreCase("alreadySent")) {
-                
+
                 String xml = _missingissueModel.alreadySent();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }
-            else if (action.equalsIgnoreCase("noCopies")) {                
+            else if (action.equalsIgnoreCase("noCopies")) {
                 String xml = _missingissueModel.noCopies();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }
-            else if (action.equalsIgnoreCase("gMiList")) {                
+            else if (action.equalsIgnoreCase("gMiList")) {
                 String xml = _missingissueModel.generateMl();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }
-            else if (action.equalsIgnoreCase("reprint")) {                
+            else if (action.equalsIgnoreCase("reprint")) {
                 String xml = _missingissueModel.reprint();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+            }
+            else if (action.equalsIgnoreCase("generateMlForMi")) {
+                String xml = _missingissueModel.generateMLforReprint(response);
+                //request.setAttribute("xml", xml);
+                url = "/pdfserver";
             }
         }
          catch (Exception e) {

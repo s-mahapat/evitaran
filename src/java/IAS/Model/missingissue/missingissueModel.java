@@ -55,27 +55,27 @@ public class missingissueModel extends JDSModel {
     {
         _missingissueFormBean = new missingissueFormBean();
 
-        
+
         String sql = Queries.getQuery("get_subscriber_detail");
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);        
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         while (rs.next()) {
             BeanProcessor bProc = new BeanProcessor();
             Class type = Class.forName("IAS.Bean.missingissue.missingissueFormBean");
             this._missingissueFormBean = (IAS.Bean.missingissue.missingissueFormBean) bProc.toBean(rs, type);
-        }   
+        }
         _missingissueFormBean.setMiId(Integer.parseInt(request.getParameter("miId")));
         _missingissueFormBean.setInwardNumber(request.getParameter("inwardNumber"));
-        _missingissueFormBean.setSubscriberNumber(request.getParameter("subscriberNumber"));        
-        request.setAttribute("missingissueFormBean", _missingissueFormBean);        
+        _missingissueFormBean.setSubscriberNumber(request.getParameter("subscriberNumber"));
+        request.setAttribute("missingissueFormBean", _missingissueFormBean);
     }
-    
+
      public String save()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
-         
+
         String xml = null;
         String subscriberNumber = request.getParameter("subscriberNumber");
         String inwardNumber = request.getParameter("inwardNumber");
@@ -94,15 +94,15 @@ public class missingissueModel extends JDSModel {
                 //float balance = subscriptionTotal - this._inwardFormBean.getAmount();
 
 
-                
+
                 st.setString(++paramIndex, inwardNumber);
                 st.setString(++paramIndex, subscriberNumber);
                 //st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
                 if (db.executeUpdatePreparedStatement(st) == 1) {
                     ResultSet rs = st.getGeneratedKeys();
                     rs.first();
-                    missingissueId = rs.getInt(1); 
-                    
+                    missingissueId = rs.getInt(1);
+
                     int[] res = this.__addMissingJournals(missingissueId,
                             util.convertStringArraytoIntArray(subscriptionId),
                             journalGroupName,
@@ -110,7 +110,7 @@ public class missingissueModel extends JDSModel {
                             missingMonth,
                             util.convertStringArraytoIntArray(year),
                             util.convertStringArraytoIntArray(mcopies));
-                    
+
                     xml = util.convertStringToXML(String.valueOf(missingissueId), "missingissueId");
                     conn.commit();
                 }
@@ -118,7 +118,7 @@ public class missingissueModel extends JDSModel {
             conn.rollback();
         } finally {
             conn.setAutoCommit(true);
-        }   
+        }
         return xml;
     }
 
@@ -134,7 +134,7 @@ public class missingissueModel extends JDSModel {
         xml = util.convertResultSetToXML(rs);
         return xml;
     }
-     
+
     public String getCopies()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
@@ -149,11 +149,11 @@ public class missingissueModel extends JDSModel {
         if(rs.next())
             copies = rs.getInt(1);
         else
-            copies =  0;        
+            copies =  0;
         xml = util.convertStringToXML(String.valueOf(copies), "copies");
         return xml;
     }
-     
+
      public String getList()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
@@ -166,7 +166,7 @@ public class missingissueModel extends JDSModel {
         xml = util.convertResultSetToXML(rs);
         return xml;
     }
-     
+
     private int[] __addMissingJournals(
             int missingissueId, int[] subscriptionId, String[] journalGroupName, String[] journalName,
             String[] month, int[] year, int[] mcopies) throws SQLException {
@@ -188,8 +188,8 @@ public class missingissueModel extends JDSModel {
         }
         int res[] = st.executeBatch();
         return res;
-    } 
-    
+    }
+
     public String reprint()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
@@ -199,12 +199,35 @@ public class missingissueModel extends JDSModel {
         int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("miId"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+
         xml = util.convertResultSetToXML(rs);
         setAction("R");
-        completeInward();       
+        completeInward();
         return xml;
     }
-    
+
+    public String generateMLforReprint(HttpServletResponse response) throws SQLException, IOException, DocumentException
+    {
+        String xml = null;
+        String sql = Queries.getQuery("reprint_mi_list");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setString(paramIndex, request.getParameter("miId"));
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+
+        // Generate the reprint mailing list
+        OutputStream os = response.getOutputStream();
+        convertToPdf c2Pdf = new convertToPdf();
+        // By default we select label
+        c2Pdf.addLabelContent(rs, os);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition", "attachment; filename=reprint.pdf");
+        os.flush();
+
+        String pdf = null;
+        return pdf;
+    }
+
      public String generateMl()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
@@ -217,9 +240,9 @@ public class missingissueModel extends JDSModel {
         xml = util.convertResultSetToXML(rs);
         setAction("M");
         completeInward();
-        return xml;        
+        return xml;
     }
-      
+
     public String noCopies()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
@@ -230,9 +253,9 @@ public class missingissueModel extends JDSModel {
         setAction("N");
         completeInward();
         xml = util.convertStringToXML("N", "action");
-        return xml;        
+        return xml;
     }
-    
+
     public String alreadySent()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception{
@@ -254,7 +277,7 @@ public class missingissueModel extends JDSModel {
         st.setString(paramIndex, request.getParameter("inwardNumber"));
         db.executeUpdatePreparedStatement(st);
     }
-    
+
     public void setAction(String action)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String sql = Queries.getQuery("update_missing_action");
@@ -263,5 +286,5 @@ public class missingissueModel extends JDSModel {
         st.setString(paramIndex, action);
         st.setString(++paramIndex, request.getParameter("miId"));
         db.executeUpdatePreparedStatement(st);
-    }    
+    }
 }

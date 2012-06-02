@@ -18,7 +18,7 @@ function addJournal(){
     }
     var validSubscription = 0;
     validSubscription = getSubscription(selectedJournalName, selectedMonth, selectedYear);
-    
+
     if(validSubscription == 1){ // check the validity of subscription
         var copies = 0;
         copies = getCopies(selectedSubscriptionId, selectedJournalGroupName)
@@ -28,11 +28,11 @@ function addJournal(){
                 "subscriptionId": $("#subscriptionId").val(),
                 "journalGroupName": $("#journalGroupName").val(),
                 "journalName": $("#journalName").val(),
-                "month": $("#month").val(), 
+                "month": $("#month").val(),
                 "year": $("#year").val(),
                 "scopies": copies,
                 "mcopies": mcopies,
-                "delete":"<img src='images/delete.png' onclick=\"deleteRow('" + selectedJournalName + "')\"/>"                
+                "delete":"<img src='images/delete.png' onclick=\"deleteRow('" + selectedJournalName + "')\"/>"
             };
             // the journal code is the rowid.
         bRet = $("#addmissingissueTable").addRowData(selectedJournalName, newRowData,"last");
@@ -40,7 +40,7 @@ function addJournal(){
             alert("Failed to add missing issue!!! No of subscribed copies is less than the missing copies");
             bRet = false;
         }
-        
+
     }else{
         alert("Failed to add missing issue!!! No subscription exists for the selected Year, Month and Journal ");
         bRet = false;
@@ -61,15 +61,15 @@ function getCopies(subscriptionId, journalGroupName){
         async: false,
         url: "missingissue?action=getCopies&journalGroupName=" + journalGroupName + "&subscriptionId=" + subscriptionId,
         success: function(xmlResponse, textStatus, jqXHR){
-            
+
             $(xmlResponse).find("results").each(function(){
                 copies = $(this).find("copies").text();
             });
         },
         error: function(jqXHR,textStatus,errorThrown){
             alert("Failed to get Journal Copies. " + textStatus + ": "+ errorThrown);
-        } 
-       }); 
+        }
+       });
    return copies;
 }
 
@@ -122,7 +122,7 @@ function saveMissingInfo(){
         rowRequiredData.push({
             name: "mcopies",
             value: rowObj.mcopies
-        });         
+        });
     }
 
     $.ajax({
@@ -141,7 +141,7 @@ function saveMissingInfo(){
                 var error = $(this).find("error").text();
                 var missingissueId = $(this).find("missingissueId").text();
                 var mi = $(this).find("missingissueId").text();
-                document.forms["addMissingissueForm"].miId.value = mi;                
+                document.forms["addMissingissueForm"].miId.value = mi;
                 if(error){
                     alert(error);
                 }
@@ -170,22 +170,22 @@ function alreadySent(){
         url: "missingissue?action=alreadySent&miId=" +  $("#miId").val()
         + "&inwardNumber=" + $("#inwardNumber").val(),
         success: function(xmlResponse, textStatus, jqXHR){
-            
+
             $(xmlResponse).find("results").each(function(){
                 act = $(this).find("action").text();
             });
             $("#btngMi").button("disable");
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
-            $("#btnSentMsg").button("disable");            
+            $("#btnSentMsg").button("disable");
             return true;
-            
+
         },
         error: function(jqXHR,textStatus,errorThrown){
             alert("Failed to sent mail/ Print. " + textStatus + ": "+ errorThrown);
             return false;
-        } 
-       }); 
+        }
+       });
 }
 
 function noCopies(){
@@ -197,22 +197,22 @@ function noCopies(){
         url: "missingissue?action=noCopies&miId=" +  $("#miId").val()
         + "&inwardNumber=" + $("#inwardNumber").val(),
         success: function(xmlResponse, textStatus, jqXHR){
-            
+
             $(xmlResponse).find("results").each(function(){
                 act = $(this).find("action").text();
             });
             $("#btngMi").button("disable");
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
-            $("#btnSentMsg").button("disable");            
+            $("#btnSentMsg").button("disable");
             return true;
-            
+
         },
         error: function(jqXHR,textStatus,errorThrown){
             alert("Failed to sent mail/ Print. " + textStatus + ": "+ errorThrown);
             return false;
-        } 
-       }); 
+        }
+       });
 }
 
 function gMiList(){
@@ -224,22 +224,22 @@ function gMiList(){
         url: "missingissue?action=gMiList&miId=" +  $("#miId").val()
         + "&inwardNumber=" + $("#inwardNumber").val(),
         success: function(xmlResponse, textStatus, jqXHR){
-            
+
             $(xmlResponse).find("results").each(function(){
                 act = $(this).find("action").text();
             });
             $("#btngMi").button("disable");
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
-            $("#btnSentMsg").button("disable");            
+            $("#btnSentMsg").button("disable");
             return true;
-            
+
         },
         error: function(jqXHR,textStatus,errorThrown){
             alert("Failed to sent mail/ Print. " + textStatus + ": "+ errorThrown);
             return false;
-        } 
-       }); 
+        }
+       });
 }
 
 function reprint(){
@@ -251,20 +251,20 @@ function reprint(){
         url: "missingissue?action=reprint&miId=" +  $("#miId").val()
         + "&inwardNumber=" + $("#inwardNumber").val(),
         success: function(xmlResponse, textStatus, jqXHR){
-            
+
             $(xmlResponse).find("results").each(function(){
                 act = $(this).find("action").text();
             });
             $("#btngMi").button("disable");
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
-            $("#btnSentMsg").button("disable");            
+            $("#btnSentMsg").button("disable");
+            document.missingissueForm.submit();
             return true;
-            
         },
         error: function(jqXHR,textStatus,errorThrown){
             alert("Failed to sent mail/ Print. " + textStatus + ": "+ errorThrown);
             return false;
-        } 
-       }); 
+        }
+       });
 }

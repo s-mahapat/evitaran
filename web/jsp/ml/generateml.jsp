@@ -327,7 +327,7 @@
                                              <input class="IASButton" TABINDEX="5" type="button" value="Display Mailing List" id="btnSearch" name="btnSearch" onclick="search()"/>
                                         </div> --%>
                                         <div id="addBtnDiv">
-                                             <input class="IASButton" TABINDEX="5" type="button" value="Generate Mailing lis" id="btnAdd" name="btnAddRate" onclick="generate()"/>
+                                             <input class="IASButton" TABINDEX="5" type="button" value="Generate Mailing List" id="btnAdd" name="btnAddRate" onclick="generate()"/>
                                         </div>
                                      </div>
                             </fieldset>
