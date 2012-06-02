@@ -56,12 +56,40 @@ public class missingissue extends JDSController {
 
             }
             else if (action.equalsIgnoreCase("missinglist")) {
-                
+
+                _missingissueModel.passId();
                 url = "/jsp/missingissue/missingissuelist.jsp";
             }
             else if (action.equalsIgnoreCase("getList")) {
                 
                 String xml = _missingissueModel.getList();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }
+            else if (action.equalsIgnoreCase("getCopies")) {
+                
+                String xml = _missingissueModel.getCopies();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }
+            else if (action.equalsIgnoreCase("alreadySent")) {
+                
+                String xml = _missingissueModel.alreadySent();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }
+            else if (action.equalsIgnoreCase("noCopies")) {                
+                String xml = _missingissueModel.noCopies();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }
+            else if (action.equalsIgnoreCase("gMiList")) {                
+                String xml = _missingissueModel.generateMl();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }
+            else if (action.equalsIgnoreCase("reprint")) {                
+                String xml = _missingissueModel.reprint();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }

@@ -7,7 +7,8 @@
     $(document).ready(function(){
 
         jdsAppend("<%=request.getContextPath() + "/CMasterData?md=month"%>","month","month");
-        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
+        loadSubscription();
+        //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
 
         $("#addmissingissueTable").jqGrid({
             url:'',
@@ -23,8 +24,24 @@
             sortname:'subscriptionDate',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames: ['Journal Name', 'Month', 'Year', 'Delete'],
+            colNames: ['Subscriber ID', 'Journal Group','Journal Name', 'Month', 'Year', 'Subscribed Copies','mssing copies', 'Delete', ],
             colModel: [
+                {
+                    name:"subscriptionId",
+                    index:"subscriptionId",
+                    align:"center",
+                    key: true,
+                    width:40
+
+                },
+                {
+                    name:"journalGroupName",
+                    index:"journalGroupName",
+                    align:"center",
+                    key: true,
+                    width:140
+
+                },
                 {
                     name:"journalName",
                     index:"journalName",
@@ -46,6 +63,18 @@
                     align:"center"
                 },
                 {
+                    name:"scopies",
+                    index:"scopies",
+                    width:60,
+                    align:"center"
+                },
+                {
+                    name:"mcopies",
+                    index:"mcopies",
+                    width:60,
+                    align:"center"
+                },
+                {
                     name:"delete",
                     index:"delete",
                     width:40,
@@ -60,12 +89,84 @@
         });
     });
 
+    function loadSubscription( ){
+
+                $("#subscriptionId").empty();
+                $("#subscriptionId").text("");
+
+                var newOption = new Option("Select", "value");
+                $(newOption).html("Select");
+                $("#subscriptionId").append(newOption);
+              
+                requestURL = "/JDS/CMasterData?md=get_subscriptionid&mdvalue=" + $("#subscriberNumber").val();
+
+                jdsAppend(requestURL,"id","subscriptionId");                
+
+     }
+     
+     function loadJournalGroup( ){
+
+                $("#journalGroupName").empty();
+                $("#journalGroupName").text("");
+
+                var newOption = new Option("Select", "value");
+                $(newOption).html("Select");
+                $("#journalGroupName").append(newOption);
+              
+                requestURL = "/JDS/CMasterData?md=get_journalGroup&mdvalue=" + $("#subscriptionId").val();
+
+                jdsAppend(requestURL,"journalGroupName","journalGroupName");                
+
+     }
+     
+     function loadJournals( ){
+
+                $("#journalName").empty();
+                $("#journalName").text("");
+
+                var newOption = new Option("Select", "value");
+                $(newOption).html("Select");
+                $("#journalName").append(newOption);
+              
+                requestURL = "/JDS/CMasterData?md=get_journalName&mdvalue=" + $("#journalGroupName").val();
+
+                jdsAppend(requestURL,"journalName","journalName");
+
+     }
 
 </script>
 
 <fieldset class="subMainFieldSet">
     <legend>Select Journal</legend>
     <div class="IASFormLeftDiv">
+        <div class="IASFormFieldDiv">     
+
+            <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+                <label>Subscription:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBoxLessMargin">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="subscriptionId" id="subscriptionId" onchange = "loadJournalGroup()">
+                </select>
+            </span>
+
+        </div>
+        <div class="IASFormFieldDiv">       
+
+            <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+                <label>Journal Group:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBoxLessMargin">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="journalGroupName" id="journalGroupName" onchange = "loadJournals()">
+                </select>
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="IASFormRightDiv">
         <div class="IASFormFieldDiv">       
 
             <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
@@ -76,11 +177,7 @@
                 <select class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName">
                 </select>
             </span>
-
         </div>
-    </div>
-
-    <div class="IASFormRightDiv">
         <div class="IASFormFieldDiv">
 
             <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
@@ -89,8 +186,6 @@
 
             <span class="IASFormDivSpanInputBoxLessMargin">
                 <select class="IASComboBoxMandatory" TABINDEX="11" name="month" id="month">
-                    <option value="0">Select</option>
-
                 </select>
             </span>
 
@@ -110,6 +205,14 @@
                 </select>
             </span>
         </div>
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
+                <label>Missing Copies:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBox" TABINDEX="1" type="text" name="missingcopies" id="missingcopies" value=""/>
+            </span>
+        </div>
     </div>
     
     <span class="actionBtnDiv" style="margin-left:5px;">
@@ -121,7 +224,6 @@
         <table class="datatable" id="addmissingissueTable"></table>
         <div id="pager"></div>
     </div>
-    <div id="journalGroupContents"></div>
 </fieldset>
 
 

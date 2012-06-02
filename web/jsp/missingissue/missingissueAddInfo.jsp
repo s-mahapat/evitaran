@@ -21,9 +21,9 @@
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form name="addMissingissueForm" action="missingissue?action=missinglist" method="POST">
+            <form name="addMissingissueForm" action="missingissue?action=missinglist" method="POST" id="addMissingissueForm">
                 <input type="hidden" name="purpose" id="purpose"/>
-
+                <input style="display:none;" type="hidden" name="miId" id="miId"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Add Missing Issue</legend>

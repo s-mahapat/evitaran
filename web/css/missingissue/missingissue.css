@@ -31,15 +31,23 @@ root {
 
 }
 
-#subscriptionTotal{
-
-    float: right;
-    width: 20%;
-    margin-right: 20px;
-    text-align: right;
+#gMiBtnDiv{
+    margin-left: 20%;
+    float: left;
+    width: 15%;
 }
 
-#journalGroupContents{
+#reprintBtnDiv{
     float: left;
-    width: 100%;
+    width: 15%;
+}
+
+#noCopyBtnDiv{
+    float: left;
+    width: 15%;
+}
+
+#sentMsgBtnDiv{
+    float: left;
+    width: 15%;
 }
