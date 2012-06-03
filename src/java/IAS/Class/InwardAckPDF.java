@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class InwardAckPDF extends JDSPDF {
 
@@ -52,7 +53,7 @@ public class InwardAckPDF extends JDSPDF {
             String letterNumber,
             String LetterDate,
             String chequeDDNo,
-            String amount) throws SQLException {
+            String amount) throws SQLException, IOException {
 
         Paragraph paragraph1 = new Paragraph();
         Paragraph paragraph2 = new Paragraph();
@@ -70,14 +71,17 @@ public class InwardAckPDF extends JDSPDF {
 
         paragraph1.add(new Chunk("Subject: Regarding Subscription of Journals"));
         paragraph1.add(Chunk.NEWLINE);
-        paragraph1.add(Chunk.NEWLINE);
-        paragraph1.add(new Chunk("Subscription No: " + subscriptionID));
-        paragraph1.add(Chunk.NEWLINE);
+        
         paragraph1.add(Chunk.NEWLINE);
         paragraph1.add(new Chunk("Your Letter No: " + letterNumber + " Dated: " + LetterDate));
+        
+        Properties props = new Properties();
+        props.load(this.pdfTemplatesFile);
+        String template = props.getProperty("inward_ack");
+        String bodyText = String.format(template, chequeDDNo, amount);
 
-        String bodyText = "This is to acknowledge with thanks the receipt of the Cheque/DD No: " + chequeDDNo
-                + " of Amount Rs. " + amount + " towards subscription to the following journals.";
+//        String bodyText = "This is to acknowledge with thanks the receipt of the Cheque/DD No: " + chequeDDNo
+//                + " of Amount Rs. " + amount + " towards subscription to the following journals.";
         paragraph2.add(new Chunk(bodyText));
 
         // get all the subscription details for the inward
@@ -140,9 +144,18 @@ public class InwardAckPDF extends JDSPDF {
             }
         }
 
+        
+        
         paragraph1.add(paragraph2);
         paragraph3.add(table);
         paragraph1.add(paragraph3);
+        paragraph3.add(Chunk.NEWLINE);
+        paragraph3.add(Chunk.NEWLINE);
+        paragraph3.add(new Chunk("Subscription No: " + subscriptionID));
+        paragraph3.add(Chunk.NEWLINE);
+        paragraph3.add(Chunk.NEWLINE);
+        paragraph3.add(new Chunk("Inward No: " + inwardNumber));
+        paragraph3.add(Chunk.NEWLINE);
         return paragraph1;
 
     }

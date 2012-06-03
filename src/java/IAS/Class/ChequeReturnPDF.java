@@ -8,10 +8,8 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.Properties;
-import javax.servlet.ServletContext;
 
 /**
  *
@@ -19,12 +17,10 @@ import javax.servlet.ServletContext;
  */
 public class ChequeReturnPDF extends JDSPDF{
     
-    private InputStream pdfTemplatesFile = null;
+    //private InputStream pdfTemplatesFile = null;
     
     public ChequeReturnPDF(){
         super();
-        ServletContext context = ServletContextInfo.getServletContext();
-        pdfTemplatesFile = context.getResourceAsStream("/WEB-INF/classes/pdf_templates.properties");
     }
     
     public ByteArrayOutputStream getPDF( String SubscriberNumber, String InwardNumber, 
@@ -57,20 +53,22 @@ public class ChequeReturnPDF extends JDSPDF{
         
         //Font _IASFont = new Font(Font.FontFamily.HELVETICA, 11, Font.NORMAL, BaseColor.BLACK);
         paragraph.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE);
-        paragraph.setIndentationLeft(25);
+        paragraph.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         //paragraph.setFont(_IASFont);
         paragraph.setAlignment(Element.ALIGN_LEFT);
         
-        paragraph2.setIndentationLeft(50);
+        paragraph2.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         //paragraph2.setFont(_IASFont);
         paragraph2.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
+        paragraph2.setAlignment(Element.ALIGN_LEFT);
         
-        paragraph3.setIndentationLeft(50);
+        paragraph3.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         //paragraph2.setFont(_IASFont);
         paragraph3.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
+        paragraph3.setAlignment(Element.ALIGN_LEFT);
         
         Properties props = new Properties();
-        props.load(pdfTemplatesFile);
+        props.load(this.pdfTemplatesFile);
         String template = props.getProperty("cheque_return");
         String _body = String.format(template, String.valueOf(ChequeNumber),
                                      ChequeDate, String.valueOf(Amount));

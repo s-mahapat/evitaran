@@ -8,6 +8,7 @@ import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.ChequeReturnPDF;
 import IAS.Class.Database;
 import IAS.Class.InwardAckPDF;
+import IAS.Class.RequestForInvoicePDF;
 import IAS.Class.JDSLogger;
 import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
@@ -51,7 +52,12 @@ public class Print extends JDSController {
                     if (returnReason.equalsIgnoreCase("others")) {
                         returnReason = _inwardFormBean.getChequeDDReturnReasonOther();
                     }
-                    ByteArrayOutputStream baos = _chequePdf.getPDF(_inwardFormBean.getSubscriberIdAsText(), _inwardFormBean.getInwardNumber(), _inwardFormBean.getChqddNumber(), _inwardFormBean.getPaymentDate(), _inwardFormBean.getAmount(), returnReason);
+                    ByteArrayOutputStream baos = _chequePdf.getPDF( _inwardFormBean.getSubscriberIdAsText(), 
+                                                                    _inwardFormBean.getInwardNumber(), 
+                                                                    _inwardFormBean.getChqddNumber(), 
+                                                                    _inwardFormBean.getPaymentDate(), 
+                                                                    _inwardFormBean.getAmount(), 
+                                                                    returnReason);
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     this.sendResponse(baos, fileName, response);
                     //                    byte pdfData[] = baos.toByteArray();
@@ -87,6 +93,15 @@ public class Print extends JDSController {
                     this.sendResponse(baos, fileName, response);
 
                 }
+                // for request for invoice
+                else if (action.equalsIgnoreCase("rfi")){
+                    String inwardNumber = documentID;
+                    RequestForInvoicePDF _rfiPdf = new RequestForInvoicePDF(request);
+                    ByteArrayOutputStream baos = _rfiPdf.getPDF(inwardNumber);
+                    
+                    String fileName = inwardNumber + ".pdf";
+                    this.sendResponse(baos, fileName, response);
+                }
 
             } // for all subscription
             else if (document.equalsIgnoreCase("subscription")) {
@@ -104,8 +119,8 @@ public class Print extends JDSController {
 
         byte pdfData[] = baos.toByteArray();
         response.reset();
-        response.setContentType("application/pdf");
-        response.setHeader("Content-disposition", "inline; filename=" + fileName);
+        response.setContentType("application/pdf");        
+        response.setHeader("Content-disposition", "inline; filename=" + fileName);        
         try (OutputStream output = response.getOutputStream()) {
             output.write(pdfData);
         }

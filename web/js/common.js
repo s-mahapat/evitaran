@@ -411,3 +411,11 @@ function jdsEmail(url){
         }        
     });
 }
+
+function jdsPrint(url, windowName){
+    _window = window.open(url, windowName);
+    _window.onload = function(){
+        _window.document.title=windowName + " Print Preview";
+    }
+    return false;
+}

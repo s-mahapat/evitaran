@@ -45,6 +45,10 @@ public class inwardModel extends JDSModel {
         props.load(is);
 
     }
+    
+    public inwardModel(){
+        
+    }
 
     public int Save() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
@@ -455,11 +459,17 @@ public class inwardModel extends JDSModel {
     }
 
     public InvoiceFormBean getInvoiceDetail() throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
+        String InwardNumber = request.getParameter("inwardNumber");
+        return this.getInvoiceDetail(InwardNumber);
+        
+    }
+    
+    public InvoiceFormBean getInvoiceDetail(String InwardNumber) throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
         String sql;
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
         sql = Queries.getQuery("get_invoice_detail");
         PreparedStatement st = conn.prepareStatement(sql);
-        st.setString(1, request.getParameter("inwardNumber"));
+        st.setString(1, InwardNumber);
         try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
             while (rs.next()) {
                 BeanProcessor bProc = new BeanProcessor();
@@ -488,5 +498,9 @@ public class inwardModel extends JDSModel {
                                 chqDate,
                                 bank,
                                 String.valueOf(amount));
+    }
+    
+    public String getRequestForInvoiceEmailBody(){
+        return props.getProperty("inward_request_for_invoice");        
     }
 }

@@ -5,18 +5,25 @@
 package IAS.Class;
 
 import com.itextpdf.text.*;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.servlet.ServletContext;
 
 public class JDSPDF {
     
+    public InputStream pdfTemplatesFile = null;
     public static int OUTER_PARAGRAPH_SPACE  = 10;
     public static int INNER_PARAGRAPH_SPACE  = 30;
-    public static int LEFT_INDENTATION_LESS = 25;
-    public static int LEFT_INDENTATION_MORE = 50;
+    public static int LEFT_INDENTATION_LESS = 15;
+    public static int LEFT_INDENTATION_MORE = 30;
     public static Font JDS_BOLD_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
     public static Font JDS_FONT_NORMAL_SMALL = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
     
+    public JDSPDF(){
+        ServletContext context = ServletContextInfo.getServletContext();
+        this.pdfTemplatesFile = context.getResourceAsStream("/WEB-INF/classes/pdf_templates.properties");
+    }    
     
     public Document getPDFDocument(){
         com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4);        
@@ -66,7 +73,7 @@ public class JDSPDF {
     public Paragraph getSalutation(){
         Paragraph paragraph = new Paragraph();
         paragraph.setSpacingBefore(40);
-        paragraph.setIndentationLeft(25);
+        paragraph.setIndentationLeft(LEFT_INDENTATION_LESS);
         paragraph.setAlignment(Element.ALIGN_LEFT);
         paragraph.add(new Chunk(JDSConstants.IAS_LETTERHEAD_SALUTATION));
         return paragraph;

@@ -31,8 +31,11 @@ function showChequeDDReturnPrintPreview(url){
     //$("#btnPrintPreview").printPreview();
     //windowParameters = "center:yes; resizeable: no;status: no;menubar: no;scrollbars: yes;toolbar: no;";
     _window = window.open(url, "Inward Return");
+    _window.onload = function(){
+        _window.document.title="Inward Return Print Preview";
+    }
   
     //$("#chequeReturn").attr("action",url);
     //$("#chequeReturn").submit();
-    return true;
+    return false;
 }

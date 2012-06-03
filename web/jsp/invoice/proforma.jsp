@@ -1,3 +1,4 @@
+<%@page import="IAS.Class.util"%>
 <jsp:useBean class="IAS.Bean.Invoice.InvoiceFormBean" id="invoiceFormBean" scope="request"></jsp:useBean>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -15,7 +16,7 @@
                 $.ajax({
                     type: 'GET',
                     dataType: 'xml',
-                    url: "subscription?oper=getSubscriptionDetalsForInward&inwardNumber=" + "${invoiceFormBean.inwardNumber}",
+                    url: "subscription?oper=getSubscriptionDetailsForInward&inwardNumber=" + "${invoiceFormBean.inwardNumber}",
                     success: function(xmlResponse, textStatus, jqXHR){
                         var html = "<tbody>";
                         $(xmlResponse).find("results").find("row").each(function(){
@@ -50,6 +51,12 @@
                     }
 
                 });
+                
+                //disable email button if no email id present
+                var email = "${invoiceFormBean.subscriptionID}";
+                if(isEmptyValue(email)){
+                    $("#btnEmail").button("disable");
+                }
 
             });
 
@@ -60,6 +67,7 @@
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
             <div class="MainDiv">
+                <input type="hidden" id="inwardNumber" name="inwardNumber" value="${invoiceFormBean.inwardNumber}"/>
                 <fieldset class="MainFieldset">
                     <fieldset class="subMainFieldSet">
                         <div id="letterDiv">
@@ -140,7 +148,8 @@
                     </fieldset>
                     <fieldset class="subMainFieldSet">
                         <div class="actionBtnDiv">
-                            <input class="IASButton" id="btnPrint" value="Print" type="button" onclick="javascript:window.print()"/>
+                            <input class="IASButton" id="btnPrint" value="Print" type="button" onclick="jdsPrint('print/inward/' + $('#inwardNumber').val() + '/rfi', 'Request For Invoice')"/>
+                            <input class="IASButton" id="btnEmail" value="Email" type="button" onclick="jdsEmail('email/inward/' + $('#inwardNumber').val() + '/rfi')"/>
                         </div>
                     </fieldset>
                 </fieldset>

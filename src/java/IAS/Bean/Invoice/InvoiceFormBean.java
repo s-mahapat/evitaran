@@ -21,7 +21,28 @@ public class InvoiceFormBean {
     private String invoiceCreationDate = util.getDateString();
     private int subscriptionTotal = 0;
     private String subscriberAddress = "";
+    private String subscriberName;
+    private String email;
 
+    
+    public String getEmail(){
+        return this.email;
+    }
+    
+    public void setEmail(String _email){
+        this.email = _email;
+    }
+    
+    /*
+     * Subscriber Name
+     */
+    public String getSubscriberName(){
+        return this.subscriberName;
+    }
+    
+    public void setSubscriberName(String _name){
+        this.subscriberName = _name;
+    }
     /*
      * -----------------------------------------------------------------------
      * Invoice ID

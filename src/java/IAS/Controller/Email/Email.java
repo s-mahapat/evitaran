@@ -105,6 +105,23 @@ public class Email extends JDSController {
                                                                             "application/pdf");
                     
                 }
+                // for request for invoice
+                else if (action.equalsIgnoreCase("rfi")) {
+                    String _inwardNumber = documentID;
+                    RequestForInvoicePDF _rfiPDF = new RequestForInvoicePDF(request);
+                    ByteArrayOutputStream baos = _rfiPDF.getPDF(_inwardNumber);
+                    byte pdfData[] = baos.toByteArray();
+                    String fileName = _inwardNumber + ".pdf";
+                    msgsend _mailer = new msgsend();
+                    String emailBody = _inwardModel.getRequestForInvoiceEmailBody();
+                    success = _mailer.sendEmailToSubscriberWithAttachment(  _inwardFormBean.getEmail(),
+                                                                            "Request For Invoice",
+                                                                            emailBody,
+                                                                            fileName,
+                                                                            pdfData,
+                                                                            "application/pdf");
+                }
+                
 
             }
         } catch (Exception e) {

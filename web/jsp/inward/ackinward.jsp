@@ -9,7 +9,6 @@
         <link rel="stylesheet" type="text/css" href="css/inward/ackinward.css"/>
         <link rel="stylesheet" media="print" type="text/css" href="css/inward/ackinwardprint.css"/>
         <link rel="stylesheet" media="print" type="text/css" href="css/print.css"/>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/ackinward.js"%>"></script>
         <title>Acknowledge Inward</title>
         <script type="text/javascript">
             var subscriptionID = 0;
@@ -108,10 +107,10 @@
                     <fieldset class="subMainFieldSet">
                         <div class="actionBtnDiv">
                             <!--onclick="javascript:window.print()"-->
-                            <input class="IASButton" id="btnPrint" value="Print" type="button" onclick="printInwardAcknowledgement('print/inward/' 
-                                                                                                                                    + subscriptionID + '/ack?lno=' 
-                                                                                                                                    + $('#letterNumber').val() 
-                                                                                                                                    + '&ldate=' + $('#subscriberletterDate').val() + '&inwardNumber=${inwardFormBean.inwardNumber}')"/>
+                            <input class="IASButton" id="btnPrint" value="Print" type="button" onclick="jdsPrint('print/inward/' 
+                                                                                                                + subscriptionID + '/ack?lno=' 
+                                                                                                                + $('#letterNumber').val() 
+                                                                                                                + '&ldate=' + $('#subscriberletterDate').val() + '&inwardNumber=${inwardFormBean.inwardNumber}', 'Inward Acknowledgement')"/>
                             <%
                                 String email = inwardFormBean.getEmail();
                                 String bEmail = "enabled";
