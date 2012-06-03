@@ -1,51 +1,76 @@
 function addJournal(){
 
-    var selectedJournalName = $("#journalName").val();
-    var selectedYear = $("#year").val();
-    var selectedMonth = $("#month").val();
-    var selectedJournalGroupName = $("#journalGroupName").val();
-    var selectedSubscriptionId = $("#subscriptionId").val();
-    var arrRowIds = $("#addmissingissueTable").getDataIDs();
-    if(arrRowIds.length != 0){
-        intIndex = arrRowIds.indexOf(selectedJournalName, selectedMonth, selectedYear);
-        /* checks if the journal id bieng added is already existing in the grid.
-         * Cannot add the same journal twice.
-         */
-        if(intIndex > -1){
-            alert("An entry for the journal year and Month already exists. No duplicate entries allowed");
-            return false;
-        }
+    if ($("#year").val() == 'value') {
+        alert("Select Year");
     }
-    var validSubscription = 0;
-    validSubscription = getSubscription(selectedJournalName, selectedMonth, selectedYear);
 
-    if(validSubscription == 1){ // check the validity of subscription
-        var copies = 0;
-        copies = getCopies(selectedSubscriptionId, selectedJournalGroupName)
-        var mcopies = $("#missingcopies").val();
-        if (copies >= mcopies){
-            var newRowData = {
-                "subscriptionId": $("#subscriptionId").val(),
-                "journalGroupName": $("#journalGroupName").val(),
-                "journalName": $("#journalName").val(),
-                "month": $("#month").val(),
-                "year": $("#year").val(),
-                "scopies": copies,
-                "mcopies": mcopies,
-                "delete":"<img src='images/delete.png' onclick=\"deleteRow('" + selectedJournalName + "')\"/>"
-            };
-            // the journal code is the rowid.
-        bRet = $("#addmissingissueTable").addRowData(selectedJournalName, newRowData,"last");
-        }else {
-            alert("Failed to add missing issue!!! No of subscribed copies is less than the missing copies");
+    else if ($("#journalName").val() == 'value'){
+        alert("Select Journal");
+    }
+
+    else if ($("#month").val() == 'value'){
+        alert("Select Month");
+    }
+
+    else if ($("#journalGroupName").val() == 'value'){
+        alert("Select Journal Group Name");
+    }
+
+    else if($("#subscriptionId").val() == 'value') {
+        alert("Select Subscription");
+    }
+    else if($("#missingcopies").val() == 0) {
+        alert("Add Missing Copies");
+    }
+    else{
+        var selectedJournalName = $("#journalName").val();
+        var selectedYear = $("#year").val();
+        var selectedMonth = $("#month").val();
+        var selectedJournalGroupName = $("#journalGroupName").val();
+        var selectedSubscriptionId = $("#subscriptionId").val();
+        var arrRowIds = $("#addmissingissueTable").getDataIDs();
+
+        if(arrRowIds.length != 0){
+            intIndex = arrRowIds.indexOf(selectedJournalName, selectedMonth, selectedYear);
+            /* checks if the journal id bieng added is already existing in the grid.
+             * Cannot add the same journal twice.
+             */
+            if(intIndex > -1){
+                alert("An entry for the journal year and Month already exists. No duplicate entries allowed");
+                return false;
+            }
+        }
+        var validSubscription = 0;
+        validSubscription = getSubscription(selectedJournalName, selectedMonth, selectedYear);
+
+        if(validSubscription == 1){ // check the validity of subscription
+            var copies = 0;
+            copies = getCopies(selectedSubscriptionId, selectedJournalGroupName)
+            var mcopies = $("#missingcopies").val();
+            if (copies >= mcopies){
+                var newRowData = {
+                    "subscriptionId": $("#subscriptionId").val(),
+                    "journalGroupName": $("#journalGroupName").val(),
+                    "journalName": $("#journalName").val(),
+                    "month": $("#month").val(),
+                    "year": $("#year").val(),
+                    "scopies": copies,
+                    "mcopies": mcopies,
+                    "delete":"<img src='images/delete.png' onclick=\"deleteRow('" + selectedJournalName + "')\"/>"
+                };
+                // the journal code is the rowid.
+            bRet = $("#addmissingissueTable").addRowData(selectedJournalName, newRowData,"last");
+            }else {
+                alert("Failed to add missing issue!!! No of subscribed copies is less than the missing copies");
+                bRet = false;
+            }
+
+        }else{
+            alert("Failed to add missing issue!!! No subscription exists for the selected Year, Month and Journal ");
             bRet = false;
         }
-
-    }else{
-        alert("Failed to add missing issue!!! No subscription exists for the selected Year, Month and Journal ");
-        bRet = false;
+        return(bRet);
     }
-    return(bRet);
 }
 
 function getSubscription(selectedJournalName, selectedMonth, selectedYear){

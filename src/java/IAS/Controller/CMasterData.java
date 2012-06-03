@@ -31,6 +31,7 @@ public class CMasterData extends JDSController {
         Database db = (Database) request.getSession().getAttribute("db_connection");
         String mdataReqKey = request.getParameter("mdkey");
         String mdataReqValue = request.getParameter("mdvalue");
+        String optionalParam[] = request.getParameterValues("optionalParam");
         try {
             if (mdataReqValue == null) {
                 xml = util.convertResultSetToXML(db.executeQuery(Queries.getQuery(mdataRequested)));
@@ -38,6 +39,13 @@ public class CMasterData extends JDSController {
             if (mdataReqValue != null) {
                 PreparedStatement ps = db.getConnection().prepareStatement(Queries.getQuery(mdataRequested));
                 ps.setString(1, mdataReqValue);
+
+                if(optionalParam != null) {
+                    for(int i=0, j=2; i<optionalParam.length; i++) {
+                        ps.setInt(j++, Integer.parseInt(optionalParam[i]));
+                    }
+                }
+                
                 ResultSet rs = ps.executeQuery();
                 xml = util.convertResultSetToXML(rs);
             }

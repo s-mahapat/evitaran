@@ -32,14 +32,13 @@ root {
 }
 
 #gMiBtnDiv{
-    margin-left: 20%;
     float: left;
-    width: 15%;
+    width: 20%;
 }
 
 #reprintBtnDiv{
     float: left;
-    width: 15%;
+    width: 20%;
 }
 
 #noCopyBtnDiv{

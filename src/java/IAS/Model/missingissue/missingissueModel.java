@@ -199,7 +199,6 @@ public class missingissueModel extends JDSModel {
         int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("miId"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-
         xml = util.convertResultSetToXML(rs);
         setAction("R");
         completeInward();
@@ -223,7 +222,6 @@ public class missingissueModel extends JDSModel {
         response.setContentType("application/pdf");
         response.setHeader("Content-disposition", "attachment; filename=reprint.pdf");
         os.flush();
-
         String pdf = null;
         return pdf;
     }
@@ -232,12 +230,32 @@ public class missingissueModel extends JDSModel {
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
         String xml = null;
-        String sql = Queries.getQuery("get_missing_journals");
+        String miId = null;
+        miId = request.getParameter("miId");
+        String sql = Queries.getQuery("generate_ml");
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("miId"));
+        int paramIndex = 0;
+        stGet.setString(++paramIndex, request.getParameter("miId"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        xml = util.convertResultSetToXML(rs);
+        while(rs.next()){
+            String sqlmldtl = Queries.getQuery("insert_mldtl_mil");
+            PreparedStatement stmldtl = conn.prepareStatement(sqlmldtl);
+            paramIndex = 0;
+            
+            Object value = null;
+            for (int j = 1; j <= 26; j++) {
+                value = rs.getObject(j); 
+                String temp = "";
+                if(value == null)
+                    temp = "";
+                else
+                    temp = value.toString();
+                stmldtl.setString(++paramIndex, temp);
+            }
+            //stmldtl.setString(++paramIndex, miId );
+            db.executeUpdatePreparedStatement(stmldtl);            
+        }
+        //xml = util.convertResultSetToXML(rs);
         setAction("M");
         completeInward();
         return xml;
@@ -286,5 +304,47 @@ public class missingissueModel extends JDSModel {
         st.setString(paramIndex, action);
         st.setString(++paramIndex, request.getParameter("miId"));
         db.executeUpdatePreparedStatement(st);
+    }
+    
+    public int checkMissingExists()  throws IllegalAccessException, ParseException,
+            ParserConfigurationException, SQLException, TransformerException,
+            IOException, InvocationTargetException, Exception {
+        int miId = 0;
+        String sql = Queries.getQuery("get_miId_for_inward");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setString(paramIndex, request.getParameter("inwardNumber"));
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        if(rs.next()){
+            Object value = null;
+            value = rs.getObject(1);
+            miId = Integer.parseInt(value.toString());
+            value = rs.getObject(2);
+            request.setAttribute("subscriberNumber", value.toString());
+        }
+        return miId;
+    }
+
+        public void setAttri(int miId) throws IllegalAccessException, ParseException,
+            ParserConfigurationException, SQLException, TransformerException,
+            IOException, InvocationTargetException, Exception
+    {
+        _missingissueFormBean = new missingissueFormBean();
+
+
+        String sql = Queries.getQuery("get_subscriber_detail");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        while (rs.next()) {
+            BeanProcessor bProc = new BeanProcessor();
+            Class type = Class.forName("IAS.Bean.missingissue.missingissueFormBean");
+            this._missingissueFormBean = (IAS.Bean.missingissue.missingissueFormBean) bProc.toBean(rs, type);
+        }
+        _missingissueFormBean.setMiId(miId);
+        _missingissueFormBean.setInwardNumber(request.getParameter("inwardNumber"));
+        _missingissueFormBean.setSubscriberNumber(request.getParameter("subscriberNumber"));
+        request.setAttribute("missingissueFormBean", _missingissueFormBean);
     }
 }

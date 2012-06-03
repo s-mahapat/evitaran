@@ -44,8 +44,17 @@ public class missingissue extends JDSController {
         try {
             _missingissueModel = new IAS.Model.missingissue.missingissueModel(request);
             if (action.equalsIgnoreCase("addInfo")) {
-
-                url = "/jsp/missingissue/missingissueAddInfo.jsp";
+                int miId = 0;
+                miId = _missingissueModel.checkMissingExists();
+                if (miId == 0){
+                    url = "/jsp/missingissue/missingissueAddInfo.jsp";
+                }
+                else{
+                    //request.setAttribute("miId", miId);
+                    _missingissueModel.setAttri(miId);                
+                    url = "/jsp/missingissue/missingissuelist.jsp";        
+                }
+                    
             }
             else if (action.equalsIgnoreCase("save")) {
 

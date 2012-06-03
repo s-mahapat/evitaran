@@ -6,7 +6,7 @@
     var journalInfo = {};
     $(document).ready(function(){
 
-        jdsAppend("<%=request.getContextPath() + "/CMasterData?md=month"%>","month","month");
+        //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=month"%>","month","month");
         loadSubscription();
         //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
 
@@ -133,6 +133,21 @@
                 jdsAppend(requestURL,"journalName","journalName");
 
      }
+     
+          function loadMonths( ){
+
+                $("#month").empty();
+                $("#month").text("");
+
+                var newOption = new Option("Select", "value");
+                $(newOption).html("Select");
+                $("#month").append(newOption);
+              
+                requestURL = "/JDS/CMasterData?md=get_month_mi&mdvalue=" + $("#journalName").val() + "&optionalParam=" + $("#year").val();
+
+                jdsAppend(requestURL,"month","month");
+
+     }
 
 </script>
 
@@ -174,7 +189,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBoxLessMargin">
-                <select class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName" onchange ="loadMonths()">
                 </select>
             </span>
         </div>
@@ -194,7 +209,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBoxLessMargin">
-                <select class="IASComboBoxMandatory" TABINDEX="11" name="year" id="year">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="year" id="year" onchange ="loadMonths()">
                     <%
                         int year = Integer.parseInt(util.getDateString("yyyy"));
                             out.println("<option value=\"" + year + "\">" + year + "</option>");
