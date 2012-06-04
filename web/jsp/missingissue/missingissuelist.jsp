@@ -129,7 +129,8 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/missingissue?action=generateMlForMi"%>" name="missingissueForm">
+            <form method="post" action="<%=request.getContextPath() + "/missingissue?"%>" name="missingissueForm">
+                <input type="hidden" name="action" id="action"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Missing Issue List</legend>
@@ -279,8 +280,8 @@
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
                                             <select class="IASComboBoxMandatory" TABINDEX="5" name="printOption" id="printOption">
-                                                <option value ="L">Label</option>
-                                                <option value ="S">Sticker</option>
+                                                <option value ="LABEL">Label</option>
+                                                <option value ="STICKER">Sticker</option>
                                             </select>
                                         </span>
                                     </div>
@@ -293,7 +294,7 @@
                                         <div id="reprintBtnDiv">
                                             <input class="IASButton" TABINDEX="4" type="button" value="Re-print Mailing List" id="btnReprint" name="btnReprint" onclick="reprint()"/>
                                         </div>
-                                    </div>   
+                                    </div>
                                 </div>
                             </fieldset>
                             <%-----------------------------------------------------------------------------------------------------%>
@@ -308,12 +309,12 @@
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
                                             <select class="IASComboBoxMandatory" TABINDEX="5" name="replyOption" id="replyOption">
-                                                <option value ="P">Print</option>
-                                                <option value ="E">EMail</option>
+                                                <option value ="Print">Print</option>
+                                                <option value ="EMail">EMail</option>
                                             </select>
                                         </span>
                                     </div>
-                                </div>  
+                                </div>
                                 <div class="IASFormRightDiv">
                                     <div class="IASFormFieldDiv">
                                         <div id="noCopyBtnDiv">

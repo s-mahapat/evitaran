@@ -43,6 +43,49 @@ public convertToPdf(){
         super();
     }
 
+    public void printMIresponse(OutputStream os, String msg) throws DocumentException, FileNotFoundException, IOException
+    {
+        Document document = this.getPDFDocument();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        //pdfWriter.setPageEvent(new onEndPage());
+
+        document.open();
+        Properties properties = getMissingIssueProperties();
+
+        // 1. Add the letter head
+        document.add(this.getLetterHead());
+
+        // 2. Leave 2 lines in between
+        document.add(Chunk.NEWLINE);
+        document.add(Chunk.NEWLINE);
+
+        // Setup the font and leading
+        PdfContentByte cb = pdfWriter.getDirectContent();
+        setupFontAndLeading(cb);
+
+        boolean ensureNewLine = false;
+        float curY = pdfWriter.getVerticalPosition(ensureNewLine);
+        float curX = document.leftMargin();
+
+        cb.beginText();
+        cb.moveText(curX, curY);
+        //cb.newlineShowText(msg);
+        cb.endText();
+
+        Paragraph paragraph = new Paragraph();
+        paragraph.setAlignment(textAlignment);
+        paragraph.setFont(new Font(fontType, fontSize));
+        paragraph.add(msg);
+        paragraph.add(Chunk.NEWLINE);
+
+        document.add(paragraph);
+
+        document.close();
+        outputStream.writeTo(os);
+    }
+
     public ByteArrayOutputStream reminderType2() throws DocumentException, IOException {
 
         Document document = this.getPDFDocument();
@@ -375,6 +418,7 @@ public convertToPdf(){
         cb.newlineShowText(template);
 
     }
+
     public void addSubjectReminderType1(PdfContentByte cb, int invoiceNo, String invoiceDate, float invoiceAmount)
     {
         String template1 = "Sub:- Settlement of our Proforma Invoice No. ";
@@ -458,6 +502,7 @@ public convertToPdf(){
         return info;
 
     }
+
     public void addShippingAddress(PdfContentByte cb)
     {
         String subscriberName   = "(Ref: ID 123 IMS Engg College)";
@@ -600,6 +645,23 @@ public convertToPdf(){
     {
         ServletContext context = ServletContextInfo.getServletContext();
         String mlPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_mailinglist.properties");
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(mlPropertiesFile));
+
+        // Read common information
+        leading         = Float.valueOf(properties.getProperty("leading").trim()).floatValue();
+        textAlignment   = Integer.parseInt(properties.getProperty("textAlignment"));
+        fontType        = Font.getFamily(properties.getProperty("fontFamily"));
+        fontSize        = Integer.parseInt(properties.getProperty("fontSize"));
+        fontStyle       = Font.getStyleValue(properties.getProperty("fontStyle"));
+
+        return properties;
+    }
+
+    public Properties getMissingIssueProperties() throws FileNotFoundException, IOException
+    {
+        ServletContext context = ServletContextInfo.getServletContext();
+        String mlPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
         Properties properties = new Properties();
         properties.load(new FileInputStream(mlPropertiesFile));
 

@@ -51,10 +51,10 @@ public class missingissue extends JDSController {
                 }
                 else{
                     //request.setAttribute("miId", miId);
-                    _missingissueModel.setAttri(miId);                
-                    url = "/jsp/missingissue/missingissuelist.jsp";        
+                    _missingissueModel.setAttri(miId);
+                    url = "/jsp/missingissue/missingissuelist.jsp";
                 }
-                    
+
             }
             else if (action.equalsIgnoreCase("save")) {
 
@@ -103,7 +103,16 @@ public class missingissue extends JDSController {
                 url = "/xmlserver";
             }
             else if (action.equalsIgnoreCase("generateMlForMi")) {
-                String xml = _missingissueModel.generateMLforReprint(response);
+                String xml = _missingissueModel.generateMLforMI(response);
+                //request.setAttribute("xml", xml);
+                url = "/pdfserver";
+            }else if (action.equalsIgnoreCase("printNoCopies")) {
+                String xml = _missingissueModel.printNoCopies(response);
+                //request.setAttribute("xml", xml);
+                url = "/pdfserver";
+            }
+            else if (action.equalsIgnoreCase("printAlreadySent")) {
+                String xml = _missingissueModel.printAlreadySent(response);
                 //request.setAttribute("xml", xml);
                 url = "/pdfserver";
             }

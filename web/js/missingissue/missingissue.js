@@ -193,16 +193,32 @@ function alreadySent(){
         dataType: 'xml',
         async: false,
         url: "missingissue?action=alreadySent&miId=" +  $("#miId").val()
-        + "&inwardNumber=" + $("#inwardNumber").val(),
+        + "&inwardNumber=" + $("#inwardNumber").val()
+        + "&replyOption=" + $("#replyOption").val()
+        + "&email=" + $("#email").val(),
         success: function(xmlResponse, textStatus, jqXHR){
 
             $(xmlResponse).find("results").each(function(){
                 act = $(this).find("action").text();
             });
+            if(act == 'failure')
+            {
+                alert("Failed to send email");
+                return false;
+            }
+            if(act == 'success')
+                alert("Email sent");
+
             $("#btngMi").button("disable");
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
             $("#btnSentMsg").button("disable");
+
+            if(act == 'print')
+            {
+                document.forms["missingissueForm"].action.value = "printAlreadySent";
+                document.missingissueForm.submit();
+            }
             return true;
 
         },
@@ -220,16 +236,32 @@ function noCopies(){
         dataType: 'xml',
         async: false,
         url: "missingissue?action=noCopies&miId=" +  $("#miId").val()
-        + "&inwardNumber=" + $("#inwardNumber").val(),
+        + "&inwardNumber=" + $("#inwardNumber").val()
+        + "&replyOption=" + $("#replyOption").val()
+        + "&email=" + $("#email").val(),
         success: function(xmlResponse, textStatus, jqXHR){
 
             $(xmlResponse).find("results").each(function(){
                 act = $(this).find("action").text();
             });
+            if(act == 'failure')
+            {
+                alert("Failed to send email");
+                return false;
+            }
+            if(act == 'success')
+                alert("Email sent");
+
             $("#btngMi").button("disable");
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
             $("#btnSentMsg").button("disable");
+
+            if(act == 'print')
+            {
+                document.forms["missingissueForm"].action.value = "printNoCopies";
+                document.missingissueForm.submit();
+            }
             return true;
 
         },
@@ -247,7 +279,8 @@ function gMiList(){
         dataType: 'xml',
         async: false,
         url: "missingissue?action=gMiList&miId=" +  $("#miId").val()
-        + "&inwardNumber=" + $("#inwardNumber").val(),
+        + "&inwardNumber=" + $("#inwardNumber").val()
+        + "&printOption=" + $("#printOption").val(),
         success: function(xmlResponse, textStatus, jqXHR){
 
             $(xmlResponse).find("results").each(function(){
@@ -257,6 +290,8 @@ function gMiList(){
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
             $("#btnSentMsg").button("disable");
+            document.forms["missingissueForm"].action.value = "generateMlForMi";
+            document.missingissueForm.submit();
             return true;
 
         },
@@ -274,7 +309,8 @@ function reprint(){
         dataType: 'xml',
         async: false,
         url: "missingissue?action=reprint&miId=" +  $("#miId").val()
-        + "&inwardNumber=" + $("#inwardNumber").val(),
+        + "&inwardNumber=" + $("#inwardNumber").val()
+        + "&printOption=" + $("#printOption").val(),
         success: function(xmlResponse, textStatus, jqXHR){
 
             $(xmlResponse).find("results").each(function(){
@@ -284,6 +320,7 @@ function reprint(){
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
             $("#btnSentMsg").button("disable");
+            document.forms["missingissueForm"].action.value = "generateMlForMi";
             document.missingissueForm.submit();
             return true;
         },

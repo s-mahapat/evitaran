@@ -281,7 +281,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB AUTO_INCREMENT=1871 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1872 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -486,7 +486,7 @@ CREATE TABLE `mailing_list` (
   `month` int(11) NOT NULL,
   `mlDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -495,7 +495,7 @@ CREATE TABLE `mailing_list` (
 
 LOCK TABLES `mailing_list` WRITE;
 /*!40000 ALTER TABLE `mailing_list` DISABLE KEYS */;
-INSERT INTO `mailing_list` VALUES (1,1,1,2012,1,'2012-06-02 08:15:33'),(2,2,1,2012,1,'2012-06-02 08:18:46'),(3,1,2,2012,2,'2012-06-02 09:00:27');
+INSERT INTO `mailing_list` VALUES (1,1,1,2012,1,'2012-06-02 08:15:33'),(2,2,1,2012,1,'2012-06-02 08:18:46'),(3,1,2,2012,2,'2012-06-02 09:00:27'),(4,1,4,2012,2,'2012-06-02 11:13:55'),(5,2,3,2012,1,'2012-06-03 06:53:39');
 /*!40000 ALTER TABLE `mailing_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -537,7 +537,7 @@ CREATE TABLE `mailing_list_detail` (
   `miId` int(11) DEFAULT NULL,
   `bildate` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -546,7 +546,7 @@ CREATE TABLE `mailing_list_detail` (
 
 LOCK TABLES `mailing_list_detail` WRITE;
 /*!40000 ALTER TABLE `mailing_list_detail` DISABLE KEYS */;
-INSERT INTO `mailing_list_detail` VALUES (1,1,166227,232,41,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(2,1,166248,236,47,1,'CURR','II','12E-S-00023','Lakshmi','','','agra','Agra','Bhadrak','Uttar Pradesh','India',0,1,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(3,1,166227,239,52,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(4,1,166227,246,62,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(5,1,166227,247,63,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(6,1,166250,248,64,1,'CURR','IP','12E-S-00025','Usha Godbole','','','test','Indore','West Nimar','Madhya Pradesh','India',453212,1,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(7,1,166251,249,68,1,'CURR','IP','12E-S-00026','Deepali Gokhale','','','Central City ','Vadodara','Vadodara','Gujarat','India',567892,1,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(8,1,166227,251,71,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(9,2,166248,236,48,2,'RES','II','12E-S-00023','Lakshmi','','','agra','Agra','Bhadrak','Uttar Pradesh','India',0,5,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(10,2,166250,248,65,2,'RES','IP','12E-S-00025','Usha Godbole','','','test','Indore','West Nimar','Madhya Pradesh','India',453212,1,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(11,2,166251,249,69,2,'RES','IP','12E-S-00026','Deepali Gokhale','','','Central City ','Vadodara','Vadodara','Gujarat','India',567892,1,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(12,2,166227,251,72,2,'RES','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL,NULL),(13,3,166227,232,41,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,2,0,2,2012,NULL,NULL,NULL),(14,1,155905,250,70,1,'CURR','IC','5248','Principal','Holkar Science College','Attn: Library','Indore','Indore','','Madhya Pradesh','India',452001,2,2012,1,2016,1,0,1,2012,NULL,116,'2012-06-03');
+INSERT INTO `mailing_list_detail` VALUES (1,1,166227,232,41,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL),(2,1,166248,236,47,1,'CURR','II','12E-S-00023','Lakshmi','','','agra','Agra','Bhadrak','Uttar Pradesh','India',0,1,2012,1,2012,1,0,1,2012,NULL,NULL),(3,1,166227,239,52,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL),(4,1,166227,246,62,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL),(5,1,166227,247,63,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL),(6,1,166250,248,64,1,'CURR','IP','12E-S-00025','Usha Godbole','','','test','Indore','West Nimar','Madhya Pradesh','India',453212,1,2012,1,2012,1,0,1,2012,NULL,NULL),(7,1,166251,249,68,1,'CURR','IP','12E-S-00026','Deepali Gokhale','','','Central City ','Vadodara','Vadodara','Gujarat','India',567892,1,2012,1,2012,1,0,1,2012,NULL,NULL),(8,1,166227,251,71,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL),(9,2,166248,236,48,2,'RES','II','12E-S-00023','Lakshmi','','','agra','Agra','Bhadrak','Uttar Pradesh','India',0,5,2012,1,2012,1,0,1,2012,NULL,NULL),(10,2,166250,248,65,2,'RES','IP','12E-S-00025','Usha Godbole','','','test','Indore','West Nimar','Madhya Pradesh','India',453212,1,2012,1,2012,1,0,1,2012,NULL,NULL),(11,2,166251,249,69,2,'RES','IP','12E-S-00026','Deepali Gokhale','','','Central City ','Vadodara','Vadodara','Gujarat','India',567892,1,2012,1,2012,1,0,1,2012,NULL,NULL),(12,2,166227,251,72,2,'RES','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,1,0,1,2012,NULL,NULL),(13,3,166227,232,41,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,2,0,2,2012,NULL,NULL),(14,1,166250,248,64,1,'CURR','IP','12E-S-00025','Usha Godbole','','','test','Indore','West Nimar','Madhya Pradesh','India',453212,1,2012,1,2012,1,0,1,2012,133,'2012-06-02'),(15,1,166250,252,73,1,'CURR','IP','12E-S-00025','Usha Godbole','','','test','Indore','West Nimar','Madhya Pradesh','India',453212,1,2012,1,2012,1,0,1,2012,142,'2012-06-02'),(16,3,166250,252,73,1,'CURR','IP','12E-S-00025','Usha Godbole','','','test','Indore','West Nimar','Madhya Pradesh','India',453212,1,2012,1,2012,2,0,2,2012,143,'2012-06-02'),(17,2,166250,252,74,2,'RES','IP','12E-S-00025','Usha Godbole','','','test','Indore','West Nimar','Madhya Pradesh','India',453212,1,2012,1,2012,1,0,1,2012,144,'2012-06-02'),(18,4,166227,232,41,1,'CURR','IP','12D-S-00002','Pinki Pachisia','','','1075, Sobha Amethyst, Kannamanagala\r\ntest2','Bengaluru','Bengaluru','Karnataka','India',560067,1,2012,1,2012,4,0,2,2012,NULL,NULL),(19,5,166248,236,48,2,'RES','II','12E-S-00023','Lakshmi','','','agra','Agra','Bhadrak','Uttar Pradesh','India',0,5,2012,1,2012,3,0,1,2012,NULL,NULL);
 /*!40000 ALTER TABLE `mailing_list_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1618,8 +1618,8 @@ BEGIN
   
 
   
-
-  DECLARE cur1 CURSOR FOR  select t2.journalID, 
+
+  DECLARE cur1 CURSOR FOR  select t2.journalID, 
 
                                   t3.month, 
 
@@ -1640,14 +1640,14 @@ BEGIN
                             and t3.year = _new_startYear;
 
                             
-
-  
+
+  
 
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
   
-
-  OPEN cur1;
+
+  OPEN cur1;
 
   read_loop: LOOP
 
