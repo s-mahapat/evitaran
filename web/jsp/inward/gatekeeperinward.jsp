@@ -140,7 +140,7 @@
                 <input type="hidden" id="" name ="action" value="processinward"/>
                 --%>
                 <input type="hidden" id="inwardNumber" name ="inwardNumber" value=""/>
-                <input type="hidden" id="subscriberNumber" name ="subscriberNumber" value=""/>
+                <input type="hidden" id="subscriberNumber" name="subscriberNumber" value=""/>
                 <input type="hidden" id="inwardPurpose" name ="inwardPurpose" value="<%=request.getParameter("inwardPurpose")%>"/>
                 <input type="hidden" id="purpose" name ="purpose" value="<%=request.getParameter("purpose") != null ? request.getParameter("purpose") : ""%>"/>
                 <input type="hidden" id="asf" name ="asf" value="<%=request.getParameter("asf") != null ? request.getParameter("asf") : 0%>"/>

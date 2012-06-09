@@ -1,2 +1,2 @@
-"%PROGRAMFILES%\MySQL\MySQL Server 5.5\bin\mysql.exe" -u root -proot < generateschema.sql
-"%PROGRAMFILES%\MySQL\MySQL Server 5.5\bin\mysql.exe" -u root -proot -D jds < jds_schema_data.sql
+"%PROGRAMFILES%\MySQL\MySQL Server 5.5\bin\mysql.exe" -u root -proot < generateschema.sql >> import_jds_data.log
+"%PROGRAMFILES%\MySQL\MySQL Server 5.5\bin\mysql.exe" -u root -proot -D jds < jds_schema_data.sql >> import_jds_data.log
