@@ -204,7 +204,7 @@ function isInwardSelected(){
         alert("Please select an Inward");
         return false;
 
-    }else if(selectedSubscriberId == null && selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION){
+    }else if((selectedSubscriberId == "undefined" || selectedSubscriberId == null || selectedSubscriberId == 0) && selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION){
         // if its not a new subscription then we need a subscriber id, search for the subscriber id
         city = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'City').toString();
         subscriberName = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'From').toString();
