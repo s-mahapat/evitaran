@@ -205,7 +205,7 @@ public class subscriberModel extends JDSModel {
         st.setString(++paramIndex, _subscriberFormBean.getDepartment());
         st.setString(++paramIndex, _subscriberFormBean.getInstitution());
         st.setString(++paramIndex, _subscriberFormBean.getEmail());
-        st.setString(++paramIndex, _subscriberFormBean.getAgent());
+        st.setString(++paramIndex, _subscriberFormBean.getAgentName());
         st.setBoolean(++paramIndex, _subscriberFormBean.isDeactive());
         if (mode.equalsIgnoreCase("Update")) {
             st.setString(++paramIndex, _subscriberFormBean.getSubscriberNumber());

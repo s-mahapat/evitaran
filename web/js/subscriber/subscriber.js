@@ -15,3 +15,9 @@ function subtypeCodeAppend(){
         }
     });
 }
+
+
+function imposeMaxLength(Event, Object, MaxLen)
+{
+    return (Object.value.length <= MaxLen)||(Event.keyCode == 8 ||Event.keyCode==46||(Event.keyCode>=35&&Event.keyCode<=40))
+}

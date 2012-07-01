@@ -17,7 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
-
+import IAS.Bean.User.LoggedInUserBean;
+import IAS.Class.Queries;
+import java.sql.*;
+//import com.mysql.jdbc.PreparedStatement;
 /**
  *
  * @author Shailendra Mahapatra
@@ -52,42 +55,65 @@ public class home extends JDSController {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String username = context.getInitParameter("db_user");
-        String password = context.getInitParameter("db_password");
-        String dbURL =
-                context.getInitParameter("db_driver") + "://"
-                + context.getInitParameter("db_host") + "/"
-                + context.getInitParameter("db_name");
-
         String url = null;
-        HttpSession session = request.getSession(true);
-        logger.debug("Created a new session with id: " + session.getId());
-        synchronized (session) {
+        HttpSession session = request.getSession(false);
+        if (null == session.getAttribute("name")) {
+            String username = context.getInitParameter("db_user");
+            String password = context.getInitParameter("db_password");
+            String dbURL =
+                    context.getInitParameter("db_driver") + "://"
+                    + context.getInitParameter("db_host") + "/"
+                    + context.getInitParameter("db_name");
 
-            //get the connection from the session if it exists.
-            try {
-                Database db = (Database) session.getAttribute("db_connection");
-                if (db != null) {
-                    db.close(); //close the existing connection, to reopen another one
+
+            session = request.getSession(true);
+            logger.debug("Created a new session with id: " + session.getId());
+            synchronized (session) {
+
+                //get the connection from the session if it exists.
+                try {
+                    Database db = (Database) session.getAttribute("db_connection");
+                    if (db != null) {
+                        db.close(); //close the existing connection, to reopen another one
+                    }
+                    connection = DriverManager.getConnection(dbURL, username, password);
+                    connection.setAutoCommit(true);
+                    db = new Database(connection);
+                    session.setAttribute("db_connection", db);
+                    session.setAttribute("inwardUnderProcess", null);
+                    
+                    String sql = Queries.getQuery("logged_in_user");
+                    String userName = request.getUserPrincipal().getName();
+                    
+                    // set the user information in the session
+                    PreparedStatement pst = connection.prepareStatement(sql);
+                    pst.setString(1, userName);
+                    ResultSet rs = pst.executeQuery();
+                    rs.first();
+                    String firstName = rs.getString(1);
+                    String lastName = rs.getString(2);
+                    LoggedInUserBean userBean = new LoggedInUserBean();
+                    userBean.setUserName(userName);
+                    userBean.setFirstName(firstName);
+                    userBean.setLastName(lastName);
+                    session.setAttribute("userBean", userBean);
+                    url = "jsp/home.jsp";
+
+                } catch (SQLException e) {
+                    url = "jsp/errors/error.jsp";
                 }
-                connection = DriverManager.getConnection(dbURL, username, password);
-                connection.setAutoCommit(true);
-                db = new Database(connection);
-                session.setAttribute("db_connection", db);
-                session.setAttribute("inwardUnderProcess", null);
-                url = "jsp/home.jsp";
 
-            } catch (SQLException e) {
-                url = "jsp/errors/error.jsp";
-            } finally {
-                RequestDispatcher rd = request.getRequestDispatcher(url);
-                rd.forward(request, response);
             }
-
+        }else{
+            url = "jsp/home.jsp";
         }
+        RequestDispatcher rd = request.getRequestDispatcher(url);
+        rd.forward(request, response);
+
 
     }
 

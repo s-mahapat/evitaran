@@ -34,7 +34,7 @@
                             name:"journalGroupName",
                             index:"journalGroupName",
                             align:"center",
-                            width:80,
+                            width:120,
                             key:true
                         },
                         {
@@ -55,7 +55,7 @@
                         {
                             name:"Copies",
                             index:"Copies",
-                            width:40,
+                            width:20,
                             align:"center",
                             xmlmap: 'copies',
                             editable:true,
@@ -69,13 +69,13 @@
                         {
                             name:"total",
                             index:"total",
-                            width:40,
+                            width:30,
                             align:"center"
                         },
                         {
                             name:"active",
                             index:"active",
-                            width:40,
+                            width:20,
                             align:"center",
                             formatter: "checkbox"
                         }

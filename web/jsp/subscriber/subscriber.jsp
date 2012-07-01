@@ -22,7 +22,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxMandatoryWide" TABINDEX="1" type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
+                <input class="IASTextBoxMandatoryWide" TABINDEX="1" maxlength="64" type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
             </span>
         </div>
 
@@ -33,7 +33,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <textarea class="IASTextAreaMandatory" TABINDEX="2" name="subscriberAddress" id="subscriberAddress">${subscriberFormBean.subscriberAddress}</textarea>
+                <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="2" name="subscriberAddress" id="subscriberAddress">${subscriberFormBean.subscriberAddress}</textarea>
             </span>
         </div>
 
@@ -173,7 +173,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxWide" TABINDEX="10" type="text" name="department" id="department" value="${subscriberFormBean.department}"/>
+                <input class="IASTextBoxWide" TABINDEX="10" maxlength="64" type="text" name="department" id="department" value="${subscriberFormBean.department}"/>
             </span>
         </div>
 
@@ -183,7 +183,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxWide" TABINDEX="11" type="text" name="institution" id="institution" value="${subscriberFormBean.institution}"/>
+                <input class="IASTextBoxWide" TABINDEX="11" maxlength="64" type="text" name="institution" id="institution" value="${subscriberFormBean.institution}"/>
             </span>
         </div>
 
@@ -194,7 +194,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" TABINDEX="12" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${subscriberFormBean.email}"/>
+                <input class="IASEmailTextBox" TABINDEX="12" maxlength="64" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${subscriberFormBean.email}"/>
             </span>
         </div>
 
@@ -205,11 +205,11 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="13" name="agent" id="agent">
+                <select class="IASComboBoxWide" TABINDEX="13" name="agent" id="agent">
                     <option value="">Select</option>
                     <%
-                        if (subscriberFormBean.getAgent() != null && !subscriberFormBean.getAgent().isEmpty()) {
-                            out.println("<option value=" + "\"" + subscriberFormBean.getAgent() + "\"" + " selected >" + subscriberFormBean.getAgent() + "</option>");
+                        if (subscriberFormBean.getAgentName() != null && !subscriberFormBean.getAgentName().isEmpty()) {
+                            out.println("<option value=" + "\"" + subscriberFormBean.getAgentName() + "\"" + " selected >" + subscriberFormBean.getAgentName() + "</option>");
                         }
                     %>
                 </select>

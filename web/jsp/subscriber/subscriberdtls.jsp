@@ -171,11 +171,11 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="13" name="agent" id="agent">
+                <select class="IASComboBoxWide" TABINDEX="13" name="agent" id="agent">
                     <option value="">Select</option>
                     <%
-                        if (subscriberFormBean.getAgent() != null && !subscriberFormBean.getAgent().isEmpty()) {
-                            out.println("<option value=" + "\"" + subscriberFormBean.getAgent() + "\"" + " selected >" + subscriberFormBean.getAgent() + "</option>");
+                        if (subscriberFormBean.getAgentName() != null && !subscriberFormBean.getAgentName().isEmpty()) {
+                            out.println("<option value=" + "\"" + subscriberFormBean.getAgentName() + "\"" + " selected >" + subscriberFormBean.getAgentName() + "</option>");
                         }
                     %>
                 </select>

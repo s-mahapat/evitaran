@@ -28,7 +28,7 @@
         $( "input:submit, input:button, input:reset, button", "#bodyContainer,.subMainDiv" ).button();
         $("input:reset").on("click", function(){
             resetGrid(".datatable");
-        });        
+        });
     });
     $(document).ajaxStart(function(){        
         $('#ajaxBusy').show();

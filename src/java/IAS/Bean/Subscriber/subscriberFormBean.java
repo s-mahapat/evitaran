@@ -165,11 +165,11 @@ public class subscriberFormBean extends JDSBean {
         this.email = _email;
     }
 
-    public void setAgent(String _agent){
+    public void setAgentName(String _agent){
         this.agent = _agent;
     }
 
-    public String getAgent(){
+    public String getAgentName(){
         return this.agent;
     }
 

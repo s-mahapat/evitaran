@@ -121,7 +121,7 @@ function listSubscription(){
 }
 
 function getSubscriptionDetails(subscriptionId){
-   windowParams = "dialogHeight:500px; dialogWidth:800px; center:yes; resizeable:no; status:no; menubar:no;\n\
+   windowParams = "dialogHeight:500px; dialogWidth:1000px; center:yes; resizeable:no; status:no; menubar:no;\n\
                     scrollbars:yes; toolbar: no;";
    openModalPopUp("jsp/subscription/subscriptiondetails.jsp?id=" + subscriptionId , "", windowParams);
    return false;
