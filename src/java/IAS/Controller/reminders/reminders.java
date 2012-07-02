@@ -46,9 +46,15 @@ public class reminders extends JDSController {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
+            }else if(action.equalsIgnoreCase("send")){
+
+                String xml = null; //_reminderModel.send();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+                logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
 
         } finally {

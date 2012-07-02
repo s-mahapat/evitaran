@@ -342,5 +342,14 @@ public class reportModel extends JDSModel{
         //xml = util.convertResultSetToXML(rs);
         //return xml;
     }     
+     
+ public ResultSet searchCirculationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String xml = null;
+        String sql;
+        sql = Queries.getQuery("list_circulation_figures");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        return rs;
+    }
 }
 

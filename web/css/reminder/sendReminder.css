@@ -1,0 +1,28 @@
+/*
+    Document   : Style for Subtype related JSPs are defined here
+*/
+root {
+    display:block;
+}
+
+#remindBtnDiv{
+    margin-left: 45%;
+    float: left;
+    width: 10%;
+}
+
+#printMedium{
+    margin-left: 20%;
+    float: left;
+    width: 30%;
+}
+
+#printSendBtnDiv{
+    float: left;
+    width: 20%;
+}
+
+#cancelBtnDiv{
+    float: left;
+    width: 20%;
+}

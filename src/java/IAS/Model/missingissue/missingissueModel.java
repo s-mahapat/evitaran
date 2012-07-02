@@ -191,9 +191,18 @@ public class missingissueModel extends JDSModel {
         int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("miId"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        xml = util.convertResultSetToXML(rs);
-        setAction("R");
-        completeInward();
+        if (rs.next()){
+            xml = util.convertResultSetToXML(rs);
+            conn.setAutoCommit(false);
+            try {
+                setAction("R");
+                completeInward();
+            }catch (SQLException | ParseException | NumberFormatException e) {
+                conn.rollback();
+            } finally {
+                conn.setAutoCommit(true);
+            }
+        }
         return xml;
     }
 
@@ -276,33 +285,40 @@ public class missingissueModel extends JDSModel {
             IOException, InvocationTargetException, Exception {
         String xml = null;
         String miId = null;
+        conn.setAutoCommit(false);
         miId = request.getParameter("miId");
         String sql = Queries.getQuery("generate_ml");
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 0;
         stGet.setString(++paramIndex, request.getParameter("miId"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        while(rs.next()){
-            String sqlmldtl = Queries.getQuery("insert_mldtl_mil");
-            PreparedStatement stmldtl = conn.prepareStatement(sqlmldtl);
-            paramIndex = 0;
+        try{
+            while(rs.next()){
+                String sqlmldtl = Queries.getQuery("insert_mldtl_mil");
+                PreparedStatement stmldtl = conn.prepareStatement(sqlmldtl);
+                paramIndex = 0;
 
-            Object value = null;
-            for (int j = 1; j <= 26; j++) {
-                value = rs.getObject(j);
-                String temp = "";
-                if(value == null)
-                    temp = "";
-                else
-                    temp = value.toString();
-                stmldtl.setString(++paramIndex, temp);
-            }
-            //stmldtl.setString(++paramIndex, miId );
-            db.executeUpdatePreparedStatement(stmldtl);
-        }
+                Object value = null;
+                for (int j = 1; j <= 26; j++) {
+                    value = rs.getObject(j); 
+                    String temp = "";
+                    if(value == null)
+                        temp = "";
+                    else
+                        temp = value.toString();
+                    stmldtl.setString(++paramIndex, temp);
+                }
+                //stmldtl.setString(++paramIndex, miId );
+                db.executeUpdatePreparedStatement(stmldtl);            
+            }            
         //xml = util.convertResultSetToXML(rs);
-        setAction("M");
-        completeInward();
+            setAction("M");
+            completeInward();
+        }catch (SQLException | ParseException | NumberFormatException e) {
+            conn.rollback();
+        } finally {
+            conn.setAutoCommit(true);
+        }                
         return xml;
     }
 
@@ -312,39 +328,16 @@ public class missingissueModel extends JDSModel {
 
         boolean status = false;
         String xml = null;
-
-        String replyOption = request.getParameter("replyOption");
-        //If the user chosses to print
-        if(replyOption.equals("Print"))
-        {
-            xml = util.convertStringToXML("print", "action");
-            status = true;
-        }
-        //If the user chosses to send email
-        if(replyOption.equals("EMail"))
-        {
-            ServletContext context = ServletContextInfo.getServletContext();
-            String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
-            Properties properties = new Properties();
-            properties.load(new FileInputStream(emailPropertiesFile));
-
-            String msg = properties.getProperty("missingIssueNoCopy");
-            String to = request.getParameter("email");
-
-            msgsend sendMsg = new msgsend();
-            status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "", "Missing Issues", msg, "", "", null);
-            if(status)
-                xml = util.convertStringToXML("success", "action");
-            else
-                xml = util.convertStringToXML("failure", "action");
-        }
-
-        if(status)
-        {
+        conn.setAutoCommit(false);
+        try {
             setAction("N");
             completeInward();
-        }
-
+        }catch (SQLException | ParseException | NumberFormatException e) {
+            conn.rollback();
+        } finally {
+            conn.setAutoCommit(true);
+        }        
+        xml = util.convertStringToXML("N", "action");
         return xml;
     }
 
@@ -354,39 +347,16 @@ public class missingissueModel extends JDSModel {
 
         boolean status = false;
         String xml = null;
-
-        String replyOption = request.getParameter("replyOption");
-        //If the user chosses to print
-        if(replyOption.equals("Print"))
-        {
-            xml = util.convertStringToXML("print", "action");
-            status = true;
-        }
-        //If the user chosses to send email
-        if(replyOption.equals("EMail"))
-        {
-            ServletContext context = ServletContextInfo.getServletContext();
-            String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
-            Properties properties = new Properties();
-            properties.load(new FileInputStream(emailPropertiesFile));
-
-            String msg = properties.getProperty("missingIssueAlreadySent");
-            String to = request.getParameter("email");
-
-            msgsend sendMsg = new msgsend();
-            status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "", "Missing Issues", msg, "", "", null);
-            if(status)
-                xml = util.convertStringToXML("success", "action");
-            else
-                xml = util.convertStringToXML("failure", "action");
-        }
-
-        if(status)
-        {
+        conn.setAutoCommit(false);
+        try {
             setAction("S");
             completeInward();
-        }
-
+        }catch (SQLException | ParseException | NumberFormatException e) {
+            conn.rollback();
+        } finally {
+            conn.setAutoCommit(true);
+        }        
+        xml = util.convertStringToXML("S", "action");
         return xml;
     }
 

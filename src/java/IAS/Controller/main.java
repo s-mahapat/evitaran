@@ -164,6 +164,10 @@ public class main extends JDSController {
 
             url = "/jsp/reminders/sendReminders.jsp";
 
+        } else if (action.equalsIgnoreCase("displayReminders")) {
+
+            url = "/jsp/reminders/displayResendReminders.jsp";
+
         } else if (action.equalsIgnoreCase("gpi")) {
 
             url = "/jsp/inward/gatekeeperinward.jsp?nextAction=gpi&inwardPurpose=Request For Invoice&next=" + request.getContextPath() + "/jsp/invoice/proforma.jsp";

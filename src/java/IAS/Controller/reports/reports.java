@@ -87,8 +87,18 @@ public class reports extends JDSController {
                 ResultSet rs = _reportModel.searchSubscriber();
                 request.setAttribute("ResultSet", rs);
                 url = "/jsp/reports/listSubscriberPrint.jsp";
-            }
+            }else if(action.equalsIgnoreCase("listCirculationFigures")){
 
+                ResultSet rs = _reportModel.searchCirculationFigures();
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }else if(action.equalsIgnoreCase("listCirculationFiguresPrint")){
+
+                ResultSet rs = _reportModel.searchCirculationFigures();
+                request.setAttribute("ResultSet", rs);
+                url = "/jsp/reports/listCirculationFiguresPrint.jsp";
+            }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);

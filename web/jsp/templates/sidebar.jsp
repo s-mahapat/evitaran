@@ -62,9 +62,8 @@
         <li class="menu">
             <a href="#">Reminders</a>
             <ul>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=contextPath + "/main?action=sendReminders"%>">Send Reminders</a>
-                </li>
+                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=sendReminders"%>">Send Reminders</a></li>
+                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=displayReminders"%>">Display/Resend Reminders</a></li>
             </ul>
         </li>
 

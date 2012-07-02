@@ -273,8 +273,9 @@
                             <%-----------------------------------------------------------------------------------------------------%>
                             <fieldset class="subMainFieldSet">
                                 <legend>Generate/ Print Mailing List</legend>
-                                <div class="IASFormLeftDiv">
-                                    <div class="IASFormFieldDiv">
+
+                                <div class="IASFormFieldDiv">
+                                    <div id="mlOptionDiv">
                                         <span class="IASFormDivSpanLabel">
                                             <label>Print Option</label>
                                         </span>
@@ -285,25 +286,22 @@
                                             </select>
                                         </span>
                                     </div>
-                                </div>
-                                <div class="IASFormRightDiv">
-                                    <div class="IASFormFieldDiv">
-                                        <div id="gMiBtnDiv">
-                                            <input class="IASButton" TABINDEX="4" type="button" value="Generate Mailing List" id="btngMi" name="btngMi" onclick="gMiList()"/>
-                                        </div>
-                                        <div id="reprintBtnDiv">
-                                            <input class="IASButton" TABINDEX="4" type="button" value="Re-print Mailing List" id="btnReprint" name="btnReprint" onclick="reprint()"/>
-                                        </div>
+                                    <div id="gMiBtnDiv">
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Generate Mailing List" id="btngMi" name="btngMi" onclick="gMiList()"/>
                                     </div>
-                                </div>
+                                    <div id="reprintBtnDiv">
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Re-print Mailing List" id="btnReprint" name="btnReprint" onclick="reprint()"/>
+                                    </div>
+                                </div>   
+
                             </fieldset>
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Journal Actions Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>
 
                             <fieldset class="subMainFieldSet">
-                                <div class="IASFormLeftDiv">
-                                    <div class="IASFormFieldDiv">
+                                <div class="IASFormFieldDiv">
+                                    <div id ="replyOptionDiv">
                                         <span class="IASFormDivSpanLabel">
                                             <label>Reply Option</label>
                                         </span>
@@ -314,17 +312,16 @@
                                             </select>
                                         </span>
                                     </div>
+
+                                <div id="noCopyBtnDiv">
+                                    <input class="IASButton" TABINDEX="4" type="button" value="No Copy" id="btnNoCopy" name="btnNoCopy" onclick="noCopies()"/>
                                 </div>
-                                <div class="IASFormRightDiv">
-                                    <div class="IASFormFieldDiv">
-                                        <div id="noCopyBtnDiv">
-                                            <input class="IASButton" TABINDEX="4" type="button" value="No Copy" id="btnNoCopy" name="btnNoCopy" onclick="noCopies()"/>
-                                        </div>
-                                        <div id="sentMsgBtnDiv">
-                                            <input class="IASButton" TABINDEX="4" type="button" value="Already Sent" id="btnSentMsg" name="btnSentMsg" onclick="alreadySent()"/>
-                                        </div>
-                                    </div>
+                                <div id="sentMsgBtnDiv">
+                                    <input class="IASButton" TABINDEX="4" type="button" value="Already Sent" id="btnSentMsg" name="btnSentMsg" onclick="alreadySent()"/>
                                 </div>
+                                </div>
+
+
                             </fieldset>
                     </fieldset>
                 </div>
