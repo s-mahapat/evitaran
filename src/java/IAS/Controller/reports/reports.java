@@ -33,56 +33,127 @@ public class reports extends JDSController {
         try{
 
             _reportModel = new IAS.Model.Reports.reportModel(request);
+            /*----------------------------------------------------------------*/
+            if(action.equalsIgnoreCase("listRates")){
 
-            if(action.equalsIgnoreCase("listJournal")){
-
-                ResultSet rs = _reportModel.searchJournal();
+                ResultSet rs = _reportModel.listRates();
                 String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }else if(action.equalsIgnoreCase("listJournalPrint")){
+            }else if(action.equalsIgnoreCase("printRates")){
 
-                ResultSet rs = _reportModel.searchJournal();
+                ResultSet rs = _reportModel.listRates();
+                request.setAttribute("ResultSet", rs);
+                String query = "Annual Rates for Journals";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+
+            }
+
+            /*----------------------------------------------------------------*/
+            if(action.equalsIgnoreCase("listJournalGroup")){
+
+                ResultSet rs = _reportModel.searchJournalGroup();
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("printJournalGroup")){
+
+                ResultSet rs = _reportModel.searchJournalGroup();
+                request.setAttribute("ResultSet", rs);
+                String query = "List of journals in group";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+
+            }
+            // This actually generates a html page with table. This functionality is nolonger used
+            else if(action.equalsIgnoreCase("listJournalPrint")){
+
+                ResultSet rs = _reportModel.searchJournalGroup();
                 request.setAttribute("ResultSet", rs);
                 url = "/jsp/reports/listJournalPrint.jsp";
 
-            }else if(action.equalsIgnoreCase("listSubType")){
+            }
+            /*----------------------------------------------------------------*/
+            else if(action.equalsIgnoreCase("listSubType")){
 
                 ResultSet rs = _reportModel.searchSubType();
                 String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }else if(action.equalsIgnoreCase("listSubTypePrint")){
+            }else if(action.equalsIgnoreCase("printSubType")){
+
+                ResultSet rs = _reportModel.searchSubType();
+                request.setAttribute("ResultSet", rs);
+                String query = "List of subscriber types";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+            }
+            // This actually generates a html page with table. This functionality is nolonger used
+            else if(action.equalsIgnoreCase("listSubTypePrint")){
 
                 ResultSet rs = _reportModel.searchSubType();
                 request.setAttribute("ResultSet", rs);
                 url = "/jsp/reports/listSubTypePrint.jsp";
 
-            }else if(action.equalsIgnoreCase("listInwards")){
+            }
+            /*----------------------------------------------------------------*/
+            else if(action.equalsIgnoreCase("listInwards")){
 
-                String xml = _reportModel.searchInwards();
+                ResultSet rs = _reportModel.searchInwardsAll();
+                String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }else if(action.equalsIgnoreCase("listAgents")){
+            }else if(action.equalsIgnoreCase("printInwardsList")){
+
+                ResultSet rs = _reportModel.searchInwardsAll();
+                request.setAttribute("ResultSet", rs);
+                String query = "List of inwards";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+            }
+            /*----------------------------------------------------------------*/
+            else if(action.equalsIgnoreCase("listAgents")){
                 ResultSet rs = _reportModel.searchAgents();
                 String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }else if(action.equalsIgnoreCase("listAgentPrint")){
+            }else if(action.equalsIgnoreCase("printAgents")){
 
-                ResultSet rs = _reportModel.searchSubType();
+                ResultSet rs = _reportModel.searchAgents();
+                request.setAttribute("ResultSet", rs);
+                String query = "List of Agents";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+            }
+            // This actually generates a html page with table. This functionality is nolonger used
+            else if(action.equalsIgnoreCase("listAgentPrint")){
+
+                ResultSet rs = _reportModel.searchAgents();
                 request.setAttribute("ResultSet", rs);
                 url = "/jsp/reports/listAgentPrint.jsp";
-            }else if(action.equalsIgnoreCase("listSubscribers")){
+            }
+            /*----------------------------------------------------------------*/
+            else if(action.equalsIgnoreCase("listSubscribers")){
 
                 ResultSet rs = _reportModel.searchSubscriber();
                 String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }else if(action.equalsIgnoreCase("listSubscribersPrint")){
+            }else if(action.equalsIgnoreCase("printSubscribersReport")){
+
+                ResultSet rs = _reportModel.searchSubscriber();
+                request.setAttribute("ResultSet", rs);
+                String query = "List of Subscribers";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+            }
+            // This actually generates a html page with table. This functionality is nolonger used
+            else if(action.equalsIgnoreCase("listSubscribersPrint")){
 
                 ResultSet rs = _reportModel.searchSubscriber();
                 request.setAttribute("ResultSet", rs);
@@ -99,6 +170,39 @@ public class reports extends JDSController {
                 request.setAttribute("ResultSet", rs);
                 url = "/jsp/reports/listCirculationFiguresPrint.jsp";
             }
+            /*----------------------------------------------------------------*/
+            else if(action.equalsIgnoreCase("statement")){
+
+                ResultSet rs = _reportModel.statement();
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("printStatement")){
+
+                ResultSet rs = _reportModel.statement();
+                request.setAttribute("ResultSet", rs);
+                String query = "Statement for Journal";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+            }
+            /*----------------------------------------------------------------*/
+            else if(action.equalsIgnoreCase("circulationFigures")){
+
+                ResultSet rs = _reportModel.statement();
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("printCirculationFigures")){
+
+                ResultSet rs = _reportModel.statement();
+                request.setAttribute("ResultSet", rs);
+                String query = "Circulation Figures";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+            }
+
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);

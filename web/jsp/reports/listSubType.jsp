@@ -28,7 +28,7 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No Subscriber Type",
                     loadtext: "Loading...",
@@ -47,9 +47,9 @@
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "subtype>page",
-                        total: "subtype>total",
-                        records : "subtype>records",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
                         id: "id"
                     },
@@ -102,14 +102,14 @@
                     document.getElementById("selall").value = 1;
                 }
             }
-            
+
         </script>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchSubTypeForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports?action=printSubType"%>" name="searchSubTypeForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List and Print Subscriber Type</legend>
@@ -147,7 +147,7 @@
                                             <option value ="F">Foreign</option>
                                         </select>
                                     </span>
-                                </div>                                
+                                </div>
                             </div>
 
                             <div class="IASFormRightDiv">
@@ -198,7 +198,8 @@
                          <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
-                                    <input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>
+                                    <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
+                                    <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
                                 </div>
                             </div>
                         </fieldset>

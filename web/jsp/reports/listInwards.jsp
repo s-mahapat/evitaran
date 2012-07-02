@@ -18,9 +18,10 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=purpose"%>","purpose","inwardPurpose");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=currency"%>","currency","currency");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=payment_mode"%>","payment_mode","paymentMode");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=language"%>","language","language");
             });
 
-        </script>        
+        </script>
         <script type="text/javascript">
             var selectedInward = 0;
             var selectedSubscriberId = 0;
@@ -43,8 +44,9 @@
                         autowidth: true,
                         forceFit: true,
                         sortable: true,
-                        sortname: 'inwardNumber',
-                        loadonce: false,
+                        loadonce: true,
+                        //sortname: 'inwardNumber',
+                        //loadonce: false,
                         rownumbers: true,
                         emptyrecords: "No inwards to view",
                         loadtext: "Loading...",
@@ -57,7 +59,6 @@
                             {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
                             {name:'Cheque', index:'chqddNumber', width:40, align:'center', xmlmap:'chqddNumber'},
                             {name:'Purpose', index:'inwardPurpose', width:80, align:'center', xmlmap:'inwardPurpose'},
-                            
                         ],
                         xmlReader : {
                             root: "results",
@@ -77,7 +78,7 @@
                         gridComplete: function() {
                             var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
                             if(ids.length > 0){
-                                $("#btnNext").removeAttr("disabled");
+                                $("#printReportBtn").button("enable");
                             }
                         },
                         beforeRequest: function(){
@@ -126,7 +127,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="listInwardForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports?action=printInwardsList"%>" name="listInwardForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List and Print Inwards</legend>
@@ -156,7 +157,7 @@
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBox" TABINDEX="2" name="country" id="country">
                                             <option value="0" selected >Select</option>
-                                        </select>                                        
+                                        </select>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -165,21 +166,21 @@
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBox" TABINDEX="3" name="state" id="state">
-                                            <option value="" selected >Select</option>
+                                            <option value="0" selected >Select</option>
                                         </select>
                                         <%--<input class="IASTextBoxMandatory" TABINDEX="3" name="state" id="state" value="<jsp:getProperty name="inwardFormBean" property="state"/>"--%>
                                     </span>
-                                </div>                                     
+                                </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBox" TABINDEX="4" name="city" id="city">
-                                            <option value="NULL">Select</option>
+                                            <option value="0">Select</option>
                                         </select>
                                     </span>
-                                </div>                                    
+                                </div>
 
                             </div>
 
@@ -207,10 +208,10 @@
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBox" TABINDEX="7" name="paymentMode" id="paymentMode">
-                                            <option value="">Select</option>
+                                            <option value="0">Select</option>
                                         </select>
                                     </span>
-                                </div>  
+                                </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Currency:</label>
@@ -220,7 +221,7 @@
                                             <option value="">Select</option>
                                         </select>
                                     </span>
-                                </div>    
+                                </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Language:</label>
@@ -228,12 +229,9 @@
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBox" TABINDEX="9" name="language" id="language">
                                             <option value="">Select</option>
-                                            <option value ="E">English</option>
-                                            <option value ="H">Hindi</option>
-                                            <option value ="O">other</option>
                                         </select>
                                     </span>
-                                </div>                                           
+                                </div>
                             </div>
                             <div class="actionBtnDiv">
                                 <input class="IASButton" TABINDEX="10" type="button" value="Search" onclick="searchInwards()"/>
@@ -258,14 +256,15 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- SPrint Button Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-                        
+
                      <fieldset class="subMainFieldSet">
                         <div class="IASFormFieldDiv">
                             <div class="singleActionBtnDiv">
-                                <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
+                                <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
+                                <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
                             </div>
                         </div>
-                    </fieldset>                        
+                    </fieldset>
                 </div>
             </form>
         </div>

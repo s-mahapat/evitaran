@@ -25,7 +25,7 @@
             $(document).ready(function (){
                 $(function(){
                         $("#subscriberTable").jqGrid({
-                        url:"<%=request.getContextPath() + "/subscriber?action=listSubscribers"%>",
+                        url:"<%=request.getContextPath() + "/reports?action=listSubscribers"%>",
                         datatype: 'xml',
                         mtype: 'GET',
                         width: '100%',
@@ -39,12 +39,12 @@
                         loadtext: "Loading...",
                         colNames:['Subscriber Number','Subscriber Name', 'Department','City','Pin Code','Country'],
                         colModel :[
-                            {name:'Subscriber Number', index:'subscriberNumber', width:40, align:'center', xmlmap:'subscriberNumber'},
-                            {name:'Subscriber Name', index:'subscriberName', width:40, align:'center', xmlmap:'subscriberName'},
-                            {name:'Department', index:'department', width:40, align:'center', xmlmap:'department'},
-                            {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                            {name:'Pin Code', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
-                            {name:'Country', index:'country', width:30, align:'center', xmlmap:'country'},
+                            {name:'subscriberNumber', index:'subscriberNumber', width:40, align:'center', xmlmap:'subscriberNumber'},
+                            {name:'subscriberName', index:'subscriberName', width:40, align:'center', xmlmap:'subscriberName'},
+                            {name:'department', index:'department', width:40, align:'center', xmlmap:'department'},
+                            {name:'city', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
+                            {name:'pincode', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
+                            {name:'country', index:'country', width:30, align:'center', xmlmap:'country'},
                           ],
                         xmlReader : {
                             root: "results",
@@ -65,10 +65,8 @@
 
                         gridComplete: function() {
                             var ids = jQuery("#subscriberTable").jqGrid('getDataIDs');
-                            for (var i = 0; i < ids.length; i++) {
-                                var subscriberId = ids[i];
-                                action = "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "'>View</a><a style='color:blue;' href='subscriber?action=edit&subscriberNumber=" + subscriberId + "'>Edit</a>";
-                                jQuery("#subscriberTable").jqGrid('setRowData', ids[i], { Action: action });
+                            if(ids.length > 0){
+                                $("#printReportBtn").button("enable");
                             }
                         },
                         beforeRequest: function(){
@@ -81,31 +79,35 @@
                 });
             });
 
-
-
             // called when the search button is clicked
             function searchSubscriber(){
-                jQuery("#subscriberTable").setGridParam({ datatype: "xml" });
-                if(validateSearchSubscriber() == true){
+                //if(validateSearchSubscriber() == true)
+                if(($("#subtype").val() == 0 && $("#nationality").val() == 0 && $("#institutional").val() == 0
+                    && $("#subscriberType").val() == 0 && $("#journalGroupName").val() == 0
+                    && $("#country").val() == 0) && $("#city").val() == 0 && $("#state").val() == 0)
+                    alert("Atleast one search parameter should be selected");
+                else
+                {
                     isPageLoaded = true;
                     jQuery("#subscriberTable").setGridParam({postData:
-                            {city               : $("#city").val(),
-                            country               : $("#country").val(),
-                            state               : $("#state").val(),
-                            journalGroupName    : $("#journalGroupName").val(),
-                            subtype             : $("#subtype").val(),
+                            {subtype            : $("#subtype").val(),
                             nationality         : $("#nationality").val(),
                             institutional       : $("#institutional").val(),
                             subscriberType      : $("#subscriberType").val(),
+                            journalGroupName    : $("#journalGroupName").val(),
+                            country             : $("#country").val(),
+                            state               : $("#state").val(),
+                            city                : $("#city").val(),
                             from                : $("#from").val(),
                             to                  : $("#to").val()
                         }});
+                    jQuery("#subscriberTable").setGridParam({ datatype: "xml" });
                     jQuery("#subscriberTable").trigger("clearGridData");
                     jQuery("#subscriberTable").trigger("reloadGrid");
                 }
 
             }
-            
+
             // draw the date picker.
             jQueryDatePicker("from","to");
         </script>
@@ -114,7 +116,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchSubscriberForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports?action=printSubscribersReport"%>" name="searchSubscriberForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Subscriber</legend>
@@ -136,7 +138,7 @@
                                     <span class="IASFormDivSpanInputBox">
 
                                         <select class="IASComboBoxMandatory" TABINDEX="4" name="subtype" id="subtype">
-                                            <option value ="">Select</option>
+                                            <option value ="0">Select</option>
                                             <option value ="Paid">Paid</option>
                                             <option value ="Free">Free</option>
                                         </select>
@@ -149,7 +151,7 @@
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBoxMandatory" TABINDEX="5" name="nationality" id="nationality">
-                                            <option value ="">Select</option>
+                                            <option value ="0">Select</option>
                                             <option value ="I">Indian</option>
                                             <option value ="F">Foreign</option>
                                         </select>
@@ -162,7 +164,7 @@
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBoxMandatory" TABINDEX="6" name="institutional" id="institutional">
-                                            <option value ="">Select</option>
+                                            <option value ="0">Select</option>
                                             <option value ="I">Institute</option>
                                             <option value ="P">Personal</option>
                                         </select>
@@ -178,8 +180,8 @@
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
-                                </div> 
-                                
+                                </div>
+
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Journal Group:</label>
@@ -189,21 +191,21 @@
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
-                                </div>                               
+                                </div>
                             </div>
 
 
                             <%-- Search Criteria right div --%>
                             <div class="IASFormRightDiv">
 
-<                               <div class="IASFormFieldDiv">
+                                <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Country:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBox" TABINDEX="2" name="country" id="country">
                                             <option value="0" selected >Select</option>
-                                        </select>                                        
+                                        </select>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -212,18 +214,18 @@
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBox" TABINDEX="3" name="state" id="state">
-                                            <option value="" selected >Select</option>
+                                            <option value="0" selected >Select</option>
                                         </select>
                                         <%--<input class="IASTextBoxMandatory" TABINDEX="3" name="state" id="state" value="<jsp:getProperty name="inwardFormBean" property="state"/>"--%>
                                     </span>
-                                </div>                                     
+                                </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBox" TABINDEX="4" name="city" id="city">
-                                            <option value="NULL">Select</option>
+                                            <option value="0">Select</option>
                                         </select>
                                     </span>
                                 </div>
@@ -231,7 +233,7 @@
                                     <span class="IASFormDivSpanLabel">
                                         <label>Date Range:</label>
                                     </span>
-                                    <div class="dateDiv"></div> 
+                                    <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
                                     </span>
@@ -256,6 +258,19 @@
                             <table class="datatable" id="subscriberTable"></table>
                             <div id="pager"></div>
                         </fieldset>
+                    </fieldset>
+
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        <%-- SPrint Button Field Set --%>
+                        <%-----------------------------------------------------------------------------------------------------%>
+
+                     <fieldset class="subMainFieldSet">
+                        <div class="IASFormFieldDiv">
+                            <div class="singleActionBtnDiv">
+                                <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
+                                <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
+                            </div>
+                        </div>
                     </fieldset>
                 </div>
             </form>

@@ -24,7 +24,7 @@
             $(function(){
 
                       $("#datatable").jqGrid({
-                        url:'',
+                        url:"<%=request.getContextPath() + "/reports?action=listProformaInvoice"%>",
                         datatype: 'xml',
                         mtype: 'GET',
                         width: '100%',
@@ -52,11 +52,11 @@
 
                         ],
                         xmlReader : {
-                          root: "result",
+                          root: "results",
                           row: "row",
-                          page: "data>page",
-                          total: "data>total",
-                          records : "data>records",
+                          page: "results>page",
+                          total: "results>total",
+                          records : "results>records",
                           repeatitems: false,
                           id: "subscriber_id"
                        },
@@ -81,7 +81,7 @@
                 jQuery("#datatable").trigger("reloadGrid");
             }
         </script>
-        
+
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -233,11 +233,12 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Print Button Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
- 
+
                          <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
-                                    <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
+                                    <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
+                                    <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
                                 </div>
                             </div>
                         </fieldset>

@@ -17,7 +17,7 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
             });
         </script>
-        
+
         <script type="text/javascript">
             //var selectedAgentName = 0;
             var selectedAgentId = 0;
@@ -35,7 +35,7 @@
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
-                    loadonce: false,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No Agent",
                     loadtext: "Loading...",
@@ -51,9 +51,9 @@
                     xmlReader : {
                         root: "results",
                         row: "row",
-                        page: "agent>page",
-                        total: "agent>total",
-                        records : "agent>records",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
                         id: "id"
                     },
@@ -66,8 +66,8 @@
                     gridComplete: function() {
                         var ids = jQuery("#agentTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
-                            $("#btnNext").removeAttr("disabled");
-                        }                        
+                            $("#printReportBtn").button("enable");
+                        }
                     },
                     beforeRequest: function(){
                         return isPageLoaded;
@@ -81,19 +81,23 @@
 
             // called when the search button is clicked
             function searchAgents(){
-                isPageLoaded = true;
+                if(($("#country").val() == 0) && $("#city").val() == 0 && $("#state").val() == 0 && document.getElementById("selall").value == 0)
+                    alert("Atleast one search parameter should be selected");
+                else
+                 {
+                    isPageLoaded = true;
 
-                jQuery("#agentTable").setGridParam({postData:
-                        {country       : $("#country").val(),
-                        state          : $("#state").val(),
-                        city           : $("#city").val(),
-                        from           : $("#from").val(),
-                        to             : $("#to").val(),
-                        selall         : $("#selall:checked").length
-                    }});
-                jQuery("#agentTable").setGridParam({ datatype: "xml" });
-                jQuery("#agentTable").trigger("clearGridData");
-                jQuery("#agentTable").trigger("reloadGrid");
+                    jQuery("#agentTable").setGridParam({postData:
+                            {country       : $("#country").val(),
+                            state          : $("#state").val(),
+                            city           : $("#city").val(),
+                            selall         : $("#selall:checked").length
+                            //selall         : $("#selall").val
+                        }});
+                    jQuery("#agentTable").setGridParam({ datatype: "xml" });
+                    jQuery("#agentTable").trigger("clearGridData");
+                    jQuery("#agentTable").trigger("reloadGrid");
+                }
             }
 
             function getChecked(){
@@ -103,9 +107,6 @@
                     document.getElementById("selall").value = 1;
                 }
             }
-            
-            // draw the date picker.
-            jQueryDatePicker("from","to");
 
         </script>
 
@@ -115,10 +116,10 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="listAgentForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports?action=printAgents"%>" name="listAgentForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>List and Print Inwards</legend>
+                        <legend>List and Print Agent Data</legend>
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
@@ -133,9 +134,9 @@
                                         <label>Country:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="2" name="country" id="country">
+                                        <select class="IASComboBox" TABINDEX="1" name="country" id="country">
                                             <option value="0" selected >Select</option>
-                                        </select>                                        
+                                        </select>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -143,41 +144,24 @@
                                         <label>State:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="3" name="state" id="state">
-                                            <option value="" selected >Select</option>
+                                        <select class="IASComboBox" TABINDEX="2" name="state" id="state">
+                                            <option value="0" selected>Select</option>
                                         </select>
                                         <%--<input class="IASTextBoxMandatory" TABINDEX="3" name="state" id="state" value="<jsp:getProperty name="inwardFormBean" property="state"/>"--%>
                                     </span>
-                                </div>                                     
+                                </div>
+                            </div>
+
+                            <%-- Search Criteria right div --%>
+                            <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="4" name="city" id="city">
-                                            <option value="NULL">Select</option>
+                                        <select class="IASComboBox" TABINDEX="3" name="city" id="city">
+                                            <option value="0" selected>Select</option>
                                         </select>
-                                    </span>
-                                </div>                                    
-
-                            </div>
-
-                            <%-- Search Criteria right div --%>
-                            <div class="IASFormRightDiv">
-
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Date Range:</label>
-                                    </span>
-                                    <div class="dateDiv"></div>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
-                                    </span>
-                                    <span class="IASFormDivSpanForHyphen">
-                                        <label> to </label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -185,14 +169,13 @@
                                         <label>All Agents</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
+                                        <input class="IASCheckBox" TABINDEX="4" type="checkbox" value="0" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
-                                </div>                                
-                                      
+                                </div>
+
                             </div>
                             <div class="actionBtnDiv">
-                                <input class="IASButton" TABINDEX="10" type="button" value="Search" onclick="searchAgents()"/>
-                                <input class="IASButton" TABINDEX="11" type="reset" value="Reset"/>
+                                <input class="IASButton" TABINDEX="5" type="button" value="Search" onclick="searchAgents()"/>
                             </div>
 
                         </fieldset>
@@ -213,14 +196,14 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- SPrint Button Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-                        
+
                      <fieldset class="subMainFieldSet">
                         <div class="IASFormFieldDiv">
                             <div class="singleActionBtnDiv">
-                                <input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>
+                                <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
                             </div>
                         </div>
-                    </fieldset>                        
+                    </fieldset>
                 </div>
             </form>
         </div>

@@ -8,7 +8,16 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/statement.css" />
-        <script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalName"%>","journalName","journalName");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");
+            });
+        </script>
+
+        <script type="text/javascript">
             var isPageLoaded = false;
 
             // draw the date picker.
@@ -17,7 +26,7 @@
             $(function(){
 
                       $("#statementTable").jqGrid({
-                        url:'',
+                        url:"<%=request.getContextPath() + "/reports?action=statement"%>",
                         datatype: 'xml',
                         mtype: 'GET',
                         width: '100%',
@@ -31,20 +40,20 @@
                         loadtext: "Loading...",
                         colNames:['Journal Code','Journal Name', 'Subscriber Type','Subscriber Count','No. Of Copies'],
                         colModel :[
-                          {name:'JournalCode', index:'inward_id', width:50, align:'center', xmlmap:'journal_code'},
-                          {name:'JournalName', index:'subscriber_id', width:80, align:'center', xmlmap:'journal_name'},
-                          {name:'SubscriberType', index:'from', width:80, align:'center', xmlmap:'subscriber_type'},
-                          {name:'SubscriberCount', index:'date', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'subscriber_count'},
-                          {name:'Copies', index:'city', width:80, align:'center', sortable:false, xmlmap:'copies'},
+                          {name:'journalCode', index:'journalCode', width:50, align:'center', xmlmap:'journalCode'},
+                          {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
+                          {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
+                          {name:'subscriberCount', index:'subscriberCount', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'subscriberCount'},
+                          {name:'copies', index:'copies', width:80, align:'center', sortable:false, xmlmap:'copies'},
                         ],
                         xmlReader : {
-                          root: "result",
+                          root: "results",
                           row: "row",
-                          page: "data>page",
-                          total: "data>total",
-                          records : "data>records",
+                          page: "results>page",
+                          total: "results>total",
+                          records : "results>records",
                           repeatitems: false,
-                          id: "journal_code"
+                          id: "journalCode"
                        },
                         pager: '#pager',
                         rowNum:10,
@@ -52,6 +61,12 @@
                         viewrecords: true,
                         gridview: true,
                         caption: '&nbsp;',
+                        gridComplete: function() {
+                            var ids = jQuery("#statementTable").jqGrid('getDataIDs');
+                            if(ids.length > 0){
+                                $("#printReportBtn").button("enable");
+                            }
+                        },
                         beforeRequest: function(){
                           return isPageLoaded;
                         },
@@ -63,10 +78,33 @@
 
             });
 
+            // called when the search button is clicked
             function getStatements(){
-                isPageLoaded = true;
-                jQuery("#statementTable").trigger("reloadGrid");
+                if(($("#journalName").val() == 0) && $("#year").val() == 0 && $("#subscriberType").val() == 0
+                && isEmpty(document.getElementById("from")) && isEmpty(document.getElementById("to")))
+                {
+                        alert("Atleast one search parameter should be selected");
+                }
+                else if(isEmpty(document.getElementById("from")) || isEmpty(document.getElementById("to")))
+                        alert("Both dates (from-to) should be selected");
+                else{
+                    isPageLoaded = true;
+                    jQuery("#statementTable").setGridParam({postData:
+                            {journalName    : $("#journalName").val(),
+                            year            : $("#year").val(),
+                            subscriberType  : $("#subscriberType").val(),
+                            fromDate        : $("#from").val(),
+                            toDate          : $("#to").val()
+                        }});
+                    jQuery("#statementTable").setGridParam({ datatype: "xml" });
+                    jQuery("#statementTable").trigger("clearGridData");
+                    jQuery("#statementTable").trigger("reloadGrid");
+
+                }
             }
+
+            // draw the date picker.
+            jQueryDatePicker("from","to");
 
 
         </script>
@@ -76,7 +114,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="statement">
+            <form method="post" action="<%=request.getContextPath() + "/reports?action=printStatement"%>" name="statement">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Statement</legend>
@@ -85,7 +123,7 @@
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Statement of Label for Journal</legend>
+                            <legend>Statement for Journal</legend>
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
@@ -95,11 +133,9 @@
                                         <label>Journal Name</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                     <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName">
-                                        <option value ="P">Pramanna</option>
-                                        <option value ="CS">Current Science</option>
-                                        <option value ="RES">Resonance</option>
-                                    </select>
+                                        <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName">
+                                            <option value="0" selected>Select</option>
+                                        </select>
                                     </span>
                                 </div>
 
@@ -108,9 +144,9 @@
                                         <label>Year</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                     <select class="IASComboBox" TABINDEX="2" name="year" id="year">
-                                        <option value ="yr">2011</option>
-                                    </select>
+                                        <select class="IASComboBox" TABINDEX="2" name="year" id="year">
+                                            <option value="0">Select</option>
+                                        </select>
                                     </span>
                                 </div>
                             </div>
@@ -123,10 +159,9 @@
                                         <label>Subscriber Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                     <select class="IASComboBox" TABINDEX="1" name="subType" id="subType">
-                                        <option value ="IP">Indian Personnel</option>
-                                        <option value ="ISC">Indian Institution</option>
-                                    </select>
+                                        <select class="IASComboBox" TABINDEX="3" name="subscriberType" id="subscriberType">
+                                            <option value="0" selected>Select</option>
+                                        </select>
                                     </span>
                                 </div>
 
@@ -136,29 +171,27 @@
                                     </span>
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" type="text" id="from" name="from"/>
+                                        <input class="IASDateTextBox" TABINDEX="4" readonly size="10" type="text" id="from" name="from"/>
                                     </span>
                                     <span class="IASFormDivSpanForHyphen">
                                         <label> to </label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" type="text" id="to" name="to"/>
+                                        <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                             </div>
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="button" value="Search" onclick="getStatements()"/>
+                                    <input class="IASButton" TABINDEX="6" type="button" value="Search" onclick="getStatements()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
+                                    <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
                                 </div>
                             </div>
 
                         </fieldset>
-
-
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
@@ -171,7 +204,8 @@
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
-                                    <input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>
+                                    <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
+                                    <input class="IASButton" type="submit" TABINDEX="8" value="Print" disabled id="printReportBtn"/>
                                 </div>
                             </div>
                         </fieldset>

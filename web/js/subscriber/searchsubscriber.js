@@ -4,11 +4,11 @@ function validateSearchSubscriber(){
         alert("Invalid Pin Code");
         return;
     }*/
-    if( isEmpty(document.getElementById("subscriberNumber"))
-        && isEmpty(document.getElementById("subscriberName"))
-        && isEmpty(document.getElementById("email"))
-        && document.getElementById("city").value == "NULL"
-        && document.getElementById("pincode").value.length == 0
+    if( isEmpty(document.getElementById("subscriberType"))
+        && isEmpty(document.getElementById("journalGroupName"))
+        //&& isEmpty(document.getElementById("institutional"))
+        //&& document.getElementById("city").value == "NULL"
+        //&& document.getElementById("state").value.length == 0
         ){
         alert("Please fill in at least one field to search for subscriber");
         return false;

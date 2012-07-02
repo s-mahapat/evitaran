@@ -19,6 +19,7 @@ import com.itextpdf.text.pdf.AcroFields.FieldPosition;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.mysql.jdbc.ResultSetMetaData;
@@ -33,14 +34,98 @@ import javax.servlet.ServletContext;
 public class convertToPdf extends JDSPDF {
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Class.convertToPdf");
-    float leading = 10.0f;
-    int textAlignment = 1;
-    Font.FontFamily fontType;
-    int fontSize    = 10;
-    int fontStyle;
+
+    // Default values
+    float leading       = 10.0f;
+    int textAlignment   = 0;
+    Font.FontFamily fontType = Font.getFamily("HELVETICA");
+    int fontSize        = 10;
+    int fontStyle       = Font.getStyleValue("BOLD");
 
 public convertToPdf(){
         super();
+    }
+
+    public void convertResultSetToPdf(OutputStream os, ResultSet rs, String query) throws DocumentException, FileNotFoundException, IOException, SQLException
+    {
+        Document document = this.getPDFDocumentLandscape();
+        //Document document = this.getPDFDocument();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+
+        document.open();
+
+        // 1. Add the letter head
+        document.add(this.getLetterHead());
+
+        // 2. Leave 2 lines in between
+        document.add(Chunk.NEWLINE);
+        document.add(Chunk.NEWLINE);
+
+        // 3. Add the query name
+        Paragraph info = new Paragraph();
+        info.setLeading(leading);
+        info.setAlignment(textAlignment);
+
+        Font font = new Font(fontType, fontSize, fontStyle, BaseColor.BLACK);
+        if(query != null && !query.isEmpty())
+        {
+            info.add(Chunk.NEWLINE);
+            info.add("Query: " + query);
+        }
+        document.add(info);
+
+        // 4. Add the table
+        document.add(Chunk.NEWLINE);
+        ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+        int colCount = rsmd.getColumnCount();
+        int rowCount = 0;
+
+        PdfPTable table = new PdfPTable(colCount);
+        table.setWidthPercentage(90);
+
+        Font f = new Font(fontType, fontSize);
+        BaseFont bf = f.getCalculatedBaseFont(false);
+
+        float[] columnWidth = new float[colCount];
+
+        // Write the Table header first
+        for (int i = 1; i <= colCount; i++)
+        {
+            String columnName = rsmd.getColumnName(i);
+            table.addCell(columnName);
+            columnWidth[i-1] = columnWidth[i-1] + bf.getWidthPoint(columnName, fontSize);
+        }
+        rowCount++;
+
+        // Write the table rows
+        while (rs.next()){
+            for (int i = 1; i <= colCount; i++) {
+                // check if the value is null, then initialize it to a blank string
+                Object value = rs.getObject(i) != null ? rs.getObject(i) : "";
+                table.addCell(value.toString());
+
+                columnWidth[i-1] = columnWidth[i-1] + bf.getWidthPoint(value.toString(), fontSize);
+            }
+            rowCount++;
+        }
+
+        // Calculate the average width of the table and set the table width
+        for (int i = 1; i <= colCount; i++) {
+            columnWidth[i-1] = columnWidth[i-1] / rowCount;
+            // Usually the first column is the id. Because we take the average width, the column text wraps to the next line
+            // To prevent that we double the size of the first column.
+            if(i == 1)
+                columnWidth[i-1] = columnWidth[i-1] * 2;
+            logger.debug("Column: " + i + "-" + columnWidth[i-1]);
+        }
+        table.setTotalWidth(columnWidth);
+
+        document.add(table);
+
+        document.close();
+        outputStream.writeTo(os);
     }
 
     public void printMIresponse(OutputStream os, String msg) throws DocumentException, FileNotFoundException, IOException
@@ -49,6 +134,7 @@ public convertToPdf(){
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+
         //pdfWriter.setPageEvent(new onEndPage());
 
         document.open();
@@ -229,7 +315,7 @@ public convertToPdf(){
         // 4. Add the date
         cb.beginText();
         cb.moveText(curX + deltaX, curY);
-        addCurrentDate(cb);
+        cb.showText("DATE: " + getCurrentDate());
         cb.endText();
 
         // Now move back to left side
@@ -451,12 +537,12 @@ public convertToPdf(){
         return paragraph;
     }
 
-    public void addCurrentDate(PdfContentByte cb)
+    public String getCurrentDate()
     {
         Format dtformat = new SimpleDateFormat("dd MMM yyyy");
         java.util.Date dt = new java.util.Date();
         String date = dtformat.format(dt);
-        cb.showText("DATE: " + date);
+        return date;
     }
 
     public void addSubscriberId(PdfContentByte cb)
