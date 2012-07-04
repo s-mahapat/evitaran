@@ -80,21 +80,20 @@
 
             // called when the search button is clicked
             function getStatements(){
-                if(($("#journalName").val() == 0) && $("#year").val() == 0 && $("#subscriberType").val() == 0
-                && isEmpty(document.getElementById("from")) && isEmpty(document.getElementById("to")))
+                if(($("#journalName").val() == 0) && $("#year").val() == 0 && $("#subscriberType").val() == 0)
                 {
-                        alert("Atleast one search parameter should be selected");
+                        alert("Atleast one search parameter should be selected along with Year");
                 }
-                else if(isEmpty(document.getElementById("from")) || isEmpty(document.getElementById("to")))
-                        alert("Both dates (from-to) should be selected");
+                else if ($("#year").val() == 0)
+                {
+                        alert("Select Year");
+                }    
                 else{
                     isPageLoaded = true;
                     jQuery("#statementTable").setGridParam({postData:
                             {journalName    : $("#journalName").val(),
                             year            : $("#year").val(),
-                            subscriberType  : $("#subscriberType").val(),
-                            fromDate        : $("#from").val(),
-                            toDate          : $("#to").val()
+                            subscriberType  : $("#subscriberType").val()
                         }});
                     jQuery("#statementTable").setGridParam({ datatype: "xml" });
                     jQuery("#statementTable").trigger("clearGridData");
@@ -102,9 +101,6 @@
 
                 }
             }
-
-            // draw the date picker.
-            jQueryDatePicker("from","to");
 
 
         </script>
@@ -133,7 +129,7 @@
                                         <label>Journal Name</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName">
+                                        <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
@@ -144,7 +140,7 @@
                                         <label>Year</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="2" name="year" id="year">
+                                        <select class="IASComboBoxSmallMandatory" TABINDEX="2" name="year" id="year">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -159,27 +155,12 @@
                                         <label>Subscriber Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="3" name="subscriberType" id="subscriberType">
+                                        <select class="IASComboBoxWide" TABINDEX="3" name="subscriberType" id="subscriberType">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
                                 </div>
 
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Date Range:</label>
-                                    </span>
-                                    <div class="dateDiv"></div>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="4" readonly size="10" type="text" id="from" name="from"/>
-                                    </span>
-                                    <span class="IASFormDivSpanForHyphen">
-                                        <label> to </label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="to" name="to"/>
-                                    </span>
-                                </div>
                             </div>
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">

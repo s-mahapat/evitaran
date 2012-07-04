@@ -441,16 +441,42 @@ public class reportModel extends JDSModel{
         String journalName = request.getParameter("journalName");
         String year = request.getParameter("year");
         String subscriberType = request.getParameter("subscriberType");
-        String fromDate = request.getParameter("fromDate");
-        String toDate = request.getParameter("toDate");
 
-        /*
-         * Deepali insert query here
-         */
+        String sql = null;
+        sql = Queries.getQuery("statement");
+        int param = 0;       
+            
+        if (journalName != null && journalName.length() > 0) {
+            sql += " and journals.journalName=" + "'" + journalName + "'";
+            param = 1;
+        }
 
-        String sql = Queries.getQuery("statement");
+        if (subscriberType != null && subscriberType.length() > 0) {
+            if (param == 0){
+                sql += " subscriber_type.subtypedesc=" + "'" + subscriberType + "'";
+                param = 1;
+            }
+            else{
+                sql += " and subscriber_type.subtypedesc=" + "'" + subscriberType + "'";
+            }
+        }
+
+        if (year != null && year.length() > 0) {
+             if (param == 0){
+                sql += " subscriptiondetails.startYear <=" + "'" + year + "'";
+                sql += " and subscriptiondetails.endYear >=" + "'" + year + "'";
+                param = 1;
+            }
+            else{
+                sql += " and subscriptiondetails.startYear <=" + "'" + year + "'";
+                sql += " and subscriptiondetails.endYear >=" + "'" + year + "'";
+            }
+        }
+
+        sql += " group by  subscriber_type.subtypecode, journals.journalCode";
+        sql += " order by journals.journalCode, subscriber_type.subtypecode";
+        
         PreparedStatement stGet = conn.prepareStatement(sql);
-
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
       }
