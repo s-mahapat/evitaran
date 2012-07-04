@@ -91,9 +91,15 @@ function clearSubscription(){
 }
 
 
-function setInwardSubscriber(inwardId,subscriberId, purpose){
+/*function setInwardSubscriber(inwardId,subscriberId, purpose){
     selectedInward = inwardId;
     selectedSubscriberId = subscriberId || null;
+    selectedInwardPurpose = purpose;
+}*/
+
+function setInwardSubscriber(rowid, purpose){
+    selectedSubscriberId = jQuery("#inwardTable").jqGrid('getCell',rowid,'SubscriberId').toString();
+    selectedInward = rowid;
     selectedInwardPurpose = purpose;
 }
 
@@ -172,6 +178,7 @@ function subscriberlink(cellvalue, options, rowObject){
     var inwardid = tagvalues[3];
     if(isEmptyValue(subscriberID)){
         var link = "<a href=\"#\" onclick=" + "\"" + "selectSubscriber('" + city + "','" + subscriberName + "','" + inwardid + "')" + "\"" + ">Select Subscriber</a>";
+        //var link = "<a href=\"#\" onclick=" + "\"" + "selectSubscriber('" + rowid + "')" + "\"" + ">Select Subscriber</a>";
         return link;
     }
     return "";
@@ -190,30 +197,35 @@ function selectInwardFormatter(cellvalue, options, rowObject){
         }
     }
     var purposeId = tagvalues[0];
-    var inwardId = tagvalues[1];
-    var subscriberId = tagvalues[2];
-    action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + rowid + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purposeId + "')" + "\"" + "/>";
+    //var inwardId = tagvalues[1];
+    //var subscriberId = tagvalues[2];
+    //action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + rowid + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purposeId + "')" + "\"" + "/>";
+    action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + rowid + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + rowid + "','" + purposeId + "')" + "\"" + "/>";
     return action;
 }
 
 function isInwardSelected(){
     var _JDSConstants = new JDSConstants();
-    //var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
-
     if(parseInt(selectedInward) == 0){
         alert("Please select an Inward");
-        return false;
-
-    }else if((selectedSubscriberId == "undefined" || selectedSubscriberId == null || selectedSubscriberId == 0) && selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION){
-        // if its not a new subscription then we need a subscriber id, search for the subscriber id
-        city = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'City').toString();
-        subscriberName = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'From').toString();
-        selectSubscriber(city, subscriberName, selectedInward);
         return false;
     }else if(selectedSubscriberId == null && selectedInwardPurpose != _JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION){
         if(confirm("Do you want to continue without selecting subscriber ?") == false){
             return false;
         }
+    }
+    else if(selectedSubscriberId == "undefined" || selectedSubscriberId == null || selectedSubscriberId == 0){
+        /*((selectedSubscriberId == "undefined" || selectedSubscriberId == null || selectedSubscriberId == 0) && 
+            (selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION || 
+            selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_ADDRESS_CHANGE ||
+            selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE ||
+            selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_PAYMENT
+             ))*/
+        // if its not a new subscription then we need a subscriber id, search for the subscriber id
+        city = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'City').toString();
+        subscriberName = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'From').toString();
+        selectSubscriber(city, subscriberName, selectedInward);
+        return false;
     }
     if(selectedSubscriberId=="undefined"){
         selectedSubscriberId = "";

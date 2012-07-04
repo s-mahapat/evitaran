@@ -157,7 +157,7 @@ public class inward extends JDSController {
                     url = "/jsp/subscriber/asf.jsp";
                 }else if (purposeID == JDSConstants.INWARD_PURPOSE_MISSING_ISSUE) {
                     missingissueFormBean _missingissueFormBean = new IAS.Bean.missingissue.missingissueFormBean();
-                    _missingissueFormBean.setSubscriberNumber(_inwardFormBean.getSubscriberId());
+                    _missingissueFormBean.setSubscriberNumber(subscriberNumber);
                     _missingissueFormBean.setInwardNumber(_inwardFormBean.getInwardNumber());
                     _missingissueFormBean.setSubscriberName(_inwardFormBean.getFrom());
                     request.setAttribute("missingissueFormBean", _missingissueFormBean);
