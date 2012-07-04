@@ -82,7 +82,10 @@ public class bilModel extends JDSModel {
             Object value = null;
             for (int j = 1; j <= 26; j++) {
                 value = rs.getObject(j);
-                stInsMlBil.setString(++paramIndex, value.toString());
+                if(value == null)
+                    stInsMlBil.setString(++paramIndex, "");
+                else
+                    stInsMlBil.setString(++paramIndex, value.toString());
                 if (j == 26)
                     bilid = value.toString();
             }

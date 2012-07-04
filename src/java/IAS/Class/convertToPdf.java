@@ -665,15 +665,15 @@ public convertToPdf(){
         document.open();
         Properties properties = getMailingListProperties();
         float[][] COLUMNS = new float[2][4];
-        COLUMNS[0][0] = Float.valueOf(properties.getProperty("llx1").trim()).floatValue();
-        COLUMNS[0][1] = Float.valueOf(properties.getProperty("lly1").trim()).floatValue();
-        COLUMNS[0][2] = Float.valueOf(properties.getProperty("urx1").trim()).floatValue();
-        COLUMNS[0][3] = Float.valueOf(properties.getProperty("ury1").trim()).floatValue();
+        COLUMNS[1][0] = Float.valueOf(properties.getProperty("llx1").trim()).floatValue();
+        COLUMNS[1][1] = Float.valueOf(properties.getProperty("lly1").trim()).floatValue();
+        COLUMNS[1][2] = Float.valueOf(properties.getProperty("urx1").trim()).floatValue();
+        COLUMNS[1][3] = Float.valueOf(properties.getProperty("ury1").trim()).floatValue();
 
-        COLUMNS[1][0] = Float.valueOf(properties.getProperty("llx2").trim()).floatValue();
-        COLUMNS[1][1] = Float.valueOf(properties.getProperty("lly2").trim()).floatValue();
-        COLUMNS[1][2] = Float.valueOf(properties.getProperty("urx2").trim()).floatValue();
-        COLUMNS[1][3] = Float.valueOf(properties.getProperty("ury2").trim()).floatValue();
+        COLUMNS[0][0] = Float.valueOf(properties.getProperty("llx2").trim()).floatValue();
+        COLUMNS[0][1] = Float.valueOf(properties.getProperty("lly2").trim()).floatValue();
+        COLUMNS[0][2] = Float.valueOf(properties.getProperty("urx2").trim()).floatValue();
+        COLUMNS[0][3] = Float.valueOf(properties.getProperty("ury2").trim()).floatValue();
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
         int numberOfColumns = 2, count=0;
@@ -837,11 +837,13 @@ public convertToPdf(){
 
 
                     // Draw the boundary
+                    /*
                     PdfContentByte canvas = writer.getDirectContent();
                     canvas.setRGBColorFill(0xFF, 0x45, 0x00);
                     canvas.setColorFill(BaseColor.WHITE);
                     canvas.rectangle(x, y, Utilities.millimetersToPoints(stickerWidth), Utilities.millimetersToPoints(stickerHeight));
                     canvas.fillStroke();
+                    */
 
                     // Create a column
                     ct.setSimpleColumn(llx, lly, urx, ury);
