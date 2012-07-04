@@ -442,10 +442,22 @@ public class reportModel extends JDSModel{
         String year = request.getParameter("year");
         String subscriberType = request.getParameter("subscriberType");
 
+        if ("0".equals(journalName)) {
+            journalName = null;
+        }
+
+        if ("0".equals(year)) {
+            year = null;
+        }
+
+        if ("0".equals(subscriberType)) {
+            subscriberType = null;
+        }
+
         String sql = null;
         sql = Queries.getQuery("statement");
-        int param = 0;       
-            
+        int param = 0;
+
         if (journalName != null && journalName.length() > 0) {
             sql += " and journals.journalName=" + "'" + journalName + "'";
             param = 1;
@@ -453,7 +465,7 @@ public class reportModel extends JDSModel{
 
         if (subscriberType != null && subscriberType.length() > 0) {
             if (param == 0){
-                sql += " subscriber_type.subtypedesc=" + "'" + subscriberType + "'";
+                sql += " and subscriber_type.subtypedesc=" + "'" + subscriberType + "'";
                 param = 1;
             }
             else{
@@ -463,7 +475,7 @@ public class reportModel extends JDSModel{
 
         if (year != null && year.length() > 0) {
              if (param == 0){
-                sql += " subscriptiondetails.startYear <=" + "'" + year + "'";
+                sql += " and subscriptiondetails.startYear <=" + "'" + year + "'";
                 sql += " and subscriptiondetails.endYear >=" + "'" + year + "'";
                 param = 1;
             }
@@ -475,7 +487,7 @@ public class reportModel extends JDSModel{
 
         sql += " group by  subscriber_type.subtypecode, journals.journalCode";
         sql += " order by journals.journalCode, subscriber_type.subtypecode";
-        
+
         PreparedStatement stGet = conn.prepareStatement(sql);
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
@@ -495,7 +507,7 @@ public class reportModel extends JDSModel{
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
       }
-     
+
  public ResultSet searchCirculationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String sql;
