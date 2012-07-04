@@ -114,7 +114,10 @@ public class mlModel extends JDSModel {
                         Object value = null;
                         for (int j = 1; j <= 21; j++) {
                             value = rsgetml.getObject(j);
-                            stmldtl.setString(++paramIndex, value.toString());
+                            if(value == null)
+                                stmldtl.setString(++paramIndex, "");
+                            else
+                                stmldtl.setString(++paramIndex, value.toString());
                         }
                         stmldtl.setString(++paramIndex, request.getParameter("issue"));
                         stmldtl.setString(++paramIndex, request.getParameter("month"));

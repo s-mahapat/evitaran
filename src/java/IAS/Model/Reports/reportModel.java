@@ -459,13 +459,13 @@ public class reportModel extends JDSModel{
         int param = 0;
 
         if (journalName != null && journalName.length() > 0) {
-            sql += " and journals.journalName=" + "'" + journalName + "'";
+            sql += " journals.journalName=" + "'" + journalName + "'";
             param = 1;
         }
 
         if (subscriberType != null && subscriberType.length() > 0) {
             if (param == 0){
-                sql += " and subscriber_type.subtypedesc=" + "'" + subscriberType + "'";
+                sql += " subscriber_type.subtypedesc=" + "'" + subscriberType + "'";
                 param = 1;
             }
             else{
@@ -475,7 +475,7 @@ public class reportModel extends JDSModel{
 
         if (year != null && year.length() > 0) {
              if (param == 0){
-                sql += " and subscriptiondetails.startYear <=" + "'" + year + "'";
+                sql += " subscriptiondetails.startYear <=" + "'" + year + "'";
                 sql += " and subscriptiondetails.endYear >=" + "'" + year + "'";
                 param = 1;
             }
@@ -494,17 +494,20 @@ public class reportModel extends JDSModel{
       }
 
       public ResultSet circulationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
-
         String year = request.getParameter("year");
-
-        /*
-         * Deepali insert query here
-         */
-
-        String sql = Queries.getQuery("circulationFigures");
+        String proc = null;
+        ResultSet rs = null;
+        proc = "{ circulation_figures(?) }";
+        CallableStatement cs = conn.prepareCall(proc);
+        int paramIndex = 1;        
+        cs.setString(paramIndex, year);
+        int rscs = cs.executeUpdate();
+        if (rscs == 1){
+        String sql = Queries.getQuery("list_circulation_figures");        
         PreparedStatement stGet = conn.prepareStatement(sql);
-
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        stGet.setString(paramIndex, year); 
+        rs = this.db.executeQueryPreparedStatement(stGet);
+        }
         return rs;
       }
 
