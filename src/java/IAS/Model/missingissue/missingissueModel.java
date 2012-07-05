@@ -326,19 +326,38 @@ public class missingissueModel extends JDSModel {
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
 
-        boolean status = false;
-        String xml = null;
-        conn.setAutoCommit(false);
-        try {
-            setAction("N");
-            completeInward();
-        }catch (SQLException | ParseException | NumberFormatException e) {
-            conn.rollback();
-        } finally {
-            conn.setAutoCommit(true);
-        }        
-        xml = util.convertStringToXML("N", "action");
-        return xml;
+            boolean status = false;
+            String xml = null;          
+            String replyOption = request.getParameter("replyOption"); 
+            //If the user chosses to print        
+            if(replyOption.equals("Print"))         
+            {
+                xml = util.convertStringToXML("print", "action");
+                status = true;
+            }         
+            //If the user chosses to send email
+            if(replyOption.equals("EMail"))
+            {             
+                ServletContext context = ServletContextInfo.getServletContext();
+                String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
+                Properties properties = new Properties();
+                properties.load(new FileInputStream(emailPropertiesFile));
+                String msg = properties.getProperty("missingIssueNoCopy");
+                String to = request.getParameter("email");
+                msgsend sendMsg = new msgsend();
+                status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "", "Missing Issues", msg, "", "", null);
+                if(status)
+                    xml = util.convertStringToXML("success", "action");
+                else                 
+                    xml = util.convertStringToXML("failure", "action");         
+            }          
+            if(status)         
+            {             
+                setAction("N");             
+                completeInward();         
+            }          
+            return xml;
+            
     }
 
     public String alreadySent()  throws IllegalAccessException, ParseException,
@@ -346,18 +365,36 @@ public class missingissueModel extends JDSModel {
             IOException, InvocationTargetException, Exception {
 
         boolean status = false;
-        String xml = null;
-        conn.setAutoCommit(false);
-        try {
-            setAction("S");
-            completeInward();
-        }catch (SQLException | ParseException | NumberFormatException e) {
-            conn.rollback();
-        } finally {
-            conn.setAutoCommit(true);
-        }        
-        xml = util.convertStringToXML("S", "action");
-        return xml;
+        String xml = null;          
+        String replyOption = request.getParameter("replyOption");         
+        //If the user chosses to print         
+        if(replyOption.equals("Print"))         
+        {             
+            xml = util.convertStringToXML("print", "action");             
+            status = true;         
+        }         
+        //If the user chosses to send email         
+        if(replyOption.equals("EMail"))         
+        {             
+            ServletContext context = ServletContextInfo.getServletContext();             
+            String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");             
+            Properties properties = new Properties();             
+            properties.load(new FileInputStream(emailPropertiesFile));              
+            String msg = properties.getProperty("missingIssueAlreadySent");             
+            String to = request.getParameter("email");              
+            msgsend sendMsg = new msgsend();             
+            status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "", "Missing Issues", msg, "", "", null);             
+            if(status)                 
+                xml = util.convertStringToXML("success", "action");             
+            else                 
+                xml = util.convertStringToXML("failure", "action");         
+        }          
+        if(status)         
+        {             
+            setAction("S");             
+            completeInward();         
+        }          
+        return xml; 
     }
 
     public void completeInward()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
