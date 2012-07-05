@@ -101,6 +101,16 @@ public class bilModel extends JDSModel {
         return xml;
     }
 
+    public ResultSet printbil() throws SQLException
+    {
+        logger.debug("Start of  mailing list resultset generation");
+        //Query whatever you want here
+        ResultSet rs = getBILDtl();
+        logger.debug("End of mailing list resultset generation");
+        return rs;
+    }
+    
+    /*
     public synchronized String printbil(HttpServletResponse response, String type) throws DocumentException, IOException, SQLException
     {
         logger.debug("Start of label printing");
@@ -131,4 +141,6 @@ public class bilModel extends JDSModel {
 
         return pdf;
     }
+     * 
+     */
 }

@@ -53,6 +53,27 @@ public class pdfserver extends JDSController {
                 response.setContentType("application/pdf");
                 response.setHeader("Content-disposition", "attachment; filename=report.pdf");
                 os.flush();
+                
+            } else if(action.equalsIgnoreCase("generatemlPrintLabel")){
+                logger.debug("Start of mailing list label generation");
+                ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
+                convertToPdf c2Pdf = new convertToPdf();
+                c2Pdf.addLabelContent(rs, os);
+                response.setContentType("application/pdf");
+                response.setHeader("Content-disposition", "attachment; filename=ml.pdf");
+                os.flush();
+                logger.debug("End of mailing list label generation");
+
+            }else if(action.equalsIgnoreCase("generatemlPrintSticker")){
+                logger.debug("Start of mailing list sticker generation");
+                ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
+                convertToPdf c2Pdf = new convertToPdf();
+                c2Pdf.addStickerContent(rs, os);
+                response.setContentType("application/pdf");
+                response.setHeader("Content-disposition", "attachment; filename=ml.pdf");
+                os.flush();
+                logger.debug("End of mailing list sticker generation");
+
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import IAS.Controller.JDSController;
+import java.sql.ResultSet;
 import javax.servlet.RequestDispatcher;
 
 /**
@@ -35,16 +36,29 @@ public class generateml extends JDSController {
 
             }else if(action.equalsIgnoreCase("printLabel")){
 
+                /*
                 String pdf = _mlModel.printml(response, "LABEL");
                 //request.setAttribute("pdf", pdf);
                 url = "/pdfserver";
                 //url = "";
+                 * 
+                 */
+                ResultSet rs = _mlModel.printml();
+                request.setAttribute("ResultSet", rs);
+                url = "/pdfserver?action=generatemlPrintLabel";
+                
             }else if(action.equalsIgnoreCase("printSticker")){
 
+                /*
                 String pdf = _mlModel.printml(response, "STICKER");
                 //request.setAttribute("pdf", pdf);
                 url = "/pdfserver";
                 //url = "";
+                 * 
+                 */
+                ResultSet rs = _mlModel.printml();
+                request.setAttribute("ResultSet", rs);
+                url = "/pdfserver?action=generatemlPrintSticker";
             }
 
         } catch (Exception e) {

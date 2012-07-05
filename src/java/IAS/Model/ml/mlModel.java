@@ -134,6 +134,17 @@ public class mlModel extends JDSModel {
         return xml;
     }
 
+    public ResultSet printml() throws SQLException, ParseException, ParserConfigurationException, TransformerException
+    {
+        logger.debug("Start of  mailing list resultset generation");
+        //Query whatever you want here
+        int mlId = searchMl();
+        ResultSet rs = getMlDtlResultset(mlId);
+        logger.debug("End of mailing list resultset generation");
+        return rs;
+    }
+    
+    /*
     public synchronized String printml(HttpServletResponse response, String type) throws DocumentException, IOException, SQLException, ParseException, ParserConfigurationException, TransformerException
     {
         logger.debug("Start of label printing");
@@ -165,4 +176,6 @@ public class mlModel extends JDSModel {
 
         return pdf;
     }
+     * 
+     */
 }
