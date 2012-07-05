@@ -217,7 +217,7 @@ function isInwardSelected(){
     else if((selectedSubscriberId == "undefined" || selectedSubscriberId == null || selectedSubscriberId == 0)
         && (selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION || 
             selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_ADDRESS_CHANGE ||
-            selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE ||
+            //selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE ||
             selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_PAYMENT ||
             selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_MISSING_ISSUE
              )){
