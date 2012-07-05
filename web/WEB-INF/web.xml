@@ -343,6 +343,7 @@
     </session-config>
     <!-- error-code related error pages -->
     <welcome-file-list>
+        <welcome-file>jsp/login/login.jsp</welcome-file>
         <welcome-file>/home</welcome-file>
     </welcome-file-list>
     <error-page>
