@@ -107,18 +107,18 @@ public class inward extends JDSController {
                 // we should use the purpose id rather than the purpose name, it can change in the database
                 // but id should not change
                 int purposeID = Integer.parseInt(request.getParameter("purpose"));
-                
+
                 // check if the flow is from add free subscriber/summer fellow.
                 int isFreeSubscriber = Integer.parseInt(request.getParameter("afs"));
                 int isSummerFellow = Integer.parseInt(request.getParameter("asf"));
-                
+
 
                 // Get into this if block for only new subscription and request for invoice
                 // if its add free subscribers or add summer fellows move on
-                if (isFreeSubscriber == 0 &&
-                    isSummerFellow == 0 &&
-                    (purposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION ||
-                    purposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE)) {
+                if (isFreeSubscriber == 0
+                        && isSummerFellow == 0
+                        && (purposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
+                        || purposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE)) {
 
                     if (subscriberNumber != null && !subscriberNumber.equalsIgnoreCase("null") && !subscriberNumber.isEmpty()) {
 
@@ -151,11 +151,33 @@ public class inward extends JDSController {
 
                 } else if (purposeID == 1 && isFreeSubscriber == 1) {
                     // Add Free Subscriber
+                    subscriberFormBean _subscriberFormBean = new IAS.Bean.Subscriber.subscriberFormBean();
+                    _subscriberFormBean.setSubscriberName(_inwardFormBean.getFrom());
+                    _subscriberFormBean.setCity(_inwardFormBean.getCity());
+                    _subscriberFormBean.setDistrict(_inwardFormBean.getDistrict());
+                    _subscriberFormBean.setState(_inwardFormBean.getState());
+                    _subscriberFormBean.setCountry(_inwardFormBean.getCountry());
+                    _subscriberFormBean.setPincode(_inwardFormBean.getPincode());
+                    _subscriberFormBean.setEmail(_inwardFormBean.getEmail());
+                    _subscriberFormBean.setDepartment(_inwardFormBean.getDepartment());
+                    _subscriberFormBean.setInstitution(_inwardFormBean.getInstitution());
+                    request.setAttribute("subscriberFormBean", _subscriberFormBean);
                     url = "/jsp/subscriber/afs.jsp";
                 } else if (purposeID == 1 && isSummerFellow == 1) {
                     // Add Summer Fellows
+                    subscriberFormBean _subscriberFormBean = new IAS.Bean.Subscriber.subscriberFormBean();
+                    _subscriberFormBean.setSubscriberName(_inwardFormBean.getFrom());
+                    _subscriberFormBean.setCity(_inwardFormBean.getCity());
+                    _subscriberFormBean.setDistrict(_inwardFormBean.getDistrict());
+                    _subscriberFormBean.setState(_inwardFormBean.getState());
+                    _subscriberFormBean.setCountry(_inwardFormBean.getCountry());
+                    _subscriberFormBean.setPincode(_inwardFormBean.getPincode());
+                    _subscriberFormBean.setEmail(_inwardFormBean.getEmail());
+                    _subscriberFormBean.setDepartment(_inwardFormBean.getDepartment());
+                    _subscriberFormBean.setInstitution(_inwardFormBean.getInstitution());
+                    request.setAttribute("subscriberFormBean", _subscriberFormBean);
                     url = "/jsp/subscriber/asf.jsp";
-                }else if (purposeID == JDSConstants.INWARD_PURPOSE_MISSING_ISSUE) {
+                } else if (purposeID == JDSConstants.INWARD_PURPOSE_MISSING_ISSUE) {
                     missingissueFormBean _missingissueFormBean = new IAS.Bean.missingissue.missingissueFormBean();
                     _missingissueFormBean.setSubscriberNumber(subscriberNumber);
                     _missingissueFormBean.setInwardNumber(_inwardFormBean.getInwardNumber());
