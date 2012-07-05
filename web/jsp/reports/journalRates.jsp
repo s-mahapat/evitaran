@@ -33,16 +33,15 @@
                         rownumbers: true,
                         emptyrecords: "No records to view",
                         loadtext: "Loading...",
-                        colNames:['Id','Journal Group Name','Subscriber Type','Year','1 Year','2 Year','3 Year','5 Year'],
+                        colNames:['Journal Group Name','Subscriber Type','Year','1 Year','2 Year','3 Year','5 Year'],
                         colModel :[
-                          {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                           {name:'journalGroupName', index:'journalGroupName', width:50, align:'center', xmlmap:'journalGroupName'},
-                          {name:'subtypedesc', index:'subtypedesc', width:50, align:'center', xmlmap:'subtypedesc'},
+                          {name:'subTypeDesc', index:'subTypeDesc', width:50, align:'center', xmlmap:'subTypeDesc'},
                           {name:'year', index:'year', width:50, align:'center', xmlmap:'year'},
-                          {name:'1_Year', index:'1_Year', width:50, align:'center', xmlmap:'1_Year'},
-                          {name:'2_Year', index:'2_Year', width:50, align:'center', xmlmap:'2_Year'},
-                          {name:'3_Year', index:'3_Year', width:50, align:'center', xmlmap:'3_Year'},
-                          {name:'5_Year', index:'journalRate_Id', width:50, align:'center', xmlmap:'5_Year'},
+                          {name: 'year1', index:'year1', width:50, align:'center', xmlmap:'year1'},
+                          {name:'year2', index:'year2', width:50, align:'center', xmlmap:'year2'},
+                          {name:'year3', index:'year3', width:50, align:'center', xmlmap:'year3'},
+                          {name:'year4', index:'year4', width:50, align:'center', xmlmap:'year4'},
                         ],
                         xmlReader : {
                           root: "results",
@@ -87,7 +86,7 @@
                         isPageLoaded = true;
 
                         jQuery("#datatable").setGridParam({postData:
-                                {journalGroupName          : $("#journalGroupName").val(),
+                                {subscriberType          : $("#subscriberType").val(),
                                 year                       : $("#year").val()
                                 }
                             });

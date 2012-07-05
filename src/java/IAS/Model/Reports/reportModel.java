@@ -40,19 +40,20 @@ public class reportModel extends JDSModel{
 
     public ResultSet listRates() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
-        String sql = null;
-        //String journalGroupName = request.getParameter("journalGroupName");
-        String year             = request.getParameter("year");
-        String subscriberType   = request.getParameter("subscriberType");
-
-
-        /* Deepali insert query here
-        sql = Queries.getQuery("list_journal_group");
-        sql += "  t2.journalGroupName =" + "'" + journalGroupName + "'";
-        */
-
+        int year = Integer.parseInt(request.getParameter("year"));
+        String proc = null;
+        ResultSet rs = null;
+        proc = "{call cir_subscription_rates(?, ?)}";
+        CallableStatement cs = conn.prepareCall(proc);
+        int paramIndex = 1;        
+        cs.setInt(paramIndex, year);
+        cs.setString(++paramIndex, request.getParameter("subscriberType"));
+        int rscs = cs.executeUpdate();
+        if (rscs == 1){
+        String sql = Queries.getQuery("rep_sub_rate");        
         PreparedStatement stGet = conn.prepareStatement(sql);
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        rs = this.db.executeQueryPreparedStatement(stGet);
+        }
         return rs;
     }
 
@@ -494,18 +495,17 @@ public class reportModel extends JDSModel{
       }
 
       public ResultSet circulationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
-        String year = request.getParameter("year");
+        int year = Integer.parseInt(request.getParameter("year"));
         String proc = null;
         ResultSet rs = null;
-        proc = "{ circulation_figures(?) }";
+        proc = "{call circulation_figures(?)}";
         CallableStatement cs = conn.prepareCall(proc);
         int paramIndex = 1;        
-        cs.setString(paramIndex, year);
+        cs.setInt(paramIndex, year);
         int rscs = cs.executeUpdate();
         if (rscs == 1){
         String sql = Queries.getQuery("list_circulation_figures");        
         PreparedStatement stGet = conn.prepareStatement(sql);
-        stGet.setString(paramIndex, year); 
         rs = this.db.executeQueryPreparedStatement(stGet);
         }
         return rs;

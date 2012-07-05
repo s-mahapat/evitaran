@@ -20,7 +20,7 @@
 
             $(function(){
 
-                      $("#datatable").jqGrid({
+                      $("#circulationTable").jqGrid({
                         url:"<%=request.getContextPath() + "/reports?action=circulationFigures"%>",
                         datatype: 'xml',
                         mtype: 'GET',
@@ -37,15 +37,15 @@
                         colModel :[
                           {name:'journalCode', index:'journalCode', width:50, align:'center', xmlmap:'journalCode'},
                           {name:'journalName', index:'journalName', width:50, align:'center', xmlmap:'journalName'},
-                          {name:'InstIndia', index:'InstIndia', width:50, align:'center', xmlmap:'InstIndia'},
-                          {name:'InstAbroad', index:'InstAbroad', width:50, align:'center', xmlmap:'InstAbroad'},
-                          {name:'IndiIndia', index:'IndiIndia', width:50, align:'center', xmlmap:'IndiIndia'},
-                          {name:'IndiAbroad', index:'IndiAbroad', width:50, align:'center', xmlmap:'IndiAbroad'},
-                          {name:'Comp', index:'Comp', width:50, align:'center', xmlmap:'Comp'},
-                          {name:'Auth', index:'Auth', width:50, align:'center', xmlmap:'Auth'},
-                          {name:'TotalCopies', index:'TotalCopies', width:50, align:'center', xmlmap:'TotalCopies'},
-                          {name:'PrintOrder', index:'PrintOrder', width:50, align:'center', xmlmap:'PrintOrder'},
-                          {name:'BalanceCopies', index:'BalanceCopies', width:50, align:'center', xmlmap:'BalanceCopies'}
+                          {name:'instIndia', index:'instIndia', width:50, align:'center', xmlmap:'instIndia'},
+                          {name:'instAbroad', index:'instAbroad', width:50, align:'center', xmlmap:'instAbroad'},
+                          {name:'indiIndia', index:'indiIndia', width:50, align:'center', xmlmap:'indiIndia'},
+                          {name:'indiAbroad', index:'indiAbroad', width:50, align:'center', xmlmap:'indiAbroad'},
+                          {name:'comp', index:'comp', width:50, align:'center', xmlmap:'comp'},
+                          {name:'auth', index:'auth', width:50, align:'center', xmlmap:'auth'},
+                          {name:'totalCopies', index:'totalCopies', width:50, align:'center', xmlmap:'totalCopies'},
+                          {name:'printOrder', index:'printOrder', width:50, align:'center', xmlmap:'printOrder'},
+                          {name:'balanceCopies', index:'balanceCopies', width:50, align:'center', xmlmap:'balanceCopies'}
 
                         ],
                         xmlReader : {
@@ -64,7 +64,7 @@
                         gridview: true,
                         caption: '&nbsp;',
                         gridComplete: function() {
-                            var ids = jQuery("#datatable").jqGrid('getDataIDs');
+                            var ids = jQuery("#circulationTable").jqGrid('getDataIDs');
                             if(ids.length > 0){
                                 $("#printReportBtn").button("enable");
                             }
@@ -75,16 +75,7 @@
                         loadError: function(xhr,status,error){
                             alert("Failed getting data from server: " + status);
                         }
-                    },
-                    beforeRequest: function(){
-                        return isPageLoaded;
-                    },
-                    loadError: function(xhr,status,error){
-                        alert("Failed getting data from server" + status);
-                    }
-
-                });
-
+                    });
             });
 
             function getReport(){
@@ -94,12 +85,12 @@
                 }
                 else{
                     isPageLoaded = true;
-                    jQuery("#datatable").setGridParam({postData:
+                    jQuery("#circulationTable").setGridParam({postData:
                             {year            : $("#year").val()
                         }});
-                    jQuery("#datatable").setGridParam({ datatype: "xml" });
-                    jQuery("#datatable").trigger("clearGridData");
-                    jQuery("#datatable").trigger("reloadGrid");
+                    jQuery("#circulationTable").setGridParam({ datatype: "xml" });
+                    jQuery("#circulationTable").trigger("clearGridData");
+                    jQuery("#circulationTable").trigger("reloadGrid");
 
                 }
             }
@@ -154,7 +145,7 @@
                         <fieldset class="subMainFieldSet">
                             <legend>Search Result</legend>
 
-                            <table class="datatable" id="circulationTable"></table>
+                            <table class="circulationTable" id="circulationTable"></table>
                             <div id="pager"></div>
                         </fieldset>
                         
