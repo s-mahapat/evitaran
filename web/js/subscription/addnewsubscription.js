@@ -12,7 +12,8 @@ function addJournal(){
     }
     var arrRowIds = $("#newSubscription").getDataIDs();
     if(arrRowIds.length != 0){
-        intIndex = arrRowIds.indexOf(selectedJournalGroupName);
+        intIndex = $.inArray(selectedJournalGroupName, arrRowIds);
+        //intIndex = arrRowIds.indexOf(selectedJournalGroupName);
         /* checks if the journal id bieng added is already existing in the grid.
          * Cannot add the same journal twice.
          */
