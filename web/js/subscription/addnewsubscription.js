@@ -110,6 +110,7 @@ function saveSubscription(){
     }
     for(intIndex in arrRowData){
         var rowObj = arrRowData[intIndex];
+        //alert(rowObj.startMonth)
         /*pick on required fields from the UI. Not fields are requred, they can be derieved from the database itself.
          * e.g. the journal name can be derieved from the code if required.
          */
