@@ -3,6 +3,19 @@ function setSubmitButtonValue(button,value){
     button.value = value;
 }
 
+function getselected(selectobject) {
+    var results = {};
+    for (var i=0; i<selectobject.options.length; i++) {
+        var option = selectobject.options[i];
+        var value = option.value;
+        if(option.selected){
+            results[option.text] = value;
+        }
+        
+    }
+    return results;
+}
+
 function listSubscription(){
     $(function(){
         //$("#subscriptionDetailDiv").hide();

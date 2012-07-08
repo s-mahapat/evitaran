@@ -211,6 +211,7 @@ function jQueryDatePicker(fromDiv, toDiv){
     fromDiv = "#" + fromDiv;
     toDiv = "#" + toDiv;
     dateRangediv = fromDiv + "," + toDiv;
+    
 
     $(function() {
         var dates = $( dateRangediv ).datepicker({
@@ -233,6 +234,9 @@ function jQueryDatePicker(fromDiv, toDiv){
                 //dates.not( this ).datepicker( "option", option, date );
             }
         });
+        // set the default populated to today
+        $(fromDiv).datepicker("setDate",new Date());
+        $(toDiv).datepicker("setDate",new Date());
     });
 
 }

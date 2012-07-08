@@ -10,6 +10,11 @@
     $(document).ready(function(){
 
         subscriberType = getSubscriberType($("#subscriberNumber").val());
+        <%-- disable and hide the delete all button here, its not required here
+        in the edit subscription screen. Its part of selectjournal
+        and is used for addnewsubscription.since the same jsp is used here also we need to disable that--%>
+        $("#btnDeleteAll").button("disable");
+        $("#btnDeleteAll").hide();
 
         $.ajax({
             type: "GET",
@@ -120,7 +125,7 @@
                 {
                     name:"endYear",
                     index:"endYear",
-                    width:40,
+                    width:30,
                     align:"center",
                     editable: true,
                     edittype:'select',
@@ -130,7 +135,7 @@
                 {
                     name:"copies",
                     index:"copies",
-                    width:40,
+                    width:30,
                     align:"center",
                     editable: true,
                     edittype:'text',
@@ -139,7 +144,7 @@
                 {
                     name:"total",
                     index:"total",
-                    width:60,
+                    width:40,
                     align:"center"
                 },
                 {
@@ -210,33 +215,6 @@
                 });
                 //$("#subscriptionTotalValue").val(totalSubscriptionValue);
             }
-            /*onSelectRow: function(id){
-                selectedRowID = id;
-                if(id && id != lastSel){
-                    jQuery('#newSubscription').restoreRow(lastSel);
-                    lastSel=id;
-                }
-                var editparameters = {
-                    "keys" : true,
-                    "oneditfunc" : null,
-                    "successfunc" : null,
-                    "url" : "subscription",
-                    "extraparam" : {subtypeid:subscriberType},
-                    "aftersavefunc" : function(){
-                        jQuery("#newSubscription").setGridParam({ datatype: "xml" });
-                        jQuery("#newSubscription").trigger("reloadGrid");
-                        getSubscriptionInfo();
-                        //$("#newSubscription").jqGrid.trigger("reloadGrid");
-                    },
-                    "errorfunc": function(){alert("Failed to update subscription data")},
-                    "afterrestorefunc" : null,
-                    "restoreAfterError" : true,
-                    "mtype" : "POST"
-                }
-                //jQuery('#newSubscription').editRow(id, editparameters);
-
-
-            }*/
         }).navGrid('#pager',{add:false, view:false, del:false, edit:true},
         {   modal: true,
             closeOnEscape: true,
@@ -271,98 +249,12 @@
 
 <fieldset class="subMainFieldSet">
     <legend>Select Journal</legend>
-
-    <div class="IASFormFieldDiv">
-        <span class="IASFormDivSpanLabel" style="width:auto;">
-            <label>Start Year:</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="subscriptionStartYear" id="subscriptionStartYear" onchange="setEndYear()">
-                <%
-                    int year = Integer.parseInt(util.getDateString("yyyy"));
-                    for (int i = year; i <= year + 4; i++) {
-                        out.println("<option value=\"" + i + "\">" + i + "</option>");
-                    }
-                %>
-            </select>
-        </span>
-
-        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>Start Month:</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="startMonth" id="startMonth">
-                <option value="1" selected>Jan</option>
-                <option value="6">Jun</option>
-
-            </select>
-        </span>
-
-        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>End Year:</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="endYear" id="endYear">
-                <%
-                    for (int j = 0; j <= 4; j++) {
-                        out.println("<option value =\"" + (j + year) + "\">" + (j + year) + "</option>");
-                    }
-                %>
-            </select>
-        </span>
-
-        <%--<span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>Journal Price Year:</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="priceYear" id="priceYear">
-                <%
-                    for (int j = 0; j <= 1; j++) {
-                        out.println("<option value =\"" + (year + j) + "\">" + (year + j) + "</option>");
-                    }
-                %>
-            </select>
-        </span>--%>
-
-        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>Journal Group</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName">
-            </select>
-        </span>
-
-        <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-            <label>Copies:</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBoxLessMargin">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="copies" id="copies">
-                <%
-                    for (int i = 1; i <= 10; i++) {
-                        out.println("<option value =\"" + i + "\">" + i + "</option>");
-                    }
-                %>
-            </select>
-        </span>
-        <span class="IASFormDivSpanInputBox" style="margin-left:35px;">
-            <input class="IASButton" TABINDEX="14" type="button" value="Add" id="btnAddLine" name="btnAddLine" onclick="addJournal()"/>
-            <%--<input class="IASButton" TABINDEX="15" type="button" value="Delete All" id="btnDeleteAll" name="btnDeleteAll" onclick="deleteRow('All')"/>--%>
-        </span>
-    </div>
+    <%@include file="selectjournal.jsp" %>
+    
     <div class="IASFormFieldDiv" id="newSubscriptiondiv" style="margin-top: 15px;">
         <table class="datatable" id="newSubscription"></table>
         <div id="pager"></div>
     </div>
-    <%--<div id="subscriptionTotal">
-        <span>Subscription Total(INR):</span>
-        <span id="subscriptionTotalValue">0</span>
-    </div>--%>
     <div id="journalGroupContents"></div>
 </fieldset>
 

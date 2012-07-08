@@ -1,17 +1,17 @@
 <%@page language="java" import="java.util.*" %>
 <jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
-<fieldset class="subMainFieldSet">
-    <legend>Subscriber</legend>
+    <fieldset class="subMainFieldSet">
+        <legend>Subscriber</legend>
 
-    <div class="IASFormLeftDiv">
+        <div class="IASFormLeftDiv">
 
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Subscriber Number:</label>
-            </span>
+            <div class="IASFormFieldDiv">
+                <span class="IASFormDivSpanLabel">
+                    <label>Subscriber Number:</label>
+                </span>
 
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASDisabledTextBox" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
+                <span class="IASFormDivSpanInputBox">
+                    <input class="IASDisabledTextBox" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
             </span>
         </div>
 
@@ -113,7 +113,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="7" type="text" name="pincode" id="pincode" value="${subscriberFormBean.pincodeAsText}"/>
+                <input class="IASTextBox" maxlength="6" TABINDEX="7" type="text" name="pincode" id="pincode" value="${subscriberFormBean.pincodeAsText}"/>
             </span>
         </div>
 
@@ -144,13 +144,22 @@
                         onchange="subtypeCodeAppend()">
                     <option value="0">Select</option>
                     <%
-                        if (subscriberFormBean.getSubtypedesc()!= null && !subscriberFormBean.getSubtypedesc().isEmpty()) {
+                        if (subscriberFormBean.getSubtypedesc() != null && !subscriberFormBean.getSubtypedesc().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getSubtypedesc() + "\"" + " selected >" + subscriberFormBean.getSubtypedesc() + "</option>");
                         }
                     %>
                 </select>
+
+            </span>
+        </div>
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Subscriber Code:</label>                
+            </span>
+            <span class="IASFormDivSpanInputBox">
                 <label class="IASLabelOnly" id="subtypecode"></label>
             </span>
+            
         </div>
     </div>
 

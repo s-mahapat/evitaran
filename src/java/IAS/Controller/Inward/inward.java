@@ -25,7 +25,7 @@ public class inward extends JDSController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        String url = "/jsp/errors/error.jsp";
+        String url = "/jsp/errors/404.jsp";
 
         try {
 
@@ -194,10 +194,17 @@ public class inward extends JDSController {
                 }
 
             } else if (action.equalsIgnoreCase("followOnProcess")) {
+                
                 int inwardPurposeID = Integer.parseInt(request.getParameter("purpose"));
+                _inwardFormBean = _inwardModel.viewInward();
+                float amount = _inwardFormBean.getAmount();                              
 
-                if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION) {
-                    _inwardFormBean = _inwardModel.viewInward();
+                // for acknowledgement amount > 0
+                if ( amount > 0 && 
+                     (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION || 
+                     inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)
+                   ) {
+                    
                     if (_inwardFormBean != null) {
                         request.setAttribute("inwardFormBean", _inwardFormBean);
                         url = "/jsp/inward/ackinward.jsp";
@@ -206,6 +213,8 @@ public class inward extends JDSController {
                     InvoiceFormBean _invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
                     _invoiceFormBean = _inwardModel.getInvoiceDetail();
                     url = "/jsp/invoice/proforma.jsp";
+                }else{
+                    url = "/home";
                 }
 
 

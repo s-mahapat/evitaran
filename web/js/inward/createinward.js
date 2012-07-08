@@ -25,5 +25,7 @@ function loadData(){
     jdsAppend("CMasterData?md=currency","currency","currency","INR");
     jdsAppend("CMasterData?md=language","language","language","English");
     jdsAutoComplete("subscriber?action=subscriberNames", "subscriberName", "from");
+    jdsAutoComplete("subscriber?action=depts", "department", "department");
+    jdsAutoComplete("subscriber?action=inst", "institution", "institution");
 
 }

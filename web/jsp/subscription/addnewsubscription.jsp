@@ -2,7 +2,7 @@
 <%@page import="IAS.Bean.Inward.inwardFormBean"%>
 <jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
 <%
-    inwardFormBean _inwardFormBean = (inwardFormBean)request.getSession().getAttribute("inwardUnderProcess");
+    inwardFormBean _inwardFormBean = (inwardFormBean) request.getSession().getAttribute("inwardUnderProcess");
     String inwardNumber = _inwardFormBean.getInwardNumber();
     float amount = _inwardFormBean.getAmount();
     String inwardPurpose = request.getParameter("purpose");
@@ -59,24 +59,7 @@
                                         <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
                                     </span>
                                 </div>
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Inward Number:</label>
-                                    </span>
 
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<%=inwardNumber%>"/>
-                                    </span>
-                                </div>
-                                    <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Inward Amount:</label>
-                                    </span>
-
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value="<%=amount%>"/>
-                                    </span>
-                                </div>
                             </div>
 
                             <div class="IASFormRightDiv">
@@ -91,17 +74,35 @@
                                 </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
+                                        <label>Inward Number:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<%=inwardNumber%>"/>
+                                    </span>
+                                </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Inward Amount:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value="<%=amount%>"/>
+                                    </span>
+                                </div>
+                                <%--<div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
                                         <label>Remarks</label>
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
                                         <textarea class="IASTextArea" TABINDEX="5" cols="20" rows="10" name="remarks" id="remarks"></textarea>
                                     </span>
-                                </div>
+                                </div>--%>
                             </div>
 
                         </fieldset>
-                        <%@include file="selectjournal.jsp"%>
+                        <%@include file="addjournal.jsp"%>
                         <fieldset class="subMainFieldSet">
 
                             <div class="actionBtnDiv">

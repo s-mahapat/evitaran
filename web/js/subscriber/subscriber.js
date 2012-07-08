@@ -7,7 +7,7 @@ function subtypeCodeAppend(){
         dataType: "xml",
         success: function(xml){
             $(xml).find("subtypecode").each(function(){
-                $("#subtypecode").text(("Subscriber Code - " + $(this).text()));
+                $("#subtypecode").text($(this).text());
             });
         },
         error: function() {

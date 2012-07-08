@@ -72,21 +72,7 @@
     <%-- Inward Info left div --%>
     <div class="IASFormLeftDiv">
 
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Purpose:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="10" name="inwardPurpose" id="inwardPurpose">
-                    <option value="0">Select</option>
-                    <%
-                        if (inwardFormBean.getInwardPurpose() != null && !inwardFormBean.getInwardPurpose().isEmpty()) {
-                            out.println("<option value=" + "\"" + inwardFormBean.getInwardPurpose() + "\"" + " selected >" + inwardFormBean.getInwardPurpose() + "</option>");
-                        }
-                    %>
-                </select>
-            </span>
-        </div>
+
 
 
         <div class="IASFormFieldDiv">
@@ -167,7 +153,16 @@
                 <label>PIN Code:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" maxlength="11" TABINDEX="5" type="text" name="pincode" id="pincode" value="${inwardFormBean.pincodeAsText}"/>
+                <input class="IASTextBox" maxlength="6" TABINDEX="5" type="text" name="pincode" id="pincode" value="${inwardFormBean.pincodeAsText}"/>
+            </span>
+        </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Email:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASEmailTextBox" maxlength="64" TABINDEX="6" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${inwardFormBean.email}"/>
             </span>
         </div>
 
@@ -197,35 +192,6 @@
             </span>
         </div>
 
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Subscriber ID:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}"/>
-            </span>
-            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
-                <button id="btnSearchSubscriber">Search Subscriber&nbsp;&nbsp;&nbsp;</button>
-                <button id="btnResetSubscriber">Reset</button>
-                <%--<input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
-                <input class="IASButton" TABINDEX="-1" type="button" name="btnResetSubscriber" id="btnResetSubscriber" value="Reset" onclick="clearSubscriber()"/>--%>
-            </span>
-        </div>
-
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Subscription ID:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASDisabledTextBox" TABINDEX="-1" disabled type="text" name="subscriptionID" id="subscriptionid" value="${inwardFormBean.subscriptionIDAsText}"/>
-            </span>
-            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
-                <button id="btnSearchSubscription">Search Subscription</button>
-                <button id="btnResetSubscription">Reset</button>
-                <%--<input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
-                <input class="IASButton" TABINDEX="-1" type="button" name="btnResetSubscriber" id="btnResetSubscriber" value="Reset" onclick="clearSubscriber()"/>--%>
-            </span>
-        </div>
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
@@ -247,12 +213,52 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Email:</label>
+                <label>Subscriber ID:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" maxlength="64" TABINDEX="6" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${inwardFormBean.email}"/>
+                <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}"/>
+            </span>
+            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
+                <button id="btnSearchSubscriber">Search Subscriber&nbsp;&nbsp;&nbsp;</button>
+                <button id="btnResetSubscriber">Reset</button>
+                <%--<input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
+                <input class="IASButton" TABINDEX="-1" type="button" name="btnResetSubscriber" id="btnResetSubscriber" value="Reset" onclick="clearSubscriber()"/>--%>
             </span>
         </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Purpose:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <select class="IASComboBoxMandatory" TABINDEX="10" name="inwardPurpose" id="inwardPurpose">
+                    <option value="0">Select</option>
+                    <%
+                        if (inwardFormBean.getInwardPurpose() != null && !inwardFormBean.getInwardPurpose().isEmpty()) {
+                            out.println("<option value=" + "\"" + inwardFormBean.getInwardPurpose() + "\"" + " selected >" + inwardFormBean.getInwardPurpose() + "</option>");
+                        }
+                    %>
+                </select>
+            </span>
+        </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Subscription ID:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASDisabledTextBox" TABINDEX="-1" disabled type="text" name="subscriptionID" id="subscriptionid" value="${inwardFormBean.subscriptionIDAsText}"/>
+            </span>
+            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
+                <button id="btnSearchSubscription">Search Subscription</button>
+                <button id="btnResetSubscription">Reset</button>
+                <%--<input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
+                <input class="IASButton" TABINDEX="-1" type="button" name="btnResetSubscriber" id="btnResetSubscriber" value="Reset" onclick="clearSubscriber()"/>--%>
+            </span>
+        </div>
+
+
+
 
     </div>
 </fieldset>
@@ -456,15 +462,15 @@
         <input onclick="setActionValue('save')" TABINDEX="24" class="IASButton" type="submit" value="Save" id="btnSaveInward" name="submitAction"/>
         <input onclick="setActionValue('edit')" TABINDEX="25" class="IASButton" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
         <input onclick="setActionValue('sendAck')" TABINDEX="26" class="IASButton" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>
-               <%--
-                   //inwardFormBean.isCompleted()== true ? out.println("enabled") : out.println("disabled");
-                   if (inwardFormBean.isCompleted() == true) {
-                       out.println(" enabled");
-                   } else {
-                       out.println(" disabled");
-                   }
-               --%>
-               
+        <%--
+            //inwardFormBean.isCompleted()== true ? out.println("enabled") : out.println("disabled");
+            if (inwardFormBean.isCompleted() == true) {
+                out.println(" enabled");
+            } else {
+                out.println(" disabled");
+            }
+        --%>
+
         <input onclick="setActionValue('sendReturn')" TABINDEX="27" class="IASButton" type="submit" value="Send Return" id="btnSendReturn" name="submitAction"/>
     </div>
 </fieldset>

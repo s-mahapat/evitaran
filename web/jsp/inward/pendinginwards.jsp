@@ -100,16 +100,6 @@
                         if(ids.length > 0){
                             $("#btnNext").button("enable");
                         }
-                        /*for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-                            var purpose = jQuery("#inwardTable").jqGrid('getCell',cl,'PurposeID').toString();
-                            var inwardId = jQuery("#inwardTable").jqGrid('getCell',cl,'InwardNo').toString();
-                            var subscriberId = jQuery("#inwardTable").jqGrid('getCell',cl,'SubscriberId').toString();
-                            //action = "<a onclick='alert(123)' style='color:blue;' href='inward?action=processinward&inwardNumber=" + inwardId + "&subscriberNumber=" + subscriberId + "&purpose=" + purpose + "'>" + purpose + "</a>";
-                            //jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Purpose: action });
-                            action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + cl + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purpose + "')" + "\"" + "/>";
-                            jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Select: action });
-                        }*/
                     },
                     beforeRequest: function(){
                         return isPageLoaded;

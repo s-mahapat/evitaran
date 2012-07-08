@@ -219,6 +219,22 @@ public class subscriberModel extends JDSModel {
         return(pst.executeQuery());
         
     }
+    
+    public ResultSet getDepartmentNames(String searchTerm) throws SQLException{
+        String sql = Queries.getQuery("department_names");
+        PreparedStatement pst = this.conn.prepareStatement(sql);
+        pst.setString(1, searchTerm + "%");
+        return(pst.executeQuery());
+        
+    }
+    
+    public ResultSet getInstitutionNames(String searchTerm) throws SQLException{
+        String sql = Queries.getQuery("institution_names");
+        PreparedStatement pst = this.conn.prepareStatement(sql);
+        pst.setString(1, searchTerm + "%");
+        return(pst.executeQuery());
+        
+    }
 
     public String searchSubscriber() throws SQLException, ParseException,
             ParserConfigurationException, TransformerException, IOException, SAXException {

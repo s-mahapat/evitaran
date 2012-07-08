@@ -3,51 +3,60 @@ var subscriberType = 0;
 var subscriptionSaved = false
 
 function addJournal(){
+    
+    // merge the old selected data and the new one, else we loose the data while saving the
+    // subscription
+    var userSelection = getselected(document.getElementById("journalName"));
+    $.extend(journalNameToGroupIDMap, userSelection);
 
-    var selectedJournalGroupCode = $("#journalName").val();
-    var selectedJournalGroupName = $("#journalName :selected").text();
-    journalNameToGroupIDMap[selectedJournalGroupName] = selectedJournalGroupCode;
     if(subscriberType == 0){
         subscriberType = getSubscriberType($("#subscriberNumber").val());
     }
     var arrRowIds = $("#newSubscription").getDataIDs();
-    if(arrRowIds.length != 0){
-        intIndex = $.inArray(selectedJournalGroupName, arrRowIds);
-        //intIndex = arrRowIds.indexOf(selectedJournalGroupName);
-        /* checks if the journal id bieng added is already existing in the grid.
-         * Cannot add the same journal twice.
-         */
-        if(intIndex > -1){
-            alert("An entry for the journal already exists.Cannot subscribe to the same journal twice");
-            return false;
+    $.each(userSelection,function(selectedJournalGroupName,selectedJournalGroupCode){
+        if(arrRowIds.length != 0){
+            intIndex = $.inArray(selectedJournalGroupName, arrRowIds);
+            //intIndex = arrRowIds.indexOf(selectedJournalGroupName);
+            /* checks if the journal id bieng added is already existing in the grid.
+            * Cannot add the same journal twice.
+            */
+            if(intIndex > -1){
+                alert("An entry for the journal " + selectedJournalGroupName + " already exists.Cannot subscribe to the same journal twice");
+                return true;
+            }
         }
-    }
 
-    //else get the price details from the server
-    startYear = $("#subscriptionStartYear").val();
-    numYears = $("#endYear").val() - startYear + 1; // +1 to include the current year
-    priceDetails = getPrice(startYear, numYears, selectedJournalGroupCode, subscriberType);
-    var price = priceDetails[1];
-    if(price != -1){ // check if the price group id is -1
-        var newRowData = {
-            "journalName": '<a color="blue" title="Click here for Journal List" href="#" onclick="getJournalGroupContents(' + selectedJournalGroupCode + ')">' + selectedJournalGroupName + '</a>',
-            "journalPriceGroupID":priceDetails[0],
-            "journalCost": price, //get the price
-            "startYear": $("#subscriptionStartYear").val(),
-            "startMonth": $("#startMonth").val(), //_JDSConstants.monthNames[$("#startMonth").val() - 1],
-            "endYear" : $("#endYear").val(),
-            "Copies": $("#copies").val(),
-            "Total": price * $("#copies").val(),
-            "delete":"<img src='images/delete.png' onclick=\"deleteRow('" + selectedJournalGroupName + "')\"/>"
-        };
-        // the journal code is the rowid.
-        bRet = $("#newSubscription").addRowData(selectedJournalGroupName, newRowData,"last");
-        updateTotal(price * $("#copies").val());
-    }else{
-        alert("Failed to add subscription!!! No price defined for the selected Year and Journal Group");
-        bRet = false;
-    }
+        //else get the price details from the server
+        startYear = $("#subscriptionStartYear").val();
+        numYears = $("#endYear").val() - startYear + 1; // +1 to include the current year
+        priceDetails = getPrice(startYear, numYears, selectedJournalGroupCode, subscriberType);
+        var price = priceDetails[1];
+        if(price != -1){ // check if the price group id is -1
+            var newRowData = {
+                "journalName": '<a color="blue" title="Click here for Journal List" href="#" onclick="getJournalGroupContents(' + selectedJournalGroupCode + ')">' + selectedJournalGroupName + '</a>',
+                "journalPriceGroupID":priceDetails[0],
+                "journalCost": price, //get the price
+                "startYear": $("#subscriptionStartYear").val(),
+                "startMonth": $("#startMonth").val(), //_JDSConstants.monthNames[$("#startMonth").val() - 1],
+                "endYear" : $("#endYear").val(),
+                "Copies": $("#copies").val(),
+                "Total": price * $("#copies").val(),
+                "delete":"<img src='images/delete.png' onclick=\"deleteRow('" + selectedJournalGroupName + "')\"/>"
+            };
+            // the journal code is the rowid.
+            bRet = $("#newSubscription").addRowData(selectedJournalGroupName, newRowData,"last");
+            updateTotal(price * $("#copies").val());
+        }else{
+            alert("Failed to add subscription!!! No price defined for the selected Year and Journal Group");
+            bRet = bRet && false;
+            return(false);
+            
+        }
+        return(true);
+    });
     return(bRet);
+    
+    
 }
 
 function updateTotal(val){
@@ -106,7 +115,7 @@ function saveSubscription(){
     var subscriptionTotal = $("#subscriptionTotalValue").text();
     var ids = $("#newSubscription").getDataIDs();
     if(ids.length == 0){
-        alert("No subscription data to save. Please select the journal jroup and click Add");
+        alert("No subscription data to save. Please select the journal group and click Add");
         return;
     }
     for(intIndex in arrRowData){
@@ -154,9 +163,9 @@ function saveSubscription(){
     $.ajax({
         type: 'POST',
         url: "subscription?oper=add"
-            + "&subscriberNumber=" + $("#subscriberNumber").val()
-            + "&remarks=" + $("#remarks").val()
-            + "&inwardNumber=" + $("#inwardNumber").val(),
+        + "&subscriberNumber=" + $("#subscriberNumber").val()
+        + "&remarks=" + $("#remarks").val()
+        + "&inwardNumber=" + $("#inwardNumber").val(),
         data: $.param(rowRequiredData),
         success: function(xmlResponse, textStatus, jqXHR){
 

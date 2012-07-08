@@ -84,7 +84,21 @@ public class subscriber extends JDSController {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
                 
-            } else if (action.equalsIgnoreCase("viewsubscription")) {
+            } else if(action.equalsIgnoreCase("depts")){
+             
+                String searchTerm = request.getParameter("term");
+                ResultSet rs = _subscriberModel.getDepartmentNames(searchTerm);
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }else if(action.equalsIgnoreCase("inst")){
+             
+                String searchTerm = request.getParameter("term");
+                ResultSet rs = _subscriberModel.getInstitutionNames(searchTerm);
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }else if (action.equalsIgnoreCase("viewsubscription")) {
 
                 //fill in the subscriber bean
                 if (_subscriberModel.GetSubscriber() != null) {
