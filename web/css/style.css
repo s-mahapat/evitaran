@@ -8,10 +8,10 @@ root {
 body{
     margin:0px;
     padding:0px;
-    background-color: #F6F6F6;/*rgb(255, 237, 202);*/
-    font-family: "Cambria",serif;
-    font-size: 12px;
-    /*width: 100%;*/
+    background-color: #F6F6F6;
+    /*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;*/
+    font-family: arial,helvetica,sans-serif;
+    font-size: 13px;
 }
 
 A:link {
@@ -215,47 +215,33 @@ A:active {
 
 .IASTextBox{
     width: 120px;
-    font-family: "Cambria",serif;
-    font-size: 12px;
 }
 
 .IASDisabledTextBox{
     width: 120px;
-    font-family: "Cambria",serif;
-    font-size: 12px;
     background-color: #EEE;
 }
 
 .IASDisabledTextBoxWide{
     width: 180px;
-    font-family: "Cambria",serif;
-    font-size: 12px;
     background-color: #EEE;
 }
 
 .IASTextBoxWide{
     width: 250px;
-    font-family: "Cambria",serif;
-    font-size: 12px;
 }
 
 .IASTextBoxForNumbers{
     width: 30px;
-    font-family: "Cambria",serif;
-    font-size: 12px;
 }
 
 .IASTextBoxMandatory{
     width: 120px;
-    font-family: "Cambria",serif;
-    font-size: 12px;
     background-color: antiquewhite;
 }
 
 .IASTextBoxMandatoryWide{
     width: 250px;
-    font-family: "Cambria",serif;
-    font-size: 12px;
     background-color: antiquewhite;
 }
 
@@ -275,8 +261,6 @@ A:active {
 .IASEmailTextBox{
     height: 14px;
     width: 180px;
-    font-family: "Cambria",serif;
-    font-size: 12px;
 }
 
 
@@ -289,16 +273,13 @@ A:active {
 
 
 .IASDateTextBox{
-
     width: 70px;
-    font-family: "Cambria",serif;
-    font-size: 12px;
     background-color: #EEE;
 }
 
 .IASButton{
     /*height: 20px;*/
-    font-size: 10px;
+    font-size: 13px;
     /*font-weight: bolder;*/
     color: black;
     text-transform: capitalize;
@@ -320,41 +301,35 @@ A:active {
 }
 
 .IASComboBox{
-    font-family: "Cambria",serif;
-    font-size: 12px;
+    /*font-size: 13px;*/
     width: 120px;
 }
 
 .IASComboBoxWide{
-    font-family: "Cambria",serif;
-    font-size: 12px;
     width: 180px;
 }
 
 .IASComboBoxWideMandatory{
-    font-family: "Cambria",serif;
-    font-size: 12px;
+    font-size: inherit;
     width: 220px;
     background-color: antiquewhite;
 }
 
 .IASComboBoxMediumMandatory{
-    font-family: "Cambria",serif;
-    font-size: 12px;
+    font-size: inherit;
     width: 160px;
     background-color: antiquewhite;
 }
 
 .IASComboBoxSmallMandatory{
-    font-family: "Cambria",serif;
-    font-size: 12px;
+    font-size: inherit;
     width: 100px;
     background-color: antiquewhite;
 }
 
 .IASComboBoxMandatory{
-    font-family: "Cambria",serif;
-    font-size: 12px;
+    /*font-family: "Cambria",serif;*/
+    font-size: inherit;
     background-color: antiquewhite;
 }
 
@@ -436,7 +411,7 @@ A:active {
 
 .datatable tbody td{
     text-align: center;
-    font-size: 1em;
+    font-size: 1.1em;
     font-weight: normal;
     /*background-color: #ECE5B6;*/
     vertical-align: middle;
@@ -638,4 +613,13 @@ A:active {
     margin-left: -24px;
     z-index: 100;
     display: none;
+}
+
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    /* add padding to account for vertical scrollbar */
+    padding-right: 20px;
 }

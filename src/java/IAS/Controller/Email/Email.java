@@ -4,13 +4,19 @@ import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.*;
 import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
+import com.itextpdf.text.DocumentException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.ParseException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 
 public class Email extends JDSController {
@@ -124,11 +130,11 @@ public class Email extends JDSController {
                 
 
             }
-        } catch (Exception e) {
+        } catch (SQLException | IOException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | DocumentException | NumberFormatException | ParserConfigurationException | TransformerException e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
         } finally{            
-            String xml = null;
+            String xml;
             try{
                 // convert true/false to 1/0
                 String successValue = (success == true) ? "1" : "0";
@@ -137,7 +143,7 @@ public class Email extends JDSController {
                 url = "/xmlserver";
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
                 rd.forward(request, response);
-            }catch(Exception ex){
+            }catch(ParserConfigurationException | SQLException | TransformerException | IOException | ServletException ex){
                 throw new ServletException(ex.getMessage());
             }
             

@@ -29,6 +29,13 @@
         $("input:reset").on("click", function(){
             resetGrid(".datatable");
         });
+        
+        // reste all combo boxes when the esc key is pressed
+        $("select[class^=IASCombo]").keydown(function(event){
+            if(event.which == 27){
+                $("*:focus").val($(this).prop('defaultSelected'));
+            }
+        });
     });
     $(document).ajaxStart(function(){        
         $('#ajaxBusy').show();
@@ -36,5 +43,6 @@
     $(document).ajaxStop(function(){
         $('#ajaxBusy').hide();
     });
+    
 </script>
 <link href="<%=request.getContextPath() + "/css/style.css"%>" type="text/css" rel="stylesheet"/>

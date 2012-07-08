@@ -246,36 +246,55 @@ function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
 
     var _formElementId = "#" + formElementId;
     var myArr = new Array;
-
-    // bind the autocompletechange event to the element, so we allow only values from the list
-    $(_formElementId).bind('autocompletechange', function(){
-
-        if ($.inArray($(this).val(), myArr) == -1 &&  $(this).val().length > 0){
-            $(this).val('');
-            $(this).focus();
-            alert('Please select a valid value from the list');
-        }
-
-    });
-    $.ajax({
-        type: "GET",
-        url: requestURL, // change to full path of file on server
-        dataType: "xml",
-        success: function(xml){
-            $(xml).find(xmlRowTag).each(function(){
-                myArr.push($(this).text());
+    $(_formElementId).autocomplete({
+       source : function(request, response){
+           $.ajax({
+                type: "GET",
+                url: requestURL, // change to full path of file on server
+                data: {"term": request.term},
+                dataType: "xml",
+                success: function(xml){
+                    myArr = [];
+                    $(xml).find(xmlRowTag).each(function(){
+                        myArr.push($(this).text());
+                    });
+                    response(myArr);
+                }
             });
-        },
-        complete: function(){
-            $(_formElementId).autocomplete({
-                source: myArr,
-                minLength: 2
-            });
-        },
-        error: function() {
-            alert("XML File could not be found");
-        }
+       },
+       minLength: 3
+       
     });
+
+//    // bind the autocompletechange event to the element, so we allow only values from the list
+//    $(_formElementId).bind('autocompletechange', function(){
+//
+//        if ($.inArray($(this).val(), myArr) == -1 &&  $(this).val().length > 0){
+//            $(this).val('');
+//            $(this).focus();
+//            alert('Please select a valid value from the list');
+//        }
+//
+//    });
+//    $.ajax({
+//        type: "GET",
+//        url: requestURL, // change to full path of file on server
+//        dataType: "xml",
+//        success: function(xml){
+//            $(xml).find(xmlRowTag).each(function(){
+//                myArr.push($(this).text());
+//            });
+//        },
+//        complete: function(){
+//            $(_formElementId).autocomplete({
+//                source: myArr,
+//                minLength: 1
+//            });
+//        },
+//        error: function() {
+//            alert("XML File could not be found");
+//        }
+//    });
 
 }
 

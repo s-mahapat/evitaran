@@ -9,6 +9,7 @@
             window.returnValue=null;
             var subscriber = window.dialogArguments;
             var selectedSubscriberId = null;
+            var selectedsubscriber;
 
             $(function(){
                 $("#subscriberList").jqGrid({
@@ -17,7 +18,11 @@
                         city            : subscriber.city,
                         subscriberName  : subscriber.name,
                         country         : subscriber.country,
-                        state           : subscriber.state
+                        state           : subscriber.state,
+                        pincode         : subscriber.pincode,
+                        institution     : subscriber.institution,
+                        department      : subscriber.department,
+                        email           : subscriber.email
                     },
                     datatype: 'xml',
                     mtype: 'GET',
@@ -30,18 +35,19 @@
                     rownumbers: true,
                     emptyrecords: "No subscribers to view",
                     loadtext: "Loading...",
-                    colNames:['Select','Subscriber Id','Subscriber Name', 'Department','City','Pin Code','Country', 'Email'],
+                    colNames:['Select','Subscriber Id','Subscriber Name', 'Department','Institute','City','Pin Code','Country', 'Email'],
                     colModel :[
                         {name:'Select', index:'select', width:15, align:'center',xmlmap:'subscriberNumber'
                             /*formatter:function (cellvalue, options, rowObject) {
                                 return '<input onclick="selectedSubscriberId=this.value" type="radio" id="selectedSubscriberRadio" name="selectedSubscriberRadio" value="' + cellvalue + '"/>';
                             }*/
                         },
-                        {name:'Subscriber Number', index:'subscriberNumber', width:30, align:'center', sortable:false, xmlmap:'subscriberNumber'},
-                        {name:'Subscriber Name', index:'subscriberName', width:40, align:'center', sortable:false, xmlmap:'subscriberName'},
+                        {name:'SubscriberNumber', index:'subscriberNumber', width:30, align:'center', sortable:false, xmlmap:'subscriberNumber'},
+                        {name:'SubscriberName', index:'subscriberName', width:40, align:'center', sortable:false, xmlmap:'subscriberName'},
                         {name:'Department', index:'department', width:60, align:'center', sortable:false, xmlmap:'department'},
+                        {name:'Instituttion', index:'institute', width:60, align:'center', sortable:false, xmlmap:'institution'},
                         {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                        {name:'Pin Code', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
+                        {name:'PinCode', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
                         {name:'Country', index:'country', width:30, align:'center', sortable:false, xmlmap:'country'},
                         {name:'Email', index:'email', width:40, align:'center',sortable:false, xmlmap:'email'}
                     ],
@@ -73,7 +79,9 @@
             });
 
             function CheckReturnValue(){
-                window.returnValue = selectedSubscriberId;
+                selectedsubscriber = jQuery("#subscriberList").getRowData(selectedSubscriberId);
+                window.returnValue = selectedsubscriber;
+                //window.returnValue = selectedSubscriberId;
 //                if(!window.returnValue){
 //                    alert("Please select a subscriber");
 //                    return false;

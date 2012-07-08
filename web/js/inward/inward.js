@@ -22,27 +22,35 @@ function enableSubscriptionID(value){
 function validateSearchSubscriber(){
 
     var isValidSearch = false;
-    if(!isEmptyValue($("#from").val())){
-        isValidSearch = true;
-    }
-    else if(!isEmptyValue($("#country").val()) && !isEmptyValue($("#state").val())){
-        isValidSearch = true;
-    }
-    else if(!isEmptyValue($("#country").val()) && !isEmptyValue($("#city").val())){
+    if(!isEmptyValue($("#pincode").val()) || !isEmptyValue($("#from").val())){
         isValidSearch = true;
     }
 
     if(!isValidSearch){
-        alert("Please fill in Country along with City/State to search for subscriber");
+        alert("Please fill in From or Pincode to search for subscriber");
         return;
     }else{
-        var selectedSubscriberFromDialog = searchSubscriber(document.getElementById("country").value
+        var selectedSubscriberFromDialog = searchSubscriber(
+            document.getElementById("from").value
+            ,document.getElementById("country").value
             ,document.getElementById("state").value
             ,document.getElementById("city").value
-            ,document.getElementById("from").value);
+            ,document.getElementById("pincode").value
+            ,document.getElementById("institution").value
+            ,document.getElementById("department").value
+            ,document.getElementById("email").value
+        );
 
-        if(!isEmptyValue(selectedSubscriberFromDialog) && selectedSubscriberFromDialog != 0){
-            document.getElementById("subscriberId").value = selectedSubscriberFromDialog;
+        if(!isEmptyValue(selectedSubscriberFromDialog.SubscriberNumber) && selectedSubscriberFromDialog.SubscriberNumber != 0){
+            $("#subscriberId").val(selectedSubscriberFromDialog.SubscriberNumber);
+            $("#institution").val(selectedSubscriberFromDialog.Instituttion);
+            $("#department").val(selectedSubscriberFromDialog.Department);
+            $("#email").val(selectedSubscriberFromDialog.Email);
+            $("#pincode").val(selectedSubscriberFromDialog.PinCode);
+            $("#from").val(selectedSubscriberFromDialog.SubscriberName);
+            $("#city").val(selectedSubscriberFromDialog.City);
+            $("#country").val(selectedSubscriberFromDialog.Country);
+            
         }
     }
 }
@@ -57,13 +65,18 @@ function validateSearchSubscription(){
     return true;
 }
 
-function searchSubscriber(country, state, city, subscriberName){
+function searchSubscriber(subscriberName,country, state, city, pincode, institution, department, email){
     var subscriber = new Object();
     windowParams = "dialogHeight:600px; dialogWidth:1000px; center:yes; resizeable:no; status:no; menubar:no;\n\
                     scrollbars:yes; toolbar: no;";
     subscriber.country = country;
     subscriber.city = city;
     subscriber.name = subscriberName;
+    subscriber.state = state;
+    subscriber.pincode = pincode;
+    subscriber.institution = institution;
+    subscriber.department = department;
+    subscriber.email = email;
     var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp"
         , subscriber
         , windowParams);
@@ -149,7 +162,7 @@ function validateNewInward(){
 
     // since selecting the subscriber is not mandatory, check if he is ok to proceed without
     // selecting subscriber. The inward should be alreay valid before we make this check
-    if(isInwardValid && isEmptyValue($("#subscriberId").val())){
+    if(InwardPurpose.toLowerCase() != 'new subscription' && isInwardValid && isEmptyValue($("#subscriberId").val())){
         if(confirm("Do you want to save the inward without selecting a subscriber?")){
             isInwardValid = true;
         }else{
@@ -233,11 +246,6 @@ function isInwardSelected(){
     $("#inwardNumber").val(selectedInward);
     $("#subscriberNumber").val(selectedSubscriberId);
     $("#purpose").val(selectedInwardPurpose);
-
-    //    document.processInwardForm.action = "inward?action=processinward&" +
-    //    "inwardNumber=" + selectedInward + "&" +
-    //    "subscriberNumber=" + selectedSubscriberId + "&" +
-    //    "purpose=" + selectedInwardPurpose
     return true;
 }
 

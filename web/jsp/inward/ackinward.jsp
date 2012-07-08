@@ -118,7 +118,7 @@
                                     bEmail = "disabled";
                                 }
                             %>
-                            <input class="IASButton" id="btnEmail" value="Email" type="button" onclick="jdsEmail('email/inward/' 
+                            <input class="IASButton" <%=bEmail%> id="btnEmail" value="Email" type="button" onclick="jdsEmail('email/inward/' 
                                                                                                                 + subscriptionID + '/ack?lno=' 
                                                                                                                 + $('#letterNumber').val() 
                                                                                                                 + '&ldate=' + $('#subscriberletterDate').val() + '&inwardNumber=${inwardFormBean.inwardNumber}')"/>

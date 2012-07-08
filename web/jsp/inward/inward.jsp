@@ -41,11 +41,20 @@
     
         $("#inwardPurpose").change(function(){
             var inward_purpose = $("#inwardPurpose").val();
+            // enable the search subscription button only for inward of type 'payment'
             if(inward_purpose.toLowerCase() == "payment"){
                 enableSubscriptionID(true);
             }
             else{
                 enableSubscriptionID(false);
+            }
+            // if the inward type is new subscription disable the search subscriber button
+            if(inward_purpose.toLowerCase() == "new subscription"){
+                $( "#btnSearchSubscriber" ).button("disable");
+                $("#btnResetSubscriber").button("disable");
+            }else{
+                $( "#btnSearchSubscriber" ).button("enable");
+                $("#btnResetSubscriber").button("enable");
             }
         });
     });

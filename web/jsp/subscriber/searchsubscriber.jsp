@@ -70,9 +70,9 @@
                     colModel :[
                         {name:'Subscriber Number', index:'subscriberNumber', width:30, align:'center', xmlmap:'subscriberNumber'},
                         {name:'Subscriber Name', index:'subscriberName', width:60, align:'center', xmlmap:'subscriberName'},
-                        {name:'Department', index:'department', width:40, align:'center', xmlmap:'department'},
-                        {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                        {name:'Pin Code', index:'pincode', width:20, align:'center', xmlmap:'pincode'},
+                        {name:'Department', index:'department', width:50, align:'center', xmlmap:'department'},
+                        {name:'City', index:'city', width:20, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
+                        {name:'Pin Code', index:'pincode', width:15, align:'center', xmlmap:'pincode'},
                         {name:'Country', index:'country', width:20, align:'center', xmlmap:'country'},
                         {name:'Action', index:'action', width:40, align:'center',formatter:'showlink'}
                     ],

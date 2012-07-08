@@ -6,7 +6,6 @@ package IAS.Model.Inward;
 
 import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
-import IAS.Class.ChequeReturnPDF;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
@@ -20,7 +19,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Properties;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -427,7 +425,7 @@ public class inwardModel extends JDSModel {
 
     public String getPendngInwards() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
-        String xml = null;
+        String xml;
 
         String sql = Queries.getQuery("pending_inwards");
         String inwardPurpose = request.getParameter("inwardPurpose");
@@ -438,7 +436,7 @@ public class inwardModel extends JDSModel {
         String orderBy = request.getParameter("sidx");
         String sortOrder = request.getParameter("sord");
 
-        if (inwardPurpose.compareToIgnoreCase("NULL") != 0 && inwardPurpose != null && inwardPurpose.length() > 0) {
+        if (inwardPurpose != null && inwardPurpose.compareToIgnoreCase("NULL") != 0 && inwardPurpose.length() > 0) {
             sql += " and t3.purpose =" + "'" + inwardPurpose + "'";
         }
 

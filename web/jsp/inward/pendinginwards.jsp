@@ -15,7 +15,7 @@
             //var calPopup = new CalendarPopup("dateDiv");
             //calPopup.showNavigationDropdowns();
 
-            var isPageLoaded = false;
+            var isPageLoaded = true;
             $(document).ready(function(){
                 $("#btnNext").button("disable");
 
@@ -123,21 +123,23 @@
             });
 
             // jquery date picker
-            jQueryDatePicker("from", "to");
+            //jQueryDatePicker("from", "to");
 
             // called when the search button is clicked
             function searchInwards(){
-                if(validateSearch() == true){
+                //validateSearch() == true
+                if(true){
                     isPageLoaded = true;
                     jQuery("#inwardTable").setGridParam({ datatype: "xml" });
                     jQuery("#inwardTable").setGridParam({postData:
-                            {inwardPurpose  : $("#inwardPurpose").val(),
-                            fromDate        : $("#from").val(),
-                            toDate          : $("#to").val()
+                            {inwardPurpose  : $("#inwardPurpose").val()
+                            //fromDate        : $("#from").val(),
+                            //toDate          : $("#to").val()
                         }});
                     jQuery("#inwardTable").trigger("clearGridData");
                     jQuery("#inwardTable").trigger("reloadGrid");
                 }
+                return true;
 
             }
 
@@ -204,7 +206,7 @@
 
 
                             <%-- Search Criteria right div --%>
-                            <div class="IASFormRightDiv">
+                            <%--<div class="IASFormRightDiv">
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
@@ -221,7 +223,7 @@
                                         <input class="IASDateTextBox" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
-                            </div>
+                            </div>--%>
 
                             <div class="IASFormFieldDiv">
                                 <div class="actionBtnDiv">

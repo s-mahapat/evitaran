@@ -13,7 +13,7 @@
         <script src="js/inward/inward.js" type="text/javascript"></script>
         <script type="text/javascript">
 
-            var isPageLoaded = false;
+            var isPageLoaded = true;
 
             $(document).ready(function(){
                 $("#btnNext").attr("disabled","disabled");
@@ -23,6 +23,7 @@
 
                 $("#inwardTable").jqGrid({
                     url:"<%=request.getContextPath() + "/inward?action=search"%>",
+                    postData:{"inwardPurpose": $("#inwardPurpose").val(),"completed": false},
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -84,16 +85,6 @@
                         if(ids.length > 0){
                             $("#btnNext").removeAttr("disabled");
                         }
-                        /*for (var i = 0; i < ids.length; i++) {
-                            var cl = ids[i];
-
-                            var inwardId = jQuery("#inwardTable").jqGrid('getCell',cl,'InwardNo').toString();
-                            var subscriberId = jQuery("#inwardTable").jqGrid('getCell',cl,'SubscriberId').toString();
-                            var purpose = jQuery("#inwardTable").jqGrid('getCell',cl,'PurposeID').toString();
-                            //var purpose = jQuery("#inwardTable").jqGrid('getCell',cl,'Purpose').toString();
-                            action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + cl + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purpose + "')" + "\"" + "/>";
-                            jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Select: action });
-                        }*/
                     },
                     beforeRequest: function(){
                         return isPageLoaded;

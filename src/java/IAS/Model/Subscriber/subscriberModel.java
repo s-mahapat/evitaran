@@ -211,6 +211,14 @@ public class subscriberModel extends JDSModel {
             st.setString(++paramIndex, _subscriberFormBean.getSubscriberNumber());
         }
     }
+    
+    public ResultSet getDistinctSubscriberNames(String searchTerm) throws SQLException{
+        String sql = Queries.getQuery("subscriber_names");
+        PreparedStatement pst = this.conn.prepareStatement(sql);
+        pst.setString(1, searchTerm + "%");
+        return(pst.executeQuery());
+        
+    }
 
     public String searchSubscriber() throws SQLException, ParseException,
             ParserConfigurationException, TransformerException, IOException, SAXException {
@@ -223,6 +231,8 @@ public class subscriberModel extends JDSModel {
         String pincode = request.getParameter("pincode");
         String country = request.getParameter("country");
         String state = request.getParameter("state");
+        String institution = request.getParameter("institution");
+        String department = request.getParameter("department");
         String condition = " where";
         int pageNumber = Integer.parseInt(request.getParameter("page"));
         int pageSize = Integer.parseInt(request.getParameter("rows"));
@@ -263,6 +273,16 @@ public class subscriberModel extends JDSModel {
 
         if (email != null && email.length() > 0) {
             sql += condition + " email =" + "'" + email + "'";
+            condition = " and";
+        }
+        
+        if (institution != null && institution.length() > 0) {
+            sql += condition + " institution like" + "'%" + institution + "%'";
+            condition = " and";
+        }
+        
+        if (department != null && department.length() > 0) {
+            sql += condition + " department like" + "'%" + department + "%'";
             condition = " and";
         }
 

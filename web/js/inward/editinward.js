@@ -1,6 +1,7 @@
 function makeInwardReadOnly(){
 
-    $("#btnEditInward").button("disable");    
+    $("#btnEditInward").button("disable");  
+    $("#inwardPurpose").attr("disabled","disabled");
 }
 
 function enablePayment(){
@@ -20,5 +21,6 @@ function loadData(){
     jdsAppend("CMasterData?md=payment_mode","payment_mode","paymentMode");
     jdsAppend("CMasterData?md=currency","currency","currency");
     jdsAppend("CMasterData?md=language","language","language");
+    jdsAutoComplete("subscriber?action=subscriberNames", "subscriberName", "from");
 
 }

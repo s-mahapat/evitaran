@@ -12,6 +12,7 @@ import IAS.Class.util;
 import IAS.Model.Subscriber.subscriberModel;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import javax.servlet.RequestDispatcher;
@@ -75,6 +76,14 @@ public class subscriber extends JDSController {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
+            } else if(action.equalsIgnoreCase("subscriberNames")){
+             
+                String searchTerm = request.getParameter("term");
+                ResultSet rs = _subscriberModel.getDistinctSubscriberNames(searchTerm);
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+                
             } else if (action.equalsIgnoreCase("viewsubscription")) {
 
                 //fill in the subscriber bean
