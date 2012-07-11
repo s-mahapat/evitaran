@@ -1,0 +1,37 @@
+USE jds;
+
+delete from journal_group_contents;
+ALTER TABLE journal_group_contents AUTO_INCREMENT = 1;
+
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (1,1);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (2,2);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (3,3);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (4,4);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (5,5);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (6,6);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (7,7);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (8,8);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (9,9);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (10,10);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (11,11);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (12,1);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (12,2);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (12,3);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (12,4);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (12,5);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (12,6);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (12,7);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (12,8);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (12,9);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (12,10);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (12,11);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (13,1);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (13,2);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (13,3);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (13,4);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (13,5);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (13,6);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (13,7);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (13,8);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (13,9);
+insert into `journal_group_contents`(`journalGroupId`,`journalId`) values (13,10);
