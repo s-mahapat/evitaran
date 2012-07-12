@@ -53,7 +53,7 @@ public class pdfserver extends JDSController {
                 response.setContentType("application/pdf");
                 response.setHeader("Content-disposition", "attachment; filename=report.pdf");
                 os.flush();
-                
+
             } else if(action.equalsIgnoreCase("generatemlPrintLabel")){
                 logger.debug("Start of mailing list label generation");
                 ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
@@ -73,6 +73,36 @@ public class pdfserver extends JDSController {
                 response.setHeader("Content-disposition", "attachment; filename=ml.pdf");
                 os.flush();
                 logger.debug("End of mailing list sticker generation");
+
+            }else if(action.equalsIgnoreCase("miPrintNoCopies")){
+                ServletContext context = ServletContextInfo.getServletContext();
+                String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
+                Properties properties = new Properties();
+                properties.load(new FileInputStream(emailPropertiesFile));
+
+                String msg = properties.getProperty("missingIssueNoCopy");
+
+                convertToPdf c2Pdf = new convertToPdf();
+                c2Pdf.printMIresponse(os, msg);
+
+                response.setContentType("application/pdf");
+                response.setHeader("Content-disposition", "attachment; filename=reprint.pdf");
+                os.flush();
+
+            }else if(action.equalsIgnoreCase("generatemlPrintSticker")){
+                ServletContext context = ServletContextInfo.getServletContext();
+                String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
+                Properties properties = new Properties();
+                properties.load(new FileInputStream(emailPropertiesFile));
+
+                String msg = properties.getProperty("missingIssueAlreadySent");
+
+                convertToPdf c2Pdf = new convertToPdf();
+                c2Pdf.printMIresponse(os, msg);
+
+                response.setContentType("application/pdf");
+                response.setHeader("Content-disposition", "attachment; filename=reprint.pdf");
+                os.flush();
 
             }
         } catch (Exception e) {

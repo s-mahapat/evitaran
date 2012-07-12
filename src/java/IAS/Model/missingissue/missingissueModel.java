@@ -206,6 +206,7 @@ public class missingissueModel extends JDSModel {
         return xml;
     }
 
+    /*
     // This function will actually generate the pdf for the missing issue
     public String printNoCopies(HttpServletResponse response) throws IOException, DocumentException
     {
@@ -229,7 +230,10 @@ public class missingissueModel extends JDSModel {
         return pdf;
 
     }
+     *
+     */
 
+    /*
     // This function will actually generate the pdf for the missing issue
     public String printAlreadySent(HttpServletResponse response) throws IOException, DocumentException
     {
@@ -253,7 +257,23 @@ public class missingissueModel extends JDSModel {
         return pdf;
 
     }
+     *
+     */
 
+    public ResultSet generateMLforMI() throws SQLException
+    {
+        String sql = Queries.getQuery("reprint_mi_list");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setString(paramIndex, request.getParameter("miId"));
+
+        String type = request.getParameter("printOption");
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+
+        return rs;
+    }
+
+    /*
     public String generateMLforMI(HttpServletResponse response) throws SQLException, IOException, DocumentException
     {
         String xml = null;
@@ -279,6 +299,8 @@ public class missingissueModel extends JDSModel {
         String pdf = null;
         return pdf;
     }
+     *
+     */
 
      public String generateMl()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
@@ -300,7 +322,7 @@ public class missingissueModel extends JDSModel {
 
                 Object value = null;
                 for (int j = 1; j <= 26; j++) {
-                    value = rs.getObject(j); 
+                    value = rs.getObject(j);
                     String temp = "";
                     if(value == null)
                         temp = "";
@@ -309,8 +331,8 @@ public class missingissueModel extends JDSModel {
                     stmldtl.setString(++paramIndex, temp);
                 }
                 //stmldtl.setString(++paramIndex, miId );
-                db.executeUpdatePreparedStatement(stmldtl);            
-            }            
+                db.executeUpdatePreparedStatement(stmldtl);
+            }
         //xml = util.convertResultSetToXML(rs);
             setAction("M");
             completeInward();
@@ -318,7 +340,7 @@ public class missingissueModel extends JDSModel {
             conn.rollback();
         } finally {
             conn.setAutoCommit(true);
-        }                
+        }
         return xml;
     }
 
@@ -327,17 +349,17 @@ public class missingissueModel extends JDSModel {
             IOException, InvocationTargetException, Exception {
 
             boolean status = false;
-            String xml = null;          
-            String replyOption = request.getParameter("replyOption"); 
-            //If the user chosses to print        
-            if(replyOption.equals("Print"))         
+            String xml = null;
+            String replyOption = request.getParameter("replyOption");
+            //If the user chosses to print
+            if(replyOption.equals("Print"))
             {
                 xml = util.convertStringToXML("print", "action");
                 status = true;
-            }         
+            }
             //If the user chosses to send email
             if(replyOption.equals("EMail"))
-            {             
+            {
                 ServletContext context = ServletContextInfo.getServletContext();
                 String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
                 Properties properties = new Properties();
@@ -348,16 +370,16 @@ public class missingissueModel extends JDSModel {
                 status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "", "Missing Issues", msg, "", "", null);
                 if(status)
                     xml = util.convertStringToXML("success", "action");
-                else                 
-                    xml = util.convertStringToXML("failure", "action");         
-            }          
-            if(status)         
-            {             
-                setAction("N");             
-                completeInward();         
-            }          
+                else
+                    xml = util.convertStringToXML("failure", "action");
+            }
+            if(status)
+            {
+                setAction("N");
+                completeInward();
+            }
             return xml;
-            
+
     }
 
     public String alreadySent()  throws IllegalAccessException, ParseException,
@@ -365,36 +387,36 @@ public class missingissueModel extends JDSModel {
             IOException, InvocationTargetException, Exception {
 
         boolean status = false;
-        String xml = null;          
-        String replyOption = request.getParameter("replyOption");         
-        //If the user chosses to print         
-        if(replyOption.equals("Print"))         
-        {             
-            xml = util.convertStringToXML("print", "action");             
-            status = true;         
-        }         
-        //If the user chosses to send email         
-        if(replyOption.equals("EMail"))         
-        {             
-            ServletContext context = ServletContextInfo.getServletContext();             
-            String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");             
-            Properties properties = new Properties();             
-            properties.load(new FileInputStream(emailPropertiesFile));              
-            String msg = properties.getProperty("missingIssueAlreadySent");             
-            String to = request.getParameter("email");              
-            msgsend sendMsg = new msgsend();             
-            status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "", "Missing Issues", msg, "", "", null);             
-            if(status)                 
-                xml = util.convertStringToXML("success", "action");             
-            else                 
-                xml = util.convertStringToXML("failure", "action");         
-        }          
-        if(status)         
-        {             
-            setAction("S");             
-            completeInward();         
-        }          
-        return xml; 
+        String xml = null;
+        String replyOption = request.getParameter("replyOption");
+        //If the user chosses to print
+        if(replyOption.equals("Print"))
+        {
+            xml = util.convertStringToXML("print", "action");
+            status = true;
+        }
+        //If the user chosses to send email
+        if(replyOption.equals("EMail"))
+        {
+            ServletContext context = ServletContextInfo.getServletContext();
+            String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(emailPropertiesFile));
+            String msg = properties.getProperty("missingIssueAlreadySent");
+            String to = request.getParameter("email");
+            msgsend sendMsg = new msgsend();
+            status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "", "Missing Issues", msg, "", "", null);
+            if(status)
+                xml = util.convertStringToXML("success", "action");
+            else
+                xml = util.convertStringToXML("failure", "action");
+        }
+        if(status)
+        {
+            setAction("S");
+            completeInward();
+        }
+        return xml;
     }
 
     public void completeInward()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import IAS.Bean.missingissue.missingissueFormBean;
 import IAS.Model.missingissue.missingissueModel;
+import java.sql.ResultSet;
 /**
  *
  * @author Shailendra Mahapatra
@@ -103,18 +104,38 @@ public class missingissue extends JDSController {
                 url = "/xmlserver";
             }
             else if (action.equalsIgnoreCase("generateMlForMi")) {
+                /*
                 String xml = _missingissueModel.generateMLforMI(response);
                 //request.setAttribute("xml", xml);
                 url = "/pdfserver";
+                 *
+                 */
+                ResultSet rs = _missingissueModel.generateMLforMI();
+                request.setAttribute("ResultSet", rs);
+
+                String type = request.getParameter("printOption");
+                if(type.equals("LABEL"))
+                    url = "/pdfserver?action=generatemlPrintLabel";
+                if(type.equals("STICKER"))
+                    url = "/pdfserver?action=generatemlPrintSticker";
+
             }else if (action.equalsIgnoreCase("printNoCopies")) {
+                /*
                 String xml = _missingissueModel.printNoCopies(response);
                 //request.setAttribute("xml", xml);
                 url = "/pdfserver";
+                 *
+                 */
+                url = "/pdfserver?action=miPrintNoCopies";
             }
             else if (action.equalsIgnoreCase("printAlreadySent")) {
+               /*
                 String xml = _missingissueModel.printAlreadySent(response);
                 //request.setAttribute("xml", xml);
                 url = "/pdfserver";
+                 *
+                 */
+                url = "/pdfserver?action=miPrintAlreadySent";
             }
         }
          catch (Exception e) {
