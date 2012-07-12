@@ -176,7 +176,7 @@
                 <label>Inward Number:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxInward" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<jsp:getProperty name="inwardFormBean" property="inwardNumber"/>"/>
+                <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<jsp:getProperty name="inwardFormBean" property="inwardNumber"/>"/>
             </span>
         </div>
 
@@ -337,7 +337,10 @@
                 <label>Amount:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="19" type="text" name="amount" id="amount" value="${inwardFormBean.amount}"/>
+                <%
+                    String amount = inwardFormBean.getAmount() > 0 ? String.valueOf(inwardFormBean.getAmount()) : "";
+                %>
+                <input class="IASTextBox" TABINDEX="19" type="text" name="amount" id="amount" value="<%=amount%>"/>
             </span>
         </div>
 

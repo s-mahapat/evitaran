@@ -20,7 +20,8 @@ public class InvoiceFormBean {
     private String invoiceNumber = "";
     private String invoiceCreationDate = util.getDateString();
     private int subscriptionTotal = 0;
-    private String subscriberAddress = "";
+    private String shippingAddress = "";
+    private String invoiceAddress = "";
     private String subscriberName;
     private String email;
 
@@ -143,12 +144,21 @@ public class InvoiceFormBean {
      * -----------------------------------------------------------------------
      * Subscriber Address
      */
-    public String getSubscriberAddress() {
-        return this.subscriberAddress;
+    /* Subscriber Address */
+    public String getShippingAddress() {
+        return this.shippingAddress;
     }
 
-    public void setSubscriberAddress(String _subscriberAddress) {
-        this.subscriberAddress = _subscriberAddress;
+    public void setShippingAddress(String _ShippingAddress) {
+        this.shippingAddress = _ShippingAddress;
+    }
+    
+    public String getInvoiceAddress() {        
+        return this.invoiceAddress;
+    }
+
+    public void setInvoiceAddress(String _InvoiceAddress) {
+        this.invoiceAddress = _InvoiceAddress;
     }
     /*
      * -----------------------------------------------------------------------

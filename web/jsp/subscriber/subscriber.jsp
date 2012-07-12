@@ -1,17 +1,17 @@
 <%@page language="java" import="java.util.*" %>
 <jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
-    <fieldset class="subMainFieldSet">
-        <legend>Subscriber</legend>
+<fieldset class="subMainFieldSet">
+    <legend>Subscriber</legend>
 
-        <div class="IASFormLeftDiv">
+    <div class="IASFormLeftDiv">
 
-            <div class="IASFormFieldDiv">
-                <span class="IASFormDivSpanLabel">
-                    <label>Subscriber Number:</label>
-                </span>
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Subscriber Number:</label>
+            </span>
 
-                <span class="IASFormDivSpanInputBox">
-                    <input class="IASDisabledTextBox" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASDisabledTextBox" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
             </span>
         </div>
 
@@ -26,17 +26,33 @@
             </span>
         </div>
 
-
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Address:</label>
+                <label>Shipping Address:</label>
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="2" name="subscriberAddress" id="subscriberAddress">${subscriberFormBean.subscriberAddress}</textarea>
+                <textarea onkeydown="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="3" name="shippingAddress" id="shippingAddress">${subscriberFormBean.shippingAddress}</textarea>
             </span>
         </div>
 
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Invoice Address:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input type="checkbox" id="copyshipaddress" name="sameInvoiceAddress" onchange="copyShippingAddress()"><label>Same as Shipping Address</label>
+            </span>
+
+        </div>
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>&nbsp;</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <textarea onkeydown="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="2" name="invoiceAddress" id="invoiceAddress">${subscriberFormBean.invoiceAddress}</textarea>
+            </span>
+        </div>
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
@@ -159,7 +175,7 @@
             <span class="IASFormDivSpanInputBox">
                 <label class="IASLabelOnly" id="subtypecode"></label>
             </span>
-            
+
         </div>
     </div>
 
@@ -203,7 +219,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" TABINDEX="12" maxlength="64" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${subscriberFormBean.email}"/>
+                <input class="IASTextBoxWide" TABINDEX="12" maxlength="64" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${subscriberFormBean.email}"/>
             </span>
         </div>
 

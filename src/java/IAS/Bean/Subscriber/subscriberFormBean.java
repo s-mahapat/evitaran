@@ -8,7 +8,8 @@ public class subscriberFormBean extends JDSBean {
     private String subscriberNumber = "";
     private String subscriberCreationDate = util.getDateString();
     private String subscriberName = "";
-    private String subscriberAddress = "";
+    private String invoiceAddress = "";
+    private String shippingAddress = "";    
     private String city = "";
     private String district = "";
     private String state = "";
@@ -22,6 +23,7 @@ public class subscriberFormBean extends JDSBean {
     private String agent = "";
     private boolean deactive = false;
     private String deactivationDate;
+    private boolean sameInvoiceAddress = false;
 
 
     /* Subscriber ID */
@@ -53,12 +55,23 @@ public class subscriberFormBean extends JDSBean {
     }
 
     /* Subscriber Address */
-    public String getSubscriberAddress() {
-        return this.subscriberAddress;
+    public String getShippingAddress() {
+        return this.shippingAddress;
     }
 
-    public void setSubscriberAddress(String _SubscriberAddress) {
-        this.subscriberAddress = _SubscriberAddress;
+    public void setShippingAddress(String _ShippingAddress) {
+        this.shippingAddress = _ShippingAddress;
+    }
+    
+    public String getInvoiceAddress() {
+        if(this.sameInvoiceAddress == true){
+            return this.shippingAddress;
+        }
+        return this.invoiceAddress;
+    }
+
+    public void setInvoiceAddress(String _InvoiceAddress) {
+        this.invoiceAddress = _InvoiceAddress;
     }
 
     /* Subscriber City */
@@ -187,6 +200,14 @@ public class subscriberFormBean extends JDSBean {
 
     public void setDeactivationDate(String _deactivationDate){
         this.deactivationDate = _deactivationDate;
+    }
+    
+    public boolean isSameInvoiceAddress(){
+        return this.sameInvoiceAddress;
+    }
+    
+    public void setSameInvoiceAddress(boolean _sameInvoiceAddress){
+        this.sameInvoiceAddress = _sameInvoiceAddress;
     }
 
 }

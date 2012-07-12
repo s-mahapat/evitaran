@@ -37,7 +37,7 @@
                             subscriptionGridCreated=true;
                             //$("#subscriptionList").jqGrid('setCaption','').trigger("reloadGrid");
                         }
-                         if(selected_index == 3 && invoiceGridCreated==false){
+                        if(selected_index == 3 && invoiceGridCreated==false){
                             drawInvoiceTable();
                             invoiceGridCreated=true;
                         }
@@ -91,13 +91,24 @@
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Address:</label>
+                                        <label>Shipping Address:</label>
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <textarea class="IASTextAreaMandatory" TABINDEX="2" name="subscriberAddress" id="subscriberAddress">${subscriberFormBean.subscriberAddress}</textarea>
+                                        <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="3" name="shippingAddress" id="shippingAddress">${subscriberFormBean.shippingAddress}</textarea>
                                     </span>
                                 </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Invoice Address:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="2" name="invoiceAddress" id="invoiceAddress">${subscriberFormBean.invoiceAddress}</textarea>
+                                    </span>
+                                </div>
+
+
                             </div>
                         </fieldset>
                         <fieldset class="subMainFieldSet" style="border: none">

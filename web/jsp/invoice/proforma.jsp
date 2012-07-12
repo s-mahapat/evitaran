@@ -93,21 +93,14 @@
                             <div class="invoceAddressDiv">
                                 <div class="invoiceLeftDiv">
                                     <span class="invoiceSubscriberAddressSpan">
-                                        ${invoiceFormBean.subscriberAddress}
+                                        ${invoiceFormBean.invoiceAddress}
                                     </span>
                                 </div>
                                 <div class="invoiceRightDiv">
                                     <span class="invoiceSubscriberAddressSpan">
-                                        ${invoiceFormBean.subscriberAddress}
+                                        ${invoiceFormBean.shippingAddress}
                                     </span>
                                 </div>
-                            </div>
-
-                            <div class="invoiceLetterBody" style="margin-top: 50px;">
-                                Dear Sir/Madam,
-                            </div>
-                            <div class="invoiceLetterBody">
-                                We have received your order form
                             </div>
                             <div class="invoiceLetterBody">
                                 As desired, we enclose our Invoice No. ${invoiceFormBean.invoiceNumber} date ${invoiceFormBean.invoiceCreationDate}

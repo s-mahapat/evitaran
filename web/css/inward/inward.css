@@ -38,13 +38,6 @@ root {
 
 }
 
-.IASTextBoxInward{
-    width: 120px;
-    font-family: "Cambria",serif;
-    font-size: 12px;
-    background-color: #EEE;
-}
-
 #returnReasonDiv{
     text-align: left;
     padding-left: 10px;

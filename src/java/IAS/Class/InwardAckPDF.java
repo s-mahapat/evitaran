@@ -23,10 +23,12 @@ public class InwardAckPDF extends JDSPDF {
 
     public ByteArrayOutputStream getPDF(int subscriptionID,
             String inwardNumber,
+            String paymentMode,
             int chqDDNumber,
             float amount,
             String LetterNumber,
-            String LetterDate) throws SQLException, DocumentException, MalformedURLException, IOException {
+            String LetterDate,
+            String customText) throws SQLException, DocumentException, MalformedURLException, IOException {
 
         com.itextpdf.text.Document document = this.getPDFDocument();
 
@@ -38,10 +40,12 @@ public class InwardAckPDF extends JDSPDF {
         document.add(this.getSalutation());
         document.add(this.getInwardAckLetterBody(String.valueOf(subscriptionID),
                 inwardNumber,
+                paymentMode,
                 LetterNumber,
                 LetterDate,
-                String.valueOf(chqDDNumber),
-                String.valueOf(amount)));
+                chqDDNumber,
+                String.valueOf(amount),
+                customText));
         document.add(this.getLetterFooter());
         document.close();
         return outputStream;
@@ -50,24 +54,30 @@ public class InwardAckPDF extends JDSPDF {
 
     private Paragraph getInwardAckLetterBody(String subscriptionID,
             String inwardNumber,
+            String paymentMode,
             String letterNumber,
             String LetterDate,
-            String chequeDDNo,
-            String amount) throws SQLException, IOException {
+            int chequeDDNo,
+            String amount,
+            String customText) throws SQLException, IOException {
 
         Paragraph paragraph1 = new Paragraph();
         Paragraph paragraph2 = new Paragraph();
         Paragraph paragraph3 = new Paragraph();
+        Paragraph pcustomText = new Paragraph();
 
         paragraph1.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE);
         paragraph1.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         paragraph1.setAlignment(Element.ALIGN_LEFT);
 
-        paragraph2.setIndentationLeft(JDSPDF.LEFT_INDENTATION_MORE);
+        paragraph2.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         paragraph2.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
 
         paragraph3.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         paragraph3.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
+        
+        pcustomText.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
+        pcustomText.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
 
         paragraph1.add(new Chunk("Subject: Regarding Subscription of Journals"));
         paragraph1.add(Chunk.NEWLINE);
@@ -78,11 +88,16 @@ public class InwardAckPDF extends JDSPDF {
         Properties props = new Properties();
         props.load(this.pdfTemplatesFile);
         String template = props.getProperty("inward_ack");
-        String bodyText = String.format(template, chequeDDNo, amount);
+        String bodyText;
+        
+        if(chequeDDNo == 0){
+            bodyText = String.format(template, paymentMode, amount);
+        }else{
+            bodyText = String.format(template, paymentMode + " No:" + chequeDDNo, amount);
+        }
+        
 
-//        String bodyText = "This is to acknowledge with thanks the receipt of the Cheque/DD No: " + chequeDDNo
-//                + " of Amount Rs. " + amount + " towards subscription to the following journals.";
-        paragraph2.add(new Chunk(bodyText));
+        paragraph2.add(new Phrase(bodyText));
 
         // get all the subscription details for the inward
         String sql = Queries.getQuery("get_subscription_details_for_inward");
@@ -143,19 +158,23 @@ public class InwardAckPDF extends JDSPDF {
                 table.addCell(c4);
             }
         }
-
+        if(!customText.isEmpty()){
+            pcustomText.add(new Chunk(customText));
+        }
         
         
         paragraph1.add(paragraph2);
         paragraph3.add(table);
-        paragraph1.add(paragraph3);
         paragraph3.add(Chunk.NEWLINE);
+        paragraph3.add(pcustomText);
+        paragraph1.add(paragraph3);
         paragraph3.add(Chunk.NEWLINE);
         paragraph3.add(new Chunk("Subscription No: " + subscriptionID));
         paragraph3.add(Chunk.NEWLINE);
-        paragraph3.add(Chunk.NEWLINE);
         paragraph3.add(new Chunk("Inward No: " + inwardNumber));
         paragraph3.add(Chunk.NEWLINE);
+        
+        
         return paragraph1;
 
     }

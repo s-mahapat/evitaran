@@ -35,14 +35,12 @@ public class Email extends JDSController {
         String documentID = requestParams[1];
         String action = requestParams[2];
         boolean success = false;
-        String url = "/jsp/errors/error.jsp";
 
         try {
             // for all inwards
             if (document.equalsIgnoreCase("inward")) {
                 inwardModel _inwardModel = new inwardModel(request);
-                inwardFormBean _inwardFormBean = new inwardFormBean();
-                _inwardFormBean = _inwardModel.GetInward(documentID);
+                inwardFormBean _inwardFormBean = _inwardModel.GetInward(documentID);
                 request.setAttribute("inwardFormBean", _inwardFormBean);
 
                 // for inward cheque return
@@ -81,6 +79,7 @@ public class Email extends JDSController {
                     String _inwardNumber = request.getParameter("inwardNumber");
                     String letterNumber = request.getParameter("lno");
                     String letterDate = request.getParameter("ldate");
+                    String customText = request.getParameter("ctext");
                     //inwardModel _inwardModel = new inwardModel(request);
                     //inwardFormBean _inwardFormBean = new inwardFormBean();
                     _inwardFormBean = _inwardModel.GetInward(_inwardNumber);
@@ -90,10 +89,12 @@ public class Email extends JDSController {
                     InwardAckPDF _inwardAckPdf = new InwardAckPDF(conn);
                     ByteArrayOutputStream baos = _inwardAckPdf.getPDF(subid,
                                                                     _inwardNumber,
+                                                                    _inwardFormBean.getPaymentMode(),
                                                                     _inwardFormBean.getChqddNumber(),
                                                                     _inwardFormBean.getAmount(),
                                                                     letterNumber,
-                                                                    letterDate);
+                                                                    letterDate,
+                                                                    customText);
                     byte pdfData[] = baos.toByteArray();
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     msgsend _mailer = new msgsend();
@@ -140,7 +141,7 @@ public class Email extends JDSController {
                 String successValue = (success == true) ? "1" : "0";
                 xml = util.convertStringToXML(successValue, "success");
                 request.setAttribute("xml", xml);
-                url = "/xmlserver";
+                String url = "/xmlserver";
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
                 rd.forward(request, response);
             }catch(ParserConfigurationException | SQLException | TransformerException | IOException | ServletException ex){

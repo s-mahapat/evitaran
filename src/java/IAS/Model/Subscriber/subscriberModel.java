@@ -194,7 +194,8 @@ public class subscriberModel extends JDSModel {
             st.setDate(++paramIndex, util.dateStringToSqlDate(_subscriberFormBean.getSubscriberCreationDate()));
         }
         st.setString(++paramIndex, _subscriberFormBean.getSubscriberName());
-        st.setString(++paramIndex, _subscriberFormBean.getSubscriberAddress());
+        st.setString(++paramIndex, _subscriberFormBean.getShippingAddress());
+        st.setString(++paramIndex, _subscriberFormBean.getInvoiceAddress());
         st.setString(++paramIndex, _subscriberFormBean.getCity());
         st.setString(++paramIndex, _subscriberFormBean.getDistrict());
         st.setString(++paramIndex, _subscriberFormBean.getState());

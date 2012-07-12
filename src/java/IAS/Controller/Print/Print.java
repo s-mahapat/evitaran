@@ -41,8 +41,7 @@ public class Print extends JDSController {
             // for inward print
             if (document.equalsIgnoreCase("inward")) {
                 inwardModel _inwardModel = new inwardModel(request);
-                inwardFormBean _inwardFormBean = new inwardFormBean();
-                _inwardFormBean = _inwardModel.GetInward(documentID);
+                inwardFormBean _inwardFormBean = _inwardModel.GetInward(documentID);
                 //request.setAttribute("inwardFormBean", _inwardFormBean);
 
                 // for inward cheque return, create the pdf
@@ -75,6 +74,7 @@ public class Print extends JDSController {
                     String _inwardNumber = request.getParameter("inwardNumber");
                     String letterNumber = request.getParameter("lno");
                     String letterDate = request.getParameter("ldate");
+                    String customText = request.getParameter("ctext");
                     //inwardModel _inwardModel = new inwardModel(request);
                     //inwardFormBean _inwardFormBean = new inwardFormBean();
                     _inwardFormBean = _inwardModel.GetInward(_inwardNumber);
@@ -84,10 +84,12 @@ public class Print extends JDSController {
                     InwardAckPDF _inwardAckPdf = new InwardAckPDF(conn);
                     ByteArrayOutputStream baos = _inwardAckPdf.getPDF(subid,
                                                                     _inwardNumber,
+                                                                    _inwardFormBean.getPaymentMode(),
                                                                     _inwardFormBean.getChqddNumber(),
                                                                     _inwardFormBean.getAmount(),
                                                                     letterNumber,
-                                                                    letterDate);
+                                                                    letterDate,
+                                                                    customText);
                     
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     this.sendResponse(baos, fileName, response);

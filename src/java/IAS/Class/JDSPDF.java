@@ -10,12 +10,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.servlet.ServletContext;
 
-public class JDSPDF {
+public class JDSPDF implements IJDSPDF{
 
     public InputStream pdfTemplatesFile = null;
     public static int OUTER_PARAGRAPH_SPACE  = 10;
-    public static int INNER_PARAGRAPH_SPACE  = 30;
+    public static int INNER_PARAGRAPH_SPACE  = 10;
     public static int LEFT_INDENTATION_LESS = 15;
+    public static int RIGHT_INDENTATION_LESS = 15;
     public static int LEFT_INDENTATION_MORE = 30;
     public static Font JDS_BOLD_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
     public static Font JDS_FONT_NORMAL_SMALL = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
@@ -23,6 +24,11 @@ public class JDSPDF {
     public JDSPDF(){
         ServletContext context = ServletContextInfo.getServletContext();
         this.pdfTemplatesFile = context.getResourceAsStream("/WEB-INF/classes/pdf_templates.properties");
+    }
+    
+    @Override
+    public ByteArrayOutputStream getPDF(){
+        throw(new UnsupportedOperationException("This method has to be overriden"));
     }
 
     public Document getPDFDocument(){
@@ -51,6 +57,7 @@ public class JDSPDF {
 
         paragraph.setAlignment(Element.ALIGN_CENTER);
         paragraphDate.setAlignment(Element.ALIGN_RIGHT);
+        paragraphDate.setIndentationRight(JDSPDF.RIGHT_INDENTATION_LESS);
 
         ServletContext context = ServletContextInfo.getServletContext();
         String logo = context.getRealPath("/images/pdflogo.jpg");
@@ -65,6 +72,7 @@ public class JDSPDF {
 
         Chunk HeaderIASAddress = new Chunk(JDSConstants.IAS_LETTERHEAD_ADDRESS);
         Chunk HeaderIASTel = new Chunk(JDSConstants.IAS_LETTERHEAD_TELEPHONE);
+        Chunk HeaderEmail_Web = new Chunk(JDSConstants.IAS_LETTERHEAD_EMAIL + " " + JDSConstants.IAS_LETTERHEAD_WEB);
         Chunk LetterDate = new Chunk("Date: " + util.getDateString());
         paragraphDate.add(LetterDate);
 
@@ -73,6 +81,8 @@ public class JDSPDF {
         paragraph.add(HeaderIASAddress);
         paragraph.add(Chunk.NEWLINE);
         paragraph.add(HeaderIASTel);
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(HeaderEmail_Web);
 
         paragraphDate.setSpacingBefore(INNER_PARAGRAPH_SPACE);
         paragraph.add(paragraphDate);

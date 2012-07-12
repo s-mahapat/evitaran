@@ -19,5 +19,16 @@ function subtypeCodeAppend(){
 
 function imposeMaxLength(Event, Object, MaxLen)
 {
-    return (Object.value.length <= MaxLen)||(Event.keyCode == 8 ||Event.keyCode==46||(Event.keyCode>=35&&Event.keyCode<=40))
+    return (Object.value.length <= MaxLen - 1)||(Event.keyCode == 8 ||Event.keyCode==46||(Event.keyCode>=35&&Event.keyCode<=40))
+}
+
+function copyShippingAddress(){
+    if($('#copyshipaddress').is(":checked")){
+        $("#invoiceAddress").val($("#shippingAddress").val());
+        $("#invoiceAddress").attr("disabled",true);
+    }else{
+        $("#invoiceAddress").val("");
+        $("#invoiceAddress").attr("disabled",false);
+    }
+    
 }

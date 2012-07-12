@@ -258,12 +258,6 @@ A:active {
     height: 50px;
 }
 
-.IASEmailTextBox{
-    height: 14px;
-    width: 180px;
-}
-
-
 .IASCheckBox{
 }
 
@@ -278,30 +272,19 @@ A:active {
 }
 
 .IASButton{
-    /*height: 20px;*/
-    font-size: 13px;
-    /*font-weight: bolder;*/
+    font-size: 0.9em;
     color: black;
     text-transform: capitalize;
     margin: 0px 10px;
     z-index: 0;
 }
 
-/*
-.IASButton{
-    height: 20px;
-    font-size: 10px;
-    font-weight: bold;
-    margin: 0px 2px;
-}
-*/
 .JDSFileInput{
     font-family: Cambria;
     font-size: 12px;
 }
 
 .IASComboBox{
-    /*font-size: 13px;*/
     width: 120px;
 }
 
@@ -527,7 +510,7 @@ A:active {
     width: 80%;
     text-align: center;
     font-size: 20px;
-    font-family: cambria,sans-serif,serif;
+    /*font-family: cambria,sans-serif,serif;*/
 }
 
 #subletterhead_1{
@@ -539,7 +522,7 @@ A:active {
     text-align: center;
     font-size: 16px;
     margin-top: 5px;
-    font-family: cambria,sans-serif,serif;
+    /*font-family: cambria,sans-serif,serif;*/
 }
 
 #letterTel{
@@ -578,18 +561,14 @@ A:active {
 
 .salutation{
     margin-left: 10px;
-    font-family: cambria,sans-serif,serif;
-    font-size: 12px;
+    /*font-family: cambria,sans-serif,serif;*/
     width: 100%;
     float: left;
     margin-top: 30px;
 }
 
 .subjectLine{
-
     margin-left: 10px;
-    font-family: cambria,sans-serif,serif;
-    font-size: 12px;
     width: 100%;
     float: left;
     margin-top: 20px;
@@ -597,8 +576,6 @@ A:active {
 
 .letterBody{
     margin-left: 5%;
-    font-family: cambria,sans-serif,serif;
-    font-size: 12px;
     width: 95%;
     margin-top: 20px;
     float: right;
