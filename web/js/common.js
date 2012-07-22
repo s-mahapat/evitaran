@@ -235,8 +235,8 @@ function jQueryDatePicker(fromDiv, toDiv){
             }
         });
         // set the default populated to today
-        $(fromDiv).datepicker("setDate",new Date());
-        $(toDiv).datepicker("setDate",new Date());
+        //$(fromDiv).datepicker("setDate",new Date());
+        //$(toDiv).datepicker("setDate",new Date());
     });
 
 }

@@ -1,8 +1,5 @@
 function drawInvoiceTable(){
 
-    //initally set to false, after the first search the flag is set to true
-    var isPageLoaded = false;
-
     $("#invoiceTable").jqGrid({
             url:"subscriber?action=subscriberInvoice&subscriberNumber=" + $("#subscriberNumber").val(),
             datatype: 'xml',
@@ -49,10 +46,7 @@ function drawInvoiceTable(){
                     action = "<a style='color:blue;' href='subscriber?action=printInvoice&invoiceNo=" + invoiceId + "'>Print</a>";
                     jQuery("#invoiceTable").jqGrid('setRowData', ids[i], { Action: action });
                 }
-            },
-            beforeRequest: function(){
-                return true;
-            },
+            },            
             loadError: function(xhr,status,error){
                 alert("Failed getting data from server " + status);
             }

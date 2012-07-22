@@ -64,7 +64,9 @@ public class msgsend {
         String SMTP_AUTH_USER = properties.getProperty("SMTP_AUTH_USER");
         String SMTP_AUTH_PWD = properties.getProperty("SMTP_AUTH_PWD");
         try{
-            new Mailer(SMTP_HOST_NAME, 25, SMTP_AUTH_USER, SMTP_AUTH_PWD, TransportStrategy.SMTP_TLS).sendMail(email);
+            Mailer _mailer = new Mailer(SMTP_HOST_NAME, 25, SMTP_AUTH_USER, SMTP_AUTH_PWD, TransportStrategy.SMTP_TLS);
+            _mailer.validate(email);
+            _mailer.sendMail(email);
             return true;
         }catch(Exception e){
             return false;

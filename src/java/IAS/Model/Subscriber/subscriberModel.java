@@ -128,7 +128,6 @@ public class subscriberModel extends JDSModel {
 //        String monthChar = Character.toString(alphabet[_month]);
 //        return monthChar.toUpperCase();
 //    }
-
     public String editSubscriber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
         return GetSubscriber();
@@ -212,29 +211,29 @@ public class subscriberModel extends JDSModel {
             st.setString(++paramIndex, _subscriberFormBean.getSubscriberNumber());
         }
     }
-    
-    public ResultSet getDistinctSubscriberNames(String searchTerm) throws SQLException{
+
+    public ResultSet getDistinctSubscriberNames(String searchTerm) throws SQLException {
         String sql = Queries.getQuery("subscriber_names");
         PreparedStatement pst = this.conn.prepareStatement(sql);
         pst.setString(1, searchTerm + "%");
-        return(pst.executeQuery());
-        
+        return (pst.executeQuery());
+
     }
-    
-    public ResultSet getDepartmentNames(String searchTerm) throws SQLException{
+
+    public ResultSet getDepartmentNames(String searchTerm) throws SQLException {
         String sql = Queries.getQuery("department_names");
         PreparedStatement pst = this.conn.prepareStatement(sql);
         pst.setString(1, searchTerm + "%");
-        return(pst.executeQuery());
-        
+        return (pst.executeQuery());
+
     }
-    
-    public ResultSet getInstitutionNames(String searchTerm) throws SQLException{
+
+    public ResultSet getInstitutionNames(String searchTerm) throws SQLException {
         String sql = Queries.getQuery("institution_names");
         PreparedStatement pst = this.conn.prepareStatement(sql);
         pst.setString(1, searchTerm + "%");
-        return(pst.executeQuery());
-        
+        return (pst.executeQuery());
+
     }
 
     public String searchSubscriber() throws SQLException, ParseException,
@@ -292,12 +291,12 @@ public class subscriberModel extends JDSModel {
             sql += condition + " email =" + "'" + email + "'";
             condition = " and";
         }
-        
+
         if (institution != null && institution.length() > 0) {
             sql += condition + " institution like" + "'%" + institution + "%'";
             condition = " and";
         }
-        
+
         if (department != null && department.length() > 0) {
             sql += condition + " department like" + "'%" + department + "%'";
             condition = " and";
@@ -334,8 +333,8 @@ public class subscriberModel extends JDSModel {
         return subscriberType;
     }
 
-    public String subscriberInvoices()throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException{
-       String xml = null;
+    public String subscriberInvoices() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+        String xml = null;
         String sql = Queries.getQuery("search_subscriber_invoice");
         String ajax_sql = sql + " LIMIT ?, ?";
 
@@ -347,7 +346,7 @@ public class subscriberModel extends JDSModel {
         int totalQueryCount = 0;
         PreparedStatement pst = conn.prepareStatement(ajax_sql);
         pst.setString(1, subscriberNumber);
-        pst.setInt(2, (pageSize * (pageNumber - 1 )));
+        pst.setInt(2, (pageSize * (pageNumber - 1)));
         pst.setInt(3, pageSize);
         ResultSet rs = pst.executeQuery();
 
@@ -362,7 +361,7 @@ public class subscriberModel extends JDSModel {
         return xml;
     }
 
-        public InvoiceFormBean getInvoiceDetail() throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
+    public InvoiceFormBean getInvoiceDetail() throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
         String sql;
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
         sql = Queries.getQuery("get_invoice_detail_usng_invno");
@@ -372,9 +371,18 @@ public class subscriberModel extends JDSModel {
             while (rs.next()) {
                 BeanProcessor bProc = new BeanProcessor();
                 Class type = Class.forName("IAS.Bean.Invoice.InvoiceFormBean");
-                invoiceFormBean = (IAS.Bean.Invoice.InvoiceFormBean) bProc.toBean(rs, type);            }
+                invoiceFormBean = (IAS.Bean.Invoice.InvoiceFormBean) bProc.toBean(rs, type);
+            }
         }
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         return invoiceFormBean;
+    }
+    
+    public ResultSet getReminders(String subscriberNumber) throws SQLException{
+        String sql = Queries.getQuery("get_subscriber_reminders");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setString(1, subscriberNumber);
+        ResultSet rs = db.executeQueryPreparedStatement(st);
+        return rs;
     }
 }

@@ -89,10 +89,11 @@
                                 Dear Sir/Madam,
                             </div>
                             <div class="letterBody">
-                                This is to acknowledge with thanks the receipt of <strong>${inwardFormBean.paymentMode} ${inwardFormBean.chqddNumberAsText}</strong> of Amount <strong>Rs. ${inwardFormBean.amount}</strong>
-                                towards subscription of the following journals.
+                                This is to acknowledge with thanks the receipt of <strong> ${inwardFormBean.paymentMode} ${inwardFormBean.chqddNumberAsText}</strong> of Amount <strong>Rs. ${inwardFormBean.amount}</strong> towards 
+                                subscription of Journals
+                                <!--towards subscription of the following journals.-->
                             </div>
-                            <div id="subscriptionDetail">
+                            <!--<div id="subscriptionDetail">
                                 <table class="datatable" style="width: 100%">
                                     <tr>
                                         <th>Journal Name</th>
@@ -101,7 +102,7 @@
                                         <th>Copies</th>
                                     </tr>
                                 </table>
-                            </div>
+                            </div>-->
                             <div id="customTextDiv" style="margin-left: 5%;float:left;width: 90%;">
                                 <label>Custom Text: </label>
                                 <textarea style="margin-left: 10px; width: 80%;" class="IASTextArea" id="customText" maxlength="300" cols="80"></textarea>

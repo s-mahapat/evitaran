@@ -6,6 +6,7 @@ import IAS.Class.util;
 public class subscriberFormBean extends JDSBean {
 
     private String subscriberNumber = "";
+    private int subscriberID;
     private String subscriberCreationDate = util.getDateString();
     private String subscriberName = "";
     private String invoiceAddress = "";
@@ -33,6 +34,14 @@ public class subscriberFormBean extends JDSBean {
 
     public void setSubscriberNumber(String _SubscriberNumber) {
         this.subscriberNumber = _SubscriberNumber;
+    }
+    
+    public int getSubscriberID() {
+        return this.subscriberID;
+    }
+
+    public void setSubscriberID(int _SubscriberID) {
+        this.subscriberID = _SubscriberID;
     }
 
 

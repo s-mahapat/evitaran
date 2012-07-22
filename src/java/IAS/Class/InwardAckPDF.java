@@ -100,7 +100,7 @@ public class InwardAckPDF extends JDSPDF {
         paragraph2.add(new Phrase(bodyText));
 
         // get all the subscription details for the inward
-        String sql = Queries.getQuery("get_subscription_details_for_inward");
+        /*String sql = Queries.getQuery("get_subscription_details_for_inward");
         PreparedStatement pst = conn.prepareStatement(sql);
         pst.setString(1, inwardNumber);
         PdfPTable table;
@@ -157,20 +157,18 @@ public class InwardAckPDF extends JDSPDF {
                 table.addCell(c3);
                 table.addCell(c4);
             }
-        }
+        }*/
+        paragraph1.add(paragraph2);
+        //paragraph3.add(table);
+        paragraph3.add(Chunk.NEWLINE);
         if(!customText.isEmpty()){
             pcustomText.add(new Chunk(customText));
+            paragraph3.add(pcustomText);
         }
-        
-        
-        paragraph1.add(paragraph2);
-        paragraph3.add(table);
-        paragraph3.add(Chunk.NEWLINE);
-        paragraph3.add(pcustomText);
         paragraph1.add(paragraph3);
-        paragraph3.add(Chunk.NEWLINE);
-        paragraph3.add(new Chunk("Subscription No: " + subscriptionID));
-        paragraph3.add(Chunk.NEWLINE);
+        //paragraph3.add(Chunk.NEWLINE);
+        //paragraph3.add(new Chunk("Subscription No: " + subscriptionID));
+        //paragraph3.add(Chunk.NEWLINE);
         paragraph3.add(new Chunk("Inward No: " + inwardNumber));
         paragraph3.add(Chunk.NEWLINE);
         

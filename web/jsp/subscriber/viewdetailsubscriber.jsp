@@ -15,11 +15,13 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/subscriberinward.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/invoice/subscriberInvoice.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/reminders.js"%>"></script>
         <script>
             $(document).ready(function(){
                 inwardGridCreated = false;
                 subscriptionGridCreated = false;
                 invoiceGridCreated = false;
+                reminderGridCreated = false;
                 var tab_cookie_id = parseInt($.cookie("the_tab_cookie")) || 0;
                 $("#subscriberDtlsTabs").tabs({
                     selected:-1,
@@ -40,6 +42,10 @@
                         if(selected_index == 3 && invoiceGridCreated==false){
                             drawInvoiceTable();
                             invoiceGridCreated=true;
+                        }
+                        if(selected_index == 4 && reminderGridCreated == false){
+                            drawReminderTable();
+                            reminderGridCreated = true;
                         }
 
                     }
@@ -73,6 +79,7 @@
 
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASDisabledTextBox" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
+                                        <input type="hidden" name="subscriberid" id="subscriberid" value="${subscriberFormBean.subscriberID}"/>
                                     </span>
                                 </div>
 
@@ -112,7 +119,7 @@
                             </div>
                         </fieldset>
                         <fieldset class="subMainFieldSet" style="border: none">
-                            <div id="subscriberDtlsTabs" style="padding-left: 0px;font-size: 12px; font-family: cambria,serif" >
+                            <div id="subscriberDtlsTabs" style="padding-left: 0px;font-size: 12px;" >
                                 <ul>
                                     <li><a href="#subDtls">Subscriber Details</a></li>
                                     <li><a href="#inwards">Inwards</a></li>
@@ -124,20 +131,25 @@
                                     <%@include file="subscriberdtls.jsp"%>
                                 </div>
 
-                                <div id="inwards" style="font-size: 11px;width: auto;padding: 3px;overflow-x: hidden">
+                                <div id="inwards" style="font-size: 12px;width: 98%;padding: 3px;">
                                     <table id="inwardTable" class="datatable" style="padding-bottom: 3px;"></table>
                                     <div id="pager"></div>
 
                                 </div>
 
-                                <div id="subscriptions" style="font-size: 11px;width: auto;padding: 3px;overflow-x: hidden">
+                                <div id="subscriptions" style="font-size: 12px;width: 98%;padding: 3px;">
                                     <table id="subscriptionList" class="datatable"></table>
                                     <div id="pager"></div>
                                 </div>
 
-                                <div id="invoices" style="font-size: 11px;width: auto;padding: 3px;overflow-x: hidden">
+                                <div id="invoices" style="font-size: 12px;width: 98%;padding: 3px;">
                                     <table id="invoiceTable" class="datatable"></table>
                                     <div id="pager_invoice"></div>
+                                </div>
+                                
+                                <div id="reminders" style="font-size: 12px;width: 98%;padding: 3px;">
+                                    <table id="remindersTable" class="datatable"></table>
+                                    <div id="pager_reminders"></div>
                                 </div>
 
                                 <div id="reminders">

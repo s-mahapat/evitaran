@@ -136,7 +136,14 @@ public class subscriber extends JDSController {
                 String xml = util.convertStringToXML(String.valueOf(subType), "subtype");
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+            }else if (action.equalsIgnoreCase("reminders")) {
+                String subscriberNumber = request.getParameter("subscriberNumber");
+                ResultSet rs = _subscriberModel.getReminders(subscriberNumber);
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             }
+            
 
         } catch (SQLException | ParseException | InvocationTargetException |
                 IllegalAccessException | ClassNotFoundException | ParserConfigurationException |

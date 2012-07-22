@@ -15,6 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import IAS.Bean.missingissue.missingissueFormBean;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
+import java.text.ParseException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 
 public class inward extends JDSController {
 
@@ -199,8 +205,7 @@ public class inward extends JDSController {
                 _inwardFormBean = _inwardModel.viewInward();
                 float amount = _inwardFormBean.getAmount();                              
 
-                // for acknowledgement amount > 0
-                if ( amount > 0 && 
+                /*if ( amount > 0 && 
                      (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION || 
                      inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)
                    ) {
@@ -209,9 +214,17 @@ public class inward extends JDSController {
                         request.setAttribute("inwardFormBean", _inwardFormBean);
                         url = "/jsp/inward/ackinward.jsp";
                     }
+                }*/ 
+                // for acknowledgement amount > 0
+                if ( 
+                     (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION || 
+                     inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)
+                   ) {                    
+                        url = "/jsp/inward/pendinginwards.jsp";
+                        
                 } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
-                    InvoiceFormBean _invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
-                    _invoiceFormBean = _inwardModel.getInvoiceDetail();
+                    InvoiceFormBean _invoiceFormBean = _inwardModel.getInvoiceDetail(); //new IAS.Bean.Invoice.InvoiceFormBean();
+                    request.setAttribute("invoiceFormBean", _invoiceFormBean);
                     url = "/jsp/invoice/proforma.jsp";
                 }else{
                     url = "/home";
@@ -219,7 +232,7 @@ public class inward extends JDSController {
 
 
             }
-        } catch (Exception e) {
+        } catch (SQLException | IOException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | ParserConfigurationException | TransformerException | SAXException | NumberFormatException e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
 
