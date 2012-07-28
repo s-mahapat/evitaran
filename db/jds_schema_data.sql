@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.24, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.25, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.24
+-- Server version	5.5.25
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -128,7 +128,7 @@ CREATE TABLE `cities` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `city_UNIQUE` (`city`)
-) ENGINE=InnoDB AUTO_INCREMENT=252 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=239 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,7 +137,7 @@ CREATE TABLE `cities` (
 
 LOCK TABLES `cities` WRITE;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `cities` VALUES (23,'Agra'),(5,'Ahmedabad'),(123,'Ahmednagar'),(148,'Aizawl'),(80,'Ajmer'),(103,'Akola'),(54,'Aligarh'),(36,'Allahabad'),(136,'Alwar'),(93,'Ambattur'),(168,'Ambernath'),(66,'Amravati'),(34,'Amritsar'),(164,'Anantapur'),(165,'Arrah'),(77,'Asansol'),(32,'Aurangabad'),(126,'Avadi'),(147,'Bally'),(216,'Bangarpet'),(172,'Baranagar'),(137,'Bardhaman'),(51,'Bareilly'),(204,'Baripada'),(152,'Bathinda'),(91,'Belgaum'),(108,'Bellary'),(3,'Bengaluru'),(111,'Bhagalpur'),(170,'Bharatpur'),(114,'Bhatpara'),(74,'Bhavnagar'),(68,'Bhilai'),(120,'Bhilwara'),(61,'Bhiwandi'),(16,'Bhopal'),(57,'Bhubaneswar'),(208,'Bhuj'),(184,'Bidar'),(183,'Bidhan Nagar'),(144,'Bihar Sharif'),(131,'Bijapur'),(65,'Bikaner'),(129,'Bilaspur'),(106,'Bokaro'),(121,'Brahmapur'),(48,'Chandigarh'),(134,'Chandrapur'),(6,'Chennai'),(249,'Chittoor'),(39,'Coimbatore'),(71,'Cuttack'),(146,'Darbhanga'),(101,'Davanagere'),(209,'Davangere'),(75,'Dehradun'),(2,'Delhi'),(191,'Deoli'),(149,'Dewas'),(33,'Dhanbad'),(242,'Dharwad'),(117,'Dhule'),(229,'Dona Paula'),(160,'Durg'),(76,'Durgapur'),(238,'Ernakulam'),(167,'Etawah'),(25,'Faridabad'),(158,'Farrukhabad'),(72,'Firozabad'),(185,'Gandhinagar'),(96,'Gaya'),(21,'Ghaziabad'),(110,'Gopalpur'),(63,'Gorakhpur'),(81,'Gulbarga'),(64,'Guntur'),(225,'Gurgaon'),(47,'Guwahati'),(41,'Gwalior'),(163,'Hapur'),(142,'Hisar'),(186,'Hosapete'),(38,'Howrah'),(50,'Hubballi-Dharwad'),(4,'Hyderabad'),(150,'Ichalkaranji'),(161,'Imphal'),(14,'Indore'),(40,'Jabalpur'),(10,'Jaipur'),(55,'Jalandhar'),(97,'Jalgaon'),(153,'Jalna'),(89,'Jammu'),(82,'Jamnagar'),(69,'Jamshedpur'),(86,'Jhansi'),(43,'Jodhpur'),(241,'Kadapa'),(139,'Kakinada'),(244,'Kalpakkam'),(28,'Kalyan-Dombivali'),(235,'Kalyani'),(128,'Kamarhati'),(12,'Kanpur'),(203,'Kanyakumari'),(247,'Karaikkudi'),(166,'Karimnagar'),(245,'Kattankulathur'),(221,'Kharagpur'),(231,'Kishangarh'),(73,'Kochi'),(79,'Kolhapur'),(7,'Kolkata'),(125,'Kollam (Quilon)'),(119,'Korba'),(46,'Kota'),(102,'Kozhikode (Calicut)'),(250,'Krishangarh'),(138,'Kulti'),(104,'Kurnool'),(207,'Kushalnagar'),(116,'Latur'),(84,'Loni'),(11,'Lucknow'),(22,'Ludhiana'),(44,'Madurai'),(99,'Maheshtala'),(95,'Malegaon'),(233,'Manauli'),(92,'Mangalore'),(246,'Manipal'),(124,'Mathura'),(156,'Mau'),(26,'Meerut'),(59,'Mira-Bhayandar'),(175,'Mirzapur'),(190,'Mohali'),(52,'Moradabad'),(1,'Mumbai'),(113,'Muzaffarnagar'),(122,'Muzaffarpur'),(53,'Mysore'),(220,'Nadia'),(214,'Nagercoil'),(13,'Nagpur'),(181,'Naihati'),(240,'Nainital'),(78,'Nanded'),(187,'Nangloi Jat'),(24,'Nashik'),(35,'Navi Mumbai'),(88,'Nellore'),(171,'New Delhi'),(140,'Nizamabad'),(67,'Noida'),(169,'North Dumdum'),(143,'Ozhukarai'),(177,'Pali'),(224,'Panchkula'),(115,'Panihati'),(145,'Panipat'),(189,'Panvel'),(141,'Parbhani'),(109,'Patiala'),(19,'Patna'),(18,'Pimpri-Chinchwad'),(248,'Prasanti Nilayam'),(210,'Puducherry'),(9,'Pune'),(154,'Purnia'),(243,'Radaur'),(176,'Raichur'),(45,'Raipur'),(127,'Rajahmundry'),(27,'Rajkot'),(105,'Rajpur Sonarpur'),(178,'Ramagundam'),(132,'Rampur'),(37,'Ranchi'),(162,'Ratlam'),(174,'Rewa'),(118,'Rohtak'),(218,'Roorkee'),(159,'Sagar'),(62,'Saharanpur'),(58,'Salem'),(90,'Sangli-Miraj & Kupwad'),(223,'Santiniketan'),(217,'SAS Nagar'),(155,'Satna'),(228,'Secunderabad'),(130,'Shahjahanpur'),(239,'Shillong'),(133,'Shivamogga (Shimoga)'),(227,'Silchar'),(85,'Siliguri'),(251,'Sindhudurg'),(182,'Singrauli'),(212,'Sivakasi'),(49,'Solapur'),(157,'Sonipat'),(107,'South Dumdum'),(179,'Sri Ganganagar'),(31,'Srinagar'),(213,'Sriperumbudur'),(188,'Srirampur'),(237,'Sultanpur'),(8,'Surat'),(215,'Surathkal'),(226,'Tezpur'),(15,'Thane'),(60,'Thiruvananthapuram'),(135,'Thrissur'),(234,'Tiruchirapalli'),(94,'Tirunelveli'),(151,'Tirupati'),(100,'Tirupur'),(173,'Tiruvottiyur'),(112,'Tumakuru (Tumkur)'),(98,'Udaipur'),(83,'Ujjain'),(87,'Ulhasnagar'),(180,'Uluberia'),(20,'Vadodara'),(222,'Vallabh Vidyanagar'),(30,'Varanasi'),(29,'Vasai-Virar'),(219,'Vellore'),(42,'Vijayawada'),(17,'Visakhapatnam'),(70,'Warangal'),(211,'Yamunanagar'),(232,'Yeddumailaram');
+INSERT INTO `cities` VALUES (1,'Agra'),(2,'Ahmedabad'),(3,'Ahmednagar'),(4,'Aizawl'),(5,'Ajmer'),(6,'Akola'),(7,'Aligarh'),(8,'Allahabad'),(9,'Alwar'),(10,'Ambattur'),(11,'Ambernath'),(12,'Amravati'),(13,'Amritsar'),(14,'Anantapur'),(15,'Arrah'),(16,'Asansol'),(17,'Aurangabad'),(18,'Avadi'),(19,'Bally'),(20,'Bangarpet'),(21,'Baranagar'),(22,'Bardhaman'),(23,'Bareilly'),(24,'Baripada'),(25,'Bathinda'),(26,'Belgaum'),(27,'Bellary'),(28,'Bengaluru'),(29,'Berhampur'),(30,'Bhagalpur'),(31,'Bharatpur'),(32,'Bhatpara'),(33,'Bhavnagar'),(34,'Bhilai'),(35,'Bhilwara'),(36,'Bhiwandi'),(37,'Bhopal'),(38,'Bhubaneswar'),(39,'Bhuj'),(40,'Bidar'),(41,'Bidhan Nagar'),(42,'Bihar Sharif'),(43,'Bijapur'),(44,'Bikaner'),(45,'Bilaspur'),(46,'Bokaro'),(47,'Brahmapur'),(48,'Chandigarh'),(49,'Chandrapur'),(50,'Chennai'),(51,'Chittoor'),(52,'Coimbatore'),(53,'Cuttack'),(54,'Darbhanga'),(55,'Davanagere'),(56,'Davangere'),(57,'Dehradun'),(58,'Delhi'),(59,'Deoli'),(60,'Dewas'),(61,'Dhanbad'),(62,'Dharwad'),(63,'Dhule'),(64,'Dona Paula'),(65,'Durg'),(66,'Durgapur'),(67,'Ernakulam'),(68,'Etawah'),(69,'Faridabad'),(70,'Farrukhabad'),(71,'Firozabad'),(72,'Gandhinagar'),(73,'Gaya'),(74,'Ghaziabad'),(75,'Gopalpur'),(76,'Gorakhpur'),(77,'Gulbarga'),(78,'Guntur'),(79,'Gurgaon'),(80,'Guwahati'),(81,'Gwalior'),(82,'Hapur'),(83,'Hisar'),(84,'Hosapete'),(85,'Howrah'),(86,'Hubballi-Dharwad'),(87,'Hyderabad'),(88,'Ichalkaranji'),(89,'Imphal'),(90,'Indore'),(91,'Jabalpur'),(92,'Jaipur'),(93,'Jalandhar'),(94,'Jalgaon'),(95,'Jalna'),(96,'Jammu'),(97,'Jamnagar'),(98,'Jamshedpur'),(99,'Jhansi'),(100,'Jodhpur'),(101,'Kadapa'),(102,'Kakinada'),(103,'Kalpakkam'),(104,'Kalyan-Dombivali'),(105,'Kalyani'),(106,'Kamarhati'),(107,'Kanpur'),(108,'Kanyakumari'),(109,'Karaikkudi'),(110,'Karimnagar'),(111,'Kattankulathur'),(112,'Kharagpur'),(113,'Kishangarh'),(114,'Kochi'),(115,'Kolhapur'),(116,'Kolkata'),(117,'Kollam (Quilon)'),(118,'Korba'),(119,'Kota'),(120,'Kozhikode (Calicut)'),(121,'Krishangarh'),(122,'Kulti'),(123,'Kurnool'),(124,'Kushalnagar'),(125,'Latur'),(126,'Loni'),(127,'Lucknow'),(128,'Ludhiana'),(129,'Madurai'),(130,'Maheshtala'),(131,'Malegaon'),(132,'Manauli'),(133,'Mangalore'),(134,'Manipal'),(135,'Mathura'),(136,'Mau'),(137,'Meerut'),(138,'Mira-Bhayandar'),(139,'Mirzapur'),(140,'Mohali'),(141,'Moradabad'),(142,'Mumbai'),(143,'Muzaffarnagar'),(144,'Muzaffarpur'),(145,'Mysore'),(146,'Nadia'),(147,'Nagercoil'),(148,'Nagpur'),(149,'Naihati'),(150,'Nainital'),(151,'Nanded'),(152,'Nangloi Jat'),(153,'Nashik'),(154,'Navi Mumbai'),(155,'Nellore'),(156,'New Delhi'),(157,'Nizamabad'),(158,'Noida'),(159,'North Dumdum'),(160,'Ozhukarai'),(161,'Palakkad'),(162,'Pali'),(163,'Panchkula'),(164,'Panihati'),(165,'Panipat'),(166,'Panvel'),(167,'Parbhani'),(168,'Patiala'),(169,'Patna'),(170,'Pimpri-Chinchwad'),(171,'Prasanti Nilayam'),(172,'Puducherry'),(173,'Pune'),(174,'Purnia'),(175,'Radaur'),(176,'Raichur'),(177,'Raipur'),(178,'Rajahmundry'),(179,'Rajkot'),(180,'Rajpur Sonarpur'),(181,'Ramagundam'),(182,'Rampur'),(183,'Ranchi'),(184,'Ratlam'),(185,'Rewa'),(186,'Rohtak'),(187,'Roorkee'),(188,'Sagar'),(189,'Saharanpur'),(190,'Salem'),(191,'Sangli-Miraj & Kupwad'),(192,'Santiniketan'),(193,'SAS Nagar'),(194,'Satna'),(195,'Secunderabad'),(196,'Shahjahanpur'),(197,'Shillong'),(198,'Shimla'),(199,'Shivamogga (Shimoga)'),(200,'Silchar'),(201,'Siliguri'),(202,'Sindhudurg'),(203,'Singrauli'),(204,'Sivakasi'),(205,'Solapur'),(206,'Sonipat'),(207,'South Dumdum'),(208,'Sri Ganganagar'),(209,'Srinagar'),(210,'Sriperumbudur'),(211,'Srirampur'),(212,'Sultanpur'),(213,'Surat'),(214,'Surathkal'),(215,'Tezpur'),(216,'Thane'),(217,'Thiruvananthapuram'),(218,'Thrissur'),(219,'Tiruchirapalli'),(220,'Tirunelveli'),(221,'Tirupati'),(222,'Tirupur'),(223,'Tiruvottiyur'),(224,'Tumakuru (Tumkur)'),(225,'Udaipur'),(226,'Ujjain'),(227,'Ulhasnagar'),(228,'Uluberia'),(229,'Vadodara'),(230,'Vallabh Vidyanagar'),(231,'Varanasi'),(232,'Vasai-Virar'),(233,'Vellore'),(234,'Vijayawada'),(235,'Visakhapatnam'),(236,'Warangal'),(237,'Yamunanagar'),(238,'Yeddumailaram');
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +154,7 @@ CREATE TABLE `countries` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `country_UNIQUE` (`country`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `countries` (
 
 LOCK TABLES `countries` WRITE;
 /*!40000 ALTER TABLE `countries` DISABLE KEYS */;
-INSERT INTO `countries` VALUES (6,'Australia'),(7,'Brazil'),(8,'Canada'),(4,'China'),(1,'India'),(9,'Italy'),(3,'Japan'),(10,'Netherlands'),(11,'Saudi Arabia'),(12,'Singapore'),(5,'Sri Lanka'),(13,'Switzerland'),(14,'Taiwan'),(15,'UK'),(2,'USA');
+INSERT INTO `countries` VALUES (1,'Australia'),(2,'Belgium'),(3,'Brazil'),(4,'Canada'),(5,'Chile'),(6,'China'),(7,'Czech Republic'),(8,'Denmark'),(9,'Finland'),(10,'France'),(11,'Germany'),(12,'India'),(13,'Israel'),(14,'Italy'),(15,'Japan'),(16,'Macedonia'),(17,'Nepal'),(18,'Netherlands'),(19,'Norway'),(20,'Pakistan'),(21,'Poland'),(22,'Russia'),(23,'Saudi Arabia'),(24,'Singapore'),(25,'Spain'),(26,'Sri Lanka'),(27,'Switzerland'),(28,'Taiwan'),(29,'UK'),(30,'USA');
 /*!40000 ALTER TABLE `countries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -993,7 +993,7 @@ DROP TABLE IF EXISTS `subscriber_type`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subscriber_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subtypecode` char(5) NOT NULL,
+  `subtypecode` char(6) NOT NULL,
   `subtypedesc` char(64) NOT NULL,
   `subtype` char(32) NOT NULL,
   `nationality` char(1) NOT NULL,
@@ -1002,7 +1002,7 @@ CREATE TABLE `subscriber_type` (
   `discount` float(8,3) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_UNIQUE` (`subtypecode`,`subtypedesc`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1011,7 +1011,7 @@ CREATE TABLE `subscriber_type` (
 
 LOCK TABLES `subscriber_type` WRITE;
 /*!40000 ALTER TABLE `subscriber_type` DISABLE KEYS */;
-INSERT INTO `subscriber_type` VALUES (1,'FELJM','Fellows','Free','I','P',2,0.000),(2,'AS','Associate','Free','I','P',2,0.000),(3,'EBALL','Editorial Borad Member','Free','I','P',1,0.000),(4,'EI','Indian Exchange','Free','I','I',0,0.000),(5,'EF','Foreign Exchange','Free','F','I',0,0.000),(6,'GRANT','Grant','Free','I','P',2,0.000),(7,'AUTH','AUTHOR','Free','I','P',1,0.000),(8,'II','Indian Universities and Institutions','Paid','I','I',0,0.000),(9,'IC','Indian Schools and Colleges','Paid','I','I',0,0.000),(10,'IN','Industry Corporates','Paid','I','I',0,0.000),(11,'IP','Indian Personnel','Paid','I','P',0,0.000),(12,'FP','Foreign Personnel','Paid','F','P',0,0.000),(13,'FI','Foreign Institutions','Paid','F','I',0,0.000),(14,'SF','Summer Fellows','Free','I','P',1,0.000),(15,'KVPY','Kishore Vaigyanik Protsahan Yojana','Paid','I','I',0,0.000);
+INSERT INTO `subscriber_type` VALUES (1,'FELJM','Fellows','Free','I','P',2,0.000),(2,'AS','Associate','Free','I','P',2,0.000),(3,'EBALL','Editorial Board Member','Free','I','P',1,0.000),(4,'EI','Indian Exchange','Free','I','I',0,0.000),(5,'EF','Foreign Exchange','Free','F','I',0,0.000),(6,'GRANT','Grant','Free','I','P',2,0.000),(7,'AUTH','AUTHOR','Free','I','P',1,0.000),(8,'II','Indian Universities and Institutions','Paid','I','I',0,0.000),(9,'IC','Indian Schools and Colleges','Paid','I','I',0,0.000),(10,'IN','Industry Corporates','Paid','I','I',0,0.000),(11,'IP','Indian Personnel','Paid','I','P',0,0.000),(12,'FP','Foreign Personnel','Paid','F','P',0,0.000),(13,'FI','Foreign Institutions','Paid','F','I',0,0.000),(14,'SF','Summer Fellows','Free','I','P',1,0.000),(15,'KVPY','Kishore Vaigyanik Protsahan Yojana','Paid','I','I',0,0.000),(16,'HONFEL','Honorary Fellow','Free','I','P',0,0.000);
 /*!40000 ALTER TABLE `subscriber_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2615,4 +2615,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-07-27 22:31:08
+-- Dump completed on 2012-07-29  4:22:50
