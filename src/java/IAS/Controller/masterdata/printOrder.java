@@ -33,13 +33,15 @@ public class printOrder extends JDSController {
 
             _printOrderModel = new IAS.Model.masterdata.printOrderModel(request);
 
+            /*
             if(action.equalsIgnoreCase("add")){
 
                 String xml = _printOrderModel.addPrintOrder();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }else if(action.equalsIgnoreCase("save")){
+            }else*/
+            if(action.equalsIgnoreCase("save")){
 
                 _printOrderModel.Save();
                 url = "/jsp/masterdata/displayPrintOrder.jsp";

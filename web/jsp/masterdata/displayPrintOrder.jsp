@@ -27,6 +27,7 @@
 
             $(document).ready(function(){
                 jQuery("#printOrderTable").jqGrid('navGrid',"#IASFormFieldDiv",{edit:false,add:false,del:false});
+                 jQuery("#btnEdit,#btnSave,#btnCancel").attr("disabled",true);
              });
 
             $(function(){
@@ -44,15 +45,27 @@
                     rownumbers: true,
                     emptyrecords: "No Print Order for selected Year",
                     loadtext: "Loading...",
-                    colNames:['Print Order Id','Journal Code','Journal Name','Year','Issues per Year', 'Print Order', 'Annual Print Order'],
+                    //colNames:['Id','Journal Code','Journal Name','Year','Issues per Year', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Annual'],
+                    colNames:['Id','Journal Code','Journal Name','Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Annual'],
                     colModel :[
                         {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
-                        {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
-                        {name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},
-                        {name:'printOrder', index:'printOrder', width:80, align:'center',xmlmap:'printOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {required: true, integer:true, minValue:0 }},
-                        {name:'annualPrintOrder', index:'annualPrintOrder', width:80, align:'center',xmlmap:'annualPrintOrder'}
+                        //{name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
+                        //{name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},
+                        {name:'janPrintOrder', index:'janPrintOrder', width:80, align:'center',xmlmap:'janPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'febPrintOrder', index:'febPrintOrder', width:80, align:'center',xmlmap:'febPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'marPrintOrder', index:'marPrintOrder', width:80, align:'center',xmlmap:'marPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'aprPrintOrder', index:'aprPrintOrder', width:80, align:'center',xmlmap:'aprPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'mayPrintOrder', index:'mayPrintOrder', width:80, align:'center',xmlmap:'mayPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'junePrintOrder', index:'junePrintOrder', width:80, align:'center',xmlmap:'junePrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'julyPrintOrder', index:'julyPrintOrder', width:80, align:'center',xmlmap:'julyPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'augPrintOrder', index:'augPrintOrder', width:80, align:'center',xmlmap:'augPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'septPrintOrder', index:'septPrintOrder', width:80, align:'center',xmlmap:'septPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'octPrintOrder', index:'octPrintOrder', width:80, align:'center',xmlmap:'octPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'novPrintOrder', index:'novPrintOrder', width:80, align:'center',xmlmap:'novPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'decPrintOrder', index:'decPrintOrder', width:80, align:'center',xmlmap:'decPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
+                        {name:'annualPrintOrder', index:'annualPrintOrder', width:80, align:'center',xmlmap:'annualPrintOrder', editable: false}
                     ],
                     xmlReader : {
                         root: "results",
@@ -103,19 +116,28 @@
 
                 for (var i = 0; i < ids.length; i++) {
                     jQuery("#printOrderTable").setGridParam({editurl: "<%=request.getContextPath()%>/printOrder?action=save" +
-                                                                        "&year=" + $("#printOrderTable").getCell(ids[i], 'year') +
-                                                                "&journalCode=" + $("#printOrderTable").getCell(ids[i], 'journalCode') +
-                                                                "&id=" + $("#printOrderTable").getCell(ids[i], 'id')
+                                                                        "&year=" + $("#year").val() +
+                                                                "&journalCode=" + $("#printOrderTable").getCell(ids[i], 'journalCode')
                                                                 });
+
+                    //var aPO = $("#printOrderTable").getCell(ids[i], 'issues') * $("#printOrderTable").getCell(ids[i], 'printOrder');
+
                     jQuery("#printOrderTable").jqGrid('saveRow',ids[i]);
-                    var aPO = $("#printOrderTable").getCell(ids[i], 'issues') * $("#printOrderTable").getCell(ids[i], 'printOrder');
-                    jQuery("#printOrderTable").setCell(ids[i], 'annualPrintOrder', aPO);
                     //setGridParam requires a reload for value to reflect in the cell. Hence using setCell instead
                     //jQuery("#printOrderTable").setGridParam({annualPrintOrder: aPO});
                 }
                 jQuery("#btnSave,#btnCancel").attr("disabled",true);
                 jQuery("#btnEdit").attr("disabled",false);
 
+                // The annual print order gets calculated on the server. To get that value we initiate a reloadgrid.
+                jQuery("#printOrderTable").setGridParam({postData:
+                        {year       : $("#year").val(),
+                        action       : "searchPrintOrder"
+                    }});
+
+                jQuery("#printOrderTable").setGridParam({ datatype: "xml" });
+                jQuery("#printOrderTable").trigger("clearGridData");
+                jQuery("#printOrderTable").trigger("reloadGrid");
             }
 
             function cancelPrintOrder(){
@@ -149,9 +171,11 @@
                         jQuery("#printOrderTable").trigger("reloadGrid");
 
                     }
+                    jQuery("#btnEdit").attr("disabled",false);
                 }
-                }
+            }
 
+            /*
             function addNewPrintOrder(){
                 if($("#year").val() == 0)
                 {
@@ -174,6 +198,7 @@
                     }
                 }
                 }
+                */
 
         </script>
     </head>
@@ -199,8 +224,6 @@
                                             </span>
                                         </div>
                                     </div>
-
-
                             </fieldset>
                             <fieldset class="subMainFieldSet">
                                 <legend>Actions: Search/ Add</legend>
@@ -208,10 +231,7 @@
                                    <div id="searchBtnDiv">
                                         <input class="IASButton" TABINDEX="2" type="button" value="Search Print Orders" id="btnSearch" name="btnSearch" onclick="searchPrintOrder()"/>
                                    </div>
-                                   <div id="addBtnDiv">
-                                        <input class="IASButton" TABINDEX="3" type="button" value="Add New Print Orders" id="btnAdd" name="btnAdd" onclick="addNewPrintOrder()"/>
-                                    </div>
-                                </div>                                
+                                </div>
                             </fieldset>
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Search Result Field Set --%>
@@ -230,13 +250,13 @@
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
                                     <div id="editBtnDiv">
-                                        <input class="IASButton" TABINDEX="4" type="button" value="Edit" onclick="editPrintOrder()" id="btnEdit" name="btnEditAction"/>
+                                        <input class="IASButton" TABINDEX="3" type="button" value="Edit" onclick="editPrintOrder()" id="btnEdit" name="btnEditAction"/>
                                     </div>
                                     <div id="saveBtnDiv">
-                                        <input class="IASButton" TABINDEX="5" type="button" value="Save" onclick="savePrintOrder()" id="btnSave" name="btnSaveAction"/>
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Save" onclick="savePrintOrder()" id="btnSave" name="btnSaveAction"/>
                                     </div>
                                     <div id="cancelBtnDiv">
-                                        <input class="IASButton" TABINDEX="6" type="button" value="Cancel" onclick="cancelPrintOrder()" id="btnCancel" name="btnCancelAction"/>
+                                        <input class="IASButton" TABINDEX="5" type="button" value="Cancel" onclick="cancelPrintOrder()" id="btnCancel" name="btnCancelAction"/>
                                     </div>
                                 </div>
                             </fieldset>
