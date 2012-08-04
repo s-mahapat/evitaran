@@ -35,4 +35,7 @@ insert into states
 ('Tripura'), 
 ('Uttar Pradesh'), 
 ('Uttarakhand'), 
-('West Bengal')
+('West Bengal'),
+('Andaman & Nicobar'),
+('Daman & Diu'),
+('Lakshadweep')

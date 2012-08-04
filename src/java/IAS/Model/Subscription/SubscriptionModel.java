@@ -72,7 +72,7 @@ public class SubscriptionModel extends JDSModel {
         String Copies[] = request.getParameterValues("copies");
         String Total[] = request.getParameterValues("total");
         float subscriptionTotal = Float.parseFloat(request.getParameter("subscriptionTotal"));
-        String remarks = request.getParameter("remarks");
+        //String remarks = request.getParameter("remarks");
         int subscriptionID = 0;
 
 
@@ -104,7 +104,7 @@ public class SubscriptionModel extends JDSModel {
                 //st.setFloat(++paramIndex, balance);
                 st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
                 //st.setFloat(++paramIndex, subscriptionTotal);
-                st.setString(++paramIndex, remarks);
+                //st.setString(++paramIndex, remarks);
                 if (db.executeUpdatePreparedStatement(st) == 1) {
                     ResultSet rs = st.getGeneratedKeys();
                     rs.first();
