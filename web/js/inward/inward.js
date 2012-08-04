@@ -250,7 +250,7 @@ function isInwardSelected(){
 }
 
 function selectSubscriber(city, subscriberName, rowid){
-    selectedSubscriberId = searchSubscriber("", "", city, subscriberName);
+    selectedSubscriberId = searchSubscriber(subscriberName,"","",city);
     jQuery("#inwardTable").jqGrid('setRowData', rowid, {
         'SubscriberId': selectedSubscriberId.SubscriberNumber
     });

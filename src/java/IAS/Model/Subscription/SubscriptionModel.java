@@ -122,7 +122,12 @@ public class SubscriptionModel extends JDSModel {
                             util.convertStringArraytoFloatArray(Total),
                             util.convertStringArraytoIntArray(journalPriceGroupID));
 
-                    //if(res.length > 0)
+                    for(int i=0; i<res.length; i++){
+                        if(res[i] != 1){
+                            xml = util.convertStringToXML("Failed to save subscription details", "error");
+                            throw( new SQLException("Failed to update scubscription details"));
+                        }
+                    }
 
 
                     // Update the Performa Invoice

@@ -313,8 +313,8 @@ public final class util {
     
     public static int getPreviousMonth(int currentMonth){
         int previousMonth;
-        if(currentMonth == 12){
-            previousMonth = 1;
+        if(currentMonth == 1){
+            previousMonth = 12;
         }else{
             previousMonth = currentMonth - 1;
         }
