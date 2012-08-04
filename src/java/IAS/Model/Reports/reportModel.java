@@ -1,4 +1,3 @@
-
 package IAS.Model.Reports;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,17 +23,18 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import java.io.StringReader;
 import java.io.StringWriter;
+
 /**
  *
  * @author Deepali
  */
-public class reportModel extends JDSModel{
+public class reportModel extends JDSModel {
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.reports");
 
-    public reportModel(HttpServletRequest request) throws SQLException{
+    public reportModel(HttpServletRequest request) throws SQLException {
 
-       super(request);
+        super(request);
 
     }
 
@@ -45,14 +45,14 @@ public class reportModel extends JDSModel{
         ResultSet rs = null;
         proc = "{call cir_subscription_rates(?, ?)}";
         CallableStatement cs = conn.prepareCall(proc);
-        int paramIndex = 1;        
+        int paramIndex = 1;
         cs.setInt(paramIndex, year);
         cs.setString(++paramIndex, request.getParameter("subscriberType"));
         int rscs = cs.executeUpdate();
-        if (rscs == 1){
-        String sql = Queries.getQuery("rep_sub_rate");        
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        rs = this.db.executeQueryPreparedStatement(stGet);
+        if (rscs == 1) {
+            String sql = Queries.getQuery("rep_sub_rate");
+            PreparedStatement stGet = conn.prepareStatement(sql);
+            rs = this.db.executeQueryPreparedStatement(stGet);
         }
         return rs;
     }
@@ -82,13 +82,12 @@ public class reportModel extends JDSModel{
         String sql;
         int param = 0;
         if ("0".equals(selall)) {
-                selall = null;
-            }
-        if (selall != null){
+            selall = null;
+        }
+        if (selall != null) {
 
             sql = Queries.getQuery("search_subtype_all");
-        }
-        else {
+        } else {
             sql = Queries.getQuery("search_subtype_prm");
 
             if (subType != null && subType.length() > 0) {
@@ -97,21 +96,19 @@ public class reportModel extends JDSModel{
             }
 
             if (nationality != null && nationality.length() > 0) {
-                if (param == 0){
+                if (param == 0) {
                     sql += " nationality =" + "'" + nationality + "'";
                     param = 1;
-                }
-                else{
+                } else {
                     sql += " and nationality =" + "'" + nationality + "'";
                 }
             }
 
             if (institutional != null && institutional.length() > 0) {
-                 if (param == 0){
+                if (param == 0) {
                     sql += " institutional =" + "'" + institutional + "'";
                     param = 1;
-                }
-                else{
+                } else {
                     sql += " and institutional =" + "'" + institutional + "'";
                 }
             }
@@ -126,7 +123,7 @@ public class reportModel extends JDSModel{
         //return xml;
     }
 
-     public String searchInwards() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+    public String searchInwards() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String xml = null;
         String sql = Queries.getQuery("search_inward");
         String city = request.getParameter("city");
@@ -169,27 +166,27 @@ public class reportModel extends JDSModel{
             sql += " and t3.purpose =" + "'" + inwardPurpose + "'";
         }
 
-        if (city != null && city.compareToIgnoreCase("NULL") != 0  && city != null && city.length() > 0) {
+        if (city != null && city.compareToIgnoreCase("NULL") != 0 && city != null && city.length() > 0) {
             sql += " and t2.id = t1.city and t2.city = " + "\"" + city + "\"";
         }
 
-        if (country != null && country.compareToIgnoreCase("NULL") != 0  && country.length() > 0) {
+        if (country != null && country.compareToIgnoreCase("NULL") != 0 && country.length() > 0) {
             sql += " and t7.id = t1.country and t7.country = " + "\"" + country + "\"";
         }
 
-        if (state != null && state.compareToIgnoreCase("NULL") != 0  && state.length() > 0) {
+        if (state != null && state.compareToIgnoreCase("NULL") != 0 && state.length() > 0) {
             sql += " and t8.id = t1.state and t8.state = " + "\"" + state + "\"";
         }
 
-        if (paymentMode != null && paymentMode.compareToIgnoreCase("NULL") != 0  && paymentMode.length() > 0) {
+        if (paymentMode != null && paymentMode.compareToIgnoreCase("NULL") != 0 && paymentMode.length() > 0) {
             sql += " and t6.id = t1.paymentMode and t6.paymentMode = " + "\"" + paymentMode + "\"";
         }
 
-        if (currency != null && currency.compareToIgnoreCase("NULL") != 0  && currency.length() > 0) {
+        if (currency != null && currency.compareToIgnoreCase("NULL") != 0 && currency.length() > 0) {
             sql += " and t5.id = t1.currency and t5.currency = " + "\"" + currency + "\"";
         }
 
-        if (language != null && language.compareToIgnoreCase("NULL") != 0  && language.length() > 0) {
+        if (language != null && language.compareToIgnoreCase("NULL") != 0 && language.length() > 0) {
             sql += " and language = " + "\"" + language + "\"";
         }
 
@@ -203,12 +200,12 @@ public class reportModel extends JDSModel{
 
         sql = "select count(*) from (" + sql + ") as tbl";
         rs = this.db.executeQuery(sql);
-        while(rs.next()){
+        while (rs.next()) {
             totalQueryCount = rs.getInt(1);
         }
 
-        if(totalQueryCount > 0){
-            totalPages = (double)totalQueryCount/(double)pageSize;
+        if (totalQueryCount > 0) {
+            totalPages = (double) totalQueryCount / (double) pageSize;
             totalPages = java.lang.Math.ceil(totalPages);
         }
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -243,7 +240,7 @@ public class reportModel extends JDSModel{
         return xml;
     }
 
-     public ResultSet searchInwardsAll() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+    public ResultSet searchInwardsAll() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
 
         String sql = Queries.getQuery("search_inward");
         String city = request.getParameter("city");
@@ -281,27 +278,27 @@ public class reportModel extends JDSModel{
             sql += " and t3.purpose =" + "'" + inwardPurpose + "'";
         }
 
-        if (city != null && city.compareToIgnoreCase("NULL") != 0  && city != null && city.length() > 0) {
+        if (city != null && city.compareToIgnoreCase("NULL") != 0 && city != null && city.length() > 0) {
             sql += " and t2.id = t1.city and t2.city = " + "\"" + city + "\"";
         }
 
-        if (country != null && country.compareToIgnoreCase("NULL") != 0  && country.length() > 0) {
+        if (country != null && country.compareToIgnoreCase("NULL") != 0 && country.length() > 0) {
             sql += " and t7.id = t1.country and t7.country = " + "\"" + country + "\"";
         }
 
-        if (state != null && state.compareToIgnoreCase("NULL") != 0  && state.length() > 0) {
+        if (state != null && state.compareToIgnoreCase("NULL") != 0 && state.length() > 0) {
             sql += " and t8.id = t1.state and t8.state = " + "\"" + state + "\"";
         }
 
-        if (paymentMode != null && paymentMode.compareToIgnoreCase("NULL") != 0  && paymentMode.length() > 0) {
+        if (paymentMode != null && paymentMode.compareToIgnoreCase("NULL") != 0 && paymentMode.length() > 0) {
             sql += " and t6.id = t1.paymentMode and t6.payment_mode = " + "\"" + paymentMode + "\"";
         }
 
-        if (currency != null && currency.compareToIgnoreCase("NULL") != 0  && currency.length() > 0) {
+        if (currency != null && currency.compareToIgnoreCase("NULL") != 0 && currency.length() > 0) {
             sql += " and t5.id = t1.currency and t5.currency = " + "\"" + currency + "\"";
         }
 
-        if (language != null && language.compareToIgnoreCase("NULL") != 0  && language.length() > 0) {
+        if (language != null && language.compareToIgnoreCase("NULL") != 0 && language.length() > 0) {
             sql += " and language = (select id from languages where language=" + "\"" + language + "\")";
         }
 
@@ -319,7 +316,7 @@ public class reportModel extends JDSModel{
         return rs;
     }
 
-     public ResultSet searchAgents() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+    public ResultSet searchAgents() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String xml = null;
         String sql;
         String city = request.getParameter("city");
@@ -329,13 +326,12 @@ public class reportModel extends JDSModel{
         int param = 0;
 
         if ("0".equals(selall)) {
-                selall = null;
-            }
-        if (selall != null){
+            selall = null;
+        }
+        if (selall != null) {
 
             sql = Queries.getQuery("list_agent_all");
-        }
-        else {
+        } else {
             sql = Queries.getQuery("list_agent_prm");
             if ("0".equals(city)) {
                 city = null;
@@ -347,24 +343,24 @@ public class reportModel extends JDSModel{
                 state = null;
             }
 
-            if (city != null && city.compareToIgnoreCase("NULL") != 0  && city != null && city.length() > 0) {
+            if (city != null && city.compareToIgnoreCase("NULL") != 0 && city != null && city.length() > 0) {
                 sql += " t2.id = t1.cityId and t2.city = " + "'" + city + "'";
                 param = 1;
             }
 
-            if (country != null && country.compareToIgnoreCase("NULL") != 0  && country.length() > 0) {
+            if (country != null && country.compareToIgnoreCase("NULL") != 0 && country.length() > 0) {
                 if (param == 1) {
                     sql += " and t5.id = t1.countryId and t5.country = " + "\"" + country + "\"";
-                }else {
+                } else {
                     sql += " t5.id = t1.countryId and t5.country = " + "\"" + country + "\"";
                     param = 1;
                 }
             }
 
-            if (state != null && state.compareToIgnoreCase("NULL") != 0  && state.length() > 0) {
+            if (state != null && state.compareToIgnoreCase("NULL") != 0 && state.length() > 0) {
                 if (param == 1) {
                     sql += " and t4.id = t1.stateId and t4.state = " + "\"" + state + "\"";
-                }else {
+                } else {
                     sql += " t4.id = t1.stateId and t4.state = " + "\"" + state + "\"";
                     param = 1;
                 }
@@ -376,7 +372,7 @@ public class reportModel extends JDSModel{
         return rs;
     }
 
- public ResultSet searchSubscriber() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public ResultSet searchSubscriber() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
 
         String subType = request.getParameter("subtype");
@@ -392,43 +388,26 @@ public class reportModel extends JDSModel{
 
         String sql = null;
 
-         /* Deepali insert query here
-        int param = 0;
-
-        if (selall != null){
-
-            sql = Queries.getQuery("search_subtype_all");
-        }
-        else {
-            sql = Queries.getQuery("search_subtype_prm");
-
-            if (subType != null && subType.length() > 0) {
-                sql += " subType=" + "'" + subType + "'";
-                param = 1;
-            }
-
-            if (nationality != null && nationality.length() > 0) {
-                if (param == 0){
-                    sql += " nationality =" + "'" + nationality + "'";
-                    param = 1;
-                }
-                else{
-                    sql += " and nationality =" + "'" + nationality + "'";
-                }
-            }
-
-            if (institutional != null && institutional.length() > 0) {
-                 if (param == 0){
-                    sql += " institutional =" + "'" + institutional + "'";
-                    param = 1;
-                }
-                else{
-                    sql += " and institutional =" + "'" + institutional + "'";
-                }
-            }
-            sql += " order by id";
-        }
-
+        /*
+         * Deepali insert query here int param = 0;
+         *
+         * if (selall != null){
+         *
+         * sql = Queries.getQuery("search_subtype_all"); } else { sql =
+         * Queries.getQuery("search_subtype_prm");
+         *
+         * if (subType != null && subType.length() > 0) { sql += " subType=" +
+         * "'" + subType + "'"; param = 1; }
+         *
+         * if (nationality != null && nationality.length() > 0) { if (param ==
+         * 0){ sql += " nationality =" + "'" + nationality + "'"; param = 1; }
+         * else{ sql += " and nationality =" + "'" + nationality + "'"; } }
+         *
+         * if (institutional != null && institutional.length() > 0) { if (param
+         * == 0){ sql += " institutional =" + "'" + institutional + "'"; param =
+         * 1; } else{ sql += " and institutional =" + "'" + institutional + "'";
+         * } } sql += " order by id"; }
+         *
          *
          */
         PreparedStatement stGet = conn.prepareStatement(sql);
@@ -437,7 +416,7 @@ public class reportModel extends JDSModel{
         return rs;
     }
 
-      public ResultSet statement() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+    public ResultSet statement() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
 
         String journalName = request.getParameter("journalName");
         String year = request.getParameter("year");
@@ -465,22 +444,20 @@ public class reportModel extends JDSModel{
         }
 
         if (subscriberType != null && subscriberType.length() > 0) {
-            if (param == 0){
+            if (param == 0) {
                 sql += " subscriber_type.subtypedesc=" + "'" + subscriberType + "'";
                 param = 1;
-            }
-            else{
+            } else {
                 sql += " and subscriber_type.subtypedesc=" + "'" + subscriberType + "'";
             }
         }
 
         if (year != null && year.length() > 0) {
-             if (param == 0){
+            if (param == 0) {
                 sql += " subscriptiondetails.startYear <=" + "'" + year + "'";
                 sql += " and subscriptiondetails.endYear >=" + "'" + year + "'";
                 param = 1;
-            }
-            else{
+            } else {
                 sql += " and subscriptiondetails.startYear <=" + "'" + year + "'";
                 sql += " and subscriptiondetails.endYear >=" + "'" + year + "'";
             }
@@ -492,26 +469,25 @@ public class reportModel extends JDSModel{
         PreparedStatement stGet = conn.prepareStatement(sql);
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
-      }
+    }
 
-      public ResultSet circulationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+    public ResultSet circulationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         int year = Integer.parseInt(request.getParameter("year"));
         String proc = null;
         ResultSet rs = null;
         proc = "{call circulation_figures(?)}";
         CallableStatement cs = conn.prepareCall(proc);
-        int paramIndex = 1;        
+        int paramIndex = 1;
         cs.setInt(paramIndex, year);
-        int rscs = cs.executeUpdate();
-        if (rscs == 1){
-        String sql = Queries.getQuery("list_circulation_figures");        
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        rs = this.db.executeQueryPreparedStatement(stGet);
+        if (cs.execute() == true) {
+            String sql = Queries.getQuery("list_circulation_figures");
+            PreparedStatement stGet = conn.prepareStatement(sql);
+            rs = this.db.executeQueryPreparedStatement(stGet);
         }
         return rs;
-      }
+    }
 
- public ResultSet searchCirculationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public ResultSet searchCirculationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String sql;
         sql = Queries.getQuery("list_circulation_figures");
@@ -520,4 +496,3 @@ public class reportModel extends JDSModel{
         return rs;
     }
 }
-

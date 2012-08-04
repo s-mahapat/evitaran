@@ -25,7 +25,7 @@
                         datatype: 'xml',
                         mtype: 'GET',
                         width: '100%',
-                        height: 240,
+                        height: 250,
                         autowidth: true,
                         forceFit: true,
                         sortable: true,
@@ -35,17 +35,17 @@
                         loadtext: "Loading...",
                         colNames:['Journal Code','Journal Name', 'Inst. India','Inst. Abroad','Indi. India','Indi. Abroad','Comp','Auth','Total Copies','Print Order','Balance Copies'],
                         colModel :[
-                          {name:'journalCode', index:'journalCode', width:50, align:'center', xmlmap:'journalCode'},
-                          {name:'journalName', index:'journalName', width:50, align:'center', xmlmap:'journalName'},
-                          {name:'instIndia', index:'instIndia', width:50, align:'center', xmlmap:'instIndia'},
-                          {name:'instAbroad', index:'instAbroad', width:50, align:'center', xmlmap:'instAbroad'},
-                          {name:'indiIndia', index:'indiIndia', width:50, align:'center', xmlmap:'indiIndia'},
-                          {name:'indiAbroad', index:'indiAbroad', width:50, align:'center', xmlmap:'indiAbroad'},
-                          {name:'comp', index:'comp', width:50, align:'center', xmlmap:'comp'},
-                          {name:'auth', index:'auth', width:50, align:'center', xmlmap:'auth'},
-                          {name:'totalCopies', index:'totalCopies', width:50, align:'center', xmlmap:'totalCopies'},
-                          {name:'printOrder', index:'printOrder', width:50, align:'center', xmlmap:'printOrder'},
-                          {name:'balanceCopies', index:'balanceCopies', width:50, align:'center', xmlmap:'balanceCopies'}
+                          {name:'journalCode', index:'journalCode', width:30, align:'center', xmlmap:'journalCode'},
+                          {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
+                          {name:'instIndia', index:'instIndia', width:25, align:'center', xmlmap:'instIndia'},
+                          {name:'instAbroad', index:'instAbroad', width:25, align:'center', xmlmap:'instAbroad'},
+                          {name:'indiIndia', index:'indiIndia', width:30, align:'center', xmlmap:'indiIndia'},
+                          {name:'indiAbroad', index:'indiAbroad', width:30, align:'center', xmlmap:'indiAbroad'},
+                          {name:'comp', index:'comp', width:20, align:'center', xmlmap:'comp'},
+                          {name:'auth', index:'auth', width:20, align:'center', xmlmap:'auth'},
+                          {name:'totalCopies', index:'totalCopies', width:30, align:'center', xmlmap:'totalCopies'},
+                          {name:'printOrder', index:'printOrder', width:30, align:'center', xmlmap:'printOrder'},
+                          {name:'balanceCopies', index:'balanceCopies', width:35, align:'center', xmlmap:'balanceCopies'}
 
                         ],
                         xmlReader : {
@@ -58,8 +58,8 @@
                           id: "journal_id"
                        },
                         pager: '#pager',
-                        rowNum:10,
-                        rowList:[10,20,30],
+                        rowNum:15,
+                        rowList:[15,30,50],
                         viewrecords: true,
                         gridview: true,
                         caption: '&nbsp;',
