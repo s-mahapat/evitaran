@@ -142,6 +142,12 @@ public class subscriber extends JDSController {
                 String xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+            }else if(action.equalsIgnoreCase("mi")){
+                int subscriberID = Integer.parseInt(request.getParameter("sid"));
+                ResultSet rs = _subscriberModel.getMissingIssues(subscriberID);
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             }
             
 

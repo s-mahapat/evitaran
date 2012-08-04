@@ -24,14 +24,14 @@
             sortname:'subscriptionDate',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames: ['Subscriber ID', 'Journal Group','Journal Name', 'Month', 'Year', 'Subscribed Copies','mssing copies', 'Delete', ],
+            colNames: ['Subscriber ID', 'Journal Group','Journal Name', 'Month', 'Year', 'Subscribed Copies','Missing Copies', 'Delete', ],
             colModel: [
                 {
                     name:"subscriptionId",
                     index:"subscriptionId",
                     align:"center",
                     key: true,
-                    width:40
+                    width:45
 
                 },
                 {
@@ -39,7 +39,7 @@
                     index:"journalGroupName",
                     align:"center",
                     key: true,
-                    width:140
+                    width:120
 
                 },
                 {
@@ -47,37 +47,37 @@
                     index:"journalName",
                     align:"center",
                     key: true,
-                    width:140
+                    width:120
 
                 },
                 {
                     name:"month",
                     index:"month",
-                    width:40,
+                    width:20,
                     align:"center"
                 },
                 {
                     name:"year",
                     index:"year",
-                    width:60,
+                    width:20,
                     align:"center"
                 },
                 {
                     name:"scopies",
                     index:"scopies",
-                    width:60,
+                    width:50,
                     align:"center"
                 },
                 {
                     name:"mcopies",
                     index:"mcopies",
-                    width:60,
+                    width:45,
                     align:"center"
                 },
                 {
                     name:"delete",
                     index:"delete",
-                    width:40,
+                    width:20,
                     align:"center"
                 }
 
@@ -98,7 +98,7 @@
                 $(newOption).html("Select");
                 $("#subscriptionId").append(newOption);
               
-                requestURL = "/JDS/CMasterData?md=get_subscriptionid&mdvalue=" + $("#subscriberNumber").val();
+                requestURL = "CMasterData?md=get_subscriptionid&mdvalue=" + $("#subscriberNumber").val();
 
                 jdsAppend(requestURL,"id","subscriptionId");                
 
@@ -113,7 +113,7 @@
                 $(newOption).html("Select");
                 $("#journalGroupName").append(newOption);
               
-                requestURL = "/JDS/CMasterData?md=get_journalGroup&mdvalue=" + $("#subscriptionId").val();
+                requestURL = "CMasterData?md=get_journalGroup&mdvalue=" + $("#subscriptionId").val();
 
                 jdsAppend(requestURL,"journalGroupName","journalGroupName");                
 
@@ -128,7 +128,7 @@
                 $(newOption).html("Select");
                 $("#journalName").append(newOption);
               
-                requestURL = "/JDS/CMasterData?md=get_journalName&mdvalue=" + $("#journalGroupName").val();
+                requestURL = "CMasterData?md=get_journalName&mdvalue=" + $("#journalGroupName").val();
 
                 jdsAppend(requestURL,"journalName","journalName");
 
@@ -143,7 +143,7 @@
                 $(newOption).html("Select");
                 $("#month").append(newOption);
               
-                requestURL = "/JDS/CMasterData?md=get_month_mi&mdvalue=" + $("#journalName").val() + "&optionalParam=" + $("#year").val();
+                requestURL = "CMasterData?md=get_month_mi&mdvalue=" + $("#journalName").val() + "&optionalParam=" + $("#year").val();
 
                 jdsAppend(requestURL,"month","month");
 

@@ -16,12 +16,14 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/invoice/subscriberInvoice.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/reminders.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/missingissues.js"%>"></script>
         <script>
             $(document).ready(function(){
                 inwardGridCreated = false;
                 subscriptionGridCreated = false;
                 invoiceGridCreated = false;
                 reminderGridCreated = false;
+                missingIssueGridCreated = false;
                 var tab_cookie_id = parseInt($.cookie("the_tab_cookie")) || 0;
                 $("#subscriberDtlsTabs").tabs({
                     selected:-1,
@@ -47,6 +49,10 @@
                             drawReminderTable();
                             reminderGridCreated = true;
                         }
+                        if(selected_index == 5 && missingIssueGridCreated == false){
+                            drawMissingIssuesTable();
+                            missingIssueGridCreated = true;
+                        }
 
                     }
                 });
@@ -57,8 +63,6 @@
                 subtypeCodeAppend();
 
             });
-
-
         </script>
     </head>
     <body>
@@ -126,6 +130,7 @@
                                     <li><a href="#subscriptions">Subscriptions</a></li>
                                     <li><a href="#invoices">Invoices</a></li>
                                     <li><a href="#reminders">Reminders</a></li>
+                                    <li><a href="#missing_issues">Missing Issues</a></li>
                                 </ul>
                                 <div id="subDtls" style="font-size: 12px;">
                                     <%@include file="subscriberdtls.jsp"%>
@@ -146,17 +151,16 @@
                                     <table id="invoiceTable" class="datatable"></table>
                                     <div id="pager_invoice"></div>
                                 </div>
-                                
+
                                 <div id="reminders" style="font-size: 12px;width: 98%;padding: 3px;">
                                     <table id="remindersTable" class="datatable"></table>
                                     <div id="pager_reminders"></div>
                                 </div>
 
-                                <div id="reminders">
-
+                                <div id="missing_issues" style="font-size: 12px;width: 98%;padding: 3px;">
+                                    <table id="missing_issuesTable" class="datatable"></table>
+                                    <div id="pager_missing_issues"></div>
                                 </div>
-
-
                             </div>
 
                         </fieldset>

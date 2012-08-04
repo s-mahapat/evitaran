@@ -385,4 +385,12 @@ public class subscriberModel extends JDSModel {
         ResultSet rs = db.executeQueryPreparedStatement(st);
         return rs;
     }
+    
+    public ResultSet getMissingIssues(int subscriberID) throws SQLException{
+        String sql = Queries.getQuery("get_missing_issues_for_subscriber");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setInt(1, subscriberID);
+        ResultSet rs = db.executeQueryPreparedStatement(st);
+        return rs;
+    }
 }
