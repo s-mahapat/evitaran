@@ -225,7 +225,7 @@
                                         <label>Pin Code:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="3" type="text" name="pincode" id="pincode" value=""/>
+                                        <input class="IASTextBox" maxlength="6" TABINDEX="3" type="text" name="pincode" id="pincode" value=""/>
                                     </span>
                                 </div>
 
