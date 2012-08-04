@@ -25,7 +25,7 @@
                         datatype: 'xml',
                         mtype: 'GET',
                         width: '100%',
-                        height: 240,
+                        height: 300,
                         autowidth: true,
                         forceFit: true,
                         sortable: true,
@@ -33,15 +33,15 @@
                         rownumbers: true,
                         emptyrecords: "No records to view",
                         loadtext: "Loading...",
-                        colNames:['Journal Group Name','Subscriber Type','Year','1 Year','2 Year','3 Year','5 Year'],
+                        colNames:['Journal Group Name','Year','1 Year','2 Year','3 Year','5 Year'],
                         colModel :[
-                          {name:'journalGroupName', index:'journalGroupName', width:50, align:'center', xmlmap:'journalGroupName'},
-                          {name:'subTypeDesc', index:'subTypeDesc', width:50, align:'center', xmlmap:'subTypeDesc'},
-                          {name:'year', index:'year', width:50, align:'center', xmlmap:'year'},
-                          {name: 'year1', index:'year1', width:50, align:'center', xmlmap:'year1'},
-                          {name:'year2', index:'year2', width:50, align:'center', xmlmap:'year2'},
-                          {name:'year3', index:'year3', width:50, align:'center', xmlmap:'year3'},
-                          {name:'year4', index:'year4', width:50, align:'center', xmlmap:'year4'},
+                          {name:'journalGroupName', index:'journalGroupName', width:80, align:'center', xmlmap:'journalGroupName'},
+                          //{name:'subTypeDesc', index:'subTypeDesc', width:50, align:'center', xmlmap:'subTypeDesc'},
+                          {name:'year', index:'year', width:30, align:'center', xmlmap:'year'},
+                          {name: 'year1', index:'year1', width:30, align:'center', xmlmap:'year1'},
+                          {name:'year2', index:'year2', width:30, align:'center', xmlmap:'year2'},
+                          {name:'year3', index:'year3', width:30, align:'center', xmlmap:'year3'},
+                          {name:'year4', index:'year4', width:30, align:'center', xmlmap:'year4'},
                         ],
                         xmlReader : {
                           root: "results",
@@ -53,8 +53,8 @@
                           id: "id"
                        },
                         pager: '#pager',
-                        rowNum:10,
-                        rowList:[10,20,30],
+                        rowNum:15,
+                        rowList:[15,30,50],
                         viewrecords: true,
                         gridview: true,
                         caption: '&nbsp;',
@@ -147,7 +147,7 @@
                                         <label>Subscriber Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="3" name="subscriberType" id="subscriberType">
+                                        <select class="IASComboBoxWide" TABINDEX="3" name="subscriberType" id="subscriberType">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>

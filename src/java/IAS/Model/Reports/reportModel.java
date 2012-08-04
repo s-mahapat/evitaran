@@ -48,8 +48,7 @@ public class reportModel extends JDSModel {
         int paramIndex = 1;
         cs.setInt(paramIndex, year);
         cs.setString(++paramIndex, request.getParameter("subscriberType"));
-        int rscs = cs.executeUpdate();
-        if (rscs == 1) {
+        if (cs.execute()) {
             String sql = Queries.getQuery("rep_sub_rate");
             PreparedStatement stGet = conn.prepareStatement(sql);
             rs = this.db.executeQueryPreparedStatement(stGet);
