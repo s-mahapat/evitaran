@@ -36,3 +36,6 @@ ALTER TABLE invoice AUTO_INCREMENT = 1;
 
 delete from payment;
 ALTER TABLE payment AUTO_INCREMENT = 1;
+
+delete from print_order;
+ALTER TABLE print_order AUTO_INCREMENT = 1;
