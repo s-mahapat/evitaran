@@ -175,7 +175,16 @@ function getSubscriberType(subscriberNumber){
 function getPrice(startYear, years, journalGroupID, subscriberTypeID){
     var _price = -1;
     var _id = -1;
-    var _priceDetails = new Array();
+    var startMonth = $("#startMonth").val();
+    var _priceDetails = new Array();    
+    /* if the start month is not Jan, then consider it as one year less
+     * for e.g. Jul 2012 to Jun 2013, would normally be considered as 2 yrs, but its
+     * actually one year. so deduct 1 from the num of years
+     */
+    if(startMonth > 1){
+        years = years - 1;
+    }
+    
     $.ajax({
         type: 'GET',
         dataType: 'xml',

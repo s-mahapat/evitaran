@@ -154,7 +154,7 @@ public class SubscriptionModel extends JDSModel {
 
         String sql = Queries.getQuery("insert_subscription_detail");
         PreparedStatement st = conn.prepareStatement(sql);
-        int paramIndex = 0;
+        int paramIndex;
         for (int i = 0; i < journalGroupID.length; i++) {
             paramIndex = 0;
             st.setInt(++paramIndex, subscriptionID);
@@ -163,21 +163,12 @@ public class SubscriptionModel extends JDSModel {
             st.setInt(++paramIndex, copies[i]);
             st.setInt(++paramIndex, startYear[i]);
             st.setInt(++paramIndex, startMonth[i]);
+            st.setInt(++paramIndex, util.getPreviousMonth(startMonth[i]));
             st.setInt(++paramIndex, endYear[i]);
             //st.setFloat(++paramIndex, total[i]);
             st.addBatch();
         }
         int res[] = st.executeBatch();
-//        ResultSet rs = st.getGeneratedKeys();
-//        while (rs.next()) {
-//            int subscription_detail_id = rs.getInt(1);
-//            //create object of Back issue list model
-//            BackIssueListModel _backIssueListModel = new BackIssueListModel(this.conn);
-//            for (int i = 0; i < res.length; i++) {
-//                _backIssueListModel.addToBackIssueList(subscription_detail_id, journalGroupID[i], copies[i]);
-//            }
-//        }
-
         return res;
 
     }

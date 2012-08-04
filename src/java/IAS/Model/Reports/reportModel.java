@@ -473,7 +473,7 @@ public class reportModel extends JDSModel {
 
     public ResultSet circulationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         int year = Integer.parseInt(request.getParameter("year"));
-        String proc = null;
+        String proc;
         ResultSet rs = null;
         proc = "{call circulation_figures(?)}";
         CallableStatement cs = conn.prepareCall(proc);
@@ -488,7 +488,6 @@ public class reportModel extends JDSModel {
     }
 
     public ResultSet searchCirculationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        String xml = null;
         String sql;
         sql = Queries.getQuery("list_circulation_figures");
         PreparedStatement stGet = conn.prepareStatement(sql);
