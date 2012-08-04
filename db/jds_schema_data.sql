@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.25, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.24, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.25
+-- Server version	5.5.24
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -102,7 +102,7 @@ CREATE TABLE `circulation_figure` (
   `printOrder` int(11) DEFAULT NULL,
   `balanceCopies` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,7 +111,7 @@ CREATE TABLE `circulation_figure` (
 
 LOCK TABLES `circulation_figure` WRITE;
 /*!40000 ALTER TABLE `circulation_figure` DISABLE KEYS */;
-INSERT INTO `circulation_figure` VALUES (9,'CURR','Current Science',1227,0,499,0,0,0,1726,2400,674);
+INSERT INTO `circulation_figure` VALUES (146,'P','Pramana - Journal of Physics',0,0,0,0,0,0,0,7803,7803),(147,'JAA','Journal of Astrophysics and Astronomy',0,0,0,0,0,0,0,78002,78002),(148,'MS','Proceedings (Mathematical Sciences)',0,0,0,0,0,0,0,0,0),(149,'EPS','Journal of Earth System Science (formerly Proc. Earth Planet Sci.)',0,0,0,0,0,0,0,0,0),(150,'CS','Journal of Chemical Sciences (formerly Proc. Chemical Sci.)',0,0,0,0,0,0,0,0,0),(151,'BMS','Bulletin of Materials Science',0,0,0,0,0,0,0,0,0),(152,'S','Sadhana (Engineering Sciences)',0,0,0,0,0,0,0,0,0),(153,'JB','Journal of Biosciences',0,0,0,0,0,0,0,0,0),(154,'JG','Journal of Genetics',0,0,0,0,0,0,0,0,0),(155,'RES','Resonanace - Journal of Science Education',0,0,0,0,0,0,0,0,0),(156,'CURR','Current Science',0,0,0,0,0,0,0,0,0);
 /*!40000 ALTER TABLE `circulation_figure` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -555,7 +555,7 @@ CREATE TABLE `mailing_list_detail` (
   `state` varchar(45) DEFAULT NULL,
   `country` varchar(45) DEFAULT NULL,
   `pincode` int(11) DEFAULT NULL,
-  `copies` int(11) NOT NULL,
+  `copies` int(11) NOT NULL DEFAULT '0',
   `startYear` int(11) DEFAULT NULL,
   `startMonth` int(11) DEFAULT NULL,
   `endYear` int(11) DEFAULT NULL,
@@ -1798,12 +1798,12 @@ BEGIN
       
       DECLARE balance_copies             int default 0;    
       
-      DECLARE done int default 0;    
+      DECLARE done int default 0;
+      DECLARE print_order_found int default 0;
       
-      
-	    DECLARE
-
-        cur1 CURSOR FOR SELECT id, journalCode, journalName from journals;
+	    DECLARE cur1 CURSOR FOR 
+        SELECT t1.id,t1.journalcode,t1.journalname
+        from journals t1;
  
       DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
       
@@ -1813,87 +1813,68 @@ BEGIN
    
      read_loop: LOOP
 
-          FETCH cur1 INTO journal_id, journal_code, journal_name;           
-          
+          FETCH cur1 INTO journal_id, journal_code, journal_name;
+          set print_order_value = 0;
           IF done = 1 THEN
-
             LEAVE read_loop;
-
           END IF;       
           
-          select printOrder into print_order_value from print_order where `year` = cir_year and journalId = journal_id;
+          SELECT COUNT(*) into print_order_found FROM print_order WHERE `year` = cir_year and journalId = journal_id;
+          if print_order_found > 0 then
+              select annualprintOrder into print_order_value from print_order where `year` = cir_year and journalId = journal_id;
+          end if;
           
-          
-          select sum(mailing_list_detail.copies) into inst_i
-          from mailing_list_detail left join subscriber_type on mailing_list_detail.subtypecode = subscriber_type.subtypecode
-          where subscriber_type.nationality = 'I' AND subscriber_type.institutional = 'I'
+          select COALESCE(sum(mailing_list_detail.copies),0) into inst_i
+          from mailing_list_detail,subscriber_type
+          where mailing_list_detail.subtypecode = subscriber_type.subtypecode
+          and subscriber_type.nationality = 'I' AND subscriber_type.institutional = 'I'
           and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
-          and mailing_list_detail.journalId = journal_id
-          group by
-          mailing_list_detail.journalId, mailing_list_detail.`year`, subscriber_type.institutional, subscriber_type.nationality;
+          and mailing_list_detail.journalId = journal_id;
           
-          
-          select sum(mailing_list_detail.copies) into inst_f
-          from mailing_list_detail left join subscriber_type on mailing_list_detail.subtypecode = subscriber_type.subtypecode
-          where subscriber_type.nationality = 'F' AND subscriber_type.institutional = 'I'
+          select COALESCE(sum(mailing_list_detail.copies),0) into inst_f
+          from mailing_list_detail,subscriber_type
+          where mailing_list_detail.subtypecode = subscriber_type.subtypecode
+          and subscriber_type.nationality = 'F' AND subscriber_type.institutional = 'I'
           and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
-          and mailing_list_detail.journalId = journal_id
-          group by
-          mailing_list_detail.journalId, mailing_list_detail.`year`, subscriber_type.institutional, subscriber_type.nationality;
+          and mailing_list_detail.journalId = journal_id;
           
-          select sum(mailing_list_detail.copies) into ind_i
-          from mailing_list_detail left join subscriber_type on mailing_list_detail.subtypecode = subscriber_type.subtypecode
-          where subscriber_type.nationality = 'I' AND subscriber_type.institutional = 'P'
+          select COALESCE(sum(mailing_list_detail.copies),0) into ind_i
+          from mailing_list_detail,subscriber_type
+          where mailing_list_detail.subtypecode = subscriber_type.subtypecode
+          and subscriber_type.nationality = 'I' AND subscriber_type.institutional = 'P'
           and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
-          and mailing_list_detail.journalId = journal_id
-          group by
-          mailing_list_detail.journalId, mailing_list_detail.`year`, subscriber_type.institutional, subscriber_type.nationality;
+          and mailing_list_detail.journalId = journal_id;
           
-          
-          select sum(mailing_list_detail.copies) into ind_f
-          from mailing_list_detail left join subscriber_type on mailing_list_detail.subtypecode = subscriber_type.subtypecode
-          where subscriber_type.nationality = 'F' AND subscriber_type.institutional = 'P'
+          select COALESCE(sum(mailing_list_detail.copies),0) into ind_f
+          from mailing_list_detail,subscriber_type
+          where mailing_list_detail.subtypecode = subscriber_type.subtypecode
+          and subscriber_type.nationality = 'F' AND subscriber_type.institutional = 'P'
           and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
-          and mailing_list_detail.journalId = journal_id
-          group by
-          mailing_list_detail.journalId, mailing_list_detail.`year`, subscriber_type.institutional, subscriber_type.nationality;
+          and mailing_list_detail.journalId = journal_id;
           
-          select sum(mailing_list_detail.copies) into auth
-          from mailing_list_detail left join subscriber_type on mailing_list_detail.subtypecode = subscriber_type.subtypecode
-          where subscriber_type.subtypecode = 'AUTH'
+          select COALESCE(sum(mailing_list_detail.copies),0) into auth
+          from mailing_list_detail,subscriber_type
+          where mailing_list_detail.subtypecode = subscriber_type.subtypecode
+          and subscriber_type.subtypecode = 'AUTH'
           and mailing_list_detail.`year` = cir_year
-          and mailing_list_detail.journalId = journal_id
-          group by
-          mailing_list_detail.journalId, mailing_list_detail.`year`;
+          and mailing_list_detail.journalId = journal_id;
           
-          select sum(mailing_list_detail.copies) into comp
-          from mailing_list_detail left join subscriber_type on mailing_list_detail.subtypecode = subscriber_type.subtypecode
-          where subscriber_type.subtype = 'FREE'
+          select COALESCE(sum(mailing_list_detail.copies),0) into comp
+          from mailing_list_detail, subscriber_type
+          where mailing_list_detail.subtypecode = subscriber_type.subtypecode
+          and subscriber_type.subtype = 'FREE'
           and mailing_list_detail.`year` = cir_year
-          and mailing_list_detail.journalId = journal_id
-          group by
-          mailing_list_detail.journalId, mailing_list_detail.`year`;        
+          and mailing_list_detail.journalId = journal_id;
           
           SET total_copies = inst_i + inst_f + ind_i + ind_f + auth + comp;
           
-          set balance_copies = print_order_value - total_copies;
-          
-            insert into circulation_figure ( journalCode ,journalName, instIndia, instAbroad, indiIndia, 
-            indiAbroad, comp, auth, totalCopies, printOrder, balanceCopies) 
-            VALUES (
-              journal_code
-              ,journal_name
-              ,inst_i
-              ,inst_f
-              ,ind_i
-              ,ind_f
-              ,comp
-              ,auth
-              ,total_copies
-              ,print_order_value
-              ,balance_copies
-            );
-          
+          insert into circulation_figure ( journalCode ,journalName, instIndia, instAbroad, 
+                                           indiIndia, indiAbroad, comp, auth, 
+                                           totalCopies, printOrder, balanceCopies) 
+          VALUES (journal_code, journal_name, inst_i, inst_f,
+                  ind_i, ind_f, comp, auth,
+                  total_copies, print_order_value, (print_order_value - total_copies));
+          select total_copies;
        END LOOP;
       
     CLOSE cur1;
@@ -2618,4 +2599,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-08-04 11:17:17
+-- Dump completed on 2012-08-04 11:46:30
