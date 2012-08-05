@@ -11,8 +11,13 @@ root {
     width: 10%;
 }
 
+#printBtnDiv{
+    margin-left: 30%;
+    float: left;
+    width: 10%;
+}
+
 #resetBtnDiv{
-    /*margin-right: 35%;*/
     float: left;
     width: 10%;
 }

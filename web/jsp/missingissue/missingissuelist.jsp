@@ -37,7 +37,7 @@
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
                     colNames:['id', 'subscription Detail id', 'Journal Group', 'journalCode', 'journal Name', 'Sub Copies',
-                                'startYear', 'startMonth', 'endMonth', 'endYear', 'month', '`year`', 'Missing Copies'],
+                                'startYear', 'startMonth', 'endMonth', 'endYear', 'month', 'year', 'Missing Copies'],
                     colModel :[
                         {name:'id', index:'id', width:80, align:'center', xmlmap:'id'},
                         {name:'subscriptiondetailsId', index:'subscriptoindetailsId', width:2, align:'center', xmlmap:'subscriptiondetailsId'},

@@ -493,4 +493,58 @@ public class reportModel extends JDSModel {
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
     }
+ 
+       
+ public ResultSet listMl() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+        String sql = Queries.getQuery("listml");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setString(paramIndex, request.getParameter("journalName"));
+        stGet.setString(++paramIndex, request.getParameter("issue"));
+        stGet.setString(++paramIndex, request.getParameter("year"));
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        return rs;
+      }
+       
+ 
+ public ResultSet listBil() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+        String toDate = request.getParameter("to");
+        String fromDate = request.getParameter("from");
+        String subscriberType = request.getParameter("subscriberType");
+
+        if ("0".equals(toDate)) {
+            toDate = null;
+        }
+
+        if ("0".equals(fromDate)) {
+            fromDate = null;
+        }
+
+        if ("0".equals(subscriberType)) {
+            subscriberType = null;
+        }
+
+        String sql = null;
+        sql = Queries.getQuery("listbil");
+
+
+        if (subscriberType != null && subscriberType.length() > 0) {
+
+                sql += " and subscriber_type.subtypedesc=" + "'" + subscriberType + "'";
+        }
+
+        if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
+                sql += " and t1.bildate >=" + "'" + toDate + "'";
+                sql += " and t1.bildate <=" + "'" + fromDate + "'";
+        }
+        int paramIndex = 1;
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        stGet.setString(paramIndex, request.getParameter("journalName"));
+        stGet.setString(++paramIndex, request.getParameter("issue"));
+        stGet.setString(++paramIndex, request.getParameter("year"));
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        return rs;
+        
+      }       
+       
 }

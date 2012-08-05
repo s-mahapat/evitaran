@@ -204,7 +204,36 @@ public class reports extends JDSController {
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
             }
+            else if(action.equalsIgnoreCase("listMl")){
 
+                ResultSet rs = _reportModel.listMl();
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("printlistMl")){
+
+                ResultSet rs = _reportModel.listMl();
+                request.setAttribute("ResultSet", rs);
+                String query = "Circulation Figures";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+            }
+            else if(action.equalsIgnoreCase("listBil")){
+
+                ResultSet rs = _reportModel.listBil();
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("printlistBil")){
+
+                ResultSet rs = _reportModel.listBil();
+                request.setAttribute("ResultSet", rs);
+                String query = "Circulation Figures";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+            }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);

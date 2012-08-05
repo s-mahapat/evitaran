@@ -48,11 +48,19 @@ public class main extends JDSController {
 
             url = "/jsp/ml/generateml.jsp?list=ml";
 
-        } else if (action.equalsIgnoreCase("gbil")) {
+        } else if (action.equalsIgnoreCase("vml")) {
+
+            url = "/jsp/ml/viewml.jsp?list=ml";
+
+        }else if (action.equalsIgnoreCase("gbil")) {
 
             url = "/jsp/ml/generatebil.jsp?list=bil";
 
-        } else if (action.equalsIgnoreCase("newsubscription")) {
+        } else if (action.equalsIgnoreCase("vbil")) {
+
+            url = "/jsp/ml/viewbil.jsp?list=bil";
+
+        }else if (action.equalsIgnoreCase("newsubscription")) {
 
             url = "/jsp/inward/gatekeeperinward.jsp?inwardPurpose=New Subscription";
 

@@ -53,7 +53,7 @@
                     emptyrecords: "No Journal Groups Found",
                     loadtext: "Loading...",
                     //colNames:['Journal Group Id','Journal Group Name','Journal Name','Select'],
-                    colNames:['Id','Journal Group Name','Subscriber Type', 'Years', 'Period','Rate'],
+                    colNames:['Id','Journal Group Name','Subscriber Type', 'Start Years', 'No of Years','Rate'],
                     colModel :[
                         //{name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         //{name:'journalGroupName', index:'journalGroupName', width:50, align:'center', xmlmap:'journalGroupName'},

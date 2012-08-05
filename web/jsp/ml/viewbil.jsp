@@ -10,7 +10,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/ml/generatebil.css"/>
-        <title>Generate and Print Back Issue List</title>
+        <title>View and Print Back Issue List</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/ml/generatebil.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
@@ -22,8 +22,8 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jQuery("#btnSearch,#btnPrint").attr("disabled",true);
-                reloadSubscriberNumber('g');
+                jQuery("#btnPrint").attr("disabled",true);
+                reloadSubscriberNumber('s');
              });
 
             $(function(){
@@ -91,7 +91,7 @@
 
             });
 
-            function generate(){
+            function search(){
 
                 if (($("#subscriberNumber").val() == 0) || ($("#selall:checked").val()) == 0 ){
                     alert("Select Subscriber Number or All pending Back isuses");
@@ -105,7 +105,7 @@
                                 to                      : $("#to").length,
                                 from                      : $("#from").length,
                                 bilCreationDate          : $("#bilCreationDate").val(),
-                                action                  : "generate"
+                                action                  : "search"
                             }});
                         jQuery("#bilTable").setGridParam({ datatype: "xml" });
                         jQuery("#bilTable").trigger("clearGridData");
@@ -155,7 +155,7 @@
             <form method="get" action="<%=request.getContextPath() + "/generatebil"%>" name="mlForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Generate and Print Back Issue List</legend>
+                        <legend>View and Print Back Issue List</legend>
                         <jsp:useBean class="IAS.Bean.MailingList.bilFormBean" id="bilFormBean" scope="request"></jsp:useBean>
                             <fieldset class="subMainFieldSet">
                                 <legend>Selection Criteria</legend>
@@ -203,8 +203,8 @@
                             </fieldset>
                             <fieldset class="subMainFieldSet">
                                 <legend>Actions - Search / Generate</legend>
-                                <div id="singleActionBtnDiv">
-                                     <input class="IASButton" TABINDEX="5" type="button" value="Generate" id="btnGenerate" name="btnGenerate" onclick="generate()"/>
+                                <div id="actionBtnDiv">
+                                     <input class="IASButton" TABINDEX="5" type="button" value="Search" id="btnSearch" name="btnSearch" onclick="search()"/>
                                 </div>
                             </fieldset>
                             <%-----------------------------------------------------------------------------------------------------%>

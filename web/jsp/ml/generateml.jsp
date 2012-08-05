@@ -26,6 +26,8 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=month"%>","month","month");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
                 //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=getissues"%>","issueNumber","issue");
+                jQuery("#btnAdd,#btnPrintLabel,#btnPrintSticker").attr("disabled",true);
+                
              });
 
             $(function(){
@@ -43,19 +45,14 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
-                    colNames:['id', 'journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'department', 'institution', 'address', 'city', 'district',
-                                'state', 'country', 'pincode', 'copies', 'issue', 'month', '`year`', 'startYear', 'startMonth', 'endYear', 'endMonth'],
+                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city', 
+                                'state', 'country', 'pincode', 'copies', 'issue', 'month', 'year'],
                     colModel :[
-                        {name:'id', index:'id', width:80, align:'center', xmlmap:'id'},
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
                         {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
                         {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
-                        {name:'department', index:'department', width:80, align:'center', xmlmap:'department'},
-                        {name:'institution', index:'institution', width:80, align:'center', xmlmap:'institution'},
-                        {name:'address', index:'address', width:80, align:'center', xmlmap:'address'},
                         {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
-                        {name:'district', index:'district', width:80, align:'center', xmlmap:'district'},
                         {name:'state', index:'state', width:80, align:'center', xmlmap:'state'},
                         {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
                         {name:'pincode', index:'pincode', width:80, align:'center', xmlmap:'pincode'},
@@ -63,10 +60,6 @@
                         {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
                         {name:'month', index:'month', width:80, align:'center', xmlmap:'month'},
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
-                        {name:'startYear', index:'startYear', width:80, align:'center', xmlmap:'startYear'},
-                        {name:'startMonth', index:'startMonth', width:80, align:'center', xmlmap:'startMonth'},
-                        {name:'endYear', index:'endYear', width:80, align:'center', xmlmap:'endYear'},
-                        {name:'endMonth', index:'endMonth', width:80, align:'center', xmlmap:'endMonth'},
                     ],
                     xmlReader : {
                         root: "results",
@@ -83,7 +76,7 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-                    editurl:"<%=request.getContextPath()%>/generateml?action=search",
+                    editurl:"<%=request.getContextPath()%>/generateml?action=generate",
                     gridComplete: function() {
                         var ids = jQuery("#mlTable").jqGrid('getDataIDs');
                         for (var i = 0; i < ids.length; i++) {
@@ -101,6 +94,7 @@
                 });
 
             });
+
 
             function generate(){
 
@@ -138,49 +132,11 @@
                         jQuery("#mlTable").setGridParam({ datatype: "xml" });
                         jQuery("#mlTable").trigger("clearGridData");
                         jQuery("#mlTable").trigger("reloadGrid");
+                        jQuery("#btnPrintLabel,#btnPrintSticker").attr("disabled",false);
+                        jQuery("#btnAdd").attr("disabled",true);
                     }
             }
-
-
-            function search(){
-                //check if search criteria is initial, raise alert else enable search for Records
-                if ($("#year").val() == 0) {
-                    alert("Select Year");
-                }
-
-                else if ($("#journalName").val() == 0){
-                    alert("Select Journal");
-                }
-
-                else if ($("#month").val() == 0){
-                    alert("Select Month");
-                }
-
-                else if ($("#issue").val() == 'value'){
-                    alert("Select Issue");
-                }
-
-                else if($("#mlCreationDate").val() == "") {
-                    alert("Please try again after logging in again ");
-                }
-
-                else {
-                        isPageLoaded = true;
-                        jQuery("#mlTable").setGridParam({postData:
-                                {year                   : $("#year").val(),
-                                journalName             : $("#journalName").val(),
-                                month                   : $("#month").val(),
-                                mlCreationDate          : $("#mlCreationDate").val(),
-                                issue                   : $("#issue").val(),
-                                action                  : "search"
-                            }});
-
-                        jQuery("#mlTable").setGridParam({ datatype: "xml" });
-                        jQuery("#mlTable").trigger("clearGridData");
-                        jQuery("#mlTable").trigger("reloadGrid");
-
-                    }
-                }
+            
 
 
             function print(){
@@ -322,14 +278,10 @@
                             </fieldset>
                             <fieldset class="subMainFieldSet">
                                 <legend>Actions - Search / Generate</legend>
-                                    <div class="IASFormFieldDiv">
-                                        <%--<div id="searchBtnDiv">
-                                             <input class="IASButton" TABINDEX="5" type="button" value="Display Mailing List" id="btnSearch" name="btnSearch" onclick="search()"/>
-                                        </div> --%>
-                                        <div id="addBtnDiv">
-                                             <input class="IASButton" TABINDEX="5" type="button" value="Generate Mailing List" id="btnAdd" name="btnAddRate" onclick="generate()"/>
-                                        </div>
-                                     </div>
+                                    <div class="actionBtnDiv">
+                                        <input class="IASButton" TABINDEX="5" type="button" value="Check" id="btnCheck" name="btnCheck" onclick="checkMl()"/>
+                                        <input class="IASButton" TABINDEX="5" type="button" value="Generate Mailing List" id="btnAdd" name="btnAddRate" onclick="generate()"/>
+                                    </div>
                             </fieldset>
 
                             <%-----------------------------------------------------------------------------------------------------%>
@@ -347,18 +299,11 @@
                             <%-----------------------------------------------------------------------------------------------------%>
 
                             <input type="hidden" name="action" id="action"/>
-
                             <fieldset class="subMainFieldSet">
-                                <div class="IASFormFieldDiv">
-                                    <div id="printLabelBtnDiv">
-                                        <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
-                                    </div>
-                                    <div id="printStickerBtnDiv">
-                                        <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
-                                    </div>
-                                    <div id="cancelBtnDiv">
-                                        <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
-                                    </div>
+                                <div class="actionBtnDiv">
+                                    <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
+                                    <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
+                                    <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
                                 </div>
                             </fieldset>
                     </fieldset>

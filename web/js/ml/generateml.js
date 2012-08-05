@@ -96,3 +96,120 @@ function _generateLabel(){
     }
     return htmlStr;
 }
+
+function checkMl(){
+
+    if ($("#year").val() == 0) {
+        alert("Select Year");
+    }
+
+    else if ($("#journalName").val() == 0){
+        alert("Select Journal");
+    }
+
+    else if ($("#month").val() == 0){
+        alert("Select Month");
+    }
+
+    else if ($("#issue").val() == 'value'){
+        alert("Select Issue");
+    }
+
+    else if($("#mlCreationDate").val() == "") {
+        alert("Please try again after logging in again ");
+    }
+
+    else {                   
+        var mlid;
+        $.ajax({
+            type: 'POST',
+            dataType: 'xml',
+            async: false,
+            url: "generateml?action=checkml&year=" +  $("#year").val()
+            + "&journalName=" + $("#journalName").val()
+            + "&month=" + $("#month").val()
+            + "&mlCreationDate=" + $("#mlCreationDate").val()
+            + "&issue=" + $("#issue").val(),
+
+            success: function(xmlResponse, textStatus, jqXHR){
+
+                $(xmlResponse).find("results").each(function(){
+                    mlid = $(this).find("mlid").text();
+                });
+                if (mlid == 0){
+                    $("#btnAdd").button("enable");
+                }
+                else {
+                    alert("Mailing List already generated for&year=" +  $("#year").val() + "&journalName=" + $("#journalName").val()
+                            + "&month=" + $("#month").val() + "&issue=" + $("#issue").val());
+                }
+                return true;
+            },
+            error: function(jqXHR,textStatus,errorThrown){
+                alert("Failed to Generate Mailing List. : " + errorThrown);
+                return false;
+            }
+           });
+   }
+ }
+  
+  function checkViewMl(){
+
+    if ($("#year").val() == 0) {
+        alert("Select Year");
+    }
+
+    else if ($("#journalName").val() == 0){
+        alert("Select Journal");
+    }
+
+    else if ($("#month").val() == 0){
+        alert("Select Month");
+    }
+
+    else if ($("#issue").val() == 'value'){
+        alert("Select Issue");
+    }
+
+    else if($("#mlCreationDate").val() == "") {
+        alert("Please try again after logging in again ");
+    }
+
+    else {                   
+        var mlid;
+        $.ajax({
+            type: 'POST',
+            dataType: 'xml',
+            async: false,
+            url: "generateml?action=checkml&year=" +  $("#year").val()
+            + "&journalName=" + $("#journalName").val()
+            + "&month=" + $("#month").val()
+            + "&mlCreationDate=" + $("#mlCreationDate").val()
+            + "&issue=" + $("#issue").val(),
+
+            success: function(xmlResponse, textStatus, jqXHR){
+
+                $(xmlResponse).find("results").each(function(){
+                    mlid = $(this).find("mlid").text();
+                });
+                if (mlid == 0){
+                    alert("Mailing List already generated for&year=" +  $("#year").val() + "&journalName=" + $("#journalName").val()
+                            + "&month=" + $("#month").val() + "&issue=" + $("#issue").val());
+                    
+                }
+                else {
+                    $("#btnSearch").button("enable");
+                }
+                return true;
+            },
+            error: function(jqXHR,textStatus,errorThrown){
+                alert("Failed to Generate Mailing List. : " + errorThrown);
+                return false;
+            }
+           });
+   }
+ }
+ 
+            
+
+

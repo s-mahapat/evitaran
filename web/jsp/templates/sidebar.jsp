@@ -54,8 +54,10 @@
         </li>
         <li class="menu"><a href="#">Mailing List</a>
             <ul>
-                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gml"%>">Generate Mailing List</a></li>
-                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gbil"%>">Generate Back Issue List</a></li>
+                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gml"%>">Generate/Print Mailing List</a></li>
+                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=vml"%>">View/Print Mailing List</a></li>
+                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gbil"%>">Generate/Print Back Issue List</a></li>
+                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=vbil"%>">View/Print Back Issue List</a></li>
             </ul>
 
         </li>
