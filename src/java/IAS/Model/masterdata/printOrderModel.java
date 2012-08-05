@@ -43,7 +43,8 @@ public class printOrderModel extends JDSModel{
         PreparedStatement st = conn.prepareStatement(sql);
         int paramIndex = 1;
         st.setInt(paramIndex, _printOrderFormBean.getYear());
-        st.setString(++paramIndex, _printOrderFormBean.getJournalCode());
+        st.setString(++paramIndex, _printOrderFormBean.getJournalName());
+        st.setInt(++paramIndex, _printOrderFormBean.getIssueNo());
         ResultSet rs = db.executeQueryPreparedStatement(st);
         // Update the print_order if it exists, else it means it is a new print_order
         if(rs.next()){
@@ -51,19 +52,7 @@ public class printOrderModel extends JDSModel{
             sql = Queries.getQuery("update_printOrder");
             st = conn.prepareStatement(sql);
             paramIndex = 1;
-            st.setInt(paramIndex++, _printOrderFormBean.getJanPrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getFebPrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getMarPrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getAprPrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getMayPrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getJunePrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getJulyPrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getAugPrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getSeptPrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getOctPrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getNovPrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getDecPrintOrder());
-            st.setInt(paramIndex++, _printOrderFormBean.getAnnualPrintOrder());
+            st.setInt(paramIndex++, _printOrderFormBean.getPrintOrder());
             st.setInt(paramIndex++, printOrderId);
             int success = db.executeUpdatePreparedStatement(st);
         }
@@ -71,49 +60,19 @@ public class printOrderModel extends JDSModel{
         {
             // Since the print order does not exist in the table add a new entry
             // Check if the print_order is >0, if it is then it means that it is a new entry, else ignore it
-            if(this._printOrderFormBean.getJanPrintOrder()>0 ||
-                this._printOrderFormBean.getFebPrintOrder()>0 ||
-                this._printOrderFormBean.getMarPrintOrder()>0 ||
-                this._printOrderFormBean.getAprPrintOrder()>0 ||
-                this._printOrderFormBean.getMayPrintOrder()>0 ||
-                this._printOrderFormBean.getJunePrintOrder()>0 ||
-                this._printOrderFormBean.getJulyPrintOrder()>0 ||
-                this._printOrderFormBean.getAugPrintOrder()>0 ||
-                this._printOrderFormBean.getSeptPrintOrder()>0 ||
-                this._printOrderFormBean.getOctPrintOrder()>0 ||
-                this._printOrderFormBean.getNovPrintOrder()>0 ||
-                this._printOrderFormBean.getDecPrintOrder()>0
-                )
+            if(this._printOrderFormBean.getPrintOrder()>0)
             {
                 // First get the journalID
                 int journalId=0;
-                String query = Queries.getQuery("get_journal_id");
-                PreparedStatement pst = conn.prepareStatement(query);
-                pst.setString(1, _printOrderFormBean.getJournalCode());
-                rs = db.executeQueryPreparedStatement(pst);
-                while(rs.next()){
-                        journalId = rs.getInt(1);
-                    }
 
-                query = Queries.getQuery("insert_printOrder");
-                pst = conn.prepareStatement(query);
+                String query = Queries.getQuery("insert_printOrder");
+                PreparedStatement pst = conn.prepareStatement(query);
 
                 int index = 1;
                 pst.setInt(index, _printOrderFormBean.getYear());
-                pst.setInt(++index, journalId);
-                pst.setInt(++index, _printOrderFormBean.getJanPrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getFebPrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getMarPrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getAprPrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getMayPrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getJunePrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getJulyPrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getAugPrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getSeptPrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getOctPrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getNovPrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getDecPrintOrder());
-                pst.setInt(++index,this._printOrderFormBean.getAnnualPrintOrder());
+                pst.setString(++index, _printOrderFormBean.getJournalName());
+                pst.setInt(++index, _printOrderFormBean.getIssueNo());
+                pst.setInt(++index, _printOrderFormBean.getPrintOrder());
 
                 db.executeUpdatePreparedStatement(pst);
             }
@@ -121,7 +80,8 @@ public class printOrderModel extends JDSModel{
         request.setAttribute("printOrderFormBean", this._printOrderFormBean);
     }
 
-    public String searchPrintOrder() throws SQLException, ParseException, ParserConfigurationException, TransformerException, IllegalAccessException, InvocationTargetException {
+    public String searchPrintOrder() throws SQLException, ParseException, ParserConfigurationException, TransformerException, IllegalAccessException, InvocationTargetException
+    {
 
         printOrderFormBean printOrderFormBean = new IAS.Bean.masterdata.printOrderFormBean();
         request.setAttribute("printOrderFormBean", printOrderFormBean);
@@ -132,13 +92,55 @@ public class printOrderModel extends JDSModel{
 
         request.setAttribute("printOrderFormBean", this._printOrderFormBean);
 
-        String xml = null;
-        String sql = Queries.getQuery("get_print_order_by_year");
+        String sql = Queries.getQuery("getNoOfIssues");
         PreparedStatement st = conn.prepareStatement(sql);
-        st.setInt(1, this._printOrderFormBean.getYear());
+        st.setString(1, this._printOrderFormBean.getJournalName());
 
         ResultSet rs = this.db.executeQueryPreparedStatement(st);
-        xml = util.convertResultSetToXML(rs);
+        //xml = util.convertResultSetToXML(rs);
+        String xml = this.convertResultSetToXMLForPrintOrder(rs, this._printOrderFormBean.getYear(), this._printOrderFormBean.getJournalName());
+        return xml;
+    }
+
+    public String convertResultSetToXMLForPrintOrder(ResultSet result, int year, String journalName) throws SQLException
+    {
+        String xml = "";
+        xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n";
+        //System.out.println("<?xml version='1.0' encoding='utf-8'?>\n");
+        xml = xml + "<results>";
+        //System.out.println("<results>");
+
+        ResultSetMetaData rsmd = result.getMetaData();
+        String colName = rsmd.getColumnName(1);
+        int noOfIssues = 0;
+        if(result.next())
+            noOfIssues = result.getInt(1);
+
+        for (int i = 1; i <= noOfIssues; i++)
+        {
+            xml = xml + "<row>";
+
+            String sql = Queries.getQuery("get_printOrder");
+            PreparedStatement st = conn.prepareStatement(sql);
+            int paramIndex = 1;
+            st.setInt(paramIndex++, year);
+            st.setString(paramIndex++, journalName);
+            st.setInt(paramIndex, i);
+            ResultSet rs = this.db.executeQueryPreparedStatement(st);
+
+            ResultSetMetaData rsMD = rs.getMetaData();
+            int printOrder = 0;
+            if(rs.next())
+                printOrder = rs.getInt(1);
+
+            xml = xml + "<" + colName + ">" + i + "</" + colName + ">";
+            xml = xml + "<" + rsMD.getColumnName(1) + ">" + printOrder + "</" + rsMD.getColumnName(1) + ">";
+
+            xml = xml + "</row>";
+
+        }
+        xml = xml + "</results>";
+
         return xml;
     }
 
@@ -164,7 +166,7 @@ public class printOrderModel extends JDSModel{
         return xml;
     }
 
-    public String convertResultSetToXMLForPrintOrder(ResultSet result, int year) throws SQLException
+    public String convertResultSetToXMLForPrintOrder(ResultSet result, int year, String journalName) throws SQLException
     {
         String xml = "";
         xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n";
@@ -273,7 +275,6 @@ public class printOrderModel extends JDSModel{
 
         return xml;
     }
-     * *
-     */
-
+    *
+    */
 }

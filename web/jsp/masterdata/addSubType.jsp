@@ -15,7 +15,7 @@
         <script type="text/javascript" src="js/masterdata/validateSubType.js"></script>
         <script>
             $(document).ready(function(){
-                makeCreateReadOnly();
+                //makeCreateReadOnly();
             });
         </script>
     </head>

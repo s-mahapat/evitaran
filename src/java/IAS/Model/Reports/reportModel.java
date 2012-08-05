@@ -547,4 +547,74 @@ public class reportModel extends JDSModel {
         
       }       
        
+
+    /*
+    public String printOrderTableDetails()
+    {
+        String colNames = "<colNames>" + "['Issue No','Print Order']" + "</colNames>";
+        String colModel = "<colModel>" + "[{name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},{name:'printOrder', index:'printOrder', width:80, align:'center',xmlmap:'printOrder'}]" +"</colModel>";
+        String colData =  "<colData>";
+        colData = colData + "[";
+        colData = colData + "{<issues>10</issues>,<printOrder>10</printOrder>},";
+        colData = colData + "{<issues>20</issues>,<printOrder>20</printOrder>}";
+        colData = colData + "]";
+        colData = colData + "</colData>";
+
+        request.setAttribute("colNames", colNames);
+        request.setAttribute("colData", colData);
+        request.setAttribute("colModel", colModel);
+
+        String xml="";
+        return xml;
+    }
+    */
+
+    /*
+    public String printOrderTableDetails()
+    {
+        String xml = "";
+        xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n";
+
+        xml = xml + "<results>";
+
+        xml = xml + "<colNames>" + "['Issue No','Print Order']" + "</colNames>";
+        xml = xml + "<colModel>" + "[{name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},{name:'printOrder', index:'printOrder', width:80, align:'center',xmlmap:'printOrder'}]" +"</colModel>";
+
+        xml = xml + "<colData>";
+        xml = xml + "[";
+        xml = xml + "{<issues>10</issues>,<printOrder>10</printOrder>},";
+        xml = xml + "{<issues>20</issues>,<printOrder>20</printOrder>}";
+        xml = xml + "]";
+        xml = xml + "</colData>";
+
+        xml = xml + "</results>";
+
+        return(xml);
+    }
+    */
+
+    public String printOrderTableDetails()
+    {
+        String xml = "";
+        xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n";
+        xml = xml + "<results>";
+        //xml = xml + "<colData>"  + "</colData>";
+        xml = xml + "<colNames>" + "['Issue No','Print Order']" + "</colNames>";
+        //xml = xml + "<colModel>" + "[{name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},{name:'printOrder', index:'printOrder', width:80, align:'center',xmlmap:'printOrder'}]" +"</colModel>";
+        xml = xml + "<colModel>" + "[{name:'issues', index:'issues', xmlmap:'issues'},{name:'printOrder', index:'printOrder', xmlmap:'printOrder'}]" +"</colModel>";
+
+        xml = xml + "<row>";
+        xml = xml + "<issues>" + "10" +"</issues>";
+        xml = xml + "<printOrder>" + "20" + "</printOrder>";
+        xml = xml + "</row>";
+
+        xml = xml + "<row>";
+        xml = xml + "<issues>" + "30" +"</issues>";
+        xml = xml + "<printOrder>" + "40" + "</printOrder>";
+        xml = xml + "</row>";
+
+        xml = xml + "</results>";
+        return(xml);
+    }
+
 }

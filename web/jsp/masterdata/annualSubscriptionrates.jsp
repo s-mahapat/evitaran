@@ -53,7 +53,7 @@
                     emptyrecords: "No Journal Groups Found",
                     loadtext: "Loading...",
                     //colNames:['Journal Group Id','Journal Group Name','Journal Name','Select'],
-                    colNames:['Id','Journal Group Name','Subscriber Type', 'Start Years', 'No of Years','Rate'],
+                    colNames:['Id','Journal Group Name','Subscriber Type', 'Start Year', 'No of years','Rate'],
                     colModel :[
                         //{name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         //{name:'journalGroupName', index:'journalGroupName', width:50, align:'center', xmlmap:'journalGroupName'},
@@ -63,7 +63,7 @@
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
                         {name:'period', index:'period', width:80, align:'center', xmlmap:'period'},
                         {name:'rate', index:'rate', width:80, align:'center', xmlmap:'rate'},
-                        
+
                     ],
                     xmlReader : {
                         root: "results",
@@ -124,7 +124,7 @@
                     jQuery("#subscriberType").attr("disabled",true);
                 }
             }
-            
+
             function cancel(){
                 //Clear the content of the table
                 var ids = jQuery("#annualSubscriptionRateTable").jqGrid('getDataIDs');
@@ -167,7 +167,7 @@
                         jQuery("#annualSubscriptionRateTable").setGridParam({ datatype: "xml" });
                         jQuery("#annualSubscriptionRateTable").trigger("clearGridData");
                         jQuery("#annualSubscriptionRateTable").trigger("reloadGrid");
-                        
+
                         //make the entry fields disabled
                         jQuery("#noofYear").attr("disabled",true);
                         jQuery("#rate").attr("disabled",true);
@@ -176,7 +176,7 @@
                         jQuery("#year").attr("disabled",false);
                         jQuery("#journalGroupName").attr("disabled",false);
                         jQuery("#subscriberType").attr("disabled",false);
-                    }               
+                    }
             }
 
 
@@ -228,10 +228,10 @@
                                         <div class="IASFormFieldDiv">
                                             <div class="IASFormFieldDiv">
                                                 <span class="IASFormDivSpanInputBox">
-                                                <span class="IASFormDivSpanLabel">
-                                                    <label>Year:</label>
-                                                </span>
-                                                <select class="IASComboBox" TABINDEX="1" name="year" id="year">
+                                                    <span class="IASFormDivSpanLabel">
+                                                        <label>Year:</label>
+                                                    </span>
+                                                    <select class="IASComboBox" TABINDEX="1" name="year" id="year">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
@@ -246,7 +246,7 @@
                                                     </select>
                                                 </span>
                                             </div>
-                                          
+
                                         </div>
                                     </div>
                                     <%-- Search Criteria right div --%>
@@ -261,7 +261,7 @@
                                                         <option value="0" selected>Select</option>
                                                     </select>
                                                 </span>
-                                            </div>   
+                                            </div>
                                         </div>
                                     </div>
 
@@ -271,10 +271,10 @@
                                     <div class="IASFormFieldDiv">
                                         <div id="searchBtnDiv">
                                              <input class="IASButton" TABINDEX="3" type="button" value="Display Rates" id="btnSearch" name="btnSearch" onclick="search()"/>
-                                        </div>                                          
+                                        </div>
                                         <div id="defineRateBtnDiv">
                                              <input class="IASButton" TABINDEX="4" type="button" value="Define Rates" id="btnAddRate" name="btnAddRate" onclick="addRate()"/>
-                                        </div>   
+                                        </div>
                                      </div>
                             </fieldset>
                             <fieldset class="subMainFieldSet">
@@ -299,14 +299,14 @@
                                             </span>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="IASFormFieldDiv">
                                         <div id="addBtnDiv">
                                              <input class="IASButton" TABINDEX="3" type="button" value="Add Rates" id="btnAdd" name="btnAdd" onclick="add()"/>
-                                        </div>                                          
+                                        </div>
                                     </div>
-                                   
-                            </fieldset>                                    
+
+                            </fieldset>
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Search Result Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>

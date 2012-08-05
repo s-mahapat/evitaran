@@ -234,6 +234,12 @@ public class reports extends JDSController {
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
             }
+    /*----------------------------------------------------------------*/
+            else if(action.equalsIgnoreCase("printOrderTableDetails")){
+       		String xml = _reportModel.printOrderTableDetails();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);

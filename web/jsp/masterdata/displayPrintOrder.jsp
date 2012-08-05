@@ -27,7 +27,9 @@
 
             $(document).ready(function(){
                 jQuery("#printOrderTable").jqGrid('navGrid',"#IASFormFieldDiv",{edit:false,add:false,del:false});
-                 jQuery("#btnEdit,#btnSave,#btnCancel").attr("disabled",true);
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journals"%>", "journalName", "journalName");
+                jQuery("#btnEdit,#btnSave,#btnCancel").attr("disabled",true);
              });
 
             $(function(){
@@ -45,27 +47,10 @@
                     rownumbers: true,
                     emptyrecords: "No Print Order for selected Year",
                     loadtext: "Loading...",
-                    //colNames:['Id','Journal Code','Journal Name','Year','Issues per Year', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Annual'],
-                    colNames:['Id','Journal Code','Journal Name','Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Annual'],
+                    colNames:['Issue No','Print Order'],
                     colModel :[
-                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
-                        {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
-                        {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
-                        //{name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
-                        //{name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},
-                        {name:'janPrintOrder', index:'janPrintOrder', width:80, align:'center',xmlmap:'janPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'febPrintOrder', index:'febPrintOrder', width:80, align:'center',xmlmap:'febPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'marPrintOrder', index:'marPrintOrder', width:80, align:'center',xmlmap:'marPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'aprPrintOrder', index:'aprPrintOrder', width:80, align:'center',xmlmap:'aprPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'mayPrintOrder', index:'mayPrintOrder', width:80, align:'center',xmlmap:'mayPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'junePrintOrder', index:'junePrintOrder', width:80, align:'center',xmlmap:'junePrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'julyPrintOrder', index:'julyPrintOrder', width:80, align:'center',xmlmap:'julyPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'augPrintOrder', index:'augPrintOrder', width:80, align:'center',xmlmap:'augPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'septPrintOrder', index:'septPrintOrder', width:80, align:'center',xmlmap:'septPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'octPrintOrder', index:'octPrintOrder', width:80, align:'center',xmlmap:'octPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'novPrintOrder', index:'novPrintOrder', width:80, align:'center',xmlmap:'novPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'decPrintOrder', index:'decPrintOrder', width:80, align:'center',xmlmap:'decPrintOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }},
-                        {name:'annualPrintOrder', index:'annualPrintOrder', width:80, align:'center',xmlmap:'annualPrintOrder', editable: false}
+                        {name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},
+                        {name:'printOrder', index:'printOrder', width:80, align:'center',xmlmap:'printOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }}
                     ],
                     xmlReader : {
                         root: "results",
@@ -117,7 +102,8 @@
                 for (var i = 0; i < ids.length; i++) {
                     jQuery("#printOrderTable").setGridParam({editurl: "<%=request.getContextPath()%>/printOrder?action=save" +
                                                                         "&year=" + $("#year").val() +
-                                                                "&journalCode=" + $("#printOrderTable").getCell(ids[i], 'journalCode')
+                                                                "&journalName=" + $("#journalName").val() +
+                                                                "&issueNo=" + $("#printOrderTable").getCell(ids[i], 'issues')
                                                                 });
 
                     //var aPO = $("#printOrderTable").getCell(ids[i], 'issues') * $("#printOrderTable").getCell(ids[i], 'printOrder');
@@ -175,6 +161,26 @@
                 }
             }
 
+            function getPrintOrderDetails()
+            {
+                if($("#year").val() == 0){
+                    alert("Select year");
+                } else if($("#journalName").val() == 0) {
+                    alert("Select journal");
+                }else {
+                    isPageLoaded = true;
+                    jQuery("#printOrderTable").setGridParam({postData:
+                                    {year       : $("#year").val(),
+                                    journalName : $("#journalName").val(),
+                                    action       : "searchPrintOrder"
+                                }});
+                    jQuery("#printOrderTable").setGridParam({ datatype: "xml" });
+                    jQuery("#printOrderTable").trigger("clearGridData");
+                    jQuery("#printOrderTable").trigger("reloadGrid");
+                    jQuery("#btnEdit").attr("disabled",false);
+                }
+            }
+
             /*
             function addNewPrintOrder(){
                 if($("#year").val() == 0)
@@ -216,11 +222,25 @@
                                     <%-- Search Criteria left div --%>
                                     <div class="IASFormLeftDiv">
                                         <div class="IASFormFieldDiv">
-                                            <span class="IASFormDivSpanLabel">
-                                                <label>Year:</label>
-                                            </span>
                                             <span class="IASFormDivSpanInputBox">
-                                                <input class="IASTextBox" TABINDEX="1" type="text" name="year" id="year" value="<jsp:getProperty name="printOrderFormBean" property="year"/>"/>
+                                                <span class="IASFormDivSpanLabel">
+                                                    <label>Year:</label>
+                                                </span>
+                                                <select class="IASComboBox" TABINDEX="1" name="year" id="year">
+                                                    <option value="0">Select</option>
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="IASFormRightDiv">
+                                        <div class="IASFormFieldDiv">
+                                            <span class="IASFormDivSpanInputBox">
+                                                <span class="IASFormDivSpanLabel">
+                                                    <label>Journal:</label>
+                                                </span>
+                                                <select class="IASComboBox" TABINDEX="2" name="journalName" id="journalName">
+                                                    <option value="0">Select</option>
+                                                </select>
                                             </span>
                                         </div>
                                     </div>
@@ -229,7 +249,7 @@
                                 <legend>Actions: Search/ Add</legend>
                                 <div class="IASFormFieldDiv">
                                    <div id="searchBtnDiv">
-                                        <input class="IASButton" TABINDEX="2" type="button" value="Search Print Orders" id="btnSearch" name="btnSearch" onclick="searchPrintOrder()"/>
+                                        <input class="IASButton" TABINDEX="2" type="button" value="Search Print Orders" id="btnSearch" name="btnSearch" onclick="getPrintOrderDetails()"/>
                                    </div>
                                 </div>
                             </fieldset>

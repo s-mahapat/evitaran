@@ -77,6 +77,7 @@
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listSubType"%>">List of Subscriber types</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listAgent"%>">List of Agent</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=journalRates"%>">Rates for Journals</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listprintOrder"%>">Print Order</a></li>
                     </ul>
                 </li>
                 <li class="menu"><a href="#">Subscriber/ Subscription</a>

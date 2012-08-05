@@ -168,7 +168,11 @@ public class main extends JDSController {
 
             url = "/jsp/reports/listInwards.jsp";
 
-        }else if (action.equalsIgnoreCase("sendReminders")) {
+        } else if (action.equalsIgnoreCase("listprintOrder")) {
+
+            url = "/jsp/reports/listPrintOrder.jsp";
+
+        } else if (action.equalsIgnoreCase("sendReminders")) {
 
             url = "/jsp/reminders/sendReminders.jsp";
 
