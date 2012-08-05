@@ -313,7 +313,7 @@ public class SubscriptionModel extends JDSModel {
 
     public String getSubscription() throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
-        String xml = null;
+        String xml;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_subscription_for_subscriber");
         PreparedStatement st = conn.prepareStatement(sql);

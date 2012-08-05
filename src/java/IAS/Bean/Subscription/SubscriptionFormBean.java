@@ -9,6 +9,15 @@ public class SubscriptionFormBean extends JDSBean{
     private float subscriptionTotal;
     private float amount;
     private float balance;
+    private boolean legacy;
+    
+    public boolean isLegacy(){
+        return this.legacy;
+    }
+    
+    public void setLegacy(boolean _legacy){
+        this.legacy = _legacy;
+    }
 
     public int getSubscriptionID(){
         return this.subscriptionID;

@@ -32,7 +32,7 @@ function listSubscription(){
             //sortname:'subscriptionID',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Subscription Date','Amount Paid','Subscription Value', 'Balance', 'Currency','Action'],
+            colNames:['Subscription Id','Inward No','Subscription Date','Amount Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
             colModel :[
             {
                 name:'subscriptionID',
@@ -99,6 +99,14 @@ function listSubscription(){
                 width:15,
                 align:'center',
                 sortable: false
+            },
+            {
+                name:'legacy',
+                index:'legacy',
+                width:15,
+                align:'legacy',
+                hidden: true,
+                sortable: false
             }],
             xmlReader : {
                 root: "results",
@@ -116,10 +124,13 @@ function listSubscription(){
 
                 var ids = jQuery("#subscriptionList").jqGrid('getDataIDs');
                 for (var i = 0; i < ids.length; i++) {
+                    var islegacy = parseInt(jQuery("#subscriptionList").getCell(ids[i], 'legacy'));
                     action = "<a style=\"color:blue\" href=\"#\" onclick=\"getSubscriptionDetails(" + ids[i] + ")\">" + "Details" + "</a>";
-                    action += "<a style=\"color:blue\" href=\"subscription?action=edit" +
+                    if(islegacy != 1){
+                        action += "<a style=\"color:blue\" href=\"subscription?action=edit" +
                         "&subscriberNumber=" + $("#subscriberNumber").val() +
                         "&id=" + ids[i] + "\">" + "Edit" + "</a>";
+                    }                    
                     jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
                         "details": action
                     });

@@ -17,7 +17,7 @@
             $(document).ready(function() {
                 makeReadOnly();
                 makeViewSubscriptionReadOnly();
-                listSubscription("Display");
+                listSubscription();
             });
         </script>
     </head>
