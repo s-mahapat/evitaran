@@ -13,6 +13,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -31,7 +32,7 @@ public final class util {
         java.util.Date dt = new java.util.Date();
         return dtformat.format(dt);
     }
-    
+
     public static String getDateString(Date dt, String dateFormat) {
         Format dtformat = new SimpleDateFormat(dateFormat);
         return dtformat.format(dt);
@@ -50,8 +51,7 @@ public final class util {
 
     // The date format to be used everywhere is dd/MM/yyyy.
     // If the date format is of the form yyyy-MM-dd, this function helps to convert back to the correct format
-    public static String changeDateFormat(String stringDate) throws ParseException
-    {
+    public static String changeDateFormat(String stringDate) throws ParseException {
         if (stringDate == null || stringDate.length() == 0) {
             return null;
         }
@@ -63,24 +63,21 @@ public final class util {
 
     // The date format to be used everywhere is dd/MM/yyyy.
     // This function checks if the date is in this format.
-    public static boolean checkDateFormat(String stringDate)
-    {
+    public static boolean checkDateFormat(String stringDate) {
         if (stringDate == null || stringDate.length() == 0) {
             return false;
         }
         DateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
-        try
-        {
+        try {
             formater.parse(stringDate);
             return true;
-        }catch(ParseException pe)
-        {
+        } catch (ParseException pe) {
             return false;
         }
     }
 
     public static String convertResultSetToXML(ResultSet rs, int pageNumber,
-                                                    int pageSize, int totalQueryCount)
+            int pageSize, int totalQueryCount)
             throws ParserConfigurationException, SQLException, TransformerException {
 
         String xml = null;
@@ -177,7 +174,7 @@ public final class util {
 
     }
 
-    public static String convertStringToXML(String text,String tagName) throws ParserConfigurationException, SQLException, TransformerException, IOException {
+    public static String convertStringToXML(String text, String tagName) throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
         String xml = null;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -210,8 +207,7 @@ public final class util {
         return sw.toString();
     }
 
-    public static void printResultSet(ResultSet result) throws SQLException
-    {
+    public static void printResultSet(ResultSet result) throws SQLException {
         // Print the data obtained from the query
         ResultSetMetaData rsmd = result.getMetaData();
 
@@ -220,18 +216,20 @@ public final class util {
 
         int numberOfColumns = rsmd.getColumnCount();
 
-        for (int i = 1; i <= numberOfColumns; i++)
-        {
-            if (i > 1) System.out.print(",  ");
+        for (int i = 1; i <= numberOfColumns; i++) {
+            if (i > 1) {
+                System.out.print(",  ");
+            }
             String columnName = rsmd.getColumnName(i);
             System.out.print(columnName);
         }
         System.out.println("");
 
-        while (result.next())
-        {
-                for (int i = 1; i <= numberOfColumns; i++) {
-                if (i > 1) System.out.print(",  ");
+        while (result.next()) {
+            for (int i = 1; i <= numberOfColumns; i++) {
+                if (i > 1) {
+                    System.out.print(",  ");
+                }
                 String columnValue = result.getString(i);
                 System.out.print(columnValue);
             }
@@ -241,18 +239,17 @@ public final class util {
     }
 
     public static void printColTypes(ResultSetMetaData rsmd)
-                            throws SQLException {
-    int columns = rsmd.getColumnCount();
-    for (int i = 1; i <= columns; i++) {
-      int jdbcType = rsmd.getColumnType(i);
-      String name = rsmd.getColumnTypeName(i);
-      System.out.print("Column " + i + " is JDBC type " + jdbcType);
-      System.out.println(", which the DBMS calls " + name);
-    }
+            throws SQLException {
+        int columns = rsmd.getColumnCount();
+        for (int i = 1; i <= columns; i++) {
+            int jdbcType = rsmd.getColumnType(i);
+            String name = rsmd.getColumnTypeName(i);
+            System.out.print("Column " + i + " is JDBC type " + jdbcType);
+            System.out.println(", which the DBMS calls " + name);
+        }
     }
 
-    public static String convertResultSetWithoutIDToXML(ResultSet result) throws SQLException
-    {
+    public static String convertResultSetWithoutIDToXML(ResultSet result) throws SQLException {
         String xml = "";
         xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n";
         //System.out.println("<?xml version='1.0' encoding='utf-8'?>\n");
@@ -263,22 +260,18 @@ public final class util {
         int numberOfColumns = rsmd.getColumnCount();
 
         int id = 1;
-        while (result.next())
-        {
-            for (int i = 1; i <= numberOfColumns; i++)
-            {
+        while (result.next()) {
+            for (int i = 1; i <= numberOfColumns; i++) {
                 String columnValue = result.getString(i);
 
-                if(i == 1)
-                {
+                if (i == 1) {
                     xml = xml + "<row>";
                 }
 
                 xml = xml + "<id>" + id + "</id>";
                 xml = xml + "<" + rsmd.getColumnName(i) + ">" + columnValue + "</" + rsmd.getColumnName(i) + ">";
 
-                if(i == numberOfColumns)
-                {
+                if (i == numberOfColumns) {
                     xml = xml + "</row>";
                 }
             }
@@ -321,5 +314,32 @@ public final class util {
         return previousMonth;
     }
 
+    public static String convertArrayListToXML(ArrayList<String> arr, String tagname) throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
+        String xml = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+        for (int i = 0; i < arr.size(); i++) {
+            Element error = doc.createElement(tagname);
+            results.appendChild(error);
+            error.appendChild(doc.createTextNode(arr.get(i)));
+        }
+
+        DOMSource domSource = new DOMSource(doc);
+        try (StringWriter writer = new StringWriter()) {
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            xml = writer.toString();
+        }
+
+
+        return xml;
+
+    }
 }
