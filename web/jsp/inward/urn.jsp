@@ -4,18 +4,33 @@
         <meta charset="utf-8">
         <title>Update Receipt Numbers</title>
         <%@include file="../templates/style.jsp"%>
+        <%@include file="../fileupload/fileupload.jsp"%>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/inward/inward.css"%>" />
-
         <script type="text/javascript">
-            //var calPopup = new CalendarPopup("dateDiv");
-            //calPopup.showNavigationDropdowns();
             var selectedInward = 0;
             var selectedSubscriberId = 0;
             var isPageLoaded = false;
+            
             $(function(){
+                
+                _fileuploader = new jdsfileuploader("uploader");
+                _fileuploader.url = "fileupload?action=urn";
+                _fileuploader.filters = [{title : "XML files", extensions : "xml"}];
+                _fileuploader.success = function(up, file, info){
+                    console.log(info);
+                };
+                _fileuploader.error = function(up, args){
+                    alert("Error");
+                }
+                _fileuploader.draw();
+
+            });
+            
+            
+            /*$(function(){
 
                 $("#urnTable").jqGrid({
-                    url:'/JDS/jsp/inward/urnXML.jsp',
+                    url:'',
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -56,36 +71,27 @@
                         alert("Failed getting data from server" + status);
                     }
                 });
-            })
+                                
+            });*/
+            
+            function validateFileType(){
+                return TestFileType($("#urnxmlfile").val(), ['xml'])
+            }
         </script>
 
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data" onsubmit="return validateFileType()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Update Receipt Numbers</legend>
                         <fieldset class="subMainFieldSet">
                             <legend>File Upload</legend>
                             <div class="IASFormLeftDiv">
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        Add files...
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="JDSFileInput" type="file" maxlength="512" name="files[]" multiple>
-                                    </span>
-                                </div>
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">&nbsp;</span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <button class="IASButton" type="submit">Start Upload</button>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <button class="IASButton" type="reset">Cancel Upload</button>
-                                    </span>
+                                <div id="uploader">
+                                    <p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
                                 </div>
                             </div>
                             <div class="IASFormRightDiv">
@@ -103,8 +109,8 @@
                         <fieldset class="subMainFieldSet">
                             <legend>Results</legend>
                             <div class="IASFormFieldDiv">
-                            <table class="datatable" id="urnTable"></table>
-                            <div id="pager"></div>
+                                <table class="datatable" id="urnTable"></table>
+                                <div id="pager"></div>
                             </div>
                         </fieldset>
                     </fieldset>
