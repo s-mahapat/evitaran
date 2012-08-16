@@ -25,13 +25,7 @@ public class FileUploadBase extends JDSModel {
         while (i.hasNext()) {
             FileItem fileItem = (FileItem) i.next();
             if (fileItem.isFormField() == false) {                
-                try{
-                    uploadedFiles.add(fileItem);
-                }catch(Exception e){
-                    int j = 0;
-                    
-                }
-                
+                uploadedFiles.add(fileItem);                
             }
         }
     }

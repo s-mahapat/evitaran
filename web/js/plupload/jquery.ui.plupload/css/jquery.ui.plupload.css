@@ -57,11 +57,18 @@ div.plupload div.plupload_header {border-width: 0 0 1px 0; position: relative;}
 	cursor:move;	
 }
 
-.plupload_scroll {
+/*.plupload_scroll {
 	max-height: 180px;
 	min-height: 168px;
 	_height: 168px;
 	overflow-y: auto;
+}*/
+
+.plupload_scroll {
+	max-height: 60px;
+	min-height: 60px;
+	_height: 60px;
+	overflow-y: hidden;
 }
 
 .plupload_file_size, .plupload_file_status {text-align: right;}
@@ -99,7 +106,7 @@ div.plupload div.plupload_header {border-width: 0 0 1px 0; position: relative;}
 	text-align: center;
 	vertical-align: middle;
 	border: 0;
-	line-height: 165px;
+	line-height: 60px;
 }
 
 .plupload_buttons, .plupload_upload_status {float: left}
