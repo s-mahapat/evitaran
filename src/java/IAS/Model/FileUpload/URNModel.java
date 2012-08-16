@@ -26,12 +26,12 @@ public class URNModel extends FileUploadBase {
 
             try {
                 InputStream xml = item.getInputStream();
-                StringBuilder buffer = new StringBuilder();
+                /*StringBuilder buffer = new StringBuilder();
                 byte[] _b = new byte[4096];
                 for (int n; (n = xml.read(_b)) != -1;) {
                     buffer.append(new String(_b, 0, n));
                 }
-                String str = buffer.toString();
+                String str = buffer.toString();*/
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docb = dbf.newDocumentBuilder();
                 byte b[] = new byte[364];
