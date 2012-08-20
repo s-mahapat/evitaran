@@ -78,9 +78,8 @@ public class Print extends JDSController {
                     //inwardModel _inwardModel = new inwardModel(request);
                     //inwardFormBean _inwardFormBean = new inwardFormBean();
                     _inwardFormBean = _inwardModel.GetInward(_inwardNumber);
-                    int subid = Integer.parseInt(documentID);
-                    Database db = (Database)request.getSession(false).getAttribute("db_connection");
-                    Connection conn = db.getConnection();
+                    int subid = Integer.parseInt(documentID);                    
+                    Connection conn = Database.getConnection();
                     InwardAckPDF _inwardAckPdf = new InwardAckPDF(conn);
                     ByteArrayOutputStream baos = _inwardAckPdf.getPDF(subid,
                                                                     _inwardNumber,

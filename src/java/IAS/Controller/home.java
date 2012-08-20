@@ -4,12 +4,12 @@
  */
 package IAS.Controller;
 
+import IAS.Bean.User.LoggedInUserBean;
 import IAS.Class.Database;
 import IAS.Class.JDSLogger;
+import IAS.Class.Queries;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,9 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
-import IAS.Bean.User.LoggedInUserBean;
-import IAS.Class.Queries;
-import java.sql.*;
 //import com.mysql.jdbc.PreparedStatement;
 /**
  *
@@ -61,29 +58,17 @@ public class home extends JDSController {
 
         String url = null;
         HttpSession session = request.getSession(false);
-        if (null == session.getAttribute("name")) {
-            String username = context.getInitParameter("db_user");
-            String password = context.getInitParameter("db_password");
-            String dbURL =
-                    context.getInitParameter("db_driver") + "://"
-                    + context.getInitParameter("db_host") + "/"
-                    + context.getInitParameter("db_name");
-
-
+        if (null == session.getAttribute("name")) {            
             session = request.getSession(true);
             logger.debug("Created a new session with id: " + session.getId());
             synchronized (session) {
 
                 //get the connection from the session if it exists.
-                try {
-                    Database db = (Database) session.getAttribute("db_connection");
-                    if (db != null) {
-                        db.close(); //close the existing connection, to reopen another one
-                    }
-                    connection = DriverManager.getConnection(dbURL, username, password);
+                try {                    
+                    connection = Database.getConnection();
                     connection.setAutoCommit(true);
-                    db = new Database(connection);
-                    session.setAttribute("db_connection", db);
+                    //db = new Database(connection);
+                    //session.setAttribute("db_connection", db);
                     session.setAttribute("inwardUnderProcess", null);
                     
                     String sql = Queries.getQuery("logged_in_user");

@@ -28,7 +28,7 @@ public class fileUploadModel extends JDSModel {
 
     public fileUploadModel(HttpServletRequest request) throws SQLException, IOException {
         //call the base class constructor
-        super(request);
+        //super(request);
     }
 
     public ArrayList<String> uploadDataInDB() throws ServletException, SQLException {

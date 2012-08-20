@@ -6,6 +6,7 @@ package IAS.Model.FileUpload;
 
 import IAS.Model.JDSModel;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,9 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class FileUploadBase extends JDSModel {
 
+    public FileUploadBase() throws SQLException{
+        super();
+    }
     private ArrayList<FileItem> uploadedFiles=new ArrayList<>();
 
     public void addFiles(List<FileItem> _uploadedFiles) {        
@@ -35,11 +39,11 @@ public class FileUploadBase extends JDSModel {
         return uploadedFiles;
     }
 
-    public void processFiles() throws IOException {
+    public void processFiles() throws IOException, SQLException {
         throw (new NotImplementedException());
     }
 
-    public String getOutput() {
+    public String getOutputAsXML() throws IOException{
         throw (new NotImplementedException());
     }
 }

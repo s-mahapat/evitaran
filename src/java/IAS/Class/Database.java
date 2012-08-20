@@ -8,28 +8,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
+import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 
 public class Database implements HttpSessionBindingListener {
 
     ServletContext context;
-    private Connection connection = null;
+    private static Connection connection = null;
+    private static DataSource datasource;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Class.Database");
-
-    public Database() {
-    }
-
-    public Database(Connection conn) {
-        this.connection = conn;
-        //this.context = _context;
-    }
-
-    public void setConnection(Connection conn) {
-        this.connection = conn;
-    }
 
     @Override
     public void valueUnbound(HttpSessionBindingEvent ev) {
@@ -55,7 +48,21 @@ public class Database implements HttpSessionBindingListener {
 
     }
 
-    public Connection getConnection() {
+    private static DataSource getDataSource() throws SQLException {
+        if (datasource == null) {
+            try {
+                Context initCtx = new InitialContext();
+                Context envCtx = (Context) initCtx.lookup("java:comp/env");
+                datasource = (DataSource) envCtx.lookup("jdbc/jds");
+            } catch (NamingException e) {
+                throw(new SQLException(e.getMessage()));
+            }
+        }
+        return datasource;
+    }
+
+    public static Connection getConnection() throws SQLException {
+        connection = getDataSource().getConnection();
         return connection;
     }
 

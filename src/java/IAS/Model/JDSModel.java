@@ -26,18 +26,15 @@ public class JDSModel {
     protected Database db = null;
     protected HttpSession session = null;
 
-    public JDSModel(HttpServletRequest _request) throws SQLException {
+    public JDSModel() throws SQLException {        
+        this.conn = Database.getConnection();
+        this.db = new Database();
 
-        this.request = _request;
-        this.session = _request.getSession(false); //do not create the session if it does not exist
-        if (this.session == null) {
-            throw (new SQLException("Session does not exist.Database connection not found in the session"));
-        }
-        this.db = (Database) session.getAttribute("db_connection");
-        this.conn = db.getConnection();
     }
-
-    public JDSModel() {
+    
+    public JDSModel(HttpServletRequest request) throws SQLException{
+        this.conn = Database.getConnection();
+        this.db = new Database();
     }
 
     public void FillBean(HttpServletRequest request, Object _bean) throws IllegalAccessException, java.lang.reflect.InvocationTargetException {
@@ -54,7 +51,6 @@ public class JDSModel {
         //Update inward with completed flag once the transaction is completed
         String sql = Queries.getQuery("update_inward_complete_flag");
         PreparedStatement st = conn.prepareStatement(sql);
-        st = conn.prepareStatement(sql);
         st.setInt(1, inwardID);
         if (db.executeUpdatePreparedStatement(st) == 1) {
             session.setAttribute("inwardUnderProcess", null);

@@ -17,22 +17,25 @@
                 _fileuploader.url = "fileupload?action=urn";
                 _fileuploader.filters = [{title : "XML files", extensions : "xml"}];
                 _fileuploader.success = function(up, file, info){
-                    console.log(info);
+                    if($(info.response).find("results").find("row") != null){
+                        loadErrorGrid(info.response);
+                    }else if($(info.response).find("results") != null){
+                        alert("Add XML Data updated")
+                    }                    
                 };
                 _fileuploader.error = function(up, args){
-                    alert("Error");
+                    alert("Error in uploading XML file");
                 }
                 _fileuploader.draw();
 
             });
             
             
-            /*$(function(){
-
+            function loadErrorGrid(xml){
                 $("#urnTable").jqGrid({
-                    url:'',
-                    datatype: 'xml',
-                    mtype: 'GET',
+                    datatype: 'xmlstring',
+                    datastr: xml,
+                    //mtype: 'GET',
                     width: '100%',
                     height: 240,
                     autowidth: true,
@@ -44,20 +47,20 @@
                     loadtext: "Loading...",
                     colNames:['Inward#','Subscriber#', 'Reciept#','Cheque#','Date'],
                     colModel :[
-                        {name:'Inward#', index:'inward_id', width:50, align:'center', xmlmap:'inward_id'},
-                        {name:'Subscriber#', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_id'},
+                        {name:'Inward#', index:'inward_id', width:50, align:'center', xmlmap:'inwardno'},
+                        {name:'Subscriber#', index:'subscriber_id', width:50, align:'center', xmlmap:'subno'},
                         {name:'Reciept#', index:'reciept_no', width:50, align:'center', xmlmap:'reciept_no'},
-                        {name:'Cheque#', index:'cheque_no', width:50, align:'center', xmlmap:'cheque_no'},
-                        {name:'Date', index:'date', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'date'},
+                        {name:'Cheque#', index:'cheque_no', width:50, align:'center', xmlmap:'chqno'},
+                        {name:'Date', index:'date', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'chqdate'},
                     ],
                     xmlReader : {
-                        root: "result",
-                        row: "urn",
-                        page: "urns>page",
-                        total: "urns>total",
-                        records : "urns>records",
+                        root: "results",
+                        row: "row",
+                        page: "results>page",
+                        total: "results>total",
+                        records : "results>records",
                         repeatitems: false,
-                        id: "id"
+                        id: "inwardno"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -71,11 +74,6 @@
                         alert("Failed getting data from server" + status);
                     }
                 });
-                                
-            });*/
-            
-            function validateFileType(){
-                return TestFileType($("#urnxmlfile").val(), ['xml'])
             }
         </script>
 
@@ -83,7 +81,7 @@
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form action="" method="POST" enctype="multipart/form-data" onsubmit="return validateFileType()">
+            <form action="" method="POST" enctype="multipart/form-data">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Update Receipt Numbers</legend>
@@ -107,7 +105,7 @@
                         </fieldset>
 
                         <fieldset class="subMainFieldSet">
-                            <legend>Results</legend>
+                            <legend>Failures</legend>
                             <div class="IASFormFieldDiv">
                                 <table class="datatable" id="urnTable"></table>
                                 <div id="pager"></div>

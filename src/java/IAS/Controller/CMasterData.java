@@ -22,14 +22,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CMasterData extends JDSController {
 
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         String xml = null;
-        String strDBValue = null;
         String mdataRequested = request.getParameter("md").toLowerCase();
-        Database db = (Database) request.getSession().getAttribute("db_connection");
-        String mdataReqKey = request.getParameter("mdkey");
+        Database db = new Database();
         String mdataReqValue = request.getParameter("mdvalue");
         String optionalParam[] = request.getParameterValues("optionalParam");
         try {
@@ -37,7 +36,7 @@ public class CMasterData extends JDSController {
                 xml = util.convertResultSetToXML(db.executeQuery(Queries.getQuery(mdataRequested)));
             }
             if (mdataReqValue != null) {
-                PreparedStatement ps = db.getConnection().prepareStatement(Queries.getQuery(mdataRequested));
+                PreparedStatement ps = Database.getConnection().prepareStatement(Queries.getQuery(mdataRequested));
                 ps.setString(1, mdataReqValue);
 
                 if(optionalParam != null) {

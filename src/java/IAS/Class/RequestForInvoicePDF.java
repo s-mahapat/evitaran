@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -32,17 +31,10 @@ public class RequestForInvoicePDF extends JDSPDF {
 
     private HttpServletRequest request = null;
     private Connection conn = null;
-    private final HttpSession session;
 
     public RequestForInvoicePDF(HttpServletRequest request) throws SQLException {
-        super();
-        this.request = request;
-        this.session = request.getSession(false); //do not create the session if it does not exist
-        if (this.session == null) {
-            throw (new SQLException("Session does not exist.Database connection not found in the session"));
-        }
-        Database db = (Database) session.getAttribute("db_connection");
-        this.conn = db.getConnection();
+        super();        
+        this.conn = Database.getConnection();
     }
 
     public ByteArrayOutputStream getPDF(String InwardNumber) throws DocumentException,

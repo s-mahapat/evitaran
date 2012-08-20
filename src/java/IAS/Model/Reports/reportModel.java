@@ -34,7 +34,7 @@ public class reportModel extends JDSModel {
 
     public reportModel(HttpServletRequest request) throws SQLException {
 
-        super(request);
+        //super(request);
 
     }
 

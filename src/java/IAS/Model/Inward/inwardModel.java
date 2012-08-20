@@ -32,21 +32,19 @@ import org.xml.sax.SAXException;
 public class inwardModel extends JDSModel {
 
     private inwardFormBean _inwardFormBean = null;
+    //private HttpServletRequest request;
     Properties props = null;
 
-    public inwardModel(HttpServletRequest request) throws SQLException, IOException {
+    public inwardModel(HttpServletRequest request) throws SQLException, IOException {        
         //call the base class constructor
-        super(request);
+        //super(request);
+        this.request = request;
         //throw (new SQLException("Database connection not found in the session"));
         InputStream is = request.getServletContext().getResourceAsStream("/WEB-INF/classes/email_templates.properties");
         props = new Properties();
         props.load(is);
 
-    }
-    
-    public inwardModel(){
-        
-    }
+    }    
 
     public int Save() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
@@ -383,11 +381,12 @@ public class inwardModel extends JDSModel {
         if (completed != null && completed.length() > 0) {
             sql += " and completed=" + completed;
         }
-        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose order by inwardID " + sortOrder;
+        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose order by inwardID " + sortOrder;        
         ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
 
         sql = "select count(*) from (" + sql + ") as tbl";
-        ResultSet rs_count = this.db.executeQuery(sql);
+        PreparedStatement pst = this.conn.prepareStatement(sql);
+        ResultSet rs_count = pst.executeQuery(sql);
         rs_count.first();
         totalQueryCount = rs_count.getInt(1);
         xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
@@ -445,11 +444,10 @@ public class inwardModel extends JDSModel {
         }
 
         sql += " order by sortdate " + sortOrder;
-
-        ResultSet rs = this.db.executeQuery(sql);
-
+        ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);        
         sql = "select count(*) from (" + sql + ") as tbl";
-        ResultSet rs_count = this.db.executeQuery(sql);
+        PreparedStatement pst = this.conn.prepareStatement(sql);
+        ResultSet rs_count = pst.executeQuery();
         rs_count.first();
         int totalQueryCount = rs_count.getInt(1);
         xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
