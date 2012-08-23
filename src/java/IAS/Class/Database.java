@@ -20,10 +20,9 @@ import org.apache.log4j.Logger;
 public class Database implements HttpSessionBindingListener {
 
     ServletContext context;
-    private static Connection connection = null;
     private static DataSource datasource;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Class.Database");
-
+  
     @Override
     public void valueUnbound(HttpSessionBindingEvent ev) {
         logger.debug("session close event");
@@ -48,14 +47,18 @@ public class Database implements HttpSessionBindingListener {
     }
 
     public static Connection getConnection() throws SQLException {
-        connection = getDataSource().getConnection();
-        return connection;
+        return getDataSource().getConnection();
     }
 
     public ResultSet executeQuery(String query) throws SQLException {
         PreparedStatement st;
         ResultSet rs;
-        st = connection.prepareStatement(query);
+        try{
+            st = Database.getConnection().prepareStatement(query);
+        }catch(SQLException e){
+            throw(new SQLException(e.getMessage()));
+        }
+        
         rs = st.executeQuery();
 
         if (st == null) {
@@ -83,7 +86,7 @@ public class Database implements HttpSessionBindingListener {
         ResultSet rs;
         int start = (pageNumber - 1) * pageSize;
         query += " LIMIT " + start + "," + pageSize;
-        PreparedStatement pstatement = connection.prepareStatement(query);
+        PreparedStatement pstatement = Database.getConnection().prepareStatement(query);
         rs = pstatement.executeQuery();
         if (pstatement == null) {
             return null;
@@ -97,7 +100,7 @@ public class Database implements HttpSessionBindingListener {
 
         PreparedStatement st;
         int rs;
-        st = connection.prepareStatement(statement);
+        st = Database.getConnection().prepareStatement(statement);
         rs = st.executeUpdate();
 
         if (st == null) {
@@ -120,22 +123,5 @@ public class Database implements HttpSessionBindingListener {
         }
 
     }
-
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException sqlException) {
-            //sqlException.printStackTrace();
-            connection = null;
-        }
-    }
-
-    @Override
-    protected void finalize() {
-        try {
-            super.finalize();
-        } catch (java.lang.Throwable e) {
-        }
-        close();
-    }
+    
 }
