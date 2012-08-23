@@ -30,7 +30,7 @@ public class subscriberModel extends JDSModel {
 
     public subscriberModel(HttpServletRequest request) throws SQLException {
         //call the base class constructor
-        //super(request);
+        super(request);
         if (session.getAttribute("inwardUnderProcess") != null) {
             this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");
             this.inwardNumber = _inwardFormBean.getInwardNumber();

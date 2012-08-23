@@ -1,32 +1,30 @@
 package IAS.Model.Reports;
 
 import IAS.Bean.Reports.printOrderFormBeanReport;
-import javax.servlet.http.HttpServletRequest;
-import java.sql.*;
-import IAS.Model.*;
-import java.text.ParseException;
-import IAS.Class.Queries;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import IAS.Class.util;
-import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
+import IAS.Class.Queries;
+import IAS.Class.util;
+import IAS.Model.*;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.*;
+import java.text.ParseException;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  *

@@ -26,26 +26,12 @@ public class Database implements HttpSessionBindingListener {
 
     @Override
     public void valueUnbound(HttpSessionBindingEvent ev) {
-
-        try {
-            if (connection != null) {
-                logger.debug("Closing database connection, session close event");
-                //connection.rollback();
-                connection.close();
-            }
-        } catch (SQLException e) {
-            logger.error(e);
-        } catch (Exception e) {
-            logger.error(e);
-        }
-
+        logger.debug("session close event");
     }
 
     @Override
     public void valueBound(HttpSessionBindingEvent event) {
-
         logger.debug("Create New session event triggered");
-
     }
 
     private static DataSource getDataSource() throws SQLException {
@@ -55,7 +41,7 @@ public class Database implements HttpSessionBindingListener {
                 Context envCtx = (Context) initCtx.lookup("java:comp/env");
                 datasource = (DataSource) envCtx.lookup("jdbc/jds");
             } catch (NamingException e) {
-                throw(new SQLException(e.getMessage()));
+                throw (new SQLException(e.getMessage()));
             }
         }
         return datasource;
@@ -109,8 +95,8 @@ public class Database implements HttpSessionBindingListener {
 
     public int executeUpdate(String statement) throws SQLException {
 
-        PreparedStatement st = null;
-        int rs = 0;
+        PreparedStatement st;
+        int rs;
         st = connection.prepareStatement(statement);
         rs = st.executeUpdate();
 
@@ -124,7 +110,7 @@ public class Database implements HttpSessionBindingListener {
 
     public int executeUpdatePreparedStatement(PreparedStatement pstatement) throws SQLException {
 
-        int rs = 0;
+        int rs;
         rs = pstatement.executeUpdate();
         //this.connection.commit();
         if (pstatement == null) {

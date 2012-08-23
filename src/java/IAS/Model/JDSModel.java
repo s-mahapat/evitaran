@@ -36,6 +36,7 @@ public class JDSModel {
         this.conn = Database.getConnection();
         this.db = new Database();
         this.request = request;
+        this.session = request.getSession(false);
     }
 
     public void FillBean(HttpServletRequest request, Object _bean) throws IllegalAccessException, java.lang.reflect.InvocationTargetException {
