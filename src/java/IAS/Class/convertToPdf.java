@@ -25,10 +25,18 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.mysql.jdbc.ResultSetMetaData;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
 import javax.servlet.ServletContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 
 public class convertToPdf extends JDSPDF {
@@ -44,6 +52,111 @@ public class convertToPdf extends JDSPDF {
 
 public convertToPdf(){
         super();
+    }
+
+    /*
+     * NOTE: Usually we calculate the width of the columns based on the average.
+     * But in this case we calculate the max of the column widths.
+     * Currently this is used only for print order. if this is used for any other
+     * report then the output will have to be customised.
+     */
+    public void convertXMLResponseToPDF(OutputStream os, String xml, String query) throws ParserConfigurationException, SAXException, IOException, DocumentException
+    {
+        Document document = this.getPDFDocumentLandscape();
+        //Document document = this.getPDFDocument();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+
+        document.open();
+
+        // 1. Add the letter head
+        document.add(this.getLetterHead());
+
+        // 2. Leave 2 lines in between
+        document.add(Chunk.NEWLINE);
+        document.add(Chunk.NEWLINE);
+
+        // 3. Add the query name
+        Paragraph info = new Paragraph();
+        info.setLeading(leading);
+        info.setAlignment(textAlignment);
+
+        Font font = new Font(fontType, fontSize, fontStyle, BaseColor.BLACK);
+        if(query != null && !query.isEmpty())
+        {
+            info.add(Chunk.NEWLINE);
+            info.add("Query: " + query);
+        }
+        document.add(info);
+
+        // 4. Add the table
+        document.add(Chunk.NEWLINE);
+        //ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+        //int colCount = rsmd.getColumnCount();
+        int colCount = util.getColCount(xml);
+        int rowCount = 0;
+
+        PdfPTable table = new PdfPTable(colCount);
+        table.setWidthPercentage(90);
+
+        Font f = new Font(fontType, fontSize);
+        BaseFont bf = f.getCalculatedBaseFont(false);
+
+        float[] columnWidth = new float[colCount];
+
+        // Write the Table header first
+        //for (int i = 1; i <= colCount; i++)
+        for (int i = 0; i < colCount; i++)
+        {
+            String columnName = util.getColNames(xml, 0, i);
+            table.addCell(columnName);
+            //columnWidth[i-1] = columnWidth[i-1] + bf.getWidthPoint(columnName, fontSize);
+            // We do not include the header row into the average calculation
+            //columnWidth[i] = columnWidth[i] + bf.getWidthPoint(columnName, fontSize);
+        }
+        //rowCount++;
+
+        // Write the table rows
+        //while (rs.next()){
+        for (int j = 0; j < util.getRowCount(xml); j++) {
+            //for (int i = 1; i <= colCount; i++) {
+            for (int i = 0; i < colCount; i++) {
+                // check if the value is null, then initialize it to a blank string
+                //Object value = rs.getObject(i) != null ? rs.getObject(i) : "";
+                //table.addCell(value.toString());
+                String colValue = util.getColValue(xml, j, i);
+                table.addCell(colValue);
+
+                //columnWidth[i-1] = columnWidth[i-1] + bf.getWidthPoint(value.toString(), fontSize);
+                //columnWidth[i] = columnWidth[i] + bf.getWidthPoint(colValue, fontSize);
+                // We make an exception here, to calculate the width based on the max row size
+                if(columnWidth[i] < bf.getWidthPoint(colValue, fontSize)) {
+                    columnWidth[i] = bf.getWidthPoint(colValue, fontSize);
+                }
+            }
+            rowCount++;
+        }
+
+        // Calculate the average width of the table and set the table width
+        /*
+        for (int i = 1; i <= colCount; i++) {
+            columnWidth[i-1] = columnWidth[i-1] / rowCount;
+            // Usually the first column is the id. Because we take the average width, the column text wraps to the next line
+            // To prevent that we double the size of the first column.
+            //if(i == 1) {
+            //    columnWidth[i-1] = columnWidth[i-1] * 2;
+            //}
+            logger.debug("Column: " + i + "-" + columnWidth[i-1]);
+        }
+        */
+        table.setTotalWidth(columnWidth);
+
+        document.add(table);
+
+        document.close();
+        outputStream.writeTo(os);
+
     }
 
     public void convertResultSetToPdf(OutputStream os, ResultSet rs, String query) throws DocumentException, FileNotFoundException, IOException, SQLException

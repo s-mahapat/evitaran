@@ -1,5 +1,6 @@
 package IAS.Model.Reports;
 
+import IAS.Bean.Reports.printOrderFormBeanReport;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import IAS.Model.*;
@@ -23,6 +24,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -34,7 +38,7 @@ public class reportModel extends JDSModel {
 
     public reportModel(HttpServletRequest request) throws SQLException {
 
-        //super(request);
+        super(request);
 
     }
 
@@ -493,8 +497,7 @@ public class reportModel extends JDSModel {
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
     }
- 
-       
+
  public ResultSet listMl() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String sql = Queries.getQuery("listml");
         PreparedStatement stGet = conn.prepareStatement(sql);
@@ -505,8 +508,7 @@ public class reportModel extends JDSModel {
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
       }
-       
- 
+
  public ResultSet listBil() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String toDate = request.getParameter("to");
         String fromDate = request.getParameter("from");
@@ -544,9 +546,9 @@ public class reportModel extends JDSModel {
         stGet.setString(++paramIndex, request.getParameter("year"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
-        
-      }       
-       
+
+      }
+
 
     /*
     public String printOrderTableDetails()
@@ -569,7 +571,6 @@ public class reportModel extends JDSModel {
     }
     */
 
-    /*
     public String printOrderTableDetails()
     {
         String xml = "";
@@ -591,29 +592,142 @@ public class reportModel extends JDSModel {
 
         return(xml);
     }
-    */
 
-    public String printOrderTableDetails()
+    public String printOrderTableDetailsList() throws SQLException, IllegalAccessException, InvocationTargetException {
+
+        printOrderFormBeanReport printOrderFormBeanReport = new IAS.Bean.Reports.printOrderFormBeanReport();
+        request.setAttribute("printOrderFormBeanReport", printOrderFormBeanReport);
+        //FillBean is defined in the parent class IAS.Model/JDSModel.java
+        FillBean(this.request, printOrderFormBeanReport);
+
+        int year = printOrderFormBeanReport.getYear();
+
+        String sql = Queries.getQuery("get_max_no_of_issues");
+        PreparedStatement st = conn.prepareStatement(sql);
+        ResultSet rs = db.executeQueryPreparedStatement(st);
+        int maxNoOfIssues = 0;
+        if(rs.next()) {
+            maxNoOfIssues = rs.getInt(1);
+        }
+
+        String xml = "";
+        xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n";
+        xml = xml + "<results>";
+
+        sql = Queries.getQuery("get_list_of_journals");
+        st = conn.prepareStatement(sql);
+        ResultSet rsLJ = db.executeQueryPreparedStatement(st);
+        ResultSetMetaData rsmd = rsLJ.getMetaData();
+        String colName = rsmd.getColumnName(1);
+
+        while(rsLJ.next())
+        {
+            xml = xml + "<row>";
+            String journalCode = rsLJ.getString(1);
+
+            xml = xml + "<" + colName + ">" + journalCode + "</" + colName + ">";
+
+            sql = Queries.getQuery("get_no_of_issues");
+            st = conn.prepareStatement(sql);
+            st.setString(1, journalCode);
+            ResultSet rsNI = db.executeQueryPreparedStatement(st);
+            int noOfIssues = 0;
+            if(rsNI.next()) {
+                noOfIssues = rsNI.getInt(1);
+            }
+
+            for(int i=1; i<=maxNoOfIssues; i++){
+
+                if(i>noOfIssues)
+                {
+                    xml = xml + "<col" + i + ">" + "NA" + "</col" + i + ">";
+                }else {
+                    xml = xml + "<col" + i + ">";
+
+                    sql = Queries.getQuery("get_print_order");
+                    st = conn.prepareStatement(sql);
+                    int paramIndex = 1;
+                    st.setInt(paramIndex++, year);
+                    st.setString(paramIndex++, journalCode);
+                    st.setInt(paramIndex++, i);
+                    ResultSet rsPO = db.executeQueryPreparedStatement(st);
+                    String print_order = "";
+                    if(rsPO.next()) {
+                        print_order = Integer.toString(rsPO.getInt(1));
+                    }
+                    xml = xml + print_order;
+                    xml = xml + "</col" + i + ">";
+                }
+            }
+            xml = xml + "</row>";
+        }
+        xml = xml + "</results>";
+
+        return(xml);
+    }
+
+    public void contructTableForPrintOrderReport() throws SQLException, ParserConfigurationException, SAXException, IOException, IllegalAccessException, InvocationTargetException {
+
+        //printOrderFormBeanReport _printOrderFormBeanReport = new IAS.Bean.Reports.printOrderFormBeanReport();
+        //request.setAttribute("printOrderFormBeanReport", _printOrderFormBeanReport);
+        //FillBean is defined in the parent class IAS.Model/JDSModel.java
+        //FillBean(this.request, _printOrderFormBeanReport);
+
+        String sql = Queries.getQuery("get_max_no_of_issues");
+        PreparedStatement st = conn.prepareStatement(sql);
+        ResultSet rs = db.executeQueryPreparedStatement(st);
+        int maxNoOfIssues = 0;
+        if(rs.next()) {
+            maxNoOfIssues = rs.getInt(1);
+        }
+
+        String colNames = "['Journal',";
+        String colModel = "[" + "{name:'journalCode', index:'journalCode', xmlmap:'journalCode'},";
+        for(int i=1; i<=maxNoOfIssues; i++)
+        {
+            colNames = colNames + "'" + i + "'";
+            colModel = colModel + "{name:'col" + i + "'," + "index:'col" + i + "'," + "align:'center'," +"xmlmap:'col" + i + "'}";
+
+            if(i != maxNoOfIssues) {
+                colNames = colNames + ",";
+                colModel = colModel + ",";
+            }
+
+            if(i == maxNoOfIssues) {
+                colNames = colNames + "]";
+                colModel = colModel + "]";
+            }
+        }
+
+        printOrderFormBeanReport _printOrderFormBeanReport = new IAS.Bean.Reports.printOrderFormBeanReport();
+        _printOrderFormBeanReport.setColM(colModel);
+        _printOrderFormBeanReport.setColN(colNames);
+        request.setAttribute("printOrderFormBeanReport", _printOrderFormBeanReport);
+
+    }
+
+    public String printOrderTableDetailsTest()
     {
         String xml = "";
         xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n";
         xml = xml + "<results>";
         //xml = xml + "<colData>"  + "</colData>";
-        xml = xml + "<colNames>" + "['Issue No','Print Order']" + "</colNames>";
+        //xml = xml + "<colNames>" + "['Issue No','Print Order']" + "</colNames>";
         //xml = xml + "<colModel>" + "[{name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},{name:'printOrder', index:'printOrder', width:80, align:'center',xmlmap:'printOrder'}]" +"</colModel>";
-        xml = xml + "<colModel>" + "[{name:'issues', index:'issues', xmlmap:'issues'},{name:'printOrder', index:'printOrder', xmlmap:'printOrder'}]" +"</colModel>";
+        //xml = xml + "<colModel>" + "[{name:'issues', index:'issues', xmlmap:'issues'},{name:'printOrder', index:'printOrder', xmlmap:'printOrder'}]" +"</colModel>";
 
-        xml = xml + "<row>";
+        xml = xml + "<rows>";
         xml = xml + "<issues>" + "10" +"</issues>";
         xml = xml + "<printOrder>" + "20" + "</printOrder>";
-        xml = xml + "</row>";
+        xml = xml + "</rows>";
 
-        xml = xml + "<row>";
+        xml = xml + "<rows>";
         xml = xml + "<issues>" + "30" +"</issues>";
         xml = xml + "<printOrder>" + "40" + "</printOrder>";
-        xml = xml + "</row>";
+        xml = xml + "</rows>";
 
         xml = xml + "</results>";
+
         return(xml);
     }
 

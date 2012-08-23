@@ -3,6 +3,7 @@
 
 package IAS.Controller.reports;
 
+import IAS.Bean.Reports.printOrderFormBeanReport;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -235,11 +236,21 @@ public class reports extends JDSController {
                 url = "/pdfserver?action=printResultset";
             }
     /*----------------------------------------------------------------*/
-            else if(action.equalsIgnoreCase("printOrderTableDetails")){
-       		String xml = _reportModel.printOrderTableDetails();
+            else if(action.equalsIgnoreCase("printOrderTableDetailsList")){
+       		String xml = _reportModel.printOrderTableDetailsList();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+            }else if(action.equalsIgnoreCase("contructTableForPrintOrderReport")){
+                _reportModel.contructTableForPrintOrderReport();
+                url = "/jsp/reports/listPrintOrder.jsp";
+            }else if(action.equalsIgnoreCase("printPOT")){
+                String xml = _reportModel.printOrderTableDetailsList();
+                request.setAttribute("xml", xml);
+                String query = "Print Order Table";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printXML";
             }
+    /*----------------------------------------------------------------*/
         }catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);

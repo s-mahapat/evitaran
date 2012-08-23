@@ -1,5 +1,6 @@
 package IAS.Controller;
 
+import IAS.Bean.Reports.printOrderFormBeanReport;
 import IAS.Class.JDSLogger;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -170,8 +171,12 @@ public class main extends JDSController {
 
         } else if (action.equalsIgnoreCase("listprintOrder")) {
 
+            url = "/reports?action=contructTableForPrintOrderReport";
+            /*
+            printOrderFormBeanReport _printOrderFormBeanReport = new IAS.Bean.Reports.printOrderFormBeanReport();
+            request.setAttribute("printOrderFormBeanReport", _printOrderFormBeanReport);
             url = "/jsp/reports/listPrintOrder.jsp";
-
+            */
         } else if (action.equalsIgnoreCase("sendReminders")) {
 
             url = "/jsp/reminders/sendReminders.jsp";

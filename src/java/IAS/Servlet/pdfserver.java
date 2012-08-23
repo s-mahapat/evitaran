@@ -54,7 +54,19 @@ public class pdfserver extends JDSController {
                 response.setHeader("Content-disposition", "attachment; filename=report.pdf");
                 os.flush();
 
-            } else if(action.equalsIgnoreCase("generatemlPrintLabel")){
+            } else if(action.equalsIgnoreCase("printXML")){
+
+                String query = (String) request.getAttribute("query");
+                String xml = (String) request.getAttribute("xml");
+
+                convertToPdf c2Pdf = new convertToPdf();
+                c2Pdf.convertXMLResponseToPDF(os, xml, query);
+
+                response.setContentType("application/pdf");
+                response.setHeader("Content-disposition", "attachment; filename=printOrderTable.pdf");
+                os.flush();
+
+            }else if(action.equalsIgnoreCase("generatemlPrintLabel")){
                 logger.debug("Start of mailing list label generation");
                 ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
                 convertToPdf c2Pdf = new convertToPdf();

@@ -26,15 +26,16 @@ public class JDSModel {
     protected Database db = null;
     protected HttpSession session = null;
 
-    public JDSModel() throws SQLException {        
+    public JDSModel() throws SQLException {
         this.conn = Database.getConnection();
         this.db = new Database();
 
     }
-    
+
     public JDSModel(HttpServletRequest request) throws SQLException{
         this.conn = Database.getConnection();
         this.db = new Database();
+        this.request = request;
     }
 
     public void FillBean(HttpServletRequest request, Object _bean) throws IllegalAccessException, java.lang.reflect.InvocationTargetException {
