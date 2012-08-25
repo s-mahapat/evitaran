@@ -471,40 +471,45 @@ public class reportModel extends JDSModel {
                 value = rsSubType.getObject(1);
                 stGetStatement.setString(++paramIndex, value.toString());
                 ResultSet rsStatement = this.db.executeQueryPreparedStatement(stGetStatement);
-                while (rsStatement.next())
+
+                String subtypecode = value.toString();
+                int subCount = 0;
+                int copies = 0;
+
+                if (rsStatement.next())
                 {
 
                     value = rsStatement.getObject(1);
-                    String subtypecode = value.toString();
+                    subtypecode = value.toString();
+
                     value = rsStatement.getObject(2);
-                    int subCount = Integer.parseInt(value.toString());
+                    subCount = Integer.parseInt(value.toString());
+
                     value = rsStatement.getObject(3);
-                    int copies = Integer.parseInt(value.toString());
+                    copies = Integer.parseInt(value.toString());
                     //System.out.println("Subs type: " + subtypecode + " Subs Count: " + subCount + " No of copies: " + copies);
 
                     totalNoOfSubscribers = totalNoOfSubscribers + subCount;
                     totalNoOfCopies = totalNoOfCopies + copies;
-
-                    // Add the row element
-                    Element row = doc.createElement("row");
-                    results.appendChild(row);
-
-                    Element _subType = doc.createElement("subtypecode");
-                    row.appendChild(_subType);
-                    _subType.appendChild(doc.createTextNode(subtypecode));
-
-                    Element _subCount = doc.createElement("subCount");
-                    row.appendChild(_subCount);
-                    _subCount.appendChild(doc.createTextNode(Integer.toString(subCount)));
-
-                    Element _copies = doc.createElement("copies");
-                    row.appendChild(_copies);
-                    _copies.appendChild(doc.createTextNode(Integer.toString(copies)));
-
                 }
+                // Add the row element. Add information for all subscribers
+                Element row = doc.createElement("row");
+                results.appendChild(row);
+
+                Element _subType = doc.createElement("subtypecode");
+                row.appendChild(_subType);
+                _subType.appendChild(doc.createTextNode(subtypecode));
+
+                Element _subCount = doc.createElement("subCount");
+                row.appendChild(_subCount);
+                _subCount.appendChild(doc.createTextNode(Integer.toString(subCount)));
+
+                Element _copies = doc.createElement("copies");
+                row.appendChild(_copies);
+                _copies.appendChild(doc.createTextNode(Integer.toString(copies)));
             }
 
-            // Add the row element
+            // Add the row element. Add the total number of copies and subscriber count here
             Element row = doc.createElement("row");
             results.appendChild(row);
 

@@ -51,7 +51,7 @@ public convertToPdf(){
     /*
      * NOTE: Usually we calculate the width of the columns based on the average.
      * But in this case we calculate the max of the column widths.
-     * Currently this is used only for print order. if this is used for any other
+     * Currently this is used only for print order and statement. if this is used for any other
      * report then the output will have to be customised.
      */
     public void convertXMLResponseToPDF(OutputStream os, String xml, String query) throws ParserConfigurationException, SAXException, IOException, DocumentException
@@ -93,7 +93,8 @@ public convertToPdf(){
 
         PdfPTable table = new PdfPTable(colCount);
         table.setWidthPercentage(90);
-        table.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
 
         Font f = new Font(fontType, fontSize);
         BaseFont bf = f.getCalculatedBaseFont(false);
@@ -186,7 +187,7 @@ public convertToPdf(){
 
         // 4. Add the table
         document.add(Chunk.NEWLINE);
-        ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+        java.sql.ResultSetMetaData rsmd = rs.getMetaData();
         int colCount = rsmd.getColumnCount();
         int rowCount = 0;
 
