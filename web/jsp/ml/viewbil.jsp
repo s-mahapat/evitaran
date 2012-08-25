@@ -93,8 +93,9 @@
 
             function search(){
 
-                if (($("#subscriberNumber").val() == 0) || ($("#selall:checked").val()) == 0 ){
-                    alert("Select Subscriber Number or All pending Back isuses");
+                //if (($("#subscriberNumber").val() == 0) || ((isEmpty($("#to"))) && (isEmpty($("#from"))))){
+                if (1 == 0){
+                    alert("Select Subscriber Number or Date Range");
                 }
 
                 else {
@@ -102,8 +103,8 @@
                         jQuery("#bilTable").setGridParam({postData:
                                 {
                                 subscriberNumber        : $("#subscriberNumber").val(),
-                                to                      : $("#to").length,
-                                from                      : $("#from").length,
+                                to                      : $("#to").val(),
+                                from                      : $("#from").val(),
                                 bilCreationDate          : $("#bilCreationDate").val(),
                                 action                  : "search"
                             }});
@@ -119,7 +120,7 @@
                 $("#subscriberNumber").empty();
                 $("#subscriberNumber").text("");
 
-                var newOption = new Option("Select", "value");
+                var newOption = new Option("Select", "0");
                 $(newOption).html("Select");
                 $("#subscriberNumber").append(newOption);
                 if (mode == 'g')

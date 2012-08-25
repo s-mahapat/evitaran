@@ -78,6 +78,7 @@ CREATE TABLE `back_issue_list` (
 
 LOCK TABLES `back_issue_list` WRITE;
 /*!40000 ALTER TABLE `back_issue_list` DISABLE KEYS */;
+INSERT INTO `back_issue_list` VALUES (1,3132,1,1,2012,1,1,1,'2012-08-05','2012-08-05',1),(2,3132,1,1,2012,2,1,1,'2012-08-05','2012-08-05',1),(3,3132,1,3,2012,3,1,1,'2012-08-05','2012-08-05',1),(4,3132,1,4,2012,4,1,1,'2012-08-05','2012-08-05',1),(5,3132,1,5,2012,5,1,1,'2012-08-05','2012-08-05',1);
 /*!40000 ALTER TABLE `back_issue_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +103,7 @@ CREATE TABLE `circulation_figure` (
   `printOrder` int(11) DEFAULT NULL,
   `balanceCopies` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1775,8 +1776,7 @@ BEGIN
       
 
 	    DECLARE
-
-         cur1 CURSOR FOR SELECT id, journalCode, journalName from journals;
+         cur1 CURSOR FOR SELECT id, journalCode, journalName from journals;
  
       DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
       
@@ -1792,8 +1792,7 @@ BEGIN
           IF done = 1 THEN
 
             LEAVE read_loop;
-
-                    END IF;       
+                    END IF;       
 
 
           select printOrder into print_order_value from print_order where `year` = cir_year and journalId = journal_id;
@@ -1907,25 +1906,30 @@ BEGIN
 DECLARE
 
      cur1 CURSOR FOR select id, journalGroupName from journal_groups;
-
+
+
       DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-
+
+
       delete from temp_sub_rate;
-
+
+
       OPEN cur1;
-
+
+
       read_loop: LOOP
 
 
       fetch cur1 into journal_gp_id, journal_gp_name;
-
+
+
         IF done = 1 THEN
-
-
-            LEAVE read_loop;
-
-         END IF;
 
+            LEAVE read_loop;
+
+         END IF;
+
+
         select subscription_rates.rate into price_rate 
           from 
           subscription_rates, subscriber_type 
@@ -1936,7 +1940,8 @@ BEGIN
 
 
           insert into temp_sub_rate 
-          (journalGroupId, journalGroupName, subTypeDesc, `year`, year1)           VALUES 
+          (journalGroupId, journalGroupName, subTypeDesc, `year`, year1) 
+          VALUES 
           (journal_gp_id, journal_gp_name, sub_type_desc, cir_year, price_rate);
 
           set price_rate = 0;
@@ -1948,7 +1953,8 @@ BEGIN
           where  
           subscription_rates.`year` = cir_year AND subscription_rates.period = 2 
           AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id 
-          and subscriber_type.subtypedesc = sub_type_desc;
+          and subscriber_type.subtypedesc = sub_type_desc;
+
 
           update temp_sub_rate SET
             year2 = price_rate 
@@ -1960,7 +1966,8 @@ BEGIN
           set price_rate = 0;
 
 
-        select subscription_rates.rate into price_rate           from 
+        select subscription_rates.rate into price_rate 
+          from 
           subscription_rates, subscriber_type 
           where  
           subscription_rates.`year` = cir_year AND subscription_rates.period = 3 
@@ -1970,7 +1977,8 @@ BEGIN
           update temp_sub_rate SET
             year3 = price_rate 
             where 
-              journalGroupId = journal_gp_id AND journalGroupName = journal_gp_name               AND subTypeDesc = sub_type_desc and `year` = cir_year;
+              journalGroupId = journal_gp_id AND journalGroupName = journal_gp_name 
+              AND subTypeDesc = sub_type_desc and `year` = cir_year;
 
 
           set price_rate = 0;
@@ -1979,10 +1987,11 @@ BEGIN
         select subscription_rates.rate into price_rate 
           from 
           subscription_rates, subscriber_type 
-          where            subscription_rates.`year` = cir_year AND subscription_rates.period = 5 
-          AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id           and subscriber_type.subtypedesc = sub_type_desc; 
-
-
+          where  
+          subscription_rates.`year` = cir_year AND subscription_rates.period = 5 
+          AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id 
+          and subscriber_type.subtypedesc = sub_type_desc; 
+
         update temp_sub_rate SET
             year4 = price_rate 
             where 
@@ -1992,7 +2001,8 @@ BEGIN
 
           set price_rate = 0;
       END LOOP;
-
+
+
       CLOSE cur1;  
 
 
@@ -2603,4 +2613,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-08-05 23:52:01
+-- Dump completed on 2012-08-25  9:26:58

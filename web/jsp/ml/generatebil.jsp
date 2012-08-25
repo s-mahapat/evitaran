@@ -93,7 +93,7 @@
 
             function generate(){
 
-                if (($("#subscriberNumber").val() == 0) || ($("#selall:checked").val()) == 0 ){
+                if (($("#subscriberNumber").val() == 0) || (($("#to").val()) == 0 && ($("#from").val()) == 0)){
                     alert("Select Subscriber Number or All pending Back isuses");
                 }
 
@@ -119,7 +119,7 @@
                 $("#subscriberNumber").empty();
                 $("#subscriberNumber").text("");
 
-                var newOption = new Option("Select", "value");
+                var newOption = new Option("Select", "0");
                 $(newOption).html("Select");
                 $("#subscriberNumber").append(newOption);
                 if (mode == 'g')

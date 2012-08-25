@@ -176,14 +176,14 @@ public class reports extends JDSController {
             /*----------------------------------------------------------------*/
             else if(action.equalsIgnoreCase("statement")){
 
-                ResultSet rs = _reportModel.statement();
-                String xml = util.convertResultSetToXML(rs);
+                String xml = _reportModel.statement();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
             }else if(action.equalsIgnoreCase("printStatement")){
 
-                ResultSet rs = _reportModel.statement();
+                ResultSet rs = null;
+                String xml = _reportModel.statement();
                 request.setAttribute("ResultSet", rs);
                 String query = "Statement for Journal";
                 request.setAttribute("query", query);

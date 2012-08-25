@@ -34,7 +34,7 @@ public class bilModel extends JDSModel {
 
     }
 
-     public String search()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+     public String searchGen()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
 
         ResultSet rs = getBILDtlUi();
@@ -43,23 +43,72 @@ public class bilModel extends JDSModel {
         return xml;
     }
      
+    public String search()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String xml = null;
+
+        ResultSet rs = getBILDtlUi();
+
+        xml = util.convertResultSetToXML(rs);
+        return xml;
+    }
+    
         public ResultSet getBILDtlUi() throws SQLException
     {
+        
+        String fromDate = request.getParameter("from");
+        String toDate = request.getParameter("to");
+        String subscriberNumber = request.getParameter("subscriberNumber");
+        if ("0".equals(fromDate)) {
+            fromDate = null;
+        }
+        if ("0".equals(toDate)) {
+            toDate = null;
+        }
+        if ("0".equals(subscriberNumber) || "value".equals(subscriberNumber)) {
+            subscriberNumber = null;
+        }        
         String sql = Queries.getQuery("search_bil_ui");
+        
+        if (subscriberNumber != null && subscriberNumber.compareToIgnoreCase("NULL") != 0 && subscriberNumber.length() > 0) {
+            sql += " and subscriber.subscriberNumber =" + "'" + subscriberNumber + "'";
+        }
+        else{
+            sql += " and back_issue_list.added_on between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+        }      
+        
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
+        //int paramIndex = 1;
+        //stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-
         return rs;
     }
 
     public ResultSet getBILDtl() throws SQLException
     {
+                String fromDate = request.getParameter("from");
+        String toDate = request.getParameter("to");
+        String subscriberNumber = request.getParameter("subscriberNumber");
+        if ("0".equals(fromDate)) {
+            fromDate = null;
+        }
+        if ("0".equals(toDate)) {
+            toDate = null;
+        }
+        if ("0".equals(subscriberNumber)) {
+            subscriberNumber = null;
+        }        
         String sql = Queries.getQuery("search_bil");
+        
+        if (subscriberNumber != null && subscriberNumber.compareToIgnoreCase("NULL") != 0 && subscriberNumber.length() > 0) {
+            sql += " and subscriber.subscriberNumber =" + "'" + subscriberNumber + "'";
+        }
+        else{
+            sql += " and back_issue_list.added_on between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+        } 
+
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
+        //int paramIndex = 1;
+        //stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
     }
@@ -98,15 +147,13 @@ public class bilModel extends JDSModel {
             sql += " and back_issue_list.added_on between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         while (rs.next()) {
             // insert record by record to mailing list
             String bilid = null;
             String sqlInsBil = Queries.getQuery("insert_mldtl_bil");
             PreparedStatement stInsMlBil = conn.prepareStatement(sqlInsBil);
-            paramIndex = 0;
+            int paramIndex = 0;
             Object value = null;
             for (int j = 1; j <= 26; j++) {
                 value = rs.getObject(j);
@@ -125,7 +172,7 @@ public class bilModel extends JDSModel {
             stUpdBil.setString(paramIndexUpd, bilid);
             db.executeUpdatePreparedStatement(stUpdBil);
         }
-        xml = this.search();
+        xml = this.searchGen();
         return xml;
     }
 

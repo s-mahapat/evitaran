@@ -417,11 +417,11 @@ public class reportModel extends JDSModel {
         return rs;
     }
 
-    public ResultSet statement() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
-
+    public String statement() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+        String xml = null;
         String journalName = request.getParameter("journalName");
         String year = request.getParameter("year");
-        String subscriberType = request.getParameter("subscriberType");
+        String issue = request.getParameter("issue");
 
         if ("0".equals(journalName)) {
             journalName = null;
@@ -431,45 +431,52 @@ public class reportModel extends JDSModel {
             year = null;
         }
 
-        if ("0".equals(subscriberType)) {
-            subscriberType = null;
+        if ("0".equals(issue)) {
+            issue = null;
         }
 
         String sql = null;
-        sql = Queries.getQuery("statement");
-        int param = 0;
-
-        if (journalName != null && journalName.length() > 0) {
-            sql += " journals.journalName=" + "'" + journalName + "'";
-            param = 1;
-        }
-
-        if (subscriberType != null && subscriberType.length() > 0) {
-            if (param == 0) {
-                sql += " subscriber_type.subtypedesc=" + "'" + subscriberType + "'";
-                param = 1;
-            } else {
-                sql += " and subscriber_type.subtypedesc=" + "'" + subscriberType + "'";
-            }
-        }
-
-        if (year != null && year.length() > 0) {
-            if (param == 0) {
-                sql += " subscriptiondetails.startYear <=" + "'" + year + "'";
-                sql += " and subscriptiondetails.endYear >=" + "'" + year + "'";
-                param = 1;
-            } else {
-                sql += " and subscriptiondetails.startYear <=" + "'" + year + "'";
-                sql += " and subscriptiondetails.endYear >=" + "'" + year + "'";
-            }
-        }
-
-        sql += " group by  subscriber_type.subtypecode, journals.journalCode";
-        sql += " order by journals.journalCode, subscriber_type.subtypecode";
-
+        sql = Queries.getQuery("journal_id");
+        int paramIndex = 1;
         PreparedStatement stGet = conn.prepareStatement(sql);
+        stGet.setString(paramIndex, request.getParameter("journalName"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        return rs;
+        if (rs.next())
+        {
+            int journalId = 0;
+            journalId = rs.getInt(1);
+            String sqlSubType = null;
+            sqlSubType = Queries.getQuery("subscriber_type");
+            PreparedStatement stGetSubType = conn.prepareStatement(sqlSubType);
+            ResultSet rsSubType = this.db.executeQueryPreparedStatement(stGetSubType);
+            while (rsSubType.next())
+            {
+                Object value = null;
+                String sqlStatement = null;
+                sqlStatement = Queries.getQuery("statement");
+                PreparedStatement stGetStatement = conn.prepareStatement(sqlStatement);
+                paramIndex = 1;
+                stGetStatement.setInt(paramIndex, journalId);
+                stGetStatement.setString(++paramIndex, request.getParameter("issue"));
+                stGetStatement.setString(++paramIndex, request.getParameter("year"));
+                value = rsSubType.getObject(1);
+                stGetStatement.setString(++paramIndex, value.toString());
+                ResultSet rsStatement = this.db.executeQueryPreparedStatement(stGetStatement);
+                while (rsStatement.next())
+                {
+
+                        value = rsStatement.getObject(1);
+                        String subType = value.toString();
+                        value = rsStatement.getObject(2);
+                        int subCount = Integer.parseInt(value.toString());
+                        value = rsStatement.getObject(3);
+                        int copies = Integer.parseInt(value.toString());
+                        System.out.println("Subs type: " + subType + " Subs Count: " + subCount + " No of copies: " + copies);
+
+                }    
+            }
+        }
+        return xml;
     }
 
     public ResultSet circulationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {

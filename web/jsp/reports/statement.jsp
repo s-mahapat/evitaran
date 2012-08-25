@@ -13,7 +13,7 @@
             $(document).ready(function() {
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalName"%>","journalName","journalName");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");
+                //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");
             });
         </script>
 
@@ -38,10 +38,8 @@
                         rownumbers: true,
                         emptyrecords: "No records to view",
                         loadtext: "Loading...",
-                        colNames:['Journal Code','Journal Name', 'Subscriber Type','Subscriber Count','No. Of Copies'],
+                        colNames:['Subscriber Type','Subscriber Count','No. Of Copies'],
                         colModel :[
-                          {name:'journalCode', index:'journalCode', width:50, align:'center', xmlmap:'journalCode'},
-                          {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
                           {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
                           {name:'subscriberCount', index:'subscriberCount', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'subscriberCount'},
                           {name:'copies', index:'copies', width:80, align:'center', sortable:false, xmlmap:'copies'},
@@ -80,26 +78,46 @@
 
             // called when the search button is clicked
             function getStatements(){
-                if(($("#journalName").val() == 0) && $("#year").val() == 0 && $("#subscriberType").val() == 0)
+                if(($("#journalName").val() == 0) && $("#year").val() == 0 && $("#issue").val() == 0)
                 {
                         alert("Atleast one search parameter should be selected along with Year");
                 }
                 else if ($("#year").val() == 0)
                 {
                         alert("Select Year");
-                }    
+                }
+                else if ($("#issue").val() == 0)
+                {
+                        alert("Select Issue");
+                }  
+                else if ($("#journalName").val() == 0)
+                {
+                        alert("Select Journal Name");
+                }  
                 else{
                     isPageLoaded = true;
                     jQuery("#statementTable").setGridParam({postData:
                             {journalName    : $("#journalName").val(),
                             year            : $("#year").val(),
-                            subscriberType  : $("#subscriberType").val()
+                            issue           : $("#issue").val()
                         }});
                     jQuery("#statementTable").setGridParam({ datatype: "xml" });
                     jQuery("#statementTable").trigger("clearGridData");
                     jQuery("#statementTable").trigger("reloadGrid");
 
                 }
+            }
+            
+            function loadIssues(){
+                $("#issue").empty();
+                //text("");
+
+                var newOption = new Option("Select", "0");
+                $(newOption).html("Select");
+                $("#issue").append(newOption);
+
+                requestURL = "/JDS/CMasterData?md=getissues&mdvalue=" +  $("#journalName").val();
+                jdsAppend(requestURL,"issueNumber","issue");
             }
 
 
@@ -110,6 +128,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
+            <jsp:useBean class="IAS.Bean.Reports.statementFormBean" id="statementFormBean" scope="request"></jsp:useBean>
             <form method="post" action="<%=request.getContextPath() + "/reports?action=printStatement"%>" name="statement">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
@@ -129,11 +148,27 @@
                                         <label>Journal Name</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName">
+                                        <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName" onchange="loadIssues()">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
                                 </div>
+
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Issue:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                    <select class="IASComboBox" TABINDEX="2" name="issue" id="issue">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <%-- Search Criteria Right div --%>
+                            <div class="IASFormRightDiv">
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
@@ -142,21 +177,6 @@
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBoxSmallMandatory" TABINDEX="2" name="year" id="year">
                                             <option value="0">Select</option>
-                                        </select>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <%-- Search Criteria Right div --%>
-                            <div class="IASFormRightDiv">
-
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Subscriber Type</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="3" name="subscriberType" id="subscriberType">
-                                            <option value="0" selected>Select</option>
                                         </select>
                                     </span>
                                 </div>

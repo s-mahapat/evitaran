@@ -13,7 +13,7 @@
               auth="Container"
               factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" 
               type="javax.sql.DataSource"
-              testWhileIdle="false"
+              testWhileIdle="true"
               testOnBorrow="true"
               testOnReturn="false"
               validationQuery="SELECT 1"
