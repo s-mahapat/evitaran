@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import IAS.Model.Reports.reportModel;
-
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
@@ -204,6 +203,25 @@ public class reports extends JDSController {
                 ResultSet rs = _reportModel.circulationFigures();
                 request.setAttribute("ResultSet", rs);
                 String query = "Circulation Figures";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+            }
+            else if(action.equalsIgnoreCase("constructTableSubcriptionFigures")){
+                _reportModel.constructTableSubcriptionFigures();
+                url = "/jsp/reports/subscriptionFigures.jsp";
+            }
+            else if(action.equalsIgnoreCase("subscriptionFigures")){
+
+                String xml = _reportModel.subscriptionFigures();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("printSubscriptionFigures")){
+
+                ResultSet rs = _reportModel.circulationFigures();
+                String xml = _reportModel.subscriptionFigures();
+                request.setAttribute("ResultSet", rs);
+                String query = "Subscription Figures";
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
             }

@@ -1,6 +1,7 @@
 package IAS.Model.Reports;
 
 import IAS.Bean.Reports.printOrderFormBeanReport;
+import IAS.Bean.Reports.subscriptionFiguresFormBeanReport;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
@@ -793,5 +794,123 @@ public class reportModel extends JDSModel {
 
         return(xml);
     }
+    
+    public String subscriptionFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+
+        // Add the results element
+        String xml = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+
+        String sql = null;
+        sql = Queries.getQuery("get_list_of_journals");
+        PreparedStatement stGetJournals = this.conn.prepareStatement(sql);
+        ResultSet rs1 = db.executeQueryPreparedStatement(stGetJournals);
+        while(rs1.next())
+        {            
+            int totalNoOfSubscribers = 0;
+            int totalNoOfCopies = 0;
+            String journalCode = rs1.getString(1);
+            
+            // Add the row element
+            Element row = doc.createElement("row");
+            results.appendChild(row);
+            
+            Element _journalCode = doc.createElement("journalCode");
+            row.appendChild(_journalCode);
+            _journalCode.appendChild(doc.createTextNode(journalCode));
+            
+            String sqlSubType = null;
+            sqlSubType = Queries.getQuery("subscriber_type");            
+            PreparedStatement stGetSubType = this.conn.prepareStatement(sqlSubType);
+            ResultSet rs2 = db.executeQueryPreparedStatement(stGetSubType);
+            while(rs2.next())
+            {
+
+                String subtypecode = rs2.getString(1);
+                int paramIndex = 1;
+                String sqlSubFigures = null;
+                sqlSubFigures = Queries.getQuery("subscription_Figures");                
+                PreparedStatement stGetFigures = this.conn.prepareStatement(sqlSubFigures);
+                stGetFigures.setString(paramIndex, journalCode);
+                stGetFigures.setString(++paramIndex, subtypecode);
+                ResultSet rs3 = db.executeQueryPreparedStatement(stGetFigures);
+                int subscriberCount = 0;
+                int copies = 0;
+                if (rs3.next())
+                {
+                    subscriberCount = rs3.getInt(1);
+                    copies = rs3.getInt(2);  
+
+                }
+ 
+                    totalNoOfSubscribers = totalNoOfSubscribers + subscriberCount;
+                    totalNoOfCopies = totalNoOfCopies + copies;
+
+                    Element _subType = doc.createElement(subtypecode + "-No");
+                    row.appendChild(_subType);
+                    _subType.appendChild(doc.createTextNode(Integer.toString(subscriberCount)));
+
+                    Element _subCount = doc.createElement(subtypecode + "-C");
+                    row.appendChild(_subCount);
+                    _subCount.appendChild(doc.createTextNode(Integer.toString(copies)));
+
+                  
+                //System.out.println("Journal Code: " + journalCode + " -> subType Code: " + subtypecode + " -> Subscriber Count: " + subscriberCount + " -> Subscriber Copies: " + copies);
+            }
+        }
+        
+        DOMSource domSource = new DOMSource(doc);
+        try (StringWriter writer = new StringWriter()) {
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            xml = writer.toString();
+        }
+        
+        return xml;
+    }
+    
+        public void constructTableSubcriptionFigures() throws SQLException, ParserConfigurationException, SAXException, IOException, IllegalAccessException, InvocationTargetException {
+
+
+        String sql = Queries.getQuery("subscriber_type");
+        PreparedStatement st = conn.prepareStatement(sql);
+        ResultSet rs = db.executeQueryPreparedStatement(st);
+        int maxNoOfIssues = 0;        
+        
+        String colNames = "['Journal',";
+        String colModel = "[" + "{name:'journalCode', index:'journalCode', xmlmap:'journalCode'},";
+        
+        while(rs.next()) {            
+            String subtypecode = rs.getString(1);
+            colNames = colNames + "'" + subtypecode + "-No'";
+            colNames = colNames + ",";
+            colNames = colNames + "'" + subtypecode + "-C'";
+            colModel = colModel + "{name:'" + subtypecode + "-No'," + "index:'" + subtypecode + "-No'," + "align:'center'," +"xmlmap:'" + subtypecode + "-No'}";
+            colModel = colModel + ",";
+            colModel = colModel + "{name:'" + subtypecode + "-C'," + "index:'" + subtypecode + "-C'," + "align:'center'," +"xmlmap:'" + subtypecode + "-C'}";
+            
+            if(rs.isLast() == false) {
+                colNames = colNames + ",";
+                colModel = colModel + ",";
+            }
+            else {
+                colNames = colNames + "]";
+                colModel = colModel + "]";
+            }
+        }
+
+        subscriptionFiguresFormBeanReport _subscriptionFiguresFormBeanReport = new IAS.Bean.Reports.subscriptionFiguresFormBeanReport();
+        _subscriptionFiguresFormBeanReport.setColM(colModel);
+        _subscriptionFiguresFormBeanReport.setColN(colNames);
+        request.setAttribute("subscriptionFiguresFormBeanReport", _subscriptionFiguresFormBeanReport);
+
+    }
+
 
 }

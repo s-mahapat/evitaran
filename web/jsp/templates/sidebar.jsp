@@ -91,8 +91,9 @@
                 </li>
                 <li class="menu"><a href="#">Others</a>
                     <ul>
-                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=statement"%>">Statement</a></li>
-                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation figures for journals</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=statement"%>">Statement of Label</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation Figures for journals</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=subscriptionFigures"%>">Subscription Figures</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listInwards"%>">Inwards</a></li>
                     </ul>
                 </li>
