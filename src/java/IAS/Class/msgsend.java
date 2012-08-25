@@ -9,6 +9,9 @@ package IAS.Class;
  * If the datasource is not null, then the datasource will be used to get the data and
  * the data will be send as attachment with the name "fileName". No file is written to the disk
  * If datasource is null, then the file "fileName" will be attached with the mail if fileName is not null or empty.
+ *
+ * jds.adm.all@gmail.com: This account is used to collect all the exception messages
+ * jds.ias.mails@gmail.com: This account is used to collect all the mails which are sent by IAS. All mails to this account are sent as bcc
  */
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -58,6 +61,7 @@ public class msgsend {
         email.setFromAddress(properties.getProperty("FROM_TEXT"), properties.getProperty("FROM_EMAIL_ID"));
         email.setSubject(Subject);
         email.addRecipient(SubscriberEmail, SubscriberEmail, RecipientType.TO);
+        email.addRecipient("IAS", "jds.ias.emails@gmail.com", RecipientType.BCC);
         email.setText(body);
         email.addAttachment(FileName, attachment, attachmentType);
         String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");

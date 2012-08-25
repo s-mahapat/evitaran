@@ -2,17 +2,11 @@ package IAS.Class;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.Paragraph;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import org.apache.log4j.Logger;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.Utilities;
 import com.itextpdf.text.pdf.AcroFields.FieldPosition;
@@ -23,19 +17,19 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.mysql.jdbc.ResultSetMetaData;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringReader;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
 import javax.servlet.ServletContext;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 
@@ -48,7 +42,7 @@ public class convertToPdf extends JDSPDF {
     int textAlignment   = 0;
     Font.FontFamily fontType = Font.getFamily("HELVETICA");
     int fontSize        = 10;
-    int fontStyle       = Font.getStyleValue("BOLD");
+    int fontStyle       = Font.getStyleValue("NORMAL");
 
 public convertToPdf(){
         super();
@@ -1033,7 +1027,7 @@ public convertToPdf(){
 
         if(rs.next())
         {
-            ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+            java.sql.ResultSetMetaData rsmd = rs.getMetaData();
             int numberOfColumns = rsmd.getColumnCount();
             for (int i = 1; i <= numberOfColumns; i++)
             {
@@ -1095,6 +1089,7 @@ public convertToPdf(){
             info.add(Chunk.NEWLINE);
             info.add(new Chunk(address, font));
             info.add(Chunk.NEWLINE);
+            font = new Font(fontType, fontSize, Font.BOLD);
             String lastLine = city +
                     " " + pincode +
                     " " + state +

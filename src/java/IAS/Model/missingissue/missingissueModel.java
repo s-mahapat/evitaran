@@ -367,7 +367,7 @@ public class missingissueModel extends JDSModel {
                 String msg = properties.getProperty("missingIssueNoCopy");
                 String to = request.getParameter("email");
                 msgsend sendMsg = new msgsend();
-                status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "", "Missing Issues", msg, "", "", null);
+                status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "jds.ias.mails@gmail.com", "Missing Issues", msg, "", "", null);
                 if(status)
                     xml = util.convertStringToXML("success", "action");
                 else
@@ -405,7 +405,7 @@ public class missingissueModel extends JDSModel {
             String msg = properties.getProperty("missingIssueAlreadySent");
             String to = request.getParameter("email");
             msgsend sendMsg = new msgsend();
-            status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "", "Missing Issues", msg, "", "", null);
+            status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "jds.ias.mails@gmail.com", "Missing Issues", msg, "", "", null);
             if(status)
                 xml = util.convertStringToXML("success", "action");
             else
