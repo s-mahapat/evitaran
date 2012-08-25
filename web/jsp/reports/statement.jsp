@@ -14,6 +14,7 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalName"%>","journalName","journalName");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
                 //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");
+                $("#printReportBtn").button("disable");
             });
         </script>
 
@@ -41,7 +42,7 @@
                         colNames:['Subscriber Type','Subscriber Count','No. Of Copies'],
                         colModel :[
                           {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
-                          {name:'subscriberCount', index:'subscriberCount', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'subscriberCount'},
+                          {name:'subCount', index:'subscriberCount', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'subCount'},
                           {name:'copies', index:'copies', width:80, align:'center', sortable:false, xmlmap:'copies'},
                         ],
                         xmlReader : {
@@ -89,11 +90,11 @@
                 else if ($("#issue").val() == 0)
                 {
                         alert("Select Issue");
-                }  
+                }
                 else if ($("#journalName").val() == 0)
                 {
                         alert("Select Journal Name");
-                }  
+                }
                 else{
                     isPageLoaded = true;
                     jQuery("#statementTable").setGridParam({postData:
@@ -107,7 +108,7 @@
 
                 }
             }
-            
+
             function loadIssues(){
                 $("#issue").empty();
                 //text("");

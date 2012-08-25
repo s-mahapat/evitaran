@@ -418,7 +418,6 @@ public class reportModel extends JDSModel {
     }
 
     public String statement() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
-        String xml = null;
         String journalName = request.getParameter("journalName");
         String year = request.getParameter("year");
         String issue = request.getParameter("issue");
@@ -435,6 +434,14 @@ public class reportModel extends JDSModel {
             issue = null;
         }
 
+        // Add the results element
+        String xml = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+
         String sql = null;
         sql = Queries.getQuery("journal_id");
         int paramIndex = 1;
@@ -443,6 +450,8 @@ public class reportModel extends JDSModel {
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         if (rs.next())
         {
+            int totalNoOfSubscribers=0;
+            int totalNoOfCopies=0;
             int journalId = 0;
             journalId = rs.getInt(1);
             String sqlSubType = null;
@@ -465,16 +474,60 @@ public class reportModel extends JDSModel {
                 while (rsStatement.next())
                 {
 
-                        value = rsStatement.getObject(1);
-                        String subType = value.toString();
-                        value = rsStatement.getObject(2);
-                        int subCount = Integer.parseInt(value.toString());
-                        value = rsStatement.getObject(3);
-                        int copies = Integer.parseInt(value.toString());
-                        System.out.println("Subs type: " + subType + " Subs Count: " + subCount + " No of copies: " + copies);
+                    value = rsStatement.getObject(1);
+                    String subtypecode = value.toString();
+                    value = rsStatement.getObject(2);
+                    int subCount = Integer.parseInt(value.toString());
+                    value = rsStatement.getObject(3);
+                    int copies = Integer.parseInt(value.toString());
+                    //System.out.println("Subs type: " + subtypecode + " Subs Count: " + subCount + " No of copies: " + copies);
 
-                }    
+                    totalNoOfSubscribers = totalNoOfSubscribers + subCount;
+                    totalNoOfCopies = totalNoOfCopies + copies;
+
+                    // Add the row element
+                    Element row = doc.createElement("row");
+                    results.appendChild(row);
+
+                    Element _subType = doc.createElement("subtypecode");
+                    row.appendChild(_subType);
+                    _subType.appendChild(doc.createTextNode(subtypecode));
+
+                    Element _subCount = doc.createElement("subCount");
+                    row.appendChild(_subCount);
+                    _subCount.appendChild(doc.createTextNode(Integer.toString(subCount)));
+
+                    Element _copies = doc.createElement("copies");
+                    row.appendChild(_copies);
+                    _copies.appendChild(doc.createTextNode(Integer.toString(copies)));
+
+                }
             }
+
+            // Add the row element
+            Element row = doc.createElement("row");
+            results.appendChild(row);
+
+            Element _subType = doc.createElement("subtypecode");
+            row.appendChild(_subType);
+            _subType.appendChild(doc.createTextNode("Total"));
+
+            Element _subCount = doc.createElement("subCount");
+            row.appendChild(_subCount);
+            _subCount.appendChild(doc.createTextNode(Integer.toString(totalNoOfSubscribers)));
+
+            Element _copies = doc.createElement("copies");
+            row.appendChild(_copies);
+            _copies.appendChild(doc.createTextNode(Integer.toString(totalNoOfCopies)));
+        }
+
+        DOMSource domSource = new DOMSource(doc);
+        try (StringWriter writer = new StringWriter()) {
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            xml = writer.toString();
         }
         return xml;
     }

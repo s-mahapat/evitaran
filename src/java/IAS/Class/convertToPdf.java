@@ -93,6 +93,7 @@ public convertToPdf(){
 
         PdfPTable table = new PdfPTable(colCount);
         table.setWidthPercentage(90);
+        table.setHorizontalAlignment(Element.ALIGN_CENTER);
 
         Font f = new Font(fontType, fontSize);
         BaseFont bf = f.getCalculatedBaseFont(false);

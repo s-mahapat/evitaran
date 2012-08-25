@@ -184,10 +184,12 @@ public class reports extends JDSController {
 
                 ResultSet rs = null;
                 String xml = _reportModel.statement();
-                request.setAttribute("ResultSet", rs);
-                String query = "Statement for Journal";
+                request.setAttribute("xml", xml);
+                String query = "Statement for Journal " + request.getParameter("journalName") +
+                        " for year " + request.getParameter("year") +
+                        " for issue no " + request.getParameter("issue");
                 request.setAttribute("query", query);
-                url = "/pdfserver?action=printResultset";
+                url = "/pdfserver?action=printXML";
             }
             /*----------------------------------------------------------------*/
             else if(action.equalsIgnoreCase("circulationFigures")){

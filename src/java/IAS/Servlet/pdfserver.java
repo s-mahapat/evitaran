@@ -55,12 +55,20 @@ public class pdfserver extends JDSController {
 
                 String query = (String) request.getAttribute("query");
                 String xml = (String) request.getAttribute("xml");
+                /*
+                String filename = "output.pdf";
+                Object obj = request.getAttribute("filename");
+                if(obj != null){
+                    filename = obj.toString();
+                }
+                */
 
                 convertToPdf c2Pdf = new convertToPdf();
                 c2Pdf.convertXMLResponseToPDF(os, xml, query);
 
                 response.setContentType("application/pdf");
-                response.setHeader("Content-disposition", "attachment; filename=printOrderTable.pdf");
+                response.setHeader("Content-disposition", "attachment; filename=report.pdf");
+                //response.setHeader("Content-disposition", "attachment; filename=" + filename);
                 os.flush();
 
             }else if(action.equalsIgnoreCase("generatemlPrintLabel")){
