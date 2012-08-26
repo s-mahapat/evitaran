@@ -192,15 +192,14 @@ public class reports extends JDSController {
             }
             /*----------------------------------------------------------------*/
             else if(action.equalsIgnoreCase("circulationFigures")){
-
-                ResultSet rs = _reportModel.circulationFigures();
-                String xml = util.convertResultSetToXML(rs);
+                
+                String xml = _reportModel.circulationFigures();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
             }else if(action.equalsIgnoreCase("printCirculationFigures")){
 
-                ResultSet rs = _reportModel.circulationFigures();
+                ResultSet rs = null;
                 request.setAttribute("ResultSet", rs);
                 String query = "Circulation Figures";
                 request.setAttribute("query", query);

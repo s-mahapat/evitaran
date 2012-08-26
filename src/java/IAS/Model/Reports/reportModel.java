@@ -237,8 +237,6 @@ public class reportModel extends JDSModel {
         transformer.transform(domSource, result);
         xml = writer.toString();
         writer.close();
-
-
         return xml;
     }
 
@@ -538,20 +536,292 @@ public class reportModel extends JDSModel {
         return xml;
     }
 
-    public ResultSet circulationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
-        int year = Integer.parseInt(request.getParameter("year"));
-        String proc;
-        ResultSet rs = null;
-        proc = "{call circulation_figures(?)}";
-        CallableStatement cs = conn.prepareCall(proc);
-        int paramIndex = 1;
-        cs.setInt(paramIndex, year);
-        if (cs.execute() == true) {
-            String sql = Queries.getQuery("list_circulation_figures");
-            PreparedStatement stGet = conn.prepareStatement(sql);
-            rs = this.db.executeQueryPreparedStatement(stGet);
+    public String circulationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+        
+        String year = request.getParameter("year");
+        String month = request.getParameter("month");
+
+
+        if ("0".equals(year)) {
+            year = null;
         }
-        return rs;
+
+        if ("0".equals(month)) {
+            month = null;
+        }
+
+        // Add the results element
+        String xml = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+        
+        int totalTotalCopies = 0;
+        int totalBalanceCopies=0;
+        int totalPrintOrder = 0;
+        int totalInstI = 0;
+        int totalInstF = 0;
+        int totalIndI = 0;
+        int totalIndF = 0;
+        int totalAuth = 0;
+        int totalFree = 0;
+            
+        String sql = null;
+        sql = Queries.getQuery("cf_journals");
+        int paramIndex = 1;
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        while (rs.next())
+        {
+            int totalCopies = 0;
+            int balanceCopies=0;
+            int printOrder = 0;
+            int instI = 0;
+            int instF = 0;
+            int indI = 0;
+            int indF = 0;
+            int auth = 0;
+            int free = 0;
+            
+            int journalId = rs.getInt(1);
+            String journalCode = rs.getString(2);
+ 
+            String sqlIssues = null;
+            sqlIssues = Queries.getQuery("cf_issue");
+            PreparedStatement stGetIssues = conn.prepareStatement(sqlIssues);
+            paramIndex = 1;
+            stGetIssues.setString(paramIndex, request.getParameter("year"));
+            stGetIssues.setInt(++paramIndex, journalId);
+            stGetIssues.setString(++paramIndex, request.getParameter("month"));
+            ResultSet rsIssues = this.db.executeQueryPreparedStatement(stGetIssues);        
+            while (rsIssues.next())
+            {
+                int issue = rsIssues.getInt(1);
+                
+                // Add the row element. Add information for a journal
+                Element row = doc.createElement("row");
+                results.appendChild(row);
+                
+                // Add journal Code as first column
+                Element _journalCode = doc.createElement("journalCode");
+                row.appendChild(_journalCode);
+                _journalCode.appendChild(doc.createTextNode(journalCode));
+
+                // Add journal Code as first column
+                Element _issue = doc.createElement("issue");
+                row.appendChild(_issue);
+                _issue.appendChild(doc.createTextNode(Integer.toString(issue)));
+                
+                String sqlInstI = null;
+                sqlInstI = Queries.getQuery("cf_inst_i");
+                PreparedStatement stGetInstI = conn.prepareStatement(sqlInstI);
+                paramIndex = 1;
+                stGetInstI.setString(paramIndex, request.getParameter("year"));
+                stGetInstI.setInt(++paramIndex, journalId);
+                stGetInstI.setInt(++paramIndex, issue);
+                ResultSet rsInstI = this.db.executeQueryPreparedStatement(stGetInstI);
+                if (rsInstI.next())
+                {
+                    instI = rsInstI.getInt(1);
+                }
+
+                Element _instI = doc.createElement("instIndia");
+                row.appendChild(_instI);
+                _instI.appendChild(doc.createTextNode(Integer.toString(instI)));
+
+                totalInstI = totalInstI + instI;
+
+                String sqlInstF = null;
+                sqlInstF = Queries.getQuery("cf_inst_f");
+                PreparedStatement stGetInstF = conn.prepareStatement(sqlInstF);
+                paramIndex = 1;
+                stGetInstF.setString(paramIndex, request.getParameter("year"));
+                stGetInstF.setInt(++paramIndex, journalId);
+                stGetInstF.setInt(++paramIndex, issue);           
+                ResultSet rsInstF = this.db.executeQueryPreparedStatement(stGetInstF);
+                if (rsInstF.next())
+                {
+                    instF = rsInstF.getInt(1);
+                }
+
+                Element _instF = doc.createElement("instAbroad");
+                row.appendChild(_instF);
+                _instF.appendChild(doc.createTextNode(Integer.toString(instF)));
+
+                totalInstF = totalInstF + instF;
+
+                String sqlIndI = null;
+                sqlIndI = Queries.getQuery("cf_ind_i");
+                PreparedStatement stGetIndI = conn.prepareStatement(sqlIndI);
+                paramIndex = 1;
+                stGetIndI.setString(paramIndex, request.getParameter("year"));
+                stGetIndI.setInt(++paramIndex, journalId);
+                stGetIndI.setInt(++paramIndex, issue);            
+                ResultSet rsIndI = this.db.executeQueryPreparedStatement(stGetIndI);
+                if (rsIndI.next())
+                {
+                    indI = rsIndI.getInt(1);
+                }
+
+                Element _indI = doc.createElement("indIndia");
+                row.appendChild(_indI);
+                _indI.appendChild(doc.createTextNode(Integer.toString(indI)));
+
+                totalIndI = totalIndI + indI;
+
+                String sqlIndF = null;
+                sqlIndF = Queries.getQuery("cf_ind_f");
+                PreparedStatement stGetIndF = conn.prepareStatement(sqlIndF);
+                paramIndex = 1;
+                stGetIndF.setString(paramIndex, request.getParameter("year"));
+                stGetIndF.setInt(++paramIndex, journalId);
+                stGetIndF.setInt(++paramIndex, issue);              
+                ResultSet rsIndF = this.db.executeQueryPreparedStatement(stGetIndF);
+                if (rsIndF.next())
+                {
+                    indF = rsIndF.getInt(1);
+                }
+
+                Element _indF = doc.createElement("indAbroad");
+                row.appendChild(_indF);
+                _indF.appendChild(doc.createTextNode(Integer.toString(indF)));    
+
+                totalIndF = totalIndF + indF;
+
+                String sqlFree = null;
+                sqlFree = Queries.getQuery("cf_free");
+                PreparedStatement stGetFree = conn.prepareStatement(sqlFree);
+                paramIndex = 1;
+                stGetFree.setString(paramIndex, request.getParameter("year"));
+                stGetFree.setInt(++paramIndex, journalId);
+                stGetFree.setInt(++paramIndex, issue);             
+                ResultSet rsFree = this.db.executeQueryPreparedStatement(stGetFree);
+                if (rsFree.next())
+                {
+                    free = rsFree.getInt(1);
+                }
+
+                Element _free = doc.createElement("comp");
+                row.appendChild(_free);
+                _free.appendChild(doc.createTextNode(Integer.toString(free)));
+                
+                totalFree = totalFree + free;
+
+                String sqlAuth = null;
+                sqlAuth = Queries.getQuery("cf_auth");
+                PreparedStatement stGetAuth = conn.prepareStatement(sqlAuth);
+                paramIndex = 1;
+                stGetAuth.setString(paramIndex, request.getParameter("year"));
+                stGetAuth.setInt(++paramIndex, journalId);
+                stGetAuth.setInt(++paramIndex, issue);             
+                ResultSet rsAuth = this.db.executeQueryPreparedStatement(stGetAuth);
+                if (rsAuth.next())
+                {
+                    auth = rsAuth.getInt(1);
+                }
+
+                Element _auth = doc.createElement("auth");
+                row.appendChild(_auth);
+                _auth.appendChild(doc.createTextNode(Integer.toString(auth)));
+
+                totalAuth = totalAuth + auth;
+
+                String sqlPrintOrder = null;
+                sqlPrintOrder = Queries.getQuery("cf_print_order");
+                PreparedStatement stGetPrintOrder = conn.prepareStatement(sqlPrintOrder);
+                stGetPrintOrder.setString(paramIndex, request.getParameter("year"));
+                stGetPrintOrder.setInt(++paramIndex, journalId);
+                stGetPrintOrder.setInt(++paramIndex, issue);                    
+                ResultSet rsPrintOrder = this.db.executeQueryPreparedStatement(stGetPrintOrder);
+                if (rsPrintOrder.next())
+                {
+                    printOrder = rsPrintOrder.getInt(1);
+                }
+
+                Element _printOrder = doc.createElement("printOrder");
+                row.appendChild(_printOrder);
+                _printOrder.appendChild(doc.createTextNode(Integer.toString(printOrder)));
+
+                totalPrintOrder = totalPrintOrder + printOrder;
+
+                totalCopies = instI + instF + indI + indF + auth + free;
+                balanceCopies = printOrder - totalCopies;
+
+                Element _totalCopies = doc.createElement("totalCopies");
+                row.appendChild(_totalCopies);
+                _totalCopies.appendChild(doc.createTextNode(Integer.toString(totalCopies)));            
+
+                Element _balanceCopies = doc.createElement("balanceCopies");
+                row.appendChild(_balanceCopies);
+                _balanceCopies.appendChild(doc.createTextNode(Integer.toString(balanceCopies)));
+
+                totalTotalCopies = totalTotalCopies + totalCopies;
+                totalBalanceCopies = totalBalanceCopies + balanceCopies;
+            }
+         }
+        
+            // Add the row element. Add for total
+            Element row = doc.createElement("row");
+            results.appendChild(row);
+
+            Element _journalCode = doc.createElement("journalCode");
+            row.appendChild(_journalCode);
+            _journalCode.appendChild(doc.createTextNode("Total"));
+
+            // Add journal Code as first column
+            Element _issue = doc.createElement("issue");
+            row.appendChild(_issue);
+            _issue.appendChild(doc.createTextNode("-->"));
+
+            Element _instI = doc.createElement("instIndia");
+            row.appendChild(_instI);
+            _instI.appendChild(doc.createTextNode(Integer.toString(totalInstI)));
+
+            Element _instF = doc.createElement("instAbroad");
+            row.appendChild(_instF);
+            _instF.appendChild(doc.createTextNode(Integer.toString(totalInstF)));
+            
+            Element _indI = doc.createElement("indIndia");
+            row.appendChild(_indI);
+            _indI.appendChild(doc.createTextNode(Integer.toString(totalIndF)));
+
+            Element _indF = doc.createElement("indAbroad");
+            row.appendChild(_indF);
+            _indF.appendChild(doc.createTextNode(Integer.toString(totalIndF)));            
+        
+            Element _free = doc.createElement("comp");
+            row.appendChild(_free);
+            _free.appendChild(doc.createTextNode(Integer.toString(totalFree)));
+
+            Element _auth = doc.createElement("auth");
+            row.appendChild(_auth);
+            _auth.appendChild(doc.createTextNode(Integer.toString(totalAuth)));
+
+            Element _totalCopies = doc.createElement("totalCopies");
+            row.appendChild(_totalCopies);
+            _totalCopies.appendChild(doc.createTextNode(Integer.toString(totalTotalCopies)));            
+
+            Element _printOrder = doc.createElement("printOrder");
+            row.appendChild(_printOrder);
+            _printOrder.appendChild(doc.createTextNode(Integer.toString(totalPrintOrder)));
+            
+            Element _balanceCopies = doc.createElement("balanceCopies");
+            row.appendChild(_balanceCopies);
+            _balanceCopies.appendChild(doc.createTextNode(Integer.toString(totalBalanceCopies)));
+
+            
+            DOMSource domSource = new DOMSource(doc);
+            try (StringWriter writer = new StringWriter()) {
+                StreamResult result = new StreamResult(writer);
+                TransformerFactory tf = TransformerFactory.newInstance();
+                Transformer transformer = tf.newTransformer();
+                transformer.transform(domSource, result);
+                xml = writer.toString();
+            }
+            
+        return xml;
     }
 
     public ResultSet searchCirculationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException {

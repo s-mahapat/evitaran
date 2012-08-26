@@ -12,6 +12,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=month"%>","month","month");
             });
         </script>
 
@@ -33,10 +34,10 @@
                         rownumbers: true,
                         emptyrecords: "No records to view",
                         loadtext: "Loading...",
-                        colNames:['Journal Code','Journal Name', 'Inst. India','Inst. Abroad','Indi. India','Indi. Abroad','Comp','Auth','Total Copies','Print Order','Balance Copies'],
+                        colNames:['Journal Code','Issue', 'Inst. India','Inst. Abroad','Indi. India','Indi. Abroad','Comp','Auth','Total Copies','Print Order','Balance Copies'],
                         colModel :[
                           {name:'journalCode', index:'journalCode', width:30, align:'center', xmlmap:'journalCode'},
-                          {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
+                          {name:'issue', index:'issue', width:30, align:'center', xmlmap:'issue'},
                           {name:'instIndia', index:'instIndia', width:25, align:'center', xmlmap:'instIndia'},
                           {name:'instAbroad', index:'instAbroad', width:25, align:'center', xmlmap:'instAbroad'},
                           {name:'indiIndia', index:'indiIndia', width:30, align:'center', xmlmap:'indiIndia'},
@@ -86,7 +87,9 @@
                 else{
                     isPageLoaded = true;
                     jQuery("#circulationTable").setGridParam({postData:
-                            {year            : $("#year").val()
+                            {year            : $("#year").val(),
+                             month            : $("#month").val()
+                            
                         }});
                     jQuery("#circulationTable").setGridParam({ datatype: "xml" });
                     jQuery("#circulationTable").trigger("clearGridData");
@@ -104,7 +107,7 @@
             <form method="post" action="<%=request.getContextPath() + "/reports?action=printCirculationFigures"%>" name="circulationFigures">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>List and Print Journals</legend>
+                        <legend>Circulation Figures</legend>
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
@@ -126,6 +129,19 @@
                                 </div>
                             </div>
  
+                            <%-- Search Criteria Right div --%>
+                            <div class="IASFormRightDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Month:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                    <select class="IASComboBox" TABINDEX="4" name="month" id="month">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
                                     <input class="IASButton" TABINDEX="2" type="button" onclick="getReport()" value="Search"/>
