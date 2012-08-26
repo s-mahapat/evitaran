@@ -109,7 +109,7 @@ public class inward extends JDSController {
                 HttpSession session = request.getSession(false);
                 _inwardFormBean = _inwardModel.GetInward();
                 session.setAttribute("inwardUnderProcess", _inwardFormBean);
-
+                String agentName = _inwardFormBean.getagentName(); // agent changes PINKI
                 // we should use the purpose id rather than the purpose name, it can change in the database
                 // but id should not change
                 int purposeID = Integer.parseInt(request.getParameter("purpose"));
@@ -126,11 +126,13 @@ public class inward extends JDSController {
                         && (purposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
                         || purposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE)) {
 
-                    if (subscriberNumber != null && !subscriberNumber.equalsIgnoreCase("null") && !subscriberNumber.isEmpty()) {
-
+                    if (subscriberNumber != null && !subscriberNumber.equalsIgnoreCase("null") && !subscriberNumber.isEmpty() && agentName.isEmpty()) {
                         url = "/subscriber?action=add";
+                    }
 
-                    } else {
+                    else if(!agentName.isEmpty()){url = "/jsp/inward/agentexcelupload.jsp";} //agent changes - PINKI
+
+                    else {
 
                         //IAS.Model.Subscriber.subscriberModel _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
                         // create a subscriber form bean and fill the values from the selected inward
@@ -200,16 +202,16 @@ public class inward extends JDSController {
                 }
 
             } else if (action.equalsIgnoreCase("followOnProcess")) {
-                
+
                 int inwardPurposeID = Integer.parseInt(request.getParameter("purpose"));
                 _inwardFormBean = _inwardModel.viewInward();
-                float amount = _inwardFormBean.getAmount();                              
+                float amount = _inwardFormBean.getAmount();
 
                 /*if ( amount > 0 && 
                      (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION || 
                      inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)
                    ) {
-                    
+
                     if (_inwardFormBean != null) {
                         request.setAttribute("inwardFormBean", _inwardFormBean);
                         url = "/jsp/inward/ackinward.jsp";

@@ -42,3 +42,6 @@ ALTER TABLE print_order AUTO_INCREMENT = 1;
 
 delete from circulation_figure;
 ALTER TABLE circulation_figure AUTO_INCREMENT = 1;
+
+delete from inward_agent_details;
+ALTER TABLE inward_agent_details AUTO_INCREMENT = 1;

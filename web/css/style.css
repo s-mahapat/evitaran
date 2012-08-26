@@ -282,6 +282,7 @@ A:active {
 .JDSFileInput{
     font-family: Cambria;
     font-size: 12px;
+    width: 95%;
 }
 
 .IASComboBox{

@@ -330,7 +330,6 @@ public final class util {
             results.appendChild(error);
             error.appendChild(doc.createTextNode(arr.get(i)));
         }
-
         DOMSource domSource = new DOMSource(doc);
         try (StringWriter writer = new StringWriter()) {
             StreamResult result = new StreamResult(writer);
@@ -339,10 +338,7 @@ public final class util {
             transformer.transform(domSource, result);
             xml = writer.toString();
         }
-
-
         return xml;
-
     }
 
     // This utility parses the xml responce to get the number of rows

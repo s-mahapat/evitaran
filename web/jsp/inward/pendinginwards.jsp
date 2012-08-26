@@ -37,31 +37,39 @@
                     sortorder: 'desc',
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','PurposeID','Action'],
+                    colNames:['Select','Inward No','Subscriber Id','Agent', 'From','Received Date','City','Cheque#','Purpose','PurposeID','Action'],
                     colModel :[
                         {
                             name:'Select',
                             index:'select',
-                            width:50,
+                            width:30,
                             align:'center',
                             xmlmap:'inwardNumber',
                             sortable: false,
                             formatter: selectInwardFormatter
                         },
-                        {name:'InwardNo', sortable: false, index:'inward_id', width:50, align:'center', xmlmap:'inwardNumber'},
+                        {name:'InwardNo', sortable: false, index:'inward_id', width:40, align:'center', xmlmap:'inwardNumber'},
                         {name:'SubscriberId'
                             , index:'subscriber_id'
-                            , width:50
+                            , width:40
                             , align:'center'
                             , sortable: false
                             , xmlmap:'subscriberId'
+                            //,formatter: subscriberlink
+                        },
+                        {name:'Agent'
+                            , index:'agent'
+                            , width:60
+                            , align:'center'
+                            , sortable: false
+                            , xmlmap:'agentName'
                             //,formatter: subscriberlink
                         },
                         {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
                         {
                             name:'ReceivedDate',
                             index:'inwardCreationDate',
-                            width:80,
+                            width:60,
                             align:'center',
                             xmlmap:'inwardCreationDate'
                             //formatter:'date',

@@ -1,7 +1,8 @@
 function makeInwardReadOnly(){
 
-    $("#btnEditInward").button("disable");  
+    $("#btnEditInward").button("disable");
     //$("#inwardPurpose").attr("disabled","disabled");
+    //$("#agentName").attr("disabled","disabled");
 }
 
 function enablePayment(){
@@ -24,5 +25,5 @@ function loadData(){
     jdsAutoComplete("subscriber?action=subscriberNames", "subscriberName", "from");
     jdsAutoComplete("subscriber?action=depts", "department", "department");
     jdsAutoComplete("subscriber?action=inst", "institution", "institution");
-
+    jdsAppend("CMasterData?md=agent","agentName","agentName");
 }

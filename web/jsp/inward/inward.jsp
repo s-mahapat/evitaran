@@ -4,6 +4,7 @@
 <script>
     $(document).ready(function(){
         $("#from").focus();
+
         $(function() {
             $( "#btnSearchSubscriber" )
             .button()
@@ -38,6 +39,30 @@
             .buttonset();
         });
 
+    $(function() {
+            $( "#btnUE" )
+            .button("disable")
+            .click(function(){$("#agentName").val("");$("#agentName").change();return false;})
+            .parent()
+            .buttonset();
+        });
+
+        $(function(){
+            $("#agentName")
+            // disable the search subscriber and reset button
+            if(!isEmptyValue($("#agentName").val())){
+                $("#btnSearchSubscriber").button("disable");
+                $("#btnResetSubscriber").button("disable");
+                $("#btnUE").button("enable");
+                $("#btnResetUE").button("enable");
+            }
+            else{
+                $("#btnSearchSubscriber").button("enable");
+                $("#btnResetSubscriber").button("enable");
+                $("#btnUE").button("disable");
+                $("#btnResetUE").button("disable");
+            }
+        });
 
 
         $("#inwardPurpose").change(function(){
@@ -58,11 +83,24 @@
                 $("#btnResetSubscriber").button("enable");
             }
         });
+
+        $("#agentName").change(function(){
+            // disable the search subscriber and reset button
+            if(!isEmptyValue($("#agentName").val())){
+                $("#btnSearchSubscriber").button("disable");
+                $("#btnResetSubscriber").button("disable");
+                $("#btnUE").button("enable");
+                $("#btnResetUE").button("enable");
+            }
+            else{
+                $("#btnSearchSubscriber").button("enable");
+                $("#btnResetSubscriber").button("enable");
+                $("#btnUE").button("disable");
+                $("#btnResetUE").button("disable");
+            }
+        });
+
     });
-
-
-
-
 </script>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Inward Info Field Set --%>
@@ -164,7 +202,23 @@
             </span>
         </div>
 
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Institution:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBox" maxlength="64" TABINDEX="8" type="text" name="institution" id="institution" value="${inwardFormBean.institution}"/>
+            </span>
+        </div>
 
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Department:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBox" maxlength="64" TABINDEX="9" type="text" name="department" id="department" value="${inwardFormBean.department}"/>
+            </span>
+        </div>
     </div>
 
     <%-- Inward Info right div --%>
@@ -191,22 +245,25 @@
         </div>
 
 
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Institution:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" maxlength="64" TABINDEX="8" type="text" name="institution" id="institution" value="${inwardFormBean.institution}"/>
-            </span>
-        </div>
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Department:</label>
+                <label>Agent:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" maxlength="64" TABINDEX="9" type="text" name="department" id="department" value="${inwardFormBean.department}"/>
+                <select class="IASComboBoxWide" TABINDEX="5" name="agentName" id="agentName">
+                    <option value="" selected >Select</option>
+                    <%
+                        if (inwardFormBean.getagentName() != null && !inwardFormBean.getagentName().isEmpty()) {
+                            out.println("<option value=" + "\"" + inwardFormBean.getagentName() + "\"" + " selected >" + inwardFormBean.getagentName() + "</option>");
+                        }
+                    %>
+                </select>
             </span>
+            <%--<span class="IASFormDivSpanInputBox" style="font-size: 8px;">
+                <button id="btnUE" TABINDEX="13">Upload Excel</button>
+                <button id="btnResetUE" TABINDEX="14">Reset</button>
+            </span>--%>
         </div>
 
         <div class="IASFormFieldDiv">

@@ -42,13 +42,13 @@
                                 return '<input onclick="selectedSubscriberId=this.value" type="radio" id="selectedSubscriberRadio" name="selectedSubscriberRadio" value="' + cellvalue + '"/>';
                             }*/
                         },
-                        {name:'SubscriberNumber', index:'subscriberNumber', width:30, align:'center', sortable:false, xmlmap:'subscriberNumber'},
-                        {name:'SubscriberName', index:'subscriberName', width:40, align:'center', sortable:false, xmlmap:'subscriberName'},
-                        {name:'Department', index:'department', width:60, align:'center', sortable:false, xmlmap:'department'},
-                        {name:'Instituttion', index:'institute', width:60, align:'center', sortable:false, xmlmap:'institution'},
+                        {name:'SubscriberNumber', index:'subscriberNumber', width:35, align:'center', sortable:false, xmlmap:'subscriberNumber'},
+                        {name:'SubscriberName', index:'subscriberName', width:50, align:'center', sortable:false, xmlmap:'subscriberName'},
+                        {name:'Department', index:'department', width:50, align:'center', sortable:false, xmlmap:'department'},
+                        {name:'Instituttion', index:'institute', width:50, align:'center', sortable:false, xmlmap:'institution'},
                         {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                        {name:'PinCode', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
-                        {name:'Country', index:'country', width:30, align:'center', sortable:false, xmlmap:'country'},
+                        {name:'PinCode', index:'pincode', width:20, align:'center', sortable:false, xmlmap:'pincode'},
+                        {name:'Country', index:'country', width:20, align:'center', sortable:false, xmlmap:'country'},
                         {name:'Email', index:'email', width:40, align:'center',sortable:false, xmlmap:'email'}
                     ],
                     xmlReader : {

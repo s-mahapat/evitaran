@@ -13,10 +13,8 @@ import IAS.Model.JDSModel;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -37,7 +35,7 @@ public class inwardModel extends JDSModel {
     //private HttpServletRequest request;
     Properties props = null;
 
-    public inwardModel(HttpServletRequest request) throws SQLException, IOException {        
+    public inwardModel(HttpServletRequest request) throws SQLException, IOException {
         //call the base class constructor
         super(request);
         this.request = request;
@@ -46,7 +44,7 @@ public class inwardModel extends JDSModel {
         props = new Properties();
         props.load(is);
 
-    }    
+    }
 
     public int Save() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
@@ -55,6 +53,7 @@ public class inwardModel extends JDSModel {
         request.setAttribute("inwardFormBean", inwardFormBean);
         String sql;
         int rc;
+        int inwardID = 0;
 
         //throw new SQLException("Generated this exception");
 
@@ -81,23 +80,36 @@ public class inwardModel extends JDSModel {
             this._setNewInwardStatementParams(st);
 
             rc = st.executeUpdate();
+
+            try (ResultSet rs = st.getGeneratedKeys()) {
+                rs.first();
+                inwardID = rs.getInt(1);
+                rs.close();
+            } catch (SQLException e) {
+                throw (new SQLException(e));
+            }
+
+
             int subscriptionID = inwardFormBean.getSubscriptionID();
             //update the payment info if subscription id is not null
             if (subscriptionID != 0 && rc == 1) {
                 sql = Queries.getQuery("insert_payment");
                 PreparedStatement pst = conn.prepareStatement(sql);
-                try (ResultSet rs = st.getGeneratedKeys()) {
-                    rs.first();
-                    int inwardID = rs.getInt(1);
-                    pst.setInt(1, inwardID);
-                    pst.setInt(2, subscriptionID);
-                    rc = pst.executeUpdate();
-                    rs.close();
-                    pst.close();
-                }
-
+                pst.setInt(1, inwardID);
+                pst.setInt(2, subscriptionID);
+                rc = pst.executeUpdate();
+                pst.close();
+                //}
             }
-            st.close();
+            //update inward-agent details
+            String agentName = inwardFormBean.getagentName();
+            if (!agentName.isEmpty() && rc == 1) {
+                sql = Queries.getQuery("insert_in_agent_dtls");
+                PreparedStatement pst = conn.prepareStatement(sql);
+                pst.setInt(1, inwardID);
+                pst.setString(2, agentName);
+                rc = pst.executeUpdate();
+            }
         }
         conn.commit();
         conn.setAutoCommit(true);
@@ -138,7 +150,7 @@ public class inwardModel extends JDSModel {
         st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReasonOther());
         st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
         st.setString(++paramIndex, inwardFormBean.getInwardNumber());
-        db.executeUpdatePreparedStatement(st);        
+        db.executeUpdatePreparedStatement(st);
         inwardFormBean __inwardFormBean = this.GetInward();
         return __inwardFormBean;
 
@@ -154,7 +166,7 @@ public class inwardModel extends JDSModel {
             this._setUpdateInwardStatementParams(st);
             rc = st.executeUpdate();
             int subscriptionID = this._inwardFormBean.getSubscriptionID();
-            if(subscriptionID > 0){
+            if (subscriptionID > 0) {
                 sql = Queries.getQuery("update_payment_info");
                 PreparedStatement pst = Database.getConnection().prepareStatement(sql);
                 pst.closeOnCompletion();
@@ -163,10 +175,32 @@ public class inwardModel extends JDSModel {
                 rc = pst.executeUpdate();
                 pst.close();
             }
+            //update inward-agent details - PINKI
+            sql = Queries.getQuery("get_in_agent_dtls");//Get the previous agent selected
+            PreparedStatement pst = conn.prepareStatement(sql);
+            int inwardID = this._inwardFormBean.getInwardID();
+            pst.setInt(1, inwardID);
+            ResultSet rs = db.executeQueryPreparedStatement(pst);
+            String agentName = rs.getString(1);
+            String updateAgentName = this._inwardFormBean.getagentName();
+            if (!updateAgentName.isEmpty() && !(agentName.equalsIgnoreCase(updateAgentName))) { //If it is not equal to previous then trigger the update
+                sql = Queries.getQuery("update_in_agent_dtls");
+                pst = conn.prepareStatement(sql);
+                rs = st.getGeneratedKeys();
+                rs.first();
+                //int inwardID = rs.getInt(1);
+                pst.setInt(1, inwardID);
+                pst.setString(2, updateAgentName);
+                rc = pst.executeUpdate();
+            }
+            rs.close();
+            pst.close();
             st.close();
-        }
-        return rc;
 
+        }
+
+
+        return rc;
     }
 
     public inwardFormBean GetInward() throws SQLException, ParseException,
@@ -199,7 +233,7 @@ public class inwardModel extends JDSModel {
         //request.setAttribute("inwardFormBean", inwardFormBean);
         return inwardFormBean;
     }
-    
+
     public inwardFormBean GetInward(String inwardNumber) throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
@@ -392,7 +426,7 @@ public class inwardModel extends JDSModel {
         if (completed != null && completed.length() > 0) {
             sql += " and completed=" + completed;
         }
-        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose order by inwardID " + sortOrder;        
+        sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose order by inwardID " + sortOrder;
         ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
 
         sql = "select count(*) from (" + sql + ") as tbl";
@@ -401,7 +435,7 @@ public class inwardModel extends JDSModel {
         rs_count.first();
         totalQueryCount = rs_count.getInt(1);
         xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
-        
+
         rs.close();
         rs_count.close();
         pst.close();
@@ -461,7 +495,7 @@ public class inwardModel extends JDSModel {
         }
 
         sql += " order by sortdate " + sortOrder;
-        ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);        
+        ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);
         sql = "select count(*) from (" + sql + ") as tbl";
         PreparedStatement pst = Database.getConnection().prepareStatement(sql);
         ResultSet rs_count = pst.executeQuery();
@@ -477,9 +511,9 @@ public class inwardModel extends JDSModel {
     public InvoiceFormBean getInvoiceDetail() throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
         String InwardNumber = request.getParameter("inwardNumber");
         return this.getInvoiceDetail(InwardNumber);
-        
+
     }
-    
+
     public InvoiceFormBean getInvoiceDetail(String InwardNumber) throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
         String sql;
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
@@ -497,27 +531,27 @@ public class inwardModel extends JDSModel {
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         return invoiceFormBean;
     }
-    
-    public String getChequeReturnEmailBody(int chqDDNumber, float amount, String chqDate, String reason) throws IOException{
-                
+
+    public String getChequeReturnEmailBody(int chqDDNumber, float amount, String chqDate, String reason) throws IOException {
+
         String template = props.getProperty("cheque_return_email_body");
-        return String.format(   template, 
-                                String.valueOf(chqDDNumber),
-                                chqDate,
-                                String.valueOf(amount),
-                                reason);
+        return String.format(template,
+                String.valueOf(chqDDNumber),
+                chqDate,
+                String.valueOf(amount),
+                reason);
     }
-    
-    public String getInwardAckEmailBody(int chqDDNumber, float amount, String chqDate, String bank){
+
+    public String getInwardAckEmailBody(int chqDDNumber, float amount, String chqDate, String bank) {
         String template = props.getProperty("inward_ack_email_body");
-        return String.format(   template, 
-                                String.valueOf(chqDDNumber),
-                                chqDate,
-                                bank,
-                                String.valueOf(amount));
+        return String.format(template,
+                String.valueOf(chqDDNumber),
+                chqDate,
+                bank,
+                String.valueOf(amount));
     }
-    
-    public String getRequestForInvoiceEmailBody(){
-        return props.getProperty("inward_request_for_invoice");        
+
+    public String getRequestForInvoiceEmailBody() {
+        return props.getProperty("inward_request_for_invoice");
     }
 }

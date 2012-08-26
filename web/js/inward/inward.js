@@ -11,7 +11,7 @@ function enableSubscriptionID(value){
     if(value){
         $( "#btnSearchSubscription" ).button("enable");
         $( "#btnResetSubscription" ).button("enable");
-        $("#subscriptionid").removeAttr("disabled"); 
+        $("#subscriptionid").removeAttr("disabled");
     }else{
         $( "#btnSearchSubscription" ).button("disable");
         $( "#btnResetSubscription" ).button("disable");
@@ -50,7 +50,7 @@ function validateSearchSubscriber(){
             $("#from").val(selectedSubscriberFromDialog.SubscriberName);
             $("#city").val(selectedSubscriberFromDialog.City);
             $("#country").val(selectedSubscriberFromDialog.Country);
-            
+
         }
     }
 }
@@ -67,7 +67,7 @@ function validateSearchSubscription(){
 
 function searchSubscriber(subscriberName,country, state, city, pincode, institution, department, email){
     var subscriber = new Object();
-    windowParams = "dialogHeight:600px; dialogWidth:1000px; center:yes; resizeable:no; status:no; menubar:no;\n\
+    windowParams = "dialogHeight:600px; dialogWidth:1200px; center:yes; resizeable:no; status:no; menubar:no;\n\
                     scrollbars:yes; toolbar: no;";
     subscriber.country = country;
     subscriber.city = city;
@@ -92,7 +92,7 @@ function searchSubscription(subscriberNumber){
         , subscriber
         , windowParams);
     return selectedSubscriptionFromDialog;
-    
+
 }
 
 function clearSubscriber(){
@@ -176,7 +176,7 @@ function validateNewInward(){
 
 function subscriberlink(cellvalue, options, rowObject){
     rowid = options.rowId;
-    var tagnames = ["subscriberId", "from", "city", "inwardNumber"];
+    var tagnames = ["subscriberId", "from", "city", "inwardNumber", "agentName"];
     var tagvalues = new Array();
 
     for(i=0; i<tagnames.length; i++){
@@ -189,7 +189,8 @@ function subscriberlink(cellvalue, options, rowObject){
     var subscriberName = tagvalues[1];
     var city = tagvalues[2];
     var inwardid = tagvalues[3];
-    if(isEmptyValue(subscriberID)){
+    var agentName = tagvalues[4];
+    if(isEmptyValue(subscriberID) && (isEmptyValue(agentName))){
         var link = "<a href=\"#\" onclick=" + "\"" + "selectSubscriber('" + city + "','" + subscriberName + "','" + inwardid + "')" + "\"" + ">Select Subscriber</a>";
         //var link = "<a href=\"#\" onclick=" + "\"" + "selectSubscriber('" + rowid + "')" + "\"" + ">Select Subscriber</a>";
         return link;
@@ -228,7 +229,7 @@ function isInwardSelected(){
         }
     }
     else if((selectedSubscriberId == "undefined" || selectedSubscriberId == null || selectedSubscriberId == 0)
-        && (selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION || 
+        && (selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION ||
             selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_ADDRESS_CHANGE ||
             //selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE ||
             selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_PAYMENT ||

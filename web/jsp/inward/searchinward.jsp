@@ -161,7 +161,7 @@
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="4" name="city" id="city">
+                                        <select class="IASComboBox" TABINDEX="3" name="city" id="city">
                                             <option value="NULL">Select</option>
                                         </select>
                                     </span>
@@ -174,13 +174,13 @@
                                     </span>
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" type="text" id="from" name="from"/>
+                                        <input class="IASDateTextBox" TABINDEX="4" readonly size="10" type="text" id="from" name="from"/>
                                     </span>
                                     <span class="IASFormDivSpanForHyphen">
                                         <label> to </label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" type="text" id="to" name="to"/>
+                                        <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                             </div>

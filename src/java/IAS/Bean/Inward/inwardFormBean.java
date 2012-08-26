@@ -22,6 +22,8 @@ public class inwardFormBean extends JDSBean {
     private String institution = "";
     private String department = "";
     private int subscriptionID = 0;
+    private int agentID = 0;
+    private String agentName = "";
 
     /*
      * Inward details fields
@@ -309,16 +311,32 @@ public class inwardFormBean extends JDSBean {
     public void setLanguage(String _language) {
         this.language = _language;
     }
-    
-    public int getSubscriptionID(){
+
+    public int getSubscriptionID() {
         return this.subscriptionID;
     }
-    
+
     public String getSubscriptionIDAsText() {
         return this.subscriptionID == 0 ? "" : String.valueOf(this.subscriptionID);
     }
-    
-    public void setSubscriptionID(int _subscriptionID){
+
+    public void setSubscriptionID(int _subscriptionID) {
         this.subscriptionID = _subscriptionID;
+    }
+
+    public int getAgentID() {
+        return this.agentID;
+    }
+
+    public void setAgentID(int _agentID) {
+        this.agentID = _agentID;
+    }
+
+    public String getagentName() {
+        return this.agentName;
+    }
+
+    public void setagentName(String _agentName) {
+        this.agentName = _agentName;
     }
 }

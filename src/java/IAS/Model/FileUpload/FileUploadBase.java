@@ -46,4 +46,8 @@ public class FileUploadBase extends JDSModel {
     public String getOutputAsXML() throws IOException{
         throw (new NotImplementedException());
     }
+    
+    public ArrayList<String> getOutputAsLIST() {
+        throw (new NotImplementedException());
+    }
 }

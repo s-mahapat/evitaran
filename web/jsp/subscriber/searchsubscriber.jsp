@@ -191,7 +191,7 @@
                                         <label>Subscriber Name:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="3" type="text" name="subscriberName" id="subscriberName" value=""/>
+                                        <input class="IASTextBox" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value=""/>
                                     </span>
                                 </div>
 
@@ -200,7 +200,7 @@
                                         <label>Email:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASEmailTextBox" TABINDEX="2" type="text" name="email" id="email" value=""/>
+                                        <input class="IASEmailTextBox" TABINDEX="3" type="text" name="email" id="email" value=""/>
                                     </span>
                                 </div>
                             </div>
@@ -240,7 +240,7 @@
 
                         <fieldset class="subMainFieldSet">
                             <legend>Subscriber List</legend>
-                            <table class="datatable" id="subscriberTable"></table>
+                            <table class="datatable" id="subscriberTable" TABINDEX="8"></table>
                             <div id="pager"></div>
                         </fieldset>
                     </fieldset>

@@ -49,3 +49,7 @@ root {
     display: none;
     visibility: hidden;
 }
+
+#upload-dialog-form{
+    display: none;
+}
