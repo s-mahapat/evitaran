@@ -11,7 +11,6 @@ import IAS.Class.Queries;
 import java.io.IOException;
 import java.sql.*;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 public class home extends JDSController {
 
-    private ServletContext context = null;
+    //private ServletContext context = null;
     private static final String jdbcDriver = "com.mysql.jdbc.Driver";
     private Connection connection;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.home");
@@ -33,7 +32,7 @@ public class home extends JDSController {
     public void init() throws ServletException {
 
         try {
-            this.context = getServletContext();
+            //this.context = getServletContext();
             Class.forName(jdbcDriver); //set Java database connectivity driver
         } catch (ClassNotFoundException e) {
             logger.error(e.getMessage());
@@ -42,21 +41,11 @@ public class home extends JDSController {
         }
     }
 
-    /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String url = null;
+        String url;
         HttpSession session = request.getSession(false);
         if (null == session.getAttribute("name")) {            
             session = request.getSession(true);

@@ -12,48 +12,48 @@
             <title>Acknowledge Inward</title>
             <script type="text/javascript">
                 var subscriptionID = 0;
-                $(document).ready(function(){
-                    jQueryCalendar("subscriberletterDate");
-                    $.ajax({
-                        type: 'GET',
-                        dataType: 'xml',
-                        url: "subscription?oper=getSubscriptionDetailsForInward&inwardNumber=" + "${inwardFormBean.inwardNumber}",
-                        success: function(xmlResponse, textStatus, jqXHR){
-                            var html = "<tbody>";
-                            $(xmlResponse).find("results").find("row").each(function(){
-
-                                html += "<tr>";
-                                // get the journal id and set it in the UI
-                                subscriptionID = $(this).find("subscriptionid").text();
-                                $("#subscriptionID").text(subscriptionID);
-
-                                //get the journal name
-                                journalName = $(this).find("journalName").text();
-
-                                //get the start year, end year and copies
-                                startYear = $(this).find("startYear").text();
-                                endYear = $(this).find("endYear").text();
-                                copies = $(this).find("copies").text();
-
-                                html += "<td>" + journalName + "</td>"
-                                html += "<td>" + startYear + "</td>"
-                                html += "<td>" + endYear + "</td>"
-                                html += "<td>" + copies + "</td>"
-                                html += "</tr>";
-
-                            });
-                            html += "</tbody>";
-                            var _orightml = $(".datatable").html();
-                            html = _orightml + html;
-                            $(".datatable").html(html);
-                        },
-                        error: function(jqXHR,textStatus,errorThrown){
-                            alert("Failed to get subscription information for Inward. Error:" + textStatus + " : "+ errorThrown);
-                        }
-
-                    });
-
-                });
+//                $(document).ready(function(){
+//                    jQueryCalendar("subscriberletterDate");
+//                    $.ajax({
+//                        type: 'GET',
+//                        dataType: 'xml',
+//                        url: "subscription?oper=getSubscriptionDetailsForInward&inwardNumber=" + "${inwardFormBean.inwardNumber}",
+//                        success: function(xmlResponse, textStatus, jqXHR){
+//                            var html = "<tbody>";
+//                            $(xmlResponse).find("results").find("row").each(function(){
+//
+//                                html += "<tr>";
+//                                // get the journal id and set it in the UI
+//                                subscriptionID = $(this).find("subscriptionid").text();
+//                                $("#subscriptionID").text(subscriptionID);
+//
+//                                //get the journal name
+//                                journalName = $(this).find("journalName").text();
+//
+//                                //get the start year, end year and copies
+//                                startYear = $(this).find("startYear").text();
+//                                endYear = $(this).find("endYear").text();
+//                                copies = $(this).find("copies").text();
+//
+//                                html += "<td>" + journalName + "</td>"
+//                                html += "<td>" + startYear + "</td>"
+//                                html += "<td>" + endYear + "</td>"
+//                                html += "<td>" + copies + "</td>"
+//                                html += "</tr>";
+//
+//                            });
+//                            html += "</tbody>";
+//                            var _orightml = $(".datatable").html();
+//                            html = _orightml + html;
+//                            $(".datatable").html(html);
+//                        },
+//                        error: function(jqXHR,textStatus,errorThrown){
+//                            alert("Failed to get subscription information for Inward. Error:" + textStatus + " : "+ errorThrown);
+//                        }
+//
+//                    });
+//
+//                });
 
         </script>
     </head>
@@ -69,7 +69,7 @@
                                 Date: <%=util.getDateString()%>
                             </div>
                             <div class="subjectLine">
-                                <strong>Subscription No:</strong>
+                                <!--<strong>Subscription No:</strong>-->
                                 <span style="padding-left: 5px;" id="subscriptionID"></span>
                             </div>
                             <div class="subjectLine">

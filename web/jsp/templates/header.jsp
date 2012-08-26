@@ -5,16 +5,17 @@
     String userPrincipal = null;
     try {
         userPrincipal = request.getUserPrincipal().getName();
+        //HttpSession _session = request.getSession(false);
+
+        if (session != null) {
+            IAS.Bean.User.LoggedInUserBean _userBean = (IAS.Bean.User.LoggedInUserBean) session.getAttribute("userBean");
+            firstName = _userBean.getFirstName();
+            lastName = _userBean.getLastName();
+        }
     } catch (NullPointerException e) {
         userPrincipal = null;
     }
-    HttpSession _session = request.getSession(false);
 
-    if (userPrincipal != null) {
-        IAS.Bean.User.LoggedInUserBean _userBean = (IAS.Bean.User.LoggedInUserBean) _session.getAttribute("userBean");
-        firstName = _userBean.getFirstName();
-        lastName = _userBean.getLastName();
-    }
 
 %>
 <div id="header">
@@ -22,7 +23,6 @@
         <div id="headertext">Journal Distribution System  </div>
     </div>
     <div id="lightsubheader">
-        <!--<div id="smalldarksubheader"></div>-->
         <div id="welcomeUser">
             <%
                 if (userPrincipal != null) {

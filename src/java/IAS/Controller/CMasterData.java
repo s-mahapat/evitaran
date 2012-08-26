@@ -9,6 +9,7 @@ import IAS.Class.Queries;
 import IAS.Class.util;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.rmi.ServerException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,28 +31,24 @@ public class CMasterData extends JDSController {
         String mdataRequested = request.getParameter("md").toLowerCase();
         Database db = new Database();
         String mdataReqValue = request.getParameter("mdvalue");
-        String optionalParam[] = request.getParameterValues("optionalParam");
+        //String optionalParam[] = request.getParameterValues("optionalParam");
         try {
             if (mdataReqValue == null) {
                 xml = util.convertResultSetToXML(db.executeQuery(Queries.getQuery(mdataRequested)));
             }
             if (mdataReqValue != null) {
-                PreparedStatement ps = Database.getConnection().prepareStatement(Queries.getQuery(mdataRequested));
-                ps.setString(1, mdataReqValue);
-
-                if(optionalParam != null) {
-                    for(int i=0, j=2; i<optionalParam.length; i++) {
-                        ps.setInt(j++, Integer.parseInt(optionalParam[i]));
-                    }
+                try (PreparedStatement ps = Database.getConnection().prepareStatement(Queries.getQuery(mdataRequested)); 
+                        ResultSet rs = ps.executeQuery()) {
+                    xml = util.convertResultSetToXML(rs);
+                    rs.close();
+                    ps.close();
                 }
                 
-                ResultSet rs = ps.executeQuery();
-                xml = util.convertResultSetToXML(rs);
             }
         } catch (SQLException ex) {
-
+            throw(new ServerException(ex.getMessage()));
         } catch (Exception ex) {
-
+            throw(new ServerException(ex.getMessage()));
         } finally {
             response.setContentType("text/xml");
             out.println(xml);
