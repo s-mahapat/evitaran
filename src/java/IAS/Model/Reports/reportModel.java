@@ -794,7 +794,7 @@ public class reportModel extends JDSModel {
 
         return(xml);
     }
-    
+
     public String subscriptionFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
 
         // Add the results element
@@ -809,31 +809,38 @@ public class reportModel extends JDSModel {
         sql = Queries.getQuery("get_list_of_journals");
         PreparedStatement stGetJournals = this.conn.prepareStatement(sql);
         ResultSet rs1 = db.executeQueryPreparedStatement(stGetJournals);
+
+        // Should be the size of the total no of subscribers
+        //int[] tNoS = new int[16];
+        //int[] tNoC = new int[16];
+
         while(rs1.next())
-        {            
+        {
             int totalNoOfSubscribers = 0;
             int totalNoOfCopies = 0;
             String journalCode = rs1.getString(1);
-            
+
             // Add the row element
             Element row = doc.createElement("row");
             results.appendChild(row);
-            
+
             Element _journalCode = doc.createElement("journalCode");
             row.appendChild(_journalCode);
             _journalCode.appendChild(doc.createTextNode(journalCode));
-            
+
             String sqlSubType = null;
-            sqlSubType = Queries.getQuery("subscriber_type");            
+            sqlSubType = Queries.getQuery("subscriber_type");
             PreparedStatement stGetSubType = this.conn.prepareStatement(sqlSubType);
             ResultSet rs2 = db.executeQueryPreparedStatement(stGetSubType);
+
+            //int k=0;
+
             while(rs2.next())
             {
-
                 String subtypecode = rs2.getString(1);
                 int paramIndex = 1;
                 String sqlSubFigures = null;
-                sqlSubFigures = Queries.getQuery("subscription_Figures");                
+                sqlSubFigures = Queries.getQuery("subscription_Figures");
                 PreparedStatement stGetFigures = this.conn.prepareStatement(sqlSubFigures);
                 stGetFigures.setString(paramIndex, journalCode);
                 stGetFigures.setString(++paramIndex, subtypecode);
@@ -843,26 +850,46 @@ public class reportModel extends JDSModel {
                 if (rs3.next())
                 {
                     subscriberCount = rs3.getInt(1);
-                    copies = rs3.getInt(2);  
-
+                    copies = rs3.getInt(2);
                 }
- 
-                    totalNoOfSubscribers = totalNoOfSubscribers + subscriberCount;
-                    totalNoOfCopies = totalNoOfCopies + copies;
+                //tNoS[k] = tNoS[k] + subscriberCount;
+                //tNoC[k] = tNoC[k] + copies;
 
-                    Element _subType = doc.createElement(subtypecode + "-No");
-                    row.appendChild(_subType);
-                    _subType.appendChild(doc.createTextNode(Integer.toString(subscriberCount)));
+                totalNoOfSubscribers = totalNoOfSubscribers + subscriberCount;
+                totalNoOfCopies = totalNoOfCopies + copies;
 
-                    Element _subCount = doc.createElement(subtypecode + "-C");
-                    row.appendChild(_subCount);
-                    _subCount.appendChild(doc.createTextNode(Integer.toString(copies)));
+                Element _subType = doc.createElement(subtypecode + "-No");
+                row.appendChild(_subType);
+                _subType.appendChild(doc.createTextNode(Integer.toString(subscriberCount)));
 
-                  
+                Element _subCount = doc.createElement(subtypecode + "-C");
+                row.appendChild(_subCount);
+                _subCount.appendChild(doc.createTextNode(Integer.toString(copies)));
+
+                //k++;
+
                 //System.out.println("Journal Code: " + journalCode + " -> subType Code: " + subtypecode + " -> Subscriber Count: " + subscriberCount + " -> Subscriber Copies: " + copies);
             }
+            Element _subTypeTotal = doc.createElement("Total" + "-No");
+            row.appendChild(_subTypeTotal);
+            _subTypeTotal.appendChild(doc.createTextNode(Integer.toString(totalNoOfSubscribers)));
+
+            Element _subCountTotal = doc.createElement("Total" + "-C");
+            row.appendChild(_subCountTotal);
+            _subCountTotal.appendChild(doc.createTextNode(Integer.toString(totalNoOfCopies)));
+
+            /*
+            if(rs1.isLast()) {
+                Element _total = doc.createElement("Total");
+                row.appendChild(_total);
+                for(int j=0; j<16; j++) {
+                    _total.appendChild(doc.createTextNode(Integer.toString(tNoS[j])));
+                    _total.appendChild(doc.createTextNode(Integer.toString(tNoC[j])));
+                }
+            }
+            */
         }
-        
+
         DOMSource domSource = new DOMSource(doc);
         try (StringWriter writer = new StringWriter()) {
             StreamResult result = new StreamResult(writer);
@@ -871,22 +898,22 @@ public class reportModel extends JDSModel {
             transformer.transform(domSource, result);
             xml = writer.toString();
         }
-        
+
         return xml;
     }
-    
+
         public void constructTableSubcriptionFigures() throws SQLException, ParserConfigurationException, SAXException, IOException, IllegalAccessException, InvocationTargetException {
 
 
         String sql = Queries.getQuery("subscriber_type");
         PreparedStatement st = conn.prepareStatement(sql);
         ResultSet rs = db.executeQueryPreparedStatement(st);
-        int maxNoOfIssues = 0;        
-        
+        int maxNoOfIssues = 0;
+
         String colNames = "['Journal',";
         String colModel = "[" + "{name:'journalCode', index:'journalCode', xmlmap:'journalCode'},";
-        
-        while(rs.next()) {            
+
+        while(rs.next()) {
             String subtypecode = rs.getString(1);
             colNames = colNames + "'" + subtypecode + "-No'";
             colNames = colNames + ",";
@@ -894,12 +921,20 @@ public class reportModel extends JDSModel {
             colModel = colModel + "{name:'" + subtypecode + "-No'," + "index:'" + subtypecode + "-No'," + "align:'center'," +"xmlmap:'" + subtypecode + "-No'}";
             colModel = colModel + ",";
             colModel = colModel + "{name:'" + subtypecode + "-C'," + "index:'" + subtypecode + "-C'," + "align:'center'," +"xmlmap:'" + subtypecode + "-C'}";
-            
+
             if(rs.isLast() == false) {
                 colNames = colNames + ",";
                 colModel = colModel + ",";
             }
             else {
+                colNames = colNames + ",'Total-No'";
+                colNames = colNames + ",";
+                colNames = colNames + "'Total-C'";
+
+                colModel = colModel + ",{name:'" + "Total" + "-No'," + "index:'" + "Total" + "-No'," + "align:'center'," +"xmlmap:'" + "Total" + "-No'}";
+                colModel = colModel + ",";
+                colModel = colModel + "{name:'" + "Total" + "-C'," + "index:'" + "Total" + "-C'," + "align:'center'," +"xmlmap:'" + "Total" + "-C'}";
+
                 colNames = colNames + "]";
                 colModel = colModel + "]";
             }

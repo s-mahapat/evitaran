@@ -12,6 +12,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
+                $("#printReportBtn").button("disable");
             });
         </script>
 
@@ -96,12 +97,12 @@
                             <legend>Search Criteria</legend>
 
                             <%-- Search Criteria left div --%>
- 
+
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
                                     <input class="IASButton" TABINDEX="2" type="button" onclick="getReport()" value="Get Report"/>
                                 </div>
-                                    
+
                                 <div id="resetBtnDiv">
                                     <input class="IASButton" TABINDEX="3" type="reset" value="Reset"/>
                                 </div>
@@ -119,12 +120,12 @@
                             <table class="subscriptionFigTable" id="subscriptionFigTable"></table>
                             <div id="pager"></div>
                         </fieldset>
-                        
+
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Print Action Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-                        
-                        
+
+
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">

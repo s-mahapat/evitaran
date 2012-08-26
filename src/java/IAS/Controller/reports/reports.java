@@ -206,6 +206,7 @@ public class reports extends JDSController {
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
             }
+            /*----------------------------------------------------------------*/
             else if(action.equalsIgnoreCase("constructTableSubcriptionFigures")){
                 _reportModel.constructTableSubcriptionFigures();
                 url = "/jsp/reports/subscriptionFigures.jsp";
@@ -218,13 +219,13 @@ public class reports extends JDSController {
 
             }else if(action.equalsIgnoreCase("printSubscriptionFigures")){
 
-                ResultSet rs = _reportModel.circulationFigures();
                 String xml = _reportModel.subscriptionFigures();
-                request.setAttribute("ResultSet", rs);
+                request.setAttribute("xml", xml);
                 String query = "Subscription Figures";
                 request.setAttribute("query", query);
-                url = "/pdfserver?action=printResultset";
+                url = "/pdfserver?action=printXML";
             }
+            /*----------------------------------------------------------------*/
             else if(action.equalsIgnoreCase("listMl")){
 
                 ResultSet rs = _reportModel.listMl();

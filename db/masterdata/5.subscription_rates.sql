@@ -3,6 +3,9 @@ USE jds;
 delete from subscription_rates;
 ALTER TABLE subscription_rates AUTO_INCREMENT = 1;
 
+/*----This is for legacy data--------------------------------------------------------------------------------------*/
+insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (0, 0, 0, 0, 0);
+
 /*----2012---------------------------------------------------------------------------------------------------------*/
 /* For Industry Corporates */
 insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 10, 2012, 1, 10000);
@@ -181,7 +184,6 @@ insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate)
 
 /*----2011---------------------------------------------------------------------------------------------------------*/
 /* For Industry Corporates - Not defined for year 2011 */
-/* insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 10, 2011, 1, 10000); */
 
 /* For Indian Universities and Institutions */
 /* Individual Journals */
@@ -357,7 +359,6 @@ insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate)
 
 /*----2010---------------------------------------------------------------------------------------------------------*/
 /* For Industry Corporates - Not defined for year 2010 */
-/* insert into subscription_rates (journalGroupId, subtypeId, `year`, period, rate) VALUES (11, 10, 2010, 1, 10000); */
 
 /* For Indian Universities and Institutions */
 /* Individual Journals */
