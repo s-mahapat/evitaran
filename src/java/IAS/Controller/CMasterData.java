@@ -10,6 +10,7 @@ import IAS.Class.util;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.rmi.ServerException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,26 +30,31 @@ public class CMasterData extends JDSController {
         PrintWriter out = response.getWriter();
         String xml = null;
         String mdataRequested = request.getParameter("md").toLowerCase();
-        Database db = new Database();
+        String mdataReqKey = request.getParameter("mdkey");
         String mdataReqValue = request.getParameter("mdvalue");
-        //String optionalParam[] = request.getParameterValues("optionalParam");
+        String optionalParam[] = request.getParameterValues("optionalParam");
         try {
-            if (mdataReqValue == null) {
-                xml = util.convertResultSetToXML(db.executeQuery(Queries.getQuery(mdataRequested)));
-            }
+            Connection conn = Database.getConnection();
+            PreparedStatement ps = conn.prepareStatement(Queries.getQuery(mdataRequested));
             if (mdataReqValue != null) {
-                try (PreparedStatement ps = Database.getConnection().prepareStatement(Queries.getQuery(mdataRequested)); 
-                        ResultSet rs = ps.executeQuery()) {
-                    xml = util.convertResultSetToXML(rs);
-                    rs.close();
-                    ps.close();
+                //PreparedStatement ps = conn.prepareStatement(Queries.getQuery(mdataRequested));
+                ps.setString(1, mdataReqValue);
+
+                if (optionalParam != null) {
+                    for (int i = 0, j = 2; i < optionalParam.length; i++) {
+                        ps.setInt(j++, Integer.parseInt(optionalParam[i]));
+                    }
                 }
-                
             }
+            
+            ResultSet rs = ps.executeQuery();
+            xml = util.convertResultSetToXML(rs);
+            rs.close();
+            ps.close();
         } catch (SQLException ex) {
-            throw(new ServerException(ex.getMessage()));
+            throw (new ServerException(ex.getMessage()));
         } catch (Exception ex) {
-            throw(new ServerException(ex.getMessage()));
+            throw (new ServerException(ex.getMessage()));
         } finally {
             response.setContentType("text/xml");
             out.println(xml);
@@ -56,11 +62,11 @@ public class CMasterData extends JDSController {
         }
     }
 
-
-
-       // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP
+     * <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -73,7 +79,9 @@ public class CMasterData extends JDSController {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -87,6 +95,7 @@ public class CMasterData extends JDSController {
 
     /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

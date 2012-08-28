@@ -169,7 +169,6 @@ public class inwardModel extends JDSModel {
             if (subscriptionID > 0) {
                 sql = Queries.getQuery("update_payment_info");
                 PreparedStatement pst = Database.getConnection().prepareStatement(sql);
-                pst.closeOnCompletion();
                 pst.setInt(1, subscriptionID);
                 pst.setString(2, this._inwardFormBean.getInwardNumber());
                 rc = pst.executeUpdate();

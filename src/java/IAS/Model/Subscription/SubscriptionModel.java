@@ -43,7 +43,7 @@ public class SubscriptionModel extends JDSModel {
 
     public SubscriptionModel(HttpServletRequest request) throws SQLException {
         // call the base class constructor.
-        //super(request);
+        super(request);
         _subscriptionBean = new SubscriptionFormBean();
         //this.journalName = request.getParameter("journalName");
         //this.copies = 0;

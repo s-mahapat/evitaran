@@ -58,13 +58,12 @@ public class JDSModel extends HttpServlet {
         int rc = 0;
         String sql = Queries.getQuery("update_inward_complete_flag");
         PreparedStatement st = conn.prepareStatement(sql);
-        st.closeOnCompletion();
         st.setInt(1, inwardID);
         if (db.executeUpdatePreparedStatement(st) == 1) {
             session.setAttribute("inwardUnderProcess", null);
             rc = 1;
         }
-        
+        st.close();        
         return (rc);
     }
 
