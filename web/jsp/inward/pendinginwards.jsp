@@ -196,7 +196,7 @@
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBoxWide" TABINDEX="1" name="inwardPurpose" id="inwardPurpose">
-                                            <option value ="NULL">Select</option>
+                                            <option value ="NULL">All</option>
                                         </select>
                                     </span>
                                 </div>

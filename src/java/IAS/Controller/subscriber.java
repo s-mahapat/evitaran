@@ -79,23 +79,20 @@ public class subscriber extends JDSController {
             } else if(action.equalsIgnoreCase("subscriberNames")){
              
                 String searchTerm = request.getParameter("term");
-                ResultSet rs = _subscriberModel.getDistinctSubscriberNames(searchTerm);
-                String xml = util.convertResultSetToXML(rs);
+                String xml = _subscriberModel.getDistinctSubscriberNames(searchTerm);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
                 
             } else if(action.equalsIgnoreCase("depts")){
              
                 String searchTerm = request.getParameter("term");
-                ResultSet rs = _subscriberModel.getDepartmentNames(searchTerm);
-                String xml = util.convertResultSetToXML(rs);
+                String xml = _subscriberModel.getDepartmentNames(searchTerm);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }else if(action.equalsIgnoreCase("inst")){
              
                 String searchTerm = request.getParameter("term");
-                ResultSet rs = _subscriberModel.getInstitutionNames(searchTerm);
-                String xml = util.convertResultSetToXML(rs);
+                String xml = _subscriberModel.getInstitutionNames(searchTerm);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }else if (action.equalsIgnoreCase("viewsubscription")) {

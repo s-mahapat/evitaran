@@ -4,19 +4,15 @@
  */
 package IAS.Controller;
 
-import IAS.Class.Database;
-import IAS.Class.Queries;
-import IAS.Class.util;
+import IAS.Model.MasterDataModel;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.rmi.ServerException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 /**
  *
@@ -27,39 +23,27 @@ public class CMasterData extends JDSController {
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        String xml = null;
-        String mdataRequested = request.getParameter("md").toLowerCase();
-        String mdataReqKey = request.getParameter("mdkey");
-        String mdataReqValue = request.getParameter("mdvalue");
-        String optionalParam[] = request.getParameterValues("optionalParam");
+        String xml;
+        String url = null;
         try {
-            Connection conn = Database.getConnection();
-            PreparedStatement ps = conn.prepareStatement(Queries.getQuery(mdataRequested));
-            if (mdataReqValue != null) {
-                //PreparedStatement ps = conn.prepareStatement(Queries.getQuery(mdataRequested));
-                ps.setString(1, mdataReqValue);
-
-                if (optionalParam != null) {
-                    for (int i = 0, j = 2; i < optionalParam.length; i++) {
-                        ps.setInt(j++, Integer.parseInt(optionalParam[i]));
-                    }
-                }
+            MasterDataModel mm = new MasterDataModel();
+            String mdataRequested = request.getParameter("md").toLowerCase();
+            //String mdataReqKey = request.getParameter("mdkey");
+            String mdataReqValue = request.getParameter("mdvalue");
+            String optionalParam[] = request.getParameterValues("optionalParam");
+            xml = mm.getMasterData(mdataRequested, mdataReqValue, optionalParam);
+            request.setAttribute("xml", xml);
+            url = "/xmlserver";
+        } catch (SQLException | ParserConfigurationException | TransformerException e) {
+            throw (new ServletException(e.getMessage(), e));
+        }finally {
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+            if (rd != null && url != null) {
+                rd.forward(request, response);
             }
-            
-            ResultSet rs = ps.executeQuery();
-            xml = util.convertResultSetToXML(rs);
-            rs.close();
-            ps.close();
-        } catch (SQLException ex) {
-            throw (new ServerException(ex.getMessage()));
-        } catch (Exception ex) {
-            throw (new ServerException(ex.getMessage()));
-        } finally {
-            response.setContentType("text/xml");
-            out.println(xml);
-            out.close();
         }
+
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

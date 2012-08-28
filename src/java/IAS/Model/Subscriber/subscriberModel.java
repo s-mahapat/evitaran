@@ -4,6 +4,7 @@ import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Class.JDSConstants;
+import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.dbutils.BeanProcessor;
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 public class subscriberModel extends JDSModel {
@@ -27,6 +29,7 @@ public class subscriberModel extends JDSModel {
     private int inwardID;
     private int inwardPurposeID;
     private inwardFormBean _inwardFormBean;
+    private static Logger logger = JDSLogger.getJDSLogger(subscriberModel.class.getName());
 
     public subscriberModel(HttpServletRequest request) throws SQLException {
         //call the base class constructor
@@ -71,18 +74,25 @@ public class subscriberModel extends JDSModel {
 
             //If the mode was create new user update the inward with the new subscriber that was created
             if (mode.equalsIgnoreCase("Create")) {
-                ResultSet rs = st.getGeneratedKeys();
-                rs.first();
-                //inwardFormBean _inwardFormBean = (inwardFormBean) this.session.getAttribute("inwardUnderProcess");
-                //String inwardUnderProcess = _inwardFormBean.getInwardNumber();
-                int _subscriberId = rs.getInt(1);
+                int _subscriberId;
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    rs.first();
+                    _subscriberId = rs.getInt(1);
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                    throw e;
+                }
 
                 if (this.inwardNumber != null) {
                     String _sql = Queries.getQuery("update_subscriber_in_inward");
-                    PreparedStatement pst = conn.prepareStatement(_sql);
-                    pst.setInt(1, _subscriberId);
-                    pst.setString(2, this.inwardNumber);
-                    db.executeUpdatePreparedStatement(pst);
+                    try (PreparedStatement pst = conn.prepareStatement(_sql)) {
+                        pst.setInt(1, _subscriberId);
+                        pst.setString(2, this.inwardNumber);
+                        db.executeUpdatePreparedStatement(pst);
+                    } catch (SQLException e) {
+                        logger.error(e.getMessage(), e);
+                        throw e;
+                    }
                 }
             }
             return rowsAffected;
@@ -93,41 +103,41 @@ public class subscriberModel extends JDSModel {
     private synchronized String getNextSubscriberNumber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
-        String nextSubscriber = null;
+        String nextSubscriber;
         // Identify the subscriber type i.e.Free or Paid
         String subtype = "S";
         //get the last subscriber number from subscriber table
         String lastSubscriberSql = Queries.getQuery("get_last_subscriber");
-        ResultSet rs = db.executeQuery(lastSubscriberSql);
+
         //java.sql.ResultSetMetaData metaData = rs.getMetaData();
         Calendar calendar = Calendar.getInstance();
-        String lastSubscriber = null;
+        String lastSubscriber;
 
-        //if true there exists a previous subscriber for the year, so just increment the subscriber number.
-        if (rs.first()) {
+        try (ResultSet rs = db.executeQuery(lastSubscriberSql);) {
+            //if true there exists a previous subscriber for the year, so just increment the subscriber number.
+            if (rs.first()) {
 
-            lastSubscriber = rs.getString(1);
+                lastSubscriber = rs.getString(1);
 
-            // get the last subscriber number after the split
-            int subscriber = Integer.parseInt(lastSubscriber.substring(6));
-            //increment
-            ++subscriber;
-            //apend the year, month character and new subscriber number.
-            nextSubscriber = lastSubscriber.substring(0, 2) + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + subtype + "-" + String.format("%05d", subscriber);
-        } else {
-            // there is no previous record for the year, so start the numbering afresh
-            String year = String.valueOf(calendar.get(Calendar.YEAR)).substring(2);
-            nextSubscriber = year + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + subtype + "-" + String.format("%05d", 1);
+                // get the last subscriber number after the split
+                int subscriber = Integer.parseInt(lastSubscriber.substring(6));
+                //increment
+                ++subscriber;
+                //apend the year, month character and new subscriber number.
+                nextSubscriber = lastSubscriber.substring(0, 2) + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + subtype + "-" + String.format("%05d", subscriber);
+            } else {
+                // there is no previous record for the year, so start the numbering afresh
+                String year = String.valueOf(calendar.get(Calendar.YEAR)).substring(2);
+                nextSubscriber = year + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + subtype + "-" + String.format("%05d", 1);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw e;
         }
+
         return nextSubscriber;
     }
 
-//    private String getMonthToCharacterMap(int _month) {
-//        char[] alphabet = "abcdefghijkl".toCharArray();
-//        // the calendar objects month starts from 0
-//        String monthChar = Character.toString(alphabet[_month]);
-//        return monthChar.toUpperCase();
-//    }
     public String editSubscriber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
         return GetSubscriber();
@@ -145,19 +155,22 @@ public class subscriberModel extends JDSModel {
         String mode = "Update";
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("update_subscriber");
-        PreparedStatement st = conn.prepareStatement(sql);
-        // fill in the statement params
-        this._setSubscriberStatementParams(st, mode);
-
-        int dbUpdateFlag = 0;
-        if (db.executeUpdatePreparedStatement(st) == 1) {
-            //Update inward with completed flag once the transaction is completed
-            if ((this.inwardNumber != null) && (this.inwardPurposeID == JDSConstants.INWARD_PURPOSE_ADDRESS_CHANGE)) {
-                if (this.CompleteInward(this.inwardID) == 1) {
-                    session.setAttribute("inwardUnderProcess", null);
+        int dbUpdateFlag;
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            this._setSubscriberStatementParams(st, mode);
+            dbUpdateFlag = 0;
+            if (db.executeUpdatePreparedStatement(st) == 1) {
+                //Update inward with completed flag once the transaction is completed
+                if ((this.inwardNumber != null) && (this.inwardPurposeID == JDSConstants.INWARD_PURPOSE_ADDRESS_CHANGE)) {
+                    if (this.CompleteInward(this.inwardID) == 1) {
+                        session.setAttribute("inwardUnderProcess", null);
+                    }
                 }
+                dbUpdateFlag = 1;
             }
-            dbUpdateFlag = 1;
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw e;
         }
         return dbUpdateFlag;
     }
@@ -172,16 +185,22 @@ public class subscriberModel extends JDSModel {
         FillBean(this.request, subscriberFormBean);
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("get_subscriber_by_number");
-        PreparedStatement st = conn.prepareStatement(sql);
-        st.setString(1, subscriberFormBean.getSubscriberNumber());
-        ResultSet rs = db.executeQueryPreparedStatement(st);
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.Subscriber.subscriberFormBean");
-            subscriberFormBean = (IAS.Bean.Subscriber.subscriberFormBean) bProc.toBean(rs, type);
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, subscriberFormBean.getSubscriberNumber());
+            try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    Class type = Class.forName("IAS.Bean.Subscriber.subscriberFormBean");
+                    subscriberFormBean = (IAS.Bean.Subscriber.subscriberFormBean) bProc.toBean(rs, type);
+                }
+            } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
+                throw e;
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw e;
         }
-        rs.close();
         request.setAttribute("subscriberFormBean", subscriberFormBean);
         return subscriberFormBean.getSubscriberNumber();
     }
@@ -212,50 +231,68 @@ public class subscriberModel extends JDSModel {
         }
     }
 
-    public ResultSet getDistinctSubscriberNames(String searchTerm) throws SQLException {
+    public String getDistinctSubscriberNames(String searchTerm) throws SQLException,
+            ParserConfigurationException, TransformerException {
         String sql = Queries.getQuery("subscriber_names");
-        PreparedStatement pst = this.conn.prepareStatement(sql);
-        pst.setString(1, searchTerm + "%");
-        return (pst.executeQuery());
+        String xml;
+        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+            pst.setString(1, searchTerm + "%");
+            try (ResultSet rs = pst.executeQuery()) {
+                xml = util.convertResultSetToXML(rs);
+            }
+        }
+        return xml;
 
     }
 
-    public ResultSet getDepartmentNames(String searchTerm) throws SQLException {
+    public String getDepartmentNames(String searchTerm) throws SQLException,
+            ParserConfigurationException, TransformerException{
+        String xml;
         String sql = Queries.getQuery("department_names");
-        PreparedStatement pst = this.conn.prepareStatement(sql);
-        pst.setString(1, searchTerm + "%");
-        return (pst.executeQuery());
+        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+            pst.setString(1, searchTerm + "%");
+            try (ResultSet rs = pst.executeQuery()) {
+                xml = util.convertResultSetToXML(rs);
+            } 
+        }
+        return xml;
 
     }
 
-    public ResultSet getInstitutionNames(String searchTerm) throws SQLException {
+    public String getInstitutionNames(String searchTerm) throws SQLException,
+            ParserConfigurationException, TransformerException{
+        String xml;
         String sql = Queries.getQuery("institution_names");
-        PreparedStatement pst = this.conn.prepareStatement(sql);
-        pst.setString(1, searchTerm + "%");
-        return (pst.executeQuery());
+        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+            pst.setString(1, searchTerm + "%");
+            try (ResultSet rs = pst.executeQuery()) {
+                xml = util.convertResultSetToXML(rs);
+            } 
+        }
+        return xml;
 
     }
 
     public String searchSubscriber() throws SQLException, ParseException,
             ParserConfigurationException, TransformerException, IOException, SAXException {
-        String xml = null;
+        String xml;
         String sql = Queries.getQuery("search_subscriber");
         String subscriberNumber = request.getParameter("subscriberNumber");
         String subscriberName = request.getParameter("subscriberName");
         String email = request.getParameter("email");
         String city = request.getParameter("city");
         String pincode = request.getParameter("pincode");
-        String country = request.getParameter("country");
-        String state = request.getParameter("state");
+        //String country = request.getParameter("country");
+        //String state = request.getParameter("state");
         String institution = request.getParameter("institution");
         String department = request.getParameter("department");
         String condition = " where";
         int pageNumber = Integer.parseInt(request.getParameter("page"));
         int pageSize = Integer.parseInt(request.getParameter("rows"));
-        String orderBy = request.getParameter("sidx");
-        String sortOrder = request.getParameter("sord");
-        int totalQueryCount = 0;
-        double totalPages = 0;
+        //String orderBy = request.getParameter("sidx");
+        //String sortOrder = request.getParameter("sord");
+        int totalQueryCount;
+        //double totalPages = 0;
 
         if (subscriberNumber != null && subscriberNumber.length() > 0) {
             sql += condition + " subscriberNumber=" + "'" + subscriberNumber + "'";
@@ -305,18 +342,18 @@ public class subscriberModel extends JDSModel {
         if (pincode != null && pincode.compareToIgnoreCase("NULL") != 0 && pincode.length() > 0) {
             sql += condition + " pincode =" + "'" + pincode + "'";
         }
-
-
-        ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
-
-        //xml = util.convertResultSetToXML(rs);
-
-        sql = "select count(*) from (" + sql + ") as tbl";
-        ResultSet rs_count = this.db.executeQuery(sql);
-        rs_count.first();
-        totalQueryCount = rs_count.getInt(1);
-
-        xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+        ResultSet rs_count;
+        try (ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize)) {
+            sql = "select count(*) from (" + sql + ") as tbl";
+            rs_count = this.db.executeQuery(sql);
+            rs_count.first();
+            totalQueryCount = rs_count.getInt(1);
+            rs_count.close();
+            xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        }
         return xml;
     }
 
@@ -334,7 +371,7 @@ public class subscriberModel extends JDSModel {
     }
 
     public String subscriberInvoices() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
-        String xml = null;
+        String xml;
         String sql = Queries.getQuery("search_subscriber_invoice");
         String ajax_sql = sql + " LIMIT ?, ?";
 
@@ -343,7 +380,7 @@ public class subscriberModel extends JDSModel {
         int pageSize = Integer.parseInt(request.getParameter("rows"));
         String orderBy = request.getParameter("sidx");
         String sortOrder = request.getParameter("sord");
-        int totalQueryCount = 0;
+        int totalQueryCount;
         PreparedStatement pst = conn.prepareStatement(ajax_sql);
         pst.setString(1, subscriberNumber);
         pst.setInt(2, (pageSize * (pageNumber - 1)));
@@ -377,16 +414,16 @@ public class subscriberModel extends JDSModel {
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         return invoiceFormBean;
     }
-    
-    public ResultSet getReminders(String subscriberNumber) throws SQLException{
+
+    public ResultSet getReminders(String subscriberNumber) throws SQLException {
         String sql = Queries.getQuery("get_subscriber_reminders");
         PreparedStatement st = conn.prepareStatement(sql);
         st.setString(1, subscriberNumber);
         ResultSet rs = db.executeQueryPreparedStatement(st);
         return rs;
     }
-    
-    public ResultSet getMissingIssues(int subscriberID) throws SQLException{
+
+    public ResultSet getMissingIssues(int subscriberID) throws SQLException {
         String sql = Queries.getQuery("get_missing_issues_for_subscriber");
         PreparedStatement st = conn.prepareStatement(sql);
         st.setInt(1, subscriberID);
