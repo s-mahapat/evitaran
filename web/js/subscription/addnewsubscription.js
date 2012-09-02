@@ -31,7 +31,7 @@ function addJournal(){
         numYears = $("#endYear").val() - startYear + 1; // +1 to include the current year
         priceDetails = getPrice(startYear, numYears, selectedJournalGroupCode, subscriberType);
         var price = priceDetails[1];
-        if(price != -1){ // check if the price group id is -1
+        if(price != null && price != -1){ // check if the price group id is -1
             var newRowData = {
                 "journalName": '<a color="blue" title="Click here for Journal List" href="#" onclick="getJournalGroupContents(' + selectedJournalGroupCode + ')">' + selectedJournalGroupName + '</a>',
                 "journalPriceGroupID":priceDetails[0],

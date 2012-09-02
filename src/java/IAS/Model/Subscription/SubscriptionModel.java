@@ -73,9 +73,7 @@ public class SubscriptionModel extends JDSModel {
         String Total[] = request.getParameterValues("total");
         float subscriptionTotal = Float.parseFloat(request.getParameter("subscriptionTotal"));
         //String remarks = request.getParameter("remarks");
-        int subscriptionID = 0;
-
-
+        int subscriptionID;
 
         //this.inwardNumber = "12A-00001";
         if (this.inwardNumber == null) {
@@ -88,13 +86,14 @@ public class SubscriptionModel extends JDSModel {
             _subscriptionBean.setSubscriptionTotal(subscriptionTotal);
             request.setAttribute("subscriptionFormBean", _subscriptionBean);
             request.setAttribute("subscriptionDetailBean", _subscriptionDetailBean);
+            PreparedStatement st = null;
 
             // start transaction here.
             conn.setAutoCommit(false);
             try {
                 // the query name from the jds_sql properties files in WEB-INF/properties folder
                 String sql = Queries.getQuery("insert_subscription");
-                PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 int paramIndex = 0;
                 //float balance = subscriptionTotal - this._inwardFormBean.getAmount();
 
@@ -106,9 +105,10 @@ public class SubscriptionModel extends JDSModel {
                 //st.setFloat(++paramIndex, subscriptionTotal);
                 //st.setString(++paramIndex, remarks);
                 if (db.executeUpdatePreparedStatement(st) == 1) {
-                    ResultSet rs = st.getGeneratedKeys();
-                    rs.first();
-                    subscriptionID = rs.getInt(1);
+                    try (ResultSet rs = st.getGeneratedKeys()) {
+                        rs.first();
+                        subscriptionID = rs.getInt(1);
+                    }
 
                     //set the subscription id and total in the bean
                     _subscriptionBean.setSubscriptionID(subscriptionID);
@@ -122,17 +122,17 @@ public class SubscriptionModel extends JDSModel {
                             util.convertStringArraytoFloatArray(Total),
                             util.convertStringArraytoIntArray(journalPriceGroupID));
 
-                    for(int i=0; i<res.length; i++){
-                        if(res[i] != 1){
+                    for (int i = 0; i < res.length; i++) {
+                        if (res[i] != 1) {
                             xml = util.convertStringToXML("Failed to save subscription details", "error");
-                            throw( new SQLException("Failed to update scubscription details"));
+                            throw (new SQLException("Failed to update scubscription details"));
                         }
                     }
 
 
                     // Update the Performa Invoice
                     if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
-                        int invoiceID = this.updateInvoice();
+                        this.updateInvoice();
                     }
 
                     //Update inward with completed flag once the transaction is completed
@@ -140,12 +140,14 @@ public class SubscriptionModel extends JDSModel {
                         session.setAttribute("inwardUnderProcess", null);
                     }
                     xml = util.convertStringToXML(String.valueOf(subscriptionID), "subscriptionID");
+
                     conn.commit(); // complete the transaction here.
                 }
             } catch (SQLException | ParseException | NumberFormatException e) {
                 conn.rollback();
             } finally {
                 conn.setAutoCommit(true);
+                st.close();
             }
 
         }
@@ -158,22 +160,24 @@ public class SubscriptionModel extends JDSModel {
             float[] total, int[] journalPriceGroupID) throws SQLException {
 
         String sql = Queries.getQuery("insert_subscription_detail");
-        PreparedStatement st = conn.prepareStatement(sql);
-        int paramIndex;
-        for (int i = 0; i < journalGroupID.length; i++) {
-            paramIndex = 0;
-            st.setInt(++paramIndex, subscriptionID);
-            st.setInt(++paramIndex, journalGroupID[i]);
-            st.setInt(++paramIndex, journalPriceGroupID[i]);
-            st.setInt(++paramIndex, copies[i]);
-            st.setInt(++paramIndex, startYear[i]);
-            st.setInt(++paramIndex, startMonth[i]);
-            st.setInt(++paramIndex, util.getPreviousMonth(startMonth[i]));
-            st.setInt(++paramIndex, endYear[i]);
-            //st.setFloat(++paramIndex, total[i]);
-            st.addBatch();
+        int[] res;
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            int paramIndex;
+            for (int i = 0; i < journalGroupID.length; i++) {
+                paramIndex = 0;
+                st.setInt(++paramIndex, subscriptionID);
+                st.setInt(++paramIndex, journalGroupID[i]);
+                st.setInt(++paramIndex, journalPriceGroupID[i]);
+                st.setInt(++paramIndex, copies[i]);
+                st.setInt(++paramIndex, startYear[i]);
+                st.setInt(++paramIndex, startMonth[i]);
+                st.setInt(++paramIndex, util.getPreviousMonth(startMonth[i]));
+                st.setInt(++paramIndex, endYear[i]);
+                //st.setFloat(++paramIndex, total[i]);
+                st.addBatch();
+            }
+            res = st.executeBatch();
         }
-        int res[] = st.executeBatch();
         return res;
 
     }
@@ -204,6 +208,7 @@ public class SubscriptionModel extends JDSModel {
             throws ParserConfigurationException, SQLException, TransformerException {
 
         int rc;
+        PreparedStatement st = null;
         try {
 
             /*
@@ -229,43 +234,21 @@ public class SubscriptionModel extends JDSModel {
             int journalGroupID = rs.getInt(1);
             boolean oldactiveFlag = rs.getBoolean(2);
             //float oldTotal = rs.getFloat(3);
-            int subscriptionID = rs.getInt(3);
+            //int subscriptionID = rs.getInt(3);
 
             if ((oldactiveFlag || active) == false) {
                 return (0); //if old and new active flag is the same and its inactive, do not go further
             }
+            rs.close();
 
             // get the new price group id and price
             rs = this.getJournalPrice(startYear, (endYear - startYear + 1), journalGroupID, SubscriberTypeID);
             rs.first();
 
             int newPriceGroupID = rs.getInt(1);
-            //float total = copies * rs.getInt(2);
-
-            /*
-             * // get the amount from the inward table sql =
-             * Queries.getQuery("get_active_subscription_total_amount");
-             * PreparedStatement st = conn.prepareStatement(sql); st.setInt(1,
-             * subscriptionID); rs = st.executeQuery(); rs.first(); float
-             * oldSubscriptionTotal = rs.getFloat(1); float amount =
-             * rs.getFloat(2);
-             *
-             * float newSubscriptionTotal = 0; float newBalance = 0;
-             *
-             * if (oldactiveFlag == true && active == true) {
-             * newSubscriptionTotal = oldSubscriptionTotal - oldTotal + total; }
-             * else if (oldactiveFlag == true && active == false) {
-             * newSubscriptionTotal = oldSubscriptionTotal - oldTotal; } else if
-             * (oldactiveFlag == false && active == true) { newSubscriptionTotal
-             * = oldSubscriptionTotal + total; }
-             *
-             * //calculate the new balance newBalance = newSubscriptionTotal -
-             * amount;
-             *
-             */
-
+            //float total = copies * rs.getInt(2);     
             sql = Queries.getQuery("update_subscription_detail");
-            PreparedStatement st = conn.prepareStatement(sql);
+            st = conn.prepareStatement(sql);
             int paramIndex = 0;
             st.setInt(++paramIndex, startYear);
             st.setInt(++paramIndex, startMonth);
@@ -277,17 +260,6 @@ public class SubscriptionModel extends JDSModel {
             st.setInt(++paramIndex, id);
             rc = st.executeUpdate();
 
-            /*
-             * sql = Queries.getQuery("update_subscription_balance"); st =
-             * conn.prepareStatement(sql); paramIndex = 0;
-             * st.setFloat(++paramIndex, newSubscriptionTotal);
-             * st.setFloat(++paramIndex, newBalance); st.setInt(++paramIndex,
-             * subscriptionID); rc = st.executeUpdate();
-             */
-
-            //update the balance and subscription total after update
-            //sql = "CALL updateSubscriptionBalance(" + id + ")";
-            //rc = db.executeUpdate(sql);
             conn.commit();
             return rc;
 
@@ -296,6 +268,8 @@ public class SubscriptionModel extends JDSModel {
             throw (e);
         } finally {
             conn.setAutoCommit(true);
+            st.close();
+            //st.close();
         }
 
 
@@ -304,11 +278,14 @@ public class SubscriptionModel extends JDSModel {
     public int deleteSubscription() throws ParserConfigurationException, SQLException, TransformerException {
 
         String sql = Queries.getQuery("delete_subscription");
-        PreparedStatement st = conn.prepareStatement(sql);
-        int paramIndex = 0;
-        int subscriptionId = Integer.parseInt(request.getParameter("id"));
-        st.setInt(++paramIndex, subscriptionId);
-        return db.executeUpdatePreparedStatement(st);
+        int rc;
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            int paramIndex = 0;
+            int subscriptionId = Integer.parseInt(request.getParameter("id"));
+            st.setInt(++paramIndex, subscriptionId);
+            rc = st.executeUpdate();
+        }
+        return rc;
     }
 
     public String getSubscription() throws ParserConfigurationException, SQLException, TransformerException, IOException {
@@ -316,14 +293,16 @@ public class SubscriptionModel extends JDSModel {
         String xml;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_subscription_for_subscriber");
-        PreparedStatement st = conn.prepareStatement(sql);
-        int paramIndex = 0;
-        st.setString(++paramIndex, this.subscriberNumber);
-        ResultSet rs = db.executeQueryPreparedStatement(st);
-        if (rs != null) {
-            xml = util.convertResultSetToXML(rs);
-        } else {
-            xml = util.convertStringToXML("Failed to get subscription", "error");
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            int paramIndex = 0;
+            st.setString(++paramIndex, this.subscriberNumber);
+            try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
+                if (rs != null) {
+                    xml = util.convertResultSetToXML(rs);
+                } else {
+                    xml = util.convertStringToXML("Failed to get subscription", "error");
+                }
+            }
         }
         return xml;
 
@@ -333,9 +312,10 @@ public class SubscriptionModel extends JDSModel {
             SQLException, TransformerException, IOException {
 
         String sql = Queries.getQuery("get_subscription_info_by_id");
+        ResultSet rs;
         PreparedStatement st = conn.prepareStatement(sql);
         st.setInt(1, _id);
-        ResultSet rs = db.executeQueryPreparedStatement(st);
+        rs = st.executeQuery();
         return rs;
     }
 
@@ -343,26 +323,29 @@ public class SubscriptionModel extends JDSModel {
             SQLException, TransformerException, IOException {
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_subscription_detail_by_subscription_id");
+        ResultSet rs;
         PreparedStatement st = conn.prepareStatement(sql);
         st.setInt(1, _id);
-        ResultSet rs = db.executeQueryPreparedStatement(st);
+        rs = st.executeQuery();
         return rs;
     }
 
     public String getSubscriptionDetails() throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
-        String xml = null;
+        String xml;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_subscription_details");
-        PreparedStatement st = conn.prepareStatement(sql);
-        int paramIndex = 0;
-        st.setInt(++paramIndex, Integer.parseInt(request.getParameter("id")));
-        ResultSet rs = db.executeQueryPreparedStatement(st);
-        if (rs != null) {
-            xml = util.convertResultSetToXML(rs);
-        } else {
-            logger.error("Failed to get subscription details for id: " + request.getParameter("id"));
-            xml = util.convertStringToXML("Failed to get subscription details", "error");
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            int paramIndex = 0;
+            st.setInt(++paramIndex, Integer.parseInt(request.getParameter("id")));
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs != null) {
+                    xml = util.convertResultSetToXML(rs);
+                } else {
+                    logger.error("Failed to get subscription details for id: " + request.getParameter("id"));
+                    xml = util.convertStringToXML("Failed to get subscription details", "error");
+                }
+            }
         }
         return xml;
     }
@@ -372,31 +355,37 @@ public class SubscriptionModel extends JDSModel {
         String xml = null;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_subscription_details_for_inward");
+        ResultSet rs;
         PreparedStatement st = conn.prepareStatement(sql);
         int paramIndex = 0;
         st.setString(++paramIndex, InwardNumber);
-        ResultSet rs = db.executeQueryPreparedStatement(st);
+        rs = st.executeQuery();
         return rs;
 
     }
 
-    public ResultSet getJournalPrice(int startYear, int numYears, int journalGroupID, int subscriberTypeID) throws SQLException {
+    public ResultSet getJournalPrice(int startYear, int numYears, int journalGroupID, int subscriberTypeID) throws TransformerException,
+            ParserConfigurationException,
+            SQLException {
         String sql = Queries.getQuery("get_journal_group_price");
+        ResultSet rs;
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, journalGroupID);
         ps.setInt(2, subscriberTypeID);
         ps.setInt(3, startYear);
         ps.setInt(4, numYears);
-        ResultSet rs = this.db.executeQueryPreparedStatement(ps);
+        rs = ps.executeQuery();
         return rs;
     }
 
     public ResultSet getJournalGroupContents(int journalGroupID) throws SQLException, ParserConfigurationException, TransformerException {
         String sql = Queries.getQuery("get_journal_groupid_contents");
+        ResultSet rs;
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, journalGroupID);
-        ResultSet rs = this.db.executeQueryPreparedStatement(ps);
+        rs = ps.executeQuery();
         return rs;
+
 
     }
 
@@ -408,22 +397,23 @@ public class SubscriptionModel extends JDSModel {
         String invoiceType = "I";
         //get the last invoice number from invoice table
         String lastInvoiceSql = Queries.getQuery("get_last_invoice");
-        ResultSet rs = db.executeQuery(lastInvoiceSql);
-        Calendar calendar = Calendar.getInstance();
-        String lastInvoice = null;
-        //if true there exists a previous invoice for the year, so just increment the invoice number.
-        if (rs.first()) {
-            lastInvoice = rs.getString(1);
-            // get the last invoice number after the split
-            int invoice = Integer.parseInt(lastInvoice.substring(6));
-            //increment
-            ++invoice;
-            //apend the year, month character and new invoice number.
-            nextInvoice = lastInvoice.substring(0, 2) + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + invoiceType + "-" + String.format("%05d", invoice);
-        } else {
-            // there is no previous record for the year, so start the numbering afresh
-            String year = String.valueOf(calendar.get(Calendar.YEAR)).substring(2);
-            nextInvoice = year + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + invoiceType + "-" + String.format("%05d", 1);
+        try (ResultSet rs = db.executeQuery(lastInvoiceSql)) {
+            Calendar calendar = Calendar.getInstance();
+            String lastInvoice;
+            //if true there exists a previous invoice for the year, so just increment the invoice number.
+            if (rs.first()) {
+                lastInvoice = rs.getString(1);
+                // get the last invoice number after the split
+                int invoice = Integer.parseInt(lastInvoice.substring(6));
+                //increment
+                ++invoice;
+                //apend the year, month character and new invoice number.
+                nextInvoice = lastInvoice.substring(0, 2) + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + invoiceType + "-" + String.format("%05d", invoice);
+            } else {
+                // there is no previous record for the year, so start the numbering afresh
+                String year = String.valueOf(calendar.get(Calendar.YEAR)).substring(2);
+                nextInvoice = year + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + invoiceType + "-" + String.format("%05d", 1);
+            }
         }
         return nextInvoice;
     }
@@ -449,17 +439,19 @@ public class SubscriptionModel extends JDSModel {
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("invoice_insert");
-        PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        // fill in the statement params
-        st.setString(++paramIndex, invoiceNumber);
-        st.setInt(++paramIndex, SubscriptionID);
-        st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+        try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            st.setString(++paramIndex, invoiceNumber);
+            st.setInt(++paramIndex, SubscriptionID);
+            st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+            if (db.executeUpdatePreparedStatement(st) == 1) {
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    rs.first();
+                    invoiceID = rs.getInt(1);
+                }
+            }
 
-        if (db.executeUpdatePreparedStatement(st) == 1) {
-            ResultSet rs = st.getGeneratedKeys();
-            rs.first();
-            invoiceID = rs.getInt(1);
         }
+
         return invoiceID;
     }
 }

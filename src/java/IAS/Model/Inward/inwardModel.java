@@ -94,12 +94,11 @@ public class inwardModel extends JDSModel {
             //update the payment info if subscription id is not null
             if (subscriptionID != 0 && rc == 1) {
                 sql = Queries.getQuery("insert_payment");
-                PreparedStatement pst = conn.prepareStatement(sql);
-                pst.setInt(1, inwardID);
-                pst.setInt(2, subscriptionID);
-                rc = pst.executeUpdate();
-                pst.close();
-                //}
+                try (PreparedStatement pst = conn.prepareStatement(sql)) {
+                    pst.setInt(1, inwardID);
+                    pst.setInt(2, subscriptionID);
+                    rc = pst.executeUpdate();
+                }
             }
             //update inward-agent details
             String agentName = inwardFormBean.getagentName();
@@ -168,11 +167,11 @@ public class inwardModel extends JDSModel {
             int subscriptionID = this._inwardFormBean.getSubscriptionID();
             if (subscriptionID > 0) {
                 sql = Queries.getQuery("update_payment_info");
-                PreparedStatement pst = Database.getConnection().prepareStatement(sql);
-                pst.setInt(1, subscriptionID);
-                pst.setString(2, this._inwardFormBean.getInwardNumber());
-                rc = pst.executeUpdate();
-                pst.close();
+                try (PreparedStatement pst = Database.getConnection().prepareStatement(sql)) {
+                    pst.setInt(1, subscriptionID);
+                    pst.setString(2, this._inwardFormBean.getInwardNumber());
+                    rc = pst.executeUpdate();
+                }
             }
             //update inward-agent details - PINKI
             sql = Queries.getQuery("get_in_agent_dtls");//Get the previous agent selected
@@ -494,14 +493,16 @@ public class inwardModel extends JDSModel {
         }
 
         sql += " order by sortdate " + sortOrder;
-        ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);
-        sql = "select count(*) from (" + sql + ") as tbl";
-        PreparedStatement pst = Database.getConnection().prepareStatement(sql);
-        ResultSet rs_count = pst.executeQuery();
-        rs_count.first();
-        int totalQueryCount = rs_count.getInt(1);
-        xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
-        rs.close();
+        PreparedStatement pst;
+        ResultSet rs_count;
+        try (ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize)) {
+            sql = "select count(*) from (" + sql + ") as tbl";
+            pst = Database.getConnection().prepareStatement(sql);
+            rs_count = pst.executeQuery();
+            rs_count.first();
+            int totalQueryCount = rs_count.getInt(1);
+            xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+        }
         rs_count.close();
         pst.close();
         return xml;

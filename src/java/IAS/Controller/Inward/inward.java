@@ -126,12 +126,14 @@ public class inward extends JDSController {
                         && (purposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
                         || purposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE)) {
 
-                    if (subscriberNumber != null && !subscriberNumber.equalsIgnoreCase("null") && !subscriberNumber.isEmpty() && agentName.isEmpty()) {
+                    if (subscriberNumber != null
+                            && !subscriberNumber.equalsIgnoreCase("null")
+                            && !subscriberNumber.isEmpty()
+                            && agentName == null) {
                         url = "/subscriber?action=add";
-                    }
-
-                    else if(!agentName.isEmpty()){url = "/jsp/inward/agentexcelupload.jsp";} //agent changes - PINKI
-
+                    } else if (agentName != null && !agentName.isEmpty()) {
+                        url = "/jsp/inward/agentexcelupload.jsp";
+                    } //agent changes - PINKI
                     else {
 
                         //IAS.Model.Subscriber.subscriberModel _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
@@ -208,27 +210,25 @@ public class inward extends JDSController {
                 float amount = _inwardFormBean.getAmount();
 
                 /*if ( amount > 0 && 
-                     (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION || 
-                     inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)
-                   ) {
+                 (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION || 
+                 inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)
+                 ) {
 
-                    if (_inwardFormBean != null) {
-                        request.setAttribute("inwardFormBean", _inwardFormBean);
-                        url = "/jsp/inward/ackinward.jsp";
-                    }
-                }*/ 
+                 if (_inwardFormBean != null) {
+                 request.setAttribute("inwardFormBean", _inwardFormBean);
+                 url = "/jsp/inward/ackinward.jsp";
+                 }
+                 }*/
                 // for acknowledgement amount > 0
-                if ( 
-                     (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION || 
-                     inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)
-                   ) {                    
-                        url = "/jsp/inward/pendinginwards.jsp";
-                        
+                if ((inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
+                        || inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)) {
+                    url = "/jsp/inward/pendinginwards.jsp";
+
                 } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
                     InvoiceFormBean _invoiceFormBean = _inwardModel.getInvoiceDetail(); //new IAS.Bean.Invoice.InvoiceFormBean();
                     request.setAttribute("invoiceFormBean", _invoiceFormBean);
                     url = "/jsp/invoice/proforma.jsp";
-                }else{
+                } else {
                     url = "/home";
                 }
 

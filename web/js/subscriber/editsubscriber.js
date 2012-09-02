@@ -1,8 +1,8 @@
 
 function makeEditSubscriberReadOnly(){
 
-    document.getElementById("btnEditSubscriber").disabled = true;
-    document.getElementById('btnDisplaySubscriber').disabled = true;
+    $("#btnEditSubscriber").button("disable");
+    $('#btnDisplaySubscriber').button("disable");
     //document.getElementById("subscriberAgent").options.length=0;
     //document.getElementById("subscriberAgent").disabled = true;
     document.getElementById("deactive").disabled = false;
