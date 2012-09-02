@@ -61,7 +61,7 @@ public class msgsend {
         email.setFromAddress(properties.getProperty("FROM_TEXT"), properties.getProperty("FROM_EMAIL_ID"));
         email.setSubject(Subject);
         email.addRecipient(SubscriberEmail, SubscriberEmail, RecipientType.TO);
-        email.addRecipient("IAS", "jds.ias.emails@gmail.com", RecipientType.BCC);
+        email.addRecipient("IAS", "jds.ias.mails@gmail.com", RecipientType.BCC);
         email.setText(body);
         email.addAttachment(FileName, attachment, attachmentType);
         String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
