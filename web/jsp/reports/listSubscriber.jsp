@@ -15,7 +15,7 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=country"%>","country","country");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=state"%>","state","state");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalGroupName"%>","journalGroupName","journalGroupName");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalName"%>","journalName","journalName");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");
             });
         </script>
@@ -37,13 +37,13 @@
                         rownumbers: true,
                         emptyrecords: "No subscribers to view",
                         loadtext: "Loading...",
-                        colNames:['Subscriber Number','Subscriber Name', 'Department','City','Pin Code','Country'],
+                        colNames:['Subscriber Number','Subscriber Name', 'Subscriber Type', 'City','State','Country'],
                         colModel :[
                             {name:'subscriberNumber', index:'subscriberNumber', width:40, align:'center', xmlmap:'subscriberNumber'},
                             {name:'subscriberName', index:'subscriberName', width:40, align:'center', xmlmap:'subscriberName'},
-                            {name:'department', index:'department', width:40, align:'center', xmlmap:'department'},
+                            {name:'subtypecode', index:'subtypecode', width:40, align:'center', xmlmap:'subtypecode'},
                             {name:'city', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                            {name:'pincode', index:'pincode', width:30, align:'center', sortable:false, xmlmap:'pincode'},
+                            {name:'state', index:'state', width:30, align:'center', sortable:false, xmlmap:'state'},
                             {name:'country', index:'country', width:30, align:'center', xmlmap:'country'},
                           ],
                         xmlReader : {
@@ -94,7 +94,7 @@
                             nationality         : $("#nationality").val(),
                             institutional       : $("#institutional").val(),
                             subscriberType      : $("#subscriberType").val(),
-                            journalGroupName    : $("#journalGroupName").val(),
+                            journalGroupName    : $("#journalName").val(),
                             country             : $("#country").val(),
                             state               : $("#state").val(),
                             city                : $("#city").val(),
@@ -184,10 +184,10 @@
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Journal Group:</label>
+                                        <label>Journal Name:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="journalGroupName" id="journalGroupName">
+                                        <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
@@ -244,6 +244,14 @@
                                         <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Only Active</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="active" id="selall" onclick="getChecked()"/>
+                                    </span>
+                                </div>                                    
                             </div>
 
                             <div class="actionBtnDiv">

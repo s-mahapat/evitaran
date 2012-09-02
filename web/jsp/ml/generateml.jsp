@@ -26,7 +26,7 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=month"%>","month","month");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
                 //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=getissues"%>","issueNumber","issue");
-                jQuery("#btnAdd,#btnPrintLabel,#btnPrintSticker").attr("disabled",true);
+                jQuery("#btnAdd,#btnPrintLabel,#btnPrintSticker").button("disable");
                 
              });
 

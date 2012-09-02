@@ -379,37 +379,79 @@ public class reportModel extends JDSModel {
         String nationality = request.getParameter("nationality");
         String institutional = request.getParameter("institutional");
         String subscriberType = request.getParameter("subscriberType");
-        String journalGroupName = request.getParameter("journalGroupName");
+        String journalName = request.getParameter("journalName");
         String country = request.getParameter("country");
         String state = request.getParameter("state");
         String city = request.getParameter("city");
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
+        String deactive = request.getParameter("deactive");
 
         String sql = null;
 
-        /*
-         * Deepali insert query here int param = 0;
-         *
-         * if (selall != null){
-         *
-         * sql = Queries.getQuery("search_subtype_all"); } else { sql =
-         * Queries.getQuery("search_subtype_prm");
-         *
-         * if (subType != null && subType.length() > 0) { sql += " subType=" +
-         * "'" + subType + "'"; param = 1; }
-         *
-         * if (nationality != null && nationality.length() > 0) { if (param ==
-         * 0){ sql += " nationality =" + "'" + nationality + "'"; param = 1; }
-         * else{ sql += " and nationality =" + "'" + nationality + "'"; } }
-         *
-         * if (institutional != null && institutional.length() > 0) { if (param
-         * == 0){ sql += " institutional =" + "'" + institutional + "'"; param =
-         * 1; } else{ sql += " and institutional =" + "'" + institutional + "'";
-         * } } sql += " order by id"; }
-         *
-         *
-         */
+
+        if ("0".equals(city)) {
+            city = null;
+        }
+        if ("0".equals(country)) {
+            country = null;
+        }
+        if ("0".equals(state)) {
+            state = null;
+        }
+        if ("0".equals(subType)) {
+            subType = null;
+        }
+        if ("0".equals(nationality)) {
+            nationality = null;
+        }
+        if ("0".equals(institutional)) {
+            institutional = null;
+        }
+        if ("0".equals(subscriberType)) {
+            subscriberType = null;
+        }
+        if ("0".equals(journalName)) {
+            journalName = null;
+        }
+        if (subType != null && subType.compareToIgnoreCase("NULL") != 0 && subType.length() > 0) {
+            sql += " and subscriber_type.subtype =" + "'" + subType + "'";
+        }
+        if (subscriberType != null && subscriberType.compareToIgnoreCase("NULL") != 0 && subscriberType.length() > 0) {
+            sql += " and subscriber_type.subtypedesc =" + "'" + subscriberType + "'";
+        }
+        if (city != null && city.compareToIgnoreCase("NULL") != 0 && city != null && city.length() > 0) {
+            sql += " and cities.city = " + "\"" + city + "\"";
+        }
+
+        if (country != null && country.compareToIgnoreCase("NULL") != 0 && country.length() > 0) {
+            sql += " and countries.country = " + "\"" + country + "\"";
+        }
+
+        if (state != null && state.compareToIgnoreCase("NULL") != 0 && state.length() > 0) {
+                sql += " and states.state = " + "\"" + state + "\"";
+        }
+
+        if (journalName != null && journalName.compareToIgnoreCase("NULL") != 0 && journalName.length() > 0) {
+            sql += " and journals.journalName = " + "\"" + journalName + "\"";
+        }
+
+        if (nationality != null && nationality.compareToIgnoreCase("NULL") != 0 && nationality.length() > 0) {
+            sql += " and subscriber_type.nationality = " + "\"" + nationality + "\"";
+        }
+
+        if (institutional != null && institutional.compareToIgnoreCase("NULL") != 0 && institutional.length() > 0) {
+            sql += " and subscriber_type.institutional = " + "\"" + institutional + "\"";
+        }
+        
+        if (deactive != null && deactive.compareToIgnoreCase("NULL") != 0 && deactive.length() > 0) {
+            sql += " and subscriber.deactive = " + "\"" + deactive + "\"";
+        }
+
+        if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
+            sql += " and subscription.subscriptionDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+        }
+         
         PreparedStatement stGet = conn.prepareStatement(sql);
 
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
@@ -731,6 +773,7 @@ public class reportModel extends JDSModel {
                 String sqlPrintOrder = null;
                 sqlPrintOrder = Queries.getQuery("cf_print_order");
                 PreparedStatement stGetPrintOrder = conn.prepareStatement(sqlPrintOrder);
+                paramIndex = 1;
                 stGetPrintOrder.setString(paramIndex, request.getParameter("year"));
                 stGetPrintOrder.setInt(++paramIndex, journalId);
                 stGetPrintOrder.setInt(++paramIndex, issue);                    

@@ -154,11 +154,14 @@ public class mlModel extends JDSModel {
                                 else
                                     stmldtl.setString(++paramIndex, value.toString());
                             }
+                            
                             stmldtl.setString(++paramIndex, request.getParameter("issue"));
                             stmldtl.setString(++paramIndex, request.getParameter("month"));
                             stmldtl.setString(++paramIndex, request.getParameter("year"));
-                            db.executeUpdatePreparedStatement(stmldtl);                            
+                            db.executeUpdatePreparedStatement(stmldtl);
+                            stmldtl.close();
                         }
+                        rsgetml.close();
                         if (mlIndex == 0)
                         { 
                             throw new SQLException("No record found"); 
@@ -168,7 +171,9 @@ public class mlModel extends JDSModel {
                     }
                 }
             
-            }catch (SQLException | NumberFormatException e) {
+            }catch (Exception e) {
+                logger.error(e);
+                //SQLException | NumberFormatException
                 conn.rollback();
             } finally {
                 conn.setAutoCommit(true);
