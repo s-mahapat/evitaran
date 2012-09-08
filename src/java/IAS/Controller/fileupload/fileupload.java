@@ -37,6 +37,9 @@ public class fileupload extends JDSController {
                 URNModel _urnModel = new URNModel();
                 _urnModel.addFiles(items);
                 _urnModel.processFiles();
+                String xml = _urnModel.getOutputAsXML();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             }
 
             if (action.equals("agentxlvalidate")) { //Agent Excel Upload - PINKI
@@ -62,7 +65,7 @@ public class fileupload extends JDSController {
                 returnOutList = new ArrayList<>();
                 returnOutList = _agentXLUploadModel.getOutputAsLIST();
                 if (!returnOutList.isEmpty()) {
-                    String xml = util.convertArrayListToXML(returnOutList, "rows");
+                    String xml = util.convertArrayListToXML(returnOutList, "id");
                     request.setAttribute("xml", xml);
                     url = "/xmlserver";
                 }

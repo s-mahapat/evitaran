@@ -169,6 +169,11 @@ public class subscription extends JDSController {
                     request.setAttribute("xml", xml);
                 }
                 url = "/xmlserver";
+            }else if (action.equalsIgnoreCase("inwardinfo")){
+                int subscription_id = Integer.parseInt(request.getParameter("id"));
+                String xml = _subscriptionModel.getSubscriptionInwardInfo(subscription_id);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

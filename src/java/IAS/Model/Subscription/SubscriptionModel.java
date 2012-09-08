@@ -454,4 +454,20 @@ public class SubscriptionModel extends JDSModel {
 
         return invoiceID;
     }
+    
+    public String getSubscriptionInwardInfo(int subid) throws 
+            SQLException, 
+            ParserConfigurationException,
+            TransformerException{
+        String sql = Queries.getQuery("get_subscription_inward_amount");
+        String xml;
+        try(PreparedStatement st = conn.prepareStatement(sql)){
+            st.setInt(1, subid);
+            try(ResultSet rs = st.executeQuery()){
+                xml = util.convertResultSetToXML(rs);
+            }
+        }
+        return xml;
+        
+    }
 }

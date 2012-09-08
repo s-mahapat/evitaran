@@ -70,22 +70,22 @@
                     viewrecords: true, 
                     forceFit: true,
                     sortable: true,
-                    //loadonce: true,
+                    loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No records to view",
                     loadtext: "Loading...",
-                    colNames:['Id', 'Errors'],
+                    colNames:['Id','Errors'],
                     colModel :[
-                        {name:'Id', index:'Id', align:'center', xmlmap:'rows'},
-                        {name:'Errors', index:'Errors', align:'center', xmlmap:'rows'}
+                        {name:'Id', index:'id', align:'center', xmlmap:'id'},
+                        {name:'Errors', index:'Errors', align:'center', xmlmap:'id'}
                 ],
                     xmlReader : {
                         root: "results",
-                        row: "rows",
+                        row: "row",
                         //page: "errors>page",
                         //total: "errors>total",
                         //records : "errors>records",
-                        //repeatitems: true
+                        repeatitems: false,
                         id: "Id"
                     },
                     pager: '#pager',

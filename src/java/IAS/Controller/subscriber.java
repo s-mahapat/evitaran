@@ -135,14 +135,12 @@ public class subscriber extends JDSController {
                 url = "/xmlserver";
             }else if (action.equalsIgnoreCase("reminders")) {
                 String subscriberNumber = request.getParameter("subscriberNumber");
-                ResultSet rs = _subscriberModel.getReminders(subscriberNumber);
-                String xml = util.convertResultSetToXML(rs);
+                String xml = _subscriberModel.getReminders(subscriberNumber);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }else if(action.equalsIgnoreCase("mi")){
                 int subscriberID = Integer.parseInt(request.getParameter("sid"));
-                ResultSet rs = _subscriberModel.getMissingIssues(subscriberID);
-                String xml = util.convertResultSetToXML(rs);
+                String xml = _subscriberModel.getMissingIssues(subscriberID);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }

@@ -318,16 +318,19 @@ public final class util {
 
     public static String convertArrayListToXML(ArrayList<String> arr, String tagname) throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
-        String xml = null;
+        String xml;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.newDocument();
 
         Element results = doc.createElement("results");
         doc.appendChild(results);
-        for (int i = 0; i < arr.size(); i++) {
+                
+        for (int i = 0; i < arr.size(); i++) {            
+            Element row = doc.createElement("row");
+            results.appendChild(row);            
             Element error = doc.createElement(tagname);
-            results.appendChild(error);
+            row.appendChild(error);
             error.appendChild(doc.createTextNode(arr.get(i)));
         }
         DOMSource domSource = new DOMSource(doc);

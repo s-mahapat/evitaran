@@ -160,7 +160,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" TABINDEX="12" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${subscriberFormBean.email}"/>
+                <input class="IASTextBoxWide" TABINDEX="12" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${subscriberFormBean.email}"/>
             </span>
         </div>
 

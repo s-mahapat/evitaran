@@ -36,7 +36,7 @@ public class inward extends JDSController {
         try {
 
             _inwardModel = new IAS.Model.Inward.inwardModel(request);
-            inwardFormBean _inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
+            inwardFormBean _inwardFormBean;
 
             /*
              * If the action is to save the inward

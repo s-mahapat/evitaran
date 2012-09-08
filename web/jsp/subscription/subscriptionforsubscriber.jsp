@@ -7,7 +7,7 @@
         <title>Search Subscription</title>
         <script>
             var subscriber = window.dialogArguments;
-            var subscriberNumber = '12D-S-00002'; //subscriber.Number;
+            var subscriberNumber = subscriber.Number;
             var selectedSubscriptionid = null;
             $(document).ready(function(){
                 $("#subscriptionList").jqGrid({

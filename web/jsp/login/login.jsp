@@ -1,7 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     if (request.getRemoteUser() != null) {
-        response.sendRedirect(request.getContextPath() + "/home");
+        String redirecturl = request.getContextPath() + "/home";
+        if(request.getParameter("from") != null){
+            redirecturl = request.getParameter("from");
+        }
+        response.sendRedirect(redirecturl);
     }
 %>
 
@@ -95,6 +99,7 @@
                             <input type="submit" value="Login"/>
                             <input type="reset" value="Reset"/>
                         </div>
+                        <input type="hidden" name="from" value="<%=request.getRequestURI()%>">
 
                     </div>
 

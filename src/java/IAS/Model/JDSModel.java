@@ -31,13 +31,32 @@ public class JDSModel extends HttpServlet {
     private static final Logger logger = JDSLogger.getJDSLogger(JDSModel.class.getName());
 
     public JDSModel() throws SQLException {
-        this.conn = Database.getConnection();
+        if (this.conn == null || this.conn.isClosed() == true) {
+            this.conn = Database.getConnection();            
+        }
         this.db = new Database();
-
+    }
+    
+    protected Connection getConnection() throws SQLException{
+        return Database.getConnection();
+    }
+    
+    protected void CloseConnection(Connection conn) throws SQLException{
+        if(conn != null && conn.isClosed() == false){
+            try{
+                conn.close();
+                logger.debug("CloseConnection() called");
+            }catch(SQLException e){
+                logger.error(e);
+            }
+            
+        }
     }
 
     public JDSModel(HttpServletRequest request) throws SQLException {
-        this.conn = Database.getConnection();
+        if (this.conn == null || this.conn.isClosed() == true) {
+            this.conn = Database.getConnection();
+        }
         this.db = new Database();
         this.request = request;
         this.session = request.getSession(false);
@@ -57,13 +76,13 @@ public class JDSModel extends HttpServlet {
         //Update inward with completed flag once the transaction is completed
         int rc = 0;
         String sql = Queries.getQuery("update_inward_complete_flag");
-        PreparedStatement st = conn.prepareStatement(sql);
-        st.setInt(1, inwardID);
-        if (db.executeUpdatePreparedStatement(st) == 1) {
-            session.setAttribute("inwardUnderProcess", null);
-            rc = 1;
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, inwardID);
+            if (db.executeUpdatePreparedStatement(st) == 1) {
+                session.setAttribute("inwardUnderProcess", null);
+                rc = 1;
+            }
         }
-        st.close();        
         return (rc);
     }
 
@@ -77,7 +96,11 @@ public class JDSModel extends HttpServlet {
     @Override
     public void destroy() {
         try {
-            this.conn.close();
+            if(this.conn != null && this.conn.isClosed() == false){
+                this.conn.close();
+                logger.info("Closing connection");                
+            }
+            
         } catch (SQLException e) {
             logger.error("Failed to close Database connection");
         }

@@ -3,6 +3,7 @@ package IAS.Model.Subscriber;
 import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscriber.subscriberFormBean;
+import IAS.Class.Database;
 import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
@@ -10,6 +11,7 @@ import IAS.Class.util;
 import IAS.Model.JDSModel;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,6 +54,9 @@ public class subscriberModel extends JDSModel {
         String sql;
         String mode = "Create";
 
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, subscriberFormBean);
         this._subscriberFormBean = subscriberFormBean;
@@ -70,7 +75,7 @@ public class subscriberModel extends JDSModel {
             PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             // fill in the statement params
             this._setSubscriberStatementParams(st, mode);
-            int rowsAffected = db.executeUpdatePreparedStatement(st);
+            int rowsAffected = st.executeUpdate();
 
             //If the mode was create new user update the inward with the new subscriber that was created
             if (mode.equalsIgnoreCase("Create")) {
@@ -95,6 +100,10 @@ public class subscriberModel extends JDSModel {
                     }
                 }
             }
+
+            // return the connection back to the pool
+            this.CloseConnection(conn);
+
             return rowsAffected;
 
         }
@@ -113,7 +122,10 @@ public class subscriberModel extends JDSModel {
         Calendar calendar = Calendar.getInstance();
         String lastSubscriber;
 
-        try (ResultSet rs = db.executeQuery(lastSubscriberSql);) {
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+
+        try (ResultSet rs = conn.prepareStatement(lastSubscriberSql).executeQuery();) {
             //if true there exists a previous subscriber for the year, so just increment the subscriber number.
             if (rs.first()) {
 
@@ -133,6 +145,9 @@ public class subscriberModel extends JDSModel {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw e;
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
         }
 
         return nextSubscriber;
@@ -156,6 +171,10 @@ public class subscriberModel extends JDSModel {
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("update_subscriber");
         int dbUpdateFlag;
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             this._setSubscriberStatementParams(st, mode);
             dbUpdateFlag = 0;
@@ -171,12 +190,18 @@ public class subscriberModel extends JDSModel {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw e;
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
         }
         return dbUpdateFlag;
     }
 
     public String GetSubscriber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
 
         String sql;
         subscriberFormBean subscriberFormBean = new IAS.Bean.Subscriber.subscriberFormBean();
@@ -187,7 +212,7 @@ public class subscriberModel extends JDSModel {
         sql = Queries.getQuery("get_subscriber_by_number");
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, subscriberFormBean.getSubscriberNumber());
-            try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
+            try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     BeanProcessor bProc = new BeanProcessor();
                     Class type = Class.forName("IAS.Bean.Subscriber.subscriberFormBean");
@@ -200,6 +225,9 @@ public class subscriberModel extends JDSModel {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw e;
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
         }
         request.setAttribute("subscriberFormBean", subscriberFormBean);
         return subscriberFormBean.getSubscriberNumber();
@@ -233,41 +261,62 @@ public class subscriberModel extends JDSModel {
 
     public String getDistinctSubscriberNames(String searchTerm) throws SQLException,
             ParserConfigurationException, TransformerException {
+
         String sql = Queries.getQuery("subscriber_names");
         String xml;
-        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, searchTerm + "%");
             try (ResultSet rs = pst.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
             }
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
         }
         return xml;
 
     }
 
     public String getDepartmentNames(String searchTerm) throws SQLException,
-            ParserConfigurationException, TransformerException{
+            ParserConfigurationException, TransformerException {
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
         String xml;
         String sql = Queries.getQuery("department_names");
-        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, searchTerm + "%");
             try (ResultSet rs = pst.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
-            } 
+            }
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
         }
         return xml;
 
     }
 
     public String getInstitutionNames(String searchTerm) throws SQLException,
-            ParserConfigurationException, TransformerException{
+            ParserConfigurationException, TransformerException {
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
         String xml;
         String sql = Queries.getQuery("institution_names");
-        try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, searchTerm + "%");
             try (ResultSet rs = pst.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
-            } 
+            }
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
         }
         return xml;
 
@@ -275,6 +324,10 @@ public class subscriberModel extends JDSModel {
 
     public String searchSubscriber() throws SQLException, ParseException,
             ParserConfigurationException, TransformerException, IOException, SAXException {
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+
         String xml;
         String sql = Queries.getQuery("search_subscriber");
         String subscriberNumber = request.getParameter("subscriberNumber");
@@ -304,20 +357,6 @@ public class subscriberModel extends JDSModel {
             condition = " and";
         }
 
-        //if (country != null && Integer.parseInt(country) != 0 && country.length() > 0) {
-//        if (country != null && country.compareToIgnoreCase("NULL") != 0 && country.length() > 0) {
-//            sql += condition + " t3.country = " + "\"" + country + "\"";
-//            condition = " or";
-//
-//        }
-//
-//        if (state != null && state.compareToIgnoreCase("NULL") != 0 && state.length() > 0) {
-//            sql += condition + " t4.state = " + "\"" + state + "\"";
-//            condition = " or";
-//
-//        }
-        //city.compareToIgnoreCase("Select") != 0 &&
-
         if (city != null && city.compareToIgnoreCase("Select") != 0 && city.length() > 0) {
             sql += condition + " t2.city = " + "\"" + city + "\"";
             condition = " and";
@@ -343,7 +382,11 @@ public class subscriberModel extends JDSModel {
             sql += condition + " pincode =" + "'" + pincode + "'";
         }
         ResultSet rs_count;
-        try (ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize)) {
+
+        int start = (pageNumber - 1) * pageSize;
+        sql += " LIMIT " + start + "," + pageSize;
+        PreparedStatement pstatement = Database.getConnection().prepareStatement(sql);
+        try (ResultSet rs = pstatement.executeQuery();) {
             sql = "select count(*) from (" + sql + ") as tbl";
             rs_count = this.db.executeQuery(sql);
             rs_count.first();
@@ -353,24 +396,38 @@ public class subscriberModel extends JDSModel {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw e;
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
         }
         return xml;
     }
 
     public int getSubscriberType(String SubscriberNumber) throws SQLException {
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+
         String sql = Queries.getQuery("get_subscriber_type");
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, SubscriberNumber);
         int subscriberType;
-        try (ResultSet rs = this.db.executeQueryPreparedStatement(ps)) {
+        try (ResultSet rs = ps.executeQuery()) {
             rs.first();
             subscriberType = rs.getInt(1);
             rs.close();
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
         }
         return subscriberType;
     }
 
     public String subscriberInvoices() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+
         String xml;
         String sql = Queries.getQuery("search_subscriber_invoice");
         String ajax_sql = sql + " LIMIT ?, ?";
@@ -378,56 +435,92 @@ public class subscriberModel extends JDSModel {
         String subscriberNumber = request.getParameter("subscriberNumber");
         int pageNumber = Integer.parseInt(request.getParameter("page"));
         int pageSize = Integer.parseInt(request.getParameter("rows"));
-        String orderBy = request.getParameter("sidx");
-        String sortOrder = request.getParameter("sord");
+        //String orderBy = request.getParameter("sidx");
+        //String sortOrder = request.getParameter("sord");
         int totalQueryCount;
-        PreparedStatement pst = conn.prepareStatement(ajax_sql);
-        pst.setString(1, subscriberNumber);
-        pst.setInt(2, (pageSize * (pageNumber - 1)));
-        pst.setInt(3, pageSize);
-        ResultSet rs = pst.executeQuery();
+        try (PreparedStatement pst = conn.prepareStatement(ajax_sql);) {
+            pst.setString(1, subscriberNumber);
+            pst.setInt(2, (pageSize * (pageNumber - 1)));
+            pst.setInt(3, pageSize);
 
-        sql = "select count(*) from (" + sql + ") as tbl";
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, subscriberNumber);
-        ResultSet rs_count = pst.executeQuery();
-        rs_count.first();
-        totalQueryCount = rs_count.getInt(1);
-        xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
-
+            try (ResultSet rs = pst.executeQuery();) {
+                sql = "select count(*) from (" + sql + ") as tbl";
+                PreparedStatement pst2 = conn.prepareStatement(sql);
+                pst2.setString(1, subscriberNumber);
+                ResultSet rs_count = pst2.executeQuery();
+                rs_count.first();
+                totalQueryCount = rs_count.getInt(1);
+                xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+            }
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
+        }
         return xml;
     }
 
     public InvoiceFormBean getInvoiceDetail() throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+
         String sql;
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
         sql = Queries.getQuery("get_invoice_detail_usng_invno");
         PreparedStatement st = conn.prepareStatement(sql);
         st.setString(1, request.getParameter("invoiceNo"));
-        try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
+
+        try (ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
                 BeanProcessor bProc = new BeanProcessor();
                 Class type = Class.forName("IAS.Bean.Invoice.InvoiceFormBean");
                 invoiceFormBean = (IAS.Bean.Invoice.InvoiceFormBean) bProc.toBean(rs, type);
             }
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
         }
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         return invoiceFormBean;
     }
 
-    public ResultSet getReminders(String subscriberNumber) throws SQLException {
+    public String getReminders(String subscriberNumber) throws SQLException, 
+            ParserConfigurationException,TransformerException {
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+
         String sql = Queries.getQuery("get_subscriber_reminders");
-        PreparedStatement st = conn.prepareStatement(sql);
-        st.setString(1, subscriberNumber);
-        ResultSet rs = db.executeQueryPreparedStatement(st);
-        return rs;
+        try (PreparedStatement st = conn.prepareStatement(sql);) {
+            st.setString(1, subscriberNumber);
+            try (ResultSet rs = st.executeQuery();) {
+                return util.convertResultSetToXML(rs);
+            }
+        }finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
+        }
+
     }
 
-    public ResultSet getMissingIssues(int subscriberID) throws SQLException {
+    public String getMissingIssues(int subscriberID) throws SQLException,
+            ParserConfigurationException,TransformerException {
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+        ResultSet _rs;
+
         String sql = Queries.getQuery("get_missing_issues_for_subscriber");
-        PreparedStatement st = conn.prepareStatement(sql);
-        st.setInt(1, subscriberID);
-        ResultSet rs = db.executeQueryPreparedStatement(st);
-        return rs;
+
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, subscriberID);
+            try(ResultSet rs = st.executeQuery();){
+               return util.convertResultSetToXML(rs); 
+            }
+        }finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
+        }
+        
     }
 }

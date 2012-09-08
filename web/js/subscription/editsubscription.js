@@ -75,6 +75,7 @@ function isDuplicate(journalGroupName){
 
 /*Gets the subscription info from the server*/
 function getSubscriptionInfo(){
+    //getInwardAndAmount();
     $.ajax({
         type: 'GET',
         dataType: 'xml',
@@ -91,6 +92,26 @@ function getSubscriptionInfo(){
         },
         error: function(jqXHR,textStatus,errorThrown){
             alert("Failed to refresh subscription information. " + textStatus + ": "+ errorThrown);
+        }
+
+    });
+}
+
+function getInwardAndAmount(){
+    $.ajax({
+        type: 'GET',
+        dataType: 'xml',
+        async: true,
+        url: "subscription?action=inwardinfo&id=" + $("#subscriptionID").val(),
+        success: function(xmlResponse, textStatus, jqXHR){
+
+            $(xmlResponse).find("results").find("row").each(function(){
+                $("#inwardNumber").val($(this).find("inwardNumber").text());
+                $("#amount").val($(this).find("amount").text());
+            });
+        },
+        error: function(jqXHR,textStatus,errorThrown){
+            alert("Failed to refresh Inwards information. " + textStatus + ": "+ errorThrown);
         }
 
     });

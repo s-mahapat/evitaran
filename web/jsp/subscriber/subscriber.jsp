@@ -224,7 +224,7 @@
         </div>
 
 
-        <div class="IASFormFieldDiv">
+        <%--<div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Agent:</label>
             </span>
@@ -239,7 +239,7 @@
                     %>
                 </select>
             </span>
-        </div>
+        </div>--%>
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
