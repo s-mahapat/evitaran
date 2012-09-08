@@ -11,68 +11,82 @@
             var selectedSubscriberId = 0;
             var isPageLoaded = false;
             
-            $(function(){
-                
+            $(function(){ //Start of main function
                 _fileuploader = new jdsfileuploader("uploader");
-                _fileuploader.url = "fileupload?action=agentXLUpload";
+                _fileuploader.url = "fileupload?action=agentXLValidate";
                 _fileuploader.filters = [{title : "XLS files", extensions : "xls"}];
-                _fileuploader.success = function(up, file, info){
+                _fileuploader.success = function(up, file, info){ //Success block
                     
                     var xml = $(info.response);
                     var html = "<ol>";
-
-                    xml.find("errors").each(function(){
-                        html += "<li>" + $(this).text() + "</li>";
-                    });
+                    if(xml.find("rows").size() == 0)
+                    {html += "<hl>There are no errors found. Do you want to upload the excel?</hl>";}
+                    else{
+                        {html += "<hl>Resolve these errors to upload the Excel successfully</hl><br><br>";}
+                        xml.find("rows").each(function(){
+                            html += "<li>" + $(this).text() + "</li>";
+                        });}
                     html += "</ol>";
                     
                     $("#ErrorPage").append(html);
                     
-                    $("#ErrorPage").dialog({
+                    $("#ErrorPage").dialog({ //start of dialog block
                         modal: true,
                         height: 300,
-                        width: 500
-                    });
-                };
+                        width: 500,
+                        buttons: { //start of buttons block
+                            "Upload Excel": function() { //start of upload excel block
+                                $.ajax({
+                                    url: "fileupload?action=agentXLUpload",
+                                    success:  function(xml){
+                                        //console.log(xml);
+                                        drawResultsGrid(xml);
+                                        //function(xml){console.log(xml);}
+                                    }
+                                }); // end of ajax block
+                                $( this ).dialog( "close" );
+                            }, //end of upload excel block
+                            Cancel: function() {
+                                $( this ).dialog( "close" );
+                            }
+                        }//start of buttons block
+                    }); //end of dialog block
+                }; // end of Success block
                 _fileuploader.error = function(up, args){
                     alert("Error" + args);
                 }
                 _fileuploader.draw();
-
-            });
+            }); // end of main function
             
-            
-            /*$(function(){
-
+            function drawResultsGrid(xml){
+                console.log(xml);
                 $("#subsTable").jqGrid({
-                    url:'',
-                    datatype: 'xml',
-                    mtype: 'GET',
+                    datastr: xml,
+                    datatype: 'xmlstring',
+                    //mtype: 'GET',
                     width: '100%',
                     height: 240,
                     autowidth: true,
+                    viewrecords: true, 
                     forceFit: true,
                     sortable: true,
-                    loadonce: true,
+                    //loadonce: true,
                     rownumbers: true,
                     emptyrecords: "No records to view",
                     loadtext: "Loading...",
-                    colNames:['Inward#','Subscriber#', 'Reciept#','Cheque#','Date'],
+                    colNames:['Id', 'Errors'],
                     colModel :[
-                        {name:'Inward#', index:'inward_id', width:50, align:'center', xmlmap:'inward_id'},
-                        {name:'Subscriber#', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_id'},
-                        {name:'Reciept#', index:'reciept_no', width:50, align:'center', xmlmap:'reciept_no'},
-                        {name:'Cheque#', index:'cheque_no', width:50, align:'center', xmlmap:'cheque_no'},
-                        {name:'Date', index:'date', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'date'},
-                    ],
+                        {name:'Id', index:'Id', align:'center', xmlmap:'rows'},
+                        {name:'Errors', index:'Errors', align:'center', xmlmap:'rows'}
+                ],
                     xmlReader : {
-                        root: "result",
-                        row: "urn",
-                        page: "urns>page",
-                        total: "urns>total",
-                        records : "urns>records",
-                        repeatitems: false,
-                        id: "id"
+                        root: "results",
+                        row: "rows",
+                        //page: "errors>page",
+                        //total: "errors>total",
+                        //records : "errors>records",
+                        //repeatitems: true
+                        id: "Id"
                     },
                     pager: '#pager',
                     rowNum:10,
@@ -80,22 +94,20 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-                    gridComplete: function() {},
+                    //gridComplete: function() {},
 
                     loadError: function(xhr,status,error){
                         alert("Failed getting data from server" + status);
                     }
-                });
-                                
-            });*/
-
+                });                         
+            }
         </script>
 
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form action="" method="GET" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Upload Agent Excel</legend>
@@ -126,9 +138,9 @@
                             </div>
                         </fieldset>
                     </fieldset>
-                    <div id="ErrorPage" style="padding:20px; display: none" title="Agent Excel Errors">
-                        Resolve these errors to upload the Excel successfully
+                    <div id="ErrorPage" style="padding:20px; display: none" title="Agent Excel Upload">                       
                     </div>
+
                 </div>
             </form>
         </div>

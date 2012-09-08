@@ -2,6 +2,7 @@ package IAS.Controller.fileupload;
 
 import IAS.Class.util;
 import IAS.Controller.JDSController;
+import IAS.Controller.Print.Print;
 import IAS.Model.FileUpload.AgentXLUploadModel;
 import IAS.Model.FileUpload.URNModel;
 import java.io.IOException;
@@ -21,29 +22,47 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class fileupload extends JDSController {
 
-    private ArrayList<String> errors;
+    private ArrayList<String> returnOutList;
     String url = null;
+    static List<FileItem> heldItems;
 
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action").toLowerCase();
         try {
-            List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+
             if (action.equals("urn")) {
+                List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
                 URNModel _urnModel = new URNModel();
                 _urnModel.addFiles(items);
                 _urnModel.processFiles();
             }
 
-            if (action.equals("agentxlupload")) { //Agent Excel Upload - PINKI
+            if (action.equals("agentxlvalidate")) { //Agent Excel Upload - PINKI
+                List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
                 AgentXLUploadModel _agentXLUploadModel = new AgentXLUploadModel();
                 _agentXLUploadModel.addFiles(items);
+                _agentXLUploadModel.validateFile();
+                returnOutList = new ArrayList<>();
+                returnOutList = _agentXLUploadModel.getOutputAsLIST();
+                if (!returnOutList.isEmpty()) {
+                    String xml = util.convertArrayListToXML(returnOutList, "rows");
+                    request.setAttribute("xml", xml);
+                    url = "/xmlserver";
+                } else {
+                    heldItems = items;
+                }
+            }
+
+            if (action.equals("agentxlupload")) {
+                AgentXLUploadModel _agentXLUploadModel = new AgentXLUploadModel();
+                _agentXLUploadModel.addFiles(heldItems);
                 _agentXLUploadModel.processFiles();
-                errors = new ArrayList<>();
-                errors = _agentXLUploadModel.getOutputAsLIST();
-                if (!errors.isEmpty()) {
-                    String xml = util.convertArrayListToXML(errors, "errors");
+                returnOutList = new ArrayList<>();
+                returnOutList = _agentXLUploadModel.getOutputAsLIST();
+                if (!returnOutList.isEmpty()) {
+                    String xml = util.convertArrayListToXML(returnOutList, "rows");
                     request.setAttribute("xml", xml);
                     url = "/xmlserver";
                 }

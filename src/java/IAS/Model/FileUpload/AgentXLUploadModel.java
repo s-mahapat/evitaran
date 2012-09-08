@@ -10,64 +10,81 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import jxl.read.biff.BiffException;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class AgentXLUploadModel extends FileUploadBase {
 
     private ExcelReader excelReader = null;
     private DataValidationFromDB dataValiDB = null;
-    private ArrayList<String> errors;
+    private ArrayList<String> returnOutList;
 
-    
     public AgentXLUploadModel() throws SQLException {
         //call the base class constructor
         //super(request);
     }
-    
-    @Override
-    public void processFiles() throws SQLException {
+
+    public void validateFile() throws SQLException {
         try {
-            //List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
             for (FileItem item : this.getFiles()) {
                 InputStream filecontent = item.getInputStream();
                 try {
                     excelReader = new ExcelReader(filecontent);
                     dataValiDB = new DataValidationFromDB();
-                    errors = new ArrayList<>();
+                    returnOutList = new ArrayList<>();
                     int rowNo = 1;
                     while (true) {
                         String[] rowData = excelReader.getNextRow();
                         if (rowData == null) { //Break at the end of excel
                             break;
                         }
-                        String dataError = null;
                         try {
-                            dataError = this.validateData(rowData, rowNo); // Validate the data in excel
+                            this.validateData(rowData, rowNo); // Validate the data in excel
                         } catch (SQLException ex) {
                             Logger.getLogger(AgentXLUploadModel.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        if (!dataError.isEmpty()) {
-                            System.out.println("ERROR WHILE UPLOADING EXCEL");
-                            //break;
-                        } else {
-                            String dataUploaded = this.uploadData(); //Update the DB with data
-                        }
-                        System.out.println(rowData);
+                        //System.out.println(rowData);
                         rowNo++;
                     }
                 } catch (IOException | BiffException e) {
                     System.out.println("Exception: " + e.getMessage());
                 }
             }
-        } catch ( IOException e) {
+        } catch (IOException e) {
+            try {
+                throw new ServletException("Cannot parse multipart request.", e);
+            } catch (ServletException ex) {
+                Logger.getLogger(AgentXLUploadModel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public void processFiles() throws SQLException {
+        try {
+            for (FileItem item : this.getFiles()) {
+                InputStream filecontent = item.getInputStream();
+                try {
+                    excelReader = new ExcelReader(filecontent);
+                    dataValiDB = new DataValidationFromDB();
+                    returnOutList = new ArrayList<>();
+                    int rowNo = 1;
+                    while (true) {
+                        String[] rowData = excelReader.getNextRow();
+                        if (rowData == null) { //Break at the end of excel
+                            break;
+                        }
+                        this.uploadData(); // Validate the data in excel
+                        rowNo++;
+                    }
+                } catch (IOException | BiffException e) {
+                    System.out.println("Exception: " + e.getMessage());
+                }
+            }
+        } catch (IOException e) {
             try {
                 throw new ServletException("Cannot parse multipart request.", e);
             } catch (ServletException ex) {
@@ -78,42 +95,7 @@ public class AgentXLUploadModel extends FileUploadBase {
 
     @Override
     public ArrayList<String> getOutputAsLIST() {
-        return this.errors;
-    }
-
-    public ArrayList<String> uploadDataInDB() throws ServletException, SQLException {
-        try {
-            List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-            for (FileItem item : items) {
-                InputStream filecontent = item.getInputStream();
-                try {
-                    excelReader = new ExcelReader(filecontent);
-                    dataValiDB = new DataValidationFromDB();
-                    errors = new ArrayList<>();
-                    int rowNo = 1;
-                    while (true) {
-                        String[] rowData = excelReader.getNextRow();
-                        if (rowData == null) { //Break at the end of excel
-                            break;
-                        }
-                        String dataError = this.validateData(rowData, rowNo); // Validate the data in excel
-                        if (!dataError.isEmpty()) {
-                            System.out.println("ERROR WHILE UPLOADING EXCEL");
-                            //break;
-                        } else {
-                            String dataUploaded = this.uploadData(); //Update the DB with data
-                        }
-                        System.out.println(rowData);
-                        rowNo++;
-                    }
-                } catch (IOException | BiffException e) {
-                    System.out.println("Exception: " + e.getMessage());
-                }
-            }
-        } catch (FileUploadException | IOException e) {
-            throw new ServletException("Cannot parse multipart request.", e);
-        }
-        return errors;
+        return this.returnOutList;
     }
 
     public String validateData(String[] Data, int rowNo) throws SQLException {
@@ -157,10 +139,11 @@ public class AgentXLUploadModel extends FileUploadBase {
 
     public void appendToErrorLog(int rowNo, int columnNo) {
         String dataError = "Excel has error at cell " + rowNo + this.getEquivColumn(columnNo);
-        this.errors.add(dataError);
+        this.returnOutList.add(dataError);
     }
 
-    public String uploadData() {
-        return "";
+    public void uploadData() {
+        String dataError = "Success";
+        this.returnOutList.add(dataError);
     }
 }
