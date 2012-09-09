@@ -9,9 +9,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
-        <link rel="stylesheet" type="text/css" href="css/ml/generateml.css"/>
-        <title>Generate and Print mailing List</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/ml/generateml.js"%>"></script>
+            <link rel="stylesheet" type="text/css" href="css/ml/generateml.css"/>
+            <title>Generate and Print mailing List</title>
+            <script type="text/javascript" src="<%=request.getContextPath() + "/js/ml/generateml.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
 
@@ -28,7 +28,7 @@
                 //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=getissues"%>","issueNumber","issue");
                 jQuery("#btnAdd,#btnPrintLabel,#btnPrintSticker").button("disable");
                 
-             });
+            });
 
             $(function(){
 
@@ -46,20 +46,20 @@
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
                     colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city', 
-                                'state', 'country', 'pincode', 'copies', 'issue', 'month', 'year'],
+                        'state', 'country', 'pincode', 'copies', 'issue', 'month', 'year'],
                     colModel :[
-                        {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
-                        {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
-                        {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
+                        {name:'journalCode', index:'journalCode', width:35, align:'center', xmlmap:'journalCode'},
+                        {name:'subtypecode', index:'subtypecode', width:35, align:'center', xmlmap:'subtypecode'},
+                        {name:'subscriberNumber', index:'subscriberNumber', width:50, align:'center', xmlmap:'subscriberNumber'},
                         {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
-                        {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
-                        {name:'state', index:'state', width:80, align:'center', xmlmap:'state'},
-                        {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
-                        {name:'pincode', index:'pincode', width:80, align:'center', xmlmap:'pincode'},
-                        {name:'copies', index:'copies', width:80, align:'copies', xmlmap:'copies'},
-                        {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
-                        {name:'month', index:'month', width:80, align:'center', xmlmap:'month'},
-                        {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
+                        {name:'city', index:'city', width:40, align:'center', xmlmap:'city'},
+                        {name:'state', index:'state', width:40, align:'center', xmlmap:'state'},
+                        {name:'country', index:'country', width:40, align:'center', xmlmap:'country'},
+                        {name:'pincode', index:'pincode', width:20, align:'center', xmlmap:'pincode'},
+                        {name:'copies', index:'copies', width:20, align:'center', xmlmap:'copies'},
+                        {name:'issue', index:'issue', width:20, align:'center', xmlmap:'issue'},
+                        {name:'month', index:'month', width:20, align:'center', xmlmap:'month'},
+                        {name:'year', index:'year', width:20, align:'center', xmlmap:'year'},
                     ],
                     xmlReader : {
                         root: "results",
@@ -119,22 +119,22 @@
                 }
 
                 else {
-                        isPageLoaded = true;
-                        jQuery("#mlTable").setGridParam({postData:
-                                {
-                                year                    : $("#year").val(),
-                                journalName             : $("#journalName").val(),
-                                month                   : $("#month").val(),
-                                mlCreationDate          : $("#mlCreationDate").val(),
-                                issue                   : $("#issue").val(),
-                                action                  : "generate"
-                            }});
-                        jQuery("#mlTable").setGridParam({ datatype: "xml" });
-                        jQuery("#mlTable").trigger("clearGridData");
-                        jQuery("#mlTable").trigger("reloadGrid");
-                        jQuery("#btnPrintLabel,#btnPrintSticker").attr("disabled",false);
-                        jQuery("#btnAdd").attr("disabled",true);
-                    }
+                    isPageLoaded = true;
+                    jQuery("#mlTable").setGridParam({postData:
+                            {
+                            year                    : $("#year").val(),
+                            journalName             : $("#journalName").val(),
+                            month                   : $("#month").val(),
+                            mlCreationDate          : $("#mlCreationDate").val(),
+                            issue                   : $("#issue").val(),
+                            action                  : "generate"
+                        }});
+                    jQuery("#mlTable").setGridParam({ datatype: "xml" });
+                    jQuery("#mlTable").trigger("clearGridData");
+                    jQuery("#mlTable").trigger("reloadGrid");
+                    jQuery("#btnPrintLabel,#btnPrintSticker").button("disable");
+                    jQuery("#btnAdd").button("disable");
+                }
             }
             
 
@@ -142,10 +142,10 @@
             function print(){
 
                 $.ajax({
-                   type:    'GET',
-                   url:     "<%=request.getContextPath()%>/generateml",
-                   data:
-                       {year                   : $("#year").val(),
+                    type:    'GET',
+                    url:     "<%=request.getContextPath()%>/generateml",
+                    data:
+                        {year                   : $("#year").val(),
                         journalName             : $("#journalName").val(),
                         month                   : $("#month").val(),
                         mlCreationDate          : $("#mlCreationDate").val(),
@@ -174,7 +174,7 @@
                 jQuery("#mlTable").setGridParam({ datatype: "xml" });
                 jQuery("#mlTable").trigger("clearGridData");
                 jQuery("#mlTable").trigger("reloadGrid");
-                */
+                 */
 
             }
 
@@ -214,98 +214,102 @@
                     <fieldset class="MainFieldset">
                         <legend>Generate and Print Mailing List</legend>
                         <jsp:useBean class="IAS.Bean.MailingList.mlFormBean" id="mlFormBean" scope="request"></jsp:useBean>
-                            <fieldset class="subMainFieldSet">
-                                <legend>Selection Criteria</legend>
-                                    <%-- Search Criteria left div --%>
-                                    <div class="IASFormLeftDiv">
-                                        <div class="IASFormFieldDiv">
-                                            <div class="IASFormFieldDiv">
-                                                <span class="IASFormDivSpanLabel">
-                                                    <label>Journal Name:</label>
-                                                </span>
-                                                <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName" onchange="loadIssues()">
-                                                        <option value="0">Select</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                            <div class="IASFormFieldDiv">
-                                                <span class="IASFormDivSpanLabel">
-                                                    <label>Issue:</label>
-                                                </span>
-                                                <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox" TABINDEX="2" name="issue" id="issue">
-                                                        <option value="0">Select</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="IASFormFieldDiv">
-                                            <span class="IASFormDivSpanLabel">
-                                                <label>Creation Date:</label>
-                                            </span>
-                                            <span class="IASFormDivSpanInputBox">
-                                                <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="mlCreationDate" id="mlCreationDate" value="<jsp:getProperty name="mlFormBean" property="mlCreationDate"/>"/>
-                                            </span>
-                                        </div>
+                        <fieldset class="subMainFieldSet">
+                            <legend>Selection Criteria</legend>
+                            <%-- Search Criteria left div --%>
+                            <div class="IASFormLeftDiv">
+                                <div class="IASFormFieldDiv">
+                                    <div class="IASFormFieldDiv">
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Journal Name:</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName" onchange="loadIssues()">
+                                                <option value="0">Select</option>
+                                            </select>
+                                        </span>
                                     </div>
-                                    <%-- Search Criteria right div --%>
-                                    <div class="IASFormRightDiv">
-                                        <div class="IASFormFieldDiv">
-                                            <div class="IASFormFieldDiv">
-                                                <span class="IASFormDivSpanLabel">
-                                                    <label>Year:</label>
-                                                </span>
-                                                <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox" TABINDEX="3" name="year" id="year">
-                                                        <option value="0">Select</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                            <div class="IASFormFieldDiv">
-                                                <span class="IASFormDivSpanLabel">
-                                                    <label>Month:</label>
-                                                </span>
-                                                <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox" TABINDEX="4" name="month" id="month">
-                                                        <option value="0">Select</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                        </div>
+                                    <div class="IASFormFieldDiv">
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Issue:</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <select class="IASComboBox" TABINDEX="2" name="issue" id="issue">
+                                                <option value="0">Select</option>
+                                            </select>
+                                        </span>
                                     </div>
-
-                            </fieldset>
-                            <fieldset class="subMainFieldSet">
-                                <legend>Actions - Search / Generate</legend>
-                                    <div class="actionBtnDiv">
-                                        <input class="IASButton" TABINDEX="5" type="button" value="Check" id="btnCheck" name="btnCheck" onclick="checkMl()"/>
-                                        <input class="IASButton" TABINDEX="5" type="button" value="Generate Mailing List" id="btnAdd" name="btnAddRate" onclick="generate()"/>
-                                    </div>
-                            </fieldset>
-
-                            <%-----------------------------------------------------------------------------------------------------%>
-                            <%-- Search Result Field Set --%>
-                            <%-----------------------------------------------------------------------------------------------------%>
-                            <fieldset class="subMainFieldSet">
-                                <legend>Mailing List Table</legend>
-
-                                <table class="datatable" id="mlTable"></table>
-                                <div id="pager"></div>
-                            </fieldset>
-
-                            <%-----------------------------------------------------------------------------------------------------%>
-                            <%-- Journal Actions Field Set --%>
-                            <%-----------------------------------------------------------------------------------------------------%>
-
-                            <input type="hidden" name="action" id="action"/>
-                            <fieldset class="subMainFieldSet">
-                                <div class="actionBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
-                                    <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
-                                    <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
                                 </div>
-                            </fieldset>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Creation Date:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="mlCreationDate" id="mlCreationDate" value="<jsp:getProperty name="mlFormBean" property="mlCreationDate"/>"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <%-- Search Criteria right div --%>
+                            <div class="IASFormRightDiv">
+                                <div class="IASFormFieldDiv">
+                                    <div class="IASFormFieldDiv">
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Year:</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <select class="IASComboBox" TABINDEX="3" name="year" id="year">
+                                                <option value="0">Select</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                    <div class="IASFormFieldDiv">
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Month:</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <select class="IASComboBox" TABINDEX="4" name="month" id="month">
+                                                <option value="0">Select</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="actionBtnDiv">
+                                <input class="IASButton" TABINDEX="5" type="button" value="Check" id="btnCheck" name="btnCheck" onclick="checkMl()"/>
+                                <input class="IASButton" TABINDEX="5" type="button" value="Generate Mailing List" id="btnAdd" name="btnAddRate" onclick="generate()"/>
+                            </div>
+
+                        </fieldset>
+                        <%--<fieldset class="subMainFieldSet">
+                            <legend>Actions - Search / Generate</legend>
+                                <div class="actionBtnDiv">
+                                    <input class="IASButton" TABINDEX="5" type="button" value="Check" id="btnCheck" name="btnCheck" onclick="checkMl()"/>
+                                    <input class="IASButton" TABINDEX="5" type="button" value="Generate Mailing List" id="btnAdd" name="btnAddRate" onclick="generate()"/>
+                                </div>
+                        </fieldset>--%>
+
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        <%-- Search Result Field Set --%>
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        <fieldset class="subMainFieldSet">
+                            <legend>Mailing List Table</legend>
+
+                            <table class="datatable" id="mlTable"></table>
+                            <div id="pager"></div>
+                        </fieldset>
+
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        <%-- Journal Actions Field Set --%>
+                        <%-----------------------------------------------------------------------------------------------------%>
+
+                        <input type="hidden" name="action" id="action"/>
+                        <fieldset class="subMainFieldSet">
+                            <div class="actionBtnDiv">
+                                <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
+                                <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
+                                <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
+                            </div>
+                        </fieldset>
                     </fieldset>
                 </div>
             </form>

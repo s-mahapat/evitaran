@@ -17,7 +17,7 @@
               testOnBorrow="true"
               testOnReturn="false"
               validationQuery="SELECT 1"
-              validationInterval="10"
+              validationInterval="60"
               timeBetweenEvictionRunsMillis="30000"
               maxActive="50"
               minIdle="0"
