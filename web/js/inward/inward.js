@@ -181,7 +181,7 @@ function subscriberlink(cellvalue, options, rowObject){
 
     for(i=0; i<tagnames.length; i++){
         var obj = rowObject.getElementsByTagName(tagnames[i])[0];
-        if(obj.hasChildNodes()){
+        if(obj != null && obj.hasChildNodes()){
             tagvalues[i] = obj.childNodes[0].nodeValue;
         }
     }
@@ -206,7 +206,7 @@ function selectInwardFormatter(cellvalue, options, rowObject){
 
     for(i=0; i<tagnames.length; i++){
         var obj = rowObject.getElementsByTagName(tagnames[i])[0];
-        if(obj.hasChildNodes()){
+        if(obj != null && obj.hasChildNodes()){
             tagvalues[i] = obj.childNodes[0].nodeValue;
         }
     }

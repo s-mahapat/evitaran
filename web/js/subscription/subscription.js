@@ -32,7 +32,7 @@ function listSubscription(){
             //sortname:'subscriptionID',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Subscription Date','Amount Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
+            colNames:['Subscription Id','Inward No','Subscription Date','Agent','Amount Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
             colModel :[
             {
                 name:'subscriptionID',
@@ -52,7 +52,6 @@ function listSubscription(){
                 sortable: false,
                 xmlmap:'inwardNumber'
             },
-
             {
                 name:'subscriptionDate',
                 index:'subscriptionDate',
@@ -60,6 +59,14 @@ function listSubscription(){
                 align:'center',
                 sortable: true,
                 xmlmap:'subscriptionDate'
+            },
+            {
+                name:'Agent',
+                index:'agent',
+                width:20,
+                align:'center',
+                sortable: false,
+                xmlmap:'agentName'
             },
             {
                 name:'amountPaid',
@@ -124,7 +131,25 @@ function listSubscription(){
 
                 var ids = jQuery("#subscriptionList").jqGrid('getDataIDs');
                 for (var i = 0; i < ids.length; i++) {
+                    
+                    var subscription_via_agent = jQuery("#subscriptionList").getCell(ids[i], 'Agent');
                     var islegacy = parseInt(jQuery("#subscriptionList").getCell(ids[i], 'legacy'));
+                    
+                    // if the agent value is not null then show the subscription value, balance and amount as 0
+                    if(subscription_via_agent != ""){
+                        jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
+                            "amountPaid": 0
+                        });
+                        
+                        jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
+                            "subscriptionValue": 0
+                        });
+                        
+                        jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
+                            "balance": 0
+                        });
+                    }
+                    
                     action = "<a style=\"color:blue\" href=\"#\" onclick=\"getSubscriptionDetails(" + ids[i] + ")\">" + "Details" + "</a>";
                     if(islegacy != 1){
                         action += "<a style=\"color:blue\" href=\"subscription?action=edit" +
@@ -145,10 +170,10 @@ function listSubscription(){
 }
 
 function getSubscriptionDetails(subscriptionId){
-   windowParams = "dialogHeight:500px; dialogWidth:1000px; center:yes; resizeable:no; status:no; menubar:no;\n\
+    windowParams = "dialogHeight:500px; dialogWidth:1000px; center:yes; resizeable:no; status:no; menubar:no;\n\
                     scrollbars:yes; toolbar: no;";
-   openModalPopUp("jsp/subscription/subscriptiondetails.jsp?id=" + subscriptionId , "", windowParams);
-   return false;
+    openModalPopUp("jsp/subscription/subscriptiondetails.jsp?id=" + subscriptionId , "", windowParams);
+    return false;
 }
 
 function setEndYear(){

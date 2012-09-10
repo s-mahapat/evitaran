@@ -99,7 +99,7 @@
                             var subscriberId = ids[i];
                             action = "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "'>View</a>" +
                                 "<a style='color:blue;' href='subscriber?action=edit&subscriberNumber=" + subscriberId + "'>Edit</a>" +
-                                "<a style='color:blue;' href='subscriber?action=editsubscription&subscriberNumber=" + subscriberId + "'>Subscription</a>";
+                                "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "#subscriptions" + "'>Subscription</a>";
                             jQuery("#subscriberTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                         updateCookie();
@@ -191,7 +191,7 @@
                                         <label>Subscriber Name:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value=""/>
+                                        <input class="IASTextBoxWide" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value=""/>
                                     </span>
                                 </div>
 
@@ -200,7 +200,7 @@
                                         <label>Email:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASEmailTextBox" TABINDEX="3" type="text" name="email" id="email" value=""/>
+                                        <input class="IASTextBoxWide" TABINDEX="3" type="text" name="email" id="email" value=""/>
                                     </span>
                                 </div>
                             </div>
