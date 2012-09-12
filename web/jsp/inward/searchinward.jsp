@@ -13,12 +13,11 @@
         <script type="text/javascript">
             var selectedInward = 0;
             var selectedSubscriberId = 0;
+            var isFirstTime = false;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
-            $(document).ready(function(){
-
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
+            $(document).ready(function(){                
 
                 // set the default focus to inward text box.
                 $("#inwardNumber").focus();
@@ -65,6 +64,10 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
+                    loadComplete: function(xml){
+                        //sessionStorage.searchinwards = xml.toString();
+                        //console.log(sessionStorage.searchinwards.toString());
+                    },
                     gridComplete: function() {
                         var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
@@ -75,8 +78,18 @@
                             action = "<a style='color:blue;' href='inward?action=view&inwardNumber=" + inwardId + "'>View</a><a style='color:blue;' href='inward?action=edit&inwardNumber=" + inwardId + "'>Edit</a>";
                             jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
+                        sessionStorage['searchinwards'] = JSON.stringify({  "page": jQuery("#inwardTable").jqGrid('getGridParam','page'),
+                            "rowNum": jQuery("#inwardTable").jqGrid('getGridParam','rowNum'),
+                            "totalpages": jQuery("#inwardTable").jqGrid('getGridParam','lastpage'),
+                            "city": $("#city").val(),
+                            inwardNumber    : $("#inwardNumber").val(),
+                            chequeNumber    : $("#chequeNumber").val(),
+                            fromDate        : $("#from").val(),
+                            toDate          : $("#to").val() 
+                        });
+                        //console.log(sessionStorage.searchinwards);
                     },
-                    beforeRequest: function(){
+                    beforeRequest: function(){                        
                         return isPageLoaded;
                     },
                     loadError: function(xhr,status,error){
@@ -84,8 +97,34 @@
                     }
 
                 });
+                
+                if(sessionStorage.searchinwards){
+                    var json = JSON.parse(sessionStorage.searchinwards);
+                    jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>",
+                    "city",
+                    "city",
+                    json.city,
+                    function(){
+                        $("#inwardNumber").val(json.inwardNumber);
+                        $("#chequeNumber").val(json.chequeNumber);
+                        $("#from").val(json.from);
+                        $("#to").val(json.to);
+                        searchInwards();
+                    }
+
+                );
+                    isFirstTime = true;
+                    isPageLoaded = true;
+                    
+                    
+                    
+                }else{
+                    jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
+                }
+
 
             });
+            
 
             // called when the search button is clicked
             function searchInwards(){

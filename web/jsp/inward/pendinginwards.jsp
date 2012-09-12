@@ -51,7 +51,7 @@
                         {name:'InwardNo', sortable: false, index:'inward_id', width:40, align:'center', xmlmap:'inwardNumber'},
                         {name:'SubscriberId'
                             , index:'subscriber_id'
-                            , width:40
+                            , width:45
                             , align:'center'
                             , sortable: false
                             , xmlmap:'subscriberId'
@@ -59,7 +59,7 @@
                         },
                         {name:'Agent'
                             , index:'agent'
-                            , width:60
+                            , width:50
                             , align:'center'
                             , sortable: false
                             , xmlmap:'agentName'

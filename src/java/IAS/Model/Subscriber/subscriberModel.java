@@ -381,25 +381,26 @@ public class subscriberModel extends JDSModel {
         if (pincode != null && pincode.compareToIgnoreCase("NULL") != 0 && pincode.length() > 0) {
             sql += condition + " pincode =" + "'" + pincode + "'";
         }
-        ResultSet rs_count;
+        String sql_count = "select count(*) from (" + sql + ") as tbl";
+        
+        try (PreparedStatement pst = conn.prepareStatement(sql_count);) {
+            try (ResultSet rs_count = pst.executeQuery();) {
+                rs_count.first();
+                totalQueryCount = rs_count.getInt(1);
+            }
+        }
 
         int start = (pageNumber - 1) * pageSize;
         sql += " LIMIT " + start + "," + pageSize;
-        PreparedStatement pstatement = Database.getConnection().prepareStatement(sql);
-        try (ResultSet rs = pstatement.executeQuery();) {
-            sql = "select count(*) from (" + sql + ") as tbl";
-            rs_count = this.db.executeQuery(sql);
-            rs_count.first();
-            totalQueryCount = rs_count.getInt(1);
-            rs_count.close();
-            xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw e;
-        } finally {
-            // return the connection back to the pool
-            this.CloseConnection(conn);
+        try (PreparedStatement pstatement = conn.prepareStatement(sql);) {
+            try (ResultSet rs = pstatement.executeQuery();) {
+                xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+            }
         }
+        
+        // close the connection
+        this.CloseConnection(conn);
+        
         return xml;
     }
 

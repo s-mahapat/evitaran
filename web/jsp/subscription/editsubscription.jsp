@@ -60,15 +60,15 @@
                                         <input class="IASDisabledTextBox" TABINDEX="3" readonly type="text" name="subscriptionID" id="subscriptionID" value="<%=request.getParameter("id")%>"/>
                                     </span>
                                 </div>
-                                <%--<div class="IASFormFieldDiv">
+                                <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Remarks:</label>
+                                        <label>Agent:</label>
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <textarea class="IASTextArea" TABINDEX="3" cols="20" rows="10" name="remarks" id="remarks"></textarea>
+                                        <input class="IASDisabledTextBox" TABINDEX="4" readonly type="text" name="agentName" id="agentName" value=""/>
                                     </span>
-                                </div>--%>
+                                </div>
                             </div>
 
                             <div class="IASFormRightDiv">

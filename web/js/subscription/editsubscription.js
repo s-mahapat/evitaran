@@ -75,7 +75,6 @@ function isDuplicate(journalGroupName){
 
 /*Gets the subscription info from the server*/
 function getSubscriptionInfo(){
-    //getInwardAndAmount();
     $.ajax({
         type: 'GET',
         dataType: 'xml',
@@ -84,34 +83,27 @@ function getSubscriptionInfo(){
         success: function(xmlResponse, textStatus, jqXHR){
 
             $(xmlResponse).find("results").find("row").each(function(){
-                $("#subscriptionTotalValue").val($(this).find("subscriptionTotal").text());
-                $("#balance").val($(this).find("balance").text());
-                $("#inwardNumber").val($(this).find("inwardNumber").text());
-                $("#amount").val($(this).find("amount").text());
+                
+                var agentName = $(this).find("agentName").text();
+                
+                // if agent is present set the totalsubscription value and balance to 0
+                if(agentName.length > 0 && isEmptyValue(agentName) == false){
+                    $("#subscriptionTotalValue").val(0);
+                    $("#balance").val(0);
+                    $("#amount").val(0);
+                    $("#agentName").val(agentName);
+                }else{
+                    // if there is no agent populate the subscription values from the server
+                    $("#subscriptionTotalValue").val($(this).find("subscriptionTotal").text());
+                    $("#balance").val($(this).find("balance").text());
+                    $("#amount").val($(this).find("amount").text());
+                }                               
+                $("#inwardNumber").val($(this).find("inwardNumber").text());                
+                
             });
         },
         error: function(jqXHR,textStatus,errorThrown){
             alert("Failed to refresh subscription information. " + textStatus + ": "+ errorThrown);
-        }
-
-    });
-}
-
-function getInwardAndAmount(){
-    $.ajax({
-        type: 'GET',
-        dataType: 'xml',
-        async: true,
-        url: "subscription?action=inwardinfo&id=" + $("#subscriptionID").val(),
-        success: function(xmlResponse, textStatus, jqXHR){
-
-            $(xmlResponse).find("results").find("row").each(function(){
-                $("#inwardNumber").val($(this).find("inwardNumber").text());
-                $("#amount").val($(this).find("amount").text());
-            });
-        },
-        error: function(jqXHR,textStatus,errorThrown){
-            alert("Failed to refresh Inwards information. " + textStatus + ": "+ errorThrown);
         }
 
     });
