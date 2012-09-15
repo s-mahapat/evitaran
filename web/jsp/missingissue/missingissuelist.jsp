@@ -44,7 +44,7 @@
                         {name:'journalGroupName', index:'journalGroupName', width:80, align:'center', xmlmap:'journalGroupName'},
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
-                        {name:'copies', index:'copies', width:80, align:'copies', xmlmap:'copies'},
+                        {name:'copies', index:'copies', width:80, align:'center', xmlmap:'copies'},
                         {name:'startYear', index:'startYear', width:80, align:'center', xmlmap:'startYear'},
                         {name:'startMonth', index:'startMonth', width:80, align:'center', xmlmap:'startMonth'},
                         {name:'endMonth', index:'endMonth', width:80, align:'center', xmlmap:'endMonth'},

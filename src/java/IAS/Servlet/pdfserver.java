@@ -103,10 +103,10 @@ public class pdfserver extends JDSController {
                 c2Pdf.printMIresponse(os, msg);
 
                 response.setContentType("application/pdf");
-                response.setHeader("Content-disposition", "attachment; filename=reprint.pdf");
+                response.setHeader("Content-disposition", "attachment; filename=missing_issue.pdf");
                 os.flush();
 
-            }else if(action.equalsIgnoreCase("generatemlPrintSticker")){
+            }else if(action.equalsIgnoreCase("miPrintAlreadySent")){
                 ServletContext context = ServletContextInfo.getServletContext();
                 String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
                 Properties properties = new Properties();
@@ -118,7 +118,7 @@ public class pdfserver extends JDSController {
                 c2Pdf.printMIresponse(os, msg);
 
                 response.setContentType("application/pdf");
-                response.setHeader("Content-disposition", "attachment; filename=reprint.pdf");
+                response.setHeader("Content-disposition", "attachment; filename=missing_issue.pdf");
                 os.flush();
 
             }
