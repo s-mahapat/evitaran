@@ -10,7 +10,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/report/listmailinglist.css"/>
-        <title>Report : mailing List</title>
+        <title>Report: Mailing List</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/reports/listmailinglist.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
@@ -24,6 +24,7 @@
             $(document).ready(function(){
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
+                jQuery("#btnPrint").button("disable");
              });
 
             $(function(){
@@ -41,8 +42,8 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
-                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'address', 'city', 'district',
-                                'state', 'country', 'pincode', 'copies', 'issue', 'month', '`year`', 'Sub Start', ' Sub End'],
+                    colNames:['Journal Code', 'Subtypecode', 'Subscriber Number', 'Subscriber Name', 'Address', 'City', 'District',
+                                'State', 'Country', 'Pincode', 'Copies', 'Issue', 'Month', 'Year', 'Sub Start', 'Sub End'],
                     colModel :[
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'subtypecode', index:'subtypecode', width:20, align:'center', xmlmap:'subtypecode'},
@@ -58,7 +59,7 @@
                         {name:'issue', index:'issue', width:10, align:'center', xmlmap:'issue'},
                         {name:'month', index:'month', width:80, align:'center', xmlmap:'month'},
                         {name:'year', index:'year', width:20, align:'center', xmlmap:'year'},
-                        {name:'start', index:'start', width:25, align:'center', xmlmap:'start'},                        
+                        {name:'start', index:'start', width:25, align:'center', xmlmap:'start'},
                         {name:'end', index:'end', width:25, align:'center', xmlmap:'end'},
                     ],
                     xmlReader : {
@@ -77,8 +78,12 @@
                     gridview: true,
                     caption: '&nbsp;',
                     editurl:"<%=request.getContextPath() + "/reports?action=listMl"%>",
-                    gridComplete: function() {
+                    loadComplete: function(xml){
+                        //sessionStorage.searchinwards = xml.toString();
+                        //console.log(sessionStorage.searchinwards.toString());
 
+                    },
+                    gridComplete: function() {
                     },
                     beforeRequest: function(){
                         return isPageLoaded;
@@ -91,7 +96,7 @@
 
             });
 
-            
+
             function search(){
                 //check if search criteria is initial, raise alert else enable search for Records
                 if ($("#year").val() == 0) {
@@ -119,7 +124,7 @@
                         jQuery("#mlTable").setGridParam({ datatype: "xml" });
                         jQuery("#mlTable").trigger("clearGridData");
                         jQuery("#mlTable").trigger("reloadGrid");
-
+                        jQuery("#btnPrint").button("enable");
                     }
                 }
 
@@ -143,7 +148,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="get" action="<%=request.getContextPath() + "/reports"%>" name="bilForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports?action=printlistMl"%>" name="bilForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Report - Mailing List</legend>
@@ -188,8 +193,8 @@
                                             </div>
                                     </div>
                                     <div class="actionBtnDiv">
-                                        <input class="IASButton" TABINDEX="5" type="button" value="Search" id="btnSearch" name="btnSearch" onclick="search()"/>
-                                    </div>                                    
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Search" id="btnSearch" name="btnSearch" onclick="search()"/>
+                                    </div>
                             </fieldset>
 
                             <%-----------------------------------------------------------------------------------------------------%>
@@ -201,19 +206,25 @@
                                 <table class="datatable" id="mlTable"></table>
                                 <div id="pager"></div>
                             </fieldset>
-                            
+
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Actions Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>
 
                             <fieldset class="subMainFieldSet">
+                                <%--
                                 <div class="IASFormFieldDiv">
                                     <div class="printBtnDiv">
-                                        <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
+                                        <input class="IASButton" TABINDEX="5" type="submit" value="Print" disabled id="printReportBtn"/>
                                     </div>
                                     <div id="resetBtnDiv">
-                                        <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
+                                        <input class="IASButton" TABINDEX="6" type="reset" value="Reset"/>
                                     </div>
+                                </div>
+                                --%>
+                                <div class="actionBtnDiv">
+                                    <input class="IASButton" TABINDEX="5" type="submit" value="Print" id="btnPrint" name="btnPrint"/>
+                                    <input class="IASButton" TABINDEX="6" type="reset" value="Reset" id="btnReset" name="btnReset"/>
                                 </div>
                             </fieldset>
                     </fieldset>
