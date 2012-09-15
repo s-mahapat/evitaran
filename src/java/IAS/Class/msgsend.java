@@ -63,10 +63,16 @@ public class msgsend {
         email.addRecipient(SubscriberEmail, SubscriberEmail, RecipientType.TO);
         email.addRecipient("IAS", "jds.ias.mails@gmail.com", RecipientType.BCC);
         email.setText(body);
-        email.addAttachment(FileName, attachment, attachmentType);
+        
+        // check if there is any attachment to be sent, else just ignore
+        if(FileName != null && attachment != null && attachmentType != null){
+            email.addAttachment(FileName, attachment, attachmentType);
+        }
+        
         String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
         String SMTP_AUTH_USER = properties.getProperty("SMTP_AUTH_USER");
         String SMTP_AUTH_PWD = properties.getProperty("SMTP_AUTH_PWD");
+        
         try{
             Mailer _mailer = new Mailer(SMTP_HOST_NAME, 25, SMTP_AUTH_USER, SMTP_AUTH_PWD, TransportStrategy.SMTP_TLS);
             _mailer.validate(email);
@@ -77,6 +83,7 @@ public class msgsend {
         }
 
     }
+    
 
     // This can be used for gmail
     public boolean sendMailWithAuthenticationUseSSL(String to, String cc, String bcc, String subject,

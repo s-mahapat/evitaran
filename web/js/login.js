@@ -7,7 +7,7 @@ var bPasswordSuccess = false;
 
 function init(){
 
-    //document.frmlogin.loginId.focus();
+//document.frmlogin.loginId.focus();
 }
 
 function clearErrorMsg(){
@@ -19,27 +19,27 @@ function clearErrorMsg(){
 }
 
 function validateEmail(loginFieldId){
-     //var str=document.frmlogin.loginId.value;
-     var str= document.getElementById(loginFieldId).value;
-     //alert(str);
-     //var str=document.form.name.loginId.value;
 
-     if(str.length == 0){
-       //  return false;
-     }
-     var mdiv = document.getElementById("loginErrorMsg");
-     var filter=/^.+@.+\..{2,3}$/;
-     if (filter.test(str)){
+    var str= $("#" + loginFieldId).val();
+    //alert(str);
+    //var str=document.form.name.loginId.value;
+
+    if(str.length == 0){
+    //  return false;
+    }
+    var mdiv = document.getElementById("loginErrorMsg");
+    var filter=/^.+@.+\..{2,3}$/;
+    if (filter.test(str)){
         bLoginSuccess = true;
         mdiv.innerHTML = "&nbsp;";
-     }
-     else {
+    }
+    else {
         mdiv.innerHTML = "Please enter a valid email address!";
         document.getElementById(loginFieldId).value = "";
         document.getElementById(loginFieldId).focus();
         bLoginSuccess = false;
     }
-     return (bLoginSuccess);
+    return (bLoginSuccess);
 }
 
 function validatePassword(passwordField){
@@ -66,5 +66,21 @@ function validate(login,password){
     }else{
         //mdiv.innerHTML = "Please enter a valid Id and Password";
         return false;
+    }
+}
+
+function ResetPassword(){
+    if(validateEmail("userEmail")){
+        $.ajax({
+            type: 'POST',
+            url: 'usermgr/resetpwd',
+            data: {email: $("#userEmail").val()},
+            success: function(xml){
+                if($(xml).find("success")){
+                    $("#successMsg").html("Email with the new password has been sent to " + $("#userEmail").val());
+                }
+            },
+            dataType: 'xml'
+        });
     }
 }

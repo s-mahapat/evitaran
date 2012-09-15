@@ -2,7 +2,7 @@
 <%
     if (request.getRemoteUser() != null) {
         String redirecturl = request.getContextPath() + "/home";
-        if(request.getParameter("from") != null){
+        if (request.getParameter("from") != null) {
             redirecturl = request.getParameter("from");
         }
         response.sendRedirect(redirecturl);
@@ -14,6 +14,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <%@include file="../templates/style.jsp"%>
+        <script type="text/javascript" src="js/login.js"></script>
         <title>Login</title>
         <script type="text/javascript">
             $(function() {
@@ -40,6 +41,12 @@
 
                 text-align: center;
                 color: red;
+            }
+
+            #successMsg{
+
+                text-align: center;
+                color: green;
             }
 
             #resetpwdDiv{
@@ -106,17 +113,16 @@
                     <div id="resetpwd">
                         <div class="authField">
                             <span class="authLabel">Email ID:</span>
-                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBox" name="j_user" id="ResetloginFieldId"/></span>
+                            <span class="authInput"><input type="text" class="IASTextBoxMandatoryWide" name="userEmail" id="userEmail"/></span>
                         </div>
                         <div class="authAction">
-                            <input type="submit" value="Reset Password"/>
+                            <input type="button" value="Reset Password" onclick="ResetPassword()"/>
                         </div>
                     </div>
 
                 </div>
-                <div id="loginErrorMsg">
-
-                </div>
+                <div id="loginErrorMsg"></div>
+                <div id="successMsg"></div>
 
             </form>
         </div>

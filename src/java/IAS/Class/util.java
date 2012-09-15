@@ -176,9 +176,9 @@ public final class util {
 
     }
 
-    public static String convertStringToXML(String text, String tagName) throws ParserConfigurationException, SQLException, TransformerException, IOException {
+    public static String convertStringToXML(String text, String tagName) throws ParserConfigurationException, TransformerException, IOException {
 
-        String xml = null;
+        String xml;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.newDocument();

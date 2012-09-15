@@ -143,7 +143,7 @@ public class Email extends JDSController {
                 String url = "/xmlserver";
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
                 rd.forward(request, response);
-            }catch(ParserConfigurationException | SQLException | TransformerException | IOException | ServletException ex){
+            }catch(ParserConfigurationException | TransformerException | IOException | ServletException ex){
                 throw new ServletException(ex.getMessage());
             }
             
