@@ -160,6 +160,7 @@ public class reports extends JDSController {
                 ResultSet rs = _reportModel.searchSubscriber();
                 request.setAttribute("ResultSet", rs);
                 url = "/jsp/reports/listSubscriberPrint.jsp";
+            /*----------------------------------------------------------------*/
             }else if(action.equalsIgnoreCase("listCirculationFigures")){
 
                 ResultSet rs = _reportModel.searchCirculationFigures();
@@ -192,18 +193,19 @@ public class reports extends JDSController {
             }
             /*----------------------------------------------------------------*/
             else if(action.equalsIgnoreCase("circulationFigures")){
-                
+
                 String xml = _reportModel.circulationFigures();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
             }else if(action.equalsIgnoreCase("printCirculationFigures")){
 
-                ResultSet rs = null;
-                request.setAttribute("ResultSet", rs);
-                String query = "Circulation Figures";
+                String xml = _reportModel.circulationFigures();
+                request.setAttribute("xml", xml);
+                String query = "Circulation Figures for Year " + request.getParameter("year") +
+                        " for Month " + request.getParameter("month");
                 request.setAttribute("query", query);
-                url = "/pdfserver?action=printResultset";
+                url = "/pdfserver?action=printXML";
             }
             /*----------------------------------------------------------------*/
             else if(action.equalsIgnoreCase("constructTableSubcriptionFigures")){
