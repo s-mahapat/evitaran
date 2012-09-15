@@ -12,8 +12,8 @@
             <link rel="stylesheet" type="text/css" href="css/ml/generateml.css"/>
             <title>Generate and Print mailing List</title>
             <script type="text/javascript" src="<%=request.getContextPath() + "/js/ml/generateml.js"%>"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
-        <script type="text/javascript" src="js/jquery/grid.common.js"></script>
+            <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
+            <script type="text/javascript" src="js/jquery/grid.common.js"></script>
 
 
         <script type="text/javascript">
@@ -27,7 +27,7 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
                 //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=getissues"%>","issueNumber","issue");
                 jQuery("#btnAdd,#btnPrintLabel,#btnPrintSticker").button("disable");
-                
+
             });
 
             $(function(){
@@ -45,7 +45,7 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
-                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city', 
+                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city',
                         'state', 'country', 'pincode', 'copies', 'issue', 'month', 'year'],
                     colModel :[
                         {name:'journalCode', index:'journalCode', width:35, align:'center', xmlmap:'journalCode'},
@@ -132,11 +132,11 @@
                     jQuery("#mlTable").setGridParam({ datatype: "xml" });
                     jQuery("#mlTable").trigger("clearGridData");
                     jQuery("#mlTable").trigger("reloadGrid");
-                    jQuery("#btnPrintLabel,#btnPrintSticker").button("disable");
+                    jQuery("#btnPrintLabel,#btnPrintSticker").button("enable");
                     jQuery("#btnAdd").button("disable");
                 }
             }
-            
+
 
 
             function print(){

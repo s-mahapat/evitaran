@@ -119,7 +119,7 @@ function checkMl(){
         alert("Please try again after logging in again ");
     }
 
-    else {                   
+    else {
         var mlid;
         $.ajax({
             type: 'POST',
@@ -140,8 +140,8 @@ function checkMl(){
                     $("#btnAdd").button("enable");
                 }
                 else {
-                    alert("Mailing List already generated for&year=" +  $("#year").val() + "&journalName=" + $("#journalName").val()
-                            + "&month=" + $("#month").val() + "&issue=" + $("#issue").val());
+                    alert("Mailing List already generated for Year: " +  $("#year").val() + ", Journal Name: " + $("#journalName").val()
+                            + ", Month: " + $("#month").val() + ", Issue: " + $("#issue").val());
                 }
                 return true;
             },
@@ -152,7 +152,7 @@ function checkMl(){
            });
    }
  }
-  
+
   function checkViewMl(){
 
     if ($("#year").val() == 0) {
@@ -175,7 +175,7 @@ function checkMl(){
         alert("Please try again after logging in again ");
     }
 
-    else {                   
+    else {
         var mlid;
         $.ajax({
             type: 'POST',
@@ -195,7 +195,7 @@ function checkMl(){
                 if (mlid == 0){
                     alert("Mailing List already generated for&year=" +  $("#year").val() + "&journalName=" + $("#journalName").val()
                             + "&month=" + $("#month").val() + "&issue=" + $("#issue").val());
-                    
+
                 }
                 else {
                     $("#btnSearch").button("enable");
@@ -209,7 +209,7 @@ function checkMl(){
            });
    }
  }
- 
-            
+
+
 
 
