@@ -36,8 +36,8 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
-                    colNames:['id', 'subscription Detail id', 'Journal Group', 'journalCode', 'journal Name', 'Sub Copies',
-                                'startYear', 'startMonth', 'endMonth', 'endYear', 'month', 'year', 'Missing Copies'],
+                    colNames:['Id', 'Subscription Detail id', 'Journal Group', 'Journal Code', 'Journal Name', 'Sub Copies',
+                                'Start Year', 'Start Month', 'End Month', 'End Year', 'Month', 'Year', 'Missing Copies'],
                     colModel :[
                         {name:'id', index:'id', width:80, align:'center', xmlmap:'id'},
                         {name:'subscriptiondetailsId', index:'subscriptoindetailsId', width:2, align:'center', xmlmap:'subscriptiondetailsId'},
@@ -164,7 +164,7 @@
                                             <label>Subscriber Number:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASDisabledTextBox" TABINDEX="1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${missingissueFormBean.subscriberNumber}"/>
+                                            <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${missingissueFormBean.subscriberNumber}"/>
                                         </span>
                                     </div>
                                     <div class="IASFormFieldDiv">
@@ -185,15 +185,15 @@
                                             <label>Address:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASDisabledTextBoxWide" TABINDEX="2" name="subscriberAddress" id="subscriberAddress" value="${missingissueFormBean.subscriberAddress}"/>
+                                            <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="subscriberAddress" id="subscriberAddress" value="${missingissueFormBean.subscriberAddress}"/>
                                         </span>
                                     </div>
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
-                                            <label>city:</label>
+                                            <label>City:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASDisabledTextBoxWide" TABINDEX="2" name="city" id="city" value="${missingissueFormBean.city}"/>
+                                            <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="city" id="city" value="${missingissueFormBean.city}"/>
                                         </span>
                                     </div>
                                     <div class="IASFormFieldDiv">
@@ -201,7 +201,7 @@
                                             <label>District:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASDisabledTextBoxWide" TABINDEX="2" name="district" id="district" value="${missingissueFormBean.district}"/>
+                                            <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="district" id="district" value="${missingissueFormBean.district}"/>
                                         </span>
                                     </div>
                                     <div class="IASFormFieldDiv">
@@ -209,7 +209,7 @@
                                             <label>State:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASDisabledTextBoxWide" TABINDEX="2" name="state" id="state" value="${missingissueFormBean.state}"/>
+                                            <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="state" id="state" value="${missingissueFormBean.state}"/>
                                         </span>
                                     </div>
                                     <div class="IASFormFieldDiv">
@@ -217,7 +217,7 @@
                                             <label>Country:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASDisabledTextBoxWide" TABINDEX="2" name="country" id="country" value="${missingissueFormBean.country}"/>
+                                            <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="country" id="country" value="${missingissueFormBean.country}"/>
                                         </span>
                                     </div>
                                 </div>
@@ -228,7 +228,7 @@
                                             <label>Pin Code:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASDisabledTextBoxWide" TABINDEX="2" name="pincode" id="pincode" value="${missingissueFormBean.pincode}"/>
+                                            <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="pincode" id="pincode" value="${missingissueFormBean.pincode}"/>
                                         </span>
                                     </div>
                                     <div class="IASFormFieldDiv">
@@ -236,15 +236,15 @@
                                             <label>Department:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASDisabledTextBoxWide" TABINDEX="2" name="department" id="department" value="${missingissueFormBean.department}"/>
+                                            <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="department" id="department" value="${missingissueFormBean.department}"/>
                                         </span>
                                     </div>
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
-                                            <label>institution:</label>
+                                            <label>Institution:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASDisabledTextBoxWide" TABINDEX="2" name="institution" id="institution" value="${missingissueFormBean.institution}"/>
+                                            <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="institution" id="institution" value="${missingissueFormBean.institution}"/>
                                         </span>
                                     </div>
                                     <div class="IASFormFieldDiv">
@@ -252,7 +252,7 @@
                                             <label>email:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASDisabledTextBoxWide" TABINDEX="2" name="email" id="email" value="${missingissueFormBean.email}"/>
+                                            <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="email" id="email" value="${missingissueFormBean.email}"/>
                                         </span>
                                     </div>
 
@@ -280,19 +280,19 @@
                                             <label>Print Option</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBoxMandatory" TABINDEX="5" name="printOption" id="printOption">
+                                            <select class="IASComboBoxMandatory" TABINDEX="1" name="printOption" id="printOption">
                                                 <option value ="LABEL">Label</option>
                                                 <option value ="STICKER">Sticker</option>
                                             </select>
                                         </span>
                                     </div>
                                     <div id="gMiBtnDiv">
-                                        <input class="IASButton" TABINDEX="4" type="button" value="Generate Mailing List" id="btngMi" name="btngMi" onclick="gMiList()"/>
+                                        <input class="IASButton" TABINDEX="2" type="button" value="Generate Mailing List" id="btngMi" name="btngMi" onclick="gMiList()"/>
                                     </div>
                                     <div id="reprintBtnDiv">
-                                        <input class="IASButton" TABINDEX="4" type="button" value="Re-print Mailing List" id="btnReprint" name="btnReprint" onclick="reprint()"/>
+                                        <input class="IASButton" TABINDEX="3" type="button" value="Re-print Mailing List" id="btnReprint" name="btnReprint" onclick="reprint()"/>
                                     </div>
-                                </div>   
+                                </div>
 
                             </fieldset>
                             <%-----------------------------------------------------------------------------------------------------%>
@@ -306,7 +306,7 @@
                                             <label>Reply Option</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBoxMandatory" TABINDEX="5" name="replyOption" id="replyOption">
+                                            <select class="IASComboBoxMandatory" TABINDEX="4" name="replyOption" id="replyOption">
                                                 <option value ="Print">Print</option>
                                                 <option value ="EMail">EMail</option>
                                             </select>
@@ -314,10 +314,10 @@
                                     </div>
 
                                 <div id="noCopyBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="button" value="No Copy" id="btnNoCopy" name="btnNoCopy" onclick="noCopies()"/>
+                                    <input class="IASButton" TABINDEX="5" type="button" value="No Copy" id="btnNoCopy" name="btnNoCopy" onclick="noCopies()"/>
                                 </div>
                                 <div id="sentMsgBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="button" value="Already Sent" id="btnSentMsg" name="btnSentMsg" onclick="alreadySent()"/>
+                                    <input class="IASButton" TABINDEX="6" type="button" value="Already Sent" id="btnSentMsg" name="btnSentMsg" onclick="alreadySent()"/>
                                 </div>
                                 </div>
 
