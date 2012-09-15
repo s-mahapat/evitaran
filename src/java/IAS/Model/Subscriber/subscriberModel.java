@@ -509,7 +509,6 @@ public class subscriberModel extends JDSModel {
 
         // get the connection from connection pool
         Connection conn = this.getConnection();
-        ResultSet _rs;
 
         String sql = Queries.getQuery("get_missing_issues_for_subscriber");
 

@@ -158,16 +158,8 @@ public class subscription extends JDSController {
 
             } else if (oper.equalsIgnoreCase("getSubscriptionDetailsForInward")) {
                 String inwardNumber = request.getParameter("inwardNumber");
-                try (ResultSet rs = _subscriptionModel.getSubscriptionDetailsForInward(inwardNumber)) {
-                    String xml;
-                    if (rs != null) {
-                        xml = util.convertResultSetToXML(rs);
-                    } else {
-                        logger.error("Failed to get subscription details for id: " + request.getParameter("inwardNumber"));
-                        xml = util.convertStringToXML("Failed to get subscription details", "error");
-                    }
-                    request.setAttribute("xml", xml);
-                }
+                String xml = _subscriptionModel.getSubscriptionDetailsForInward(inwardNumber);
+                request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }else if (action.equalsIgnoreCase("inwardinfo")){
                 int subscription_id = Integer.parseInt(request.getParameter("id"));

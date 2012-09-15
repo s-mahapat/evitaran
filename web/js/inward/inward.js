@@ -39,7 +39,7 @@ function validateSearchSubscriber(){
             ,document.getElementById("institution").value
             ,document.getElementById("department").value
             ,document.getElementById("email").value
-        );
+            );
 
         if(!isEmptyValue(selectedSubscriberFromDialog.SubscriberNumber) && selectedSubscriberFromDialog.SubscriberNumber != 0){
             $("#subscriberId").val(selectedSubscriberFromDialog.SubscriberNumber);
@@ -234,7 +234,7 @@ function isInwardSelected(){
             //selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE ||
             selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_PAYMENT ||
             selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_MISSING_ISSUE
-             )){
+            )){
         // if its not a new subscription then we need a subscriber id, search for the subscriber id
         city = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'City').toString();
         subscriberName = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'From').toString();
@@ -252,7 +252,14 @@ function isInwardSelected(){
 
 function selectSubscriber(city, subscriberName, rowid){
     selectedSubscriberId = searchSubscriber(subscriberName,"","",city);
-    jQuery("#inwardTable").jqGrid('setRowData', rowid, {
-        'SubscriberId': selectedSubscriberId.SubscriberNumber
-    });
+    // ensure that user has selected a subscriber
+    if(!isEmptyValue(selectedSubscriberId.SubscriberNumber)){
+        jQuery("#inwardTable").jqGrid('setRowData', rowid, {
+            'SubscriberId': selectedSubscriberId.SubscriberNumber
+        });
+        selectedSubscriberId = selectedSubscriberId.SubscriberId;
+    }else{
+        selectedSubscriberId = 0;
+    }
+    
 }

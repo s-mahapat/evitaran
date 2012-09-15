@@ -327,6 +327,12 @@ public class inwardModel extends JDSModel {
         st.setString(++paramIndex, _inwardFormBean.getAckDate());
         st.setString(++paramIndex, _inwardFormBean.getRemarks());
         st.setString(++paramIndex, _inwardFormBean.getLanguage());
+        
+        /*
+         * if the inward is of any non process type like Advertisement, Payment,
+         * Others, Manuscript a trigger on the DB side marks the inward as complete
+         * This ensures that we do not get the inwards in the pending inwards screen
+         */
     }
 
     private void _setUpdateInwardStatementParams(PreparedStatement st) throws SQLException, ParseException {
@@ -506,6 +512,7 @@ public class inwardModel extends JDSModel {
 
         String sql_count = "select count(*) from (" + sql + ") as tbl";
         try (PreparedStatement pst = conn.prepareStatement(sql_count);) {
+            pst.setString(1, subscriberNumber);
             try (ResultSet rs_count = pst.executeQuery();) {
                 rs_count.first();
                 totalQueryCount = rs_count.getInt(1);

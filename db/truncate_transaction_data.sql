@@ -1,3 +1,5 @@
+use jds;
+
 delete from inward;
 ALTER TABLE inward AUTO_INCREMENT = 1;
 

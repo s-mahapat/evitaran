@@ -30,11 +30,10 @@ import javax.xml.transform.TransformerException;
 public class RequestForInvoicePDF extends JDSPDF {
 
     private HttpServletRequest request = null;
-    private Connection conn = null;
 
     public RequestForInvoicePDF(HttpServletRequest request) throws SQLException {
-        super();        
-        this.conn = Database.getConnection();
+        super();
+        this.request = request;
     }
 
     public ByteArrayOutputStream getPDF(String InwardNumber) throws DocumentException,
@@ -68,6 +67,8 @@ public class RequestForInvoicePDF extends JDSPDF {
             ClassNotFoundException,
             IOException {
 
+        Connection conn = Database.getConnection();
+        
         inwardModel _inwardModel = new inwardModel(this.request);
         InvoiceFormBean _invoiceBean = _inwardModel.getInvoiceDetail(InwardNumber);
 
@@ -87,7 +88,7 @@ public class RequestForInvoicePDF extends JDSPDF {
         // create the shipping and invoice address table with 1 row and 2 cols        
         addressParagraph.add(addressTable);
         addressParagraph.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
-        addressTable.setWidthPercentage(98);
+        addressTable.setWidthPercentage(100);
         
         
         paragraphShippingAddress.setIndentationLeft(JDSPDF.LEFT_INDENTATION_MORE);
@@ -142,12 +143,13 @@ public class RequestForInvoicePDF extends JDSPDF {
         pst.setString(1, InwardNumber);
         PdfPTable table;
         try (ResultSet rs = pst.executeQuery()) {
-            table = new PdfPTable(4);
+            table = new PdfPTable(5);
             table.setWidthPercentage(98);
 
             PdfPCell cell1 = new PdfPCell(new Paragraph("Journal Name"));
-            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell1.setHorizontalAlignment(Element.ALIGN_MIDDLE);
             cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell1.setColspan(2);
 
             PdfPCell cell2 = new PdfPCell(new Paragraph("Start Year"));
             cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -170,12 +172,13 @@ public class RequestForInvoicePDF extends JDSPDF {
             while (rs.next()) {
                 String journalName = rs.getString("journalName");
                 String startYear = String.valueOf(rs.getInt("startYear"));
-                String endYear = String.valueOf(rs.getInt("endYear"));;
+                String endYear = String.valueOf(rs.getInt("endYear"));
                 String copies = String.valueOf(rs.getInt("copies"));
 
                 PdfPCell c1 = new PdfPCell(new Phrase(journalName, JDSPDF.JDS_FONT_NORMAL_SMALL));
-                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                c1.setHorizontalAlignment(Element.ALIGN_LEFT);
                 c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                c1.setColspan(2);
 
                 PdfPCell c2 = new PdfPCell(new Phrase(startYear, JDSPDF.JDS_FONT_NORMAL_SMALL));
                 c2.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -214,8 +217,8 @@ public class RequestForInvoicePDF extends JDSPDF {
         paragraphOuter.add(Chunk.NEWLINE);
         paragraphOuter.add(paragraphBody);
 
-
-
+        // return connection to pool
+        conn.close();
         return paragraphOuter;
     }
 }

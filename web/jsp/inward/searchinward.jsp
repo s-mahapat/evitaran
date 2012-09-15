@@ -78,10 +78,11 @@
                             action = "<a style='color:blue;' href='inward?action=view&inwardNumber=" + inwardId + "'>View</a><a style='color:blue;' href='inward?action=edit&inwardNumber=" + inwardId + "'>Edit</a>";
                             jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
-                        sessionStorage['searchinwards'] = JSON.stringify({  "page": jQuery("#inwardTable").jqGrid('getGridParam','page'),
-                            "rowNum": jQuery("#inwardTable").jqGrid('getGridParam','rowNum'),
-                            "totalpages": jQuery("#inwardTable").jqGrid('getGridParam','lastpage'),
-                            "city": $("#city").val(),
+                        sessionStorage['searchinwards'] = JSON.stringify({  
+                            page: jQuery("#inwardTable").jqGrid('getGridParam','page'),
+                            rowNum: jQuery("#inwardTable").jqGrid('getGridParam','rowNum'),
+                            totalpages: jQuery("#inwardTable").jqGrid('getGridParam','lastpage'),
+                            city: $("#city").val(),
                             inwardNumber    : $("#inwardNumber").val(),
                             chequeNumber    : $("#chequeNumber").val(),
                             fromDate        : $("#from").val(),
@@ -109,6 +110,11 @@
                         $("#chequeNumber").val(json.chequeNumber);
                         $("#from").val(json.from);
                         $("#to").val(json.to);
+                        jQuery("#inwardTable").setGridParam({
+                            'rowNum': json.rowNum,
+                            'page': json.page
+
+                        });
                         searchInwards();
                     }
 

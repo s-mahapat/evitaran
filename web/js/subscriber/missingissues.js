@@ -17,7 +17,7 @@ function drawMissingIssuesTable(){
             colModel :[
                 {name:'inwardNumber', index:'inwardNumber', width:50, align:'center', xmlmap:'inwardNumber'},
                 {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
-                {name:'month', index:'month', width:40, align:'center', xmlmap:'month'},
+                {name:'month', index:'month', width:40, align:'center', xmlmap:'month', formatter: monthNumberToName},
                 {name:'year', index:'year', sortable: false, width:60, align:'center',xmlmap:'year'},
                 {name:'missingcopies', index:'missingcopies', sortable: false, width:60, align:'center',xmlmap:'missingcopies'},
                 {name:'action', index:'action', sortable: false, width:60, align:'center',xmlmap:'action'},

@@ -145,17 +145,17 @@ public class subscriber extends JDSController {
                 url = "/xmlserver";
             }
             
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+            if (rd != null && url != null) {
+                rd.forward(request, response);
+            }
+            
 
         } catch (SQLException | ParseException | InvocationTargetException |
                 IllegalAccessException | ClassNotFoundException | ParserConfigurationException |
                 TransformerException | SAXException | IOException e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
-        } finally {
-            RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
-            if (rd != null && url != null) {
-                rd.forward(request, response);
-            }
         }
     }
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

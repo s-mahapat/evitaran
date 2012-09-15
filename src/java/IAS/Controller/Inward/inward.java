@@ -234,16 +234,14 @@ public class inward extends JDSController {
 
 
             }
-        } catch (SQLException | IOException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | ParserConfigurationException | TransformerException | SAXException | NumberFormatException e) {
-            logger.error(e.getMessage(), e);
-            throw new javax.servlet.ServletException(e);
-
-        } finally {
+            
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
             if (rd != null && url != null) {
                 rd.forward(request, response);
-                //response.sendRedirect(request.getContextPath() + url);
             }
+        } catch (SQLException | IOException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | ParserConfigurationException | TransformerException | SAXException | NumberFormatException e) {
+            logger.error(e.getMessage(), e);
+            throw new javax.servlet.ServletException(e);
         }
     }
 

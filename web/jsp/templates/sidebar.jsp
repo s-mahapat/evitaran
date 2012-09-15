@@ -40,7 +40,7 @@
         </li>
         <li class="menu"><a href="#">Subscriber <br> Subscription</a>
             <ul>
-                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gcreatesubscriber"%>">Create Subscriber</a></li>
+                <!--<li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gcreatesubscriber"%>">Create Subscriber</a></li>-->
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchsubscriber"%>">Search Subscriber</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=afs"%>">Add Free Subscriber</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=asf"%>">Add Summer Fellows</a></li>

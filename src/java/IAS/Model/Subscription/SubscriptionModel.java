@@ -16,6 +16,7 @@ import IAS.Model.JDSModel;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -350,17 +351,24 @@ public class SubscriptionModel extends JDSModel {
         return xml;
     }
 
-    public ResultSet getSubscriptionDetailsForInward(String InwardNumber) throws ParserConfigurationException, SQLException, TransformerException, IOException {
+    public String getSubscriptionDetailsForInward(String InwardNumber) throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
         String xml = null;
+        Connection conn = this.getConnection();
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_subscription_details_for_inward");
-        ResultSet rs;
-        PreparedStatement st = conn.prepareStatement(sql);
-        int paramIndex = 0;
-        st.setString(++paramIndex, InwardNumber);
-        rs = st.executeQuery();
-        return rs;
+        try (PreparedStatement st = conn.prepareStatement(sql);) {
+            int paramIndex = 0;
+            st.setString(++paramIndex, InwardNumber);
+            try(ResultSet rs = st.executeQuery();){
+                if(rs != null){
+                    xml = util.convertResultSetToXML(rs);
+                }
+            }
+        }finally{
+            conn.close();
+        }
+        return xml;
 
     }
 
@@ -454,20 +462,20 @@ public class SubscriptionModel extends JDSModel {
 
         return invoiceID;
     }
-    
-    public String getSubscriptionInwardInfo(int subid) throws 
-            SQLException, 
+
+    public String getSubscriptionInwardInfo(int subid) throws
+            SQLException,
             ParserConfigurationException,
-            TransformerException{
+            TransformerException {
         String sql = Queries.getQuery("get_subscription_inward_amount");
         String xml;
-        try(PreparedStatement st = conn.prepareStatement(sql)){
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, subid);
-            try(ResultSet rs = st.executeQuery()){
+            try (ResultSet rs = st.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
             }
         }
         return xml;
-        
+
     }
 }
