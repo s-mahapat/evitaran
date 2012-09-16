@@ -1,8 +1,9 @@
 function makeInwardReadOnly(){
 
     $("#btnEditInward").button("disable");
-    //$("#inwardPurpose").attr("disabled","disabled");
-    //$("#agentName").attr("disabled","disabled");
+    if(Number($("#amount").val()) <= 0){
+        $("#btnSendReturn").button("disable");
+    }
 }
 
 function enablePayment(){
