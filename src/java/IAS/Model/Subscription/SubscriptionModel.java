@@ -13,6 +13,7 @@ import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import IAS.Model.Subscriber.subscriberModel;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -64,6 +65,8 @@ public class SubscriptionModel extends JDSModel {
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
 
+        Connection conn = this.getConnection();
+
         String xml = null;
         String journalGroupID[] = request.getParameterValues("journalGroupID");
         String journalPriceGroupID[] = request.getParameterValues("journalPriceGroupID");
@@ -87,29 +90,30 @@ public class SubscriptionModel extends JDSModel {
             _subscriptionBean.setSubscriptionTotal(subscriptionTotal);
             request.setAttribute("subscriptionFormBean", _subscriptionBean);
             request.setAttribute("subscriptionDetailBean", _subscriptionDetailBean);
-            PreparedStatement st = null;
+            //PreparedStatement st = null;
 
             // start transaction here.
             conn.setAutoCommit(false);
             try {
                 // the query name from the jds_sql properties files in WEB-INF/properties folder
-                String sql = Queries.getQuery("insert_subscription");
-                st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                int paramIndex = 0;
+                //String sql = Queries.getQuery("insert_subscription");
+                //st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                //int paramIndex = 0;
                 //float balance = subscriptionTotal - this._inwardFormBean.getAmount();
 
 
-                st.setString(++paramIndex, this.subscriberNumber);
-                st.setString(++paramIndex, this.inwardNumber);
+                //st.setString(++paramIndex, this.subscriberNumber);
+                //st.setString(++paramIndex, this.inwardNumber);
                 //st.setFloat(++paramIndex, balance);
-                st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+                //st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
                 //st.setFloat(++paramIndex, subscriptionTotal);
                 //st.setString(++paramIndex, remarks);
-                if (db.executeUpdatePreparedStatement(st) == 1) {
-                    try (ResultSet rs = st.getGeneratedKeys()) {
-                        rs.first();
-                        subscriptionID = rs.getInt(1);
-                    }
+                subscriptionID = this.addNewSubscription(this.subscriberNumber, this.inwardNumber, util.getDateString());
+                if (subscriptionID > 0) {
+                    /*try (ResultSet rs = st.getGeneratedKeys()) {
+                     rs.first();
+                     subscriptionID = rs.getInt(1);
+                     }*/
 
                     //set the subscription id and total in the bean
                     _subscriptionBean.setSubscriptionID(subscriptionID);
@@ -148,7 +152,8 @@ public class SubscriptionModel extends JDSModel {
                 conn.rollback();
             } finally {
                 conn.setAutoCommit(true);
-                st.close();
+                //st.close();
+                conn.close();
             }
 
         }
@@ -183,6 +188,36 @@ public class SubscriptionModel extends JDSModel {
 
     }
 
+    public int addNewSubscription(String subscriberNumber, String inwardNumber, String subscriptionDate) throws SQLException {
+
+        Connection conn = this.getConnection();
+        int subscriptionID = 0;
+
+        // the query name from the jds_sql properties files in WEB-INF/properties folder
+        String sql = Queries.getQuery("insert_subscription");
+        try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+            int paramIndex = 0;
+            st.setString(++paramIndex, subscriberNumber);
+            st.setString(++paramIndex, inwardNumber);
+            st.setDate(++paramIndex, util.dateStringToSqlDate(subscriptionDate));
+            int ra = st.executeUpdate();
+
+            // check if the row was added
+            if (ra == 1) {
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    rs.first();
+                    subscriptionID = rs.getInt(1);
+                }
+            }
+        } catch (ParseException ex) {
+            logger.error(ex);
+        } finally {
+            conn.close();
+            return subscriptionID;
+        }
+
+    }
+
     public int[] addNewSubscriptionDetail(int subscriptionID, int journalGroupID,
             int startYear, int startMonth, int endYear, int copies,
             float total, int journalPriceGroupID) throws SQLException {
@@ -200,6 +235,68 @@ public class SubscriptionModel extends JDSModel {
                 subscriptionID, _journalGroupID,
                 _startYear, _startMonth,
                 _endYear, _copies,
+                _total, _journalPriceGroupID);
+        return res;
+    }
+    
+    /*
+     * This method is to be used by agent excel upload functionality
+     * to save subscription detail
+     */
+    public int[] addNewSubscriptionDetail(
+            int subscriptionID,
+            int[] journalGroupID,
+            int startYear,
+            int startMonth,
+            int endYear,
+            int[] copies,
+            String subscriberNumber) throws SQLException {
+
+        int res[] = new int[journalGroupID.length];
+        int[] _journalPriceGroupID = new int[journalGroupID.length];
+        int numYears = endYear - startYear + 1;
+        int subscriberTypeID = new subscriberModel(request).getSubscriberType(subscriberNumber);
+        
+        int[] _startYear = new int[journalGroupID.length];
+        int[] _startMonth = new int[journalGroupID.length];
+        int[] _endYear = new int[journalGroupID.length];
+        //int[] _copies = {copies};
+        float[] _total = {0};
+        
+        for(int j=0; j<journalGroupID.length; j++){
+            _startYear[j] = startYear;
+            _startMonth[j] = startMonth;
+            _endYear[j] = endYear;
+            
+        }
+        
+        /* if the start month is not Jan, then consider it as one year less
+         * for e.g. Jul 2012 to Jun 2013, would normally be considered as 2 yrs, but its
+         * actually one year. so deduct 1 from the num of years
+         */
+        if (startMonth > 1) {
+            numYears--;
+        }
+        
+        // Get the price group ids for all the journals
+        for (int i = 0; i < journalGroupID.length; i++) {
+            try{
+                try (ResultSet rs = this.getJournalPrice(startYear, numYears, journalGroupID[i], subscriberTypeID)) {
+                    if(rs.first()){
+                        int priceGroupID = rs.getInt(1);
+                        _journalPriceGroupID[i] = priceGroupID;
+                    }
+                }
+            }catch(TransformerException | ParserConfigurationException ex){
+                logger.error(ex);
+                return res;
+            }
+            
+        }
+        res = this.__addSubscriptionDetail(
+                subscriptionID, journalGroupID,
+                _startYear, _startMonth,
+                _endYear, copies,
                 _total, _journalPriceGroupID);
         return res;
     }
@@ -360,12 +457,12 @@ public class SubscriptionModel extends JDSModel {
         try (PreparedStatement st = conn.prepareStatement(sql);) {
             int paramIndex = 0;
             st.setString(++paramIndex, InwardNumber);
-            try(ResultSet rs = st.executeQuery();){
-                if(rs != null){
+            try (ResultSet rs = st.executeQuery();) {
+                if (rs != null) {
                     xml = util.convertResultSetToXML(rs);
                 }
             }
-        }finally{
+        } finally {
             conn.close();
         }
         return xml;
