@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.apache.commons.fileupload.FileItem;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -43,7 +45,7 @@ public class FileUploadBase extends JDSModel {
         throw (new NotImplementedException());
     }
 
-    public String getOutputAsXML() throws IOException{
+    public String getOutputAsXML() throws IOException, TransformerException, ParserConfigurationException{
         throw (new NotImplementedException());
     }
     

@@ -16,11 +16,12 @@
                 _fileuploader = new jdsfileuploader("uploader");
                 _fileuploader.url = "fileupload?action=urn";
                 _fileuploader.filters = [{title : "XML files", extensions : "xml"}];
-                _fileuploader.success = function(up, file, info){
+                _fileuploader.success = function(up, file, info){                    
+                    alert($(info.response).find("message").text());
                     if($(info.response).find("results").find("row") != null){
                         loadErrorGrid(info.response);
-                    }else if($(info.response).find("results") != null){
-                        alert("Add XML Data updated")
+                    }else{
+                        alert($(info.response).find("message").text());
                     }                    
                 };
                 _fileuploader.error = function(up, args){

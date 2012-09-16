@@ -43,12 +43,6 @@
                 color: red;
             }
 
-            #successMsg{
-
-                text-align: center;
-                color: green;
-            }
-
             #resetpwdDiv{
 
                 margin: 10% 10%;
@@ -85,6 +79,7 @@
     </head>
     <body>
         <jsp:include page="../templates/header.jsp"></jsp:include>
+        <div id="ajaxBusy"><img src="/JDS/images/ajax-loader.gif"><p>Please Wait...</p></div>
         <%--<jsp:include page="../templates/loginsidebar.jsp"></jsp:include>--%>
         <div id="bodyContainer">
             <form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginFieldId','passwordField')">
@@ -96,11 +91,11 @@
                     <div id="login">
                         <div class="authField">
                             <span class="authLabel">User Name</span>
-                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBoxMandatory" name="j_username" value="jds@ias.com" id="loginFieldId" onblur="validateEmail(this.id)"/></span>
+                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBoxMandatory" name="j_username" value="" id="loginFieldId" onblur="validateEmail(this.id)"/></span>
                         </div>
                         <div class="authField">
                             <span class="authLabel">Password</span>
-                            <span class="authInput"><input type="password" maxlength="16" style="width:160px" class="IASTextBox" value="jds" name="j_password" id="passwordField"/></span>
+                            <span class="authInput"><input type="password" maxlength="16" style="width:160px" class="IASTextBox" value="" name="j_password" id="passwordField"/></span>
                         </div>
                         <div class="authAction">
                             <input type="submit" value="Login"/>
@@ -116,13 +111,12 @@
                             <span class="authInput"><input type="text" class="IASTextBoxMandatoryWide" name="userEmail" id="userEmail"/></span>
                         </div>
                         <div class="authAction">
-                            <input type="button" value="Reset Password" onclick="ResetPassword()"/>
+                            <input class="IASButton" id="resetpwdbtn" type="button" value="Reset Password" onclick="ResetPassword()"/>
                         </div>
                     </div>
 
                 </div>
                 <div id="loginErrorMsg"></div>
-                <div id="successMsg"></div>
 
             </form>
         </div>

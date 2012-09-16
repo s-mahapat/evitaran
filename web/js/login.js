@@ -47,7 +47,7 @@ function validatePassword(passwordField){
     var pwd = document.getElementById(passwordField).value;
     var mdiv = document.getElementById("loginErrorMsg");
     if(pwd.length > 16){
-        mdiv.innerHTML = "Please enter a password less than 16 characters !";
+        mdiv.innerHTML = "Please enter a password of 16 characters or less!";
         document.getElementById(passwordField).value = "";
         bPasswordSuccess = false;
     }else if(pwd.length == 0){
@@ -70,17 +70,41 @@ function validate(login,password){
 }
 
 function ResetPassword(){
+    $("#resetpwdbtn").button("disable");
+    $('#ajaxBusy').show();
     if(validateEmail("userEmail")){
         $.ajax({
             type: 'POST',
             url: 'usermgr/resetpwd',
             data: {email: $("#userEmail").val()},
             success: function(xml){
-                if($(xml).find("success")){
-                    $("#successMsg").html("Email with the new password has been sent to " + $("#userEmail").val());
+                if($(xml).find("results").find("success").text() == "true"){
+                    $("#loginErrorMsg").html($(xml).find("results").find("message").text());
+                    $("#loginErrorMsg").css('color','green');
+                }else{
+                    $("#loginErrorMsg").html($(xml).find("results").find("message").text());
                 }
+                
+            },
+            complete: function(){
+                $('#ajaxBusy').hide();
+                $("#resetpwdbtn").button("enable");
             },
             dataType: 'xml'
         });
     }
+}
+
+function validateChangePassword(){
+    
+    var isCorrect = false;
+    if($("#passwordField").val() == $("#renterPasswordField").val()){
+        if(validatePassword("passwordField")){
+            isCorrect = true;
+        }
+    }else{
+        $("#loginErrorMsg").html("The password in the two fields do not match");
+    }
+    return isCorrect;
+    
 }

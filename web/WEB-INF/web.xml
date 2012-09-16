@@ -200,6 +200,10 @@
         <servlet-name>usermgr</servlet-name>
         <servlet-class>IAS.Controller.UserMgr.ResetPwd</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangePwd</servlet-name>
+        <servlet-class>IAS.Controller.UserMgr.ChangePwd</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -353,6 +357,10 @@
     <servlet-mapping>
         <servlet-name>usermgr</servlet-name>
         <url-pattern>/usermgr/resetpwd</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePwd</servlet-name>
+        <url-pattern>/usermgr/changepwd</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

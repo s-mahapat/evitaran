@@ -12,13 +12,13 @@ public class InwardInfo {
     
     private String inwardNo;
     private int chqNo;
-    private int subNo;
+    private String subNo;
     private String chqDate;
     private Float amount;
     
     public InwardInfo(String _inwardNo, 
             int _chqNo, 
-            int _subNo, 
+            String _subNo, 
             String _chqDate, 
             Float _amount){
         
@@ -33,7 +33,7 @@ public class InwardInfo {
         return this.chqNo;
     }
     
-    public int getSubscriberNo(){
+    public String getSubscriberNo(){
         return this.subNo;
     }
     

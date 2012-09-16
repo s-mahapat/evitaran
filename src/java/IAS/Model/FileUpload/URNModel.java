@@ -1,5 +1,6 @@
 package IAS.Model.FileUpload;
 
+import IAS.Class.Ajax.AjaxResponse;
 import IAS.Class.InwardInfo;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
@@ -59,13 +60,13 @@ public class URNModel extends FileUploadBase {
                             _failures.add(_inwardinfo);
                         }
                     } catch (ParseException e) {
-                        logger.error(e.getMessage());
+                        logger.error(e);
                         throw (new IOException(e.getMessage()));
                     }
 
                 }
             } catch (ParserConfigurationException | IOException | SAXException e) {
-                logger.error(e.getMessage());
+                logger.error(e);
                 throw (new IOException(e.getMessage()));
             }
 
@@ -90,13 +91,14 @@ public class URNModel extends FileUploadBase {
     private InwardInfo getInwardInfo(Element el) {
         String _inwardno = this.getInwardNo(el);
         int _chqno = this.getChequeNo(el);
-        int _subno = this.getSubscriberNo(el);
+        String _subno = this.getSubscriberNo(el);
         String _chqdt = this.getChqDt(el);
+        float _amount = this.getAmount(el);
         InwardInfo _inwardinfo = new InwardInfo(_inwardno,
                 _chqno,
                 _subno,
                 _chqdt,
-                Float.valueOf(0));
+                _amount);
 
         return _inwardinfo;
     }
@@ -105,11 +107,20 @@ public class URNModel extends FileUploadBase {
         NodeList inwardList = el.getElementsByTagNameNS("*", "INWARDNO.LIST");
         Element _inward_list_el = (Element) inwardList.item(0);
         String _inward = this.getTextValue(_inward_list_el, "INWARDNO");
-        /*for (int i = 0; i < inwardList.getLength(); i++) {
-         Element _inward_list_el = (Element) inwardList.item(i);
-         _inward = this.getTextValue(_inward_list_el, "INWARDNO");
-         }*/
         return _inward;
+    }
+    
+    private float getAmount(Element el) {
+        NodeList amountList = el.getElementsByTagNameNS("*", "ALLLEDGERENTRIES.LIST");
+        float amount = 0;
+        for (int i = 0; i < amountList.getLength(); i++){
+            Element _amount_list_el = (Element) amountList.item(i);
+            float _amount = this.getFloatValue(_amount_list_el, "AMOUNT");
+            if(_amount > 0){
+                amount += _amount;
+            }
+        }             
+        return amount;
     }
 
     private int getChequeNo(Element el) {
@@ -118,10 +129,10 @@ public class URNModel extends FileUploadBase {
         return this.getIntValue(_inward_list_el, "CHQNO");
     }
 
-    private int getSubscriberNo(Element el) {
+    private String getSubscriberNo(Element el) {
         NodeList inwardList = el.getElementsByTagNameNS("*", "SUBNO.LIST");
         Element _inward_list_el = (Element) inwardList.item(0);
-        return this.getIntValue(_inward_list_el, "SUBNO");
+        return this.getTextValue(_inward_list_el, "SUBNO");
     }
 
     private String getChqDt(Element el) {
@@ -151,51 +162,68 @@ public class URNModel extends FileUploadBase {
     private int getIntValue(Element ele, String tagName) {
         return Integer.parseInt(getTextValue(ele, tagName));
     }
+    
+    /**
+     * Calls getTextValue and returns a float value
+     */
+    private float getFloatValue(Element ele, String tagName) {
+        return Float.parseFloat(getTextValue(ele, tagName));
+    }
 
     @Override
-    public String getOutputAsXML() throws IOException {
-        String xml;
-        Iterator iter = _failures.iterator();
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.newDocument();
-            Element results = doc.createElement("results");
-            doc.appendChild(results);
+    public String getOutputAsXML() throws TransformerException, IOException, ParserConfigurationException {
 
-            while (iter.hasNext()) {
-                Element row = doc.createElement("row");
-                results.appendChild(row);
+        String xml = null;
+        AjaxResponse ajaxResponse = new AjaxResponse();
+        
+        try {                    
+            if (!_failures.isEmpty()) {
+                Iterator iter = _failures.iterator();
 
-                InwardInfo _inwardInfo = (InwardInfo) iter.next();
-                Element _row = this.appendChildToElement(doc, row, "inwardno", _inwardInfo.getInwardNo());
-                row.appendChild(_row);
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document doc = builder.newDocument();
+                Element results = doc.createElement("results");
+                doc.appendChild(results);
 
-                _row = this.appendChildToElement(doc, row, "subno", String.valueOf(_inwardInfo.getSubscriberNo()));
-                row.appendChild(_row);
+                while (iter.hasNext()) {
+                    Element row = doc.createElement("row");
+                    results.appendChild(row);
 
-                _row = this.appendChildToElement(doc, row, "chqno", String.valueOf(_inwardInfo.getInstrumentNo()));
-                row.appendChild(_row);
+                    InwardInfo _inwardInfo = (InwardInfo) iter.next();
+                    Element _row = this.appendChildToElement(doc, row, "inwardno", _inwardInfo.getInwardNo());
+                    row.appendChild(_row);
 
-                _row = this.appendChildToElement(doc, row, "amount", String.valueOf(_inwardInfo.getAmount()));
-                row.appendChild(_row);
+                    _row = this.appendChildToElement(doc, row, "subno", String.valueOf(_inwardInfo.getSubscriberNo()));
+                    row.appendChild(_row);
 
-                _row = this.appendChildToElement(doc, row, "chqdate", _inwardInfo.getInstrumentDate());
-                row.appendChild(_row);
+                    _row = this.appendChildToElement(doc, row, "chqno", String.valueOf(_inwardInfo.getInstrumentNo()));
+                    row.appendChild(_row);
 
+                    _row = this.appendChildToElement(doc, row, "amount", String.valueOf(_inwardInfo.getAmount()));
+                    row.appendChild(_row);
+
+                    _row = this.appendChildToElement(doc, row, "chqdate", _inwardInfo.getInstrumentDate());
+                    row.appendChild(_row);
+
+                }
+                DOMSource domSource = new DOMSource(doc);
+                StringWriter writer = new StringWriter();
+                StreamResult result = new StreamResult(writer);
+                TransformerFactory tf = TransformerFactory.newInstance();
+                Transformer transformer = tf.newTransformer();
+                transformer.transform(domSource, result);
+                xml = writer.toString();
+                return xml;
+
+            } else {                
+                xml = ajaxResponse.getSuccessXML(true, "Updated all inwards successfully");
             }
-            DOMSource domSource = new DOMSource(doc);
-            StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.transform(domSource, result);
-            xml = writer.toString();
-            return xml;
-
         } catch (ParserConfigurationException | TransformerException e) {
             logger.error(e.getMessage());
-            return null;
+            xml = ajaxResponse.getSuccessXML(false, "Failed to update inwards");
+        }finally{
+            return xml;
         }
 
     }

@@ -4,55 +4,38 @@
  */
 package IAS.Controller.UserMgr;
 
-import IAS.Class.Ajax.AjaxResponse;
-import IAS.Class.JDSLogger;
-import IAS.Controller.JDSController;
 import IAS.Model.UserMgr.ResetPwdModel;
 import java.io.IOException;
+import java.rmi.ServerException;
 import java.sql.SQLException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.apache.log4j.Logger;
 
 /**
  *
  * @author Shailendra
  */
-@WebServlet(name = "usermgr", urlPatterns = {"/usermgr/resetpwd"})
-public class ResetPwd extends JDSController {
+public class ChangePwd extends HttpServlet {
 
-    private static final Logger logger = JDSLogger.getJDSLogger(ResetPwd.class.getName());
-
-    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String email = request.getParameter("email");
-        AjaxResponse _ajaxres = new AjaxResponse();
-        String xml;
-        String url;
+        String newPassword = request.getParameter("passwordField");
 
         try {
-            ResetPwdModel rspwdModel = new ResetPwdModel();
-            boolean isSuccess = rspwdModel.emailNewPassword(email);
-            String msg = "Email with the new password has been sent to " + email;
-            
-            if(!isSuccess){
-                msg = "Failed to reset password for this email id";
+            ResetPwdModel _rpwModel = new ResetPwdModel();
+            boolean isPwdchanged = _rpwModel.updatePassword(email, newPassword);
+            if (isPwdchanged) {
+                response.sendRedirect(request.getContextPath() + "/home");
+                //RequestDispatcher rd = request.getRequestDispatcher("/home");
+                //rd.forward(request, response);
             }
-            
-            xml = _ajaxres.getSuccessXML(isSuccess, msg);
-
-            response.setContentType("text/xml");
-            response.setHeader("Cache-Control", "no-cache");
-            response.getWriter().write(xml);
-
-        } catch (SQLException | ParserConfigurationException | TransformerException ex) {
-            logger.error(ex);
+        } catch (SQLException e) {
+            throw (new ServerException(e.getMessage()));
         }
 
     }

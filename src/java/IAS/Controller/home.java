@@ -70,12 +70,21 @@ public class home extends JDSController {
                     rs.first();
                     String firstName = rs.getString(1);
                     String lastName = rs.getString(2);
+                    boolean isPasswordReset = rs.getBoolean(3);
+                    
                     LoggedInUserBean userBean = new LoggedInUserBean();
                     userBean.setUserName(userName);
                     userBean.setFirstName(firstName);
                     userBean.setLastName(lastName);
                     session.setAttribute("userBean", userBean);
+                    
                     url = "jsp/home.jsp";
+                    
+                    // if the password was reset then redirect him to change password screen
+                    if(isPasswordReset){
+                        url = "jsp/login/changepwd.jsp";
+                    }
+                    
 
                 } catch (SQLException e) {
                     url = "jsp/errors/error.jsp";
