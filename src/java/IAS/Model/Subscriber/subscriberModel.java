@@ -3,7 +3,6 @@ package IAS.Model.Subscriber;
 import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscriber.subscriberFormBean;
-import IAS.Class.Database;
 import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
@@ -11,6 +10,7 @@ import IAS.Class.util;
 import IAS.Model.JDSModel;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -68,32 +68,16 @@ public class subscriberModel extends JDSModel {
         if (!subscriberFormBean.getSubscriberNumber().isEmpty()) {
             return this._updateSubscriber();
         } else {
-            //get the next subscriber number
-            subscriberFormBean.setSubscriberNumber(getNextSubscriberNumber());
-            // the query name from the jds_sql properties files in WEB-INF/properties folder
-            sql = Queries.getQuery("subscriber_insert");
-            PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            // fill in the statement params
-            this._setSubscriberStatementParams(st, mode);
-            int rowsAffected = st.executeUpdate();
+            int _subscriberId = this.SaveNewSubscriber(_subscriberFormBean);
 
             //If the mode was create new user update the inward with the new subscriber that was created
             if (mode.equalsIgnoreCase("Create")) {
-                int _subscriberId;
-                try (ResultSet rs = st.getGeneratedKeys()) {
-                    rs.first();
-                    _subscriberId = rs.getInt(1);
-                } catch (SQLException e) {
-                    logger.error(e.getMessage(), e);
-                    throw e;
-                }
-
                 if (this.inwardNumber != null) {
                     String _sql = Queries.getQuery("update_subscriber_in_inward");
                     try (PreparedStatement pst = conn.prepareStatement(_sql)) {
                         pst.setInt(1, _subscriberId);
                         pst.setString(2, this.inwardNumber);
-                        db.executeUpdatePreparedStatement(pst);
+                        pst.executeUpdate();
                     } catch (SQLException e) {
                         logger.error(e.getMessage(), e);
                         throw e;
@@ -104,8 +88,40 @@ public class subscriberModel extends JDSModel {
             // return the connection back to the pool
             this.CloseConnection(conn);
 
-            return rowsAffected;
+            return _subscriberId;
 
+        }
+    }
+
+    public int SaveNewSubscriber(subscriberFormBean _subscriberFormBean) throws IllegalAccessException, SQLException, ParseException, InvocationTargetException {
+
+        Connection conn = this.getConnection();
+        int _subscriberId = 0;
+
+        //get the next subscriber number
+        _subscriberFormBean.setSubscriberNumber(getNextSubscriberNumber());
+
+        // the query name from the jds_sql properties files in WEB-INF/properties folder
+        String sql = Queries.getQuery("subscriber_insert");
+        try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+            // fill in the statement params
+            this._setSubscriberStatementParams(st, "create");
+            int rowsAffected = st.executeUpdate();
+
+            if (rowsAffected == 1) {
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    rs.first();
+                    _subscriberId = rs.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            logger.error(e);
+            throw e;
+        }finally{
+            
+            // return the connection to the pool
+            conn.close();
+            return _subscriberId;
         }
     }
 
@@ -382,7 +398,7 @@ public class subscriberModel extends JDSModel {
             sql += condition + " pincode =" + "'" + pincode + "'";
         }
         String sql_count = "select count(*) from (" + sql + ") as tbl";
-        
+
         try (PreparedStatement pst = conn.prepareStatement(sql_count);) {
             try (ResultSet rs_count = pst.executeQuery();) {
                 rs_count.first();
@@ -397,10 +413,10 @@ public class subscriberModel extends JDSModel {
                 xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
             }
         }
-        
+
         // close the connection
         this.CloseConnection(conn);
-        
+
         return xml;
     }
 
@@ -485,8 +501,8 @@ public class subscriberModel extends JDSModel {
         return invoiceFormBean;
     }
 
-    public String getReminders(String subscriberNumber) throws SQLException, 
-            ParserConfigurationException,TransformerException {
+    public String getReminders(String subscriberNumber) throws SQLException,
+            ParserConfigurationException, TransformerException {
 
         // get the connection from connection pool
         Connection conn = this.getConnection();
@@ -497,7 +513,7 @@ public class subscriberModel extends JDSModel {
             try (ResultSet rs = st.executeQuery();) {
                 return util.convertResultSetToXML(rs);
             }
-        }finally {
+        } finally {
             // return the connection back to the pool
             this.CloseConnection(conn);
         }
@@ -505,7 +521,7 @@ public class subscriberModel extends JDSModel {
     }
 
     public String getMissingIssues(int subscriberID) throws SQLException,
-            ParserConfigurationException,TransformerException {
+            ParserConfigurationException, TransformerException {
 
         // get the connection from connection pool
         Connection conn = this.getConnection();
@@ -514,13 +530,13 @@ public class subscriberModel extends JDSModel {
 
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, subscriberID);
-            try(ResultSet rs = st.executeQuery();){
-               return util.convertResultSetToXML(rs); 
+            try (ResultSet rs = st.executeQuery();) {
+                return util.convertResultSetToXML(rs);
             }
-        }finally {
+        } finally {
             // return the connection back to the pool
             this.CloseConnection(conn);
         }
-        
+
     }
 }
