@@ -1,5 +1,6 @@
 package IAS.Controller.fileupload;
 
+import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.util;
 import IAS.Controller.JDSController;
 import IAS.Controller.Print.Print;
@@ -13,6 +14,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.fileupload.FileItem;
@@ -23,12 +25,14 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class fileupload extends JDSController {
 
     private ArrayList<String> returnOutList;
+    
     String url = null;
     static List<FileItem> heldItems;
 
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
         String action = request.getParameter("action").toLowerCase();
         try {
 
@@ -46,7 +50,7 @@ public class fileupload extends JDSController {
                 List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
                 AgentXLUploadModel _agentXLUploadModel = new AgentXLUploadModel();
                 _agentXLUploadModel.addFiles(items);
-                _agentXLUploadModel.validateFile();
+                _agentXLUploadModel.processFiles();
                 returnOutList = new ArrayList<>();
                 returnOutList = _agentXLUploadModel.getOutputAsLIST();
                 if (!returnOutList.isEmpty()) {
@@ -59,15 +63,22 @@ public class fileupload extends JDSController {
             }
 
             if (action.equals("agentxlupload")) {
-                AgentXLUploadModel _agentXLUploadModel = new AgentXLUploadModel();
-                _agentXLUploadModel.addFiles(heldItems);
-                _agentXLUploadModel.processFiles();
-                returnOutList = new ArrayList<>();
-                returnOutList = _agentXLUploadModel.getOutputAsLIST();
-                if (!returnOutList.isEmpty()) {
-                    String xml = util.convertArrayListToXML(returnOutList, "id");
-                    request.setAttribute("xml", xml);
-                    url = "/xmlserver";
+                String inwardNumber;
+                Boolean uploadInd = true;
+                if (session.getAttribute("inwardUnderProcess") != null) {
+                    AgentXLUploadModel _agentXLUploadModel = new AgentXLUploadModel(uploadInd,request);
+                    _agentXLUploadModel.addFiles(heldItems);
+                    _agentXLUploadModel.processFiles();
+                    returnOutList = new ArrayList<>();
+                    returnOutList = _agentXLUploadModel.getOutputAsLIST();
+                    if (!returnOutList.isEmpty()) {
+                        String xml = util.convertArrayListToXML(returnOutList, "id");
+                        request.setAttribute("xml", xml);
+                        url = "/xmlserver";
+                    }
+                } else {
+                    url = "";
+                    //throw error;
                 }
             }
         } catch (ParserConfigurationException | SQLException |
@@ -78,6 +89,5 @@ public class fileupload extends JDSController {
                 rd.forward(request, response);
             }
         }
-
     }
 }

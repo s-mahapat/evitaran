@@ -108,6 +108,7 @@
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
             <form action="" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="purpose" id="purpose" value="<%=request.getParameter("purpose")%>"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Upload Agent Excel</legend>

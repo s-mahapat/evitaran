@@ -100,7 +100,7 @@ public class subscriberModel extends JDSModel {
 
         //get the next subscriber number
         _subscriberFormBean.setSubscriberNumber(getNextSubscriberNumber());
-
+        this._subscriberFormBean = _subscriberFormBean;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("subscriber_insert");
         try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
