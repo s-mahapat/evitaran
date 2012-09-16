@@ -165,7 +165,7 @@
                                     <span class="IASFormDivSpanLabel">
                                         <label>Reminder Type</label>
                                     </span>
-                                    <span class="IASFormDivSpanInputBoxLessMargin">
+                                    <span class="IASFormDivSpanInputBox">
                                      <select class="IASComboBox" TABINDEX="6" name="reminderType" id="reminderType">
                                         <option value ="1">Type 1 Reminder - Gentle</option>
                                         <option value ="2">Type 2 Reminder - Strong</option>

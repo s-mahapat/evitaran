@@ -94,12 +94,13 @@
                             nationality         : $("#nationality").val(),
                             institutional       : $("#institutional").val(),
                             subscriberType      : $("#subscriberType").val(),
-                            journalGroupName    : $("#journalName").val(),
+                            journalName         : $("#journalName").val(),
                             country             : $("#country").val(),
                             state               : $("#state").val(),
                             city                : $("#city").val(),
                             from                : $("#from").val(),
-                            to                  : $("#to").val()
+                            to                  : $("#to").val(),
+                            selall              : $("#selall:checked").length
                         }});
                     jQuery("#subscriberTable").setGridParam({ datatype: "xml" });
                     jQuery("#subscriberTable").trigger("clearGridData");
@@ -108,6 +109,14 @@
 
             }
 
+            function getChecked(){
+                if (document.getElementById("selall").value == 1 ){
+                    document.getElementById("selall").value = 0;
+                }else {
+                    document.getElementById("selall").value = 1;
+                }
+            }
+            
             // draw the date picker.
             jQueryDatePicker("from","to");
         </script>
@@ -249,7 +258,7 @@
                                         <label>Only Active</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="active" id="selall" onclick="getChecked()"/>
+                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
                                 </div>                                    
                             </div>
