@@ -28,7 +28,7 @@ public class agentModel extends JDSModel{
 
     public agentModel(HttpServletRequest request) throws SQLException{
 
-        //super(request);
+        super(request);
 
     }
 
