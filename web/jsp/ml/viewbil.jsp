@@ -93,11 +93,9 @@
 
             function search(){
 
-                //if (($("#subscriberNumber").val() == 0) || ((isEmpty($("#to"))) && (isEmpty($("#from"))))){
-                if (1 == 0){
+                if (($("#subscriberNumber").val() == 0) && (($("#to").val()) == 0 && ($("#from").val()) == 0)){
                     alert("Select Subscriber Number or Date Range");
                 }
-
                 else {
                         isPageLoaded = true;
                         jQuery("#bilTable").setGridParam({postData:
@@ -203,8 +201,8 @@
                                     </div>
                             </fieldset>
                             <fieldset class="subMainFieldSet">
-                                <legend>Actions - Search / Generate</legend>
-                                <div id="actionBtnDiv">
+                                <legend>Actions - Search</legend>
+                                <div class="actionBtnDiv">
                                      <input class="IASButton" TABINDEX="5" type="button" value="Search" id="btnSearch" name="btnSearch" onclick="search()"/>
                                 </div>
                             </fieldset>

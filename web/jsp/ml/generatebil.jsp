@@ -72,7 +72,7 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-                    editurl:"<%=request.getContextPath()%>/generatebil?action=search",
+                    editurl:"<%=request.getContextPath()%>/generatebil?action=generate",
                     gridComplete: function() {
                         var ids = jQuery("#bilTable").jqGrid('getDataIDs');
                         for (var i = 0; i < ids.length; i++) {
@@ -93,8 +93,8 @@
 
             function generate(){
 
-                if (($("#subscriberNumber").val() == 0) || (($("#to").val()) == 0 && ($("#from").val()) == 0)){
-                    alert("Select Subscriber Number or All pending Back isuses");
+                if (($("#subscriberNumber").val() == 0) && (($("#to").val()) == 0 && ($("#from").val()) == 0)){
+                    alert("Select Subscriber Number or Date Range");
                 }
 
                 else {
@@ -102,8 +102,8 @@
                         jQuery("#bilTable").setGridParam({postData:
                                 {
                                 subscriberNumber        : $("#subscriberNumber").val(),
-                                to                      : $("#to").length,
-                                from                      : $("#from").length,
+                                to                      : $("#to").val(),
+                                from                      : $("#from").val(),
                                 bilCreationDate          : $("#bilCreationDate").val(),
                                 action                  : "generate"
                             }});
@@ -202,8 +202,8 @@
                                     </div>
                             </fieldset>
                             <fieldset class="subMainFieldSet">
-                                <legend>Actions - Search / Generate</legend>
-                                <div id="singleActionBtnDiv">
+                                <legend>Actions - Generate</legend>
+                                <div class="singleActionBtnDiv">
                                      <input class="IASButton" TABINDEX="5" type="button" value="Generate" id="btnGenerate" name="btnGenerate" onclick="generate()"/>
                                 </div>
                             </fieldset>

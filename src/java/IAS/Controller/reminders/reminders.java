@@ -42,7 +42,6 @@ public class reminders extends JDSController {
             }else if(action.equalsIgnoreCase("generate")){
 
                 String xml = _reminderModel.generate();
-
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 

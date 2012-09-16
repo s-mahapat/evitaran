@@ -70,7 +70,7 @@ public class generatebil extends JDSController {
                  */
                 ResultSet rs = _bilModel.printbil();
                 request.setAttribute("ResultSet", rs);
-                url = "/pdfserver?action=generatemlPrintLabel";                
+                url = "/pdfserver?action=generatemlPrintSticker";                
             }
 
         } catch (Exception e) {

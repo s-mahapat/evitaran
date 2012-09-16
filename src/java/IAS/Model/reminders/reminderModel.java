@@ -53,34 +53,77 @@ public class reminderModel extends JDSModel {
         return rs;
     }
        
+       
+    public ResultSet getGenReminders()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String sql = Queries.getQuery("gen_reminders_subscriber");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;        
+        stGet.setString(paramIndex, request.getParameter("reminderType"));        
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        return rs;
+    }
+           
     public String generate() throws SQLException, ParseException, ParserConfigurationException, TransformerException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
+        
         String xml = null;        
-        String proc = null;
+        ResultSet rs = null;
+        Connection conn = this.getConnection();
+        int subscription_total = 0;
+        int payment_total = 0;
+        int balance = 0;
+        String sqlSubTotal = Queries.getQuery("get_subscription_total");
+        PreparedStatement stSubRate = conn.prepareStatement(sqlSubTotal);
+        
+        String sqlPayTotal = Queries.getQuery("get_payment_total");
+        PreparedStatement stPayRate = conn.prepareStatement(sqlPayTotal);
+        
+        String sqlInsRem = Queries.getQuery("insert_rem");
+        PreparedStatement stInsRem = conn.prepareStatement(sqlInsRem);
+        
+        String sql = null;
         int remType = 0;
         remType = Integer.parseInt(request.getParameter("reminderType"));
         if (remType == 1){
-            proc = "{ call create_reminder_type1(?) }";
+            sql = Queries.getQuery("get_susbcriber_for_rem1");
         }
         else if (remType == 2){
-            proc = "{ call create_reminder_type2(?) }";
+            sql = Queries.getQuery("get_susbcriber_for_rem2");
         }
         else if (remType == 3){
-            proc = "{ call create_reminder_type3(?) }";
-        }
-        CallableStatement cs = conn.prepareCall(proc);
-        int paramIndex = 1;        
-        cs.setString(paramIndex, request.getParameter("reminderType"));
-       //cs.setString(paramIndex, request.getParameter("medium"));
-       // cs.setString(paramIndex, request.getParameter("language"));
-        //cs.execute();
-        int rs = cs.executeUpdate();
-        if (rs == 1){
-            ResultSet rsGet = getReminders();
-            xml = util.convertResultSetToXML(rsGet);
-        }
-        return xml;
+            sql = Queries.getQuery("get_susbcriber_for_rem3");
+        }        
+        
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        rs = stGet.executeQuery();
+        Object value = null;
+        int paramIndex = 1;
+        while (rs.next()){
+            value = rs.getObject(1);
+            stSubRate.setString(1, value.toString());
+            ResultSet rsSubRate = stSubRate.executeQuery();
+            if (rsSubRate.next()){
+                subscription_total = rsSubRate.getInt(1);
+                stPayRate.setString(1, value.toString());
+                ResultSet rsPayRate = stPayRate.executeQuery();    
+                if (rsSubRate.next()){
+                    payment_total = rsSubRate.getInt(1);       
+                }
+                balance = subscription_total - payment_total;
+                if (balance > 0){
+                    paramIndex = 1;
+                    stInsRem.setString(paramIndex, value.toString());
+                    stInsRem.setInt(++paramIndex, balance);
+                    stInsRem.setInt(++paramIndex, remType);
+                    stInsRem.executeUpdate();                    
+                }
+            }
+       }       
+      ResultSet rsReminders = getGenReminders();
+      xml = util.convertResultSetToXML(rsReminders);
+      return xml;
     }
+
 
     public ResultSet send()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String medium = request.getParameter("medium");

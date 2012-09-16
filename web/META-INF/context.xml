@@ -24,7 +24,7 @@
               maxIdle="5"
               maxWait="30000"
               initialSize="0"
-              removeAbandonedTimeout="10"
+              removeAbandonedTimeout="30"
               removeAbandoned="true"
               logAbandoned="false"
               minEvictableIdleTimeMillis="60000"

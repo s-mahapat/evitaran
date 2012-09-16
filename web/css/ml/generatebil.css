@@ -43,3 +43,7 @@ root {
     float: left;
     width: 10%;
 }
+
+#singleActionBtnDiv{
+    text-align: center;
+}
