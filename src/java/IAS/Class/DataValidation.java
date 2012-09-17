@@ -39,34 +39,37 @@ public class DataValidation {
         PreparedStatement st = conn.prepareStatement(Queries.getQuery("validate_district"));
         st.setString(1, district);
         ResultSet rs = st.executeQuery();
-        boolean bfirst = rs.first();
+        boolean rsfirst = rs.first();
         rs.close();
-        return bfirst;
+        return rsfirst;
     }
 
     public boolean validateState(String state) throws SQLException {
         PreparedStatement st = conn.prepareStatement(Queries.getQuery("validate_state"));
         st.setString(1, state);
         ResultSet rs = st.executeQuery();
+        boolean rsfirst = rs.first();
         rs.close();
-        return rs.first();
+        return rsfirst;
     }
 
     public boolean validateCountry(String country) throws SQLException {
         PreparedStatement st = conn.prepareStatement(Queries.getQuery("validate_country"));
         st.setString(1, country);
         ResultSet rs = st.executeQuery();
+        boolean rsfirst = rs.first();
         rs.close();
-        return rs.first();
+        return rsfirst;
     }
 
     public boolean validateSubtype(String subtype, String subtypedesc) throws SQLException {
         PreparedStatement st = conn.prepareStatement(Queries.getQuery("validate_subtype"));
         st.setString(1, subtype);
-        st.setString(1, subtypedesc);
+        st.setString(2, subtypedesc);
         ResultSet rs = st.executeQuery();
+        boolean rsfirst = rs.first();
         rs.close();
-        return rs.first();
+        return rsfirst;
     }
 
     public boolean validatePincode(String pincode) {

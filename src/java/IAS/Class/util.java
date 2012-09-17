@@ -9,6 +9,7 @@ import java.io.*;
 import java.sql.*;
 import java.text.*;
 import java.util.ArrayList;
+import java.util.List;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
@@ -306,11 +307,11 @@ public final class util {
         return null;
     }
 
-    public static int getPreviousMonth(int currentMonth){
+    public static int getPreviousMonth(int currentMonth) {
         int previousMonth;
-        if(currentMonth == 1){
+        if (currentMonth == 1) {
             previousMonth = 12;
-        }else{
+        } else {
             previousMonth = currentMonth - 1;
         }
         return previousMonth;
@@ -325,10 +326,10 @@ public final class util {
 
         Element results = doc.createElement("results");
         doc.appendChild(results);
-                
-        for (int i = 0; i < arr.size(); i++) {            
+
+        for (int i = 0; i < arr.size(); i++) {
             Element row = doc.createElement("row");
-            results.appendChild(row);            
+            results.appendChild(row);
             Element error = doc.createElement(tagname);
             row.appendChild(error);
             error.appendChild(doc.createTextNode(arr.get(i)));
@@ -345,8 +346,7 @@ public final class util {
     }
 
     // This utility parses the xml responce to get the number of rows
-    public static int getRowCount(String xml) throws ParserConfigurationException, SAXException, IOException
-    {
+    public static int getRowCount(String xml) throws ParserConfigurationException, SAXException, IOException {
         InputSource is = new InputSource();
         is.setCharacterStream(new StringReader(xml));
 
@@ -360,16 +360,15 @@ public final class util {
         // nl contains all the rows
         NodeList nl = docEle.getElementsByTagName("row");
 
-        int rowCount=0;
+        int rowCount = 0;
         if (nl != null && nl.getLength() > 0) {
-                rowCount = nl.getLength();
+            rowCount = nl.getLength();
         }
-        return(rowCount);
+        return (rowCount);
     }
 
     // This utility parses the xml responce to get the number of columns
-    public static int getColCount(String xml) throws ParserConfigurationException, SAXException, IOException
-    {
+    public static int getColCount(String xml) throws ParserConfigurationException, SAXException, IOException {
         InputSource is = new InputSource();
         is.setCharacterStream(new StringReader(xml));
 
@@ -382,57 +381,53 @@ public final class util {
         // nl contains all the rows
         NodeList nl = docEle.getElementsByTagName("row");
 
-        int colCount=0;
-        if (nl != null && nl.getLength() > 0) {
-
-                // e contains all the information within the rows i.e information about all the columns
-                org.w3c.dom.Element e = (org.w3c.dom.Element)nl.item(0);
-
-                NodeList childNodes = e.getChildNodes();
-                colCount = childNodes.getLength();
-
-        }
-        return(colCount);
-    }
-
-    // This utility parses the xml responce to get the names of the columns
-    public static String getColNames(String xml, int rowNumber, int colNumber)throws ParserConfigurationException, SAXException, IOException
-    {
-        InputSource is = new InputSource();
-        is.setCharacterStream(new StringReader(xml));
-
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder db1 = dbf.newDocumentBuilder();
-        org.w3c.dom.Document doc = db1.parse(is);
-        org.w3c.dom.Element docEle = doc.getDocumentElement();
-
-        // nl contains all the rows
-        NodeList nl = docEle.getElementsByTagName("row");
-
-        String colName=null;
+        int colCount = 0;
         if (nl != null && nl.getLength() > 0) {
 
             // e contains all the information within the rows i.e information about all the columns
-            if(rowNumber < nl.getLength())
-            {
-                org.w3c.dom.Element e = (org.w3c.dom.Element)nl.item(rowNumber);
+            org.w3c.dom.Element e = (org.w3c.dom.Element) nl.item(0);
+
+            NodeList childNodes = e.getChildNodes();
+            colCount = childNodes.getLength();
+
+        }
+        return (colCount);
+    }
+
+    // This utility parses the xml responce to get the names of the columns
+    public static String getColNames(String xml, int rowNumber, int colNumber) throws ParserConfigurationException, SAXException, IOException {
+        InputSource is = new InputSource();
+        is.setCharacterStream(new StringReader(xml));
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        DocumentBuilder db1 = dbf.newDocumentBuilder();
+        org.w3c.dom.Document doc = db1.parse(is);
+        org.w3c.dom.Element docEle = doc.getDocumentElement();
+
+        // nl contains all the rows
+        NodeList nl = docEle.getElementsByTagName("row");
+
+        String colName = null;
+        if (nl != null && nl.getLength() > 0) {
+
+            // e contains all the information within the rows i.e information about all the columns
+            if (rowNumber < nl.getLength()) {
+                org.w3c.dom.Element e = (org.w3c.dom.Element) nl.item(rowNumber);
 
                 NodeList childNodes = e.getChildNodes();
-                if(colNumber < childNodes.getLength())
-                {
+                if (colNumber < childNodes.getLength()) {
                     Node node1 = childNodes.item(colNumber);
                     colName = node1.getNodeName();
                     //System.out.println(colName);
                 }
             }
         }
-        return(colName);
+        return (colName);
     }
 
     // This utility parses the xml responce to get the values in the required row
-    public static String getColValue(String xml, int rowNumber, int colNumber)throws ParserConfigurationException, SAXException, IOException
-    {
+    public static String getColValue(String xml, int rowNumber, int colNumber) throws ParserConfigurationException, SAXException, IOException {
         InputSource is = new InputSource();
         is.setCharacterStream(new StringReader(xml));
 
@@ -449,13 +444,11 @@ public final class util {
         if (nl != null && nl.getLength() > 0) {
 
             // e contains all the information within the rows i.e information about all the columns
-            if(rowNumber < nl.getLength())
-            {
-                org.w3c.dom.Element e = (org.w3c.dom.Element)nl.item(rowNumber);
+            if (rowNumber < nl.getLength()) {
+                org.w3c.dom.Element e = (org.w3c.dom.Element) nl.item(rowNumber);
 
                 NodeList childNodes = e.getChildNodes();
-                if(colNumber < childNodes.getLength())
-                {
+                if (colNumber < childNodes.getLength()) {
                     Node node1 = childNodes.item(colNumber);
                     String colName = node1.getNodeName();
                     //System.out.println(colName);
@@ -464,9 +457,8 @@ public final class util {
                     Element line = (org.w3c.dom.Element) title.item(0);
 
                     Node node2 = line.getFirstChild();
-                    if(node2 != null)
-                    {
-                        if(!node2.getNodeValue().isEmpty()) {
+                    if (node2 != null) {
+                        if (!node2.getNodeValue().isEmpty()) {
                             colValue = line.getFirstChild().getNodeValue();
                         }
                     }
@@ -475,42 +467,50 @@ public final class util {
                 }
             }
         }
-        return(colValue);
+        return (colValue);
     }
 
-        /*
-        InputSource is = new InputSource();
-        is.setCharacterStream(new StringReader(xml));
-
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder db1 = dbf.newDocumentBuilder();
-        org.w3c.dom.Document doc = db1.parse(is);
-        org.w3c.dom.Element docEle = doc.getDocumentElement();
-
-        // nl contains all the rows
-        NodeList nl = docEle.getElementsByTagName("rows");
-
-        if (nl != null && nl.getLength() > 0) {
-            for (int i = 0; i < nl.getLength(); i++) {
-
-                // e contains all the information within the rows i.e information about all the columns
-                org.w3c.dom.Element e = (org.w3c.dom.Element)nl.item(i);
-
-                NodeList childNodes = e.getChildNodes();
-                for(int j=0; j < childNodes.getLength(); j++) {
-                    Node node1 = childNodes.item(j);
-                    String colName = node1.getNodeName();
-
-                    NodeList title = e.getElementsByTagName(colName);
-                    Element line = (org.w3c.dom.Element) title.item(0);
-                    String colValue = line.getFirstChild().getNodeValue();
-                    //System.out.println("Title: " + getCharacterDataFromElement(line));
-
-                    System.out.println(colName);
-                    System.out.println(colValue);
-                }
-            }
+    public static int[] convertIntegers(List<Integer> integers) {
+        int[] ret = new int[integers.size()];
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = integers.get(i).intValue();
         }
-        */
+        return ret;
+    }
+
+    /*
+     InputSource is = new InputSource();
+     is.setCharacterStream(new StringReader(xml));
+
+     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+     DocumentBuilder db1 = dbf.newDocumentBuilder();
+     org.w3c.dom.Document doc = db1.parse(is);
+     org.w3c.dom.Element docEle = doc.getDocumentElement();
+
+     // nl contains all the rows
+     NodeList nl = docEle.getElementsByTagName("rows");
+
+     if (nl != null && nl.getLength() > 0) {
+     for (int i = 0; i < nl.getLength(); i++) {
+
+     // e contains all the information within the rows i.e information about all the columns
+     org.w3c.dom.Element e = (org.w3c.dom.Element)nl.item(i);
+
+     NodeList childNodes = e.getChildNodes();
+     for(int j=0; j < childNodes.getLength(); j++) {
+     Node node1 = childNodes.item(j);
+     String colName = node1.getNodeName();
+
+     NodeList title = e.getElementsByTagName(colName);
+     Element line = (org.w3c.dom.Element) title.item(0);
+     String colValue = line.getFirstChild().getNodeValue();
+     //System.out.println("Title: " + getCharacterDataFromElement(line));
+
+     System.out.println(colName);
+     System.out.println(colValue);
+     }
+     }
+     }
+     */
 }
