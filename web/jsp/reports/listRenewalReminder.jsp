@@ -36,20 +36,17 @@
                         rownumbers: true,
                         emptyrecords: "No records to view",
                         loadtext: "Loading...",
-                        colNames:['Subscriber Id','Subscriber Name','Subscriber Type','Journal/s','No. Of Copies','Reminder date','Reminder Type','City','Pin Code','Country','Email'],
+                        colNames:['Subscription Id','Subscriber Type','Subscriber Number','Subscriber Name',
+                            'Balance','reminder Type','Reminder date','Email'],
                         colModel :[
-                          {name:'subscriberId', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_Id'},
-                          {name:'subscriberName', index:'subscriber_id', width:50, align:'center', xmlmap:'subscriber_name'},
-                          {name:'SubType', index:'subscriber_id', width:50, align:'center', xmlmap:'sub_type'},
-                          {name:'journal', index:'subscriber_id', width:50, align:'center', xmlmap:'journal'},
-                          {name:'noOfCopies', index:'subscriber_id', width:50, align:'center', xmlmap:'no_of_copies'},
-                          {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminder_date'},                          
-                          {name:'reminderType', index:'subscriber_id', width:50, align:'center', xmlmap:'reminder_type'},
-                          {name:'city', index:'subscriber_id', width:50, align:'center', xmlmap:'city'},
-                          {name:'country', index:'subscriber_id', width:50, align:'center', xmlmap:'country'},
-                          {name:'pinCode', index:'subscriber_id', width:50, align:'center', xmlmap:'pin_code'},
-                          {name:'emailId', index:'subscriber_id', width:50, align:'center', xmlmap:'email_id'}
-
+                          {name:'subId', index:'subId', width:10, align:'center', xmlmap:'subId'},
+                          {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
+                          {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
+                          {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
+                          {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},                       
+                          {name:'reminderType', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderType'},
+                          {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},   
+                          {name:'emailId', index:'emailId', width:50, align:'center', xmlmap:'emailId'}
                         ],
                         xmlReader : {
                           root: "result",

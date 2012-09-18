@@ -7,7 +7,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
-        <link rel="stylesheet" type="text/css" href="css/report/subType.css" />
+        <link rel="stylesheet" type="text/css" href="css/report/listProfarma.css" />
         <title>List Profarma Invoice</title>
         <%-- <script type="text/javascript" src="<%=request.getContextPath() + "/js/reports/searchSubType.js"%>"></script> --%>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/reports/listSubType.js"%>"></script>
@@ -37,17 +37,17 @@
                     rownumbers: true,
                     emptyrecords: "No Subscriber Type",
                     loadtext: "Loading...",
-                    colNames:['Id','Subscriber Type Code','Subscriber Type','Free/Paid', 'Indian/Foreign','Institute/Personal','Free Journals','Discount'],
+                    colNames:['invoiceNumber','invoiceCreationDate','subscriberNumber','subscriberName', 'subtypecode','journalCode','copies','startYear','endYear'],
                     colModel :[
-                        {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
+                        {name:'invoiceNumber', index:'invoiceNumber', width:50, align:'center', xmlmap:'invoiceNumber'},
+                        {name:'invoiceCreationDate', index:'invoiceCreationDate', width:80, align:'center', xmlmap:'invoiceCreationDate'},
+                        {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
+                        {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
                         {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
-                        {name:'subtypedesc', index:'subtypedesc', width:80, align:'center', xmlmap:'subtypedesc'},
-                        {name:'subtype', index:'subtype', width:80, align:'center', xmlmap:'subtype'},
-                        {name:'nationality', index:'nationality', width:80, align:'center', xmlmap:'nationality'},
-                        {name:'institutional', index:'institutional', width:80, align:'center', xmlmap:'institutional'},
-                        {name:'freejrnl', index:'freejrnl', width:80, align:'center', xmlmap:'freejrnl'},
-                        {name:'discount', index:'discount', width:80, align:'center', xmlmap:'discount'}
-
+                        {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
+                        {name:'copies', index:'copies', width:80, align:'center', xmlmap:'copies'},
+                        {name:'startYear', index:'startYear', width:80, align:'center', xmlmap:'startYear'},
+                        {name:'endYear', index:'endYear', width:80, align:'center', xmlmap:'endYear'}
                     ],
                     xmlReader : {
                         root: "results",
@@ -83,30 +83,21 @@
 
             // called when the search button is clicked
             function getList(){
-                if(validateSearchSubType() == true)
-                    {
                         isPageLoaded = true;
 
                         jQuery("#subTypeTable").setGridParam({postData:
-                                {subtype             : $("#subtype").val(),
+                                {subtype             : $("#subscriberType").val(),
                                 journalName         : $("#journalName").val(),
                                 from                : $("#from").val(),
-                                to                  : $("#to").val()
+                                to                  : $("#to").val(),
+                                action              : "listInvoice"
                             }});
                         jQuery("#subTypeTable").setGridParam({ datatype: "xml" });
                         jQuery("#subTypeTable").trigger("clearGridData");
                         jQuery("#subTypeTable").trigger("reloadGrid");
-                    }
+                   
             }
 
-
-            function getChecked(){
-                if (document.getElementById("selall").value == 1 ){
-                    document.getElementById("selall").value = 0;
-                }else {
-                    document.getElementById("selall").value = 1;
-                }
-            }
             
             // draw the date picker.
             jQueryDatePicker("from","to");

@@ -1265,14 +1265,47 @@ public class reportModel extends JDSModel {
     }
 
  public ResultSet listInvoice() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
-        String sql = Queries.getQuery("list_invoice");
+String xml = null;
+
+        String subType = request.getParameter("subtype");
+        String journalName = request.getParameter("journalName");
+        String fromDate = request.getParameter("from");
+        String toDate = request.getParameter("to");
+
+        String sql = null;
+        
+        if ("0".equals(subType)) {
+            subType = null;
+        }      
+        if ("0".equals(journalName)) {
+            journalName = null;
+        }
+                
+        sql = Queries.getQuery("list_invoice");
+        
+        if (subType != null && subType.compareToIgnoreCase("NULL") != 0 && subType.length() > 0) {
+            sql += " and subscriber_type.subtypedesc =" + "'" + subType + "'";
+        }
+
+        if (journalName != null && journalName.compareToIgnoreCase("NULL") != 0 && journalName.length() > 0) {
+            sql += " and journals.journalName = " + "'" + journalName + "'";
+        }
+
+        if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
+            sql += " and invoice.invoiceCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+        }         
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("subtype"));
-        stGet.setString(++paramIndex, request.getParameter("to"));
-        stGet.setString(++paramIndex, request.getParameter("from"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
       }
+ 
+     public ResultSet listReminders()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String sql = Queries.getQuery("gen_reminders_subscriber");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;        
+        stGet.setString(paramIndex, request.getParameter("reminderType"));        
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        return rs;
+    }
         
 }

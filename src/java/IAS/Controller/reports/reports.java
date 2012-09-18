@@ -269,11 +269,27 @@ public class reports extends JDSController {
 
                 ResultSet rs = _reportModel.listInvoice();
                 request.setAttribute("ResultSet", rs);
-                String query = "Circulation Figures";
+                String query = "List invoice";
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
             }
     /*----------------------------------------------------------------*/
+           else if(action.equalsIgnoreCase("listReminder")){
+
+                ResultSet rs = _reportModel.listReminders();
+                String xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("printListReminder")){
+
+                ResultSet rs = _reportModel.listReminders();
+                request.setAttribute("ResultSet", rs);
+                String query = "List invoice";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+            }
+    /*----------------------------------------------------------------*/            
             else if(action.equalsIgnoreCase("printOrderTableDetailsList")){
        		String xml = _reportModel.printOrderTableDetailsList();
                 request.setAttribute("xml", xml);
