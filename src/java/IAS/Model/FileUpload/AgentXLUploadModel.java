@@ -109,6 +109,9 @@ public class AgentXLUploadModel extends FileUploadBase {
                                 _subscriberFormBean.getSubscriberNumber());
                     }
                     rowNo++;
+                    if (uploadInd == true) {
+                        _subscriberFormBean.setSubscriberNumber("");//Reset the subscriber number as one row from the excel is successfully executed
+                    }
                 }
             }
         } catch (IOException | BiffException | SQLException | ParseException | InvocationTargetException | IllegalAccessException e) {
@@ -243,11 +246,11 @@ public class AgentXLUploadModel extends FileUploadBase {
                     String subtypedesc = Data[columnNo + 1];
                     if (subtype.isEmpty()) { // Sub type is mandatory, if not provided log error
                         this.appendToErrorLog(rowNo, columnNo, "SUBSCRIBER TYPE", subtype);
-                        this.appendToErrorLog(rowNo, columnNo+1, "SUBSCRIBER TYPE DESCRIPTION", subtypedesc);
+                        this.appendToErrorLog(rowNo, columnNo + 1, "SUBSCRIBER TYPE DESCRIPTION", subtypedesc);
                     } else if (uploadInd == false) { // validate subtype and subtype description
                         if (!dataValiDB.validateSubtype(subtype, subtypedesc)) {
                             this.appendToErrorLog(rowNo, columnNo, "SUBSCRIBER TYPE", subtype);
-                            this.appendToErrorLog(rowNo, columnNo+1, "SUBSCRIBER TYPE DESCRIPTION", subtypedesc);
+                            this.appendToErrorLog(rowNo, columnNo + 1, "SUBSCRIBER TYPE DESCRIPTION", subtypedesc);
                         }
                     } else if (uploadInd == true) { // append to subscriber bean
                         _subscriberFormBean.setSubtype(subtype);
