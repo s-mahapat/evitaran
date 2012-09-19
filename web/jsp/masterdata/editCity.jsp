@@ -13,6 +13,7 @@
         <title>Edit City</title>
         <script type="text/javascript" src="js/masterdata/editCity.js"></script>
         <script type="text/javascript" src="js/masterdata/validateCity.js"></script>
+        <script type="text/javascript" src="js/common.js"></script>
         <script>
             $(document).ready(function() {
                 makeEditReadOnly();

@@ -13,6 +13,7 @@
         <title>Edit Country</title>
         <script type="text/javascript" src="js/masterdata/editCountry.js"></script>
         <script type="text/javascript" src="js/masterdata/validateCountry.js"></script>
+        <script type="text/javascript" src="js/common.js"></script>
         <script>
             $(document).ready(function() {
                 makeEditReadOnly();

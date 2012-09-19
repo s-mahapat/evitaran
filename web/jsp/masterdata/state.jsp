@@ -20,7 +20,7 @@
                     <label>State:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="2" name="state" type="text" id="state" value="<jsp:getProperty name="stateFormBean" property="state"/>"/>
+                    <input class="IASTextBoxMandatory" maxlength="45" TABINDEX="2" name="state" type="text" id="state" onblur="validateForTextOnly(this.id)" value="<jsp:getProperty name="stateFormBean" property="state"/>"/>
                 </span>
             </div>
         </div>

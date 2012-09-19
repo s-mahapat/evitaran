@@ -47,10 +47,28 @@ public class reminders extends JDSController {
 
             }else if(action.equalsIgnoreCase("send")){
 
-                String xml = null; //_reminderModel.send();
-                request.setAttribute("xml", xml);
-                url = "/xmlserver";
+                url = null;
+                ResultSet rsGet = _reminderModel.send();
+                String medium = request.getParameter("medium");
 
+                // E = Email Only
+                if (medium.equals("E")) {
+                    String xml = _reminderModel.sendEmail(medium);
+                    request.setAttribute("xml", xml);
+                    url = "/xmlserver";
+                }
+                // P = print only
+                else if (medium.equals("P")){
+                    ResultSet rs = _reminderModel.printOnly(medium);
+                    request.setAttribute("ResultSet", rs);
+                    url = "/pdfserver?action=printRemindersPrintOnly";
+                }
+                // A = print all
+                else if(medium.equals("A")) {
+                    ResultSet rs = _reminderModel.printAll(medium);
+                    request.setAttribute("ResultSet", rs);
+                    url = "/pdfserver?action=printRemindersPrintAll";
+                }
             }
         } catch (Exception e) {
                 logger.error(e.getMessage(), e);

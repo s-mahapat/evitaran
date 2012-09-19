@@ -20,7 +20,7 @@
                     <label>District:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="2" type="text" name="district" id="district" value="<jsp:getProperty name="districtFormBean" property="district"/>"/>
+                    <input class="IASTextBoxMandatory" maxlength="64" TABINDEX="2" type="text" name="district" id="district" onblur="validateForTextOnly(this.id)" value="<jsp:getProperty name="districtFormBean" property="district"/>"/>
                 </span>
             </div>
         </div>

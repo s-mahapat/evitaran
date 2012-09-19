@@ -20,7 +20,7 @@
                     <label>Country:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="2" type="text" name="country" id="country" value="<jsp:getProperty name="countryFormBean" property="country"/>"/>
+                    <input class="IASTextBoxMandatory" maxlength="45" TABINDEX="2" type="text" name="country" id="country" onblur="validateForTextOnly(this.id)" value="<jsp:getProperty name="countryFormBean" property="country"/>"/>
                 </span>
             </div>
         </div>

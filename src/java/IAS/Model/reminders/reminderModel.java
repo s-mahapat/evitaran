@@ -38,7 +38,7 @@ public class reminderModel extends JDSModel {
     public ResultSet search()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String sql = Queries.getQuery("search_reminders_subscriber");
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;        
+        int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("reminderType"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
@@ -47,26 +47,26 @@ public class reminderModel extends JDSModel {
        public ResultSet getReminders()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String sql = Queries.getQuery("get_reminders_subscriber");
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;        
-        stGet.setString(paramIndex, request.getParameter("reminderType"));        
+        int paramIndex = 1;
+        stGet.setString(paramIndex, request.getParameter("reminderType"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
     }
-       
-       
+
+
     public ResultSet getGenReminders()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String sql = Queries.getQuery("gen_reminders_subscriber");
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;        
-        stGet.setString(paramIndex, request.getParameter("reminderType"));        
+        int paramIndex = 1;
+        stGet.setString(paramIndex, request.getParameter("reminderType"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
     }
-           
+
     public String generate() throws SQLException, ParseException, ParserConfigurationException, TransformerException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
-        
-        String xml = null;        
+
+        String xml = null;
         ResultSet rs = null;
         Connection conn = this.getConnection();
         int subscription_total = 0;
@@ -74,13 +74,13 @@ public class reminderModel extends JDSModel {
         int balance = 0;
         String sqlSubTotal = Queries.getQuery("get_subscription_total");
         PreparedStatement stSubRate = conn.prepareStatement(sqlSubTotal);
-        
+
         String sqlPayTotal = Queries.getQuery("get_payment_total");
         PreparedStatement stPayRate = conn.prepareStatement(sqlPayTotal);
-        
+
         String sqlInsRem = Queries.getQuery("insert_rem");
         PreparedStatement stInsRem = conn.prepareStatement(sqlInsRem);
-        
+
         String sql = null;
         int remType = 0;
         remType = Integer.parseInt(request.getParameter("reminderType"));
@@ -92,8 +92,8 @@ public class reminderModel extends JDSModel {
         }
         else if (remType == 3){
             sql = Queries.getQuery("get_susbcriber_for_rem3");
-        }        
-        
+        }
+
         PreparedStatement stGet = conn.prepareStatement(sql);
         rs = stGet.executeQuery();
         Object value = null;
@@ -105,9 +105,9 @@ public class reminderModel extends JDSModel {
             if (rsSubRate.next()){
                 subscription_total = rsSubRate.getInt(1);
                 stPayRate.setString(1, value.toString());
-                ResultSet rsPayRate = stPayRate.executeQuery();    
+                ResultSet rsPayRate = stPayRate.executeQuery();
                 if (rsSubRate.next()){
-                    payment_total = rsSubRate.getInt(1);       
+                    payment_total = rsSubRate.getInt(1);
                 }
                 balance = subscription_total - payment_total;
                 if (balance > 0){
@@ -115,37 +115,38 @@ public class reminderModel extends JDSModel {
                     stInsRem.setString(paramIndex, value.toString());
                     stInsRem.setInt(++paramIndex, balance);
                     stInsRem.setInt(++paramIndex, remType);
-                    stInsRem.executeUpdate();                    
+                    stInsRem.executeUpdate();
                 }
             }
-       }       
-      ResultSet rsReminders = getGenReminders();
-      xml = util.convertResultSetToXML(rsReminders);
-      return xml;
+        }
+        ResultSet rsReminders = getGenReminders();
+        xml = util.convertResultSetToXML(rsReminders);
+        return xml;
     }
 
 
     public ResultSet send()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        String medium = request.getParameter("medium");
+        String xml = null;
+
         ResultSet rsGet = getReminders();
-        if (medium == "E"){
-            sendEmail(medium);                    
-        }
-        else{
-            print();
-        }
-        
+
         return rsGet;
     }
-    
-    public int sendEmail(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
+    public String sendEmail(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
+
+        boolean status = false;
+        String xml = null;
+
+        /*
         String sql = Queries.getQuery("send_email_reminders");
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;        
-        stGet.setString(paramIndex, request.getParameter("reminderType"));        
+        int paramIndex = 1;
+        stGet.setString(paramIndex, request.getParameter("reminderType"));
+        // Get list of all subscriber to whom the reminder of type X has to be sent
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        while (rs.next()) {            
+        // Loop over all subscribers to whom reminder has to be sent
+        while (rs.next()) {
             String sqlgetjnls = Queries.getQuery("get_subscribed_journals");
             PreparedStatement stgetjnls = conn.prepareStatement(sqlgetjnls);
             paramIndex = 1;
@@ -157,6 +158,7 @@ public class reminderModel extends JDSModel {
             subscriptionId = rs.getObject(3);
             stgetjnls.setString(paramIndex, subscriptionId.toString());
             ResultSet rsgetjnls = this.db.executeQueryPreparedStatement(stgetjnls);
+            // Get List of subscribed journals
             while (rsgetjnls.next()){
                 Object value = null;
                 for (int j = 3; j <= 21; j++) {
@@ -167,20 +169,38 @@ public class reminderModel extends JDSModel {
             for (int j = 3; j <= 21; j++) {
                 value = rs.getObject(j);
             }
-            //send email
+            //send email here and if it is successful update the record
             int ins =insertReminderDetails(reminderId.toString(), medium);
 
         }
-        return 1;
+        */
+            if(status) {
+                xml = util.convertStringToXML("success", "action");
+            }
+            else {
+                xml = util.convertStringToXML("failure", "action");
+            }
+
+        return xml;
     }
-  
+
+    public ResultSet printOnly(String medium) {
+        ResultSet rs = null;
+        return rs;
+    }
+
+    public ResultSet printAll(String medium) {
+        ResultSet rs = null;
+        return rs;
+    }
+
    public int print()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String medium = request.getParameter("medium");
         ResultSet rsGet = getReminders();
-        
+
         return 1;
     }
-   
+
    public int insertReminderDetails(String reminderId, String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String sqlins = Queries.getQuery("insert_reminder_details");
         PreparedStatement stins = conn.prepareStatement(sqlins);
@@ -188,12 +208,12 @@ public class reminderModel extends JDSModel {
         stins.setString(++paramIndex, reminderId.toString());
         stins.setString(++paramIndex, medium);
         stins.setString(++paramIndex, "E");
-        if (db.executeUpdatePreparedStatement(stins) == 1)        
+        if (db.executeUpdatePreparedStatement(stins) == 1)
             return 1;
         else
             return 0;
     }
-   
+
     public String print1(HttpServletResponse response) throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException, DocumentException
     {
         //Query whatever you want here

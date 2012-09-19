@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : sendReminders.jsp
     Created on : Nov 15, 2011, 8:24:51 AM
     Author     : aloko
@@ -13,6 +13,7 @@
         <link rel="stylesheet" type="text/css" href="css/reminder/sendReminder.css" />
 
         <title>Send Reminders</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/reminders/reminders.js"%>"></script>
 
          <script type="text/javascript">
             var selectedId = 0;
@@ -20,7 +21,7 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jQuery("#btnPrintSend").attr("disabled",true);   
+                jQuery("#btnPrintSend").attr("disabled",true);
              });
 
             $(function(){
@@ -45,9 +46,9 @@
                           {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
                           {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
                           {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
-                          {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},                       
+                          {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},
                           {name:'reminderType', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderType'},
-                          {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},   
+                          {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},
                           {name:'emailId', index:'emailId', width:50, align:'center', xmlmap:'emailId'}
                         ],
                     xmlReader : {
@@ -67,7 +68,7 @@
                     caption: '&nbsp;',
                     editurl:"<%=request.getContextPath()%>/reminders?action=generate",
                     gridComplete: function() {
-                        
+
                     },
                     beforeRequest: function(){
                         return isPageLoaded;
@@ -101,6 +102,7 @@
                         jQuery("#reminderTable").setGridParam({ datatype: "xml" });
                         jQuery("#reminderTable").trigger("clearGridData");
                         jQuery("#reminderTable").trigger("reloadGrid");
+                        jQuery("#btnPrintSend").attr("disabled",false);
                     }
             }
 
@@ -116,7 +118,9 @@
                 else if($("medium").val() == "") {
                     alert("Select Medium for sending Reminders ");
                 }
-
+                else if($("#medium").val() == 'E') {
+                    emailReminders();
+                }
                 else {
                         isPageLoaded = true;
                         jQuery("#reminderTable").setGridParam({postData:
@@ -129,6 +133,7 @@
                         jQuery("#reminderTable").setGridParam({ datatype: "xml" });
                         jQuery("#reminderTable").trigger("clearGridData");
                         jQuery("#reminderTable").trigger("reloadGrid");
+                        jQuery("#btnPrintSend").attr("disabled",false);
                     }
             }
 
@@ -140,11 +145,11 @@
 
         <div id="bodyContainer">
             <form method="post" action="<%=request.getContextPath() + "/reminders"%>" name="reminderForm">
-                <div class="MainDiv">                    
+                <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Generate and Send Reminders</legend>
                         <jsp:useBean class="IAS.Bean.reminder.reminderFormBean" id="reminderFormBean" scope="request"></jsp:useBean>
-                       
+
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -161,7 +166,7 @@
                                         <option value ="2">Type 2 Reminder - Strong</option>
                                         <option value ="3">Type 3 Reminder - Harsh</option>
                                      </select>
-                                    </span>                                
+                                    </span>
                                 </div>
                             </div>
                             <div class="IASFormRightDiv">
@@ -172,17 +177,17 @@
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="reminderDate" id="reminderDate" value="<jsp:getProperty name="reminderFormBean" property="reminderDate"/>"
                                     </span>
-                                </div>  
+                                </div>
                             </div>
                         </fieldset>
                         <fieldset class="subMainFieldSet">
                             <legend>Actions - Generate</legend>
-                                <div class="IASFormFieldDiv">                                     
+                                <div class="IASFormFieldDiv">
                                     <div id="remindBtnDiv">
                                          <input class="IASButton" TABINDEX="6" type="button" value="Generate" id="btnRemind" name="btnRemind" onclick="remind()"/>
-                                    </div>   
+                                    </div>
                                  </div>
-                        </fieldset> 
+                        </fieldset>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -192,7 +197,7 @@
                             <table class="reminderTable" id="reminderTable"></table>
                             <div id="pager"></div>
                         </fieldset>
-                       
+
                         <fieldset class="subMainFieldSet">
                            <div class="IASFormFieldDiv">
                                <div id="printMedium">
@@ -209,7 +214,7 @@
                                 </div>
                                 <div id="printSendBtnDiv">
                                     <input class="IASButton" TABINDEX="4" type="button" value="Sent/ Print Reminder" id="btnPrintSend" name="btnPrintSend" onclick="sendReminders()"/>
-                                </div>                                       
+                                </div>
                                 <div id="cancelBtnDiv">
                                     <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                                 </div>

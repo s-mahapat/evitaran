@@ -13,6 +13,7 @@
         <title>Edit State</title>
         <script type="text/javascript" src="js/masterdata/editState.js"></script>
         <script type="text/javascript" src="js/masterdata/validateState.js"></script>
+        <script type="text/javascript" src="js/common.js"></script>
         <script>
             $(document).ready(function() {
                 makeEditReadOnly();

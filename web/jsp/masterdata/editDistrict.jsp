@@ -13,6 +13,7 @@
         <title>Edit District</title>
         <script type="text/javascript" src="js/masterdata/editDistrict.js"></script>
         <script type="text/javascript" src="js/masterdata/validateDistrict.js"></script>
+        <script type="text/javascript" src="js/common.js"></script>
         <script>
             $(document).ready(function() {
                 makeEditReadOnly();

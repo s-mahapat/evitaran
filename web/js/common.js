@@ -211,7 +211,7 @@ function jQueryDatePicker(fromDiv, toDiv){
     fromDiv = "#" + fromDiv;
     toDiv = "#" + toDiv;
     dateRangediv = fromDiv + "," + toDiv;
-    
+
 
     $(function() {
         var dates = $( dateRangediv ).datepicker({
@@ -267,7 +267,7 @@ function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
             });
        },
        minLength: 3
-       
+
     });
 
 //    // bind the autocompletechange event to the element, so we allow only values from the list
@@ -420,18 +420,18 @@ function jdsEmail(url){
             $(xmlResponse).find("results").each(function(){
                 var isSucess = $(this).find("success").text();
                 if(parseInt(isSucess) == 1){
-                    alert("Email sent successfully");                    
+                    alert("Email sent successfully");
                 }else{
                     alert("Failed to send Email");
                 }
             });
         },
         complete: function(){
-            
+
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert("Failed to send Email. "  + textStatus + ": "+ errorThrown);
-        }        
+        }
     });
 }
 
@@ -455,5 +455,37 @@ function TestFileType(fileName, fileTypes ) {
         return false;
     }
     return true;
-    
+
 }
+
+function IsNumeric(sText){
+    var ValidChars = "0123456789.";
+    var IsNumber = true;
+    var Char;
+    for (i = 0; i < sText.length && IsNumber == true; i++) {
+        Char = sText.charAt(i);
+        if (ValidChars.indexOf(Char) == -1) {
+            IsNumber = false;
+        }
+    }
+    return IsNumber;
+}
+
+function validateForTextOnly(FieldId){
+    var filter=/^[a-z]+$/;
+    var str = document.getElementById(FieldId).value;
+    var str1 = str.toLocaleString().toLowerCase();
+
+    if(str1.length == 0){
+        alert("Please input text");
+        document.getElementById(FieldId).focus();
+    }
+    else {
+        if (!filter.test(str1)){
+            alert("Please input text only, no numbers or special characters!");
+            document.getElementById(FieldId).value = "";
+            document.getElementById(FieldId).focus();
+        }
+    }
+}
+
