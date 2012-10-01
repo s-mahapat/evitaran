@@ -2,6 +2,7 @@ package IAS.Model.Reports;
 
 import IAS.Bean.Reports.printOrderFormBeanReport;
 import IAS.Bean.Reports.subscriptionFiguresFormBeanReport;
+import IAS.Bean.Reports.subscriptionRatesFormBeanReport;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
@@ -26,7 +27,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
+import java.util.Calendar;
+import java.util.Date;
 /**
  *
  * @author Deepali
@@ -41,24 +43,113 @@ public class reportModel extends JDSModel {
 
     }
 
-    public ResultSet listRates() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public String listRates() throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
 
         int year = Integer.parseInt(request.getParameter("year"));
+        String xml = null;
         String proc = null;
-        ResultSet rs = null;
-        proc = "{call cir_subscription_rates(?, ?)}";
-        CallableStatement cs = conn.prepareCall(proc);
-        int paramIndex = 1;
-        cs.setInt(paramIndex, year);
-        cs.setString(++paramIndex, request.getParameter("subscriberType"));
-        if (cs.execute()) {
-            String sql = Queries.getQuery("rep_sub_rate");
-            PreparedStatement stGet = conn.prepareStatement(sql);
-            rs = this.db.executeQueryPreparedStatement(stGet);
+        int journalGpId = 0;
+        String journalGroup = null;
+        int period = 0;
+        int rate = 0;
+        int count = 1;
+        
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+        
+        String sqlJournalGrp = Queries.getQuery("journal_groups");
+        PreparedStatement stGetJGrp = conn.prepareStatement(sqlJournalGrp);
+        ResultSet rsJGrp = this.db.executeQueryPreparedStatement(stGetJGrp);        
+        while (rsJGrp.next()){
+            journalGpId = rsJGrp.getInt(1);
+            journalGroup = rsJGrp.getString(2);
+            
+            // Add the row element
+            Element row = doc.createElement("row");
+            results.appendChild(row);
+
+            Element _journalCode = doc.createElement("journalGroup");
+            row.appendChild(_journalCode);
+            _journalCode.appendChild(doc.createTextNode(journalGroup));
+            
+            Element _year = doc.createElement("year");
+            row.appendChild(_year);
+            _year.appendChild(doc.createTextNode(Integer.toString(year)));
+            
+            String sqlPeriod = Queries.getQuery("get_rate_period");
+            PreparedStatement stGetPeriod = conn.prepareStatement(sqlPeriod);
+            stGetPeriod.setInt(1, year);
+            ResultSet rsPeriod = this.db.executeQueryPreparedStatement(stGetPeriod);
+            
+            while (rsPeriod.next()){
+                period = rsPeriod.getInt(1);
+                String sqlRate = Queries.getQuery("get_rate");
+                PreparedStatement stGetRate = conn.prepareStatement(sqlRate);
+                stGetRate.setInt(1, year);
+                stGetRate.setInt(2, period);
+                stGetRate.setInt(3, journalGpId);
+                stGetRate.setString(4, request.getParameter("subscriberType"));
+                ResultSet rsRate = this.db.executeQueryPreparedStatement(stGetRate);               
+                while (rsRate.next()){
+                    rate = rsRate.getInt(1);
+                    Element _rate = doc.createElement("year" + period);
+                    row.appendChild(_rate);
+                    _rate.appendChild(doc.createTextNode(Integer.toString(rate)));                    
+                }  
+            }
         }
-        return rs;
+        
+        DOMSource domSource = new DOMSource(doc);
+        try (StringWriter writer = new StringWriter()) {
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            xml = writer.toString();
+        }
+        
+        return xml;
     }
 
+    public void constructTableJournalRates() throws SQLException, ParserConfigurationException, SAXException, IOException, IllegalAccessException, InvocationTargetException {
+
+        //int year = Integer.parseInt(request.getParameter("year"));
+        int year = 2012;
+        String sql = Queries.getQuery("get_rate_period");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setInt(1, year);
+        ResultSet rs = db.executeQueryPreparedStatement(st);
+
+        String colNames = "['Journal Group', 'Year',";
+        String colModel = "[" + "{name:'journalGroup', index:'journalGroup', xmlmap:'journalGroup'},"
+                            + "{name:'year', index:'year', xmlmap:'year'},";
+
+
+        while(rs.next()) {
+            int period = rs.getInt(1);
+            colNames = colNames + "'" + period + " Year'";
+            colModel = colModel + "{name:'year" + period + "'," + "index:'year" + period + "'," + "align:'center'," +"xmlmap:'year" + period + "'}";
+
+            if(rs.isLast() == false) {
+                colNames = colNames + ",";
+                colModel = colModel + ",";
+            }
+            else {
+                colNames = colNames + "]";
+                colModel = colModel + "]";
+            }
+        }
+
+        subscriptionRatesFormBeanReport _subscriptionRatesFormBeanReport = new IAS.Bean.Reports.subscriptionRatesFormBeanReport();
+        _subscriptionRatesFormBeanReport.setColM(colModel);
+        _subscriptionRatesFormBeanReport.setColN(colNames);
+        request.setAttribute("subscriptionRatesFormBeanReport", _subscriptionRatesFormBeanReport);
+
+    }
+    
     public ResultSet searchJournalGroup() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
         String sql;
@@ -1300,12 +1391,22 @@ String xml = null;
       }
  
      public ResultSet listReminders()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        
+        String fromDate = request.getParameter("from");
+        String toDate = request.getParameter("to");
+        
         String sql = Queries.getQuery("gen_reminders_subscriber");
+        
+        if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
+            sql += " and reminders.reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+        }
+        
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;        
         stGet.setString(paramIndex, request.getParameter("reminderType"));        
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
+        
     }
         
 }

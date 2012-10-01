@@ -38,19 +38,21 @@ public class reports extends JDSController {
             /*----------------------------------------------------------------*/
             if(action.equalsIgnoreCase("listRates")){
 
-                ResultSet rs = _reportModel.listRates();
-                String xml = util.convertResultSetToXML(rs);
+                String xml = _reportModel.listRates();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
             }else if(action.equalsIgnoreCase("printRates")){
 
-                ResultSet rs = _reportModel.listRates();
-                request.setAttribute("ResultSet", rs);
+                String xml = _reportModel.listRates();
+                request.setAttribute("xml", xml);
                 String query = "Annual Rates for Journals";
                 request.setAttribute("query", query);
-                url = "/pdfserver?action=printResultset";
-
+                url = "/pdfserver?action=printXML";
+            }
+            else if(action.equalsIgnoreCase("constructTableJournalRates")){
+                _reportModel.constructTableJournalRates();
+                url = "/jsp/reports/journalRates.jsp";
             }
 
             /*----------------------------------------------------------------*/
@@ -285,7 +287,7 @@ public class reports extends JDSController {
 
                 ResultSet rs = _reportModel.listReminders();
                 request.setAttribute("ResultSet", rs);
-                String query = "List invoice";
+                String query = "List Reminders";
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
             }

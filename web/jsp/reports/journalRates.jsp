@@ -33,16 +33,8 @@
                         rownumbers: true,
                         emptyrecords: "No records to view",
                         loadtext: "Loading...",
-                        colNames:['Journal Group Name','Year','1 Year','2 Year','3 Year','5 Year'],
-                        colModel :[
-                          {name:'journalGroupName', index:'journalGroupName', width:80, align:'center', xmlmap:'journalGroupName'},
-                          //{name:'subTypeDesc', index:'subTypeDesc', width:50, align:'center', xmlmap:'subTypeDesc'},
-                          {name:'year', index:'year', width:30, align:'center', xmlmap:'year'},
-                          {name: 'year1', index:'year1', width:30, align:'center', xmlmap:'year1'},
-                          {name:'year2', index:'year2', width:30, align:'center', xmlmap:'year2'},
-                          {name:'year3', index:'year3', width:30, align:'center', xmlmap:'year3'},
-                          {name:'year4', index:'year4', width:30, align:'center', xmlmap:'year4'},
-                        ],
+                        colNames: <jsp:getProperty name="subscriptionRatesFormBeanReport" property="colN"/>,
+                        colModel: <jsp:getProperty name="subscriptionRatesFormBeanReport" property="colM"/>,
                         xmlReader : {
                           root: "results",
                           row: "row",
@@ -102,6 +94,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
+            <jsp:useBean class="IAS.Bean.Reports.subscriptionRatesFormBeanReport" id="subscriptionRatesFormBeanReport" scope="request"></jsp:useBean>
             <form method="post" action="<%=request.getContextPath() + "/reports?action=printRates"%>" name="listRates">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
@@ -115,18 +108,7 @@
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
-                                <%--
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Journal Group Name</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="journalGroupName" id="journalGroupName">
-                                            <option value="0" selected>Select</option>
-                                        </select>
-                                    </span>
-                                </div>
-                                --%>
+
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Year</label>

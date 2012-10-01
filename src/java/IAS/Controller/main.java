@@ -154,7 +154,7 @@ public class main extends JDSController {
 
         } else if (action.equalsIgnoreCase("journalRates")) {
 
-            url = "/jsp/reports/journalRates.jsp";
+            url = "/reports?action=constructTableJournalRates";
 
         } else if (action.equalsIgnoreCase("circulationFigure")) {
 

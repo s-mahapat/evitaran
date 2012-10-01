@@ -83,7 +83,7 @@
                         isPageLoaded = true;
 
                         jQuery("#subTypeTable").setGridParam({postData:
-                                {selall      : $("#selall:checked").length,
+                                {selall          : $("#selall:checked").length,
                                 subtype          : $("#subtype").val(),
                                 nationality      :$('#nationality').val(),
                                 institutional    :$('#institutional').val()

@@ -107,7 +107,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printSubType"%>" name="searchSubTypeForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports?action=printlistInvoice"%>" name="searchSubTypeForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List Profarma Invoice</legend>
@@ -141,7 +141,6 @@
                                     </span>
                                 </div>                                
                             </div>
-
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
@@ -159,7 +158,6 @@
                                     </span>
                                 </div>
                             </div>
-
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
                                     <input class="IASButton" TABINDEX="3" type="button" onclick="getList()" value="Search"/>
@@ -169,9 +167,7 @@
                                     <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                                 </div>
                             </div>
-
                         </fieldset>
-
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -180,7 +176,6 @@
                             <table class="datatable" id="subTypeTable"></table>
                             <div id="pager"></div>
                         </fieldset>
-
                          <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
@@ -189,7 +184,6 @@
                                 </div>
                             </div>
                         </fieldset>
-
                     </fieldset>
                 </div>
             </form>
