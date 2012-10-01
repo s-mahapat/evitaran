@@ -17,5 +17,4 @@ insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality
 insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality`,`institutional`,`freejrnl`,`discount`) values ('FP','Foreign Personnel','Paid','F','P',0,0);
 insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality`,`institutional`,`freejrnl`,`discount`) values ('FI','Foreign Institutions','Paid','F','I',0,0);
 insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality`,`institutional`,`freejrnl`,`discount`) values ('SF','Summer Fellows','Free','I','P',1,0);
-insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality`,`institutional`,`freejrnl`,`discount`) values ('KVPY','Kishore Vaigyanik Protsahan Yojana','Paid','I','I',0,0);
 insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality`,`institutional`,`freejrnl`,`discount`) values ('HONFEL','Honorary Fellow','Free','I','P',0,0);

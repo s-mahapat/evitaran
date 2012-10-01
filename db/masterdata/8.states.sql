@@ -10,7 +10,7 @@ insert into states
 ('Assam'), 
 ('Bihar'), 
 ('Chandigarh'), 
-('Chattisgarh'), 
+('Chhattisgarh'), 
 ('Goa'), 
 ('Gujarat'), 
 ('Haryana'), 
