@@ -204,6 +204,14 @@
         <servlet-name>ChangePwd</servlet-name>
         <servlet-class>IAS.Controller.UserMgr.ChangePwd</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>cities</servlet-name>
+        <servlet-class>IAS.Controller.masterdata.cities</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>districts</servlet-name>
+        <servlet-class>IAS.Controller.masterdata.districts</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -361,6 +369,14 @@
     <servlet-mapping>
         <servlet-name>ChangePwd</servlet-name>
         <url-pattern>/usermgr/changepwd</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>cities</servlet-name>
+        <url-pattern>/cities</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>districts</servlet-name>
+        <url-pattern>/districts</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

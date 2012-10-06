@@ -49,6 +49,7 @@
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=addresschange"%>">Address Change</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gpi"%>">Request for Invoice</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=missingissue"%>">Missing Issue</a></li>
+                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=prl"%>">Pl. Refer List</a></li>
             </ul>
 
         </li>

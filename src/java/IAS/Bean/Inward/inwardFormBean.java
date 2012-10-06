@@ -11,7 +11,7 @@ public class inwardFormBean extends JDSBean {
     private String from = "";
     private String country = "";
     private String state;
-    private String district;
+    private String district="";
     private String city = "";
     private int pincode = 0;
     private String inwardNumber = "";

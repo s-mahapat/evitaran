@@ -39,7 +39,7 @@
             .buttonset();
         });
 
-    $(function() {
+        $(function() {
             $( "#btnUE" )
             .button("disable")
             .click(function(){$("#agentName").val("");$("#agentName").change();return false;})
@@ -156,15 +156,7 @@
                 <label>District:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="4" name="district" id="district">
-                    <option value="" selected >Select</option>
-                    <%
-                        if (inwardFormBean.getDistrict() != null && !inwardFormBean.getDistrict().isEmpty()) {
-                            out.println("<option value=" + "\"" + inwardFormBean.getDistrict() + "\"" + " selected >" + inwardFormBean.getDistrict() + "</option>");
-                        }
-                    %>
-                </select>
-                <%--<input class="IASTextBoxMandatory" TABINDEX="4" name="city" id="city" value="<jsp:getProperty name="inwardFormBean" property="city"/>"--%>
+                <input class="IASTextBox" TABINDEX="4" name="district" id="district" value="<jsp:getProperty name="inwardFormBean" property="district"/>"/>        
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -172,18 +164,9 @@
                 <label>City:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="5" name="city" id="city">
-                    <option value="" selected >Select</option>
-                    <%
-                        if (inwardFormBean.getCity() != null && !inwardFormBean.getCity().isEmpty()) {
-                            out.println("<option value=" + "\"" + inwardFormBean.getCity() + "\"" + " selected >" + inwardFormBean.getCity() + "</option>");
-                        }
-                    %>
-                </select>
-                <%--<input class="IASTextBoxMandatory" TABINDEX="4" name="city" id="city" value="<jsp:getProperty name="inwardFormBean" property="city"/>"--%>
+                <input class="IASTextBoxMandatory" TABINDEX="5" name="city" id="city" value="<jsp:getProperty name="inwardFormBean" property="city"/>"/>        
             </span>
         </div>
-
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>PIN Code:</label>

@@ -6,49 +6,23 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Search Subscriber</title>
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/subscriber.css"%>"/>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/searchsubscriber.js"%>"></script>
-        <title>Search Subscriber</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/city.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/searchsubscriber.js"%>"></script>        
         <script type="text/javascript">
             //initally set to false, after the first search the flag is set to true
 
             var isPageLoaded = false;
+            //var isCitySelected = false;          
+                        
             $(document).ready(function (){
-
-                city = GetCookieValue("search_subscriber","city");
-                jdsAppend("CMasterData?md=city","city","city",city,function(){
-
-                    if($.cookie("search_subscriber") != null && isPageLoaded == false){
-                        page = GetCookieValue("search_subscriber","page");
-                        totalpages = GetCookieValue("search_subscriber","totalpages");
-                        rowNum = GetCookieValue("search_subscriber","rowNum");
-                        sidx = GetCookieValue("search_subscriber","sidx");
-                        subscriberNumber = GetCookieValue("search_subscriber","subscriberNumber");
-                        subscriberName = GetCookieValue("search_subscriber","subscriberName");
-                        sord = GetCookieValue("search_subscriber","sord");
-                        city = GetCookieValue("search_subscriber","city");
-                        email = GetCookieValue("search_subscriber","email");
-                        pincode = GetCookieValue("search_subscriber","pincode");
-                        jQuery("#subscriberTable").jqGrid('setColProp','index',sidx);
-                        jQuery("#subscriberTable").setGridParam({
-                            'rowNum': rowNum,
-                            'sortorder': sord,
-                            'page':page
-
-                        });
-                        $("#subscriberNumber").val(subscriberNumber);
-                        $("#subscriberName").val(subscriberName);
-                        $("#city").val(city);
-                        //$("#city").append("<option value=" + city + " selected>" + city + "</option>");
-                        $("#email").val(email);
-                        $("#pincode").val(pincode);
-
-                        searchSubscriber();
-                        isPageLoaded = true;
-
-                    }
-                });
+                
+                //load city autocomplete
+                loadCities();
+                
+                //});
                 $("#subscriberNumber").focus()
 
                 $("#subscriberTable").jqGrid({
@@ -102,36 +76,40 @@
                                 "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "#subscriptions" + "'>Subscription</a>";
                             jQuery("#subscriberTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
-                        updateCookie();
+                        //updateCookie();
 
                     },
                     beforeRequest: function(){
-
                         return isPageLoaded;
                     },
                     loadError: function(xhr,status,error){
                         alert("Failed getting data from server " + status);
                     },
                     onPaging: function(btn){
-                        updateCookie();
+                        //updateCookie();
                     }
                 });
+                
+                
             });
 
 
 
             // called when the search button is clicked
             function searchSubscriber(){
-                if(validateSearchSubscriber() == true){
+                if(validateSearchSubscriber()){
                     isPageLoaded = true;
-                    jQuery("#subscriberTable").setGridParam({postData:
+                    console.log("validate success");
+                    console.log($("#city").val());
+                    
+                    jQuery("#subscriberTable").setGridParam({mtype: 'POST',postData:
                             {city               : $("#city").val(),
                             subscriberNumber    : $("#subscriberNumber").val(),
                             subscriberName      : $("#subscriberName").val(),
                             email               : $("#email").val(),
                             pincode             : $("#pincode").val()
                         }});
-                    //jQuery("#subscriberTable").trigger("clearGridData");
+                    jQuery("#subscriberTable").trigger("clearGridData");
                     jQuery("#subscriberTable").trigger("reloadGrid");
                 }
 
@@ -214,9 +192,7 @@
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="4" name="city" id="city">
-                                            <option value="Select">Select</option>
-                                        </select>
+                                        <input class="IASTextBox" TABINDEX="4" name="city" id="city" value=""/>        
                                     </span>
                                 </div>
 

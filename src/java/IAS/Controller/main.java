@@ -217,6 +217,11 @@ public class main extends JDSController {
             //url = "/jsp/masterdata/searchJournalPriceGroup.jsp";
             url = "/jsp/masterdata/journalSubscriptionRateGroup.jsp";
 
+        }else if (action.equals("prl")) {
+
+            //url = "/jsp/masterdata/searchJournalPriceGroup.jsp";
+            url = "/jsp/subscription/plreferlist.jsp";
+
         }
 
         if(url == null){

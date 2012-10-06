@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="css/inward/inward.css" />
         <title>Search Inward</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/searchinward.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/city.js"%>"></script>
         <script type="text/javascript">
             var selectedInward = 0;
             var selectedSubscriberId = 0;
@@ -19,6 +20,9 @@
 
             $(document).ready(function(){                
 
+                //load city autocomplete
+                loadCities();
+                
                 // set the default focus to inward text box.
                 $("#inwardNumber").focus();
 
@@ -201,7 +205,7 @@
                             <div class="IASFormRightDiv">
 
 
-                                <div class="IASFormFieldDiv">
+                                <!--<div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>City:</label>
                                     </span>
@@ -209,6 +213,14 @@
                                         <select class="IASComboBox" TABINDEX="3" name="city" id="city">
                                             <option value="NULL">Select</option>
                                         </select>
+                                    </span>
+                                </div>-->
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>City:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASTextBox" TABINDEX="4" name="city" id="city" value=""/>        
                                     </span>
                                 </div>
 

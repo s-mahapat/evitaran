@@ -3,6 +3,7 @@ package IAS.Model.masterdata;
 
 import javax.servlet.http.HttpServletRequest;
 import IAS.Bean.masterdata.districtFormBean;
+import IAS.Class.Database;
 import java.sql.*;
 import IAS.Model.*;
 import java.text.ParseException;
@@ -137,15 +138,22 @@ public class districtModel extends JDSModel{
         request.setAttribute("districtFormBean", this._districtFormBean);
     }
 
-    public String searchDistrict() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public String searchDistrict(String term) throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        Connection _conn = Database.getConnection();
         String xml = null;
         String sql = Queries.getQuery("search_district");
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, "%" + request.getParameter("district") + "%");
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        xml = util.convertResultSetToXML(rs);
+        try(PreparedStatement stGet = _conn.prepareStatement(sql)){
+            int paramIndex = 1;
+            stGet.setString(paramIndex, "%" + term + "%");
+            try(ResultSet rs = this.db.executeQueryPreparedStatement(stGet);){
+                xml = util.convertResultSetToXML(rs);
+            }
+            
+        }finally{
+            _conn.close();
+        }
+        
         return xml;
-    }
+    }    
 }
 

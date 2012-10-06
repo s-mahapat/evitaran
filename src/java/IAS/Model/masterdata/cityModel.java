@@ -2,10 +2,12 @@
 package IAS.Model.masterdata;
 
 import IAS.Bean.masterdata.cityFormBean;
+import IAS.Class.Database;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -148,5 +150,22 @@ public class cityModel extends JDSModel{
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         xml = util.convertResultSetToXML(rs);
         return xml;
+    }
+    
+    public String CitySearch(String term) throws SQLException{
+        Connection _conn = Database.getConnection();
+        String xml = null;
+        String sql = Queries.getQuery("city_search");
+        try(PreparedStatement stGet = _conn.prepareStatement(sql)){
+            stGet.setString(1, term + "%");
+            try(ResultSet rs = stGet.executeQuery()){
+                xml = util.convertResultSetToXML(rs);
+            }
+        }finally{
+            _conn.close();
+            return xml;
+        }
+        
+        
     }
 }

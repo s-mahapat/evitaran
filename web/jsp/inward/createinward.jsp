@@ -4,11 +4,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <jsp:include page="../templates/style.jsp"></jsp:include>
-            <link rel="stylesheet" type="text/css" href="css/inward/inward.css"/>
-            <title>Create Inward</title>
-            <script type="text/javascript" src="<%=request.getContextPath()%>/js/inward/createinward.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/inward/inward.css"/>
+        <title>Create Inward</title>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/inward/createinward.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/city.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/district.js"></script>
 
         <script>
+            var isCitySelected = false;
+            var isDistrictSelected = false;                    
+
             $(document).ready(function() {
                 loadData();
                 jQueryCalendar("paymentDate");
