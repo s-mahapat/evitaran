@@ -7,14 +7,14 @@
 <script src="<%=request.getContextPath() + "/js/jdsconstants.js"%>" type="text/javascript"></script>
 
 <%-- jquery Core --%>
-<script src="<%=request.getContextPath() + "/js/jquery/jquery-1.7.2.min.js"%>" type="text/javascript"></script>
+<script src="<%=request.getContextPath() + "/js/jquery/jquery-1.8.2.min.js"%>" type="text/javascript"></script>
 
 <%-- jquery alerts --%>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.alerts.js"%>" type="text/javascript"></script>
 <link href="<%=request.getContextPath() + "/css/jquery/jquery.alerts.css"%>" type="text/css" rel="stylesheet"/>
 <%-- jquery ui --%>
-<link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery-ui-1.8.18.custom.css"%>" />
-<script src="<%=request.getContextPath() + "/js/jquery/jquery-ui-1.8.18.custom.min.js"%>" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery-ui-1.8.24.custom.css"%>" />
+<script src="<%=request.getContextPath() + "/js/jquery/jquery-ui-1.8.24.custom.min.js"%>" type="text/javascript"></script>
 <%-- jquery grid --%>
 <script src="<%=request.getContextPath() + "/js/jquery/grid.locale-en.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.jqGrid.min.js"%>" type="text/javascript"></script>
