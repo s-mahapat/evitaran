@@ -257,7 +257,10 @@ function selectSubscriber(city, subscriberName, rowid){
         jQuery("#inwardTable").jqGrid('setRowData', rowid, {
             'SubscriberId': selectedSubscriberId.SubscriberNumber
         });
-        selectedSubscriberId = selectedSubscriberId.SubscriberId;
+        selectedSubscriberId = selectedSubscriberId.SubscriberNumber;
+        // set the subscriber if it is selected after selecting the inward,
+        // or any changes are made
+        $("#subscriberNumber").val(selectedSubscriberId);
     }else{
         selectedSubscriberId = 0;
     }
