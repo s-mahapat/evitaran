@@ -5,8 +5,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <%@include file="../templates/style.jsp" %>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/report/journalRates.css" />
 
         <title>Annual Rates for Journal</title>
@@ -14,42 +14,44 @@
             $(document).ready(function() {
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");
+                jQuery("#printReportBtn").attr("disabled",true);
             });
         </script>
-        <script>
+        <script type="text/javascript">
             var isPageLoaded = false;
-            $(function(){
 
-                      $("#datatable").jqGrid({
-                        url:"<%=request.getContextPath() + "/reports?action=listRates"%>",
-                        datatype: 'xml',
-                        mtype: 'GET',
-                        width: '100%',
-                        height: 300,
-                        autowidth: true,
-                        forceFit: true,
-                        sortable: true,
-                        loadonce: true,
-                        rownumbers: true,
-                        emptyrecords: "No records to view",
-                        loadtext: "Loading...",
-                        colNames: <jsp:getProperty name="subscriptionRatesFormBeanReport" property="colN"/>,
-                        colModel: <jsp:getProperty name="subscriptionRatesFormBeanReport" property="colM"/>,
-                        xmlReader : {
-                          root: "results",
-                          row: "row",
-                          page: "results>page",
-                          total: "results>total",
-                          records : "results>records",
-                          repeatitems: false,
-                          id: "id"
-                       },
-                        pager: '#pager',
-                        rowNum:15,
-                        rowList:[15,30,50],
-                        viewrecords: true,
-                        gridview: true,
-                        caption: '&nbsp;',
+            $(function(){
+                $("#datatable").jqGrid({
+                    url:  "<%=request.getContextPath() + "/main?action=journalRates"%>",
+                    datatype: 'xml',
+                    type: 'GET',
+                    width: '100%',
+                    height: 300,
+                    autowidth: true,
+                    forceFit: true,
+                    sortable: true,
+                    loadonce: true,
+                    rownumbers: true,
+                    emptyrecords: "No records to view",
+                    loadtext: "Loading...",
+                    colNames: <jsp:getProperty name="subscriptionRatesFormBeanReport" property="colN"/>,
+                    colModel: <jsp:getProperty name="subscriptionRatesFormBeanReport" property="colM"/>,
+                    xmlReader: {
+                      root: "results",
+                      row: "row",
+                      page: "results>page",
+                      total: "results>total",
+                      records : "results>records",
+                      repeatitems: false,
+                      id: "id"
+                    },
+                    pager: '#pager',
+                    rowNum:15,
+                    rowList:[15,30,50],
+                    viewrecords: true,
+                    gridview: true,
+                    caption: '&#160;',
+                    editurl:"<%=request.getContextPath() + "/main?action=journalRates"%>",
                     gridComplete: function() {
                         var ids = jQuery("#datatable").jqGrid('getDataIDs');
                         if(ids.length > 0){
@@ -63,11 +65,27 @@
                         alert("Failed getting data from server" + status);
                     }
                });
-
             });
 
-            // called when the search button is clicked
+            $(document).ready(function(){
+                isPageLoaded = true;
+                getRates();
+            });
+
             function getRates(){
+                jQuery("#datatable").setGridParam({postData:
+                        {subscriberType             : $("#subscriberType").val(),
+                        year                        : $("#year").val()
+                        }
+                    });
+                jQuery("#datatable").setGridParam({ url: "<%=request.getContextPath() + "/reports?action=listRates"%>" });
+                jQuery("#datatable").setGridParam({ datatype: "xml" });
+                jQuery("#datatable").trigger("clearGridData");
+                jQuery("#datatable").trigger("reloadGrid");
+            }
+
+            // called when the search button is clicked
+            function reLoadPage(){
                 if ($("#year").val() == 0) {
                     alert("Select Year");
                 }
@@ -76,33 +94,33 @@
                 }
                 else {
                         isPageLoaded = true;
-
-                        jQuery("#datatable").setGridParam({postData:
-                                {subscriberType          : $("#subscriberType").val(),
-                                year                       : $("#year").val()
-                                }
-                            });
-                        jQuery("#datatable").setGridParam({ datatype: "xml" });
-                        jQuery("#datatable").trigger("clearGridData");
-                        jQuery("#datatable").trigger("reloadGrid");
+                        var x = "constructTableJournalRates";
+                        $('#action').val(x);
                 }
             }
+
+            function print(){
+                 var x = "printRates";
+                 $('#action').val(x);
+            }
+
         </script>
 
     </head>
     <body>
-        <%@include file="../templates/layout.jsp" %>
 
+        <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <jsp:useBean class="IAS.Bean.Reports.subscriptionRatesFormBeanReport" id="subscriptionRatesFormBeanReport" scope="request"></jsp:useBean>
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printRates"%>" name="listRates">
+            <form method="post" action="<%=request.getContextPath() + "/reports?"%>" name="listRates">
                 <div class="MainDiv">
+                    <input type="hidden" name="action" id="action"/>
                     <fieldset class="MainFieldset">
                         <legend>List and Print Annual Rates for Journal</legend>
-
+                        <jsp:useBean class="IAS.Bean.Reports.subscriptionRatesFormBeanReport" id="subscriptionRatesFormBeanReport" scope="request"></jsp:useBean>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
+
                         <fieldset class="subMainFieldSet">
                             <legend>Search Criteria</legend>
 
@@ -114,8 +132,13 @@
                                         <label>Year</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="2" name="year" id="year">
+                                        <select class="IASComboBox" TABINDEX="2" name="year" id="year" >
                                             <option value="0">Select</option>
+                                            <%
+                                                if (subscriptionRatesFormBeanReport.getYear() != 0) {
+                                                out.println("<option selected=\"selected\" value=\"" + subscriptionRatesFormBeanReport.getYear() + "\">" + subscriptionRatesFormBeanReport.getYear() + "</option>");
+                                                }
+                                            %>
                                         </select>
                                     </span>
                                 </div>
@@ -130,7 +153,12 @@
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBoxWide" TABINDEX="3" name="subscriberType" id="subscriberType">
-                                            <option value="0" selected>Select</option>
+                                            <option value="0">Select</option>
+                                            <%
+                                                if (subscriptionRatesFormBeanReport.getSubscriberType() != null && !(subscriptionRatesFormBeanReport.getSubscriberType()).isEmpty()) {
+                                                out.println("<option selected=\"selected\" value=\"" + subscriptionRatesFormBeanReport.getSubscriberType() + "\">" + subscriptionRatesFormBeanReport.getSubscriberType() + "</option>");
+                                                }
+                                            %>
                                         </select>
                                     </span>
                                 </div>
@@ -138,13 +166,11 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="button" onclick="getRates()" value="Search"/>
+                                    <input class="IASButton" TABINDEX="3" type="submit" onclick="reLoadPage()" value="Search"/>
                                 </div>
                             </div>
 
                         </fieldset>
-
-
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
@@ -161,7 +187,7 @@
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
-                                    <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton" TABINDEX="4" type="submit" value="Print" id="printReportBtn" name="printReportBtn" onclick="print()"/>
                                 </div>
                             </div>
                         </fieldset>

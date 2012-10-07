@@ -29,6 +29,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import java.util.Calendar;
 import java.util.Date;
+import javax.xml.transform.TransformerConfigurationException;
 /**
  *
  * @author Deepali
@@ -43,9 +44,7 @@ public class reportModel extends JDSModel {
 
     }
 
-    public String listRates() throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
-
-        int year = Integer.parseInt(request.getParameter("year"));
+    public String getRatesXML(int year, String subscriberType) throws ParserConfigurationException, SQLException, TransformerConfigurationException, TransformerException, IOException {
         String xml = null;
         String proc = null;
         int journalGpId = 0;
@@ -53,20 +52,20 @@ public class reportModel extends JDSModel {
         int period = 0;
         int rate = 0;
         int count = 1;
-        
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.newDocument();
         Element results = doc.createElement("results");
         doc.appendChild(results);
-        
+
         String sqlJournalGrp = Queries.getQuery("journal_groups");
         PreparedStatement stGetJGrp = conn.prepareStatement(sqlJournalGrp);
-        ResultSet rsJGrp = this.db.executeQueryPreparedStatement(stGetJGrp);        
+        ResultSet rsJGrp = this.db.executeQueryPreparedStatement(stGetJGrp);
         while (rsJGrp.next()){
             journalGpId = rsJGrp.getInt(1);
             journalGroup = rsJGrp.getString(2);
-            
+
             // Add the row element
             Element row = doc.createElement("row");
             results.appendChild(row);
@@ -74,16 +73,16 @@ public class reportModel extends JDSModel {
             Element _journalCode = doc.createElement("journalGroup");
             row.appendChild(_journalCode);
             _journalCode.appendChild(doc.createTextNode(journalGroup));
-            
+
             Element _year = doc.createElement("year");
             row.appendChild(_year);
             _year.appendChild(doc.createTextNode(Integer.toString(year)));
-            
+
             String sqlPeriod = Queries.getQuery("get_rate_period");
             PreparedStatement stGetPeriod = conn.prepareStatement(sqlPeriod);
             stGetPeriod.setInt(1, year);
             ResultSet rsPeriod = this.db.executeQueryPreparedStatement(stGetPeriod);
-            
+
             while (rsPeriod.next()){
                 period = rsPeriod.getInt(1);
                 String sqlRate = Queries.getQuery("get_rate");
@@ -91,17 +90,20 @@ public class reportModel extends JDSModel {
                 stGetRate.setInt(1, year);
                 stGetRate.setInt(2, period);
                 stGetRate.setInt(3, journalGpId);
-                stGetRate.setString(4, request.getParameter("subscriberType"));
-                ResultSet rsRate = this.db.executeQueryPreparedStatement(stGetRate);               
-                while (rsRate.next()){
+                stGetRate.setString(4, subscriberType);
+                ResultSet rsRate = this.db.executeQueryPreparedStatement(stGetRate);
+
+                Element _rate = doc.createElement("year" + period);
+                row.appendChild(_rate);
+                if(rsRate.next()){
                     rate = rsRate.getInt(1);
-                    Element _rate = doc.createElement("year" + period);
-                    row.appendChild(_rate);
-                    _rate.appendChild(doc.createTextNode(Integer.toString(rate)));                    
-                }  
+                    _rate.appendChild(doc.createTextNode(Integer.toString(rate)));
+                }else {
+                    _rate.appendChild(doc.createTextNode(""));
+                }
             }
         }
-        
+
         DOMSource domSource = new DOMSource(doc);
         try (StringWriter writer = new StringWriter()) {
             StreamResult result = new StreamResult(writer);
@@ -110,14 +112,58 @@ public class reportModel extends JDSModel {
             transformer.transform(domSource, result);
             xml = writer.toString();
         }
-        
+
         return xml;
     }
 
-    public void constructTableJournalRates() throws SQLException, ParserConfigurationException, SAXException, IOException, IllegalAccessException, InvocationTargetException {
+    public String listRates() throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
 
-        //int year = Integer.parseInt(request.getParameter("year"));
-        int year = 2012;
+        int year = Integer.parseInt(request.getParameter("year"));
+        String subscriberType = request.getParameter("subscriberType");
+        //subscriberType = "Indian Schools and Colleges";
+
+        String xml = getRatesXML(year, subscriberType);
+        /*
+        String xml = "<?xml version='1.0' encoding='UTF-8'?>" +
+                    "<results>" +
+                        "<row>" +
+                            "<journalGroup>Pramana - Journal of Physics</journalGroup>" +
+                            "<year>2012</year>" +
+                            "<year1>750</year1>" +
+                            "<year2>750</year2>" +
+                            "<year3>750</year3>" +
+                            "<year5>750</year5>" +
+                        "</row>" +
+                        "<row>" +
+                            "<journalGroup>Journal of Astrophysics and Astronomy</journalGroup>" +
+                            "<year>2012</year>" +
+                            "<year1>300</year1>" +
+                            "<year2>750</year2>" +
+                            "<year3>750</year3>" +
+                            "<year5>750</year5>" +
+                        "</row>" +
+                    "</results>";
+                    */
+        return xml;
+    }
+
+    public void constructTableJournalRates() throws SQLException, ParserConfigurationException, SAXException, IOException, IllegalAccessException, InvocationTargetException, TransformerConfigurationException, TransformerException {
+
+        subscriptionRatesFormBeanReport subscriptionRatesFormBeanReport = new IAS.Bean.Reports.subscriptionRatesFormBeanReport();
+        FillBean(this.request, subscriptionRatesFormBeanReport);
+
+        int year = subscriptionRatesFormBeanReport.getYear();
+        if(year == 0) {
+            year = Calendar.getInstance().get(Calendar.YEAR);
+        }
+
+        String subscriberType = subscriptionRatesFormBeanReport.getSubscriberType();
+        if(subscriberType.isEmpty()){
+            subscriberType = "Indian Schools and Colleges";
+        }
+
+        //String data = getRatesXML(year, subscriberType);
+
         String sql = Queries.getQuery("get_rate_period");
         PreparedStatement st = conn.prepareStatement(sql);
         st.setInt(1, year);
@@ -146,10 +192,13 @@ public class reportModel extends JDSModel {
         subscriptionRatesFormBeanReport _subscriptionRatesFormBeanReport = new IAS.Bean.Reports.subscriptionRatesFormBeanReport();
         _subscriptionRatesFormBeanReport.setColM(colModel);
         _subscriptionRatesFormBeanReport.setColN(colNames);
+        _subscriptionRatesFormBeanReport.setYear(year);
+        _subscriptionRatesFormBeanReport.setSubscriberType(subscriberType);
+        //_subscriptionRatesFormBeanReport.setData(data);
         request.setAttribute("subscriptionRatesFormBeanReport", _subscriptionRatesFormBeanReport);
 
     }
-    
+
     public ResultSet searchJournalGroup() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
         String sql;
@@ -505,8 +554,8 @@ public class reportModel extends JDSModel {
         if ("0".equals(journalName)) {
             journalName = null;
         }
-        
-        
+
+
         sql = Queries.getQuery("list_susbsriber");
         if (subType != null && subType.compareToIgnoreCase("NULL") != 0 && subType.length() > 0) {
             sql += " and subscriber_type.subtype =" + "'" + subType + "'";
@@ -537,7 +586,7 @@ public class reportModel extends JDSModel {
         if (institutional != null && institutional.compareToIgnoreCase("NULL") != 0 && institutional.length() > 0) {
             sql += " and subscriber_type.institutional = " + "'" + institutional + "'";
         }
-        
+
         if (selall == "1") {
             selall = "0";
             sql += " and subscriber.deactive <> " +  selall;
@@ -546,7 +595,7 @@ public class reportModel extends JDSModel {
         if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
             sql += " and subscription.subscriptionDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
-         
+
         PreparedStatement stGet = conn.prepareStatement(sql);
 
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
@@ -674,7 +723,7 @@ public class reportModel extends JDSModel {
     }
 
     public String circulationFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
-        
+
         String year = request.getParameter("year");
         String month = request.getParameter("month");
 
@@ -694,7 +743,7 @@ public class reportModel extends JDSModel {
         Document doc = builder.newDocument();
         Element results = doc.createElement("results");
         doc.appendChild(results);
-        
+
         int totalTotalCopies = 0;
         int totalBalanceCopies=0;
         int totalPrintOrder = 0;
@@ -704,7 +753,7 @@ public class reportModel extends JDSModel {
         int totalIndF = 0;
         int totalAuth = 0;
         int totalFree = 0;
-            
+
         String sql = null;
         sql = Queries.getQuery("cf_journals");
         int paramIndex = 1;
@@ -721,10 +770,10 @@ public class reportModel extends JDSModel {
             int indF = 0;
             int auth = 0;
             int free = 0;
-            
+
             int journalId = rs.getInt(1);
             String journalCode = rs.getString(2);
- 
+
             String sqlIssues = null;
             sqlIssues = Queries.getQuery("cf_issue");
             PreparedStatement stGetIssues = conn.prepareStatement(sqlIssues);
@@ -732,15 +781,15 @@ public class reportModel extends JDSModel {
             stGetIssues.setString(paramIndex, request.getParameter("year"));
             stGetIssues.setInt(++paramIndex, journalId);
             stGetIssues.setString(++paramIndex, request.getParameter("month"));
-            ResultSet rsIssues = this.db.executeQueryPreparedStatement(stGetIssues);        
+            ResultSet rsIssues = this.db.executeQueryPreparedStatement(stGetIssues);
             while (rsIssues.next())
             {
                 int issue = rsIssues.getInt(1);
-                
+
                 // Add the row element. Add information for a journal
                 Element row = doc.createElement("row");
                 results.appendChild(row);
-                
+
                 // Add journal Code as first column
                 Element _journalCode = doc.createElement("journalCode");
                 row.appendChild(_journalCode);
@@ -750,7 +799,7 @@ public class reportModel extends JDSModel {
                 Element _issue = doc.createElement("issue");
                 row.appendChild(_issue);
                 _issue.appendChild(doc.createTextNode(Integer.toString(issue)));
-                
+
                 String sqlInstI = null;
                 sqlInstI = Queries.getQuery("cf_inst_i");
                 PreparedStatement stGetInstI = conn.prepareStatement(sqlInstI);
@@ -776,7 +825,7 @@ public class reportModel extends JDSModel {
                 paramIndex = 1;
                 stGetInstF.setString(paramIndex, request.getParameter("year"));
                 stGetInstF.setInt(++paramIndex, journalId);
-                stGetInstF.setInt(++paramIndex, issue);           
+                stGetInstF.setInt(++paramIndex, issue);
                 ResultSet rsInstF = this.db.executeQueryPreparedStatement(stGetInstF);
                 if (rsInstF.next())
                 {
@@ -795,7 +844,7 @@ public class reportModel extends JDSModel {
                 paramIndex = 1;
                 stGetIndI.setString(paramIndex, request.getParameter("year"));
                 stGetIndI.setInt(++paramIndex, journalId);
-                stGetIndI.setInt(++paramIndex, issue);            
+                stGetIndI.setInt(++paramIndex, issue);
                 ResultSet rsIndI = this.db.executeQueryPreparedStatement(stGetIndI);
                 if (rsIndI.next())
                 {
@@ -814,7 +863,7 @@ public class reportModel extends JDSModel {
                 paramIndex = 1;
                 stGetIndF.setString(paramIndex, request.getParameter("year"));
                 stGetIndF.setInt(++paramIndex, journalId);
-                stGetIndF.setInt(++paramIndex, issue);              
+                stGetIndF.setInt(++paramIndex, issue);
                 ResultSet rsIndF = this.db.executeQueryPreparedStatement(stGetIndF);
                 if (rsIndF.next())
                 {
@@ -823,7 +872,7 @@ public class reportModel extends JDSModel {
 
                 Element _indF = doc.createElement("indAbroad");
                 row.appendChild(_indF);
-                _indF.appendChild(doc.createTextNode(Integer.toString(indF)));    
+                _indF.appendChild(doc.createTextNode(Integer.toString(indF)));
 
                 totalIndF = totalIndF + indF;
 
@@ -833,7 +882,7 @@ public class reportModel extends JDSModel {
                 paramIndex = 1;
                 stGetFree.setString(paramIndex, request.getParameter("year"));
                 stGetFree.setInt(++paramIndex, journalId);
-                stGetFree.setInt(++paramIndex, issue);             
+                stGetFree.setInt(++paramIndex, issue);
                 ResultSet rsFree = this.db.executeQueryPreparedStatement(stGetFree);
                 if (rsFree.next())
                 {
@@ -843,7 +892,7 @@ public class reportModel extends JDSModel {
                 Element _free = doc.createElement("comp");
                 row.appendChild(_free);
                 _free.appendChild(doc.createTextNode(Integer.toString(free)));
-                
+
                 totalFree = totalFree + free;
 
                 String sqlAuth = null;
@@ -852,7 +901,7 @@ public class reportModel extends JDSModel {
                 paramIndex = 1;
                 stGetAuth.setString(paramIndex, request.getParameter("year"));
                 stGetAuth.setInt(++paramIndex, journalId);
-                stGetAuth.setInt(++paramIndex, issue);             
+                stGetAuth.setInt(++paramIndex, issue);
                 ResultSet rsAuth = this.db.executeQueryPreparedStatement(stGetAuth);
                 if (rsAuth.next())
                 {
@@ -871,7 +920,7 @@ public class reportModel extends JDSModel {
                 paramIndex = 1;
                 stGetPrintOrder.setString(paramIndex, request.getParameter("year"));
                 stGetPrintOrder.setInt(++paramIndex, journalId);
-                stGetPrintOrder.setInt(++paramIndex, issue);                    
+                stGetPrintOrder.setInt(++paramIndex, issue);
                 ResultSet rsPrintOrder = this.db.executeQueryPreparedStatement(stGetPrintOrder);
                 if (rsPrintOrder.next())
                 {
@@ -889,7 +938,7 @@ public class reportModel extends JDSModel {
 
                 Element _totalCopies = doc.createElement("totalCopies");
                 row.appendChild(_totalCopies);
-                _totalCopies.appendChild(doc.createTextNode(Integer.toString(totalCopies)));            
+                _totalCopies.appendChild(doc.createTextNode(Integer.toString(totalCopies)));
 
                 Element _balanceCopies = doc.createElement("balanceCopies");
                 row.appendChild(_balanceCopies);
@@ -899,7 +948,7 @@ public class reportModel extends JDSModel {
                 totalBalanceCopies = totalBalanceCopies + balanceCopies;
             }
          }
-        
+
             // Add the row element. Add for total
             Element row = doc.createElement("row");
             results.appendChild(row);
@@ -920,15 +969,15 @@ public class reportModel extends JDSModel {
             Element _instF = doc.createElement("instAbroad");
             row.appendChild(_instF);
             _instF.appendChild(doc.createTextNode(Integer.toString(totalInstF)));
-            
+
             Element _indI = doc.createElement("indIndia");
             row.appendChild(_indI);
             _indI.appendChild(doc.createTextNode(Integer.toString(totalIndF)));
 
             Element _indF = doc.createElement("indAbroad");
             row.appendChild(_indF);
-            _indF.appendChild(doc.createTextNode(Integer.toString(totalIndF)));            
-        
+            _indF.appendChild(doc.createTextNode(Integer.toString(totalIndF)));
+
             Element _free = doc.createElement("comp");
             row.appendChild(_free);
             _free.appendChild(doc.createTextNode(Integer.toString(totalFree)));
@@ -939,17 +988,17 @@ public class reportModel extends JDSModel {
 
             Element _totalCopies = doc.createElement("totalCopies");
             row.appendChild(_totalCopies);
-            _totalCopies.appendChild(doc.createTextNode(Integer.toString(totalTotalCopies)));            
+            _totalCopies.appendChild(doc.createTextNode(Integer.toString(totalTotalCopies)));
 
             Element _printOrder = doc.createElement("printOrder");
             row.appendChild(_printOrder);
             _printOrder.appendChild(doc.createTextNode(Integer.toString(totalPrintOrder)));
-            
+
             Element _balanceCopies = doc.createElement("balanceCopies");
             row.appendChild(_balanceCopies);
             _balanceCopies.appendChild(doc.createTextNode(Integer.toString(totalBalanceCopies)));
 
-            
+
             DOMSource domSource = new DOMSource(doc);
             try (StringWriter writer = new StringWriter()) {
                 StreamResult result = new StreamResult(writer);
@@ -958,7 +1007,7 @@ public class reportModel extends JDSModel {
                 transformer.transform(domSource, result);
                 xml = writer.toString();
             }
-            
+
         return xml;
     }
 
@@ -1364,16 +1413,16 @@ String xml = null;
         String toDate = request.getParameter("to");
 
         String sql = null;
-        
+
         if ("0".equals(subType)) {
             subType = null;
-        }      
+        }
         if ("0".equals(journalName)) {
             journalName = null;
         }
-                
+
         sql = Queries.getQuery("list_invoice");
-        
+
         if (subType != null && subType.compareToIgnoreCase("NULL") != 0 && subType.length() > 0) {
             sql += " and subscriber_type.subtypedesc =" + "'" + subType + "'";
         }
@@ -1384,29 +1433,29 @@ String xml = null;
 
         if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
             sql += " and invoice.invoiceCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
-        }         
+        }
         PreparedStatement stGet = conn.prepareStatement(sql);
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
       }
- 
+
      public ResultSet listReminders()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        
+
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
-        
+
         String sql = Queries.getQuery("gen_reminders_subscriber");
-        
+
         if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
             sql += " and reminders.reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
-        
+
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;        
-        stGet.setString(paramIndex, request.getParameter("reminderType"));        
+        int paramIndex = 1;
+        stGet.setString(paramIndex, request.getParameter("reminderType"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
-        
+
     }
-        
+
 }
