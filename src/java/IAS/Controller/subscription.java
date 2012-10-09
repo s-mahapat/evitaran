@@ -124,10 +124,7 @@ public class subscription extends JDSController {
                 url = "/xmlserver";
 
             } else if (oper.equalsIgnoreCase("subid")) {
-                String xml;
-                try (ResultSet rs = _subscriptionModel.getSubscriptionDetailBySubscriptionID(Integer.parseInt(request.getParameter("id")))) {
-                    xml = util.convertResultSetToXML(rs);
-                }
+                String xml = _subscriptionModel.getSubscriptionDetailBySubscriptionID(Integer.parseInt(request.getParameter("id")));
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
@@ -138,21 +135,16 @@ public class subscription extends JDSController {
                 url = "/xmlserver";
 
             } else if (oper.equalsIgnoreCase("getPrice")) {
-                try (ResultSet rs = _subscriptionModel.getJournalPrice(
-                             Integer.parseInt(request.getParameter("startyear")),
-                             Integer.parseInt(request.getParameter("years")),
-                             Integer.parseInt(request.getParameter("journalgroupid")),
-                             Integer.parseInt(request.getParameter("subtypeid")))) {
-                    String xml = util.convertResultSetToXML(rs);
-                    request.setAttribute("xml", xml);
-                }
+                String xml = _subscriptionModel.getJournalPrice(
+                        Integer.parseInt(request.getParameter("startyear")),
+                        Integer.parseInt(request.getParameter("years")),
+                        Integer.parseInt(request.getParameter("journalgroupid")),
+                        Integer.parseInt(request.getParameter("subtypeid")));
+                request.setAttribute("xml", xml);
                 url = "/xmlserver";
             } else if (oper.equalsIgnoreCase("getJournalGroupContents")) {
                 int groupID = Integer.parseInt(request.getParameter("groupid"));
-                String xml;
-                try (ResultSet rs = _subscriptionModel.getJournalGroupContents(groupID)) {
-                    xml = util.convertResultSetToXML(rs);
-                }
+                String xml = _subscriptionModel.getJournalGroupContents(groupID);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
@@ -161,9 +153,13 @@ public class subscription extends JDSController {
                 String xml = _subscriptionModel.getSubscriptionDetailsForInward(inwardNumber);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }else if (action.equalsIgnoreCase("inwardinfo")){
+            } else if (action.equalsIgnoreCase("inwardinfo")) {
                 int subscription_id = Integer.parseInt(request.getParameter("id"));
                 String xml = _subscriptionModel.getSubscriptionInwardInfo(subscription_id);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            } else if (action.equalsIgnoreCase("prlist")) {
+                String xml = _subscriptionModel.getPleaseReferList();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }

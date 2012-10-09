@@ -5,7 +5,7 @@
 
 function GeneratePRLGrid(){
     $("#prlTable").jqGrid({
-            url:'',
+            url:'subscription?action=prlist',
             datatype: 'xml',
             mtype: 'GET',
             height: 300,

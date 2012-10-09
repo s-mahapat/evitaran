@@ -76,7 +76,16 @@
                                 "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "#subscriptions" + "'>Subscription</a>";
                             jQuery("#subscriberTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
-                        //updateCookie();
+                        sessionStorage['searchsubscriber'] = JSON.stringify({  
+                            page: jQuery("#subscriberTable").jqGrid('getGridParam','page'),
+                            rowNum: jQuery("#subscriberTable").jqGrid('getGridParam','rowNum'),
+                            totalpages: jQuery("#subscriberTable").jqGrid('getGridParam','lastpage'),
+                            city: $("#city").val(),
+                            subscriberNumber    : $("#subscriberNumber").val(),
+                            subscriberName      : $("#subscriberName").val(),
+                            email               : $("#email").val(),
+                            pincode             : $("#pincode").val() 
+                        });
 
                     },
                     beforeRequest: function(){
@@ -89,6 +98,21 @@
                         //updateCookie();
                     }
                 });
+                if(sessionStorage.searchsubscriber){
+                    var json = JSON.parse(sessionStorage.searchsubscriber);
+                    $("#city").val(json.city);
+                    $("#subscriberNumber").val(json.subscriberNumber);
+                    $("#subscriberName").val(json.subscriberName);
+                    $("#email").val(json.email);
+                    $("#pincode").val(json.pincode);
+                    isPageLoaded = true;
+                    jQuery("#subscriberTable").setGridParam({
+                        'rowNum': json.rowNum,
+                        'page': json.page
+
+                    });
+                    searchSubscriber();
+                }
                 
                 
             });
