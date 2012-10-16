@@ -105,17 +105,17 @@ public class mlModel extends JDSModel {
         // get the connection from connection pool
         Connection conn = this.getConnection();
         String printOption = request.getParameter("printOption");
-        
+
         String sql = Queries.getQuery("search_mldtl");
-        
+
         if (printOption.equals("O")){
-            sql += " and ml.copies = 1 and subscriber_type.nationality = 'I' order by ml.pincode";
+            sql += " and ml.copies = 1 and country = 'India' order by ml.pincode";
         }else if(printOption.equals("E")){
-            sql += " and ml.copies > 1 and subscriber_type.nationality = 'I' order by ml.pincode";
+            sql += " and ml.copies > 1 and country = 'India' order by ml.pincode";
         }else if(printOption.equals("F")){
-            sql += " and subscriber_type.nationality = 'F' order by ml.pincode";
+            sql += " and country <> 'India' order by ml.pincode";
         }
-            
+
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
         stGet.setInt(paramIndex, mlId);
@@ -136,12 +136,12 @@ public class mlModel extends JDSModel {
         String xml;
         int i = 0;
         int mlid;
-        mlid = this.searchMl();        
+        mlid = this.searchMl();
         String journalName = request.getParameter("journalName");
         String issue = request.getParameter("issue");
         String year = request.getParameter("year");
         String month = request.getParameter("month");
-        
+
         // Check if the record exists in mialing_list for that journal and issue.
         // If record deosnot exists insert record first to mailing list
         // Then retried id for current iserted record
@@ -158,14 +158,14 @@ public class mlModel extends JDSModel {
                 st.setString(++paramIndex, issue);
                 st.setString(++paramIndex, year);
                 st.setString(++paramIndex, month);
-                
+
                 if (st.executeUpdate() == 1) {
                     try(ResultSet rsml = st.getGeneratedKeys();){
                         if(rsml.first()){
                             // get the newly added mailing list id
                             mailing_list_id = rsml.getInt(1);
                         }
-                    }                    
+                    }
 
                     String sqlgetml = Queries.getQuery("select_generateml");
                     PreparedStatement stgetml = conn.prepareStatement(sqlgetml);
@@ -218,7 +218,7 @@ public class mlModel extends JDSModel {
                 conn.rollback();
             } finally {
                 conn.setAutoCommit(true);
-                
+
                 // return the connection back to the pool
                 this.CloseConnection(conn);
             }
@@ -269,6 +269,6 @@ public class mlModel extends JDSModel {
 
      return pdf;
      }
-     * 
+     *
      */
 }
