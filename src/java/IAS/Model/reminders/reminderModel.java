@@ -24,7 +24,17 @@ import javax.servlet.ServletContext;
 import IAS.Class.ServletContextInfo;
 import java.io.FileInputStream;
 import IAS.Class.msgsend;
-
+import java.io.StringWriter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 /**
  *
  * @author aloko
@@ -98,7 +108,6 @@ public class reminderModel extends JDSModel {
         else if (remType == 3){
             sql = Queries.getQuery("get_susbcriber_for_rem3");
         }
-
         PreparedStatement stGet = conn.prepareStatement(sql);
         rs = stGet.executeQuery();
         Object value = null;
@@ -143,6 +152,13 @@ public class reminderModel extends JDSModel {
         String xml = null;
         // Get data for reminders
         ResultSet rsGet = getReminders();
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+        
         //Loop the data for individual subscriber for reminder
         while (rsGet.next()){
            //Extract subscriber Details
@@ -164,7 +180,64 @@ public class reminderModel extends JDSModel {
            String pincode       = rsGet.getString(16);
            String email         = rsGet.getString(17);
            int reminders_id     = rsGet.getInt(18);
-                                
+
+           // Add the row element
+            Element subscriber = doc.createElement("subscriber");
+            results.appendChild(subscriber);
+
+            Element _subtypecode = doc.createElement("subtypecode");
+            subscriber.appendChild(_subtypecode);
+            _subtypecode.appendChild(doc.createTextNode(subtypecode));
+
+            Element _subscriberNumber = doc.createElement("subscriberNumber");
+            subscriber.appendChild(_subscriberNumber);
+            _subscriberNumber.appendChild(doc.createTextNode(subscriberNumber));
+
+            Element _subscriberName = doc.createElement("subscriberName");
+            subscriber.appendChild(_subscriberName);
+            _subscriberName.appendChild(doc.createTextNode(subscriberName));
+            
+            Element _balance = doc.createElement("balance");
+            subscriber.appendChild(_balance);
+            _balance.appendChild(doc.createTextNode(Integer.toString(balance)));
+            
+            Element _department = doc.createElement("department");
+            subscriber.appendChild(_department);
+            _department.appendChild(doc.createTextNode(department));
+            
+            Element _institution = doc.createElement("institution");
+            subscriber.appendChild(_institution);
+            _institution.appendChild(doc.createTextNode(institution));
+            
+            Element _shippingAddress = doc.createElement("shippingAddress");
+            subscriber.appendChild(_shippingAddress);
+            _shippingAddress.appendChild(doc.createTextNode(shippingAddress));
+            
+            Element _city = doc.createElement("city");
+            subscriber.appendChild(_city);
+            _city.appendChild(doc.createTextNode(city));
+            
+            Element _district = doc.createElement("district");
+            subscriber.appendChild(_district);
+            _district.appendChild(doc.createTextNode(district));
+            
+            
+            Element _state = doc.createElement("state");
+            subscriber.appendChild(_state);
+            _state.appendChild(doc.createTextNode(state));
+            
+            Element _country = doc.createElement("country");
+            subscriber.appendChild(_country);
+            _country.appendChild(doc.createTextNode(country));
+            
+            Element _pincode = doc.createElement("pincode");
+            subscriber.appendChild(_pincode);
+            _pincode.appendChild(doc.createTextNode(pincode));
+            
+            Element _email = doc.createElement("email");
+            subscriber.appendChild(_email);
+            _email.appendChild(doc.createTextNode(email));
+            
            //get the subscription details
            String sqlgetjnls = Queries.getQuery("get_subscribed_journals");
            PreparedStatement stgetjnls = conn.prepareStatement(sqlgetjnls);
@@ -182,17 +255,52 @@ public class reminderModel extends JDSModel {
            int startMonth       = rsgetjnls.getInt(6);
            int endMonth         = rsgetjnls.getInt(7);
            int endYear          = rsgetjnls.getInt(8);
-           
-                      
+
+           // Add the row element
+            Element journals = doc.createElement("journals");
+            subscriber.appendChild(journals);
+
+            Element _journalCode = doc.createElement("journalCode");
+            journals.appendChild(_journalCode);
+            _journalCode.appendChild(doc.createTextNode(journalCode));
+
+            Element _journalName = doc.createElement("journalName");
+            journals.appendChild(_journalName);
+            _journalName.appendChild(doc.createTextNode(journalName));
+
+            Element _copies = doc.createElement("copies");
+            journals.appendChild(_copies);
+            _copies.appendChild(doc.createTextNode(Integer.toString(copies)));
+            
+            Element _startMonth = doc.createElement("startMonth");
+            journals.appendChild(_startMonth);
+            _startMonth.appendChild(doc.createTextNode(Integer.toString(startMonth)));
+            
+            Element _startYear = doc.createElement("startYear");
+            journals.appendChild(_startYear);
+            _startYear.appendChild(doc.createTextNode(Integer.toString(startYear)));
+            
+            Element _endMonth = doc.createElement("endMonth");
+            journals.appendChild(_endMonth);
+            _endMonth.appendChild(doc.createTextNode(Integer.toString(endMonth)));
+            
+            Element _endYear = doc.createElement("endYear");
+            journals.appendChild(_endYear);
+            _endYear.appendChild(doc.createTextNode(Integer.toString(endYear)));
+            
           // insert the record to sent reminders
           int ins = insertReminderDetails(Integer.toString(reminders_id), medium);
         }    
         
-        if(status)
-            xml = util.convertStringToXML("success", "action");
-        else
-            xml = util.convertStringToXML("failure", "action");
-
+        DOMSource domSource = new DOMSource(doc);
+        try (StringWriter writer = new StringWriter()) {
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            xml = writer.toString();
+        }
+        
         return xml;
     }
 
