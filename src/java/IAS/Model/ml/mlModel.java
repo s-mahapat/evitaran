@@ -104,8 +104,18 @@ public class mlModel extends JDSModel {
 
         // get the connection from connection pool
         Connection conn = this.getConnection();
-
+        String printOption = request.getParameter("printOption");
+        
         String sql = Queries.getQuery("search_mldtl");
+        
+        if (printOption.equals("O")){
+            sql += " and ml.copies = 1 and subscriber_type.nationality = 'I' order by ml.pincode";
+        }else if(printOption.equals("E")){
+            sql += " and ml.copies > 1 and subscriber_type.nationality = 'I' order by ml.pincode";
+        }else if(printOption.equals("F")){
+            sql += " and subscriber_type.nationality = 'F' order by ml.pincode";
+        }
+            
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
         stGet.setInt(paramIndex, mlId);

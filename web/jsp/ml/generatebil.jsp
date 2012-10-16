@@ -222,7 +222,7 @@
                             <%-----------------------------------------------------------------------------------------------------%>
 
                             <input type="hidden" name="action" id="action"/>
-                            <fieldset class="subMainFieldSet">
+                            <fieldset class="subMainFieldSet">                              
                                 <div class="actionBtnDiv">
                                         <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
                                         <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>

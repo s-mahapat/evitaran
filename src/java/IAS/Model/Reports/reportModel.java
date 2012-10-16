@@ -1444,7 +1444,7 @@ String xml = null;
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
 
-        String sql = Queries.getQuery("gen_reminders_subscriber");
+        String sql = Queries.getQuery("list_reminders_subscriber");
 
         if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
             sql += " and reminders.reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";

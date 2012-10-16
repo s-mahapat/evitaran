@@ -5,11 +5,13 @@
 package IAS.Servlet;
 
 import IAS.Class.JDSLogger;
+import IAS.Class.Queries;
 import IAS.Class.ServletContextInfo;
 import IAS.Class.convertToPdf;
 import IAS.Controller.JDSController;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
 import javax.servlet.ServletContext;
@@ -121,6 +123,41 @@ public class pdfserver extends JDSController {
                 response.setHeader("Content-disposition", "attachment; filename=missing_issue.pdf");
                 os.flush();
 
+            } else if(action.equalsIgnoreCase("printRemindersPrintAll")){
+                
+                /*
+                ResultSet rsGet = (ResultSet) request.getAttribute("ResultSet");
+                
+                //Loop the data for individual subscriber for reminder
+                while (rsGet.next()){
+                   //Extract subscriber Details
+                    
+
+                   //get the subscription details
+                   String sqlgetjnls = Queries.getQuery("get_subscribed_journals");
+                   PreparedStatement stgetjnls = conn.prepareStatement(sqlgetjnls);
+                   int paramIndex = 1;  
+                   Object reminderId = null;
+                   reminderId = rsGet.getObject(1);
+                   stgetjnls.setInt(paramIndex, rsGet.getInt(1));
+                   ResultSet rsgetjnls = this.db.executeQueryPreparedStatement(stgetjnls); 
+
+                  //Compose and send mail
+                        ServletContext context = ServletContextInfo.getServletContext();
+                        String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
+                        Properties properties = new Properties();
+                        properties.load(new FileInputStream(emailPropertiesFile));
+                        String msg = properties.getProperty("missingIssueNoCopy");
+                        String to = request.getParameter("email");
+                        msgsend sendMsg = new msgsend();
+                        status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "jds.ias.mails@gmail.com", "Missing Issues", msg, "", "", null);
+
+
+                  // insert the record to sent reminders
+                  int ins =insertReminderDetails(reminderId.toString(), medium);
+                }
+                 * 
+                 */
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
