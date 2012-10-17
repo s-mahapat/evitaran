@@ -784,6 +784,17 @@ public convertToPdf(){
         COLUMNS[0][2] = Float.valueOf(properties.getProperty("urx2").trim()).floatValue();
         COLUMNS[0][3] = Float.valueOf(properties.getProperty("ury2").trim()).floatValue();
 
+        float[][] FOOTER_COLUMNS = new float[2][4];
+        FOOTER_COLUMNS[1][0] = Float.valueOf(properties.getProperty("fllx1").trim()).floatValue();
+        FOOTER_COLUMNS[1][1] = Float.valueOf(properties.getProperty("flly1").trim()).floatValue();
+        FOOTER_COLUMNS[1][2] = Float.valueOf(properties.getProperty("furx1").trim()).floatValue();
+        FOOTER_COLUMNS[1][3] = Float.valueOf(properties.getProperty("fury1").trim()).floatValue();
+
+        FOOTER_COLUMNS[0][0] = Float.valueOf(properties.getProperty("fllx2").trim()).floatValue();
+        FOOTER_COLUMNS[0][1] = Float.valueOf(properties.getProperty("flly2").trim()).floatValue();
+        FOOTER_COLUMNS[0][2] = Float.valueOf(properties.getProperty("furx2").trim()).floatValue();
+        FOOTER_COLUMNS[0][3] = Float.valueOf(properties.getProperty("fury2").trim()).floatValue();
+
         ColumnText ct = new ColumnText(writer.getDirectContent());
         int numberOfColumns = 2, count=0;
 
@@ -802,18 +813,26 @@ public convertToPdf(){
 
             int col = (count)%numberOfColumns;
 
+            // Add the address
             ct.setSimpleColumn(
                 COLUMNS[col][0], COLUMNS[col][1],
                 COLUMNS[col][2], COLUMNS[col][3]);
-
             int status = ColumnText.START_COLUMN;
-
             // Add the content to the column
             ct.addElement(info);
             int go = ct.go();
 
-            if(col == 1)
+            // Add the footer
+            ct.setSimpleColumn(
+                FOOTER_COLUMNS[col][0], FOOTER_COLUMNS[col][1],
+                FOOTER_COLUMNS[col][2], FOOTER_COLUMNS[col][3]);
+            info = getFooterForLabel();
+            ct.addElement(info);
+            go = ct.go();
+
+            if(col == 1){
                 document.newPage();
+            }
 
             count++;
         }
@@ -1002,6 +1021,26 @@ public convertToPdf(){
 
         return info;
 
+    }
+
+    public Paragraph getFooterForLabel() {
+        Paragraph info;
+        info = new Paragraph();
+        info.setLeading(leading);
+        info.setAlignment(textAlignment);
+
+        Font font = new Font(fontType, fontSize, Font.ITALIC);
+        info.add(new Chunk("If undelivered please return to:", font));
+        info.add(Chunk.NEWLINE);
+        font = new Font(fontType, fontSize, Font.BOLD);
+        info.add(new Chunk("Indian Academy of Sciences", font));
+        font = new Font(fontType, fontSize, fontStyle, BaseColor.BLACK);
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk("P.B. No.8005, C V Raman Avenue", font));
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk("Bangalore 560 080, INDIA.", font));
+
+        return info;
     }
 
     public Paragraph getContent(ResultSet rs) throws SQLException
