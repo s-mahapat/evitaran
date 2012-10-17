@@ -1024,6 +1024,7 @@ public convertToPdf(){
         String subscriberName   = null, department = null, institution = null, address = null;
         String city             = null, pincode = null, state = null, country = null;
         String startYear=null, startMonth=null, endYear=null, endMonth=null;
+        String subType=null; int copies = 0;
 
         Paragraph info = null;
 
@@ -1062,12 +1063,21 @@ public convertToPdf(){
                     address = rs.getString(i);
                 if(columnName.equalsIgnoreCase("city"))
                     city = rs.getString(i);
-                if(columnName.equalsIgnoreCase("pincode"))
+                if(columnName.equalsIgnoreCase("pincode")){
                     pincode = rs.getString(i);
+                    // If pincode is found to be zero, then do not print
+                    if(pincode.equalsIgnoreCase("0")){
+                        pincode = "";
+                    }
+                }
                 if(columnName.equalsIgnoreCase("state"))
                     state = rs.getString(i);
                 if(columnName.equalsIgnoreCase("country"))
                     country = rs.getString(i);
+                if(columnName.equalsIgnoreCase("subType"))
+                    subType = rs.getString(i);
+                if(columnName.equalsIgnoreCase("copies"))
+                    copies = rs.getInt(i);
             }
 
             info = new Paragraph();
@@ -1075,12 +1085,19 @@ public convertToPdf(){
             info.setAlignment(textAlignment);
 
             Font font = new Font(fontType, fontSize, fontStyle, BaseColor.BLACK);
-            String firstLine = subscriberNumber +
-                    " " + journalCode +
-                    " " + subtypecode +
-                    " " + startDate +
+            String firstLine = subscriberNumber + " " + journalCode;
+
+            if(copies > 1){
+                firstLine = firstLine + " " + copies;
+            }
+
+            firstLine = firstLine + " " + subtypecode;
+
+            if(subType.equals("Paid")) {
+                firstLine = firstLine + " " + startDate +
                     " " + "to" +
                     " " + endDate;
+            }
             info.add(new Chunk(firstLine, font));
             info.add(Chunk.NEWLINE);
             info.add(new Chunk(subscriberName, font));
