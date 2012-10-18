@@ -151,6 +151,8 @@
                         mlCreationDate          : $("#mlCreationDate").val(),
                         issue                   : $("#issue").val(),
                         printOption             : $("#printOption").val(),
+                        noHeader                : $("#noHeader").val(),
+                        periodicals             : $("#periodicals").val(),
                         action                  : "print"
                     },
                     success : function(data) {
@@ -202,6 +204,22 @@
             {
                 var x = "printSticker";
                 $('#action').val(x);
+            }
+            
+                        function getNoHeaderChecked(){
+                if (document.getElementById("noHeader").value == 1 ){
+                    document.getElementById("noHeader").value = 0;
+                }else {
+                    document.getElementById("noHeader").value = 1;
+                }
+            }
+            
+            function getPeriodicalChecked(){
+                if (document.getElementById("periodicals").value == 1 ){
+                    document.getElementById("periodicals").value = 0;
+                }else {
+                    document.getElementById("periodicals").value = 1;
+                }
             }
 
         </script>
@@ -295,6 +313,31 @@
                                 <div id="pager"></div>
                             </fieldset>
 
+                            <fieldset class="subMainFieldSet">
+                                <div class="IASFormFieldDiv">
+                                    <div class="IASFormLeftDiv">
+                                        <div class="IASFormFieldDiv">
+                                            <span class="IASFormDivSpanLabel">
+                                                <label>No Header</label>
+                                            </span>
+                                            <span class="IASFormDivSpanInputBox">
+                                                <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="noHeader" id="noHeader" onclick="getNoHeaderChecked()"/>
+                                            </span>
+                                        </div> 
+                                    </div>    
+                                    <div class="IASFormRightDiv">
+                                        <div class="IASFormFieldDiv">
+                                            <span class="IASFormDivSpanLabel">
+                                                <label>Periodicals</label>
+                                            </span>
+                                            <span class="IASFormDivSpanInputBox">
+                                                <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="periodicals" id="periodicals" onclick="getPeriodicalChecked()"/>
+                                            </span>
+                                        </div>                                
+                                    </div>
+                                </div>
+                            </fieldset>
+                            
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Journal Actions Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>
