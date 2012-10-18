@@ -37,12 +37,42 @@ public class convertToPdf extends JDSPDF {
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Class.convertToPdf");
 
-    // Default values
-    float leading       = 10.0f;
+    // Common for all
+    float leading            = 10.0f;
     int textAlignment   = 0;
     Font.FontFamily fontType = Font.getFamily("HELVETICA");
     int fontSize        = 10;
     int fontStyle       = Font.getStyleValue("NORMAL");
+
+    // Specifics for label
+    float lfixedLeading       = 0.0f;
+    float lmultipliedLeading  = 1.2f;
+    int ltextAlignment    = 0;
+    Font.FontFamily lfontType = Font.getFamily("HELVETICA");
+    int lfontSize        = 10;
+    int lfontStyle       = Font.getStyleValue("NORMAL");
+    int lfontSizeHeader  = 10;
+
+    // Specifics for sticker
+    int stextAlignment    = 0;
+    Font.FontFamily sfontType = Font.getFamily("HELVETICA");
+    int sfontSize        = 10;
+    int sfontStyle       = Font.getStyleValue("NORMAL");
+    int sfontSizeHeader  = 10;
+
+    boolean noHeader = false;
+    boolean periodicals = false;
+
+
+public convertToPdf(String _noHeader, String _periodicals){
+        super();
+        if(_noHeader!= null && _noHeader.equals("on")){
+            noHeader    = true;
+        }
+        if(_periodicals!= null && _periodicals.equals("on")){
+            periodicals = true;
+        }
+    }
 
 public convertToPdf(){
         super();
@@ -795,13 +825,36 @@ public convertToPdf(){
         FOOTER_COLUMNS[0][2] = Float.valueOf(properties.getProperty("furx2").trim()).floatValue();
         FOOTER_COLUMNS[0][3] = Float.valueOf(properties.getProperty("fury2").trim()).floatValue();
 
+        float[][] SLNO_COLUMNS = new float[2][4];
+        SLNO_COLUMNS[1][0] = Float.valueOf(properties.getProperty("sllx1").trim()).floatValue();
+        SLNO_COLUMNS[1][1] = Float.valueOf(properties.getProperty("slly1").trim()).floatValue();
+        SLNO_COLUMNS[1][2] = Float.valueOf(properties.getProperty("surx1").trim()).floatValue();
+        SLNO_COLUMNS[1][3] = Float.valueOf(properties.getProperty("sury1").trim()).floatValue();
+
+        SLNO_COLUMNS[0][0] = Float.valueOf(properties.getProperty("sllx2").trim()).floatValue();
+        SLNO_COLUMNS[0][1] = Float.valueOf(properties.getProperty("slly2").trim()).floatValue();
+        SLNO_COLUMNS[0][2] = Float.valueOf(properties.getProperty("surx2").trim()).floatValue();
+        SLNO_COLUMNS[0][3] = Float.valueOf(properties.getProperty("sury2").trim()).floatValue();
+
+        float[][] PDCLS_COLUMNS = new float[2][4];
+        PDCLS_COLUMNS[1][0] = Float.valueOf(properties.getProperty("pllx1").trim()).floatValue();
+        PDCLS_COLUMNS[1][1] = Float.valueOf(properties.getProperty("plly1").trim()).floatValue();
+        PDCLS_COLUMNS[1][2] = Float.valueOf(properties.getProperty("purx1").trim()).floatValue();
+        PDCLS_COLUMNS[1][3] = Float.valueOf(properties.getProperty("pury1").trim()).floatValue();
+
+        PDCLS_COLUMNS[0][0] = Float.valueOf(properties.getProperty("pllx2").trim()).floatValue();
+        PDCLS_COLUMNS[0][1] = Float.valueOf(properties.getProperty("plly2").trim()).floatValue();
+        PDCLS_COLUMNS[0][2] = Float.valueOf(properties.getProperty("purx2").trim()).floatValue();
+        PDCLS_COLUMNS[0][3] = Float.valueOf(properties.getProperty("pury2").trim()).floatValue();
+
         ColumnText ct = new ColumnText(writer.getDirectContent());
         int numberOfColumns = 2, count=0;
+        int serialNo=1;
 
         while(true)
         {
             // Get the content
-            Paragraph info = getContent(rs);
+            Paragraph info = getLabelContent(rs);
             if(info == null)
             {
                 // step 5
@@ -813,19 +866,32 @@ public convertToPdf(){
 
             int col = (count)%numberOfColumns;
 
-            // Add the address
-            ct.setSimpleColumn(
-                COLUMNS[col][0], COLUMNS[col][1],
-                COLUMNS[col][2], COLUMNS[col][3]);
+
+            // Add the serial no
+            ct.setSimpleColumn(SLNO_COLUMNS[col][0], SLNO_COLUMNS[col][1], SLNO_COLUMNS[col][2], SLNO_COLUMNS[col][3]);
             int status = ColumnText.START_COLUMN;
-            // Add the content to the column
-            ct.addElement(info);
+            Paragraph info1 = getSerialNo(serialNo);
+            ct.addElement(info1);
             int go = ct.go();
 
+            // Add the text "P E R I O D I C A L"
+            if(periodicals){
+                ct.setSimpleColumn(PDCLS_COLUMNS[col][0], PDCLS_COLUMNS[col][1], PDCLS_COLUMNS[col][2], PDCLS_COLUMNS[col][3]);
+                status = ColumnText.START_COLUMN;
+                Paragraph info2 = getPERIODICAL();
+                ct.addElement(info2);
+            }
+            go = ct.go();
+
+            // Add the address
+            ct.setSimpleColumn(COLUMNS[col][0], COLUMNS[col][1],COLUMNS[col][2], COLUMNS[col][3]);
+            status = ColumnText.START_COLUMN;
+            ct.addElement(info);
+            go = ct.go();
+
             // Add the footer
-            ct.setSimpleColumn(
-                FOOTER_COLUMNS[col][0], FOOTER_COLUMNS[col][1],
-                FOOTER_COLUMNS[col][2], FOOTER_COLUMNS[col][3]);
+            ct.setSimpleColumn(FOOTER_COLUMNS[col][0], FOOTER_COLUMNS[col][1],FOOTER_COLUMNS[col][2], FOOTER_COLUMNS[col][3]);
+            status = ColumnText.START_COLUMN;
             info = getFooterForLabel();
             ct.addElement(info);
             go = ct.go();
@@ -835,6 +901,7 @@ public convertToPdf(){
             }
 
             count++;
+            serialNo++;
         }
     }
 
@@ -864,10 +931,26 @@ public convertToPdf(){
 
         // Read common information
         leading         = Float.valueOf(properties.getProperty("leading").trim()).floatValue();
+        lfixedLeading         = Float.valueOf(properties.getProperty("lfixedLeading").trim()).floatValue();
+        lmultipliedLeading    = Float.valueOf(properties.getProperty("lmultipliedLeading").trim()).floatValue();
         textAlignment   = Integer.parseInt(properties.getProperty("textAlignment"));
         fontType        = Font.getFamily(properties.getProperty("fontFamily"));
         fontSize        = Integer.parseInt(properties.getProperty("fontSize"));
         fontStyle       = Font.getStyleValue(properties.getProperty("fontStyle"));
+
+        // Read information required for label
+        ltextAlignment   = Integer.parseInt(properties.getProperty("ltextAlignment"));
+        lfontType        = Font.getFamily(properties.getProperty("lfontFamily"));
+        lfontSize        = Integer.parseInt(properties.getProperty("lfontSize"));
+        lfontStyle       = Font.getStyleValue(properties.getProperty("lfontStyle"));
+        lfontSizeHeader  = Integer.parseInt(properties.getProperty("lfontSizeHeader"));
+
+        // Read information required for label
+        stextAlignment   = Integer.parseInt(properties.getProperty("stextAlignment"));
+        sfontType        = Font.getFamily(properties.getProperty("sfontFamily"));
+        sfontSize        = Integer.parseInt(properties.getProperty("sfontSize"));
+        sfontStyle       = Font.getStyleValue(properties.getProperty("sfontStyle"));
+        sfontSizeHeader  = Integer.parseInt(properties.getProperty("sfontSizeHeader"));
 
         return properties;
     }
@@ -936,7 +1019,7 @@ public convertToPdf(){
                 for (int r=1; r<=stickerColumns; r++)
                 {
                     // Get the content
-                    Paragraph info = getContent(rs);
+                    Paragraph info = getStickerContent(rs);
                     if(info == null)
                     {
                         // step 5
@@ -1026,15 +1109,15 @@ public convertToPdf(){
     public Paragraph getFooterForLabel() {
         Paragraph info;
         info = new Paragraph();
-        info.setLeading(leading);
+        info.setLeading(lfixedLeading, lmultipliedLeading);
         info.setAlignment(textAlignment);
 
-        Font font = new Font(fontType, fontSize, Font.ITALIC);
+        Font font = new Font(lfontType, lfontSizeHeader, Font.ITALIC);
         info.add(new Chunk("If undelivered please return to:", font));
         info.add(Chunk.NEWLINE);
-        font = new Font(fontType, fontSize, Font.BOLD);
+        font = new Font(lfontType, lfontSizeHeader, Font.BOLD);
         info.add(new Chunk("Indian Academy of Sciences", font));
-        font = new Font(fontType, fontSize, fontStyle, BaseColor.BLACK);
+        font = new Font(lfontType, lfontSizeHeader, lfontStyle, BaseColor.BLACK);
         info.add(Chunk.NEWLINE);
         info.add(new Chunk("P.B. No.8005, C V Raman Avenue", font));
         info.add(Chunk.NEWLINE);
@@ -1043,7 +1126,156 @@ public convertToPdf(){
         return info;
     }
 
-    public Paragraph getContent(ResultSet rs) throws SQLException
+    public Paragraph getPERIODICAL() {
+        Paragraph info;
+        info = new Paragraph();
+        info.setLeading(lfixedLeading, lmultipliedLeading);
+        info.setAlignment(textAlignment);
+
+        Font font = new Font(lfontType, lfontSizeHeader, lfontStyle, BaseColor.BLACK);
+        info.add(new Chunk("P E R I O D I C A L S", font));
+        info.add(Chunk.NEWLINE);
+
+        return info;
+    }
+
+    public Paragraph getSerialNo(int slNo) {
+        Paragraph info;
+        info = new Paragraph();
+        info.setLeading(lfixedLeading, lmultipliedLeading);
+        info.setAlignment(textAlignment);
+
+        Font font = new Font(lfontType, lfontSizeHeader, lfontStyle, BaseColor.BLACK);
+        info.add(new Chunk("S.l. No. " + Integer.toString(slNo), font));
+        info.add(Chunk.NEWLINE);
+
+        return info;
+    }
+
+    public Paragraph getLabelContent(ResultSet rs) throws SQLException
+    {
+        //String subscriberNumber = "36207";
+        //String journalCode      = "RES";
+        //String subtypecode      = "II";
+        //String startDate        = "Jan 2010";
+        //String endDate          = "Dec 2010";
+        //String subscriberName   = "(Ref: ID 123 IMS Engg College)";
+        //String department       = "South Asia Distributors & Publisher";
+        //String institution      = "92-C (Part), 1st Floor, SPAN House";
+        //String address          =  "Gurudwara Road, Madangir";
+        //String city             = "New Delhi";
+        //String pincode          = "110 062";
+        //String state            = "New Delhi";
+        //String country          = "India";
+
+        String subscriberNumber = null, journalCode = null, subtypecode = null, startDate = null, endDate = null;
+        String subscriberName   = null, department = null, institution = null, address = null;
+        String city             = null, pincode = null, state = null, country = null;
+        String startYear=null, startMonth=null, endYear=null, endMonth=null;
+        String subType=null; int copies = 0;
+
+        Paragraph info = null;
+
+        if(rs.next())
+        {
+            java.sql.ResultSetMetaData rsmd = rs.getMetaData();
+            int numberOfColumns = rsmd.getColumnCount();
+            for (int i = 1; i <= numberOfColumns; i++)
+            {
+                String columnName = rsmd.getColumnName(i);
+                if(columnName.equals("subscriberNumber"))
+                    subscriberNumber = rs.getString(i);
+                if(columnName.equals("journalCode"))
+                    journalCode = rs.getString(i);
+                if(columnName.equals("subtypecode"))
+                    subtypecode = rs.getString(i);
+                if(columnName.equals("startYear"))
+                    startYear = rs.getString(i);
+                if(columnName.equals("startMonth"))
+                    startMonth = rs.getString(i);
+                startDate = startMonth + " " + startYear;
+
+                if(columnName.equals("endYear"))
+                    endYear = rs.getString(i);
+                if(columnName.equals("endMonth"))
+                    endMonth = rs.getString(i);
+                endDate = endMonth + " " + endYear;
+
+                if(columnName.equals("subscriberName"))
+                    subscriberName = rs.getString(i);
+                if(columnName.equals("department"))
+                    department = rs.getString(i);
+                if(columnName.equalsIgnoreCase("institution"))
+                    institution = rs.getString(i);
+                if(columnName.equalsIgnoreCase("address"))
+                    address = rs.getString(i);
+                if(columnName.equalsIgnoreCase("city"))
+                    city = rs.getString(i);
+                if(columnName.equalsIgnoreCase("pincode")){
+                    pincode = rs.getString(i);
+                    // If pincode is found to be zero, then do not print
+                    if(pincode.equalsIgnoreCase("0")){
+                        pincode = "";
+                    }
+                }
+                if(columnName.equalsIgnoreCase("state"))
+                    state = rs.getString(i);
+                if(columnName.equalsIgnoreCase("country"))
+                    country = rs.getString(i);
+                if(columnName.equalsIgnoreCase("subType"))
+                    subType = rs.getString(i);
+                if(columnName.equalsIgnoreCase("copies"))
+                    copies = rs.getInt(i);
+            }
+
+            info = new Paragraph();
+            info.setLeading(lfixedLeading, lmultipliedLeading);
+            info.setAlignment(ltextAlignment);
+
+            Font font;
+
+            if(!noHeader){
+                font = new Font(lfontType, lfontSizeHeader, lfontStyle, BaseColor.BLACK);
+                String firstLine = subscriberNumber + " " + journalCode;
+
+                if(copies > 1){
+                    firstLine = firstLine + " " + copies;
+                }
+
+                firstLine = firstLine + " " + subtypecode;
+
+                if(subType.equals("Paid")) {
+                    firstLine = firstLine + " " + startDate +
+                        " " + "to" +
+                        " " + endDate;
+                }
+                info.add(new Chunk(firstLine, font));
+                info.add(Chunk.NEWLINE);
+            }
+            font = new Font(lfontType, lfontSize, lfontStyle, BaseColor.BLACK);
+            info.add(new Chunk(subscriberName, font));
+            info.add(Chunk.NEWLINE);
+            info.add(new Chunk(department, font));
+            info.add(Chunk.NEWLINE);
+            info.add(new Chunk(institution, font));
+            info.add(Chunk.NEWLINE);
+            info.add(new Chunk(address, font));
+            info.add(Chunk.NEWLINE);
+            font = new Font(lfontType, lfontSize, Font.BOLD);
+            String lastLine = city +
+                    " " + pincode +
+                    " " + state +
+                    " ";
+            if(!country.equals("India")){
+                lastLine = lastLine + country;
+            }
+
+            info.add(new Chunk(lastLine, font));
+        }
+        return info;
+    }
+
+    public Paragraph getStickerContent(ResultSet rs) throws SQLException
     {
         //String subscriberNumber = "36207";
         //String journalCode      = "RES";
@@ -1123,22 +1355,26 @@ public convertToPdf(){
             info.setLeading(leading);
             info.setAlignment(textAlignment);
 
-            Font font = new Font(fontType, fontSize, fontStyle, BaseColor.BLACK);
-            String firstLine = subscriberNumber + " " + journalCode;
+            Font font;
+            if(!noHeader){
+                font = new Font(sfontType, sfontSizeHeader, sfontStyle, BaseColor.BLACK);
+                String firstLine = subscriberNumber + " " + journalCode;
 
-            if(copies > 1){
-                firstLine = firstLine + " " + copies;
+                if(copies > 1){
+                    firstLine = firstLine + " " + copies;
+                }
+
+                firstLine = firstLine + " " + subtypecode;
+
+                if(subType.equals("Paid")) {
+                    firstLine = firstLine + " " + startDate +
+                        " " + "to" +
+                        " " + endDate;
+                }
+                info.add(new Chunk(firstLine, font));
+                info.add(Chunk.NEWLINE);
             }
-
-            firstLine = firstLine + " " + subtypecode;
-
-            if(subType.equals("Paid")) {
-                firstLine = firstLine + " " + startDate +
-                    " " + "to" +
-                    " " + endDate;
-            }
-            info.add(new Chunk(firstLine, font));
-            info.add(Chunk.NEWLINE);
+            font = new Font(sfontType, sfontSize, sfontStyle, BaseColor.BLACK);
             info.add(new Chunk(subscriberName, font));
             info.add(Chunk.NEWLINE);
             info.add(new Chunk(department, font));
@@ -1147,11 +1383,15 @@ public convertToPdf(){
             info.add(Chunk.NEWLINE);
             info.add(new Chunk(address, font));
             info.add(Chunk.NEWLINE);
-            font = new Font(fontType, fontSize, Font.BOLD);
+            font = new Font(sfontType, sfontSize, Font.BOLD);
             String lastLine = city +
                     " " + pincode +
                     " " + state +
-                    " " + country;
+                    " ";
+            if(!country.equals("India")){
+                lastLine = lastLine + country;
+            }
+
             info.add(new Chunk(lastLine, font));
         }
         return info;

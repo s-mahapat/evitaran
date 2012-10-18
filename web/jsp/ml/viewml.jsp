@@ -27,7 +27,7 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
                 //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=getissues"%>","issueNumber","issue");
                 jQuery("#btnSearch,#btnPrintLabel,#btnPrintSticker").button("disable");
-                                
+
              });
 
             $(function(){
@@ -45,7 +45,7 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
-                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city', 
+                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city',
                                 'state', 'country', 'pincode', 'copies', 'issue', 'month', 'year'],
                     colModel :[
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
@@ -132,11 +132,12 @@
                         jQuery("#mlTable").setGridParam({ datatype: "xml" });
                         jQuery("#mlTable").trigger("clearGridData");
                         jQuery("#mlTable").trigger("reloadGrid");
-                        jQuery("#btnPrintLabel,#btnPrintSticker").attr("disabled",false);
+                        //jQuery("#btnPrintLabel,#btnPrintSticker").attr("disabled",false);
+                        jQuery("#btnPrintLabel,#btnPrintSticker").button("enable");
                         jQuery("#btnSearch").button("disable");
                     }
             }
-            
+
 
 
             function print(){
@@ -151,8 +152,8 @@
                         mlCreationDate          : $("#mlCreationDate").val(),
                         issue                   : $("#issue").val(),
                         printOption             : $("#printOption").val(),
-                        noHeader                : $("#noHeader").val(),
-                        periodicals             : $("#periodicals").val(),
+                        noHeader                : $("#noHeader").length,
+                        periodicals             : $("#periodicals").length,
                         action                  : "print"
                     },
                     success : function(data) {
@@ -205,7 +206,7 @@
                 var x = "printSticker";
                 $('#action').val(x);
             }
-            
+
                         function getNoHeaderChecked(){
                 if (document.getElementById("noHeader").value == 1 ){
                     document.getElementById("noHeader").value = 0;
@@ -213,7 +214,7 @@
                     document.getElementById("noHeader").value = 1;
                 }
             }
-            
+
             function getPeriodicalChecked(){
                 if (document.getElementById("periodicals").value == 1 ){
                     document.getElementById("periodicals").value = 0;
@@ -323,8 +324,8 @@
                                             <span class="IASFormDivSpanInputBox">
                                                 <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="noHeader" id="noHeader"/>
                                             </span>
-                                        </div> 
-                                    </div>    
+                                        </div>
+                                    </div>
                                     <div class="IASFormRightDiv">
                                         <div class="IASFormFieldDiv">
                                             <span class="IASFormDivSpanLabel">
@@ -333,11 +334,11 @@
                                             <span class="IASFormDivSpanInputBox">
                                                 <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="periodicals" id="periodicals"/>
                                             </span>
-                                        </div>                                
+                                        </div>
                                     </div>
                                 </div>
                             </fieldset>
-                            
+
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Journal Actions Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>

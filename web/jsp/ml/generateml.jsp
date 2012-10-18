@@ -132,7 +132,10 @@
                     jQuery("#mlTable").setGridParam({ datatype: "xml" });
                     jQuery("#mlTable").trigger("clearGridData");
                     jQuery("#mlTable").trigger("reloadGrid");
+                    //jQuery("#btnPrintLabel").attr("disabled",false);
+                    //jQuery("#btnPrintSticker").attr("disabled",false);
                     jQuery("#btnPrintLabel,#btnPrintSticker").button("enable");
+                    jQuery("#btnSearch").button("disable");
                     jQuery("#btnAdd").button("disable");
                 }
             }
@@ -151,8 +154,8 @@
                         mlCreationDate          : $("#mlCreationDate").val(),
                         issue                   : $("#issue").val(),
                         printOption             : $("#printOption").val(),
-                        noHeader                : $("#noHeader").val(),
-                        periodicals             : $("#periodicals").val(),
+                        noHeader                : $("#noHeader").length,
+                        periodicals             : $("#periodicals").length,
                         action                  : "print"
                     },
                     success : function(data) {
@@ -213,7 +216,7 @@
                     document.getElementById("noHeader").value = 1;
                 }
             }
-            
+
             function getPeriodicalChecked(){
                 if (document.getElementById("periodicals").value == 1 ){
                     document.getElementById("periodicals").value = 0;
@@ -221,7 +224,7 @@
                     document.getElementById("periodicals").value = 1;
                 }
             }
-            
+
         </script>
     </head>
     <body>
@@ -316,7 +319,7 @@
                             <table class="datatable" id="mlTable"></table>
                             <div id="pager"></div>
                         </fieldset>
-                        
+
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="IASFormLeftDiv">
@@ -327,8 +330,8 @@
                                         <span class="IASFormDivSpanInputBox">
                                             <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="noHeader" id="noHeader"/>
                                         </span>
-                                    </div> 
-                                </div>    
+                                    </div>
+                                </div>
                                 <div class="IASFormRightDiv">
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
@@ -337,11 +340,11 @@
                                         <span class="IASFormDivSpanInputBox">
                                             <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="periodicals" id="periodicals"/>
                                         </span>
-                                    </div>                                
+                                    </div>
                                 </div>
                             </div>
                         </fieldset>
-                        
+
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Journal Actions Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -349,7 +352,7 @@
                         <input type="hidden" name="action" id="action"/>
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv">
-                              <div id="printMedium">
+                               <div id="printMedium">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Print option</label>
                                     </span>
@@ -360,7 +363,7 @@
                                         <option value ="F">Foreign</option>
                                      </select>
                                     </span>
-                                </div>                                
+                                </div>
                                 <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
                                 <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
                                 <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>

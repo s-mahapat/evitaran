@@ -76,7 +76,10 @@ public class pdfserver extends JDSController {
             }else if(action.equalsIgnoreCase("generatemlPrintLabel")){
                 logger.debug("Start of mailing list label generation");
                 ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
-                convertToPdf c2Pdf = new convertToPdf();
+
+                String noHeader = request.getParameter("noHeader");
+                String periodicals = request.getParameter("periodicals");
+                convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals);
                 c2Pdf.addLabelContent(rs, os);
                 response.setContentType("application/pdf");
                 response.setHeader("Content-disposition", "attachment; filename=ml.pdf");
@@ -86,7 +89,9 @@ public class pdfserver extends JDSController {
             }else if(action.equalsIgnoreCase("generatemlPrintSticker")){
                 logger.debug("Start of mailing list sticker generation");
                 ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
-                convertToPdf c2Pdf = new convertToPdf();
+                String noHeader = request.getParameter("noHeader");
+                String periodicals = request.getParameter("periodicals");
+                convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals);
                 c2Pdf.addStickerContent(rs, os);
                 response.setContentType("application/pdf");
                 response.setHeader("Content-disposition", "attachment; filename=ml.pdf");
@@ -124,23 +129,23 @@ public class pdfserver extends JDSController {
                 os.flush();
 
             } else if(action.equalsIgnoreCase("printRemindersPrintAll")){
-                
+
                 /*
                 ResultSet rsGet = (ResultSet) request.getAttribute("ResultSet");
-                
+
                 //Loop the data for individual subscriber for reminder
                 while (rsGet.next()){
                    //Extract subscriber Details
-                    
+
 
                    //get the subscription details
                    String sqlgetjnls = Queries.getQuery("get_subscribed_journals");
                    PreparedStatement stgetjnls = conn.prepareStatement(sqlgetjnls);
-                   int paramIndex = 1;  
+                   int paramIndex = 1;
                    Object reminderId = null;
                    reminderId = rsGet.getObject(1);
                    stgetjnls.setInt(paramIndex, rsGet.getInt(1));
-                   ResultSet rsgetjnls = this.db.executeQueryPreparedStatement(stgetjnls); 
+                   ResultSet rsgetjnls = this.db.executeQueryPreparedStatement(stgetjnls);
 
                   //Compose and send mail
                         ServletContext context = ServletContextInfo.getServletContext();
@@ -156,7 +161,7 @@ public class pdfserver extends JDSController {
                   // insert the record to sent reminders
                   int ins =insertReminderDetails(reminderId.toString(), medium);
                 }
-                 * 
+                 *
                  */
             }
         } catch (Exception e) {
