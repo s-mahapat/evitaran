@@ -193,8 +193,8 @@ function checkMl(){
                     mlid = $(this).find("mlid").text();
                 });
                 if (mlid == 0){
-                    alert("Mailing List already generated for&year=" +  $("#year").val() + "&journalName=" + $("#journalName").val()
-                            + "&month=" + $("#month").val() + "&issue=" + $("#issue").val());
+                    alert("Mailing List not generated for Year: " +  $("#year").val() + ", Journal Name: " + $("#journalName").val()
+                            + ", Month: " + $("#month").val() + ", Issue: " + $("#issue").val());
 
                 }
                 else {

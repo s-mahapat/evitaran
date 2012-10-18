@@ -325,7 +325,7 @@
                                             <label>No Header</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="noHeader" id="noHeader" onclick="getNoHeaderChecked()"/>
+                                            <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="noHeader" id="noHeader"/>
                                         </span>
                                     </div> 
                                 </div>    
@@ -335,7 +335,7 @@
                                             <label>Periodicals</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="periodicals" id="periodicals" onclick="getPeriodicalChecked()"/>
+                                            <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="periodicals" id="periodicals"/>
                                         </span>
                                     </div>                                
                                 </div>

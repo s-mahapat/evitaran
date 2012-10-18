@@ -26,8 +26,8 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=month"%>","month","month");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
                 //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=getissues"%>","issueNumber","issue");
-                jQuery("#btnSearch,#btnPrintLabel,#btnPrintSticker").attr("disabled",true);
-                
+                jQuery("#btnSearch,#btnPrintLabel,#btnPrintSticker").button("disable");
+                                
              });
 
             $(function(){
@@ -133,7 +133,7 @@
                         jQuery("#mlTable").trigger("clearGridData");
                         jQuery("#mlTable").trigger("reloadGrid");
                         jQuery("#btnPrintLabel,#btnPrintSticker").attr("disabled",false);
-                        jQuery("#btnSearch").attr("disabled",true);
+                        jQuery("#btnSearch").button("disable");
                     }
             }
             
@@ -321,7 +321,7 @@
                                                 <label>No Header</label>
                                             </span>
                                             <span class="IASFormDivSpanInputBox">
-                                                <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="noHeader" id="noHeader" onclick="getNoHeaderChecked()"/>
+                                                <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="noHeader" id="noHeader"/>
                                             </span>
                                         </div> 
                                     </div>    
@@ -331,7 +331,7 @@
                                                 <label>Periodicals</label>
                                             </span>
                                             <span class="IASFormDivSpanInputBox">
-                                                <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="periodicals" id="periodicals" onclick="getPeriodicalChecked()"/>
+                                                <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="periodicals" id="periodicals"/>
                                             </span>
                                         </div>                                
                                     </div>
