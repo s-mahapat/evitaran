@@ -149,7 +149,11 @@
                     </ul>
                 </li>
             </ul>
-
+        </li>
+        <li class="menu"><a href="#">Send Bulk Emails</a>
+            <ul>
+                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=sendBulkEmails"%>">Send Bulk Emails</a></li>
+            </ul>
         </li>
     </ul>
     <div id="verticalwhiteline"></div>

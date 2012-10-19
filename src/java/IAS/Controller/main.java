@@ -162,7 +162,7 @@ public class main extends JDSController {
 
         } else if (action.equalsIgnoreCase("subscriptionFigures")) {
             url = "/reports?action=constructTableSubcriptionFigures";
-            
+
         } else if (action.equalsIgnoreCase("listprofarmaInvoice")) {
 
             url = "/jsp/reports/listprofarmaInvoice.jsp";
@@ -221,6 +221,11 @@ public class main extends JDSController {
 
             //url = "/jsp/masterdata/searchJournalPriceGroup.jsp";
             url = "/jsp/subscription/plreferlist.jsp";
+
+        }else if (action.equals("sendBulkEmails")) {
+
+            //url = "/jsp/masterdata/searchJournalPriceGroup.jsp";
+            url = "jsp/BulkEmail/sendBulkEmail.jsp";
 
         }
 

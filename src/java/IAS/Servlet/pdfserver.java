@@ -155,7 +155,7 @@ public class pdfserver extends JDSController {
                         String msg = properties.getProperty("missingIssueNoCopy");
                         String to = request.getParameter("email");
                         msgsend sendMsg = new msgsend();
-                        status = sendMsg.sendMailWithAuthenticationUseTLS(to, "", "jds.ias.mails@gmail.com", "Missing Issues", msg, "", "", null);
+                        status = sendMsg.sendMail(to, "", "jds.ias.mails@gmail.com", "Missing Issues", msg, "", "", null);
 
 
                   // insert the record to sent reminders

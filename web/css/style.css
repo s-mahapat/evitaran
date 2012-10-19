@@ -245,6 +245,11 @@ A:active {
     background-color: antiquewhite;
 }
 
+.IASTextBoxMandatoryMax{
+    width: 100%;
+    background-color: antiquewhite;
+}
+
 .IASTextArea{
     font-family:inherit;
     font-size: inherit;
@@ -353,6 +358,21 @@ A:active {
     width: 150px;
 }
 
+.IASFormDivSpanLabelMax{
+    font-size: x-small;
+    margin-left: 0px;
+    float: left;
+    text-align: left;
+    width: 100%;
+}
+
+.IASFormDivSpanLabelSpecial{
+    margin-left: 0px;
+    float: left;
+    text-align: left;
+    width: 20%;
+}
+
 .IASFormDivSpanLabelRadio{
     margin-left: 15px;
     float: left;
@@ -363,6 +383,30 @@ A:active {
 .IASFormDivSpanInputBox{
     margin-left: 15px;
     float: left;
+}
+
+.IASFormDivSpanLabelEmail{
+    margin-left: 0px;
+    float: left;
+    text-align: left;
+    width: 40px;
+}
+
+.IASFormDivSpanInputBoxEmail{
+    margin-left: 15px;
+    float: left;
+    width: 75%;
+}
+
+.IASFormDivSpanContentArea{
+    margin-left: 15px;
+    float: left;
+    width: 100%;
+}
+.IASFormDivSpanContentAreaNoLeftMargin{
+    margin-left: 0px;
+    float: left;
+    width: 100%;
 }
 
 .IASFormDivSpanInputBoxLessMargin{

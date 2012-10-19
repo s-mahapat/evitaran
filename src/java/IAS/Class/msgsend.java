@@ -63,16 +63,16 @@ public class msgsend {
         email.addRecipient(SubscriberEmail, SubscriberEmail, RecipientType.TO);
         email.addRecipient("IAS", "jds.ias.mails@gmail.com", RecipientType.BCC);
         email.setText(body);
-        
+
         // check if there is any attachment to be sent, else just ignore
         if(FileName != null && attachment != null && attachmentType != null){
             email.addAttachment(FileName, attachment, attachmentType);
         }
-        
+
         String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
         String SMTP_AUTH_USER = properties.getProperty("SMTP_AUTH_USER");
         String SMTP_AUTH_PWD = properties.getProperty("SMTP_AUTH_PWD");
-        
+
         try{
             Mailer _mailer = new Mailer(SMTP_HOST_NAME, 25, SMTP_AUTH_USER, SMTP_AUTH_PWD, TransportStrategy.SMTP_TLS);
             _mailer.validate(email);
@@ -83,7 +83,7 @@ public class msgsend {
         }
 
     }
-    
+
 
     // This can be used for gmail
     public boolean sendMailWithAuthenticationUseSSL(String to, String cc, String bcc, String subject,
@@ -171,7 +171,7 @@ public class msgsend {
                 // This will send messages as text
                 //message.setContent(msg, "text/plain");  // Setting the content type
                 // To send html links in mail
-                message.setText(msg, "UTF-8", "html");
+                message.setText(msg, "text/html");
             }
 
             message.setHeader("X-Mailer", "msgSend");
@@ -276,9 +276,9 @@ public class msgsend {
                 message.setContent(mp);
             } else {
                 // This will send messages as text
-                message.setContent(msg, "text/plain");  // Setting the content type
+                message.setContent(msg, "text/html");  // Setting the content type
                 // To send html links in mail
-                // message.setText(msg, "UTF-8", "html");
+                //message.setText(msg, "UTF-8", "html");
             }
 
             message.setHeader("X-Mailer", "msgSend");
@@ -367,7 +367,7 @@ public class msgsend {
                 // setText(text, charset)
                 //message.setText(msg);
                 // This will send messages as text
-                message.setContent(msg, "text/plain");  // Setting the content type
+                message.setContent(msg, "text/html");  // Setting the content type
                 // To send html links in mail
                 //message.setText(msg, "UTF-8", "html");
             }
@@ -460,7 +460,7 @@ public class msgsend {
                 // This will send messages as text
                 //message.setContent(msg, "text/plain");  // Setting the content type
                 // To send html links in mail
-                message.setText(msg, "UTF-8", "html");
+                message.setText(msg, "text/html");
             }
 
             message.setHeader("X-Mailer", "msgSend");
@@ -478,5 +478,29 @@ public class msgsend {
         }
         return true;
 
+    }
+
+    // IAS mails do not require authentication
+    public boolean sendMail(String to, String cc, String bcc, String subject,
+                String msg, String from, String file, DataSource dataSource){
+
+        try {
+
+            String emailPropertiesFile = getPropertiesFileLocation();
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(emailPropertiesFile));
+            String AUTH = properties.getProperty("AUTH");
+
+            if(AUTH.equalsIgnoreCase("true")){
+                boolean status = this.sendMailWithAuthenticationUseTLS(to, cc, bcc, subject, msg, from, file, dataSource);
+                return status;
+
+            }else {
+                boolean status = this.sendMailWithoutAuthentication(to, cc, bcc, subject, msg, from, file, dataSource);
+                return status;
+            }
+        }catch(Exception ex) {
+            return false;
+        }
     }
 }
