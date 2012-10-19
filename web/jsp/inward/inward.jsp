@@ -156,7 +156,14 @@
                 <label>District:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="4" name="district" id="district" value="<jsp:getProperty name="inwardFormBean" property="district"/>"/>        
+                <input class="IASTextBox" TABINDEX="4" name="district" id="district" 
+                       value="<% if (inwardFormBean.getDistrict() == "" || inwardFormBean.getDistrict() == null) {
+                               out.println("");
+                           } else {
+                               out.println(inwardFormBean.getDistrict());
+                           }
+                       %>"
+                       <%--<jsp:getProperty name="inwardFormBean" property="district"/>"/>--%>
             </span>
         </div>
         <div class="IASFormFieldDiv">
