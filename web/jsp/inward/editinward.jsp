@@ -15,6 +15,8 @@
         <%-- Calendar --%>
         <%--------------------------------------------------------------%>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/editinward.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/city.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/district.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
                 loadData();

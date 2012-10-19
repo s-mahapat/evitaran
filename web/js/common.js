@@ -17,40 +17,37 @@ function validateEmail(FieldId){
 }
 
 function checkMandatoryFields(){
+    var _filled = false;
+    _filled = _checkMandatoryFields();
+    
+    if(!_filled){
+        alert("Please fill all mandatory fields to proceed");
+    }
+    return _filled;
+}
 
-    var tagsToValidate = new Array('input', 'select','textarea');
-    var isMandatoryFilledFlag = true;
-
-    for (var i=0;i<tagsToValidate.length;i++){
-        var allFields = document.getElementsByTagName(tagsToValidate[i]);
-
-        for (var j=0;j<allFields.length;j++){
-            if(allFields[j].className == 'IASTextBoxMandatory' ||
-                allFields[j].className == 'IASTextBoxMandatoryWide' ||
-                allFields[j].className == 'IASTextAreaMandatory' ||
-                allFields[j].className == 'IASComboBoxMediumMandatory' ||
-                allFields[j].className == 'IASComboBoxSmallMandatory' ||
-                allFields[j].className == 'IASComboBoxMandatory' ){
-
-                if (allFields[j].value.length == 0 || allFields[j].value == 0) {
-                    var elementID = allFields[j].id;
-                    //document.getElementById(elementID).style.backgroundColor = 'pink';
-                    document.getElementById(elementID).focus();
-                    isMandatoryFilledFlag = false;
-                    //break;
-                } else {
-                    continue;
-                }
+function _checkMandatoryFields(){
+    var _filled = true;
+    var _classToValidate = new Array("IASTextBoxMandatory",
+        "IASTextBoxMandatoryWide",
+        "IASTextAreaMandatory",
+        "IASComboBoxMediumMandatory",
+        "IASComboBoxSmallMandatory",
+        "IASComboBoxMandatory");
+    $(_classToValidate).each(function(index, el){        
+        var _elements = $("." + el);        
+        $(_elements).each(function(index, el){
+            if($("#"+el.id).val().length == 0){
+                _filled = false;
+                return;
             }
+        });
+        if(!_filled){
+            return;  // return immediately if the inner function found a mandatory field not filled.
         }
-    }
-    if (isMandatoryFilledFlag == false){
-        alert("Please fill in all Mandatory fields marked in red");
-    }
-    else{
-        return true;
-    }
-    return false;
+    });
+    
+    return _filled;        
 }
 
 
@@ -123,7 +120,7 @@ function makeReadOnly(){
             || formField.className == "IASDateTextBox"
             || formField.className == "IASTextBoxMandatoryWide"
             || formField.className == "IASTextBoxWide"
-    ){
+            ){
             formField.setAttribute("readonly",true);
             formField.style.backgroundColor = "#EEE";
         }
@@ -138,7 +135,7 @@ function makeReadOnly(){
             || formField.className == "IASComboBoxMediumMandatory"
             || formField.className == "IASComboBoxSmallMandatory"
             || formField.className == "IASComboBoxMandatory"
-    ){
+            ){
             formField.disabled = true;
             formField.style.backgroundColor = "#EEE";
         }
@@ -228,15 +225,15 @@ function jQueryDatePicker(fromDiv, toDiv){
                 //var option = this.id == "from" ? "minDate" : "maxDate",
                 instance = $( this ).data( "datepicker" ),
                 date = $.datepicker.parseDate(
-                instance.settings.dateFormat ||
+                    instance.settings.dateFormat ||
                     $.datepicker._defaults.dateFormat,
-                selectedDate, instance.settings );
-                //dates.not( this ).datepicker( "option", option, date );
+                    selectedDate, instance.settings );
+            //dates.not( this ).datepicker( "option", option, date );
             }
         });
-        // set the default populated to today
-        //$(fromDiv).datepicker("setDate",new Date());
-        //$(toDiv).datepicker("setDate",new Date());
+    // set the default populated to today
+    //$(fromDiv).datepicker("setDate",new Date());
+    //$(toDiv).datepicker("setDate",new Date());
     });
 
 }
@@ -251,11 +248,13 @@ function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
     var _formElementId = "#" + formElementId;
     var myArr = new Array;
     $(_formElementId).autocomplete({
-       source : function(request, response){
-           $.ajax({
+        source : function(request, response){
+            $.ajax({
                 type: "GET",
                 url: requestURL, // change to full path of file on server
-                data: {"term": request.term},
+                data: {
+                    "term": request.term
+                },
                 dataType: "xml",
                 success: function(xml){
                     myArr = [];
@@ -265,8 +264,8 @@ function jdsAutoComplete(requestURL,xmlRowTag,formElementId){
                     response(myArr);
                 }
             });
-       },
-       minLength: 3
+        },
+        minLength: 3
 
     });
 
