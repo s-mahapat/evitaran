@@ -8,14 +8,17 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/masterdata/agent.css" />
-
         <title>Search Agent</title>
-
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/city.js"></script>
         <script type="text/javascript">
             //var selectedAgentName = 0;
             var selectedAgentId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
+            $(document).ready(function() {
+                // load cities autocomplete
+                loadCities();
+            });
 
             $(function(){
 
@@ -91,6 +94,8 @@
                 jQuery("#agentTable").trigger("clearGridData");
                 jQuery("#agentTable").trigger("reloadGrid");
             }
+            
+            
 
             // draw the date picker.
             //jQueryDatePicker("from","to");
@@ -123,7 +128,7 @@
                                         <input class="IASTextBox" TABINDEX="1" type="text" name="agentName" id="agentName" value=""/>
                                     </span>
                                 </div>
-                             </div>
+                            </div>
                             <%-- Search Criteria right div --%>
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">

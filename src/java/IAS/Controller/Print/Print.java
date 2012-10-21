@@ -8,8 +8,8 @@ import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.ChequeReturnPDF;
 import IAS.Class.Database;
 import IAS.Class.InwardAckPDF;
-import IAS.Class.RequestForInvoicePDF;
 import IAS.Class.JDSLogger;
+import IAS.Class.RequestForInvoicePDF;
 import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
 import java.io.ByteArrayOutputStream;
@@ -53,7 +53,7 @@ public class Print extends JDSController {
                     }
                     ByteArrayOutputStream baos = _chequePdf.getPDF( _inwardFormBean.getSubscriberIdAsText(), 
                                                                     _inwardFormBean.getInwardNumber(), 
-                                                                    _inwardFormBean.getChqddNumber(), 
+                                                                    _inwardFormBean.getChqddNumberAsText(), 
                                                                     _inwardFormBean.getPaymentDate(), 
                                                                     _inwardFormBean.getAmount(), 
                                                                     returnReason);
@@ -84,7 +84,8 @@ public class Print extends JDSController {
                     ByteArrayOutputStream baos = _inwardAckPdf.getPDF(subid,
                                                                     _inwardNumber,
                                                                     _inwardFormBean.getPaymentMode(),
-                                                                    _inwardFormBean.getChqddNumber(),
+                                                                    _inwardFormBean.getInwardPurpose(),
+                                                                    _inwardFormBean.getChqddNumberAsText(),
                                                                     _inwardFormBean.getAmount(),
                                                                     letterNumber,
                                                                     letterDate,

@@ -8,7 +8,6 @@ import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscription.SubscriptionDetailBean;
 import IAS.Bean.Subscription.SubscriptionFormBean;
-import IAS.Class.Database;
 import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
@@ -641,20 +640,117 @@ public class SubscriptionModel extends JDSModel {
 
     }
 
-    public String getPleaseReferList() throws SQLException,
+    public String getPleaseReferList(int medium) throws SQLException,
             ParserConfigurationException,
             TransformerException {
 
         Connection _conn = this.getConnection();
-        String sql = Queries.getQuery("get_pl_refer_list");
-        String xml;
+        String sql = "select count(*) from prl where year=?";
+        int bExists = -1;
         try (PreparedStatement st = _conn.prepareStatement(sql)) {
+            st.setInt(1, Calendar.YEAR);
             try (ResultSet rs = st.executeQuery()) {
+                if (rs.first()) {
+                    bExists = rs.getInt(1);
+                }
+            }
+        }catch(SQLException ex){
+            logger.error(ex);
+            return null;
+        }finally{
+            _conn.close();
+        }
+
+        if (bExists == 0) {
+            // this means that there is no existing PRL list for the year
+            this._generatePleaseReferList();
+        }
+        return _getPleaseReferList(medium);
+    }
+
+    private String _getPleaseReferList(int medium) throws SQLException,
+            ParserConfigurationException,
+            TransformerException {
+                
+        Connection _conn = this.getConnection();
+        String sql = Queries.getQuery("get_pl_refer_list_for_ui");
+        String xml = null;
+        String email_search_string;
+        /*
+         * if medium == 1 get all subscribers that have email id.
+         */
+        if(medium == 1){
+            email_search_string = "%@%"; // search for valid email ids
+        }else{
+            email_search_string = "%";  // anything in the email field
+        }
+        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+            pst.setString(1, email_search_string);
+            try (ResultSet rs = pst.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
             }
         } finally {
             _conn.close();
         }
         return xml;
+    }
+
+    private boolean _generatePleaseReferList() throws SQLException,
+            ParserConfigurationException,
+            TransformerException {
+
+        Connection _conn = this.getConnection();
+        String sql;
+        int prl_id = 0;
+
+        // start transaction here
+        _conn.setAutoCommit(false);
+
+        // first insert the new row into prl table and get the prl id
+        sql = "insert into prl(year) values (?)";
+        try (PreparedStatement pst = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pst.setInt(1, Calendar.YEAR);
+            pst.executeUpdate();
+            try (ResultSet rs = pst.getGeneratedKeys()) {
+                if (rs.first()) {
+                    prl_id = rs.getInt(1);  // get the prl id
+                }
+            }
+        } catch (SQLException ex) {
+            logger.error(ex);
+            _conn.rollback();
+            _conn.setAutoCommit(true);
+            _conn.close();            
+        }
+        // get the subscribers and thier subscription for which the 
+        // prl should be sent
+        sql = Queries.getQuery("get_pl_refer_list");
+
+        String sql_insert_prl_details = "insert into prl_details(prl_id, subscriber_id, subscription_id) values (?, ?, ?)";
+
+        try (PreparedStatement pst = _conn.prepareStatement(sql_insert_prl_details)) {
+            try (PreparedStatement st = _conn.prepareStatement(sql)) {
+                try (ResultSet rs = st.executeQuery()) {
+                    while (rs.next()) {  // for each record from the query insert into the prl_details table
+                        int subscriber_id = rs.getInt("subscriberID");
+                        int subscription_id = rs.getInt("subscriptionID");
+                        pst.setInt(1, prl_id);
+                        pst.setInt(2, subscriber_id);
+                        pst.setInt(3, subscription_id);
+                        pst.addBatch();  // add all to the batch
+                    }
+                    pst.executeBatch();
+                    _conn.commit(); // now save the data since all went well in the transaction
+
+                }
+            }
+        } catch (SQLException ex) {
+            logger.error(ex);
+            _conn.rollback();
+        } finally {
+            _conn.setAutoCommit(true);
+            _conn.close();
+        }
+        return true;
     }
 }

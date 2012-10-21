@@ -558,7 +558,7 @@ public class inwardModel extends JDSModel {
             sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
 
-        sql += " order by sortdate " + sortOrder;
+        sql += " order by t1.id desc, sortdate " + sortOrder;
         
         String sql_count = "select count(*) from (" + sql + ") as tbl";
         
@@ -615,20 +615,20 @@ public class inwardModel extends JDSModel {
         return invoiceFormBean;
     }
 
-    public String getChequeReturnEmailBody(int chqDDNumber, float amount, String chqDate, String reason) throws IOException {
+    public String getChequeReturnEmailBody(String chqDDNumber, float amount, String chqDate, String reason) throws IOException {
 
         String template = props.getProperty("cheque_return_email_body");
         return String.format(template,
-                String.valueOf(chqDDNumber),
+                chqDDNumber,
                 chqDate,
                 String.valueOf(amount),
                 reason);
     }
 
-    public String getInwardAckEmailBody(int chqDDNumber, float amount, String chqDate, String bank) {
+    public String getInwardAckEmailBody(String chqDDNumber, float amount, String chqDate, String bank) {
         String template = props.getProperty("inward_ack_email_body");
         return String.format(template,
-                String.valueOf(chqDDNumber),
+                chqDDNumber,
                 chqDate,
                 bank,
                 String.valueOf(amount));

@@ -504,8 +504,9 @@
 <fieldset class="subMainFieldSet">
     <div class="actionBtnDiv">
         <input onclick="setActionValue('save')" TABINDEX="29" class="IASButton" type="submit" value="Save" id="btnSaveInward" name="submitAction"/>
-        <input onclick="setActionValue('edit')" TABINDEX="30" class="IASButton" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
-        <input onclick="setActionValue('sendAck')" TABINDEX="31" class="IASButton" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>
+        <input onclick="location.href='main?action=createinward'" TABINDEX="30" class="IASButton" type="button" value="New Inward" id="btnNewInward" name="btnNewInward"/>
+        <input onclick="setActionValue('edit')" TABINDEX="31" class="IASButton" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
+        <input onclick="setActionValue('sendAck')" TABINDEX="32" class="IASButton" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>
         <%--
             //inwardFormBean.isCompleted()== true ? out.println("enabled") : out.println("disabled");
             if (inwardFormBean.isCompleted() == true) {

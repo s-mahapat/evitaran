@@ -202,7 +202,8 @@ public class inwardFormBean extends JDSBean {
         if (this.chqddNumber == 0) {
             return "";
         } else {
-            return String.valueOf(this.chqddNumber);
+            return String.format("%06d", this.chqddNumber);//String.valueOf(this.chqddNumber);
+            
         }
 
     }

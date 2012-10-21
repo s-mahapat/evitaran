@@ -47,7 +47,7 @@ public class subscriber extends JDSController {
             else if (action.equalsIgnoreCase("save")) {
                 url = "/jsp/subscriber/viewdetailsubscriber.jsp";
                 //if the record count saved is 1, it indicates that the record was saved else fail.
-                if (_subscriberModel.Save() == 1) {
+                if (_subscriberModel.Save() > 0) {
 
                     if (session.getAttribute("inwardUnderProcess") != null) {
                         this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");

@@ -54,14 +54,14 @@ public class Email extends JDSController {
                     }
                     ByteArrayOutputStream baos = _chequePdf.getPDF( _inwardFormBean.getSubscriberIdAsText(), 
                                                                     _inwardFormBean.getInwardNumber(), 
-                                                                    _inwardFormBean.getChqddNumber(), 
+                                                                    _inwardFormBean.getChqddNumberAsText(), 
                                                                     _inwardFormBean.getPaymentDate(), 
                                                                     _inwardFormBean.getAmount(), 
                                                                     returnReason);
                     byte pdfData[] = baos.toByteArray();
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     msgsend _mailer = new msgsend();
-                    String emailBody = _inwardModel.getChequeReturnEmailBody(_inwardFormBean.getChqddNumber(),
+                    String emailBody = _inwardModel.getChequeReturnEmailBody(_inwardFormBean.getChqddNumberAsText(),
                                                                             _inwardFormBean.getAmount(),  
                                                                             _inwardFormBean.getPaymentDate(),
                                                                             returnReason);
@@ -89,7 +89,8 @@ public class Email extends JDSController {
                     ByteArrayOutputStream baos = _inwardAckPdf.getPDF(subid,
                                                                     _inwardNumber,
                                                                     _inwardFormBean.getPaymentMode(),
-                                                                    _inwardFormBean.getChqddNumber(),
+                                                                    _inwardFormBean.getInwardPurpose(),
+                                                                    _inwardFormBean.getChqddNumberAsText(),
                                                                     _inwardFormBean.getAmount(),
                                                                     letterNumber,
                                                                     letterDate,
@@ -97,7 +98,7 @@ public class Email extends JDSController {
                     byte pdfData[] = baos.toByteArray();
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     msgsend _mailer = new msgsend();
-                    String emailBody = _inwardModel.getInwardAckEmailBody(_inwardFormBean.getChqddNumber(),
+                    String emailBody = _inwardModel.getInwardAckEmailBody(_inwardFormBean.getChqddNumberAsText(),
                                                                             _inwardFormBean.getAmount(),  
                                                                             _inwardFormBean.getPaymentDate(),
                                                                             _inwardFormBean.getBankName()

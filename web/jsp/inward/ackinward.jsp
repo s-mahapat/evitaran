@@ -89,8 +89,8 @@
                                 Dear Sir/Madam,
                             </div>
                             <div class="letterBody">
-                                This is to acknowledge with thanks the receipt of <strong> ${inwardFormBean.paymentMode} ${inwardFormBean.chqddNumberAsText}</strong> of Amount <strong>Rs. ${inwardFormBean.amount}</strong> towards 
-                                subscription of Journals
+                                This is to acknowledge with thanks the receipt <strong> ${inwardFormBean.paymentMode} ${inwardFormBean.chqddNumberAsText}</strong> of Amount <strong>Rs. ${inwardFormBean.amount}</strong> towards 
+                                your request for <strong>${inwardFormBean.inwardPurpose}</strong>
                                 <!--towards subscription of the following journals.-->
                             </div>
                             <!--<div id="subscriptionDetail">
@@ -130,6 +130,7 @@
                                     + '&ldate=' + $('#subscriberletterDate').val() 
                                     + '&inwardNumber=${inwardFormBean.inwardNumber}'
                                     + '&ctext=' + $('#customText').val())"/>
+                                   <input onclick="location.href='main?action=createinward'" TABINDEX="6" class="IASButton" type="button" value="New Inward" id="btnNewInward" name="btnNewInward"/>
                         </div>
                     </fieldset>
                 </fieldset>

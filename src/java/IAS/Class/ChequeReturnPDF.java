@@ -24,7 +24,7 @@ public class ChequeReturnPDF extends JDSPDF{
     }
     
     public ByteArrayOutputStream getPDF( String SubscriberNumber, String InwardNumber, 
-                                    int ChequeNumber, String ChequeDate,
+                                    String ChequeNumber, String ChequeDate,
                                     float Amount, String Reason) throws DocumentException, MalformedURLException, IOException{
         
         com.itextpdf.text.Document document = this.getPDFDocument();
@@ -45,7 +45,7 @@ public class ChequeReturnPDF extends JDSPDF{
     }
     
     private Paragraph getChequeReturnLetterBody( String SubscriberNumber, String InwardNumber, 
-                                                int ChequeNumber, String ChequeDate,
+                                                String ChequeNumber, String ChequeDate,
                                                 float Amount, String Reason) throws IOException{
         Paragraph paragraph = new Paragraph();
         Paragraph paragraph2 = new Paragraph();        
@@ -70,7 +70,7 @@ public class ChequeReturnPDF extends JDSPDF{
         Properties props = new Properties();
         props.load(this.pdfTemplatesFile);
         String template = props.getProperty("cheque_return");
-        String _body = String.format(template, String.valueOf(ChequeNumber),
+        String _body = String.format(template, ChequeNumber,
                                      ChequeDate, String.valueOf(Amount));
                 
 //        String _body =  "The Cheque/DD No: " + String.valueOf(ChequeNumber) + " dated " 

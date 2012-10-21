@@ -1,15 +1,11 @@
 package IAS.Class;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -24,7 +20,8 @@ public class InwardAckPDF extends JDSPDF {
     public ByteArrayOutputStream getPDF(int subscriptionID,
             String inwardNumber,
             String paymentMode,
-            int chqDDNumber,
+            String inwardPurpose,
+            String chqDDNumber,
             float amount,
             String LetterNumber,
             String LetterDate,
@@ -41,6 +38,7 @@ public class InwardAckPDF extends JDSPDF {
         document.add(this.getInwardAckLetterBody(String.valueOf(subscriptionID),
                 inwardNumber,
                 paymentMode,
+                inwardPurpose,
                 LetterNumber,
                 LetterDate,
                 chqDDNumber,
@@ -55,9 +53,10 @@ public class InwardAckPDF extends JDSPDF {
     private Paragraph getInwardAckLetterBody(String subscriptionID,
             String inwardNumber,
             String paymentMode,
+            String inwardPurpose,
             String letterNumber,
             String LetterDate,
-            int chequeDDNo,
+            String chequeDDNo,
             String amount,
             String customText) throws SQLException, IOException {
 
@@ -90,10 +89,11 @@ public class InwardAckPDF extends JDSPDF {
         String template = props.getProperty("inward_ack");
         String bodyText;
         
-        if(chequeDDNo == 0){
-            bodyText = String.format(template, paymentMode, amount);
+        if(chequeDDNo.isEmpty()){
+            paymentMode = paymentMode == null || paymentMode.length() == 0 ? "___" : paymentMode;
+            bodyText = String.format(template, paymentMode, amount, inwardPurpose);
         }else{
-            bodyText = String.format(template, paymentMode + " No:" + chequeDDNo, amount);
+            bodyText = String.format(template, paymentMode + " No:" + chequeDDNo, amount, inwardPurpose);
         }
         
 
