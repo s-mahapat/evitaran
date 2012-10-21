@@ -12,7 +12,7 @@
             $(document).ready(function(){
                 $("#subscriptionDetail").jqGrid({
 
-                    url : "<%=request.getContextPath()%>/subscription?oper=detail&id=<%=request.getParameter("id")%>",
+                    url : "<%=request.getContextPath()%>/subscription?oper=detail&id=<%=request.getParameter("id")%>&subtypeid=<%=request.getParameter("subtypeid")%>",
                     datatype: 'xml',
                     mtype: 'GET',
                     height: 240,

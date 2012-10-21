@@ -8,6 +8,7 @@ import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscription.SubscriptionDetailBean;
 import IAS.Bean.Subscription.SubscriptionFormBean;
+import IAS.Class.Ajax.AjaxResponse;
 import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
@@ -23,6 +24,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Hashtable;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -420,14 +423,22 @@ public class SubscriptionModel extends JDSModel {
         return rs;
     }
 
-    public String getSubscriptionDetailBySubscriptionID(int _id) throws ParserConfigurationException,
+    public String getSubscriptionDetailBySubscriptionID(int _id, int subscriber_type_id) throws ParserConfigurationException,
             SQLException, TransformerException, IOException {
 
         Connection _conn = this.getConnection();
         String xml;
+        String sql;
+        subscriberModel _subscriberModel = new subscriberModel(request);
+        boolean isFree = _subscriberModel.isSubscriberTypeFree(subscriber_type_id);
 
-        // the query name from the jds_sql properties files in WEB-INF/properties folder
-        String sql = Queries.getQuery("get_subscription_detail_by_subscription_id");
+        if (isFree) {
+            sql = Queries.getQuery("get_subscription_detail_by_subscription_id_free");
+        } else {
+            // the query name from the jds_sql properties files in WEB-INF/properties folder
+            sql = Queries.getQuery("get_subscription_detail_by_subscription_id");
+        }
+
         try (PreparedStatement st = conn.prepareStatement(sql);) {
             st.setInt(1, _id);
             try (ResultSet rs = st.executeQuery()) {
@@ -443,16 +454,31 @@ public class SubscriptionModel extends JDSModel {
 
         Connection _conn = this.getConnection();
         String xml;
-        // the query name from the jds_sql properties files in WEB-INF/properties folder
-        String sql = Queries.getQuery("get_subscription_details");
+        String sql;
+        int subscription_id = Integer.parseInt(request.getParameter("id"));
+        int subscriber_type_id = Integer.parseInt(request.getParameter("subtypeid"));
+
+        subscriberModel _subscriberModel = new subscriberModel(request);
+        boolean isFree = _subscriberModel.isSubscriberTypeFree(subscriber_type_id);
+
+        /* if free subscriber then dont bother about price group ID
+         * so pick another query for free subscribers
+         */
+        if (isFree) {
+            // the query name from the jds_sql properties files in WEB-INF/properties folder
+            sql = Queries.getQuery("get_subscription_details_free_subscribers");
+        } else {
+            // the query name from the jds_sql properties files in WEB-INF/properties folder
+            sql = Queries.getQuery("get_subscription_details");
+        }
         try (PreparedStatement st = _conn.prepareStatement(sql)) {
             int paramIndex = 0;
-            st.setInt(++paramIndex, Integer.parseInt(request.getParameter("id")));
+            st.setInt(++paramIndex, subscription_id);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs != null) {
                     xml = util.convertResultSetToXML(rs);
                 } else {
-                    logger.error("Failed to get subscription details for id: " + request.getParameter("id"));
+                    logger.error("Failed to get subscription details for id: " + subscription_id);
                     xml = util.convertStringToXML("Failed to get subscription details", "error");
                 }
             }
@@ -485,8 +511,13 @@ public class SubscriptionModel extends JDSModel {
 
     public String getJournalPrice(int startYear, int numYears, int journalGroupID, int subscriberTypeID) throws TransformerException,
             ParserConfigurationException,
-            SQLException {
+            SQLException,
+            IOException {
 
+        subscriberModel _subscriberModel = new subscriberModel(request);
+        if (_subscriberModel.isSubscriberTypeFree(subscriberTypeID)) {
+            return "<results><row><id>0</id><rate>0.0</rate></row></results>";
+        }
         Connection _conn = this.getConnection();
         String xml = null;
         String sql = Queries.getQuery("get_journal_group_price");
@@ -654,10 +685,10 @@ public class SubscriptionModel extends JDSModel {
                     bExists = rs.getInt(1);
                 }
             }
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             logger.error(ex);
             return null;
-        }finally{
+        } finally {
             _conn.close();
         }
 
@@ -671,7 +702,7 @@ public class SubscriptionModel extends JDSModel {
     private String _getPleaseReferList(int medium) throws SQLException,
             ParserConfigurationException,
             TransformerException {
-                
+
         Connection _conn = this.getConnection();
         String sql = Queries.getQuery("get_pl_refer_list_for_ui");
         String xml = null;
@@ -679,9 +710,9 @@ public class SubscriptionModel extends JDSModel {
         /*
          * if medium == 1 get all subscribers that have email id.
          */
-        if(medium == 1){
+        if (medium == 1) {
             email_search_string = "%@%"; // search for valid email ids
-        }else{
+        } else {
             email_search_string = "%";  // anything in the email field
         }
         try (PreparedStatement pst = _conn.prepareStatement(sql)) {
@@ -720,7 +751,7 @@ public class SubscriptionModel extends JDSModel {
             logger.error(ex);
             _conn.rollback();
             _conn.setAutoCommit(true);
-            _conn.close();            
+            _conn.close();
         }
         // get the subscribers and thier subscription for which the 
         // prl should be sent

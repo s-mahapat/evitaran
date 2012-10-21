@@ -58,7 +58,7 @@
 
         var selectedRowID = null;
         $("#newSubscription").jqGrid({
-            url:'subscription?oper=subid&id=' + $("#subscriptionID").val(),
+            url:'subscription?oper=subid&id=' + $("#subscriptionID").val() + "&subtypeid=" + $("#subtypeid").val(),
             datatype: 'xml',
             mtype: 'GET',
             height: 180,

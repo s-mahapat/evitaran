@@ -539,4 +539,40 @@ public class subscriberModel extends JDSModel {
         }
 
     }
+    
+    public boolean isSubscriberTypeFree(int subTypeID) throws SQLException{
+        
+        Connection _conn = this.getConnection();
+        String sql = Queries.getQuery("is_free_subscriber");
+        int isFree = 0;
+        try (PreparedStatement st = _conn.prepareStatement(sql)) {
+            st.setInt(1, subTypeID);
+            try (ResultSet rs = st.executeQuery();) {
+                if(rs.first()){
+                    isFree = rs.getInt(1);
+                }
+            }
+        } finally {
+            _conn.close();
+        }
+        return isFree == 1 ? true : false;
+    }
+    
+    public boolean isSubscriberFree(int subID) throws SQLException{
+        
+        Connection _conn = this.getConnection();
+        String sql = Queries.getQuery("get_subscriber_type_for_id");
+        int subtypeID = 0;
+        try (PreparedStatement st = _conn.prepareStatement(sql)) {
+            st.setInt(1, subID);
+            try (ResultSet rs = st.executeQuery();) {
+                if(rs.first()){
+                    subtypeID = rs.getInt(1);
+                }
+            }
+        } finally {
+            _conn.close();
+        }
+        return this.isSubscriberTypeFree(subtypeID);
+    }
 }

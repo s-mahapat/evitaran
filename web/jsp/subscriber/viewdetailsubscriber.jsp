@@ -84,6 +84,7 @@
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASDisabledTextBox" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
                                         <input type="hidden" name="subscriberid" id="subscriberid" value="${subscriberFormBean.subscriberID}"/>
+                                        <input type="hidden" name="subtypeid" id="subtypeid" value="${subscriberFormBean.subtypeID}"/>
                                     </span>
                                 </div>
 

@@ -124,7 +124,9 @@ public class subscription extends JDSController {
                 url = "/xmlserver";
 
             } else if (oper.equalsIgnoreCase("subid")) {
-                String xml = _subscriptionModel.getSubscriptionDetailBySubscriptionID(Integer.parseInt(request.getParameter("id")));
+                int subscription_id = Integer.parseInt(request.getParameter("id"));
+                int subscriber_type_id = Integer.parseInt(request.getParameter("subtypeid"));
+                String xml = _subscriptionModel.getSubscriptionDetailBySubscriptionID(subscription_id, subscriber_type_id);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 

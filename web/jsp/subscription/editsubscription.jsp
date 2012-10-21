@@ -25,7 +25,7 @@
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
             <form name="subscriptionForm">
-
+                <input type="hidden" name="subtypeid" id="subtypeid" value="${subscriberFormBean.subtypeID}"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Edit Subscription</legend>
@@ -35,7 +35,7 @@
                             <div class="IASFormLeftDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Subscriber ID:</label>
+                                        <label>Subscriber Number:</label>
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">

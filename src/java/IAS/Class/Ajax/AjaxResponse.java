@@ -35,8 +35,10 @@ public class AjaxResponse {
   
     }
     
-    public void sendXMLResponse(String xml){
-        
+    public String getXMLFromObject(Object obj){
+        XStream xstream = new XStream(new DomDriver());
+        String xml = xstream.toXML(obj);        
+        return xml;
     }
     
 

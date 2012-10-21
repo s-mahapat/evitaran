@@ -25,6 +25,7 @@ public class subscriberFormBean extends JDSBean {
     private boolean deactive = false;
     private String deactivationDate;
     private boolean sameInvoiceAddress = false;
+    private int subtypeID;
 
 
     /* Subscriber ID */
@@ -42,6 +43,14 @@ public class subscriberFormBean extends JDSBean {
 
     public void setSubscriberID(int _SubscriberID) {
         this.subscriberID = _SubscriberID;
+    }
+    
+    public int getSubtypeID() {
+        return this.subtypeID;
+    }
+
+    public void setSubtypeID(int _setSubtypeID) {
+        this.subtypeID = _setSubtypeID;
     }
 
 
