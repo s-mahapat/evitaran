@@ -36,14 +36,15 @@
 
             theme_advanced_buttons1 : "newdocument,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect",
             //theme_advanced_buttons2 : "cut,copy,paste,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,forecolor,backcolor",
-            theme_advanced_buttons2 : "cut,copy,paste,|,bullist,numlist,|,outdent,indent,|,undo,redo,|link,",
+            theme_advanced_buttons2 : "cut,copy,paste,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,|,forecolor,backcolor",
             theme_advanced_buttons3 : "",
             theme_advanced_toolbar_location : "top",
             theme_advanced_toolbar_align : "left",
             theme_advanced_resizing : true,
 
-            tab_focus : ":prev,:next",
+            //tab_focus : ':subject,:btnSendEmail',
             //tabfocus_elements : ":prev,:next"
+            tabfocus_elements : ":subject,:btnSendEmail",
 
             height : "300"
         });

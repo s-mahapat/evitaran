@@ -48,7 +48,8 @@ function sendmail(){
             dataType: 'xml',
             async: false,
             //url: "BulkEmail?action=sendEmail&to=" + $("#to").val() + "&subject=" + $("#subject").val() + "&selectFromDb=" + $("#selall:checked").length +"&content=" + $("#content").val(),
-            url: "BulkEmail?action=sendEmail&to=" + $("#to").val() + "&subject=" + $("#subject").val() + "&selectFromDb=" + $("#selall:checked").length +"&content=" + text,
+            //url: "BulkEmail?action=sendEmail&to=" + $("#to").val() + "&subject=" + $("#subject").val() + "&selectFromDb=" + $("#selall:checked").length +"&content=" + text,
+            url: "BulkEmail?action=sendEmail&to=" + $("#to").val() + "&subject=" + $("#subject").val() + "&selectFromDb=" + $("#selall:checked").length +"&content=" + encodeURIComponent(text),
             success: function(xmlResponse, textStatus, jqXHR){
 
                 $(xmlResponse).find("results").each(function(){

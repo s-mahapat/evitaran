@@ -11,6 +11,8 @@ import IAS.Class.util;
 import IAS.Model.JDSModel;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -101,12 +103,37 @@ public class BulkEmailModel extends JDSModel{
         return xml;
     }
 
+    public String decodeURIComponent(String s)
+    {
+        if (s == null)
+        {
+            return null;
+        }
+
+        String result = null;
+
+        try
+        {
+            result = URLDecoder.decode(s, "UTF-8");
+        }
+
+        // This exception should never occur.
+        catch (UnsupportedEncodingException e)
+        {
+            result = s;
+        }
+
+        return result;
+    }
+
+
     public String sendEmail() throws SQLException, ParserConfigurationException, TransformerException, IOException{
 
         String subject  = request.getParameter("subject");
-        String msg      = request.getParameter("content");
+        //String msg      = request.getParameter("content");
+        String encodedMessage = request.getParameter("content");
+        String msg = decodeURIComponent(encodedMessage);
         String selall   = request.getParameter("selectFromDb");
-        String requestURI = request.getQueryString();
 
         String emailIDs = "";
 
