@@ -6,9 +6,11 @@ package IAS.Model.BulkEmail;
 
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
+import IAS.Class.ServletContextInfo;
 import IAS.Class.msgsend;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
@@ -17,9 +19,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Properties;
 import javax.mail.Address;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -66,73 +70,19 @@ public class BulkEmailModel extends JDSModel{
         String successValue = (success == true) ? "1" : "0";
         xmlResponse.put("success", successValue);
         xmlResponse.put("message", message);
-        String xml = createXMLResponse(xmlResponse);
+        String xml = util.createXMLResponse(xmlResponse);
 
         //String xml = util.convertStringToXML(successValue, "success");
 
         return xml;
     }
 
-    // Create the xml response
-    public String createXMLResponse(HashMap<String, String> xmlResponseMap) throws ParserConfigurationException, IOException, TransformerConfigurationException, TransformerException{
-
-        String xml;
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.newDocument();
-
-        Element results = doc.createElement("results");
-        doc.appendChild(results);
-
-        for ( String key : xmlResponseMap.keySet() ){
-
-        Element e = doc.createElement(key);
-        results.appendChild(e);
-        e.appendChild(doc.createTextNode(xmlResponseMap.get(key)));
-
-        }
-
-        DOMSource domSource = new DOMSource(doc);
-        try (StringWriter writer = new StringWriter()) {
-            StreamResult result = new StreamResult(writer);
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.transform(domSource, result);
-            xml = writer.toString();
-        }
-        return xml;
-    }
-
-    public String decodeURIComponent(String s)
-    {
-        if (s == null)
-        {
-            return null;
-        }
-
-        String result = null;
-
-        try
-        {
-            result = URLDecoder.decode(s, "UTF-8");
-        }
-
-        // This exception should never occur.
-        catch (UnsupportedEncodingException e)
-        {
-            result = s;
-        }
-
-        return result;
-    }
-
-
-    public String sendEmail() throws SQLException, ParserConfigurationException, TransformerException, IOException{
+    public String sendEmail() throws SQLException, ParserConfigurationException, TransformerException, IOException, AddressException{
 
         String subject  = request.getParameter("subject");
         //String msg      = request.getParameter("content");
         String encodedMessage = request.getParameter("content");
-        String msg = decodeURIComponent(encodedMessage);
+        String msg = util.decodeURIComponent(encodedMessage);
         String selall   = request.getParameter("selectFromDb");
 
         String emailIDs = "";
@@ -153,12 +103,38 @@ public class BulkEmailModel extends JDSModel{
             // Get Email ID's from user
             emailIDs = request.getParameter("to");
         }
-        msgsend sendMsg = new msgsend();
-        //boolean success = sendMsg.sendMail("", "", emailIDs + " jds.ias.mails@gmail.com", subject, msg, "", "", null);
-        boolean success = sendMsg.sendMail(emailIDs, "", "jds.ias.mails@gmail.com", subject, msg, "", "", null);
+        boolean success = true;
+        Address[] toUser = InternetAddress.parse(emailIDs, false);
+        String message = "Failed to send email to the following address:";
 
+        ServletContext context          = ServletContextInfo.getServletContext();
+        String emailPropertiesFile      = context.getRealPath("/WEB-INF/classes/jds_email.properties");
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(emailPropertiesFile));
+
+        msgsend sendMsg = new msgsend();
+        for(Address s: toUser){
+            //boolean success = sendMsg.sendMail("", "", emailIDs + " jds.ias.mails@gmail.com", subject, msg, "", "", null);
+            logger.debug("Starting to send emails");
+            String email = s.toString();
+            // If message sending passed
+            if(!sendMsg.sendMail(email, "", "jds.ias.mails@gmail.com", subject, msg, "", "", null)){
+                success = false;
+                message = message + " " + email;
+            }
+            logger.debug("Done sending emails");
+        }
+
+        String xml = "";
         String successValue = (success == true) ? "1" : "0";
-        String xml = util.convertStringToXML(successValue, "success");
+        if(successValue.equals("1")){
+            xml = util.convertStringToXML(successValue, "success");
+        }else {
+            HashMap<String, String> xmlResponse = new HashMap<>();
+            xmlResponse.put("success", successValue);
+            xmlResponse.put("message", message);
+            xml = util.createXMLResponse(xmlResponse);
+        }
 
         return xml;
 

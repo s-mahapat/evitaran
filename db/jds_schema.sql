@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.25, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.25
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -409,7 +409,7 @@ CREATE TABLE `mailing_list_detail` (
   `miId` int(11) DEFAULT NULL,
   `bildate` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5553 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1411 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -746,7 +746,7 @@ CREATE TABLE `subscriber_type` (
   `discount` float(8,3) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_UNIQUE` (`subtypecode`,`subtypedesc`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1312,4 +1312,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-10-16 23:50:10
+-- Dump completed on 2012-10-19 10:59:27

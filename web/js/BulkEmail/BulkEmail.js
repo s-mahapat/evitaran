@@ -54,10 +54,11 @@ function sendmail(){
 
                 $(xmlResponse).find("results").each(function(){
                     success1 = $(this).find("success").text();
+                    message = $(this).find("message").text();
                     if(success1.valueOf() == "1") {
                         alert("Email sent");
                     } else {
-                        alert("Email not sent");
+                        alert("Email not sent: " + message);
                     }
                     return true;
                 });

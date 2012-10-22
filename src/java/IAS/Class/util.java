@@ -6,9 +6,11 @@ package IAS.Class;
 
 //import java.util.*;
 import java.io.*;
+import java.net.URLDecoder;
 import java.sql.*;
 import java.text.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
@@ -202,6 +204,54 @@ public final class util {
 
         return xml;
 
+    }
+
+// Create the xml response
+    public static String createXMLResponse(HashMap<String, String> xmlResponseMap) throws ParserConfigurationException, IOException, TransformerConfigurationException, TransformerException{
+
+        String xml;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+
+        for ( String key : xmlResponseMap.keySet() ){
+
+            Element e = doc.createElement(key);
+            results.appendChild(e);
+            e.appendChild(doc.createTextNode(xmlResponseMap.get(key)));
+
+        }
+
+        DOMSource domSource = new DOMSource(doc);
+        try (StringWriter writer = new StringWriter()) {
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            xml = writer.toString();
+        }
+        return xml;
+    }
+
+    public static String decodeURIComponent(String s)
+    {
+        if (s == null){
+            return null;
+        }
+
+        String result = null;
+
+        try {
+            result = URLDecoder.decode(s, "UTF-8");
+        }catch (UnsupportedEncodingException e){
+            // This exception should never occur.
+            result = s;
+        }
+
+        return result;
     }
 
     public static String getExceptionStackTraceAsString(Exception exception) {

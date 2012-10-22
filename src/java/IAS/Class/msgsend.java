@@ -494,7 +494,6 @@ public class msgsend {
             if(AUTH.equalsIgnoreCase("true")){
                 boolean status = this.sendMailWithAuthenticationUseTLS(to, cc, bcc, subject, msg, from, file, dataSource);
                 return status;
-
             }else {
                 boolean status = this.sendMailWithoutAuthentication(to, cc, bcc, subject, msg, from, file, dataSource);
                 return status;

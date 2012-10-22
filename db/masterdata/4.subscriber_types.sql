@@ -18,3 +18,5 @@ insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality
 insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality`,`institutional`,`freejrnl`,`discount`) values ('FI','Foreign Institutions','Paid','F','I',0,0);
 insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality`,`institutional`,`freejrnl`,`discount`) values ('SF','Summer Fellows','Free','I','P',1,0);
 insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality`,`institutional`,`freejrnl`,`discount`) values ('HONFEL','Honorary Fellow','Free','I','P',0,0);
+insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality`,`institutional`,`freejrnl`,`discount`) values ('LS','Life Subscriber','Free','I','P',0,0);
+insert into `subscriber_type`(`subtypecode`,`subtypedesc`,`subtype`,`nationality`,`institutional`,`freejrnl`,`discount`) values ('WC','Working Committee','Free','I','P',0,0);

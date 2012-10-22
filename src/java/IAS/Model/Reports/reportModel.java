@@ -173,7 +173,6 @@ public class reportModel extends JDSModel {
         String colModel = "[" + "{name:'journalGroup', index:'journalGroup', xmlmap:'journalGroup'},"
                             + "{name:'year', index:'year', xmlmap:'year'},";
 
-
         while(rs.next()) {
             int period = rs.getInt(1);
             colNames = colNames + "'" + period + " Year'";
@@ -183,11 +182,10 @@ public class reportModel extends JDSModel {
                 colNames = colNames + ",";
                 colModel = colModel + ",";
             }
-            else {
-                colNames = colNames + "]";
-                colModel = colModel + "]";
-            }
         }
+
+        colNames = colNames + "]";
+        colModel = colModel + "]";
 
         subscriptionRatesFormBeanReport _subscriptionRatesFormBeanReport = new IAS.Bean.Reports.subscriptionRatesFormBeanReport();
         _subscriptionRatesFormBeanReport.setColM(colModel);
