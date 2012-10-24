@@ -38,26 +38,16 @@
                     rownumbers: true,
                     emptyrecords: "No Reminders Found",
                     loadtext: "Loading...",
-                    colNames:['Subscriber Id','Subscription Id','Subscriber Type','Subscriber Number','Subscriber Name',
-                            'Balance','reminder Type','Reminder date','department', 'institution', 'address', 'city', 'district',
-                                'state','country','pincode','Email'],
+                    colNames:['Subscription Id','Subscriber Type','Subscriber Number','Subscriber Name',
+                            'Balance','reminder Type','Reminder date','Email'],
                         colModel :[
-                          {name:'id', index:'id', width:0, align:'center', xmlmap:'id'},
                           {name:'subId', index:'subId', width:10, align:'center', xmlmap:'subId'},
                           {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
                           {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
                           {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
-                          {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},                       
+                          {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},
                           {name:'reminderType', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderType'},
-                          {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},   
-                          {name:'department', index:'department', width:80, align:'center', xmlmap:'department'},
-                          {name:'institution', index:'institution', width:80, align:'center', xmlmap:'institution'},
-                          {name:'address', index:'address', width:80, align:'center', xmlmap:'address'},
-                          {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
-                          {name:'district', index:'district', width:80, align:'center', xmlmap:'district'},
-                          {name:'state', index:'state', width:80, align:'center', xmlmap:'state'},
-                          {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
-                          {name:'pincode', index:'pincode', width:80, align:'center', xmlmap:'pincode'},
+                          {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},
                           {name:'emailId', index:'emailId', width:50, align:'center', xmlmap:'emailId'}
                         ],
                     xmlReader : {
@@ -105,7 +95,8 @@
                         jQuery("#reminderTable").setGridParam({postData:
                                 {
                                 reminderType            : $("#reminderType").val(),
-                                reminderDate            : $("#reminderDate").val(),
+                                to                      : $("#to").val(),
+                                from                      : $("#from").val(),
                                 action                  : "search"
                             }});
                         jQuery("#reminderTable").setGridParam({ datatype: "xml" });
@@ -114,7 +105,39 @@
                     }
             }
 
+            function sendReminders(){
 
+                if ($("#reminderType").val() == 0) {
+                    alert("Select Reminder Type");
+                }
+
+                else if($("reminderDate").val() == "") {
+                    alert("Please try again after logging in again ");
+                }
+                else if($("medium").val() == "") {
+                    alert("Select Medium for sending Reminders ");
+                }
+                else if($("#medium").val() == 'E') {
+                    emailReminders();
+                }
+                else {
+                        isPageLoaded = true;
+                        jQuery("#reminderTable").setGridParam({postData:
+                                {
+                                reminderType            : $("#reminderType").val(),
+                                reminderDate            : $("#reminderDate").val(),
+                                medium                  : $("#medium").val(),
+                                action                  : "send"
+                            }});
+                        jQuery("#reminderTable").setGridParam({ datatype: "xml" });
+                        jQuery("#reminderTable").trigger("clearGridData");
+                        jQuery("#reminderTable").trigger("reloadGrid");
+                        jQuery("#btnPrintSend").attr("disabled",false);
+                    }
+            }
+
+// draw the date picker.
+            jQueryDatePicker("from","to");
         </script>
 
     </head>
@@ -152,10 +175,17 @@
                                 <span class="IASFormDivSpanLabel">
                                     <label>Reminder Date:</label>
                                 </span>
+                                <div class="dateDiv"></div>
                                 <span class="IASFormDivSpanInputBox">
-                                    <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="reminderDate" id="reminderDate" value="<jsp:getProperty name="reminderFormBean" property="reminderDate"/>"
+                                    <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
                                 </span>
-                            </div>  
+                                <span class="IASFormDivSpanForHyphen">
+                                    <label> to </label>
+                                </span>
+                                <span class="IASFormDivSpanInputBox">
+                                    <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
+                                </span>
+                            </div>
                         </div>
                       </fieldset>
                         <fieldset class="subMainFieldSet">
@@ -189,7 +219,7 @@
                                     </span>
                                 </div>
                                 <div id="printSendBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="button" value="Sent/ Print Reminder" id="btnPrintSend" name="btnPrintSend" onclick="printLabel()"/>
+                                    <input class="IASButton" TABINDEX="4" type="button" value="Sent/ Print Reminder" id="btnPrintSend" name="btnPrintSend" onclick="sendReminders()"/>
                                 </div>                                       
                                 <div id="cancelBtnDiv">
                                     <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>

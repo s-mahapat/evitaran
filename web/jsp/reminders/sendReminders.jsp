@@ -137,6 +137,8 @@
                     }
             }
 
+// draw the date picker.
+            jQueryDatePicker("from","to");
         </script>
 
     </head>

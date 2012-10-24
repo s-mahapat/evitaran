@@ -59,8 +59,22 @@ public class reminderModel extends JDSModel {
         return rs;
     }
 
-       public ResultSet getReminders()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+       public ResultSet getReminders(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String sql = Queries.getQuery("get_reminders_subscriber");
+                // E = Email Only
+        if (medium.equals("E")) {
+            
+            sql += " and subscriber.email <> \"\"  or subscriber.email <> null";
+            
+        }
+        // P = print only
+        else if (medium.equals("P")){
+            sql += " and subscriber.email = \"\" or subscriber.email = null";
+        }
+        // A = print all
+        else if(medium.equals("A")) {
+            
+        }
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("reminderType"));
@@ -139,19 +153,10 @@ public class reminderModel extends JDSModel {
     }
 
 
-    public ResultSet send()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public String buildXml(ResultSet rsGet, String medium)   throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
         String xml = null;
-
-        ResultSet rsGet = getReminders();
-        return rsGet;
-    }
-
-    public String sendEmail(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
-
-        boolean status = false;
-        String xml = null;
-        // Get data for reminders
-        ResultSet rsGet = getReminders();
+// Get data for reminders
+        //ResultSet rsGet = getReminders();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -303,26 +308,33 @@ public class reminderModel extends JDSModel {
         
         return xml;
     }
+    
+    public String sendEmail(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
 
-    public ResultSet printOnly(String medium) {
-        ResultSet rs = null;
-        return rs;
-    }
-
-    public ResultSet printAll(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
         boolean status = false;
         String xml = null;
         // Get data for reminders
-        ResultSet rsGet = getGenReminders();
-        
-        return rsGet;        
+        ResultSet rsGet = getReminders(medium);
+        xml = buildXml(rsGet, medium);
+        return xml;
     }
 
-   public int print()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        String medium = request.getParameter("medium");
-        ResultSet rsGet = getReminders();
+    public String printOnly(String medium) throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
+        boolean status = false;
+        String xml = null;
+        // Get data for reminders
+        ResultSet rsGet = getReminders(medium);
+        xml = buildXml(rsGet, medium);
+        return xml;
+    }
 
-        return 1;
+    public String printAll(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
+        boolean status = false;
+        String xml = null;
+        // Get data for reminders
+        ResultSet rsGet = getReminders(medium);
+        xml = buildXml(rsGet, medium);
+        return xml;     
     }
 
    public int insertReminderDetails(String reminderId, String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
@@ -337,34 +349,4 @@ public class reminderModel extends JDSModel {
         else
             return 0;
     }
-
-    public String print1(HttpServletResponse response) throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException, DocumentException
-    {
-        //Query whatever you want here
-        String xml = null;
-       // int stat = this.search();
-        ResultSet rs = null;
-
-        //Now convert to pdf here
-        //convertToPdf toPdf = new convertToPdf();
-        //ByteArrayOutputStream baos = toPdf.getPdf(rs, response);
-
-        // setting some response headers
-        //response.setHeader("Expires", "0");
-        //response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        //response.setHeader("Pragma", "public");
-        // setting the content type
-        //response.setContentType("application/pdf");
-        //response.setHeader("Content-disposition","attachment; filename=ml.pdf");
-        // the contentlength
-        //response.setContentLength(baos.size());
-        // write ByteArrayOutputStream to the ServletOutputStream
-        //OutputStream os = response.getOutputStream();
-        //baos.writeTo(os);
-        //os.flush();
-        //os.close();
-
-        return xml;
-    }
-
 }

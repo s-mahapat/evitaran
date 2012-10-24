@@ -47,8 +47,6 @@ public class reminders extends JDSController {
 
             }else if(action.equalsIgnoreCase("send")){
 
-                url = null;
-                ResultSet rsGet = _reminderModel.send();
                 String medium = request.getParameter("medium");
 
                 // E = Email Only
@@ -59,14 +57,14 @@ public class reminders extends JDSController {
                 }
                 // P = print only
                 else if (medium.equals("P")){
-                    ResultSet rs = _reminderModel.printOnly(medium);
-                    request.setAttribute("ResultSet", rs);
+                    String xml = _reminderModel.printOnly(medium);
+                    request.setAttribute("xml", xml);
                     url = "/pdfserver?action=printRemindersPrintOnly";
                 }
                 // A = print all
                 else if(medium.equals("A")) {
-                    ResultSet rs = _reminderModel.printAll(medium);
-                    request.setAttribute("ResultSet", rs);
+                    String xml = _reminderModel.printAll(medium);
+                    request.setAttribute("xml", xml);
                     url = "/pdfserver?action=printRemindersPrintAll";
                 }
             }
