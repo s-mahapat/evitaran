@@ -34,8 +34,7 @@ public class reminders extends JDSController {
 
                 if(action.equalsIgnoreCase("search")){
 
-                ResultSet rs = _reminderModel.search();
-                String xml = util.convertResultSetToXML(rs);
+                String xml = _reminderModel.search();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 

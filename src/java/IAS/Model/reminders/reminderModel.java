@@ -50,16 +50,20 @@ public class reminderModel extends JDSModel {
 
     }
 
-    public ResultSet search()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        String sql = Queries.getQuery("search_reminders_subscriber");
+    public String search()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String xml = null;
+        String sql = Queries.getQuery("get_reminders_subscriber");
+        sql += " and subscriber.email <> \"\"  or subscriber.email <> null";
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("reminderType"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        return rs;
+        
+        xml = util.convertResultSetToXML(rs);
+        return xml;
     }
 
-       public ResultSet getReminders(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public ResultSet getReminders(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String sql = Queries.getQuery("get_reminders_subscriber");
                 // E = Email Only
         if (medium.equals("E")) {
@@ -251,7 +255,7 @@ public class reminderModel extends JDSModel {
            //reminderId = rsGet.getObject(1);
            stgetjnls.setInt(paramIndex, reminders_id);
            ResultSet rsgetjnls = this.db.executeQueryPreparedStatement(stgetjnls);
-           
+           while (rsgetjnls.next()){
            String journalCode   = rsgetjnls.getString(1);
            String journalName   = rsgetjnls.getString(2);
            String journalGroupName  = rsgetjnls.getString(3);
@@ -261,40 +265,42 @@ public class reminderModel extends JDSModel {
            int endMonth         = rsgetjnls.getInt(7);
            int endYear          = rsgetjnls.getInt(8);
 
-           // Add the row element
-            Element journals = doc.createElement("journals");
-            subscriber.appendChild(journals);
+            // Add the row element
+             Element journals = doc.createElement("journals");
+             subscriber.appendChild(journals);
 
-            Element _journalCode = doc.createElement("journalCode");
-            journals.appendChild(_journalCode);
-            _journalCode.appendChild(doc.createTextNode(journalCode));
+             Element _journalCode = doc.createElement("journalCode");
+             journals.appendChild(_journalCode);
+             _journalCode.appendChild(doc.createTextNode(journalCode));
 
-            Element _journalName = doc.createElement("journalName");
-            journals.appendChild(_journalName);
-            _journalName.appendChild(doc.createTextNode(journalName));
+             Element _journalName = doc.createElement("journalName");
+             journals.appendChild(_journalName);
+             _journalName.appendChild(doc.createTextNode(journalName));
 
-            Element _copies = doc.createElement("copies");
-            journals.appendChild(_copies);
-            _copies.appendChild(doc.createTextNode(Integer.toString(copies)));
-            
-            Element _startMonth = doc.createElement("startMonth");
-            journals.appendChild(_startMonth);
-            _startMonth.appendChild(doc.createTextNode(Integer.toString(startMonth)));
-            
-            Element _startYear = doc.createElement("startYear");
-            journals.appendChild(_startYear);
-            _startYear.appendChild(doc.createTextNode(Integer.toString(startYear)));
-            
-            Element _endMonth = doc.createElement("endMonth");
-            journals.appendChild(_endMonth);
-            _endMonth.appendChild(doc.createTextNode(Integer.toString(endMonth)));
-            
-            Element _endYear = doc.createElement("endYear");
-            journals.appendChild(_endYear);
-            _endYear.appendChild(doc.createTextNode(Integer.toString(endYear)));
-            
+             Element _copies = doc.createElement("copies");
+             journals.appendChild(_copies);
+             _copies.appendChild(doc.createTextNode(Integer.toString(copies)));
+
+             Element _startMonth = doc.createElement("startMonth");
+             journals.appendChild(_startMonth);
+             _startMonth.appendChild(doc.createTextNode(Integer.toString(startMonth)));
+
+             Element _startYear = doc.createElement("startYear");
+             journals.appendChild(_startYear);
+             _startYear.appendChild(doc.createTextNode(Integer.toString(startYear)));
+
+             Element _endMonth = doc.createElement("endMonth");
+             journals.appendChild(_endMonth);
+             _endMonth.appendChild(doc.createTextNode(Integer.toString(endMonth)));
+
+             Element _endYear = doc.createElement("endYear");
+             journals.appendChild(_endYear);
+             _endYear.appendChild(doc.createTextNode(Integer.toString(endYear)));
+          
+           }
           // insert the record to sent reminders
           int ins = insertReminderDetails(Integer.toString(reminders_id), medium);
+          
         }    
         
         DOMSource domSource = new DOMSource(doc);
