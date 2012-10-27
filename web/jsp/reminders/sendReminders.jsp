@@ -49,7 +49,7 @@
                           {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},
                           {name:'reminderType', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderType'},
                           {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},
-                          {name:'emailId', index:'emailId', width:50, align:'center', xmlmap:'emailId'}
+                          {name:'email', index:'email', width:50, align:'center', xmlmap:'email'}
                         ],
                     xmlReader : {
                         root: "results",
@@ -163,7 +163,7 @@
                                         <label>Reminder Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                     <select class="IASComboBox" TABINDEX="6" name="reminderType" id="reminderType">
+                                     <select class="IASComboBoxWideMandatory" TABINDEX="6" name="reminderType" id="reminderType">
                                         <option value ="1">Type 1 Reminder - Gentle</option>
                                         <option value ="2">Type 2 Reminder - Strong</option>
                                         <option value ="3">Type 3 Reminder - Harsh</option>

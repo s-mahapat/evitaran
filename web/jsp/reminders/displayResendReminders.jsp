@@ -48,7 +48,7 @@
                           {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},
                           {name:'reminderType', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderType'},
                           {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},
-                          {name:'emailId', index:'emailId', width:50, align:'center', xmlmap:'emailId'}
+                          {name:'email', index:'email', width:50, align:'center', xmlmap:'email'}
                         ],
                     xmlReader : {
                         root: "results",
@@ -82,14 +82,9 @@
 
             function search(){
 
-                if ($("#reminderType").val() == 0) {
-                    alert("Select Reminder Type");
+                if (($("#reminderType").val() == 0) && (($("#to").val()) == 0 && ($("#from").val()) == 0)){
+                    alert("Select Reminder Type and Date Range");
                 }
-
-                else if($("reminderDate").val() == "") {
-                    alert("Please try again after logging in again ");
-                }
-
                 else {
                         isPageLoaded = true;
                         jQuery("#reminderTable").setGridParam({postData:
@@ -127,7 +122,7 @@
                                 reminderType            : $("#reminderType").val(),
                                 reminderDate            : $("#reminderDate").val(),
                                 medium                  : $("#medium").val(),
-                                action                  : "send"
+                                action                  : "resend"
                             }});
                         jQuery("#reminderTable").setGridParam({ datatype: "xml" });
                         jQuery("#reminderTable").trigger("clearGridData");
@@ -162,7 +157,7 @@
                                     <label>Reminder Type</label>
                                 </span>
                                 <span class="IASFormDivSpanInputBoxLessMargin">
-                                 <select class="IASComboBox" TABINDEX="6" name="reminderType" id="reminderType">
+                                 <select class="IASComboBoxWideMandatory" TABINDEX="6" name="reminderType" id="reminderType">
                                     <option value ="1">Type 1 Reminder - Gentle</option>
                                     <option value ="2">Type 2 Reminder - Strong</option>
                                     <option value ="3">Type 3 Reminder - Harsh</option>

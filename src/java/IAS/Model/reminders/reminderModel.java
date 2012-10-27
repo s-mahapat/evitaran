@@ -52,8 +52,10 @@ public class reminderModel extends JDSModel {
 
     public String search()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
-        String sql = Queries.getQuery("get_reminders_subscriber");
-        sql += " and subscriber.email <> \"\"  or subscriber.email <> null";
+        String fromDate = request.getParameter("from");
+        String toDate = request.getParameter("to");    
+        String sql = Queries.getQuery("gen_reminders_subscriber");        
+        sql += " and reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("reminderType"));
@@ -62,9 +64,17 @@ public class reminderModel extends JDSModel {
         xml = util.convertResultSetToXML(rs);
         return xml;
     }
-
-    public ResultSet getReminders(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    
+    public ResultSet getReminders(String medium, String sender)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+        String fromDate = request.getParameter("from");
+        String toDate = request.getParameter("to"); 
         String sql = Queries.getQuery("get_reminders_subscriber");
+        if (sender =="send"){
+            sql += " and reminders.reminderDate = curdate()";   
+        }else {
+            sql += " and reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+        }
+        
                 // E = Email Only
         if (medium.equals("E")) {
             
@@ -89,6 +99,7 @@ public class reminderModel extends JDSModel {
 
     public ResultSet getGenReminders()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String sql = Queries.getQuery("gen_reminders_subscriber");
+        sql += " and reminders.reminderDate = curdate()";
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("reminderType"));
@@ -315,30 +326,30 @@ public class reminderModel extends JDSModel {
         return xml;
     }
     
-    public String sendEmail(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
+    public String sendEmail(String medium, String sender)  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
 
         boolean status = false;
         String xml = null;
         // Get data for reminders
-        ResultSet rsGet = getReminders(medium);
+        ResultSet rsGet = getReminders(medium, sender);
         xml = buildXml(rsGet, medium);
         return xml;
     }
 
-    public String printOnly(String medium) throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
+    public String printOnly(String medium, String sender) throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
         boolean status = false;
         String xml = null;
         // Get data for reminders
-        ResultSet rsGet = getReminders(medium);
+        ResultSet rsGet = getReminders(medium, sender);
         xml = buildXml(rsGet, medium);
         return xml;
     }
 
-    public String printAll(String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
+    public String printAll(String medium, String sender)  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
         boolean status = false;
         String xml = null;
         // Get data for reminders
-        ResultSet rsGet = getReminders(medium);
+        ResultSet rsGet = getReminders(medium, sender);
         xml = buildXml(rsGet, medium);
         return xml;     
     }

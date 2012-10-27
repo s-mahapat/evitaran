@@ -50,19 +50,41 @@ public class reminders extends JDSController {
 
                 // E = Email Only
                 if (medium.equals("E")) {
-                    String xml = _reminderModel.sendEmail(medium);
+                    String xml = _reminderModel.sendEmail(medium, "send");
                     request.setAttribute("xml", xml);
                     url = "/xmlserver";
                 }
                 // P = print only
                 else if (medium.equals("P")){
-                    String xml = _reminderModel.printOnly(medium);
+                    String xml = _reminderModel.printOnly(medium, "send");
                     request.setAttribute("xml", xml);
                     url = "/pdfserver?action=printRemindersPrintOnly";
                 }
                 // A = print all
                 else if(medium.equals("A")) {
-                    String xml = _reminderModel.printAll(medium);
+                    String xml = _reminderModel.printAll(medium, "send");
+                    request.setAttribute("xml", xml);
+                    url = "/pdfserver?action=printRemindersPrintAll";
+                }
+            }else if(action.equalsIgnoreCase("resend")){
+
+                String medium = request.getParameter("medium");
+
+                // E = Email Only
+                if (medium.equals("E")) {
+                    String xml = _reminderModel.sendEmail(medium, "resend");
+                    request.setAttribute("xml", xml);
+                    url = "/xmlserver";
+                }
+                // P = print only
+                else if (medium.equals("P")){
+                    String xml = _reminderModel.printOnly(medium, "resend");
+                    request.setAttribute("xml", xml);
+                    url = "/pdfserver?action=printRemindersPrintOnly";
+                }
+                // A = print all
+                else if(medium.equals("A")) {
+                    String xml = _reminderModel.printAll(medium, "resend");
                     request.setAttribute("xml", xml);
                     url = "/pdfserver?action=printRemindersPrintAll";
                 }
