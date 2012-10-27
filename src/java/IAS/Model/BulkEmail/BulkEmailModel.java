@@ -84,13 +84,84 @@ public class BulkEmailModel extends JDSModel{
         String encodedMessage = request.getParameter("content");
         String msg = util.decodeURIComponent(encodedMessage);
         String selall   = request.getParameter("selectFromDb");
+        String personal   = request.getParameter("personal");
+        String isc   = request.getParameter("isc");
+        String ii   = request.getParameter("ii");
+        String ic   = request.getParameter("ic");
+        String free   = request.getParameter("free");
+        String fp   = request.getParameter("fp");
+        String fi   = request.getParameter("fp");
 
         String emailIDs = "";
+        String sql = null;
+        sql = Queries.getQuery("get_email_ids");
+        int  first = 0;
+        if (personal.equals("1")){   
+            if (first == 0){
+                sql += " and (subscriber_type.subtypecode = 'IP'";
+                first = 1;                
+            }
+            else{
+                sql += " or subscriber_type.subtypecode = 'IP'";
+            }                        
+        }
+        if (isc.equals("1")){   
+            if (first == 0){
+                sql += " and (subscriber_type.subtypecode = 'IC'";
+                first = 1;                
+            }
+            else{
+                sql += " or subscriber_type.subtypecode = 'IC'";
+            }                        
+        }            
+        if (ii.equals("1")){   
+            if (first == 0){
+                sql += " and (subscriber_type.subtypecode = 'II'";
+                first = 1;                
+            }
+            else{
+                sql += " or subscriber_type.subtypecode = 'II'";
+            }                        
+        }
+        if (ic.equals("1")){   
+            if (first == 0){
+                sql += " and (subscriber_type.subtypecode = 'IN'";
+                first = 1;                
+            }
+            else{
+                sql += " or subscriber_type.subtypecode = 'IN'";
+            }                        
+        }
+        if (free.equals("1")){   
+            if (first == 0){
+                sql += " and (subscriber_type.subtype = 'free'";
+                first = 1;                
+            }
+            else{
+                sql += " or subscriber_type.subtype = 'free'";
+            }                        
+        }
+        if (fp.equals("1")){   
+            if (first == 0){
+                sql += " and (subscriber_type.subtypecode = 'FP'";
+                first = 1;                
+            }
+            else{
+                sql += " or subscriber_type.subtypecode = 'FP'";
+            }                        
+        }
+        if (fi.equals("1")){   
+            if (first == 0){
+                sql += " and (subscriber_type.subtypecode = 'FI'";
+                first = 1;                
+            }
+            else{
+                sql += " or subscriber_type.subtypecode = 'FI'";
+            }                        
+        }
 
-        // Select email ID's from db
-        if (selall.equals("1") && selall != null) {
-
-            String sql = Queries.getQuery("get_email_ids");
+        if (first == 1){
+            sql += ")";
             PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = this.db.executeQueryPreparedStatement(st);
             while(rs.next()){
@@ -99,10 +170,10 @@ public class BulkEmailModel extends JDSModel{
             }
             // For now for testing over-write all the emailIDs
             //emailIDs = "";
-        }else {
-            // Get Email ID's from user
-            emailIDs = request.getParameter("to");
         }
+        
+        emailIDs = emailIDs + " " + request.getParameter("to");
+
         boolean success = true;
         Address[] toUser = InternetAddress.parse(emailIDs, false);
         String message = "Failed to send email to the following address:";

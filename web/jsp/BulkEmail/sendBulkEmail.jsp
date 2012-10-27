@@ -77,13 +77,63 @@
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabelSpecial">
-                                        <label>Select Email ID's from database</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="selall" id="selall" value ="1" onclick="getChecked()"/>
-                                    </span>
-                                </div>
+                                    <div class="IASFormFieldDiv">
+                                        <span class="IASFormDivSpanLabelSpecial">
+                                            <label>Select Email ID's from database:</label>
+                                        </span>
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Personal</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="personal" id="personal" value ="1" onclick="getChecked()"/>
+                                        </span>
+
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Indian Schools and Colleges</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="isc" id="isc" value ="1" onclick="getChecked()"/>
+                                        </span>
+
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Indian Institutions</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="ii" id="ii" value ="1" onclick="getChecked()"/>
+                                        </span>
+
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Indian Corporate</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="ic" id="ic" value ="1" onclick="getChecked()"/>
+                                        </span>
+                                    </div>
+                                    <div class="IASFormFieldDiv">
+                                        <span class="IASFormDivSpanLabelSpecial">
+                                            <label>           :</label>
+                                        </span>
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Free Subscribers</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="free" id="free" value ="1" onclick="getChecked()"/>
+                                        </span>
+
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Foreign Personal</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="fp" id="fp" value ="1" onclick="getChecked()"/>
+                                        </span>
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Foreign Institutions</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="fi" id="fi" value ="1" onclick="getChecked()"/>
+                                        </span>                                        
+                                    </div>
+                                </div>                                
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabelEmail">
                                         <label>Subject:</label>

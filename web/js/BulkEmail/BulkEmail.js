@@ -32,8 +32,11 @@ function sendmail(){
     var text = tinyMCE.get('content').getContent();
     //var text = tinyMCE.content.selection.getContent({format : 'text'});
 
-    if($("#selall").val() == 1 && $("#to").val() == 0){
-        alert("Add email IDs in the \"To\" field");
+    if($("#to").val() == 0 && $("#personal:checked").length == 0 
+        && $("#isc:checked").length == 0 && $("#ii:checked").length == 0
+        && $("#ic:checked").length == 0 && $("#free:checked").length == 0
+        && $("#fp:checked").length == 0 && $("#fi:checked").length == 0){
+        alert("Add email IDs in the \"To\" field or select at least one checkbox to select the value from database");
     }else if ($("#subject").val() == 0){
         alert("Subject cannot be empty");
     }/*else if ($("#content").val() == 0){
@@ -49,7 +52,10 @@ function sendmail(){
             async: false,
             //url: "BulkEmail?action=sendEmail&to=" + $("#to").val() + "&subject=" + $("#subject").val() + "&selectFromDb=" + $("#selall:checked").length +"&content=" + $("#content").val(),
             //url: "BulkEmail?action=sendEmail&to=" + $("#to").val() + "&subject=" + $("#subject").val() + "&selectFromDb=" + $("#selall:checked").length +"&content=" + text,
-            url: "BulkEmail?action=sendEmail&to=" + $("#to").val() + "&subject=" + $("#subject").val() + "&selectFromDb=" + $("#selall:checked").length +"&content=" + encodeURIComponent(text),
+            url: "BulkEmail?action=sendEmail&to=" + $("#to").val() + "&subject=" + $("#subject").val() +
+                            "&personal=" + $("#personal:checked").length +  "&isc=" + $("#isc:checked").length + "&ii=" + $("#ii:checked").length +
+                            "&ic=" + $("#ic:checked").length +  "&free=" + $("#free:checked").length + "&fp=" + $("#fp:checked").length + "&fi=" + $("#fi:checked").length +
+                            "&content=" + encodeURIComponent(text),
             success: function(xmlResponse, textStatus, jqXHR){
 
                 $(xmlResponse).find("results").each(function(){
@@ -73,13 +79,44 @@ function sendmail(){
 
 function getChecked(){
 
-    if (document.getElementById("selall").value == 1 ){
-        document.getElementById("selall").value = 0;
-        document.getElementById('to').value = "";
-        document.getElementById('to').disabled=true;
+    if (document.getElementById("personal").value == 1 ){
+        document.getElementById("personal").value = 0;        
     }else {
-        document.getElementById("selall").value = 1;
-        document.getElementById('to').disabled=false;
+        document.getElementById("personal").value = 1;        
+    }
+    if (document.getElementById("isc").value == 1 ){
+        document.getElementById("isc").value = 0;        
+    }else {
+        document.getElementById("isc").value = 1;        
+    }
+    if (document.getElementById("ic").value == 1 ){
+        document.getElementById("ic").value = 0;        
+    }else {
+        document.getElementById("ic").value = 1;        
+    }
+    
+    if (document.getElementById("ii").value == 1 ){
+        document.getElementById("ii").value = 0;        
+    }else {
+        document.getElementById("ii").value = 1;        
+    }
+    
+    if (document.getElementById("free").value == 1 ){
+        document.getElementById("free").value = 0;        
+    }else {
+        document.getElementById("fp").value = 1;        
+    }
+    
+    if (document.getElementById("fp").value == 1 ){
+        document.getElementById("fp").value = 0;        
+    }else {
+        document.getElementById("fp").value = 1;        
+    }
+    
+    if (document.getElementById("fi").value == 1 ){
+        document.getElementById("fi").value = 0;        
+    }else {
+        document.getElementById("fi").value = 1;        
     }
 }
 
