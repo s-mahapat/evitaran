@@ -10,7 +10,7 @@ body{
     padding:0px;
     background-color: #F6F6F6;
     /*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;*/
-    font-family: arial,helvetica,sans-serif;
+    font-family: arial,sans-serif;
     font-size: 13px;
 }
 
@@ -439,7 +439,7 @@ A:active {
 
 .datatable tbody td{
     text-align: center;
-    font-size: 1.1em;
+    font-size: 1.3em;
     font-weight: normal;
     /*background-color: #ECE5B6;*/
     vertical-align: middle;

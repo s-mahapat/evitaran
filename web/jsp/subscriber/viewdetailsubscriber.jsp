@@ -26,6 +26,7 @@
                 missingIssueGridCreated = false;
                 var detail_requested = <%=request.getParameter("detail")%>
                 var tab_cookie_id = parseInt($.cookie("the_tab_cookie")) || 0;
+                
                 $("#subscriberDtlsTabs").tabs({
                     selected:-1,
                     show: function(event,ui){

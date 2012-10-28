@@ -37,7 +37,7 @@ function listSubscription(){
             {
                 name:'subscriptionID',
                 index:'id',
-                width:25,
+                width:20,
                 align:'center',
                 xmlmap:'id',
                 sortable: false,
@@ -55,7 +55,7 @@ function listSubscription(){
             {
                 name:'subscriptionDate',
                 index:'subscriptionDate',
-                width:30,
+                width:20,
                 align:'center',
                 sortable: true,
                 xmlmap:'subscriptionDate'
@@ -103,7 +103,7 @@ function listSubscription(){
             {
                 name:'details',
                 index:'details',
-                width:15,
+                width:20,
                 align:'center',
                 sortable: false
             },

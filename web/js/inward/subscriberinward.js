@@ -1,17 +1,11 @@
 function drawInwardTable(){
 
-
-    var selectedInward = 0;
-    var selectedSubscriberId = 0;
-    //initally set to false, after the first search the flag is set to true
-    var isPageLoaded = false;
-
     $("#inwardTable").jqGrid({
             url:"inward?action=subscriberInward&subscriberNumber=" + $("#subscriberNumber").val(),
             datatype: 'xml',
             mtype: 'GET',
             width: '100%',
-            height: 350,
+            height: 300,
             autowidth: true,
             forceFit: true,
             sortable: false,

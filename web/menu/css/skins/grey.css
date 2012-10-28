@@ -1,4 +1,4 @@
-.grey .accordion{font: bold 10px Arial, sans-serif; border-top: 1px solid #ccc; border-right: 1px solid #ccc; border-left: 1px solid #ccc;}
+.grey .accordion{font: bold 12px Arial, sans-serif; border-top: 1px solid #ccc; border-right: 1px solid #ccc; border-left: 1px solid #ccc;}
 .grey .accordion, .grey .accordion li {margin: 0; padding: 0; border: none;}
 .grey .accordion li a {padding: 10px 10px 10px 50px; background: #ececec; text-decoration:none; display: block; color: #333; border-bottom: 1px solid #ccc; border-top: 1px solid #fff; position: relative; text-shadow: 1px 1px 1px #fff;}
 .grey .accordion ul{
