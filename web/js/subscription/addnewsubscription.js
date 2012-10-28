@@ -180,7 +180,7 @@ function saveSubscription(){
                     alert(error);
                 }
                 else if(subscriptionID){
-                    alert("Subscription with ID: " + subscriptionID + " created successfully");
+                    //alert("Subscription with ID: " + subscriptionID + " created successfully");
                     $("#subscriptionNumber").val(subscriptionID);
                     $("#btnSaveSubscription").button("disable");
                     $("#btnAddLine").button("disable");

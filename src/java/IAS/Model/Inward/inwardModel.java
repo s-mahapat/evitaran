@@ -6,6 +6,7 @@ package IAS.Model.Inward;
 
 import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
+import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Class.Database;
 import IAS.Class.Queries;
 import IAS.Class.util;
@@ -327,7 +328,7 @@ public class inwardModel extends JDSModel {
         st.setString(++paramIndex, _inwardFormBean.getAckDate());
         st.setString(++paramIndex, _inwardFormBean.getRemarks());
         st.setString(++paramIndex, _inwardFormBean.getLanguage());
-        
+
         /*
          * if the inward is of any non process type like Advertisement, Payment,
          * Others, Manuscript a trigger on the DB side marks the inward as complete
@@ -522,9 +523,9 @@ public class inwardModel extends JDSModel {
             pst.setString(1, subscriberNumber);
             pst.setInt(2, (pageSize * (pageNumber - 1)));
             pst.setInt(3, pageSize);
-            try(ResultSet rs = pst.executeQuery();){
+            try (ResultSet rs = pst.executeQuery();) {
                 xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
-            }           
+            }
 
         }
 
@@ -559,9 +560,9 @@ public class inwardModel extends JDSModel {
         }
 
         sql += " order by t1.id desc, sortdate " + sortOrder;
-        
+
         String sql_count = "select count(*) from (" + sql + ") as tbl";
-        
+
         try (PreparedStatement pst = conn.prepareStatement(sql_count);) {
             try (ResultSet rs_count = pst.executeQuery();) {
                 rs_count.first();
@@ -636,5 +637,36 @@ public class inwardModel extends JDSModel {
 
     public String getRequestForInvoiceEmailBody() {
         return props.getProperty("inward_request_for_invoice");
+    }
+
+    public subscriberFormBean getSubscriberDetail() throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
+        String SubscriberNo = request.getParameter("subscriberNumber");
+        return this.getSubscriberDetails(SubscriberNo);
+    }
+
+    public subscriberFormBean getSubscriberDetails(String SubscriberNo) throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+        String sql;
+        subscriberFormBean _subscriberFormBean = new IAS.Bean.Subscriber.subscriberFormBean();
+        sql = Queries.getQuery("get_subscriber_by_number");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setString(1, SubscriberNo);
+
+        try (ResultSet rs = st.executeQuery()) {
+            while (rs.next()) {
+                BeanProcessor bProc = new BeanProcessor();
+                Class type = Class.forName("IAS.Bean.Subscriber.subscriberFormBean");
+                _subscriberFormBean = (IAS.Bean.Subscriber.subscriberFormBean) bProc.toBean(rs, type);
+            }
+            rs.close();
+        }
+
+        // return the connection back to the pool
+        this.CloseConnection(conn);
+
+        request.setAttribute("subscriberFormBean", _subscriberFormBean);
+        return _subscriberFormBean;
     }
 }
