@@ -27,6 +27,22 @@ public class JDSConstants {
     public static String IAS_LETTERFOOT_CLOSING = "For Circulation Department";
     public static String IAS_LETTERFOOT_SIGNATURE = "(Indian Academy of Sciences)";
     
+    //IAS Payment Footer for Letters
+    public static String IAS_PAYMENTFOOT_HEADER = "Payment can also be made through electronic transfer "
+                + "and the details of account are given here:";
+    public static String IAS_PAYMENTFOOT_ACC = "Name of account holder";
+    public static String IAS_PAYMENTFOOT_ACC_NAME = "Indian Academy of Sciences";
+    public static String IAS_PAYMENTFOOT_BANK = "Name of the Bank";
+    public static String IAS_PAYMENTFOOT_BANK_NAME = "State Bank of India";
+    public static String IAS_PAYMENTFOOT_BRANCH = "Branch";
+    public static String IAS_PAYMENTFOOT_BRANCH_NAME = "Sadashivanagar Branch";
+    public static String IAS_PAYMENTFOOT_ACCNO = "A/c No.(Savings Bank)";
+    public static String IAS_PAYMENTFOOT_ACCNO_DTLS = "10356 553343";
+    public static String IAS_PAYMENTFOOT_IFSCOD = "IFS Code(For non-SBI banks)";
+    public static String IAS_PAYMENTFOOT_IFSCOD_DTLS = "SBI N 000 1811";
+    public static String IAS_PAYMENTFOOTER = "* After electronic transfer please confirm the remittance made by e-mail/post";
+    
+    
     
     
 }
