@@ -67,7 +67,7 @@ function validateSearchSubscription(){
 
 function searchSubscriber(subscriberName,country, state, city, pincode, institution, department, email){
     var subscriber = new Object();
-    windowParams = "dialogHeight:600px; dialogWidth:1200px; center:yes; resizeable:no; status:no; menubar:no;\n\
+    windowParams = "dialogHeight:650px; dialogWidth:1200px; center:yes; resizeable:no; status:no; menubar:no;\n\
                     scrollbars:yes; toolbar: no;";
     subscriber.country = country;
     subscriber.city = city;
@@ -86,7 +86,7 @@ function searchSubscriber(subscriberName,country, state, city, pincode, institut
 function searchSubscription(subscriberNumber){
     var subscriber = new Object();
     subscriber.Number = subscriberNumber;
-    windowParams = "dialogHeight:600px; dialogWidth:1000px; center:yes; resizeable:no; status:no; menubar:no;\n\
+    windowParams = "dialogHeight:800px; dialogWidth:1200px; center:yes; resizeable:no; status:no; menubar:no;\n\
                     scrollbars:yes; toolbar: no;";
     var selectedSubscriptionFromDialog = openModalPopUp("jsp/subscription/subscriptionforsubscriber.jsp"
         , subscriber
@@ -162,14 +162,15 @@ function validateNewInward(){
 
     // since selecting the subscriber is not mandatory, check if he is ok to proceed without
     // selecting subscriber. The inward should be alreay valid before we make this check
-    if(InwardPurpose.toLowerCase() != 'new subscription' && isInwardValid && isEmptyValue($("#subscriberId").val())){
+    // disabling this message for now. Inward dept do not want to enter any subscriber info
+    /*if(InwardPurpose.toLowerCase() != 'new subscription' && isInwardValid && isEmptyValue($("#subscriberId").val())){
         if(confirm("Do you want to save the inward without selecting a subscriber?")){
             isInwardValid = true;
         }else{
             isInwardValid = false;
         }
 
-    }
+    }*/
 
     return isInwardValid;
 }

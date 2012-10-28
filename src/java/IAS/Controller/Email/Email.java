@@ -90,6 +90,7 @@ public class Email extends JDSController {
                                                                     _inwardNumber,
                                                                     _inwardFormBean.getPaymentMode(),
                                                                     _inwardFormBean.getInwardPurpose(),
+                                                                    _inwardFormBean.getInwardPurposeID(),
                                                                     _inwardFormBean.getChqddNumberAsText(),
                                                                     _inwardFormBean.getAmount(),
                                                                     letterNumber,

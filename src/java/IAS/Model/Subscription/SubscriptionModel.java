@@ -679,7 +679,7 @@ public class SubscriptionModel extends JDSModel {
         String sql = "select count(*) from prl where year=?";
         int bExists = -1;
         try (PreparedStatement st = _conn.prepareStatement(sql)) {
-            st.setInt(1, Calendar.YEAR);
+            st.setInt(1, Calendar.getInstance().get(Calendar.YEAR));
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.first()) {
                     bExists = rs.getInt(1);
@@ -704,16 +704,19 @@ public class SubscriptionModel extends JDSModel {
             TransformerException {
 
         Connection _conn = this.getConnection();
-        String sql = Queries.getQuery("get_pl_refer_list_for_ui");
+        String sql = Queries.getQuery("get_pl_refer_list_for_email_and_all");
         String xml = null;
-        String email_search_string;
+        String email_search_string = null;
         /*
          * if medium == 1 get all subscribers that have email id.
          */
         if (medium == 1) {
             email_search_string = "%@%"; // search for valid email ids
-        } else {
-            email_search_string = "%";  // anything in the email field
+        } else if(medium == 2) {
+            email_search_string = "";  // not valid email ids
+            sql = Queries.getQuery("get_pl_refer_list_for_print_only");
+        }else if(medium == 3){
+            email_search_string = "%"; // search for all
         }
         try (PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setString(1, email_search_string);
@@ -740,7 +743,7 @@ public class SubscriptionModel extends JDSModel {
         // first insert the new row into prl table and get the prl id
         sql = "insert into prl(year) values (?)";
         try (PreparedStatement pst = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pst.setInt(1, Calendar.YEAR);
+            pst.setInt(1, Calendar.getInstance().get(Calendar.YEAR));
             pst.executeUpdate();
             try (ResultSet rs = pst.getGeneratedKeys()) {
                 if (rs.first()) {

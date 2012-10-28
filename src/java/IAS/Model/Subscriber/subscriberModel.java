@@ -364,7 +364,7 @@ public class subscriberModel extends JDSModel {
         //double totalPages = 0;
 
         if (subscriberNumber != null && subscriberNumber.length() > 0) {
-            sql += condition + " subscriberNumber=" + "'" + subscriberNumber + "'";
+            sql += condition + " subscriberNumber like" + "'%" + subscriberNumber + "%'";
             condition = " and";
         }
 
@@ -374,7 +374,7 @@ public class subscriberModel extends JDSModel {
         }
 
         if (city != null && city.compareToIgnoreCase("Select") != 0 && city.length() > 0) {
-            sql += condition + " t2.city = " + "\"" + city + "\"";
+            sql += condition + " t2.city like " + "'%" + city + "%'";
             condition = " and";
 
         }

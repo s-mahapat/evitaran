@@ -112,7 +112,7 @@
                                         <label>Cheque/DD No:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" maxlength="11" TABINDEX="-1" readonly type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
+                                        <input class="IASTextBoxMandatory" maxlength="11" TABINDEX="-1" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
                                     </span>
                                 </div>
 

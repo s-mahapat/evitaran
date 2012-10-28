@@ -25,6 +25,9 @@
                 
                 // set the default focus to inward text box.
                 $("#inwardNumber").focus();
+                
+                // search subscriber when ENTER key is pressed
+                setEnterKeyAction(searchInwards);
 
                 $("#inwardTable").jqGrid({
                     url:"<%=request.getContextPath() + "/inward?action=search"%>",

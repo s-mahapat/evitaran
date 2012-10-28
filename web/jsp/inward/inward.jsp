@@ -369,7 +369,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Payment Date:</label>
+                <label>Cheque Date:</label>
             </span>
             <div class="dateDiv" id="dateDiv"></div>
             <span class="IASFormDivSpanInputBox">

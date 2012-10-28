@@ -17,12 +17,17 @@ function setOtherReturnReason(){
 }
 
 function validate(){
-
-    if(document.getElementById("chequeDDReturnReason").value == "NULL"){
-        alert("Please select a Cheque/DD reason for return");
-        return false;
-    }
-    return true;
+    var rc = checkMandatoryFields(); 
+    if(rc){
+        if($("#chequeDDReturnReason").val() == "NULL"){
+            rc = false;
+            alert("Please select a Cheque/DD reason for return");
+        }else{
+            rc = true
+        }
+        
+    }    
+    return rc;
 }
 
 function showChequeDDReturnPrintPreview(url){

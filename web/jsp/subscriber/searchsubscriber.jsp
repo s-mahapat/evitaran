@@ -22,6 +22,9 @@
                 //load city autocomplete
                 loadCities();
                 
+                // search subscriber when ENTER key is pressed
+                setEnterKeyAction(searchSubscriber);
+                
                 //});
                 $("#subscriberNumber").focus()
 
@@ -73,7 +76,7 @@
                             var subscriberId = ids[i];
                             action = "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "'>View</a>" +
                                 "<a style='color:blue;' href='subscriber?action=edit&subscriberNumber=" + subscriberId + "'>Edit</a>" +
-                                "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "#subscriptions" + "'>Subscription</a>";
+                                "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "&detail=2" + "'>Subscription</a>";
                             jQuery("#subscriberTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                         sessionStorage['searchsubscriber'] = JSON.stringify({  
@@ -123,9 +126,6 @@
             function searchSubscriber(){
                 if(validateSearchSubscriber()){
                     isPageLoaded = true;
-                    console.log("validate success");
-                    console.log($("#city").val());
-                    
                     jQuery("#subscriberTable").setGridParam({mtype: 'POST',postData:
                             {city               : $("#city").val(),
                             subscriberNumber    : $("#subscriberNumber").val(),

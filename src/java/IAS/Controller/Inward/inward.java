@@ -225,7 +225,7 @@ public class inward extends JDSController {
                     //url = "/jsp/inward/pendinginwards.jsp";
                     subscriberFormBean _subFormBean = _inwardModel.getSubscriberDetail();
                     request.setAttribute("subscriberFormBean", _subFormBean);
-                    url = "/jsp/subscriber/viewdetailsubscriber.jsp";
+                    url = "/jsp/subscriber/viewdetailsubscriber.jsp?detail=2";
 
                 } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
                     InvoiceFormBean _invoiceFormBean = _inwardModel.getInvoiceDetail(); //new IAS.Bean.Invoice.InvoiceFormBean();

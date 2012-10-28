@@ -16,8 +16,17 @@ function GeneratePRLGrid(){
         rownumbers: true,
         emptyrecords: "No record(s) to view",
         loadtext: "Loading...",
-        colNames:['Subscriber Number','Subscriber Name','Subscription ID','End Year','Email','Status'],
+        colNames:['Subscriber ID','Subscriber Number','Subscriber Name','Subscription ID','End Year','Email','Status'],
         colModel :[
+        {
+            name:'subid',
+            index:'subid',
+            width:25,
+            align:'center',
+            xmlmap:'subscriberID',
+            sortable: false,
+            key: true
+        },
         {
             name:'subno',
             index:'subno',
@@ -70,7 +79,7 @@ function GeneratePRLGrid(){
             root: "results",
             row: "row",
             repeatitems: false,
-            id: "id"
+            id: "subid"
         },
         pager: '#pager',
         rowNum:10,
@@ -107,11 +116,26 @@ function _getMediumSelected(){
     if($("#prlmedium").val() == 0){
         alert("Please select Email or Print");
         return 0;
-    }
+    } 
     return $("#prlmedium").val();
 }
 
 function PrintOrEmail(){
-    
-    
+    if($("#prlmedium").val() == 1){
+        
+    }
+}
+
+function _sendEmails(){
+    _getRows();
+}
+
+function _getRows(){
+    var ids = jQuery("#prlTable").jqGrid('getDataIDs');
+    for (var i = 0; i < ids.length; i++) {
+        var subscriber_id = i;
+        var subscription_id = jQuery("#prlTable").getCell(ids[i], 'subscriptionID');
+        console.log(subscriber_id);
+        console.log(subscription_id);
+    }    
 }

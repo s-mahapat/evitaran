@@ -24,7 +24,12 @@ public class InvoiceFormBean {
     private String invoiceAddress = "";
     private String subscriberName;
     private String email;
-
+    private String department;
+    private String institute;
+    private String city;
+    private String country;
+    private int pincode;
+    private String subsciberNumber;   
     
     public String getEmail(){
         return this.email;
@@ -43,6 +48,14 @@ public class InvoiceFormBean {
     
     public void setSubscriberName(String _name){
         this.subscriberName = _name;
+    }
+    
+    public String getSubscriberNumber(){
+        return this.subsciberNumber;
+    }
+    
+    public void setSubscriberNumber(String _number){
+        this.subsciberNumber = _number;
     }
     /*
      * -----------------------------------------------------------------------
@@ -160,7 +173,45 @@ public class InvoiceFormBean {
     public void setInvoiceAddress(String _InvoiceAddress) {
         this.invoiceAddress = _InvoiceAddress;
     }
-    /*
-     * -----------------------------------------------------------------------
-     */
+    
+    public String getDepartment() {        
+        return this.department;
+    }
+
+    public void setDepartment(String _dept) {
+        this.department = _dept;
+    }
+    
+    public String getInstitute() {        
+        return this.institute;
+    }
+
+    public void setInstitute(String _inst) {
+        this.institute = _inst;
+    }
+    
+    public String getCity() {        
+        return this.city;
+    }
+
+    public void setCity(String _city) {
+        this.city = _city;
+    }
+    
+    public String getCountry() {        
+        return this.country;
+    }
+
+    public void setCountry(String _country) {
+        this.country = _country;
+    }
+    
+    public int getPincode() {        
+        return this.pincode;
+    }
+
+    public void setPincode(int _pincode) {
+        this.pincode = _pincode;
+    }
+ 
 }

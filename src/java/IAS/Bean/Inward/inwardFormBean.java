@@ -129,7 +129,7 @@ public class inwardFormBean extends JDSBean {
     }
 
     public String getSubscriberIdAsText() {
-        return this.subscriberId;
+        return this.subscriberId == null ? "" : this.subscriberId;
     }
 
     public void setSubscriberId(String _SubscriberId) {

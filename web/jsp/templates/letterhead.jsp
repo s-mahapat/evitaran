@@ -1,17 +1,13 @@
+<%@ page import="IAS.Class.JDSConstants" %>
 <div>
-<!--<div id="iasletterheadlogo" class="iasletterheadlogo"></div>-->
-<div id="letterhead" class="letterhead">
-    <div id="iasletterheadlogo" class="iasletterheadlogo"></div>
-    Indian Academy of Sciences
-</div>
-<div id="subletterhead_1">C. V. Raman Avenue, P.B. No. 8005, Sadashivanagar, Bangalore 560 080, India</div>
-<div id="letterTel">
-    <div>
-        Phone: +91-80-2266 1200, FAX: +91-80-2361 6094
+    <!--<div id="iasletterheadlogo" class="iasletterheadlogo"></div>-->
+    <div id="letterhead" class="letterhead">
+        <div id="iasletterheadlogo" class="iasletterheadlogo"></div>
+        <%=JDSConstants.IAS_LETTERHEAD%>
     </div>
-    <div>
-        E-mail: office@ias.ernet.in Website: http://www.ias.ac.in
+    <div id="subletterhead_1"><%=JDSConstants.IAS_LETTERHEAD_ADDRESS%></div>
+    <div id="letterTel">
+        <div><%=JDSConstants.IAS_LETTERHEAD_TELEPHONE%></div>
+        <div><%=JDSConstants.IAS_LETTERHEAD_EMAIL%>  <%=JDSConstants.IAS_LETTERHEAD_WEB%></div>    
     </div>
-    
-</div>
 </div>

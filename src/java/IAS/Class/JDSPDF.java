@@ -14,6 +14,7 @@ public class JDSPDF implements IJDSPDF{
 
     public InputStream pdfTemplatesFile = null;
     public static int OUTER_PARAGRAPH_SPACE  = 10;
+    public static int LESS_OUTER_PARAGRAPH_SPACE  = 2;
     public static int INNER_PARAGRAPH_SPACE  = 10;
     public static int LEFT_INDENTATION_LESS = 15;
     public static int RIGHT_INDENTATION_LESS = 15;

@@ -488,3 +488,10 @@ function validateForTextOnly(FieldId){
     }
 }
 
+function setEnterKeyAction(func){
+    $(document).keydown(function(event){
+        if(event.which == 13){
+            func();
+        }
+    });
+}

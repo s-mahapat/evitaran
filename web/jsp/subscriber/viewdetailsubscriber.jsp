@@ -24,12 +24,17 @@
                 invoiceGridCreated = false;
                 reminderGridCreated = false;
                 missingIssueGridCreated = false;
+                var detail_requested = <%=request.getParameter("detail")%>
                 var tab_cookie_id = parseInt($.cookie("the_tab_cookie")) || 0;
                 $("#subscriberDtlsTabs").tabs({
                     selected:-1,
                     show: function(event,ui){
-
-                        selected_index = ui.index;
+                        if(detail_requested){
+                            selected_index = detail_requested;
+                        }else{
+                            selected_index = ui.index;
+                        }
+                        
                         $.cookie("the_tab_cookie", selected_index);
 
                         if(selected_index == 1 && inwardGridCreated==false){
@@ -56,7 +61,12 @@
 
                     }
                 });
-                $("#subscriberDtlsTabs" ).tabs( "select", tab_cookie_id );
+                if(detail_requested){
+                    $("#subscriberDtlsTabs" ).tabs( "select", detail_requested );
+                    detail_requested = null;
+                }else{
+                    $("#subscriberDtlsTabs" ).tabs( "select", tab_cookie_id );
+                }
 
                 makeReadOnly();
                 makeViewSubscriberReadOnly();

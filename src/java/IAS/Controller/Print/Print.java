@@ -12,13 +12,19 @@ import IAS.Class.JDSLogger;
 import IAS.Class.RequestForInvoicePDF;
 import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
+import com.itextpdf.text.DocumentException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.ParseException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 
 public class Print extends JDSController {
@@ -85,6 +91,7 @@ public class Print extends JDSController {
                                                                     _inwardNumber,
                                                                     _inwardFormBean.getPaymentMode(),
                                                                     _inwardFormBean.getInwardPurpose(),
+                                                                    _inwardFormBean.getInwardPurposeID(),
                                                                     _inwardFormBean.getChqddNumberAsText(),
                                                                     _inwardFormBean.getAmount(),
                                                                     letterNumber,
@@ -111,7 +118,7 @@ public class Print extends JDSController {
 
                 
             }
-        } catch (Exception e) {
+        } catch (SQLException | IOException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | DocumentException | NumberFormatException | ParserConfigurationException | TransformerException e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
         }

@@ -449,7 +449,7 @@ public class inwardModel extends JDSModel {
         //double totalPages = 0;
 
         if (inwardNumber != null && inwardNumber.length() > 0) {
-            sql += " and inwardNumber=" + "'" + inwardNumber + "'";
+            sql += " and inwardNumber like" + "'%" + inwardNumber + "%'";
         }
 
         if (inwardPurpose != null && inwardPurpose.compareToIgnoreCase("NULL") != 0 && inwardPurpose.length() > 0) {

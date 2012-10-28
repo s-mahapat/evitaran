@@ -12,7 +12,6 @@ import IAS.Class.util;
 import IAS.Model.Subscriber.subscriberModel;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import javax.servlet.RequestDispatcher;
@@ -122,8 +121,9 @@ public class subscriber extends JDSController {
                 url = "/xmlserver";
 
             } else if (action.equalsIgnoreCase("printInvoice")) {
-                InvoiceFormBean _invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
-                _invoiceFormBean = _subscriberModel.getInvoiceDetail();
+                //InvoiceFormBean _invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
+                InvoiceFormBean _invoiceFormBean = _subscriberModel.getInvoiceDetail();
+                request.setAttribute("InvoiceFormBean", _invoiceFormBean);
                 url = "/jsp/invoice/proforma.jsp";
 
             } else if (action.equalsIgnoreCase("mil")) {

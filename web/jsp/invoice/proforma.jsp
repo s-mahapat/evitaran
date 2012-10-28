@@ -1,4 +1,5 @@
 <%@page import="IAS.Class.util"%>
+<%@page import="IAS.Class.JDSConstants"%>
 <jsp:useBean class="IAS.Bean.Invoice.InvoiceFormBean" id="invoiceFormBean" scope="request"></jsp:useBean>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -11,6 +12,7 @@
         <title>Proforma Invoice</title>
 
         <script type="text/javascript">
+            var _total = 0;
             $(document).ready(function(){
 
                 $.ajax({
@@ -30,17 +32,23 @@
                             journalName = $(this).find("journalName").text();
 
                             //get the start year, end year and copies
-                            startYear = $(this).find("startYear").text();
-                            endYear = $(this).find("endYear").text();
-                            copies = $(this).find("copies").text();
+                            //startYear = $(this).find("startYear").text();
+                            //endYear = $(this).find("endYear").text();
+                            //copies = $(this).find("copies").text();
+                            period = $(this).find("period").text();
+                            rate = $(this).find("rate").text();
+                            _total = _total + parseInt(rate);
 
                             html += "<td>" + journalName + "</td>"
-                            html += "<td>" + startYear + "</td>"
-                            html += "<td>" + endYear + "</td>"
-                            html += "<td>" + copies + "</td>"
+                            html += "<td>" + period + "</td>"
+                            html += "<td>" + rate + "</td>"
+                            //html += "<td>" + startYear + "</td>"
+                            //html += "<td>" + endYear + "</td>"
+                            //html += "<td>" + copies + "</td>"
                             html += "</tr>";
 
                         });
+                        html += "<tr><td>&nbsp;</td><td>Total</td><td>" + _total + "</td></tr>"
                         html += "</tbody>";
                         var _orightml = $(".datatable").html();
                         html = _orightml + html;
@@ -73,11 +81,22 @@
                         <div id="letterDiv">
                             <%@include file="../templates/letterhead.jsp" %>
                             <div id="invoceHeaderDiv">
-                                <span style= "float:left ; margin-left: 20%"><strong>Subscription No:</strong>${invoiceFormBean.subscriptionID}</span>
                                 <span style= "float:right ; margin-right: 20%">Date: <%=util.getDateString()%></span>
                             </div>
                             <div id="invoceHeaderDiv" style="float: left"><hr style=" l"></div>
-
+                            <div class="invoceAddressHeaderDiv">
+                                <div class="invoiceLeftDiv">
+                                    <span class="invoceAddressHeaderDiv">
+                                        Sub. No: ${invoiceFormBean.subscriberNumber}
+                                    </span>
+                                </div>
+                                <div style="margin: 0 auto">INVOICE</div>
+                                <div class="invoiceRightDiv">
+                                    <span class="invoceAddressHeaderDiv">
+                                        Invoice No: ${invoiceFormBean.invoiceNumber}
+                                    </span>
+                                </div>
+                            </div>
                             <div class="invoceAddressHeaderDiv">
                                 <div class="invoiceLeftDiv">
                                     <span class="invoiceSubscriberAddressHeaderSpan">
@@ -93,49 +112,55 @@
                             <div class="invoceAddressDiv">
                                 <div class="invoiceLeftDiv">
                                     <span class="invoiceSubscriberAddressSpan">
+                                        ${invoiceFormBean.subscriberName}</br>
                                         ${invoiceFormBean.invoiceAddress}
                                     </span>
                                 </div>
                                 <div class="invoiceRightDiv">
                                     <span class="invoiceSubscriberAddressSpan">
-                                        ${invoiceFormBean.shippingAddress}
+                                        ${invoiceFormBean.subscriberName}</br>
+                                        <%
+                                            String _department = invoiceFormBean.getDepartment();
+                                            if (_department != null && _department.length() != 0) {
+                                                out.println(_department + "</br>");
+                                            }
+                                        %>
+                                        <%
+                                            String _institute = invoiceFormBean.getInstitute();
+                                            if (_institute != null && _institute.length() != 0) {
+                                                out.println(_institute + "</br>");
+                                            }
+                                        %>
+                                        ${invoiceFormBean.shippingAddress}</br>
+                                        ${invoiceFormBean.city}</br>
+                                        <%
+                                            String _country = invoiceFormBean.getCountry();
+                                            if (_country != null && _country.length() != 0) {
+                                                out.println(_country + "</br>");
+                                            }
+                                        %>
+                                        <%
+                                            String _pincode = String.valueOf(invoiceFormBean.getPincode());
+                                            if (_pincode != null && _pincode.length() != 0) {
+                                                out.println(_pincode + "</br>");
+                                            }
+                                        %>
                                     </span>
                                 </div>
-                            </div>
-                            <div class="invoiceLetterBody">
-                                As desired, we enclose our Invoice No. ${invoiceFormBean.invoiceNumber} date ${invoiceFormBean.invoiceCreationDate}
-                                for Rs. ${invoiceFormBean.subscriptionTotal}. Please arrange an early payment <label class="underlineText">by means
-                                    of a Bank Draft (or) Cheque drawn in favour of <b>INDIAN ACADEMY OF SCIENCES, BANGALORE</b></label>
-
                             </div>
                             <div id="subscriptionDetail">
                                 <table class="datatable" style="width: 100%">
                                     <tr>
                                         <th>Journal Name</th>
-                                        <th>Start Year</th>
-                                        <th>End Year</th>
-                                        <th>Copies</th>
+                                        <th>No. of Years</th>
+                                        <th>Rs.</th>
                                     </tr>
                                 </table>
                             </div>
 
                             <div class="invoiceRightDiv">
-                                <p>Thanking You,</p>
-                                <p>Yours sincerely,</p>
-                                <p>&nbsp;</p>
-                                <p>For Circulation Department</p>
-                            </div>
-                            <div class="invoiceLeftDiv">
-                                <p>
-                                    Inward No: ${invoiceFormBean.inwardNumber}</br>
-                                    Email: office@ias.ernet.in
-                                </p>
-                            </div>
-                            <div class="invoiceWideDiv">
-                                <p id="invoiceNoticeParagraph">
-                                    Please always quote the above mentioned <b>SUB.NO.</b>
-                                    in all correspondence, claims, etc.
-                                </p>
+                                <p><%=JDSConstants.IAS_LETTERFOOT_CLOSING%></p>
+                                <p><%=JDSConstants.IAS_LETTERFOOT_SIGNATURE%></p>
                             </div>
                         </div>
                     </fieldset>

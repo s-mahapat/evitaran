@@ -12,6 +12,7 @@
             <title>Acknowledge Inward</title>
             <script type="text/javascript">
                 var subscriptionID = 0;
+                jQueryCalendar("subscriberletterDate");
 //                $(document).ready(function(){
 //                    jQueryCalendar("subscriberletterDate");
 //                    $.ajax({
@@ -78,7 +79,7 @@
                             <div class="subjectLine">
                                 Your letter no:
                                 <span>
-                                    <input class="IASTextBox" name="lno" id="letterNumber" type="text" value="">
+                                    <input class="IASTextBoxWide" name="lno" id="letterNumber" type="text" value="">
                                 </span>
                                 <span>Dated:</span>
                                 <span id="letterDateSpan">
