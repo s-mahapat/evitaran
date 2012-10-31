@@ -85,33 +85,33 @@ public class RequestForInvoicePDF extends JDSPDF {
         paragraphOuter.setSpacingBefore(JDSPDF.LESS_OUTER_PARAGRAPH_SPACE);
         paragraphOuter.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         paragraphOuter.setAlignment(Element.ALIGN_LEFT);
-        
-        InvoiceInfoTable.setWidthPercentage(100);        
+
+        InvoiceInfoTable.setWidthPercentage(100);
         Paragraph invoiceNumber = new Paragraph(new Chunk("Invoice No: " + _invoiceBean.getInvoiceNumber()));
         Paragraph subscriberNumber = new Paragraph(new Chunk("Sub No: " + _invoiceBean.getSubscriberNumber()));
         Paragraph invoiceHeader = new Paragraph(new Chunk("INVOICE"));
-        
+
         PdfPCell subscriberNumberCell = new PdfPCell(subscriberNumber);
         PdfPCell invoiceNumberCell = new PdfPCell(invoiceNumber);
         PdfPCell invoiceHeaderCell = new PdfPCell(invoiceHeader);
-        
+
         subscriberNumberCell.setBorder(Rectangle.NO_BORDER);
         subscriberNumberCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         subscriberNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
         subscriberNumberCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_LESS);
-        
+
         invoiceHeaderCell.setBorder(Rectangle.NO_BORDER);
         invoiceHeaderCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         invoiceHeaderCell.setVerticalAlignment(Element.ALIGN_TOP);
-        
+
         invoiceNumberCell.setBorder(Rectangle.NO_BORDER);
         invoiceNumberCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         invoiceNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
-        
+
         InvoiceInfoTable.addCell(subscriberNumberCell);
         InvoiceInfoTable.addCell(invoiceHeaderCell);
         InvoiceInfoTable.addCell(invoiceNumberCell);
-        
+
         //paragraphInvoiceInfo.setIndentationLeft(40);
         paragraphInvoiceInfo.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE);
 
@@ -193,6 +193,7 @@ public class RequestForInvoicePDF extends JDSPDF {
         PreparedStatement pst = conn.prepareStatement(sql);
         pst.setString(1, InwardNumber);
         PdfPTable table;
+        int total = 0;
         try (ResultSet rs = pst.executeQuery()) {
             table = new PdfPTable(4);
             table.setWidthPercentage(98);
@@ -211,23 +212,23 @@ public class RequestForInvoicePDF extends JDSPDF {
             cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
             /*PdfPCell cell4 = new PdfPCell(new Paragraph("Copies"));
-            cell4.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell4.setVerticalAlignment(Element.ALIGN_MIDDLE);*/
+             cell4.setHorizontalAlignment(Element.ALIGN_CENTER);
+             cell4.setVerticalAlignment(Element.ALIGN_MIDDLE);*/
 
             table.addCell(cell1);
             table.addCell(cell2);
             table.addCell(cell3);
             //table.addCell(cell4);           
-            int total = 0;
+
             while (rs.next()) {
                 String journalName = rs.getString("journalName");
                 /*String startYear = String.valueOf(rs.getInt("startYear"));
-                String endYear = String.valueOf(rs.getInt("endYear"));*/
+                 String endYear = String.valueOf(rs.getInt("endYear"));*/
                 String years = String.valueOf(rs.getInt("period"));
                 int _rate = rs.getInt("rate");
                 total += _rate;
                 String rate = String.valueOf(_rate);
-                
+
                 //String copies = String.valueOf(rs.getInt("copies"));
 
                 PdfPCell c1 = new PdfPCell(new Phrase(journalName, JDSPDF.JDS_FONT_NORMAL_SMALL));
@@ -244,28 +245,28 @@ public class RequestForInvoicePDF extends JDSPDF {
                 c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
                 /*PdfPCell c4 = new PdfPCell(new Paragraph(copies, JDSPDF.JDS_FONT_NORMAL_SMALL));
-                c4.setHorizontalAlignment(Element.ALIGN_CENTER);
-                c4.setVerticalAlignment(Element.ALIGN_MIDDLE);*/
+                 c4.setHorizontalAlignment(Element.ALIGN_CENTER);
+                 c4.setVerticalAlignment(Element.ALIGN_MIDDLE);*/
 
                 table.addCell(c1);
                 table.addCell(c2);
                 table.addCell(c3);
                 //table.addCell(c4);
             }
-            
+
             PdfPCell blankCell = new PdfPCell(new Phrase("", JDSPDF.JDS_FONT_NORMAL_SMALL));
             blankCell.setHorizontalAlignment(Element.ALIGN_CENTER);
             blankCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             blankCell.setColspan(2);
-            
+
             PdfPCell totalCell = new PdfPCell(new Phrase("Total", JDSPDF.JDS_FONT_NORMAL_SMALL));
             totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
             totalCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            
+
             PdfPCell totalValue = new PdfPCell(new Phrase(String.valueOf(total), JDSPDF.JDS_FONT_NORMAL_SMALL));
             totalValue.setHorizontalAlignment(Element.ALIGN_CENTER);
             totalValue.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            
+
             table.addCell(blankCell);
             table.addCell(totalCell);
             table.addCell(totalValue);
@@ -274,7 +275,9 @@ public class RequestForInvoicePDF extends JDSPDF {
         //paragraphBody.add(new Phrase(bodyText));
         //paragraphBody.add(Chunk.NEWLINE);
         paragraphBody.add(table);
-
+        EnglishNumberToWords _EnglishNumberToWords = new EnglishNumberToWords();
+        paragraphBody.add(Chunk.NEWLINE);
+        paragraphBody.add(new Phrase(_EnglishNumberToWords.convertDouble(total).toUpperCase(), JDSPDF.JDS_FONT_NORMAL_SMALL));//Convert total value in words
         /*paragraphBody.add(Chunk.NEWLINE);
          paragraphBody.add(new Chunk("Subscription No: " + _invoiceBean.getSubscriptionID()));
          paragraphBody.add(Chunk.NEWLINE);
