@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.fileupload.FileItem;
@@ -21,8 +22,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class FileUploadBase extends JDSModel {
 
-    public FileUploadBase() throws SQLException{
-        super();
+    public FileUploadBase(HttpServletRequest request) throws SQLException{
+        super(request);
     }
     private ArrayList<FileItem> uploadedFiles=new ArrayList<>();
 

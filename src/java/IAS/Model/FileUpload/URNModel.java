@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -35,7 +36,8 @@ public class URNModel extends FileUploadBase {
     private ArrayList<InwardInfo> _failures = new ArrayList<>();
     private static Logger logger = JDSLogger.getJDSLogger(URNModel.class.getName());
 
-    public URNModel() throws SQLException {
+    public URNModel(HttpServletRequest request) throws SQLException {
+        super(request);
         sql = Queries.getQuery("update_urn_info");
         pst = this.conn.prepareStatement(sql);
     }

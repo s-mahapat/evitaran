@@ -27,6 +27,10 @@
                 var detail_requested = <%=request.getParameter("detail")%>
                 var tab_cookie_id = parseInt($.cookie("the_tab_cookie")) || 0;
                 
+                setEnterKeyAction(nextSubscriber);
+                
+                
+                
                 $("#subscriberDtlsTabs").tabs({
                     selected:-1,
                     show: function(event,ui){
@@ -74,6 +78,10 @@
                 subtypeCodeAppend();
 
             });
+            
+            function nextSubscriber(){
+                $("#btnNextSubscriber").click();
+            }
         </script>
     </head>
     <body>
@@ -178,7 +186,7 @@
                         </fieldset>
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv">
-                                <input onclick="location.href='subscriber?action=nextsubscriber&sid=' + $('#subscriberid').val()" TABINDEX="30" class="IASButton" type="button" value="Next Subscriber" id="btnNewInward" name="btnNextSubscriber"/>
+                                <input onclick="location.href='subscriber?action=nextsubscriber&sid=' + $('#subscriberid').val()" TABINDEX="30" class="IASButton" type="button" value="Next Subscriber" id="btnNextSubscriber" name="btnNextSubscriber"/>
                             </div>
                         </fieldset>
                     </fieldset>

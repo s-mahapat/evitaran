@@ -38,7 +38,7 @@ public class fileupload extends JDSController {
 
             if (action.equals("urn")) {
                 List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-                URNModel _urnModel = new URNModel();
+                URNModel _urnModel = new URNModel(request);
                 _urnModel.addFiles(items);
                 _urnModel.processFiles();
                 String xml = _urnModel.getOutputAsXML();
@@ -46,9 +46,10 @@ public class fileupload extends JDSController {
                 url = "/xmlserver";
             }
 
-            if (action.equals("agentxlvalidate")) { //Agent Excel Upload - PINKI
+            if (action.equals("agentxlvalidate")) { //Agent Excel Upload - Validate Excel
+                Boolean uploadInd = false;
                 List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-                AgentXLUploadModel _agentXLUploadModel = new AgentXLUploadModel();
+                AgentXLUploadModel _agentXLUploadModel = new AgentXLUploadModel(uploadInd,request);
                 _agentXLUploadModel.addFiles(items);
                 _agentXLUploadModel.processFiles();
                 returnOutList = new ArrayList<>();
@@ -62,7 +63,7 @@ public class fileupload extends JDSController {
                 }
             }
 
-            if (action.equals("agentxlupload")) {
+            if (action.equals("agentxlupload")) {//Agent Excel Upload - Upload Excel
                 String inwardNumber;
                 Boolean uploadInd = true;
                 if (session.getAttribute("inwardUnderProcess") != null) {

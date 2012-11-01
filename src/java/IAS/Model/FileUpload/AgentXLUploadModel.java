@@ -47,14 +47,14 @@ public class AgentXLUploadModel extends FileUploadBase {
     private inwardFormBean _inwardFormBean;
     private String inwardNumber;
 
-    public AgentXLUploadModel() throws SQLException {
-        //call the base class constructor
-        //super(request);
-    }
+//    public AgentXLUploadModel() throws SQLException {
+//        //call the base class constructor
+//        //super(request);
+//    }
 
     public AgentXLUploadModel(Boolean uploadInd, HttpServletRequest request) throws SQLException {
         //call the base class constructor
-        //super(request);
+        super(request);
         HttpSession session = request.getSession(false);
         this.uploadInd = uploadInd;
         _subscriberModel = new subscriberModel(request);
@@ -62,8 +62,7 @@ public class AgentXLUploadModel extends FileUploadBase {
         _subscriptionModel = new SubscriptionModel(request);
         this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");
         this.inwardNumber = _inwardFormBean.getInwardNumber();
-        jrnlGrpId = new ArrayList<>();
-        jrnlCopies = new ArrayList<>();
+
     }
 
     @Override
@@ -74,9 +73,11 @@ public class AgentXLUploadModel extends FileUploadBase {
                 excelReader = new ExcelReader(filecontent);
                 dataValiDB = new DataValidation();
                 returnOutList = new ArrayList<>();
-                int rowNo = 1;
+                int rowNo = 0;
                 while (true) {
                     String[] rowData = excelReader.getNextRow();
+                    jrnlGrpId = new ArrayList<>();
+                    jrnlCopies = new ArrayList<>();
                     if (rowData == null) { //Break at the end of excel
                         break;
                     }
@@ -84,22 +85,17 @@ public class AgentXLUploadModel extends FileUploadBase {
                     if (uploadInd == true) {
                         if (_subscriberFormBean.getSubscriberNumber().isEmpty()) {
                             int subscriberId = _subscriberModel.SaveNewSubscriber(_subscriberFormBean);
-                            this.returnOutList.add(_subscriberFormBean.getSubscriberNumber());
                         }
+                        String returnOutList = _subscriberFormBean.getSubscriberNumber();
+
                         //create subscription
-//            int subscriptionID,
-//            int[] journalGroupID,
-//            int startYear,
-//            int startMonth,
-//            int endYear,
-//            int[] copies,
-//            String subscriberNumber
                         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
                         int[] arrJrnlGrpId = util.convertIntegers(jrnlGrpId);
                         int[] arrJrnlCopies = util.convertIntegers(jrnlCopies);
                         int subscriptionID = _subscriptionModel.addNewSubscription(_subscriberFormBean.getSubscriberNumber(),
                                 this.inwardNumber,
                                 date.format(new Date()));
+                        this.returnOutList.add(returnOutList.concat(" / " + String.valueOf(subscriptionID))); // To add subscriber and subscription to display in the table
                         _subscriptionModel.addNewSubscriptionDetail(subscriptionID,
                                 arrJrnlGrpId,
                                 Integer.parseInt(jrnlStartYear),
@@ -112,6 +108,9 @@ public class AgentXLUploadModel extends FileUploadBase {
                     if (uploadInd == true) {
                         _subscriberFormBean.setSubscriberNumber("");//Reset the subscriber number as one row from the excel is successfully executed
                     }
+                }
+                if (uploadInd == true) {
+                    this.CompleteInward(this._inwardFormBean.getInwardID());// Complete the inward after upload
                 }
             }
         } catch (IOException | BiffException | SQLException | ParseException | InvocationTargetException | IllegalAccessException e) {

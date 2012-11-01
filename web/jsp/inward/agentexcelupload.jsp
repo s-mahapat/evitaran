@@ -74,10 +74,10 @@
                     rownumbers: true,
                     emptyrecords: "No records to view",
                     loadtext: "Loading...",
-                    colNames:['Id','Errors'],
+                    colNames:['Subscriber Number / Subscription Number'],
                     colModel :[
-                        {name:'Id', index:'id', align:'center', xmlmap:'id'},
-                        {name:'Errors', index:'Errors', align:'center', xmlmap:'id'}
+                        {name:'Subscriber Number / Subscription Number', index:'id', align:'center', xmlmap:'id'},
+                        //{name:'Subscription Id', index:'subscriptionid', align:'center', xmlmap:'subscriptionid'}
                 ],
                     xmlReader : {
                         root: "results",
