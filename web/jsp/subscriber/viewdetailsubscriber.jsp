@@ -176,6 +176,11 @@
                             </div>
 
                         </fieldset>
+                        <fieldset class="subMainFieldSet">
+                            <div class="actionBtnDiv">
+                                <input onclick="location.href='subscriber?action=nextsubscriber&sid=' + $('#subscriberid').val()" TABINDEX="30" class="IASButton" type="button" value="Next Subscriber" id="btnNewInward" name="btnNextSubscriber"/>
+                            </div>
+                        </fieldset>
                     </fieldset>
                 </div>
             </form>

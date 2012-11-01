@@ -117,12 +117,94 @@ public class subscriberModel extends JDSModel {
         } catch (Exception e) {
             logger.error(e);
             throw e;
-        }finally{
-            
+        } finally {
+
             // return the connection to the pool
             conn.close();
             return _subscriberId;
         }
+    }
+
+    public String fetchNextSubscriberNumberById(int subscriberId) throws SQLException, ParseException, ClassNotFoundException {
+        String nextSubscriberNum = "";
+        Connection conn = this.getConnection();
+        // the query name from the jds_sql properties files in WEB-INF/properties folder
+        String sql = Queries.getQuery("get_next_subscriber_number");
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, subscriberId);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.first()) {
+                    nextSubscriberNum = rs.getString(1);
+                }
+            } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
+                throw e;
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
+        }
+        return nextSubscriberNum;
+    }
+
+    public String fetchFirstSubscriberNumber() throws SQLException, ParseException, ClassNotFoundException {
+        String firstSubscriberNum = "";
+        Connection conn = this.getConnection();
+        // the query name from the jds_sql properties files in WEB-INF/properties folder
+        String sql = Queries.getQuery("get_first_subscriber_number");
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.first()) {
+                    firstSubscriberNum = rs.getString(1);
+                }
+            } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
+                throw e;
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
+        }
+        return firstSubscriberNum;
+    }
+
+    public String getNextSubscriber(int subscriberId) throws SQLException, ParseException, ClassNotFoundException {
+        String subscriberNo = "";
+        subscriberFormBean subscriberFormBean = new IAS.Bean.Subscriber.subscriberFormBean();
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
+        subscriberNo = this.fetchNextSubscriberNumberById(subscriberId);
+        if (subscriberNo.isEmpty()) {
+            subscriberNo = this.fetchFirstSubscriberNumber();
+        }
+        String sql = Queries.getQuery("get_subscriber_by_number");
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, subscriberNo);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    Class type = Class.forName("IAS.Bean.Subscriber.subscriberFormBean");
+                    subscriberFormBean = (IAS.Bean.Subscriber.subscriberFormBean) bProc.toBean(rs, type);
+                }
+            } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
+                throw e;
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        } finally {
+            // return the connection back to the pool
+            this.CloseConnection(conn);
+        }
+        request.setAttribute("subscriberFormBean", subscriberFormBean);
+        return subscriberFormBean.getSubscriberNumber();
     }
 
     private synchronized String getNextSubscriberNumber() throws SQLException, ParseException,
@@ -539,16 +621,16 @@ public class subscriberModel extends JDSModel {
         }
 
     }
-    
-    public boolean isSubscriberTypeFree(int subTypeID) throws SQLException{
-        
+
+    public boolean isSubscriberTypeFree(int subTypeID) throws SQLException {
+
         Connection _conn = this.getConnection();
         String sql = Queries.getQuery("is_free_subscriber");
         int isFree = 0;
         try (PreparedStatement st = _conn.prepareStatement(sql)) {
             st.setInt(1, subTypeID);
             try (ResultSet rs = st.executeQuery();) {
-                if(rs.first()){
+                if (rs.first()) {
                     isFree = rs.getInt(1);
                 }
             }
@@ -557,16 +639,16 @@ public class subscriberModel extends JDSModel {
         }
         return isFree == 1 ? true : false;
     }
-    
-    public boolean isSubscriberFree(int subID) throws SQLException{
-        
+
+    public boolean isSubscriberFree(int subID) throws SQLException {
+
         Connection _conn = this.getConnection();
         String sql = Queries.getQuery("get_subscriber_type_for_id");
         int subtypeID = 0;
         try (PreparedStatement st = _conn.prepareStatement(sql)) {
             st.setInt(1, subID);
             try (ResultSet rs = st.executeQuery();) {
-                if(rs.first()){
+                if (rs.first()) {
                     subtypeID = rs.getInt(1);
                 }
             }

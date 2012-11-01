@@ -43,8 +43,9 @@
                     scrollOffset: 20,
                     emptyrecords: "No subscribers to view",
                     loadtext: "Loading...",
-                    colNames:['Subscriber Number','Subscriber Name', 'Department','City','Pin Code','Country', 'Action'],
+                    colNames:['Subscriber ID','Subscriber Number','Subscriber Name', 'Department','City','Pin Code','Country', 'Action'],
                     colModel :[
+                        {name:'Subscriber ID', index:'subscriberID', width:20, align:'center', xmlmap:'subscriberID'},
                         {name:'Subscriber Number', index:'subscriberNumber', width:30, align:'center', xmlmap:'subscriberNumber'},
                         {name:'Subscriber Name', index:'subscriberName', width:60, align:'center', xmlmap:'subscriberName'},
                         {name:'Department', index:'department', width:50, align:'center', xmlmap:'department'},

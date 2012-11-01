@@ -40,10 +40,9 @@ public class subscriber extends JDSController {
         HttpSession session = request.getSession(false);
         try {
             _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
-            if (action.equalsIgnoreCase("createsubscriber")){
+            if (action.equalsIgnoreCase("createsubscriber")) {
                 url = "/jsp/subscriber/createsubscriber.jsp";
-            }
-            else if (action.equalsIgnoreCase("save")) {
+            } else if (action.equalsIgnoreCase("save")) {
                 url = "/jsp/subscriber/viewdetailsubscriber.jsp";
                 //if the record count saved is 1, it indicates that the record was saved else fail.
                 if (_subscriberModel.Save() > 0) {
@@ -54,9 +53,8 @@ public class subscriber extends JDSController {
 
                         // if the inward purpose is new subscription then redirect the user to add subscription after
                         // saving subscriber info, else redirect to view subscriber
-                        if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION ||
-                            inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE
-                            ) {
+                        if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
+                                || inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
                             url = "/jsp/subscription/addnewsubscription.jsp?purpose=" + inwardPurposeID;
                         }
                     }
@@ -75,26 +73,26 @@ public class subscriber extends JDSController {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            } else if(action.equalsIgnoreCase("subscriberNames")){
-             
+            } else if (action.equalsIgnoreCase("subscriberNames")) {
+
                 String searchTerm = request.getParameter("term");
                 String xml = _subscriberModel.getDistinctSubscriberNames(searchTerm);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-                
-            } else if(action.equalsIgnoreCase("depts")){
-             
+
+            } else if (action.equalsIgnoreCase("depts")) {
+
                 String searchTerm = request.getParameter("term");
                 String xml = _subscriberModel.getDepartmentNames(searchTerm);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }else if(action.equalsIgnoreCase("inst")){
-             
+            } else if (action.equalsIgnoreCase("inst")) {
+
                 String searchTerm = request.getParameter("term");
                 String xml = _subscriberModel.getInstitutionNames(searchTerm);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }else if (action.equalsIgnoreCase("viewsubscription")) {
+            } else if (action.equalsIgnoreCase("viewsubscription")) {
 
                 //fill in the subscriber bean
                 if (_subscriberModel.GetSubscriber() != null) {
@@ -133,23 +131,27 @@ public class subscriber extends JDSController {
                 String xml = util.convertStringToXML(String.valueOf(subType), "subtype");
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }else if (action.equalsIgnoreCase("reminders")) {
+            } else if (action.equalsIgnoreCase("reminders")) {
                 String subscriberNumber = request.getParameter("subscriberNumber");
                 String xml = _subscriberModel.getReminders(subscriberNumber);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }else if(action.equalsIgnoreCase("mi")){
+            } else if (action.equalsIgnoreCase("mi")) {
                 int subscriberID = Integer.parseInt(request.getParameter("sid"));
                 String xml = _subscriberModel.getMissingIssues(subscriberID);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+            } else if (action.equalsIgnoreCase("nextsubscriber")) {
+                int subscriberID = Integer.parseInt(request.getParameter("sid"));
+                if (_subscriberModel.getNextSubscriber(subscriberID)!= null){
+                    url = "/jsp/subscriber/viewdetailsubscriber.jsp";
+                }
             }
-            
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
             if (rd != null && url != null) {
                 rd.forward(request, response);
             }
-            
+
 
         } catch (SQLException | ParseException | InvocationTargetException |
                 IllegalAccessException | ClassNotFoundException | ParserConfigurationException |
