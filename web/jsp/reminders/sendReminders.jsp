@@ -155,7 +155,7 @@
                                         <label>Reminder Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                     <select class="IASComboBoxWideMandatory" TABINDEX="6" name="reminderType" id="reminderType">
+                                     <select class="IASComboBoxWideMandatory" TABINDEX="1" name="reminderType" id="reminderType">
                                         <option value ="1">Type 1 Reminder - Gentle</option>
                                         <option value ="2">Type 2 Reminder - Strong</option>
                                         <option value ="3">Type 3 Reminder - Harsh</option>
@@ -178,7 +178,7 @@
                             <legend>Actions - Generate</legend>
                                 <div class="IASFormFieldDiv">
                                     <div id="remindBtnDiv">
-                                         <input class="IASButton" TABINDEX="6" type="button" value="Generate" id="btnRemind" name="btnRemind" onclick="remind()"/>
+                                         <input class="IASButton" TABINDEX="2" type="button" value="Generate" id="btnRemind" name="btnRemind" onclick="remind()"/>
                                     </div>
                                  </div>
                         </fieldset>
@@ -199,7 +199,7 @@
                                         <label>Medium</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                     <select class="IASComboBox" TABINDEX="6" name="medium" id="medium">
+                                     <select class="IASComboBox" TABINDEX="3" name="medium" id="medium">
                                         <option value ="E">Email Only</option>
                                         <option value ="P">Print Only</option>
                                         <option value ="A">Print All</option>
@@ -210,7 +210,7 @@
                                     <input class="IASButton" TABINDEX="4" type="button" value="Send/ Print Reminder" id="btnPrintSend" name="btnPrintSend" onclick="sendReminders()"/>
                                 </div>
                                 <div id="cancelBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
+                                    <input class="IASButton" TABINDEX="5" type="reset" value="Reset"/>
                                 </div>
                             </div>
                         </fieldset>

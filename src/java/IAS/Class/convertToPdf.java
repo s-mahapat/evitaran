@@ -459,6 +459,9 @@ public convertToPdf(){
                 document.add(new Paragraph(reminderType3Text));
             }
 
+            // 6. Add the footer
+            this.addFooter(document, writer);
+
             document.newPage();
         }
 

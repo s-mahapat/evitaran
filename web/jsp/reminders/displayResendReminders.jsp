@@ -97,10 +97,11 @@
                         jQuery("#reminderTable").setGridParam({ datatype: "xml" });
                         jQuery("#reminderTable").trigger("clearGridData");
                         jQuery("#reminderTable").trigger("reloadGrid");
+                        jQuery("#btnPrintSend").attr("disabled",false);
                     }
             }
 
-            function sendReminders(){
+            function resendReminders(){
 
                 if ($("#reminderType").val() == 0) {
                     alert("Select Reminder Type");
@@ -117,16 +118,7 @@
                 }
                 else {
                         isPageLoaded = true;
-                        jQuery("#reminderTable").setGridParam({postData:
-                                {
-                                reminderType            : $("#reminderType").val(),
-                                reminderDate            : $("#reminderDate").val(),
-                                medium                  : $("#medium").val(),
-                                action                  : "resend"
-                            }});
-                        jQuery("#reminderTable").setGridParam({ datatype: "xml" });
-                        jQuery("#reminderTable").trigger("clearGridData");
-                        jQuery("#reminderTable").trigger("reloadGrid");
+                        $("#reminderFormId1").submit();
                         jQuery("#btnPrintSend").attr("disabled",false);
                     }
             }
@@ -140,7 +132,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reminders"%>" name="reminderForm">
+            <form method="post" action="<%=request.getContextPath() + "/reminders?action=resend"%>" name="reminderForm" id="reminderFormId1">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Display and Resend Reminders</legend>
@@ -157,7 +149,7 @@
                                     <label>Reminder Type</label>
                                 </span>
                                 <span class="IASFormDivSpanInputBoxLessMargin">
-                                 <select class="IASComboBoxWideMandatory" TABINDEX="6" name="reminderType" id="reminderType">
+                                 <select class="IASComboBoxWideMandatory" TABINDEX="1" name="reminderType" id="reminderType">
                                     <option value ="1">Type 1 Reminder - Gentle</option>
                                     <option value ="2">Type 2 Reminder - Strong</option>
                                     <option value ="3">Type 3 Reminder - Harsh</option>
@@ -172,13 +164,13 @@
                                 </span>
                                 <div class="dateDiv"></div>
                                 <span class="IASFormDivSpanInputBox">
-                                    <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
+                                    <input class="IASDateTextBox" TABINDEX="2" readonly size="10" type="text" id="from" name="from"/>
                                 </span>
                                 <span class="IASFormDivSpanForHyphen">
                                     <label> to </label>
                                 </span>
                                 <span class="IASFormDivSpanInputBox">
-                                    <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
+                                    <input class="IASDateTextBox" TABINDEX="3" readonly size="10" type="text" id="to" name="to"/>
                                 </span>
                             </div>
                         </div>
@@ -187,7 +179,7 @@
                             <legend>Actions - Display</legend>
                                 <div class="IASFormFieldDiv">
                                     <div id="searchBtnDiv">
-                                         <input class="IASButton" TABINDEX="5" type="button" value="Display" id="btnSearch" name="btnSearch" onclick="search()"/>
+                                         <input class="IASButton" TABINDEX="4" type="button" value="Display" id="btnSearch" name="btnSearch" onclick="search()"/>
                                     </div>
                                  </div>
                         </fieldset>
@@ -206,7 +198,7 @@
                                         <label>Medium</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                     <select class="IASComboBox" TABINDEX="6" name="remType" id="remType">
+                                     <select class="IASComboBox" TABINDEX="5" name="medium" id="medium">
                                         <option value ="E">Email Only</option>
                                         <option value ="P">Print Only</option>
                                         <option value ="A">Print All</option>
@@ -214,10 +206,10 @@
                                     </span>
                                 </div>
                                 <div id="printSendBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="button" value="Send/ Print Reminder" id="btnPrintSend" name="btnPrintSend" onclick="sendReminders()"/>
+                                    <input class="IASButton" TABINDEX="6" type="button" value="Send/ Print Reminder" id="btnPrintSend" name="btnPrintSend" onclick="resendReminders()"/>
                                 </div>
                                 <div id="cancelBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
+                                    <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
                                 </div>
                             </div>
                         </fieldset>
