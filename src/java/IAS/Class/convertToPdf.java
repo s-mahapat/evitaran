@@ -1,4 +1,6 @@
 package IAS.Class;
+import IAS.Bean.reminder.subscriberInfo;
+import IAS.Bean.reminder.subscriptionInfo;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -7,16 +9,14 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.Utilities;
 import com.itextpdf.text.pdf.AcroFields.FieldPosition;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.LineSeparator;
-import com.mysql.jdbc.ResultSetMetaData;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,6 +26,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import javax.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
@@ -63,6 +65,25 @@ public class convertToPdf extends JDSPDF {
     boolean noHeader = false;
     boolean periodicals = false;
 
+    String reminderType1Text = "";
+    String reminderType2Text = "";
+    String reminderType3Text = "";
+
+    /*
+    String subscriberName   = "";
+    String department       = "";
+    String institution      = "";
+    String s_address        = "";
+    String m_address        = "";
+    String city             = "";
+    String pincode          = "";
+    String state            = "";
+    String country          = "";
+    int subNo;
+    String invoiceDate = "";
+    int invoiceNo;
+    float invoiceAmount;
+    */
 
 public convertToPdf(String _noHeader, String _periodicals){
         super();
@@ -255,8 +276,9 @@ public convertToPdf(){
             columnWidth[i-1] = columnWidth[i-1] / rowCount;
             // Usually the first column is the id. Because we take the average width, the column text wraps to the next line
             // To prevent that we double the size of the first column.
-            if(i == 1)
+            if(i == 1){
                 columnWidth[i-1] = columnWidth[i-1] * 2;
+            }
             logger.debug("Column: " + i + "-" + columnWidth[i-1]);
         }
         table.setTotalWidth(columnWidth);
@@ -311,170 +333,231 @@ public convertToPdf(){
         outputStream.writeTo(os);
     }
 
-    public ByteArrayOutputStream reminderType2() throws DocumentException, IOException {
+    public ByteArrayOutputStream generateReminders(List<subscriberInfo> s) throws DocumentException, IOException{
 
-        Document document = this.getPDFDocument();
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
-        //pdfWriter.setPageEvent(new onEndPage());
-
-        document.open();
         Properties properties = getRemindersProperties();
 
-        // 1. Add the letter head
-        document.add(this.getLetterHead());
+        // step 1
+        Document document = new Document(PageSize.A4);
+        document.addAuthor("JDS");
+        document.addCreator("JDS");
+        document.addTitle("Reminders");
 
-        // 2. Leave 2 lines in between
-        document.add(Chunk.NEWLINE);
-        document.add(Chunk.NEWLINE);
+        // step 2
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter writer = PdfWriter.getInstance(document, baos);
+        //writer.setInitialLeading(8.0f);
 
-        // Setup the font and leading
-        PdfContentByte cb = pdfWriter.getDirectContent();
-        setupFontAndLeading(cb);
+        // step 3
+        document.open();
 
-        // Add the address, date, subNo
-        Rectangle rect = pdfWriter.getPageSize();
-        boolean ensureNewLine = false;
-        float curY = pdfWriter.getVerticalPosition(ensureNewLine);
-        float curX = document.leftMargin();
-        float deltaX = (float) (rect.getWidth()/2);
-        addInitialBody(cb, curX, curY, deltaX);
+        Iterator itr = s.listIterator();
+        while (itr.hasNext()){
 
-        // Get the location where the next content should go
-        // When you have added multiple lines in the previous text addition use getYTLM and getXTLM to get the next location
-        curY = cb.getYTLM();
-        curX = cb.getXTLM();
-        cb.beginText();
-        cb.moveText(curX, curY);
-        cb.newlineText();
+            subscriberInfo sinfo = (subscriberInfo)itr.next();
+            int reminderType     = sinfo.getReminderType();
 
-        // 8. Add the subject
-        addSubjectReminderType2(cb);
-        cb.endText();
+            // 1. Add the letter head
+            document.add(this.getLetterHead());
 
-        // 9. Add the list of journals and the period
-        curY = cb.getYTLM();
-        curX = cb.getXTLM();
-        cb.beginText();
-        cb.moveText(curX, curY);
-        addJournals(cb);
-        cb.endText();
+            // 2. Add the address, date, subNo
+            // Add the address, date, subNo
+            //document.add(Chunk.NEWLINE);
 
-        // 10. Add the content
-        //document.newPage();
-        curY = cb.getYTLM();
-        curX = cb.getXTLM();
-        cb.beginText();
-        cb.moveText(curX, curY);
-        addBodyReminderType2(cb, (float)rect.getWidth() - 2*curX);
-        //cb.endText();
+            // Setup the font and leading
+            //PdfContentByte cb = writer.getDirectContent();
+            //setupFontAndLeading(cb);
+
+            PdfPTable table = new PdfPTable(2);
+            table.setWidthPercentage(100f);
+            table.setHeaderRows(0);
+            //PdfPCell c1 = new PdfPCell(new Phrase());
+            PdfPCell c1 = new PdfPCell(getSubNo(sinfo));
+            c1.setBorder(PdfPCell.NO_BORDER);
+            PdfPCell c2 = new PdfPCell(getDate());
+            c2.setBorder(PdfPCell.NO_BORDER);
+            PdfPCell c3 = new PdfPCell(getInvoiceAddressHeader());
+            c3.setBorder(PdfPCell.NO_BORDER);
+            PdfPCell c4 = new PdfPCell(getShippingAddressHeader());
+            c4.setBorder(PdfPCell.NO_BORDER);
+            PdfPCell c5 = new PdfPCell(getInvoiceAddress(sinfo));
+            c5.setBorder(PdfPCell.NO_BORDER);
+            PdfPCell c6 = new PdfPCell(getShippingAddress(sinfo));
+            c6.setBorder(PdfPCell.NO_BORDER);
+
+            table.addCell(c1);
+            table.addCell(c2);
+            table.addCell(c3);
+            table.addCell(c4);
+            table.addCell(c5);
+            table.addCell(c6);
+            document.add(table);
+
+            document.add(Chunk.NEWLINE);
+
+            /*
+            Rectangle rect = writer.getPageSize();
+            boolean ensureNewLine = false;
+            float curY = writer.getVerticalPosition(ensureNewLine);
+            float curX = document.leftMargin();
+            float deltaX = (float) (rect.getWidth()/2);
+            addInitialBody(cb, curX, curY, deltaX, sinfo);
+
+            // Get the location where the next content should go
+            // When you have added multiple lines in the previous text addition use getYTLM and getXTLM to get the next location
+            curY = cb.getYTLM();
+            curX = cb.getXTLM();
+            cb.beginText();
+            cb.moveText(curX, curY);
+            cb.newlineText();
+            */
+
+            // 3. Add the subject
+            //addSubjectReminderType1(cb, invoiceNo, invoiceDate, invoiceAmount);
+            if(reminderType == 1){
+                document.add(addSubjectReminderType1(sinfo.getInvoiceNo(), sinfo.getInvoicedate(), sinfo.getBalance()));
+            }else if(reminderType == 2){
+                document.add(addSubjectReminderType2());
+            }else if(reminderType == 3){
+                document.add(addSubjectReminderType2());
+            }
+            //cb.endText();
+
+            // 4. Add the list of journals and the period
+            /*
+            curY = cb.getYTLM();
+            curX = cb.getXTLM();
+            cb.beginText();
+            cb.moveText(curX, curY);
+            */
+            document.add(Chunk.NEWLINE);
+            //PdfPTable table2 = addJournals(sinfo);
+            document.add(addJournals(sinfo));
+            //float[] widths = {0.8f, 0.1f, 0.1f, 0.1f, 0.1f};
+            //table2.setWidths(widths);
+            //table2.setWidthPercentage(100f);
+            //table2.setHeaderRows(0);
+            //document.add(table2);
+            //cb.endText();
+
+            // 5. Add the content
+            /*
+            curY = cb.getYTLM();
+            curX = cb.getXTLM();
+            cb.beginText();
+            cb.moveText(curX, curY);
+            */
+            document.add(Chunk.NEWLINE);
+            if(reminderType == 1){
+                //addBodyReminderType1(cb, (float)rect.getWidth() - 2*curX);
+                document.add(new Paragraph(reminderType1Text));
+            }else if(reminderType == 2){
+                //addBodyReminderType2(cb, (float)rect.getWidth() - 2*curX);
+                document.add(new Paragraph(reminderType2Text));
+            }else if(reminderType == 3){
+                //addBodyReminderType2(cb, (float)rect.getWidth() - 2*curX);
+                document.add(new Paragraph(reminderType3Text));
+            }
+
+            document.newPage();
+        }
 
         // 11. Close the document
         document.close();
-        return outputStream;
+
+        return baos;
     }
 
-    public ByteArrayOutputStream reminderType1() throws DocumentException, IOException{
+    public Paragraph getDate(){
+        Paragraph paragraph = new Paragraph();
+        paragraph.setAlignment(textAlignment);
+        paragraph.setFont(new Font(fontType, fontSize));
+        paragraph.add("DATE: " + getCurrentDate());
 
-        com.itextpdf.text.Document document = this.getPDFDocument();
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
-        //pdfWriter.setPageEvent(new onEndPage());
-
-        document.open();
-        Properties properties = getRemindersProperties();
-
-        // 1. Add the letter head
-        document.add(this.getLetterHead());
-
-        // 2. Leave 2 lines in between
-        document.add(Chunk.NEWLINE);
-        document.add(Chunk.NEWLINE);
-
-        // Setup the font and leading
-        PdfContentByte cb = pdfWriter.getDirectContent();
-        setupFontAndLeading(cb);
-
-        // Add the address, date, subNo
-        Rectangle rect = pdfWriter.getPageSize();
-        boolean ensureNewLine = false;
-        float curY = pdfWriter.getVerticalPosition(ensureNewLine);
-        float curX = document.leftMargin();
-        float deltaX = (float) (rect.getWidth()/2);
-        addInitialBody(cb, curX, curY, deltaX);
-
-        // Get the location where the next content should go
-        // When you have added multiple lines in the previous text addition use getYTLM and getXTLM to get the next location
-        curY = cb.getYTLM();
-        curX = cb.getXTLM();
-        cb.beginText();
-        cb.moveText(curX, curY);
-        cb.newlineText();
-
-        // 8. Add the subject
-        int invoiceNo       = 2446;
-        String invoiceDate  = "12/01/2010";
-        float invoiceAmount = 3000.0f;
-        addSubjectReminderType1(cb, invoiceNo, invoiceDate, invoiceAmount);
-        cb.endText();
-
-        // 9. Add the list of journals and the period
-        curY = cb.getYTLM();
-        curX = cb.getXTLM();
-        cb.beginText();
-        cb.moveText(curX, curY);
-        addJournals(cb);
-        cb.endText();
-
-        // 10. Add the content
-        //document.newPage();
-        curY = cb.getYTLM();
-        curX = cb.getXTLM();
-        cb.beginText();
-        cb.moveText(curX, curY);
-        addBodyReminderType1(cb, (float)rect.getWidth() - 2*curX);
-        //cb.endText();
-
-        // 11. Close the document
-        document.close();
-        return outputStream;
+        return paragraph;
     }
 
-    // This contains the subNo, date, invoice address and shipping address
-    public void addInitialBody(PdfContentByte cb, float curX, float curY, float deltaX)
+    public Paragraph getSubNo(subscriberInfo sinfo) {
+
+        Paragraph paragraph = new Paragraph();
+        paragraph.setAlignment(textAlignment);
+        paragraph.setFont(new Font(fontType, fontSize));
+        paragraph.add("SUB.NO. " + sinfo.getSubscriberNumber());
+
+        return paragraph;
+
+    }
+
+    public Paragraph getInvoiceAddress(subscriberInfo sinfo)
     {
-        // 3. Add the subscriber Id
-        cb.beginText();
-        cb.moveText(curX, curY);
-        addSubscriberId(cb);
-        cb.endText();
 
-        // 4. Add the date
-        cb.beginText();
-        cb.moveText(curX + deltaX, curY);
-        cb.showText("DATE: " + getCurrentDate());
-        cb.endText();
+        Paragraph paragraph = new Paragraph();
+        paragraph.setAlignment(textAlignment);
+        paragraph.setFont(new Font(fontType, fontSize));
+        paragraph.add(sinfo.getSubscriberName());
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(sinfo.getDepartment());
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(sinfo.getInstitution());
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(sinfo.getInvoiceAddress());
+        paragraph.add(Chunk.NEWLINE);
 
-        // Now move back to left side
-        //curY = pdfWriter.getVerticalPosition(ensureNewLine);
-        //curX = document.leftMargin();
-        //deltaX = rect.getWidth()/2;
+        String lastLine = sinfo.getCity() +
+                " " + sinfo.getPincode() +
+                " " + sinfo.getState();
+                //" " + sinfo.getCountry();
 
-        // 5. Add the shipping address
-        cb.beginText();
-        cb.newlineText();
-        cb.moveText(curX + deltaX, curY);
-        addShippingAddress(cb);
-        cb.endText();
+        paragraph.add(lastLine);
+        return paragraph;
+    }
 
-        // 6. Add the mailing address
-        cb.beginText();
-        cb.newlineText();
-        cb.moveText(curX, curY);
-        addMailingAddress(cb);
-        cb.endText();
+    public Paragraph getShippingAddress(subscriberInfo sinfo)
+    {
+
+        Paragraph paragraph = new Paragraph();
+        paragraph.setAlignment(textAlignment);
+        paragraph.setFont(new Font(fontType, fontSize));
+        paragraph.add(sinfo.getSubscriberName());
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(sinfo.getDepartment());
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(sinfo.getInstitution());
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(sinfo.getShippingAddress());
+        paragraph.add(Chunk.NEWLINE);
+
+        String lastLine = sinfo.getCity() +
+                " " + sinfo.getPincode() +
+                " " + sinfo.getState();
+                //" " + sinfo.getCountry();
+
+        paragraph.add(lastLine);
+        return paragraph;
+    }
+
+    public Paragraph getInvoiceAddressHeader(){
+
+        Paragraph paragraph = new Paragraph();
+        paragraph.setAlignment(textAlignment);
+        paragraph.setFont(new Font(fontType, fontSize));
+        Chunk c = new Chunk("Invoice ADDRESS");
+        c.setUnderline(0.1f, -2f);
+        paragraph.add(c);
+
+        return paragraph;
+    }
+
+    public Paragraph getShippingAddressHeader(){
+
+        Paragraph paragraph = new Paragraph();
+        paragraph.setAlignment(textAlignment);
+        paragraph.setFont(new Font(fontType, fontSize));
+        Chunk c = new Chunk("Shipping ADDRESS");
+        c.setUnderline(0.1f, -2f);
+        paragraph.add(c);
+
+        return paragraph;
     }
 
     public void setupFontAndLeading(PdfContentByte cb)
@@ -485,195 +568,123 @@ public convertToPdf(){
         cb.setLeading(leading);
     }
 
-    public void addJournals(PdfContentByte cb)
+    public Paragraph addJournals(subscriberInfo sinfo)
     {
-        String journalName  = "Current Science";
-        String startMonth   = "JAN";
-        String startYear    = "2012";
-        String endMonth     = "DEC";
-        String endYear      = "2012";
-        cb.newlineText();
-        for(int i=0; i<=15; i++)
-        {
-            cb.newlineShowText(journalName + " " + startMonth + " " + startYear + " to " + endMonth + " " + endYear);
-        }
-    }
-
-    public void addBodyReminderType2(PdfContentByte cb, float width)
-    {
-        String template1 = "Dear Subscriber";
-        String template2 = "Please refer to our Invoice towards the supply of the journals";
-        String template3 = "mentioned above. We are sorry that in spite of repeated reminders";
-        String template4 = "our bill remains unpaid till now. However, we have mailed all";
-        String template5 = "the issues AS ON DATE in anticipation of payment.";
-        String template6 = "We solicit your kind co-operation in settlement of out bill";
-        String template7 = "immediately.";
-        String template8 = "Thanking you,";
-        String template9 = "Yours Sincerely,";
-        String template10 = "For Circulation Department.";
-        String template11 = "EMail:orders@ias.ernet.in";
-
-        cb.newlineText();
-        cb.newlineShowText(template1);
-        cb.newlineText();
-        cb.newlineShowText(template2);
-        cb.newlineShowText(template3);
-        cb.newlineShowText(template4);
-        cb.newlineShowText(template5);
-        cb.newlineText();
-
-        cb.newlineShowText(template6);
-        cb.newlineShowText(template7);
-        cb.newlineText();
-        cb.newlineShowText(template8);
-        cb.newlineText();
-        cb.newlineShowText(template9);
-        cb.newlineShowText(template10);
-        cb.newlineShowText(template11);
-        cb.endText();
-
-    }
-
-    public void addBodyReminderType1(PdfContentByte cb, float width)
-    {
-        String template1 = "Dear Sir(s),";
-        String template2 = "The invoice referred to above is outstanding.";
-        String template3 = "Kindly look into the matter and expedite payment.";
-        String template4 = "Thanking you in anticipation,";
-        String template5 = "Yours Sincerely,";
-        String template6 = "For Circulation Department.";
-        String template7 = "EMail:orders@ias.ernet.in";
-        String template8    = "***************************************";
-        String template9    = "PLEASE ALWAYS QUOTE THE";
-        String template10   = "ABOVE MENTIONED SUB. NO.";
-        String template11   = "IN ALL CORRESPONDENCE,";
-        String template12   = "CLAIMS, ETC.";
-
-        cb.newlineText();
-        cb.newlineShowText(template1);
-        cb.newlineShowText(template2);
-        cb.newlineShowText(template3);
-        cb.newlineShowText(template4);
-        cb.newlineText();
-
-        cb.newlineShowText(template5);
-        cb.newlineShowText(template6);
-        cb.newlineShowText(template7);
-        cb.newlineText();
-        //cb.endText();
-
-        //LineSeparator ls = new LineSeparator();
-        //ls.drawLine(cb, cb.getXTLM(), cb.getXTLM() + width, cb.getYTLM());
-
-        //float curY = cb.getYTLM();
-        //float curX = cb.getXTLM();
-        //cb.beginText();
-        //cb.moveText(curX, curY);
-        cb.newlineShowText(template8);
-        cb.newlineShowText(template9);
-        cb.newlineShowText(template10);
-        cb.newlineShowText(template11);
-        cb.newlineShowText(template12);
-        cb.newlineShowText(template8);
         //cb.newlineText();
-        cb.endText();
 
-        //ls.drawLine(cb, cb.getXTLM(), cb.getXTLM() + width, cb.getYTLM());
-    }
-
-    public Paragraph getBody()
-    {
-        String template1 = "Dear Sir(s),";
-        String template2 = "The invoice referred to above is outstanding.";
-        String template3 = "Kindly look into the matter and expedite payment.";
-        String template4 = "Thanking you in anticipation,";
-        String template5 = "Yours Sincerely,";
-        String template6 = "For Circulation Department.";
-        String template7 = "EMail:orders@ias.ernet.in";
-        String template8    = "****************************";
-        String template9    = "PLEASE ALWAYS QUOTE THE ABOVE MENTIONED SUB. NO. IN ALL CORRESPONDENCE CLAIMS, ETC.";
+        //PdfPTable table = new PdfPTable(5);
+        //table.setWidthPercentage(100f);
+        //table.setHeaderRows(0);
 
         Paragraph paragraph = new Paragraph();
         paragraph.setAlignment(textAlignment);
         paragraph.setFont(new Font(fontType, fontSize));
-        paragraph.add(template1);
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(template2);
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(template3);
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(template4);
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(template5);
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(template6);
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(template7);
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(Chunk.NEWLINE);
-        //paragraph.add(template8);
-        LineSeparator ls = new LineSeparator();
-        paragraph.add(new Chunk(ls));
 
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(template9);
-        paragraph.add(Chunk.NEWLINE);
-        //paragraph.add(template8);
-        paragraph.add(new Chunk(ls));
+        List<subscriptionInfo> s = sinfo.getSubscriptionInfo();
+        Iterator itr = s.listIterator();
+        while (itr.hasNext()){
+            subscriptionInfo sCurrent = (subscriptionInfo)itr.next();
+            /*
+            String journalName  = "Current Science";
+            String startMonth   = "JAN";
+            String startYear    = "2012";
+            String endMonth     = "DEC";
+            String endYear      = "2012";
+            */
+            String journalName  = sCurrent.getJournalName();
+            int startMonth   = sCurrent.getStartMonth();
+            int startYear    = sCurrent.getStartYear();
+            int endMonth     = sCurrent.getEndMonth();
+            int endYear      = sCurrent.getEndYear();
 
+            int noOfYears = 1;
+            if(endMonth != 12) {
+                noOfYears = endYear - startYear + 1;
+            }else {
+                noOfYears = endYear - startYear + 1;
+            }
+
+            String period = Integer.toString(startYear);
+            if(endYear != startYear){
+                period = Integer.toString(startYear) + "-" + Integer.toString(endYear);
+            }
+
+            Chunk c = new Chunk(journalName + " (" + Integer.toString(noOfYears) + " YEAR)" + " for the year(s) " + period);
+            paragraph.add(c);
+            paragraph.add(Chunk.NEWLINE);
+
+            /*
+            PdfPCell c1 = new PdfPCell(new Paragraph(journalName));
+            PdfPCell c2 = new PdfPCell(new Paragraph(Integer.toString(startMonth)));
+            PdfPCell c3 = new PdfPCell(new Paragraph(Integer.toString(startYear)));
+            PdfPCell c4 = new PdfPCell(new Paragraph(Integer.toString(endMonth)));
+            PdfPCell c5 = new PdfPCell(new Paragraph(Integer.toString(endYear)));
+
+            table.addCell(c1);
+            table.addCell(c2);
+            table.addCell(c3);
+            table.addCell(c4);
+            table.addCell(c5);
+            */
+
+            //cb.newlineShowText(journalName + " " + startMonth + " " + startYear + " to " + endMonth + " " + endYear);
+            /*
+            for(int i=0; i<=15; i++)
+            {
+                cb.newlineShowText(journalName + " " + startMonth + " " + startYear + " to " + endMonth + " " + endYear);
+            }
+            */
+        }
         return paragraph;
     }
 
-    public Paragraph getJournal(String journalName, String startMonth, String startYear, String endMonth, String endYear)
+    public Paragraph addSubjectReminderType2()
     {
-        String template1 = " to ";
+        String template = "Sub:- NON PAYMENT OF SUBSCRIPTION";
         Paragraph paragraph = new Paragraph();
-        paragraph.setAlignment(Element.ALIGN_LEFT);
-        paragraph.setFont(new Font(fontType, fontSize));
-
-        paragraph.add(journalName + " " + startMonth + " " + startYear + template1 + endMonth + " " + endYear);
+        //cb.newlineShowText(template);
+        paragraph.add(template);
 
         return paragraph;
-    }
-
-    public void addSubjectReminderType2(PdfContentByte cb)
-    {
-        String template = "Sub:- NON PAYMENT OF SUBSCRIPTION FOR 2011";
-        cb.newlineShowText(template);
 
     }
 
-    public void addSubjectReminderType1(PdfContentByte cb, int invoiceNo, String invoiceDate, float invoiceAmount)
+    public Paragraph addSubjectReminderType1(int invoiceNo, String invoiceDate, float invoiceAmount)
     {
+        Paragraph paragraph = new Paragraph();
+
         String template1 = "Sub:- Settlement of our Proforma Invoice No. ";
+        String template5 = "Sub:- Settlement of balance payment ";
         String template2 = " dated ";
         String template3 = " for Rs. ";
         String template4 = " towards subscription of";
 
-        cb.newlineShowText(template1 + invoiceNo);
-        cb.newlineShowText(template2 + invoiceDate + template3 + invoiceAmount);
-        cb.newlineShowText(template4);
+        String op="";
 
-    }
+        if(invoiceNo == 0){
+            //cb.newlineShowText(template5);
+            op = op + template5;
+        }else {
+            //cb.newlineShowText(template1 + invoiceNo);
+            op = op + template1 + invoiceNo;
+        }
 
-    public Paragraph getSubject(int invoiceNo, String invoiceDate, float invoiceAmount)
-    {
-        String template1 = "Sub:- Settlement of our Proforma Invoice No. ";
-        String template2 = " dated ";
-        String template3 = " for Rs. ";
-        String template4 = " towards subscription of";
-
-        Paragraph paragraph = new Paragraph();
+        if(invoiceDate.isEmpty()){
+            //cb.newlineShowText(template2 + invoiceDate + template3 + invoiceAmount);
+            op = op + template3 + invoiceAmount;
+        }else {
+            //cb.newlineShowText(template3 + invoiceAmount);
+            op = op + template2 + invoiceDate + template3 + invoiceAmount;
+        }
+        //cb.newlineShowText(template4);
+        op = op + template4;
         paragraph.setAlignment(Element.ALIGN_LEFT);
         paragraph.setFont(new Font(fontType, fontSize));
 
-        paragraph.add(template1 + invoiceNo + template2 + invoiceDate + template3 + invoiceAmount + template4);
-        //paragraph.add(Chunk.NEWLINE);
-        //paragraph.add(template2 + invoiceDate + template3 + invoiceAmount);
-        //paragraph.add(template4);
+        paragraph.add(op);
 
         return paragraph;
+
     }
 
     public String getCurrentDate()
@@ -682,102 +693,6 @@ public convertToPdf(){
         java.util.Date dt = new java.util.Date();
         String date = dtformat.format(dt);
         return date;
-    }
-
-    public void addSubscriberId(PdfContentByte cb)
-    {
-        String template = "SUB.NO. ";
-        String subscriberId = "3962";
-        cb.showText(template + subscriberId);
-    }
-
-    public Paragraph addShippingAddress()
-    {
-
-        String subscriberName   = "(Ref: ID 123 IMS Engg College)";
-        String department       = "South Asia Distributors & Publisher";
-        String institution      = "92-C (Part), 1st Floor, SPAN House";
-        String address          =  "Gurudwara Road, Madangir";
-        String city             = "New Delhi";
-        String pincode          = "110 062";
-        String state            = "New Delhi";
-        String country          = "India";
-
-        Paragraph info = new Paragraph();
-        info.setLeading(leading);
-        info.setAlignment(textAlignment);
-
-        Font font = new Font(fontType, fontSize, fontStyle, BaseColor.BLACK);
-        info.add(new Chunk("SHIPPING ADDRESS", font));
-        info.add(Chunk.NEWLINE);
-        info.add(new Chunk(subscriberName, font));
-        info.add(Chunk.NEWLINE);
-        info.add(new Chunk(department, font));
-        info.add(Chunk.NEWLINE);
-        info.add(new Chunk(institution, font));
-        info.add(Chunk.NEWLINE);
-        info.add(new Chunk(address, font));
-        info.add(Chunk.NEWLINE);
-        String lastLine = city +
-                " " + pincode +
-                " " + state +
-                " " + country;
-        info.add(new Chunk(lastLine, font));
-
-        return info;
-
-    }
-
-    public void addShippingAddress(PdfContentByte cb)
-    {
-        String subscriberName   = "(Ref: ID 123 IMS Engg College)";
-        String department       = "South Asia Distributors & Publisher";
-        String institution      = "92-C (Part), 1st Floor, SPAN House";
-        String address          =  "Gurudwara Road, Madangir";
-        String city             = "New Delhi";
-        String pincode          = "110 062";
-        String state            = "New Delhi";
-        String country          = "India";
-
-        cb.showText("SHIPPING ADDRESS");
-        //cb.newlineShowText("=================");
-        cb.newlineShowText("-----------------");
-        cb.newlineShowText(subscriberName);
-        cb.newlineShowText(department);
-        cb.newlineShowText(institution);
-        cb.newlineShowText(address);
-
-        String lastLine = city +
-                " " + pincode +
-                " " + state +
-                " " + country;
-        cb.newlineShowText(lastLine);
-    }
-
-    public void addMailingAddress(PdfContentByte cb)
-    {
-        String subscriberName   = "(Ref: ID 123 IMS Engg College)";
-        String department       = "South Asia Distributors & Publisher";
-        String institution      = "92-C (Part), 1st Floor, SPAN House";
-        String address          =  "Gurudwara Road, Madangir";
-        String city             = "New Delhi";
-        String pincode          = "110 062";
-        String state            = "New Delhi";
-        String country          = "India";
-
-        cb.showText("Mailing ADDRESS");
-        //cb.newlineShowText("===============");
-        cb.newlineShowText("---------------");
-        cb.newlineShowText(subscriberName);
-        cb.newlineShowText(department);
-        cb.newlineShowText(institution);
-        cb.newlineShowText(address);
-
-        String lastLine = city +
-                " " + pincode +
-                " " + state +
-                " " + country;
-        cb.newlineShowText(lastLine);
     }
 
     public boolean addParagraph(Paragraph p, PdfContentByte canvas, FieldPosition f, boolean simulate) throws DocumentException {
@@ -849,7 +764,7 @@ public convertToPdf(){
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
         int numberOfColumns = 2, count=0;
-        int serialNo=1;
+        int serialNo=1, noOfPages=0;
 
         while(true)
         {
@@ -858,6 +773,9 @@ public convertToPdf(){
             if(info == null)
             {
                 // step 5
+                if(noOfPages == 0){
+                    document.newPage();
+                }
                 document.close();
 
                 baos.writeTo(os);
@@ -898,6 +816,7 @@ public convertToPdf(){
 
             if(col == 1){
                 document.newPage();
+                noOfPages++;
             }
 
             count++;
@@ -918,6 +837,9 @@ public convertToPdf(){
         fontType        = Font.getFamily(properties.getProperty("fontFamily"));
         fontSize        = Integer.parseInt(properties.getProperty("fontSize"));
         fontStyle       = Font.getStyleValue(properties.getProperty("fontStyle"));
+        reminderType1Text    = properties.getProperty("reminderType1");
+        reminderType2Text    = properties.getProperty("reminderType2");
+        reminderType3Text    = properties.getProperty("reminderType3");
 
         return properties;
     }
@@ -1068,42 +990,6 @@ public convertToPdf(){
             }
             document.newPage();
         }
-    }
-
-    public Paragraph getAddress()
-    {
-
-        String subscriberName   = "(Ref: ID 123 IMS Engg College)";
-        String department       = "South Asia Distributors & Publisher";
-        String institution      = "92-C (Part), 1st Floor, SPAN House";
-        String address          =  "Gurudwara Road, Madangir";
-        String city             = "New Delhi";
-        String pincode          = "110 062";
-        String state            = "New Delhi";
-        String country          = "India";
-
-        Paragraph info = null;
-        info = new Paragraph();
-        info.setLeading(leading);
-        info.setAlignment(textAlignment);
-
-        Font font = new Font(fontType, fontSize, fontStyle, BaseColor.BLACK);
-        info.add(new Chunk(subscriberName, font));
-        info.add(Chunk.NEWLINE);
-        info.add(new Chunk(department, font));
-        info.add(Chunk.NEWLINE);
-        info.add(new Chunk(institution, font));
-        info.add(Chunk.NEWLINE);
-        info.add(new Chunk(address, font));
-        info.add(Chunk.NEWLINE);
-        String lastLine = city +
-                " " + pincode +
-                " " + state +
-                " " + country;
-        info.add(new Chunk(lastLine, font));
-
-        return info;
-
     }
 
     public Paragraph getFooterForLabel() {
@@ -1669,7 +1555,413 @@ public convertToPdf(){
         }
         return info;
     }
+
+    public Paragraph getAddress()
+    {
+
+        String subscriberName   = "(Ref: ID 123 IMS Engg College)";
+        String department       = "South Asia Distributors & Publisher";
+        String institution      = "92-C (Part), 1st Floor, SPAN House";
+        String address          =  "Gurudwara Road, Madangir";
+        String city             = "New Delhi";
+        String pincode          = "110 062";
+        String state            = "New Delhi";
+        String country          = "India";
+
+        Paragraph info = null;
+        info = new Paragraph();
+        info.setLeading(leading);
+        info.setAlignment(textAlignment);
+
+        Font font = new Font(fontType, fontSize, fontStyle, BaseColor.BLACK);
+        info.add(new Chunk(subscriberName, font));
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk(department, font));
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk(institution, font));
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk(address, font));
+        info.add(Chunk.NEWLINE);
+        String lastLine = city +
+                " " + pincode +
+                " " + state +
+                " " + country;
+        info.add(new Chunk(lastLine, font));
+
+        return info;
+
+    }
+
+    public Paragraph addShippingAddress()
+    {
+
+        Paragraph info = new Paragraph();
+        info.setLeading(leading);
+        info.setAlignment(textAlignment);
+
+        Font font = new Font(fontType, fontSize, fontStyle, BaseColor.BLACK);
+        info.add(new Chunk("SHIPPING ADDRESS", font));
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk(subscriberName, font));
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk(department, font));
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk(institution, font));
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk(address, font));
+        info.add(Chunk.NEWLINE);
+        String lastLine = city +
+                " " + pincode +
+                " " + state +
+                " " + country;
+        info.add(new Chunk(lastLine, font));
+
+        return info;
+
+    }
+
     */
+    /*
+    public ByteArrayOutputStream reminderType2(subscriberInfo sinfo) throws DocumentException, IOException {
+
+        Document document = this.getPDFDocument();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        //pdfWriter.setPageEvent(new onEndPage());
+
+        document.open();
+        Properties properties = getRemindersProperties();
+
+        // 1. Add the letter head
+        document.add(this.getLetterHead());
+
+        // 2. Leave 2 lines in between
+        document.add(Chunk.NEWLINE);
+        document.add(Chunk.NEWLINE);
+
+        // Setup the font and leading
+        PdfContentByte cb = pdfWriter.getDirectContent();
+        setupFontAndLeading(cb);
+
+        // Add the address, date, subNo
+        Rectangle rect = pdfWriter.getPageSize();
+        boolean ensureNewLine = false;
+        float curY = pdfWriter.getVerticalPosition(ensureNewLine);
+        float curX = document.leftMargin();
+        float deltaX = (float) (rect.getWidth()/2);
+        addInitialBody(cb, curX, curY, deltaX, sinfo);
+
+        // Get the location where the next content should go
+        // When you have added multiple lines in the previous text addition use getYTLM and getXTLM to get the next location
+        curY = cb.getYTLM();
+        curX = cb.getXTLM();
+        cb.beginText();
+        cb.moveText(curX, curY);
+        cb.newlineText();
+
+        // 8. Add the subject
+        addSubjectReminderType2(cb);
+        cb.endText();
+
+        // 9. Add the list of journals and the period
+        curY = cb.getYTLM();
+        curX = cb.getXTLM();
+        cb.beginText();
+        cb.moveText(curX, curY);
+        addJournals(cb, sinfo);
+        cb.endText();
+
+        // 10. Add the content
+        //document.newPage();
+        curY = cb.getYTLM();
+        curX = cb.getXTLM();
+        cb.beginText();
+        cb.moveText(curX, curY);
+        addBodyReminderType2(cb, (float)rect.getWidth() - 2*curX);
+        //cb.endText();
+
+        // 11. Close the document
+        document.close();
+
+        return outputStream;
+    }
+    */
+    /*
+    // This contains the subNo, date, invoice address and shipping address
+    public void addInitialBody(PdfContentByte cb, float curX, float curY, float deltaX, subscriberInfo sinfo)
+    {
+        // 3. Add the subscriber Id
+        cb.beginText();
+        cb.moveText(curX, curY);
+        addSubscriberId(cb, sinfo);
+        cb.endText();
+
+        // 4. Add the date
+        cb.beginText();
+        cb.moveText(curX + deltaX, curY);
+        cb.showText("DATE: " + getCurrentDate());
+        cb.endText();
+
+        // Now move back to left side
+        //curY = pdfWriter.getVerticalPosition(ensureNewLine);
+        //curX = document.leftMargin();
+        //deltaX = rect.getWidth()/2;
+         cb.newlineText();
+
+        // 5. Add the shipping address
+        cb.beginText();
+        cb.newlineText();
+        cb.moveText(curX + deltaX, curY);
+        addShippingAddress(cb, sinfo);
+        cb.endText();
+
+        // 6. Add the mailing address
+        cb.beginText();
+        cb.newlineText();
+        cb.moveText(curX, curY);
+        addInvoiceAddress(cb, sinfo);
+        cb.endText();
+    }
+    */
+    /*
+    public Paragraph getSubject(int invoiceNo, String invoiceDate, float invoiceAmount)
+    {
+        String template1 = "Sub:- Settlement of our Proforma Invoice No. ";
+        String template2 = " dated ";
+        String template3 = " for Rs. ";
+        String template4 = " towards subscription of";
+
+        Paragraph paragraph = new Paragraph();
+        paragraph.setAlignment(Element.ALIGN_LEFT);
+        paragraph.setFont(new Font(fontType, fontSize));
+
+        paragraph.add(template1 + invoiceNo + template2 + invoiceDate + template3 + invoiceAmount + template4);
+        //paragraph.add(Chunk.NEWLINE);
+        //paragraph.add(template2 + invoiceDate + template3 + invoiceAmount);
+        //paragraph.add(template4);
+
+        return paragraph;
+    }
+    */
+    /*
+    public void addBodyReminderType2(PdfContentByte cb, float width)
+    {
+        String template1 = "Dear Subscriber";
+        String template2 = "Please refer to our Invoice towards the supply of the journals";
+        String template3 = "mentioned above. We are sorry that in spite of repeated reminders";
+        String template4 = "our bill remains unpaid till now. However, we have mailed all";
+        String template5 = "the issues AS ON DATE in anticipation of payment.";
+        String template6 = "We solicit your kind co-operation in settlement of out bill";
+        String template7 = "immediately.";
+        String template8 = "Thanking you,";
+        String template9 = "Yours Sincerely,";
+        String template10 = "For Circulation Department.";
+        String template11 = "EMail:orders@ias.ernet.in";
+
+        cb.newlineText();
+        cb.newlineShowText(template1);
+        cb.newlineText();
+        cb.newlineShowText(template2);
+        cb.newlineShowText(template3);
+        cb.newlineShowText(template4);
+        cb.newlineShowText(template5);
+        cb.newlineText();
+
+        cb.newlineShowText(template6);
+        cb.newlineShowText(template7);
+        cb.newlineText();
+        cb.newlineShowText(template8);
+        cb.newlineText();
+        cb.newlineShowText(template9);
+        cb.newlineShowText(template10);
+        cb.newlineShowText(template11);
+        cb.endText();
+
+    }
+
+    public void addBodyReminderType1(PdfContentByte cb, float width)
+    {
+        String template1 = "Dear Sir(s),";
+        String template2 = "The invoice referred to above is outstanding.";
+        String template3 = "Kindly look into the matter and expedite payment.";
+        String template4 = "Thanking you in anticipation,";
+        String template5 = "Yours Sincerely,";
+        String template6 = "For Circulation Department.";
+        String template7 = "EMail:orders@ias.ernet.in";
+        String template8    = "***************************************";
+        String template9    = "PLEASE ALWAYS QUOTE THE";
+        String template10   = "ABOVE MENTIONED SUB. NO.";
+        String template11   = "IN ALL CORRESPONDENCE,";
+        String template12   = "CLAIMS, ETC.";
+
+        cb.newlineText();
+        cb.newlineShowText(template1);
+        cb.newlineShowText(template2);
+        cb.newlineShowText(template3);
+        cb.newlineShowText(template4);
+        cb.newlineText();
+
+        cb.newlineShowText(template5);
+        cb.newlineShowText(template6);
+        cb.newlineShowText(template7);
+        cb.newlineText();
+        //cb.endText();
+
+        //LineSeparator ls = new LineSeparator();
+        //ls.drawLine(cb, cb.getXTLM(), cb.getXTLM() + width, cb.getYTLM());
+
+        //float curY = cb.getYTLM();
+        //float curX = cb.getXTLM();
+        //cb.beginText();
+        //cb.moveText(curX, curY);
+        cb.newlineShowText(template8);
+        cb.newlineShowText(template9);
+        cb.newlineShowText(template10);
+        cb.newlineShowText(template11);
+        cb.newlineShowText(template12);
+        cb.newlineShowText(template8);
+        //cb.newlineText();
+        cb.endText();
+
+        //ls.drawLine(cb, cb.getXTLM(), cb.getXTLM() + width, cb.getYTLM());
+    }
+
+    public Paragraph getBody()
+    {
+        String template1 = "Dear Sir(s),";
+        String template2 = "The invoice referred to above is outstanding.";
+        String template3 = "Kindly look into the matter and expedite payment.";
+        String template4 = "Thanking you in anticipation,";
+        String template5 = "Yours Sincerely,";
+        String template6 = "For Circulation Department.";
+        String template7 = "EMail:orders@ias.ernet.in";
+        String template8    = "****************************";
+        String template9    = "PLEASE ALWAYS QUOTE THE ABOVE MENTIONED SUB. NO. IN ALL CORRESPONDENCE CLAIMS, ETC.";
+
+        Paragraph paragraph = new Paragraph();
+        paragraph.setAlignment(textAlignment);
+        paragraph.setFont(new Font(fontType, fontSize));
+        paragraph.add(template1);
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(template2);
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(template3);
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(template4);
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(template5);
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(template6);
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(template7);
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(Chunk.NEWLINE);
+        //paragraph.add(template8);
+        LineSeparator ls = new LineSeparator();
+        paragraph.add(new Chunk(ls));
+
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(template9);
+        paragraph.add(Chunk.NEWLINE);
+        //paragraph.add(template8);
+        paragraph.add(new Chunk(ls));
+
+        return paragraph;
+    }
+
+    public Paragraph getJournal(String journalName, String startMonth, String startYear, String endMonth, String endYear)
+    {
+        String template1 = " to ";
+        Paragraph paragraph = new Paragraph();
+        paragraph.setAlignment(Element.ALIGN_LEFT);
+        paragraph.setFont(new Font(fontType, fontSize));
+
+        paragraph.add(journalName + " " + startMonth + " " + startYear + template1 + endMonth + " " + endYear);
+
+        return paragraph;
+    }
+
+    public void addSubscriberId(PdfContentByte cb, subscriberInfo s)
+    {
+        String template = "SUB.NO. ";
+        //String subscriberId = "3962";
+        String subscriberNumber = s.getSubscriberNumber();
+        cb.showText(template + subscriberNumber);
+    }
+
+    */
+    /*
+    public void addShippingAddress(PdfContentByte cb, subscriberInfo sinfo)
+    {
+
+        cb.showText("SHIPPING ADDRESS");
+        cb.newlineShowText("----------------------");
+
+        //cb.newlineShowText(subscriberName);
+        //cb.newlineShowText(department);
+        //cb.newlineShowText(institution);
+        //cb.newlineShowText(s_address);
+
+        cb.newlineShowText(sinfo.getSubscriberName());
+        cb.newlineShowText(sinfo.getDepartment());
+        cb.newlineShowText(sinfo.getInstitution());
+        cb.newlineShowText(sinfo.getShippingAddress());
+
+
+        //String lastLine = city +
+        //        " " + pincode +
+        //        " " + state +
+        //        " " + country;
+
+        String lastLine = sinfo.getCity() +
+                " " + sinfo.getPincode() +
+                " " + sinfo.getState() +
+                " " + sinfo.getCountry();
+
+        cb.newlineShowText(lastLine);
+    }
+
+    public void addInvoiceAddress(PdfContentByte cb, subscriberInfo sinfo)
+    {
+        cb.showText("Invoice ADDRESS");
+        //cb.newlineShowText("===============");
+        cb.newlineShowText("--------------------");
+        cb.newlineShowText(sinfo.getSubscriberName());
+        cb.newlineShowText(sinfo.getDepartment());
+        cb.newlineShowText(sinfo.getInstitution());
+        cb.newlineShowText(sinfo.getInvoiceAddress());
+
+        String lastLine = sinfo.getCity() +
+                " " + sinfo.getPincode() +
+                " " + sinfo.getState() +
+                " " + sinfo.getCountry();
+
+        cb.newlineShowText(lastLine);
+    }
+    */
+    /*
+    public ByteArrayOutputStream reminderType(List<subscriberInfo> sinfo) throws DocumentException, IOException, ParserConfigurationException, SAXException{
+        //Parse the xml here and decide which reminder function to be called
+
+        String xml = "";
+        //int reminderType = sinfo.getReminderType();
+
+        if(reminderType == 1){
+            ByteArrayOutputStream outputStream = reminderType1(sinfo);
+            return outputStream;
+        }else if(reminderType == 2) {
+            ByteArrayOutputStream outputStream = reminderType2(sinfo);
+            return outputStream;
+        }else if(reminderType == 3) {
+            ByteArrayOutputStream outputStream = reminderType2(sinfo);
+            return outputStream;
+        }
+        return null;
+    }
+    */
+
 
 }
 

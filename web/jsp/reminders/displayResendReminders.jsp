@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : sendReminders.jsp
     Created on : Nov 15, 2011, 8:24:51 AM
     Author     : aloko
@@ -20,7 +20,7 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jQuery("#btnPrintSend").attr("disabled",true);   
+                jQuery("#btnPrintSend").attr("disabled",true);
              });
 
             $(function(){
@@ -67,7 +67,7 @@
                     caption: '&nbsp;',
                     editurl:"<%=request.getContextPath()%>/reminders?action=search",
                     gridComplete: function() {
-                        
+
                     },
                     beforeRequest: function(){
                         return isPageLoaded;
@@ -141,11 +141,11 @@
 
         <div id="bodyContainer">
             <form method="post" action="<%=request.getContextPath() + "/reminders"%>" name="reminderForm">
-                <div class="MainDiv">                    
+                <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Display and Resend Reminders</legend>
                         <jsp:useBean class="IAS.Bean.reminder.reminderFormBean" id="reminderFormBean" scope="request"></jsp:useBean>
-                     
+
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -162,8 +162,8 @@
                                     <option value ="2">Type 2 Reminder - Strong</option>
                                     <option value ="3">Type 3 Reminder - Harsh</option>
                                  </select>
-                                </span>                                
-                            </div>     
+                                </span>
+                            </div>
                         </div>
                         <div class="IASFormRightDiv">
                             <div class="IASFormFieldDiv">
@@ -188,9 +188,9 @@
                                 <div class="IASFormFieldDiv">
                                     <div id="searchBtnDiv">
                                          <input class="IASButton" TABINDEX="5" type="button" value="Display" id="btnSearch" name="btnSearch" onclick="search()"/>
-                                    </div>                                           
+                                    </div>
                                  </div>
-                        </fieldset> 
+                        </fieldset>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -198,7 +198,7 @@
                             <legend>Result</legend>
                             <table class="reminderTable" id="reminderTable"></table>
                             <div id="pager"></div>
-                        </fieldset>                       
+                        </fieldset>
                         <fieldset class="subMainFieldSet">
                            <div class="IASFormFieldDiv">
                                <div id="printMedium">
@@ -214,8 +214,8 @@
                                     </span>
                                 </div>
                                 <div id="printSendBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="button" value="Sent/ Print Reminder" id="btnPrintSend" name="btnPrintSend" onclick="sendReminders()"/>
-                                </div>                                       
+                                    <input class="IASButton" TABINDEX="4" type="button" value="Send/ Print Reminder" id="btnPrintSend" name="btnPrintSend" onclick="sendReminders()"/>
+                                </div>
                                 <div id="cancelBtnDiv">
                                     <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                                 </div>

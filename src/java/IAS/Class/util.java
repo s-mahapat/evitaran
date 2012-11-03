@@ -520,6 +520,22 @@ public final class util {
         return (colValue);
     }
 
+    public static String parseXML(String xml, String search) throws ParserConfigurationException, SAXException, IOException {
+
+        InputSource is = new InputSource();
+        is.setCharacterStream(new StringReader(xml));
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        DocumentBuilder db1 = dbf.newDocumentBuilder();
+        org.w3c.dom.Document doc = db1.parse(is);
+        org.w3c.dom.Element docEle = doc.getDocumentElement();
+
+        NodeList nl = docEle.getElementsByTagName(search);
+        return nl.item(0).getNodeValue();
+
+    }
+
     public static int[] convertIntegers(List<Integer> integers) {
         int[] ret = new int[integers.size()];
         for (int i = 0; i < ret.length; i++) {

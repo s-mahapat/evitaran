@@ -11,8 +11,18 @@ function emailReminders(){
         success: function(xmlResponse, textStatus, jqXHR){
 
             $(xmlResponse).find("results").each(function(){
-                act = $(this).find("action").text();
+                //act = $(this).find("action").text();
+                message = $(this).find("message").text();
+                success = $(this).find("success").text();
+                if(success.valueOf() == "1") {
+                    alert("Email sent");
+                } else {
+                    alert("Email not sent: " + message);
+                }
+                $("#btnPrintSend").button("disable");
+                return true;
             });
+            /*
             if(act == 'failure')
             {
                 alert("Failed to send emails");
@@ -21,10 +31,10 @@ function emailReminders(){
             }
             if(act == 'success')
                 alert("Emails sent");
-
             $("#btnPrintSend").button("disable");
 
             return true;
+            */
 
         },
         error: function(jqXHR,textStatus,errorThrown){

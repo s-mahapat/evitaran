@@ -161,17 +161,18 @@ public class msgsend {
                     mbp2.setDataHandler(new DataHandler(dataSource));
                     mbp2.setFileName(file);
                 }
-                else
-                mbp2.attachFile(file);
+                else {
+                    mbp2.attachFile(file);
+                }
                 MimeMultipart mp = new MimeMultipart();
                 mp.addBodyPart(mbp1);
                 mp.addBodyPart(mbp2);
                 message.setContent(mp);
             } else {
                 // This will send messages as text
-                //message.setContent(msg, "text/plain");  // Setting the content type
+                message.setContent(msg, "text/plain");  // Setting the content type
                 // To send html links in mail
-                message.setText(msg, "text/html");
+                //message.setText(msg, "text/html");
             }
 
             message.setHeader("X-Mailer", "msgSend");
@@ -268,8 +269,9 @@ public class msgsend {
                     mbp2.setDataHandler(new DataHandler(dataSource));
                     mbp2.setFileName(file);
                 }
-                else
-                mbp2.attachFile(file);
+                else {
+                    mbp2.attachFile(file);
+                }
                 MimeMultipart mp = new MimeMultipart();
                 mp.addBodyPart(mbp1);
                 mp.addBodyPart(mbp2);
@@ -356,8 +358,9 @@ public class msgsend {
                     mbp2.setDataHandler(new DataHandler(dataSource));
                     mbp2.setFileName(file);
                 }
-                else
-                mbp2.attachFile(file);
+                else {
+                    mbp2.attachFile(file);
+                }
                 MimeMultipart mp = new MimeMultipart();
                 mp.addBodyPart(mbp1);
                 mp.addBodyPart(mbp2);
@@ -450,8 +453,9 @@ public class msgsend {
                     mbp2.setDataHandler(new DataHandler(dataSource));
                     mbp2.setFileName(file);
                 }
-                else
-                mbp2.attachFile(file);
+                else {
+                    mbp2.attachFile(file);
+                }
                 MimeMultipart mp = new MimeMultipart();
                 mp.addBodyPart(mbp1);
                 mp.addBodyPart(mbp2);

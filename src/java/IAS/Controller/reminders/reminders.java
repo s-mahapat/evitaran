@@ -1,5 +1,6 @@
 package IAS.Controller.reminders;
 
+import IAS.Bean.reminder.subscriberInfo;
 import IAS.Model.reminders.reminderModel;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import IAS.Class.JDSLogger;
 import IAS.Class.msgsend;
 import IAS.Class.util;
 import IAS.Controller.JDSController;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 
@@ -56,14 +58,18 @@ public class reminders extends JDSController {
                 }
                 // P = print only
                 else if (medium.equals("P")){
-                    String xml = _reminderModel.printOnly(medium, "send");
-                    request.setAttribute("xml", xml);
+                    //String xml = _reminderModel.printOnly(medium, "send");
+                    List<subscriberInfo> sinfo = _reminderModel.printOnly(medium, "send");
+                    request.setAttribute("subscriberInfo", sinfo);
+                    //request.setAttribute("xml", xml);
                     url = "/pdfserver?action=printRemindersPrintOnly";
                 }
                 // A = print all
                 else if(medium.equals("A")) {
-                    String xml = _reminderModel.printAll(medium, "send");
-                    request.setAttribute("xml", xml);
+                    //String xml = _reminderModel.printAll(medium, "send");
+                    List<subscriberInfo> sinfo = _reminderModel.printAll(medium, "send");
+                    request.setAttribute("subscriberInfo", sinfo);
+                    //request.setAttribute("xml", xml);
                     url = "/pdfserver?action=printRemindersPrintAll";
                 }
             }else if(action.equalsIgnoreCase("resend")){
@@ -78,14 +84,18 @@ public class reminders extends JDSController {
                 }
                 // P = print only
                 else if (medium.equals("P")){
-                    String xml = _reminderModel.printOnly(medium, "resend");
-                    request.setAttribute("xml", xml);
+                    //String xml = _reminderModel.printOnly(medium, "resend");
+                    List<subscriberInfo> sinfo = _reminderModel.printOnly(medium, "resend");
+                    request.setAttribute("subscriberInfo", sinfo);
+                    //request.setAttribute("xml", xml);
                     url = "/pdfserver?action=printRemindersPrintOnly";
                 }
                 // A = print all
                 else if(medium.equals("A")) {
-                    String xml = _reminderModel.printAll(medium, "resend");
-                    request.setAttribute("xml", xml);
+                    //String xml = _reminderModel.printAll(medium, "resend");
+                    List<subscriberInfo> sinfo = _reminderModel.printAll(medium, "resend");
+                    request.setAttribute("subscriberInfo", sinfo);
+                    //request.setAttribute("xml", xml);
                     url = "/pdfserver?action=printRemindersPrintAll";
                 }
             }

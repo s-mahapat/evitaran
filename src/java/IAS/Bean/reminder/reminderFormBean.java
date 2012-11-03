@@ -13,10 +13,10 @@ import IAS.Class.util;
  *
  * @author I038668
  */
-public class reminderFormBean extends JDSBean {
-    
+public class reminderFormBean  {
+
     private String reminderDate = util.getDateString();
-    
+
         public String getreminderDate() {
         //Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
         return this.reminderDate;//!= null ? dtformat.format(this.inwardCreationDate) : "";

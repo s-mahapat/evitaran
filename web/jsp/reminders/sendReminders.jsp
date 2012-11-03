@@ -13,7 +13,8 @@
         <link rel="stylesheet" type="text/css" href="css/reminder/sendReminder.css" />
 
         <title>Send Reminders</title>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/reminders/reminders.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()+"/js/reminders/reminders.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
 
          <script type="text/javascript">
             var selectedId = 0;
@@ -123,16 +124,7 @@
                 }
                 else {
                         isPageLoaded = true;
-                        jQuery("#reminderTable").setGridParam({postData:
-                                {
-                                reminderType            : $("#reminderType").val(),
-                                reminderDate            : $("#reminderDate").val(),
-                                medium                  : $("#medium").val(),
-                                action                  : "send"
-                            }});
-                        jQuery("#reminderTable").setGridParam({ datatype: "xml" });
-                        jQuery("#reminderTable").trigger("clearGridData");
-                        jQuery("#reminderTable").trigger("reloadGrid");
+                        $("#reminderFormId").submit();
                         jQuery("#btnPrintSend").attr("disabled",false);
                     }
             }
@@ -146,7 +138,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reminders"%>" name="reminderForm">
+            <form method="post" action="<%=request.getContextPath() + "/reminders?action=send"%>" name="reminderForm" id="reminderFormId">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Generate and Send Reminders</legend>
@@ -177,7 +169,7 @@
                                         <label>Reminder Date:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="reminderDate" id="reminderDate" value="<jsp:getProperty name="reminderFormBean" property="reminderDate"/>"
+                                        <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="reminderDate" id="reminderDate" value="<jsp:getProperty name="reminderFormBean" property="reminderDate"/>">
                                     </span>
                                 </div>
                             </div>
@@ -215,7 +207,7 @@
                                     </span>
                                 </div>
                                 <div id="printSendBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="button" value="Sent/ Print Reminder" id="btnPrintSend" name="btnPrintSend" onclick="sendReminders()"/>
+                                    <input class="IASButton" TABINDEX="4" type="button" value="Send/ Print Reminder" id="btnPrintSend" name="btnPrintSend" onclick="sendReminders()"/>
                                 </div>
                                 <div id="cancelBtnDiv">
                                     <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
