@@ -27,18 +27,20 @@ public class errorHandler extends JDSController {
 
         Throwable throwable = (Throwable) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
         StackTraceElement elements[] = throwable.getStackTrace();
-        String exceptionMessage = throwable.getClass().getCanonicalName();
-        exceptionMessage += "\n" + throwable.getMessage();
-        exceptionMessage += "\n---------------------------------\n";
+        String exceptionMessage = "<html><head><title>" + "Exception" + "</title></head><body><p>" +
+                throwable.getClass().getCanonicalName();
+        exceptionMessage += "<br>" + throwable.getMessage();
+        exceptionMessage += "<br>---------------------------------<br>";
 
         for (int i = 0, n = elements.length; i < n; i++) {
 
-            exceptionMessage += "\nClass: " + elements[i].getClassName() + "\n";
-            exceptionMessage += "Method Name: " + elements[i].getMethodName() + "\n";
-            exceptionMessage += "Line Number: " + elements[i].getLineNumber() + "\n";
-            exceptionMessage += "File Name: " + elements[i].getFileName() + "\n";
-            exceptionMessage += "---------------------------------------------\n";
+            exceptionMessage += "<br>Class: " + elements[i].getClassName() + "<br>";
+            exceptionMessage += "Method Name: " + elements[i].getMethodName() + "<br>";
+            exceptionMessage += "Line Number: " + elements[i].getLineNumber() + "<br>";
+            exceptionMessage += "File Name: " + elements[i].getFileName() + "<br>";
+            exceptionMessage += "---------------------------------------------<br>";
         }
+        exceptionMessage = exceptionMessage + "</body></html>";
 
         //String exceptionMessage = throwable.getMessage();
         //StackTraceElement[] trace = throwable.getStackTrace();

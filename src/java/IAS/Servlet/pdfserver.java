@@ -11,8 +11,11 @@ import IAS.Class.ServletContextInfo;
 import IAS.Class.convertToPdf;
 import IAS.Controller.JDSController;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Iterator;
@@ -143,6 +146,22 @@ public class pdfserver extends JDSController {
                 response.setContentType("application/pdf");
                 response.setHeader("Content-disposition", "attachment; filename=reminder.pdf");
                 os.flush();
+
+            } else if(action.equalsIgnoreCase("printHelp")){
+
+                response.setContentType("application/pdf");
+                response.setHeader("Content-Disposition", "attachment; filename=help.pdf");
+
+                ServletContext context = ServletContextInfo.getServletContext();
+                InputStream is = context.getResourceAsStream("/WEB-INF/classes/help.pdf");
+                int read=0;
+                byte[] bytes = new byte[1024];
+
+                while((read = is.read(bytes))!= -1){
+                    os.write(bytes, 0, read);
+                }
+                os.flush();
+                os.close();
 
             }
         } catch (Exception e) {

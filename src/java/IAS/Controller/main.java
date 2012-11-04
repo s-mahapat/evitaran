@@ -227,6 +227,10 @@ public class main extends JDSController {
             //url = "/jsp/masterdata/searchJournalPriceGroup.jsp";
             url = "jsp/BulkEmail/sendBulkEmail.jsp";
 
+        }else if (action.equals("help")) {
+
+            url = "/pdfserver?action=printHelp";
+
         }
 
         if(url == null){

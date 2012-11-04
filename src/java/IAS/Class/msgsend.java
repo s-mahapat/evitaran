@@ -170,9 +170,9 @@ public class msgsend {
                 message.setContent(mp);
             } else {
                 // This will send messages as text
-                message.setContent(msg, "text/plain");  // Setting the content type
+                message.setContent(msg, "text/html");  // Setting the content type
                 // To send html links in mail
-                //message.setText(msg, "text/html");
+                //message.setText(msg, "text/plain; charset=utf-8");
             }
 
             message.setHeader("X-Mailer", "msgSend");
