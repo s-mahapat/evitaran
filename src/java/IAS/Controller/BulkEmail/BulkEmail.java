@@ -5,14 +5,9 @@
 package IAS.Controller.BulkEmail;
 
 import IAS.Class.JDSLogger;
-import IAS.Class.msgsend;
-import IAS.Class.util;
 import IAS.Controller.JDSController;
 import IAS.Model.BulkEmail.BulkEmailModel;
 import java.io.IOException;
-import javax.mail.Address;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

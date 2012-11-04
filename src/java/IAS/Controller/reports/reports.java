@@ -3,21 +3,17 @@
 
 package IAS.Controller.reports;
 
-import IAS.Bean.Reports.printOrderFormBeanReport;
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import IAS.Model.Reports.reportModel;
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
-import IAS.Class.msgsend;
 import IAS.Class.util;
 import IAS.Controller.JDSController;
 import java.sql.ResultSet;
-import javax.servlet.ServletContext;
 /**
  *
  * @author Deepali
@@ -291,7 +287,7 @@ public class reports extends JDSController {
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
             }
-    /*----------------------------------------------------------------*/            
+    /*----------------------------------------------------------------*/
             else if(action.equalsIgnoreCase("printOrderTableDetailsList")){
        		String xml = _reportModel.printOrderTableDetailsList();
                 request.setAttribute("xml", xml);

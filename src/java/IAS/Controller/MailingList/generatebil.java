@@ -2,20 +2,15 @@ package IAS.Controller.MailingList;
 
 import IAS.Model.ml.bilModel;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
-import IAS.Class.msgsend;
-import IAS.Class.util;
 import IAS.Controller.JDSController;
 import java.sql.ResultSet;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 
 /**
  *
@@ -53,12 +48,12 @@ public class generatebil extends JDSController {
                 //request.setAttribute("pdf", pdf);
                 url = "/pdfserver";
                 //url = "";
-                 * 
+                 *
                  */
                 ResultSet rs = _bilModel.printbil();
                 request.setAttribute("ResultSet", rs);
-                url = "/pdfserver?action=generatemlPrintLabel";               
-                
+                url = "/pdfserver?action=generatemlPrintLabel";
+
             }else if(action.equalsIgnoreCase("printSticker")){
 
                 /*
@@ -66,11 +61,11 @@ public class generatebil extends JDSController {
                 //request.setAttribute("pdf", pdf);
                 url = "/pdfserver";
                 //url = "";
-                 * 
+                 *
                  */
                 ResultSet rs = _bilModel.printbil();
                 request.setAttribute("ResultSet", rs);
-                url = "/pdfserver?action=generatemlPrintSticker";                
+                url = "/pdfserver?action=generatemlPrintSticker";
             }
 
         } catch (Exception e) {

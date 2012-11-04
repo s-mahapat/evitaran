@@ -3,7 +3,6 @@ package IAS.Controller.masterdata;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
@@ -11,10 +10,7 @@ import IAS.Model.masterdata.journalModel;
 
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
-import IAS.Class.msgsend;
-import IAS.Class.util;
 import IAS.Controller.JDSController;
-import javax.servlet.ServletContext;
 /**
  *
  * @author Shailendra Mahapatra

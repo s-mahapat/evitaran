@@ -3,20 +3,14 @@ package IAS.Controller.reminders;
 import IAS.Bean.reminder.subscriberInfo;
 import IAS.Model.reminders.reminderModel;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.*;
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
-import IAS.Class.msgsend;
-import IAS.Class.util;
 import IAS.Controller.JDSController;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 
 /**
  *

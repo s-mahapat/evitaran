@@ -45,7 +45,7 @@ public class errorHandler extends JDSController {
         //String exceptionMessage = throwable.getMessage();
         //StackTraceElement[] trace = throwable.getStackTrace();
         logger.fatal(throwable);
-        msgsend smtpMailSender = new msgsend();
+        msgsend smtpMailSender = new msgsend("text/html");
 
         smtpMailSender.sendExceptionMail(exceptionMessage);
 

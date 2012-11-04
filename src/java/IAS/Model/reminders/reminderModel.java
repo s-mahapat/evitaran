@@ -453,7 +453,7 @@ public class reminderModel extends JDSModel {
         ResultSet rsGet = getReminders(medium, sender);
         List<subscriberInfo> sinfo = buildRemindersData(rsGet, medium);
 
-        msgsend sendMsg = new msgsend();
+        msgsend sendMsg = new msgsend("text/html");
         boolean success = true;
         String message = "Failed to send email to the following address:";
         //Loop the data for individual subscriber for reminder

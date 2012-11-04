@@ -37,6 +37,15 @@ import org.codemonkey.simplejavamail.TransportStrategy;
 public class msgsend {
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Class.msgsend");
+    private String contentType = "text/plain";
+
+    public msgsend() {
+
+    }
+
+    public msgsend(String _contentType){
+        contentType = _contentType;
+    }
 
     public String getPropertiesFileLocation()
     {
@@ -170,7 +179,9 @@ public class msgsend {
                 message.setContent(mp);
             } else {
                 // This will send messages as text
-                message.setContent(msg, "text/html");  // Setting the content type
+                //message.setContent(msg, "text/html");  // Setting the content type
+                //message.setContent(msg, "text/html");  // Setting the content type
+                message.setContent(msg, contentType);
                 // To send html links in mail
                 //message.setText(msg, "text/plain; charset=utf-8");
             }
@@ -278,7 +289,8 @@ public class msgsend {
                 message.setContent(mp);
             } else {
                 // This will send messages as text
-                message.setContent(msg, "text/html");  // Setting the content type
+                //message.setContent(msg, "text/html");  // Setting the content type
+                message.setContent(msg, contentType);
                 // To send html links in mail
                 //message.setText(msg, "UTF-8", "html");
             }
@@ -370,7 +382,8 @@ public class msgsend {
                 // setText(text, charset)
                 //message.setText(msg);
                 // This will send messages as text
-                message.setContent(msg, "text/html");  // Setting the content type
+                //message.setContent(msg, "text/html");  // Setting the content type
+                message.setContent(msg, contentType);
                 // To send html links in mail
                 //message.setText(msg, "UTF-8", "html");
             }
@@ -464,7 +477,8 @@ public class msgsend {
                 // This will send messages as text
                 //message.setContent(msg, "text/plain");  // Setting the content type
                 // To send html links in mail
-                message.setText(msg, "text/html");
+                //message.setText(msg, "text/html");
+                message.setContent(msg, contentType);
             }
 
             message.setHeader("X-Mailer", "msgSend");
