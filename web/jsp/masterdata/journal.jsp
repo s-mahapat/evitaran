@@ -47,7 +47,7 @@
                     <label>No of Pages:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="5" type="text" name="pages" id="pages" value="<jsp:getProperty name="journalFormBean" property="pages"/>"/>
+                    <input class="IASTextBox" TABINDEX="5" type="text" name="pages" id="pages" value="<jsp:getProperty name="journalFormBean" property="pages"/>" onchange="isNumber(this.id)"/>
                 </span>
             </div>
 
@@ -56,7 +56,7 @@
                     <label>Start Year:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="6" type="text" name="startYear" id="startYear" value="<jsp:getProperty name="journalFormBean" property="startYear"/>"/>
+                    <input class="IASTextBox" TABINDEX="6" type="text" name="startYear" id="startYear" value="<jsp:getProperty name="journalFormBean" property="startYear"/>" onchange="isNumber(this.id)"/>
                 </span>
             </div>
 
@@ -65,7 +65,7 @@
                     <label>No of Issues:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="7" type="text" name="issues" id="issues" value="<jsp:getProperty name="journalFormBean" property="issues"/>"/>
+                    <input class="IASTextBox" TABINDEX="7" type="text" name="issues" id="issues" value="<jsp:getProperty name="journalFormBean" property="issues"/>" onchange="isNumber(this.id)"/>
                 </span>
             </div>
          </div>

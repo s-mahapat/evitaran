@@ -285,7 +285,7 @@
                                                 <label>No of Years:</label>
                                             </span>
                                             <span class="IASFormDivSpanInputBox">
-                                                <input class="IASTextBoxMandatory" TABINDEX="1" type="text" name="noofYear" id="noofYear" value=""/>
+                                                <input class="IASTextBoxMandatory" TABINDEX="1" type="text" name="noofYear" id="noofYear" value="" onchange="isNumber(this.id)"/>
                                             </span>
                                         </div>
                                      </div>
@@ -295,7 +295,7 @@
                                                 <label>Rate:</label>
                                             </span>
                                             <span class="IASFormDivSpanInputBox">
-                                                <input class="IASTextBoxMandatory" TABINDEX="2" type="text" name="rate" id="rate" value=""/>
+                                                <input class="IASTextBoxMandatory" TABINDEX="2" type="text" name="rate" id="rate" value="" onchange="isNumber(this.id)"/>
                                             </span>
                                         </div>
                                     </div>

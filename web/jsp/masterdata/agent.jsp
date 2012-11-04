@@ -55,7 +55,7 @@
                     <label>Discount%:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="4" type="text" name="discount" id="discount" value="<jsp:getProperty name="agentFormBean" property="discount"/>"/>
+                    <input class="IASTextBox" TABINDEX="4" type="text" name="discount" id="discount" value="<jsp:getProperty name="agentFormBean" property="discount"/>" onchange="isNumber(this.id)"/>
                 </span>
             </div>
          </div>
@@ -74,7 +74,7 @@
                     <label>Email Id:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="5" type="text" name="emailId" id="emailId" value="<jsp:getProperty name="agentFormBean" property="emailId"/>"/>
+                    <input class="IASTextBox" TABINDEX="5" type="text" name="emailId" id="emailId" value="<jsp:getProperty name="agentFormBean" property="emailId"/>" onblur="validateEmail(this.id)"/>
                 </span>
             </div>
 
@@ -159,7 +159,7 @@
                     <label>PIN Code:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="11" type="text" name="pinCode" id="pinCode" value="${agentFormBean.pinCode}"/>
+                    <input class="IASTextBox" TABINDEX="11" type="text" name="pinCode" id="pinCode" value="${agentFormBean.pinCode}" onchange="isNumber(this.id)"/>
                 </span>
             </div>
          </div>
