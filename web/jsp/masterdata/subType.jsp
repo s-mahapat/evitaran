@@ -75,7 +75,7 @@
                     <label>Free Copies:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBoxMandatory" TABINDEX="7" type="text" name="freejrnl" id="freejrnl" value="<jsp:getProperty name="subTypeFormBean" property="freejrnl"/>"/>
+                    <input class="IASTextBoxMandatory" TABINDEX="7" type="text" name="freejrnl" id="freejrnl" value="<jsp:getProperty name="subTypeFormBean" property="freejrnl"/>" onchange="isNumber(this.id)"/>
                 </span>
             </div>
 
@@ -84,7 +84,7 @@
                     <label>Discount if any %:</label>
                 </span>
                 <span class="IASFormDivSpanInputBox">
-                    <input class="IASTextBox" TABINDEX="8" type="text" name="discount" id="discount" value="<jsp:getProperty name="subTypeFormBean" property="discount"/>"/>
+                    <input class="IASTextBox" TABINDEX="8" type="text" name="discount" id="discount" value="<jsp:getProperty name="subTypeFormBean" property="discount"/>" onchange="isNumber(this.id)"/>
                 </span>
             </div>
          </div>

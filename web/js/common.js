@@ -19,7 +19,7 @@ function validateEmail(FieldId){
 function checkMandatoryFields(){
     var _filled = false;
     _filled = _checkMandatoryFields();
-    
+
     if(!_filled){
         alert("Please fill all mandatory fields to proceed");
     }
@@ -34,8 +34,8 @@ function _checkMandatoryFields(){
         "IASComboBoxMediumMandatory",
         "IASComboBoxSmallMandatory",
         "IASComboBoxMandatory");
-    $(_classToValidate).each(function(index, el){        
-        var _elements = $("." + el);        
+    $(_classToValidate).each(function(index, el){
+        var _elements = $("." + el);
         $(_elements).each(function(index, el){
             if($("#"+el.id).val().length == 0){
                 _filled = false;
@@ -46,8 +46,8 @@ function _checkMandatoryFields(){
             return;  // return immediately if the inner function found a mandatory field not filled.
         }
     });
-    
-    return _filled;        
+
+    return _filled;
 }
 
 
@@ -494,4 +494,11 @@ function setEnterKeyAction(func){
             func();
         }
     });
+}
+
+function isNumber(FieldId) {
+    if(!($.isNumeric(document.getElementById(FieldId).value))){
+        document.getElementById(FieldId).value = "";
+        alert("Enter number");
+    }
 }
