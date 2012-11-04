@@ -7,6 +7,7 @@
 function makeEditReadOnly(){
 
     document.getElementById("btnEdit").disabled = true;
+    document.getElementById("freejrnl").disabled = true;
     //document.getElementById("btnSave").disabled = true;
     //document.getElementById("subTypeId").disabled = true;
 }

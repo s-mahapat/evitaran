@@ -40,7 +40,7 @@
                 </span>
                 <span class="IASFormDivSpanInputBox">
 
-                    <select class="IASComboBoxMandatory" TABINDEX="4" name="subtype" id="subtype">
+                    <select class="IASComboBoxMandatory" TABINDEX="4" name="subtype" id="subtype" onchange="setNoofFreeCopies()">
                         <option value ="Paid">Paid</option>
                         <option value ="Free">Free</option>
                     </select>

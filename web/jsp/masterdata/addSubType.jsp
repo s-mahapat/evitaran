@@ -16,6 +16,7 @@
         <script>
             $(document).ready(function(){
                 //makeCreateReadOnly();
+                document.getElementById("freejrnl").disabled = true;
             });
         </script>
     </head>

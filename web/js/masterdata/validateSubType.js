@@ -22,6 +22,17 @@ function validateSubType(){
         return true;
 }
 
+function setNoofFreeCopies(){
+
+    if($("#subtype").val() == 'Paid'){
+        document.getElementById("freejrnl").value = 0;
+        document.getElementById("freejrnl").disabled = true;
+    }else{
+        document.getElementById("freejrnl").disabled = false;
+    }
+
+}
+
 
 
 
