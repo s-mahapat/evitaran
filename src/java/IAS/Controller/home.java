@@ -86,7 +86,8 @@ public class home extends JDSController {
                     }
                     
 
-                } catch (SQLException e) {
+                } catch (Exception e) {
+                    logger.fatal(e);
                     url = "jsp/errors/error.jsp";
                 }
 

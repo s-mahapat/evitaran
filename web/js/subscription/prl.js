@@ -8,15 +8,15 @@ function GeneratePRLGrid(){
         url:'subscription?action=genprlist',
         datatype: 'xml',
         mtype: 'GET',
-        height: 300,
+        height: 350,
         autowidth: true,
         forceFit: true,
         sortable: false,
-        loadonce: false,
+        loadonce: true,
         rownumbers: true,
         emptyrecords: "No record(s) to view",
         loadtext: "Loading...",
-        colNames:['Subscriber ID','Subscriber Number','Subscriber Name','Subscription ID','End Year','Email','Status'],
+        colNames:['Subscriber ID','Subscriber Number','Invoice Number','Subscriber Name','Subscription ID','End Year','Email','Status'],
         colModel :[
         {
             name:'subid',
@@ -33,6 +33,15 @@ function GeneratePRLGrid(){
             width:25,
             align:'center',
             xmlmap:'subscriberNumber',
+            sortable: false,
+            key: true
+        },
+        {
+            name:'invoiceno',
+            index:'invoiceno',
+            width:25,
+            align:'center',
+            xmlmap:'invoiceNumber',
             sortable: false,
             key: true
         },
@@ -82,8 +91,8 @@ function GeneratePRLGrid(){
             id: "subid"
         },
         pager: '#pager',
-        rowNum:10,
-        rowList:[10,30,50],
+        rowNum:15,
+        rowList:[15,30,50],
         viewrecords: true,
         gridview: true,
         caption: '&nbsp;',
@@ -97,6 +106,7 @@ function GeneratePRLGrid(){
 }
 
 function GeneratePRL(){
+    jQuery("#prlTable").setGridParam({ datatype: "xml" });
     isPageLoaded = true;
     if(_getMediumSelected() == 0){
         return false;
@@ -121,8 +131,11 @@ function _getMediumSelected(){
 }
 
 function PrintOrEmail(){
-    if($("#prlmedium").val() == 1){
+    var medium = $("#prlmedium").val();
+    if(medium == 1){
         
+    }else if(medium == 2 || medium == 3){
+        jdsPrint("print/prl/1/" + medium, "Invoice")
     }
 }
 

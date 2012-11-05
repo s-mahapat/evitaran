@@ -6,8 +6,12 @@ package IAS.Class;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.Utilities;
 import com.itextpdf.text.pdf.PdfContentByte;
@@ -268,8 +272,10 @@ public class JDSPDF implements IJDSPDF {
 
     public Paragraph getPaymentFooter() {
         Paragraph paragraph = new Paragraph();
-        paragraph.setAlignment(Element.ALIGN_CENTER);
+        //paragraph.setAlignment(Element.ALIGN_CENTER);
+        paragraph.setAlignment(Element.ALIGN_RIGHT);
         paragraph.setSpacingBefore(20);
+        //paragraph.setSpacingAfter(20);
         PdfPTable table;
         table = new PdfPTable(1);
         table.setWidthPercentage(80);
@@ -325,8 +331,45 @@ public class JDSPDF implements IJDSPDF {
         table.addCell(cell1);
 
         paragraph.add(table);
-
         return paragraph;
 
+    }
+
+    /**
+     * Inner class to add a header and a footer.
+     */
+    static class HeaderFooter extends PdfPageEventHelper {
+
+        Font.FontFamily fontType = Font.getFamily("HELVETICA");
+        int fontSize = 9;
+        float leading = 10.0f;
+
+        public void setupFontAndLeading(PdfContentByte cb) {
+            Font f = new Font(fontType, fontSize);
+            BaseFont bf = f.getCalculatedBaseFont(false);
+            cb.setFontAndSize(bf, fontSize);
+            cb.setLeading(leading);
+        }
+
+        @Override
+        public void onEndPage(PdfWriter writer, Document document) {
+            PdfContentByte cb = writer.getDirectContent();
+            cb.roundRectangle(LEFT_INDENTATION_MORE * 2, 30, 480, 90, 10);
+            
+            this.setupFontAndLeading(cb);
+            cb.beginText();
+            cb.showTextAligned(Element.ALIGN_LEFT, 
+                    JDSConstants.IAS_PAYMENTFOOT_HEADER, 
+                    LEFT_INDENTATION_MORE * 3, 100, 0);
+            cb.newlineText();
+            cb.newlineShowText(JDSConstants.IAS_PAYMENTFOOT_ACC + ": " + JDSConstants.IAS_PAYMENTFOOT_ACC_NAME);
+            cb.newlineShowText(JDSConstants.IAS_PAYMENTFOOT_BANK + ": " + JDSConstants.IAS_PAYMENTFOOT_BANK_NAME);
+            cb.newlineShowText(JDSConstants.IAS_PAYMENTFOOT_BRANCH + ": " + JDSConstants.IAS_PAYMENTFOOT_BRANCH_NAME);            
+            cb.newlineShowText(JDSConstants.IAS_PAYMENTFOOT_ACCNO + ": " + JDSConstants.IAS_PAYMENTFOOT_ACCNO_DTLS);
+            cb.newlineShowText(JDSConstants.IAS_PAYMENTFOOT_IFSCOD + ": " + JDSConstants.IAS_PAYMENTFOOT_IFSCOD_DTLS);
+            cb.endText();
+            cb.stroke();
+                        
+        }
     }
 }

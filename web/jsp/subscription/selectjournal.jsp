@@ -3,7 +3,7 @@
     <div class="IASFormFieldDiv">       
 
         <span class="IASFormDivSpanInputBox">
-            <select size="8" class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName" multiple="multiple">
+            <select size="11" class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName" multiple="multiple">
             </select>
         </span>
 
@@ -72,8 +72,8 @@
                     }
                 %>
             </select>
-        </span>
-    </div>                
+        </span>        
+    </div>    
 </div>
 <div class="actionBtnDiv">
     <input class="IASButton" style="margin-left: 0px;" TABINDEX="14" type="button" value="Add" id="btnAddLine" name="btnAddLine" onclick="addJournal()"/>

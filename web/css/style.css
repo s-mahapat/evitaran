@@ -254,6 +254,7 @@ A:active {
     font-family:inherit;
     font-size: inherit;
     height: 50px;
+    width: 250px;
 }
 
 .IASTextAreaMandatory{
@@ -439,11 +440,11 @@ A:active {
 
 .datatable tbody td{
     text-align: center;
-    font-size: 1.3em;
+    font-size: 1.2em;
     font-weight: normal;
     /*background-color: #ECE5B6;*/
     vertical-align: middle;
-    padding: 2px;
+    padding: 1px;
 }
 
 .datatable tbody td a{

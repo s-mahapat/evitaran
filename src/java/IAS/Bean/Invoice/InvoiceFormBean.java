@@ -29,7 +29,17 @@ public class InvoiceFormBean {
     private String city;
     private String country;
     private int pincode;
-    private String subsciberNumber;   
+    private String subsciberNumber;
+    private int subscriberType;
+    
+    
+    public int getSubscriberType() {
+        return this.subscriberType;
+    }
+
+    public void SetSubscriberType(int _subtypeid) {
+        this.subscriberType = _subtypeid;
+    }
     
     public String getEmail(){
         return this.email;

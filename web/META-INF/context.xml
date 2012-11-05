@@ -17,14 +17,14 @@
               testOnBorrow="true"
               testOnReturn="false"
               validationQuery="SELECT 1"
-              validationInterval="60"
-              timeBetweenEvictionRunsMillis="90000"
+              validationInterval="30000"
+              timeBetweenEvictionRunsMillis="5000"
               maxActive="100"
               minIdle="0"
               maxIdle="5"
               maxWait="30000"
               initialSize="0"
-              removeAbandonedTimeout="10"
+              removeAbandonedTimeout="60"
               removeAbandoned="true"
               logAbandoned="false"
               minEvictableIdleTimeMillis="120000"
@@ -34,6 +34,24 @@
               password="jds"
               driverClassName="com.mysql.jdbc.Driver"
               url="jdbc:mysql://localhost/jds"/>
+    
+    <Resource name="bonecp/jds" 
+              defaultAutoCommit="true"
+              auth="Container"
+              factory="com.jolbox.bonecp.BoneCPDataSource"
+              type="com.jolbox.bonecp.BoneCPDataSource"
+              idleMaxAge="240"
+              idleConnectionTestPeriod="60"
+              partitionCount="3"
+              acquireIncrement="5"
+              maxConnectionsPerPartition="20"
+              minConnectionsPerPartition="5"
+              statementsCacheSize="50"
+              releaseHelperThreads="5"
+              username="jds"
+              password="jds"
+              driverClassName="com.mysql.jdbc.Driver"
+              jdbcUrl="jdbc:mysql://localhost/jds"/>
 </Context>
 
 <!--connectionURL="jdbc:mysql://localhost/JDS?user=jds&amp;password=jds"-->

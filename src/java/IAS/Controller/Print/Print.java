@@ -9,6 +9,7 @@ import IAS.Class.ChequeReturnPDF;
 import IAS.Class.Database;
 import IAS.Class.InwardAckPDF;
 import IAS.Class.JDSLogger;
+import IAS.Class.PlReferListPDF;
 import IAS.Class.RequestForInvoicePDF;
 import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
@@ -20,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,12 +59,12 @@ public class Print extends JDSController {
                     if (returnReason.equalsIgnoreCase("others")) {
                         returnReason = _inwardFormBean.getChequeDDReturnReasonOther();
                     }
-                    ByteArrayOutputStream baos = _chequePdf.getPDF( _inwardFormBean.getSubscriberIdAsText(), 
-                                                                    _inwardFormBean.getInwardNumber(), 
-                                                                    _inwardFormBean.getChqddNumberAsText(), 
-                                                                    _inwardFormBean.getPaymentDate(), 
-                                                                    _inwardFormBean.getAmount(), 
-                                                                    returnReason);
+                    ByteArrayOutputStream baos = _chequePdf.getPDF(_inwardFormBean.getSubscriberIdAsText(),
+                            _inwardFormBean.getInwardNumber(),
+                            _inwardFormBean.getChqddNumberAsText(),
+                            _inwardFormBean.getPaymentDate(),
+                            _inwardFormBean.getAmount(),
+                            returnReason);
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     this.sendResponse(baos, fileName, response);
                     //                    byte pdfData[] = baos.toByteArray();
@@ -73,8 +75,7 @@ public class Print extends JDSController {
 //                    try (OutputStream output = response.getOutputStream()) {
 //                        output.write(pdfData);
 //                    }
-                }
-                // for inward acknowledgement
+                } // for inward acknowledgement
                 else if (action.equalsIgnoreCase("ack")) {
 
                     String _inwardNumber = request.getParameter("inwardNumber");
@@ -84,39 +85,41 @@ public class Print extends JDSController {
                     //inwardModel _inwardModel = new inwardModel(request);
                     //inwardFormBean _inwardFormBean = new inwardFormBean();
                     _inwardFormBean = _inwardModel.GetInward(_inwardNumber);
-                    int subid = Integer.parseInt(documentID);                    
+                    int subid = Integer.parseInt(documentID);
                     Connection conn = Database.getConnection();
                     InwardAckPDF _inwardAckPdf = new InwardAckPDF(conn);
                     ByteArrayOutputStream baos = _inwardAckPdf.getPDF(subid,
-                                                                    _inwardNumber,
-                                                                    _inwardFormBean.getPaymentMode(),
-                                                                    _inwardFormBean.getInwardPurpose(),
-                                                                    _inwardFormBean.getInwardPurposeID(),
-                                                                    _inwardFormBean.getChqddNumberAsText(),
-                                                                    _inwardFormBean.getAmount(),
-                                                                    letterNumber,
-                                                                    letterDate,
-                                                                    customText);
-                    
+                            _inwardNumber,
+                            _inwardFormBean.getPaymentMode(),
+                            _inwardFormBean.getInwardPurpose(),
+                            _inwardFormBean.getInwardPurposeID(),
+                            _inwardFormBean.getChqddNumberAsText(),
+                            _inwardFormBean.getAmount(),
+                            letterNumber,
+                            letterDate,
+                            customText);
+
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     this.sendResponse(baos, fileName, response);
 
-                }
-                // for request for invoice
-                else if (action.equalsIgnoreCase("rfi")){
+                } // for request for invoice
+                else if (action.equalsIgnoreCase("rfi")) {
                     String inwardNumber = documentID;
                     RequestForInvoicePDF _rfiPdf = new RequestForInvoicePDF(request);
                     ByteArrayOutputStream baos = _rfiPdf.getPDF(inwardNumber);
-                    
+
                     String fileName = inwardNumber + ".pdf";
                     this.sendResponse(baos, fileName, response);
                 }
 
             } // for all subscription
             else if (document.equalsIgnoreCase("subscription")) {
-
-
-                
+            } // for request for invoice
+            else if (document.equalsIgnoreCase("prl")) {
+                PlReferListPDF _PlReferListPDF = new PlReferListPDF();
+                ByteArrayOutputStream baos = _PlReferListPDF.getPDF(Integer.parseInt(action), "");
+                String fileName = String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + ".pdf";
+                this.sendResponse(baos, fileName, response);
             }
         } catch (SQLException | IOException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | DocumentException | NumberFormatException | ParserConfigurationException | TransformerException e) {
             logger.error(e.getMessage(), e);
@@ -124,12 +127,12 @@ public class Print extends JDSController {
         }
     }
 
-    private void sendResponse(ByteArrayOutputStream baos, String fileName, HttpServletResponse response) throws IOException{
+    private void sendResponse(ByteArrayOutputStream baos, String fileName, HttpServletResponse response) throws IOException {
 
         byte pdfData[] = baos.toByteArray();
         response.reset();
-        response.setContentType("application/pdf");        
-        response.setHeader("Content-disposition", "inline; filename=" + fileName);        
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition", "inline; filename=" + fileName);
         try (OutputStream output = response.getOutputStream()) {
             output.write(pdfData);
         }

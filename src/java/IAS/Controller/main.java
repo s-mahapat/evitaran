@@ -242,7 +242,7 @@ public class main extends JDSController {
             logger.debug("Called->" + url);
             // if the user clicks on the left menu reset the inwardunderprocess
             // else he may be able to add subscription/edit address without selecting an inward
-            if(request.getSession(false).getAttribute("inwardUnderProcess")!=null){
+            if(request.getSession() != null && request.getSession(false).getAttribute("inwardUnderProcess")!=null){
                request.getSession(false).setAttribute("inwardUnderProcess", null);
             }
         }

@@ -611,6 +611,25 @@ public class SubscriptionModel extends JDSModel {
         return nextInvoice;
     }
 
+    private String getNextInvoiceNumber(String lastInvoice) throws SQLException, 
+            ParseException,
+            java.lang.reflect.InvocationTargetException, 
+            java.lang.IllegalAccessException{
+
+        if(lastInvoice == null){
+            return this.getNextInvoiceNumber();
+        }
+        String nextInvoice;
+
+        // get the last invoice number after the split
+        int invoice = Integer.parseInt(lastInvoice.substring(6));
+        //increment
+        ++invoice;
+        
+        nextInvoice = lastInvoice.substring(0, 6) + String.format("%05d", invoice);
+        return nextInvoice;
+    }
+
     private int updateInvoice() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
@@ -673,7 +692,10 @@ public class SubscriptionModel extends JDSModel {
 
     public String getPleaseReferList(int medium) throws SQLException,
             ParserConfigurationException,
-            TransformerException {
+            TransformerException,
+            ParseException,
+            InvocationTargetException,
+            IllegalAccessException {
 
         Connection _conn = this.getConnection();
         String sql = "select count(*) from prl where year=?";
@@ -712,10 +734,10 @@ public class SubscriptionModel extends JDSModel {
          */
         if (medium == 1) {
             email_search_string = "%@%"; // search for valid email ids
-        } else if(medium == 2) {
+        } else if (medium == 2) {
             email_search_string = "";  // not valid email ids
             sql = Queries.getQuery("get_pl_refer_list_for_print_only");
-        }else if(medium == 3){
+        } else if (medium == 3) {
             email_search_string = "%"; // search for all
         }
         try (PreparedStatement pst = _conn.prepareStatement(sql)) {
@@ -731,7 +753,10 @@ public class SubscriptionModel extends JDSModel {
 
     private boolean _generatePleaseReferList() throws SQLException,
             ParserConfigurationException,
-            TransformerException {
+            TransformerException,
+            ParseException,
+            InvocationTargetException,
+            IllegalAccessException {
 
         Connection _conn = this.getConnection();
         String sql;
@@ -760,17 +785,34 @@ public class SubscriptionModel extends JDSModel {
         // prl should be sent
         sql = Queries.getQuery("get_pl_refer_list");
 
-        String sql_insert_prl_details = "insert into prl_details(prl_id, subscriber_id, subscription_id) values (?, ?, ?)";
-
+        String sql_insert_prl_details = "insert into prl_details(prl_id, invoice_id) values (?, ?)";
+        String invoiceNumber = null;
         try (PreparedStatement pst = _conn.prepareStatement(sql_insert_prl_details)) {
             try (PreparedStatement st = _conn.prepareStatement(sql)) {
                 try (ResultSet rs = st.executeQuery()) {
                     while (rs.next()) {  // for each record from the query insert into the prl_details table
-                        int subscriber_id = rs.getInt("subscriberID");
-                        int subscription_id = rs.getInt("subscriptionID");
+
+                        invoiceNumber = this.getNextInvoiceNumber(invoiceNumber);
+                        int subscription_id = rs.getInt(2);
+                        int invoice_id = 0;
+
+                        // insert the invoice and get the invoice id
+                        // the query name from the jds_sql properties files in WEB-INF/properties folder
+                        sql = Queries.getQuery("invoice_insert");
+                        try (PreparedStatement _st = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                            _st.setString(1, invoiceNumber);
+                            _st.setInt(2, subscription_id);
+                            _st.setDate(3, util.dateStringToSqlDate(util.getDateString()));
+                            if (_st.executeUpdate() == 1) {
+                                try (ResultSet _rs = _st.getGeneratedKeys()) {
+                                    _rs.first();
+                                    invoice_id = _rs.getInt(1);
+                                }
+                            }
+
+                        }
                         pst.setInt(1, prl_id);
-                        pst.setInt(2, subscriber_id);
-                        pst.setInt(3, subscription_id);
+                        pst.setInt(2, invoice_id);
                         pst.addBatch();  // add all to the batch
                     }
                     pst.executeBatch();

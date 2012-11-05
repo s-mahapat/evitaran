@@ -206,8 +206,8 @@ public class inward extends JDSController {
             } else if (action.equalsIgnoreCase("followOnProcess")) {
 
                 int inwardPurposeID = Integer.parseInt(request.getParameter("purpose"));
-                _inwardFormBean = _inwardModel.viewInward();
-                float amount = _inwardFormBean.getAmount();
+                //_inwardFormBean = _inwardModel.viewInward();
+                //float amount = _inwardFormBean.getAmount();
 
                 /*if ( amount > 0 && 
                  (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION || 

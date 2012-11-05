@@ -47,3 +47,12 @@ ALTER TABLE circulation_figure AUTO_INCREMENT = 1;
 
 delete from inward_agent_details;
 ALTER TABLE inward_agent_details AUTO_INCREMENT = 1;
+
+delete from prl;
+ALTER TABLE prl AUTO_INCREMENT = 1;
+
+delete from prl_details;
+ALTER TABLE prl_details AUTO_INCREMENT = 1;
+
+delete from agents;
+ALTER TABLE agents AUTO_INCREMENT = 1;
