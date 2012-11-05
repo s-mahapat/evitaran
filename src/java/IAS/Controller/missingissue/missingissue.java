@@ -64,6 +64,11 @@ public class missingissue extends JDSController {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
+            }else if (action.equalsIgnoreCase("checkGenerate")) {
+
+                String xml = _missingissueModel.checkGenerate();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             }
             else if (action.equalsIgnoreCase("missinglist")) {
 
@@ -100,6 +105,11 @@ public class missingissue extends JDSController {
             }
             else if (action.equalsIgnoreCase("reprint")) {
                 String xml = _missingissueModel.reprint();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }
+            else if (action.equalsIgnoreCase("getLabel")) {
+                String xml = _missingissueModel.getLabel();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             }

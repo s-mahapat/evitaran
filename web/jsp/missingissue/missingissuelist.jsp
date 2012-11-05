@@ -37,7 +37,7 @@
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
                     colNames:['Id', 'Subscription Detail id', 'Journal Group', 'Journal Code', 'Journal Name', 'Sub Copies',
-                                'Start Year', 'Start Month', 'End Month', 'End Year', 'Month', 'Year', 'Missing Copies'],
+                                'Start Year', 'Start Month', 'End Month', 'End Year', 'Issue', 'Year', 'Missing Copies', 'Action'],
                     colModel :[
                         {name:'id', index:'id', width:80, align:'center', xmlmap:'id'},
                         {name:'subscriptiondetailsId', index:'subscriptoindetailsId', width:2, align:'center', xmlmap:'subscriptiondetailsId'},
@@ -49,9 +49,10 @@
                         {name:'startMonth', index:'startMonth', width:80, align:'center', xmlmap:'startMonth'},
                         {name:'endMonth', index:'endMonth', width:80, align:'center', xmlmap:'endMonth'},
                         {name:'endYear', index:'endYear', width:80, align:'center', xmlmap:'endYear'},
-                        {name:'month', index:'month', width:80, align:'center', xmlmap:'month'},
+                        {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
                         {name:'missingCopies', index:'missingCopies', width:80, align:'center', xmlmap:'missingCopies'},
+                        {name:'action', index:'action', width:80, align:'center', xmlmap:'action'}
                     ],
                     xmlReader : {
                         root: "results",
@@ -89,6 +90,7 @@
 
             $(document).ready(function(){
                 search();
+                checkGenerate();
              });
 
             function search(){
@@ -120,7 +122,8 @@
 
                 isPageLoaded = true;
             }
-
+            
+            
 
 
         </script>
@@ -286,12 +289,17 @@
                                             </select>
                                         </span>
                                     </div>
+                                    <div id="getMailingBtnDiv">
+                                        <input class="IASButton" TABINDEX="3" type="button" value="Get Mailing List" id="btnMailing" name="btnMailing" onclick="getMiMl()"/>
+                                    </div>
+                                   <%--
                                     <div id="gMiBtnDiv">
-                                        <input class="IASButton" TABINDEX="2" type="button" value="Generate Mailing List" id="btngMi" name="btngMi" onclick="gMiList()"/>
+                                        <input class="IASButton" TABINDEX="2" type="button" visible="false" value="Generate Mailing List" id="btngMi" name="btngMi" onclick="gMiList()"/>
                                     </div>
                                     <div id="reprintBtnDiv">
-                                        <input class="IASButton" TABINDEX="3" type="button" value="Re-print Mailing List" id="btnReprint" name="btnReprint" onclick="reprint()"/>
-                                    </div>
+                                        <input class="IASButton" TABINDEX="3" type="button" visible="false" value="Re-print Mailing List" id="btnReprint" name="btnReprint" onclick="reprint()"/>
+                                    </div>   
+                                   --%>
                                 </div>
 
                             </fieldset>

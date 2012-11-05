@@ -8,8 +8,8 @@ function addJournal(){
         alert("Select Journal");
     }
 
-    else if ($("#month").val() == 'value'){
-        alert("Select Month");
+    else if ($("#issue").val() == 'value'){
+        alert("Select Issue");
     }
 
     else if ($("#journalGroupName").val() == 'value'){
@@ -25,23 +25,23 @@ function addJournal(){
     else{
         var selectedJournalName = $("#journalName").val();
         var selectedYear = $("#year").val();
-        var selectedMonth = $("#month").val();
+        var selectedIssue = $("#issue").val();
         var selectedJournalGroupName = $("#journalGroupName").val();
         var selectedSubscriptionId = $("#subscriptionId").val();
         var arrRowIds = $("#addmissingissueTable").getDataIDs();
 
         if(arrRowIds.length != 0){
-            intIndex = arrRowIds.indexOf(selectedJournalName, selectedMonth, selectedYear);
+            intIndex = arrRowIds.indexOf(selectedJournalName, selectedIssue, selectedYear);
             /* checks if the journal id bieng added is already existing in the grid.
              * Cannot add the same journal twice.
              */
             if(intIndex > -1){
-                alert("An entry for the journal year and Month already exists. No duplicate entries allowed");
+                alert("An entry for the journal year and Issue already exists. No duplicate entries allowed");
                 return false;
             }
         }
         var validSubscription = 0;
-        validSubscription = getSubscription(selectedJournalName, selectedMonth, selectedYear);
+        validSubscription = getSubscription(selectedJournalName, selectedIssue, selectedYear);
 
         if(validSubscription == 1){ // check the validity of subscription
             var copies = 0;
@@ -52,7 +52,7 @@ function addJournal(){
                     "subscriptionId": $("#subscriptionId").val(),
                     "journalGroupName": $("#journalGroupName").val(),
                     "journalName": $("#journalName").val(),
-                    "month": $("#month").val(),
+                    "issue": $("#issue").val(),
                     "year": $("#year").val(),
                     "scopies": copies,
                     "mcopies": mcopies,
@@ -66,14 +66,14 @@ function addJournal(){
             }
 
         }else{
-            alert("Failed to add missing issue!!! No subscription exists for the selected Year, Month and Journal ");
+            alert("Failed to add missing issue!!! No subscription exists for the selected Year, Issue and Journal ");
             bRet = false;
         }
         return(bRet);
     }
 }
 
-function getSubscription(selectedJournalName, selectedMonth, selectedYear){
+function getSubscription(selectedJournalName, selectedIssue, selectedYear){
    return 1;
 }
 
@@ -137,8 +137,8 @@ function saveMissingInfo(){
             value: rowObj.journalName
         });
         rowRequiredData.push({
-            name: "month",
-            value: rowObj.month
+            name: "issue",
+            value: rowObj.issue
         });
         rowRequiredData.push({
             name: "year",
@@ -328,5 +328,63 @@ function reprint(){
             alert("Failed to sent mail/ Print. " + textStatus + ": "+ errorThrown);
             return false;
         }
+       });      
+    }       
+
+   function checkGenerate(){
+    var act;
+    $.ajax({
+        type: 'POST',
+        dataType: 'xml',
+        async: false,
+        url: "missingissue?action=checkGenerate&miId=" +  $("#miId").val(),
+        success: function(xmlResponse, textStatus, jqXHR){
+
+            $(xmlResponse).find("results").each(function(){
+                act = $(this).find("action").text();
+            });
+            if (act == "R"){
+                $("#btngMi").button("disable");
+            }
+            else{
+                $("#btnReprint").button("disable");
+            }
+        },
+        error: function(jqXHR,textStatus,errorThrown){
+            alert("System failure. " + textStatus + ": "+ errorThrown);
+            return false;
+        }
+       });            
+ }
+ 
+ function getMiMl(){
+    var act;
+    $.ajax({
+        type: 'POST',
+        dataType: 'xml',
+        async: false,
+        url: "missingissue?action=getLabel&miId=" +  $("#miId").val()
+        + "&inwardNumber=" + $("#inwardNumber").val()
+        + "&printOption=" + $("#printOption").val(),
+        success: function(xmlResponse, textStatus, jqXHR){
+
+            $(xmlResponse).find("results").each(function(){
+                act = $(this).find("action").text();
+            });
+            $("#btngMi").button("disable");
+            $("#btnReprint").button("disable");
+            $("#btnNoCopy").button("disable");
+            $("#btnSentMsg").button("disable");
+            document.forms["missingissueForm"].action.value = "generateMlForMi";
+            document.missingissueForm.submit();
+            return true;
+
+        },
+        error: function(jqXHR,textStatus,errorThrown){
+            alert("Failed to sent mail/ Print. " + textStatus + ": "+ errorThrown);
+            return false;
+        }
        });
 }
+
+

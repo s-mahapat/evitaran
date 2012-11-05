@@ -36,7 +36,7 @@ CREATE TABLE `agents` (
   `discount` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_agent_name` (`agentName`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=372 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,7 +59,7 @@ CREATE TABLE `back_issue_list` (
   `added_on` date NOT NULL,
   `active` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +162,7 @@ CREATE TABLE `invoice` (
   `subscriptionId` int(15) DEFAULT NULL,
   `invoiceCreationDate` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -368,7 +368,7 @@ CREATE TABLE `mailing_list` (
   `month` int(11) NOT NULL,
   `mlDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -409,7 +409,7 @@ CREATE TABLE `mailing_list_detail` (
   `miId` int(11) DEFAULT NULL,
   `bildate` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12428 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -427,7 +427,7 @@ CREATE TABLE `missing_issue` (
   PRIMARY KEY (`id`),
   KEY `subscriber_id_index` (`subscriberId`),
   KEY `inward_id_index` (`inwardId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -443,15 +443,16 @@ CREATE TABLE `missing_issue_journals` (
   `subscriptiondetailId` int(11) NOT NULL,
   `journalGroupId` int(11) NOT NULL,
   `journalId` int(11) NOT NULL,
-  `month` int(11) NOT NULL,
+  `issue` int(11) NOT NULL,
   `year` int(11) NOT NULL,
   `missingCopies` int(11) NOT NULL,
   `action` char(1) DEFAULT NULL,
   `sentOn` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `mailinglistid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `foreign_key_index` (`missingissueId`),
   KEY `journal_id_index` (`journalId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -558,11 +559,11 @@ DROP TABLE IF EXISTS `reminder_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reminder_details` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL DEFAULT '0',
   `reminderId` int(11) NOT NULL,
-  `medium` char(1) NOT NULL,
+  `medium` int(11) NOT NULL,
   `language` int(11) NOT NULL,
-  `sent_date` datetime NOT NULL,
+  `sent_date` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -794,6 +795,7 @@ CREATE TABLE `subscription` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriberID` int(11) NOT NULL,
   `inwardID` int(11) NOT NULL,
+  `agentID` int(11) DEFAULT '0',
   `active` tinyint(4) NOT NULL DEFAULT '1',
   `subscriptionDate` date NOT NULL DEFAULT '0000-00-00',
   `legacy` tinyint(4) NOT NULL DEFAULT '0',

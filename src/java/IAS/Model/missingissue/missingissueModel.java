@@ -76,7 +76,7 @@ public class missingissueModel extends JDSModel {
         String journalGroupName[] = request.getParameterValues("journalGroupName");
         String journalName[] = request.getParameterValues("journalName");
         String year[] = request.getParameterValues("year");
-        String missingMonth[] = request.getParameterValues("month");
+        String missingIssue[] = request.getParameterValues("issue");
         String mcopies[] = request.getParameterValues("mcopies");
         int missingissueId = 0;
         conn.setAutoCommit(false);
@@ -100,7 +100,7 @@ public class missingissueModel extends JDSModel {
                             util.convertStringArraytoIntArray(subscriptionId),
                             journalGroupName,
                             journalName,
-                            missingMonth,
+                            missingIssue,
                             util.convertStringArraytoIntArray(year),
                             util.convertStringArraytoIntArray(mcopies));
 
@@ -159,29 +159,67 @@ public class missingissueModel extends JDSModel {
         return xml;
     }
 
+    public String checkGenerate()  throws IllegalAccessException, ParseException,
+            ParserConfigurationException, SQLException, TransformerException,
+            IOException, InvocationTargetException, Exception {
+        String xml = null;
+        String sql = Queries.getQuery("check_mailing_status");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        stGet.setString(paramIndex, request.getParameter("miId"));
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        if (rs.next()){
+            xml = "R";
+        }else {
+            xml = "G";
+        }
+        return xml;
+    }
+    
     private int[] __addMissingJournals(
             int missingissueId, int[] subscriptionId, String[] journalGroupName, String[] journalName,
-            String[] month, int[] year, int[] mcopies) throws SQLException {
+            String[] issue, int[] year, int[] mcopies) throws SQLException {
 
+        
         String sql = Queries.getQuery("insert_missing_journals");
         PreparedStatement st = conn.prepareStatement(sql);
         int paramIndex = 0;
         for (int i = 0; i < journalName.length; i++) {
+            int mlid = 0;
+            mlid = getmlid(subscriptionId[i], journalName[i], issue[i], year[i]);
             paramIndex = 0;
             st.setInt(++paramIndex, missingissueId);
             st.setInt(++paramIndex, subscriptionId[i]);
             st.setString(++paramIndex, journalGroupName[i]);
+            st.setString(++paramIndex, journalGroupName[i]);
             st.setString(++paramIndex, journalName[i]);
-            st.setString(++paramIndex, journalName[i]);
-            st.setString(++paramIndex, month[i]);
+            st.setString(++paramIndex, issue[i]);
             st.setInt(++paramIndex, year[i]);
             st.setInt(++paramIndex, mcopies[i]);
+            st.setInt(++paramIndex, mlid);
             st.addBatch();
         }
         int res[] = st.executeBatch();
         return res;
     }
 
+    private int getmlid(int subscriptionId,  String journalName, String issue, int year) throws SQLException {
+        
+        int mlid = 0;
+        String sqlmlid = Queries.getQuery("get_ml_id_for_mi");
+        PreparedStatement stGet = conn.prepareStatement(sqlmlid);
+        int paramIndexml = 1;
+        stGet.setInt(paramIndexml, subscriptionId);
+        stGet.setString(++paramIndexml, journalName);        
+        stGet.setInt(++paramIndexml, year);
+        stGet.setString(++paramIndexml, issue);
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        if (rs.next()){
+            mlid = rs.getInt(1);
+        }
+        return mlid;
+    }
+    
     public String reprint()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
@@ -206,59 +244,6 @@ public class missingissueModel extends JDSModel {
         return xml;
     }
 
-    /*
-    // This function will actually generate the pdf for the missing issue
-    public String printNoCopies(HttpServletResponse response) throws IOException, DocumentException
-    {
-        ServletContext context = ServletContextInfo.getServletContext();
-        String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(emailPropertiesFile));
-
-        String msg = properties.getProperty("missingIssueNoCopy");
-
-        OutputStream os = response.getOutputStream();
-        convertToPdf c2Pdf = new convertToPdf();
-        c2Pdf.printMIresponse(os, msg);
-
-        response.setContentType("application/pdf");
-        response.setHeader("Content-disposition", "attachment; filename=reprint.pdf");
-        os.flush();
-        os.close();
-
-        String pdf = null;
-        return pdf;
-
-    }
-     *
-     */
-
-    /*
-    // This function will actually generate the pdf for the missing issue
-    public String printAlreadySent(HttpServletResponse response) throws IOException, DocumentException
-    {
-        ServletContext context = ServletContextInfo.getServletContext();
-        String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(emailPropertiesFile));
-
-        String msg = properties.getProperty("missingIssueAlreadySent");
-
-        OutputStream os = response.getOutputStream();
-        convertToPdf c2Pdf = new convertToPdf();
-        c2Pdf.printMIresponse(os, msg);
-
-        response.setContentType("application/pdf");
-        response.setHeader("Content-disposition", "attachment; filename=reprint.pdf");
-        os.flush();
-        os.close();
-
-        String pdf = null;
-        return pdf;
-
-    }
-     *
-     */
 
     public ResultSet generateMLforMI() throws SQLException
     {
@@ -273,36 +258,7 @@ public class missingissueModel extends JDSModel {
         return rs;
     }
 
-    /*
-    public String generateMLforMI(HttpServletResponse response) throws SQLException, IOException, DocumentException
-    {
-        String xml = null;
-        String sql = Queries.getQuery("reprint_mi_list");
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("miId"));
-
-        String type = request.getParameter("printOption");
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-
-        // Generate the reprint mailing list
-        OutputStream os = response.getOutputStream();
-        convertToPdf c2Pdf = new convertToPdf();
-        if(type.equals("LABEL"))
-            c2Pdf.addLabelContent(rs, os);
-        if(type.equals("STICKER"))
-            c2Pdf.addStickerContent(rs, os);
-
-        response.setContentType("application/pdf");
-        response.setHeader("Content-disposition", "attachment; filename=reprint.pdf");
-        os.flush();
-        String pdf = null;
-        return pdf;
-    }
-     *
-     */
-
-     public String generateMl()  throws IllegalAccessException, ParseException,
+   public String generateMl()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
         String xml = null;
@@ -344,6 +300,16 @@ public class missingissueModel extends JDSModel {
         return xml;
     }
 
+   public String getLabel()  throws IllegalAccessException, ParseException,
+            ParserConfigurationException, SQLException, TransformerException,
+            IOException, InvocationTargetException, Exception {
+        String xml = null;
+        String miId = null;
+        xml = generateMl();
+        xml += reprint();
+        return xml;
+    }
+   
     public String noCopies()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
@@ -431,6 +397,12 @@ public class missingissueModel extends JDSModel {
     public void setAction(String action)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String sql = Queries.getQuery("update_missing_action");
+        if (action.equals("M")){
+            sql += " and mailinglistid = 0";
+        }
+        if (action.equals("R")){
+            sql += " and mailinglistid <> 0";
+        }
         PreparedStatement st = conn.prepareStatement(sql);
         int paramIndex = 1;
         st.setString(paramIndex, action);

@@ -24,7 +24,7 @@
             sortname:'subscriptionDate',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames: ['Subscriber ID', 'Journal Group','Journal Name', 'Month', 'Year', 'Subscribed Copies','Missing Copies', 'Delete', ],
+            colNames: ['Subscriber ID', 'Journal Group','Journal Name', 'Issue', 'Year', 'Subscribed Copies','Missing Copies', 'Delete', ],
             colModel: [
                 {
                     name:"subscriptionId",
@@ -51,8 +51,8 @@
 
                 },
                 {
-                    name:"month",
-                    index:"month",
+                    name:"issue",
+                    index:"issue",
                     width:20,
                     align:"center"
                 },
@@ -148,6 +148,19 @@
                 jdsAppend(requestURL,"month","month");
 
      }
+     
+     function loadIssues(){
+                $("#issue").empty();
+                $("#issue").text("");
+
+                var newOption = new Option("Select", "value");
+                $(newOption).html("Select");
+                $("#issue").append(newOption);
+              
+                requestURL = "CMasterData?md=get_issue_mi&mdvalue=" + $("#journalName").val() + "&optionalParam=" + $("#year").val();
+
+                jdsAppend(requestURL,"issueNumber","issue");
+            }
 
 </script>
 
@@ -189,18 +202,18 @@
             </span>
 
             <span class="IASFormDivSpanInputBoxLessMargin">
-                <select class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName" onchange ="loadMonths()">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="journalName" id="journalName" onchange ="loadIssues()">
                 </select>
             </span>
         </div>
         <div class="IASFormFieldDiv">
 
             <span class="IASFormDivSpanLabel" style="margin-left:15px;width: auto;">
-                <label>Month:</label>
+                <label>Issue:</label>
             </span>
 
             <span class="IASFormDivSpanInputBoxLessMargin">
-                <select class="IASComboBoxMandatory" TABINDEX="11" name="month" id="month">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="issue" id="issue">
                 </select>
             </span>
 
