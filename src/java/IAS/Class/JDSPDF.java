@@ -5,16 +5,13 @@
 package IAS.Class;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.Utilities;
-import com.itextpdf.text.pdf.PdfContentByte;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,8 +26,9 @@ public class JDSPDF implements IJDSPDF {
     public static int LEFT_INDENTATION_LESS = 15;
     public static int RIGHT_INDENTATION_LESS = 15;
     public static int LEFT_INDENTATION_MORE = 30;
-    public static Font JDS_BOLD_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
+    public static Font JDS_BOLD_FONT = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD, BaseColor.BLACK);
     public static Font JDS_FONT_NORMAL_SMALL = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
+    public static Font JDS_FONT_BODY = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
     public static Font JDS_FONT_NORMAL_SMALL_BOLD = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.BLACK);
 
     public JDSPDF() {
@@ -63,7 +61,7 @@ public class JDSPDF implements IJDSPDF {
         return document;
     }
 
-    public void addFooter(Document document, PdfWriter pdfWriter) throws DocumentException{
+    public void addPaymentFooter(Document document, PdfWriter pdfWriter) throws DocumentException{
 
         ColumnText ct = new ColumnText(pdfWriter.getDirectContent());
         float pageWidth = pdfWriter.getPageSize().getWidth();
@@ -219,15 +217,13 @@ public class JDSPDF implements IJDSPDF {
         Image _logo = Image.getInstance(logo);
         _logo.setAlignment(Element.ALIGN_CENTER);
         paragraph.add(_logo);
-
-        Font _IASFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
         Chunk HeaderIAS = new Chunk(JDSConstants.IAS_LETTERHEAD);
-        HeaderIAS.setFont(_IASFont);
+        HeaderIAS.setFont(JDSPDF.JDS_BOLD_FONT);
 
-        Chunk HeaderIASAddress = new Chunk(JDSConstants.IAS_LETTERHEAD_ADDRESS);
-        Chunk HeaderIASTel = new Chunk(JDSConstants.IAS_LETTERHEAD_TELEPHONE);
-        Chunk HeaderEmail_Web = new Chunk(JDSConstants.IAS_LETTERHEAD_EMAIL + " " + JDSConstants.IAS_LETTERHEAD_WEB);
-        Chunk LetterDate = new Chunk("Date: " + util.getDateString());
+        Chunk HeaderIASAddress = new Chunk(JDSConstants.IAS_LETTERHEAD_ADDRESS, JDSPDF.JDS_BOLD_FONT);
+        Chunk HeaderIASTel = new Chunk(JDSConstants.IAS_LETTERHEAD_TELEPHONE, JDSPDF.JDS_BOLD_FONT);
+        Chunk HeaderEmail_Web = new Chunk(JDSConstants.IAS_LETTERHEAD_EMAIL + " " + JDSConstants.IAS_LETTERHEAD_WEB, JDSPDF.JDS_BOLD_FONT);
+        Chunk LetterDate = new Chunk("Date: " + util.getDateString(), JDSPDF.JDS_FONT_BODY);
         paragraphDate.add(LetterDate);
 
         paragraph.add(HeaderIAS);
@@ -258,118 +254,16 @@ public class JDSPDF implements IJDSPDF {
 
         Paragraph paragraph = new Paragraph();
         paragraph.setAlignment(Element.ALIGN_RIGHT);
-        paragraph.setSpacingBefore(70);
+        paragraph.setSpacingBefore(40);
 
-        paragraph.add(new Chunk(JDSConstants.IAS_LETTERFOOT_CLOSING));
+        paragraph.add(new Chunk(JDSConstants.IAS_LETTERFOOT_CLOSING, JDSPDF.JDS_FONT_BODY));
         paragraph.add(Chunk.NEWLINE);
 
-        paragraph.add(new Chunk(JDSConstants.IAS_LETTERFOOT_SIGNATURE));
+        paragraph.add(new Chunk(JDSConstants.IAS_LETTERFOOT_SIGNATURE, JDSPDF.JDS_FONT_BODY));
         paragraph.add(Chunk.NEWLINE);
 
         return paragraph;
 
     }
 
-    public Paragraph getPaymentFooter() {
-        Paragraph paragraph = new Paragraph();
-        //paragraph.setAlignment(Element.ALIGN_CENTER);
-        paragraph.setAlignment(Element.ALIGN_RIGHT);
-        paragraph.setSpacingBefore(20);
-        //paragraph.setSpacingAfter(20);
-        PdfPTable table;
-        table = new PdfPTable(1);
-        table.setWidthPercentage(80);
-
-        PdfPCell cell1 = new PdfPCell(new Paragraph(new Chunk(JDSConstants.IAS_PAYMENTFOOT_HEADER, JDSPDF.JDS_FONT_NORMAL_SMALL_BOLD)));
-        cell1.setHorizontalAlignment(Element.ALIGN_MIDDLE);
-        cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell(cell1);
-
-        String ArrString[] = new String[10];
-        ArrString[0] = JDSConstants.IAS_PAYMENTFOOT_ACC;
-        ArrString[1] = JDSConstants.IAS_PAYMENTFOOT_ACC_NAME;
-        ArrString[2] = JDSConstants.IAS_PAYMENTFOOT_BANK;
-        ArrString[3] = JDSConstants.IAS_PAYMENTFOOT_BANK_NAME;
-        ArrString[4] = JDSConstants.IAS_PAYMENTFOOT_BRANCH;
-        ArrString[5] = JDSConstants.IAS_PAYMENTFOOT_BRANCH_NAME;
-        ArrString[6] = JDSConstants.IAS_PAYMENTFOOT_ACCNO;
-        ArrString[7] = JDSConstants.IAS_PAYMENTFOOT_ACCNO_DTLS;
-        ArrString[8] = JDSConstants.IAS_PAYMENTFOOT_IFSCOD;
-        ArrString[9] = JDSConstants.IAS_PAYMENTFOOT_IFSCOD_DTLS;
-
-        PdfPTable innerTable;
-        innerTable = new PdfPTable(3);
-        innerTable.setWidthPercentage(80);
-        PdfPCell cellInnerTable1;
-        PdfPCell cellInnerTable2;
-        PdfPCell cellInnerTable3;
-
-        for (int i = 0; i < ArrString.length; i++) {
-
-            cellInnerTable1 = new PdfPCell(new Paragraph(new Chunk(ArrString[i], JDSPDF.JDS_FONT_NORMAL_SMALL)));
-            cellInnerTable1.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cellInnerTable1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            cellInnerTable1.setBorder(Rectangle.NO_BORDER);
-            innerTable.addCell(cellInnerTable1);
-            cellInnerTable2 = new PdfPCell(new Paragraph(new Chunk("-", JDSPDF.JDS_FONT_NORMAL_SMALL)));
-            cellInnerTable2.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cellInnerTable2.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            cellInnerTable2.setBorder(Rectangle.NO_BORDER);
-            innerTable.addCell(cellInnerTable2);
-            cellInnerTable3 = new PdfPCell(new Paragraph(new Chunk(ArrString[i + 1], JDSPDF.JDS_FONT_NORMAL_SMALL)));
-            cellInnerTable3.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cellInnerTable3.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            cellInnerTable3.setBorder(Rectangle.NO_BORDER);
-            innerTable.addCell(cellInnerTable3);
-            i++;
-        }
-        table.addCell(innerTable);
-
-        cell1 = new PdfPCell(new Paragraph(new Chunk(JDSConstants.IAS_PAYMENTFOOTER, JDSPDF.JDS_FONT_NORMAL_SMALL_BOLD)));
-        cell1.setHorizontalAlignment(Element.ALIGN_MIDDLE);
-        cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell(cell1);
-
-        paragraph.add(table);
-        return paragraph;
-
-    }
-
-    /**
-     * Inner class to add a header and a footer.
-     */
-    static class HeaderFooter extends PdfPageEventHelper {
-
-        Font.FontFamily fontType = Font.getFamily("HELVETICA");
-        int fontSize = 9;
-        float leading = 10.0f;
-
-        public void setupFontAndLeading(PdfContentByte cb) {
-            Font f = new Font(fontType, fontSize);
-            BaseFont bf = f.getCalculatedBaseFont(false);
-            cb.setFontAndSize(bf, fontSize);
-            cb.setLeading(leading);
-        }
-
-        @Override
-        public void onEndPage(PdfWriter writer, Document document) {
-            PdfContentByte cb = writer.getDirectContent();
-            cb.roundRectangle(LEFT_INDENTATION_MORE * 2, 30, 480, 90, 10);
-            
-            this.setupFontAndLeading(cb);
-            cb.beginText();
-            cb.showTextAligned(Element.ALIGN_LEFT, 
-                    JDSConstants.IAS_PAYMENTFOOT_HEADER, 
-                    LEFT_INDENTATION_MORE * 3, 100, 0);
-            cb.newlineText();
-            cb.newlineShowText(JDSConstants.IAS_PAYMENTFOOT_ACC + ": " + JDSConstants.IAS_PAYMENTFOOT_ACC_NAME);
-            cb.newlineShowText(JDSConstants.IAS_PAYMENTFOOT_BANK + ": " + JDSConstants.IAS_PAYMENTFOOT_BANK_NAME);
-            cb.newlineShowText(JDSConstants.IAS_PAYMENTFOOT_BRANCH + ": " + JDSConstants.IAS_PAYMENTFOOT_BRANCH_NAME);            
-            cb.newlineShowText(JDSConstants.IAS_PAYMENTFOOT_ACCNO + ": " + JDSConstants.IAS_PAYMENTFOOT_ACCNO_DTLS);
-            cb.newlineShowText(JDSConstants.IAS_PAYMENTFOOT_IFSCOD + ": " + JDSConstants.IAS_PAYMENTFOOT_IFSCOD_DTLS);
-            cb.endText();
-            cb.stroke();
-                        
-        }
-    }
 }

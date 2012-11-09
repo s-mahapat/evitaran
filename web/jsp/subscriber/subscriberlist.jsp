@@ -11,12 +11,14 @@
             var subscriber = window.dialogArguments;
             var selectedSubscriberId = null;
             var selectedsubscriber;
+            var isSelected = false;
             
             $(document).ready(function(){
                 // search subscriber when ENTER key is pressed
                 setEnterKeyAction(searchSubscriber);
                 loadCities("<%=request.getContextPath() + "/cities"%>");
-                jdsAutoComplete("<%=request.getContextPath() + "/subscriber?action=depts"%>", "department", "department"); 
+                jdsAutoComplete("<%=request.getContextPath() + "/subscriber?action=depts"%>", "department", "department");
+                $("#subscriberNumber").focus();
             });                       
             
             $(function(){
@@ -89,9 +91,19 @@
                 });
             });
 
-            function CheckReturnValue(){
-                selectedsubscriber = jQuery("#subscriberList").getRowData(selectedSubscriberId);
-                window.returnValue = selectedsubscriber;
+            // this function is called when the page is unloading
+            function CheckReturnValue(){                
+                window.returnValue = selectedsubscriber;                
+            }
+            
+            // this function is called when the user clicks on the OK/Cancel button
+            function selectSubscriber(bSelected){
+                if(bSelected){
+                    selectedsubscriber = jQuery("#subscriberList").getRowData(selectedSubscriberId);                    
+                }else{
+                    selectedsubscriber = null;
+                }
+                window.close();
             }
             
             // called when the search button is clicked
@@ -193,8 +205,8 @@
 
                     <fieldset class="subMainFieldSet">
                         <div class="actionBtnDiv">
-                            <input class="IASButton" TABINDEX="8" type="button" onclick="window.returnValue=selectedSubscriberId;window.close()" value="OK" name="btnOk"/>
-                            <input class="IASButton" TABINDEX="9" type="button" value="Cancel" name="btnCancel" onclick="window.close()"/>
+                            <input class="IASButton" TABINDEX="8" type="button" onclick="selectSubscriber(true)" value="OK" name="btnOk"/>
+                            <input class="IASButton" TABINDEX="9" type="button" value="Cancel" name="btnCancel" onclick="selectSubscriber(false)"/>
                         </div>
                     </fieldset>
                 </fieldset>

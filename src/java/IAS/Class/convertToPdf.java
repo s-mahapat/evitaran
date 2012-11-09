@@ -461,7 +461,7 @@ public convertToPdf(){
             }
 
             // 6. Add the footer
-            this.addFooter(document, writer);
+            this.addPaymentFooter(document, writer);
 
             document.newPage();
         }

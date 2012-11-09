@@ -17,7 +17,7 @@
         });
     });
 </script>
-<div id="sidebar" class="grey">
+<nav id="sidebar" class="grey">
 
     <%
         String contextPath = request.getContextPath();
@@ -162,4 +162,4 @@
         </li>
     </ul>
     <div id="verticalwhiteline"></div>
-</div>
+</nav>

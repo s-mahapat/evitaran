@@ -144,7 +144,7 @@ root {
 }
 
 #subscriptionDetail{
-    width: 50%; float: left; margin: 20px 25%;
+    width: 80%; float: left; margin: 20px 10%;
 }
 
 #invoceHeaderDiv{
@@ -162,5 +162,47 @@ root {
     margin-top: 20px;
     float: left;
     line-height: 2em;
+}
+
+#invoiceTable tbody tr th{
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    border-right-color: black;
+    border-left-color: black;
+    border-bottom-color: black;
+    border-top-color: black;
+    text-align: center;
+    border-bottom-style: solid;
+    border-right-style: solid;
+}
+
+#invoiceTable tbody tr td{
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    border-right-color: black;
+    border-left-color: black;
+    border-bottom-color: black;
+    border-top-color: black;
+    text-align: center;
+    border-bottom-style: solid;
+    border-right-style: solid;
+}
+
+#invoiceTable tbody tr .journalname{
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    border-right-color: black;
+    border-left-color: black;
+    border-bottom-color: black;
+    border-top-color: black;
+    text-align: left;
+    border-bottom-style: solid;
+    border-right-style: solid;
 }
 
