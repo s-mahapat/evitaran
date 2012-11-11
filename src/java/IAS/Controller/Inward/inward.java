@@ -118,6 +118,11 @@ public class inward extends JDSController {
                 int isFreeSubscriber = Integer.parseInt(request.getParameter("afs"));
                 int isSummerFellow = Integer.parseInt(request.getParameter("asf"));
 
+                // update the subscriber number in the inward
+                if(_inwardModel.updateSubscriberInInward(subscriberNumber, _inwardFormBean.getInwardNumber()) == 1){
+                    logger.debug(String.format("Updated subscriber %s in inward %s", subscriberNumber, _inwardFormBean.getInwardNumber()));
+                }
+
 
                 // Get into this if block for only new subscription and request for invoice
                 // if its add free subscribers or add summer fellows move on
@@ -209,8 +214,8 @@ public class inward extends JDSController {
                 //_inwardFormBean = _inwardModel.viewInward();
                 //float amount = _inwardFormBean.getAmount();
 
-                /*if ( amount > 0 && 
-                 (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION || 
+                /*if ( amount > 0 &&
+                 (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION ||
                  inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)
                  ) {
 
@@ -237,7 +242,7 @@ public class inward extends JDSController {
 
 
             }
-            
+
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
             if (rd != null && url != null) {
                 rd.forward(request, response);

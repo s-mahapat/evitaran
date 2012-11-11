@@ -7,10 +7,11 @@ package IAS.Model.Inward;
 import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscriber.subscriberFormBean;
-import IAS.Class.Database;
+import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import IAS.Model.Subscriber.subscriberModel;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +25,12 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 /**
@@ -36,6 +42,7 @@ public class inwardModel extends JDSModel {
     private inwardFormBean _inwardFormBean = null;
     //private HttpServletRequest request;
     Properties props = null;
+    private static Logger logger = JDSLogger.getJDSLogger(inwardModel.class.getName());
 
     public inwardModel(HttpServletRequest request) throws SQLException, IOException {
         //call the base class constructor
@@ -668,5 +675,35 @@ public class inwardModel extends JDSModel {
 
         request.setAttribute("subscriberFormBean", _subscriberFormBean);
         return _subscriberFormBean;
+    }
+
+    public int updateSubscriberInInward(String subScriberNumber, String inwardNumber) {
+
+        int rc = 0;
+        ResultSetHandler<Object[]> h = new ResultSetHandler<Object[]>() {
+            @Override
+            public Object[] handle(ResultSet rs) throws SQLException {
+                Object[] result = new Object[1];
+                if (rs.first()) {
+                    result[0] = rs.getInt(1);
+                }
+                return result;
+            }
+        };
+
+        try (Connection _conn = this.getConnection()) {
+            QueryRunner run = new QueryRunner();
+            Object[] subids = run.query(_conn, Queries.getQuery("get_subscriber_id_from_number"), h, subScriberNumber);
+            int subid = (int) subids[0];
+            if (subid > 0) {
+                String sql = Queries.getQuery("update_subscriber_in_inward");
+                rc = run.update(_conn, sql, subid, inwardNumber);
+            }
+
+        } catch (SQLException ex) {
+            logger.error(ex);
+        } finally {
+            return rc;
+        }
     }
 }
