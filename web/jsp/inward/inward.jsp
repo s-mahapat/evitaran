@@ -5,6 +5,15 @@
     $(document).ready(function(){
         $("#from").focus();
 
+        // get the inward complete state from the bean
+        var iscomplete = ${inwardFormBean.completed};
+
+        // disable the send return button if the inward is not complete yet
+        // perform other actions that are required when inward is not complete inside this
+        if(iscomplete == false){
+            $("#btnSendReturn").button("disable");
+        }
+
         $(function() {
             $( "#btnSearchSubscriber" )
             .button()
@@ -507,16 +516,7 @@
         <input onclick="location.href='main?action=createinward'" TABINDEX="30" class="IASButton" type="button" value="New Inward" id="btnNewInward" name="btnNewInward"/>
         <input onclick="setActionValue('edit')" TABINDEX="31" class="IASButton" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
         <input onclick="setActionValue('sendAck')" TABINDEX="32" class="IASButton" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>
-        <%--
-            //inwardFormBean.isCompleted()== true ? out.println("enabled") : out.println("disabled");
-            if (inwardFormBean.isCompleted() == true) {
-                out.println(" enabled");
-            } else {
-                out.println(" disabled");
-            }
-        --%>
-
-        <input onclick="setActionValue('sendReturn')" TABINDEX="32" class="IASButton" type="submit" value="Send Return" id="btnSendReturn" name="submitAction"/>
+        <input onclick="setActionValue('sendReturn')" TABINDEX="33" class="IASButton" type="submit" value="Send Return" id="btnSendReturn" name="submitAction"/>
     </div>
 </fieldset>
 

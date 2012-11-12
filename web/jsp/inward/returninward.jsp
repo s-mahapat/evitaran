@@ -32,6 +32,17 @@
                     $("#btnEmail").button("disable");
                 }
 
+                // disable the email and print buttons if the subscriber id does not exist.
+                // this can happen if the inward is created but the subscriber is not, we then do not
+                // to whom to send the email/print.
+                // also we need the subscriber if to maintain history
+                if(isEmptyValue($("#subscriberId").val())){
+                    $("#btnEmail").button("disable");
+                    $("#btnPrintPreview").button("disable");
+                }
+
+
+
 
             })
 
