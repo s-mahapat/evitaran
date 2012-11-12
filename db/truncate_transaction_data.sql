@@ -56,3 +56,6 @@ ALTER TABLE prl_details AUTO_INCREMENT = 1;
 
 delete from agents;
 ALTER TABLE agents AUTO_INCREMENT = 1;
+
+delete from chq_return_details;
+ALTER TABLE chq_return_details AUTO_INCREMENT = 1;

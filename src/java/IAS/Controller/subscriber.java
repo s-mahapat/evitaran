@@ -35,7 +35,7 @@ public class subscriber extends JDSController {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String url = null;
-        int inwardPurposeID = 0;
+        int inwardPurposeID;
 
         HttpSession session = request.getSession(false);
         try {
@@ -143,8 +143,17 @@ public class subscriber extends JDSController {
                 url = "/xmlserver";
             } else if (action.equalsIgnoreCase("nextsubscriber")) {
                 int subscriberID = Integer.parseInt(request.getParameter("sid"));
-                if (_subscriberModel.getNextSubscriber(subscriberID)!= null){
+                if (_subscriberModel.getNextSubscriber(subscriberID) != null) {
                     url = "/jsp/subscriber/viewdetailsubscriber.jsp";
+                }
+            } else if (action.equalsIgnoreCase("chqreturn")) {
+                String _subscriberNumber = request.getParameter("subscriberNumber");
+                String xml = _subscriberModel.getChequeReturn(_subscriberNumber);
+                if (xml != null) {
+                    request.setAttribute("xml", xml);
+                    url = "/xmlserver";
+                }else{
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to cheque return details for subscriber");
                 }
             }
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);

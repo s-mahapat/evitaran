@@ -18,13 +18,17 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.apache.commons.collections.FastHashMap;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
@@ -147,29 +151,70 @@ public class inwardModel extends JDSModel {
 
         inwardFormBean inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
         request.setAttribute("inwardFormBean", inwardFormBean);
+        inwardFormBean __inwardFormBean = null;
+        try (Connection _conn = this.getConnection()) {
+            _conn.setAutoCommit(false);
+            FillBean(this.request, inwardFormBean);
+            this._inwardFormBean = inwardFormBean;
+            String sql = Queries.getQuery("update_cheque_return");
+            try {
+                PreparedStatement st = _conn.prepareStatement(sql);
+                int paramIndex = 0;
+                st.setBoolean(++paramIndex, true);
+                st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReason());
+                st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReasonOther());
+                st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+                st.setString(++paramIndex, inwardFormBean.getInwardNumber());
+                st.executeUpdate();
 
-        // get the connection from base class
-        Connection conn = this.getConnection();
+                sql = Queries.getQuery("update_cheque_return_details");
+                st = _conn.prepareStatement(sql);
+                paramIndex = 0;
 
-        //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        FillBean(this.request, inwardFormBean);
-        this._inwardFormBean = inwardFormBean;
+                st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReason());
+                st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReasonOther());
+                st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+                st.setFloat(++paramIndex, inwardFormBean.getAmount());
+                st.setInt(++paramIndex, inwardFormBean.getInwardID());
+                st.setInt(++paramIndex, inwardFormBean.getChqddNumber());
+                st.setDate(++paramIndex, util.dateStringToSqlDate(inwardFormBean.getPaymentDate()));
+                st.executeUpdate();
 
-        // the query name from the jds_sql properties files in WEB-INF/properties folder
-        String sql = Queries.getQuery("update_cheque_return");
-        PreparedStatement st = conn.prepareStatement(sql);
-        int paramIndex = 0;
-        st.setBoolean(++paramIndex, true);
-        st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReason());
-        st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReasonOther());
-        st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
-        st.setString(++paramIndex, inwardFormBean.getInwardNumber());
-        db.executeUpdatePreparedStatement(st);
-        inwardFormBean __inwardFormBean = this.GetInward();
+                _conn.commit();
+                __inwardFormBean = this.GetInward();
 
-        this.CloseConnection(conn);
+            } catch (SQLException ex) {
+                _conn.rollback();
+            } finally {
+                _conn.setAutoCommit(true);
+            }
+
+        }
         return __inwardFormBean;
 
+    }
+
+    public inwardFormBean getChequeReturnDetails(String inwardNumber, int chq_no) throws SQLException {
+
+        Connection _conn = this.getConnection();
+        inwardFormBean _inwardFormBean2return;
+        String sql = Queries.getQuery("print_email_chq_return");
+
+        ResultSetHandler<inwardFormBean> h = new ResultSetHandler<inwardFormBean>() {
+            @Override
+            public inwardFormBean handle(ResultSet rs) throws SQLException {
+                inwardFormBean inwardFormBean = null;
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    inwardFormBean = bProc.toBean(rs, IAS.Bean.Inward.inwardFormBean.class);
+                }
+                return inwardFormBean;
+            }
+        };
+
+        QueryRunner run = new QueryRunner();
+        _inwardFormBean2return = run.query(_conn, sql, h, inwardNumber, chq_no);
+        return _inwardFormBean2return;
     }
 
     private int _updateInward() throws SQLException, ParseException,

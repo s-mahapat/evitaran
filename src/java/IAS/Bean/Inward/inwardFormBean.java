@@ -19,6 +19,7 @@ public class inwardFormBean extends JDSBean {
     private String inwardCreationDate = util.getDateString();
     private String subscriberId = "";
     private String email = "";
+    private String subscriberEmail = null;
     private String institution = "";
     private String department = "";
     private int subscriptionID = 0;
@@ -137,11 +138,20 @@ public class inwardFormBean extends JDSBean {
     }
 
     public String getEmail() {
+        if(this.email == null || this.email.length() == 0){
+            if(this.subscriberEmail != null){
+                return this.subscriberEmail;
+            }
+        }
         return this.email;
     }
 
     public void setEmail(String _Email) {
         this.email = _Email;
+    }
+
+    public void setSubscriberEmail(String _Email) {
+        this.subscriberEmail = _Email;
     }
 
     public String getInstitution() {
@@ -203,7 +213,7 @@ public class inwardFormBean extends JDSBean {
             return "";
         } else {
             return String.format("%06d", this.chqddNumber);//String.valueOf(this.chqddNumber);
-            
+
         }
 
     }
@@ -339,5 +349,17 @@ public class inwardFormBean extends JDSBean {
 
     public void setagentName(String _agentName) {
         this.agentName = _agentName;
+    }
+
+    public String getReturnReason(){
+        /*
+         * This is a method to get the consolidated message, if the reason is
+         * 'others', it returns the free form text
+         */
+        String _reason = this.chequeDDReturnReason;
+        if(this.chequeDDReturnReason.equalsIgnoreCase("others")){
+            _reason = this.chequeDDReturnReasonOther;
+        }
+        return _reason;
     }
 }

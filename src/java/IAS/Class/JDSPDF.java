@@ -5,12 +5,9 @@
 package IAS.Class;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -245,7 +242,7 @@ public class JDSPDF implements IJDSPDF {
         paragraph.setSpacingBefore(40);
         paragraph.setIndentationLeft(LEFT_INDENTATION_LESS);
         paragraph.setAlignment(Element.ALIGN_LEFT);
-        paragraph.add(new Chunk(JDSConstants.IAS_LETTERHEAD_SALUTATION));
+        paragraph.add(new Chunk(JDSConstants.IAS_LETTERHEAD_SALUTATION, JDSPDF.JDS_FONT_BODY));
         return paragraph;
 
     }

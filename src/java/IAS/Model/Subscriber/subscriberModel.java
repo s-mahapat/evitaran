@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.dbutils.BeanProcessor;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -656,5 +658,35 @@ public class subscriberModel extends JDSModel {
             _conn.close();
         }
         return this.isSubscriberTypeFree(subtypeID);
+    }
+
+    public String getChequeReturn(String subscriberNumber) throws SQLException {
+
+        Connection _conn = this.getConnection();
+        QueryRunner run = new QueryRunner();
+        String xml = null;
+
+        ResultSetHandler<String> h = new ResultSetHandler<String>() {
+            @Override
+            public String handle(ResultSet rs) throws SQLException {
+                String xml = null;
+                try {
+                    xml = util.convertResultSetToXML(rs);
+                } catch (ParserConfigurationException | TransformerException ex) {
+                } finally {
+                    return xml;
+                }
+
+            }
+        };
+
+        try {
+            xml = run.query(_conn, Queries.getQuery("get_chq_return_for_subscriber"), h, subscriberNumber);
+        } catch (Exception ex) {
+            logger.error(ex);
+        } finally {
+            _conn.close();
+        }
+        return xml;
     }
 }

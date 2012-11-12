@@ -49,16 +49,15 @@ public class Print extends JDSController {
             // for inward print
             if (document.equalsIgnoreCase("inward")) {
                 inwardModel _inwardModel = new inwardModel(request);
-                inwardFormBean _inwardFormBean = _inwardModel.GetInward(documentID);
-                //request.setAttribute("inwardFormBean", _inwardFormBean);
+                inwardFormBean _inwardFormBean;
 
                 // for inward cheque return, create the pdf
                 if (action.equalsIgnoreCase("chqreturn")) {
+                    int chq_no = Integer.parseInt(request.getParameter("chq_no"));
+                    _inwardFormBean = _inwardModel.getChequeReturnDetails(documentID, chq_no);
                     ChequeReturnPDF _chequePdf = new ChequeReturnPDF();
-                    String returnReason = _inwardFormBean.getChequeDDReturnReason();
-                    if (returnReason.equalsIgnoreCase("others")) {
-                        returnReason = _inwardFormBean.getChequeDDReturnReasonOther();
-                    }
+                    String returnReason = _inwardFormBean.getReturnReason();
+
                     ByteArrayOutputStream baos = _chequePdf.getPDF(_inwardFormBean.getSubscriberIdAsText(),
                             _inwardFormBean.getInwardNumber(),
                             _inwardFormBean.getChqddNumberAsText(),
@@ -67,14 +66,6 @@ public class Print extends JDSController {
                             returnReason);
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     this.sendResponse(baos, fileName, response);
-                    //                    byte pdfData[] = baos.toByteArray();
-//                    
-//                    response.reset();
-//                    response.setContentType("application/pdf");
-//                    response.setHeader("Content-disposition", "inline; filename=" + fileName);
-//                    try (OutputStream output = response.getOutputStream()) {
-//                        output.write(pdfData);
-//                    }
                 } // for inward acknowledgement
                 else if (action.equalsIgnoreCase("ack")) {
 

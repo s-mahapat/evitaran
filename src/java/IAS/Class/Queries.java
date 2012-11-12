@@ -5,8 +5,8 @@
 package IAS.Class;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 import java.sql.*;
+import java.util.Properties;
 
 public class Queries {
 

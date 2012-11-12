@@ -14,32 +14,32 @@ import javax.xml.transform.TransformerException;
  *
  * @author Shailendra
  */
-public class AjaxResponse {       
-    
-    public String getSuccessXML(boolean isSuccess, String Msg) throws 
+public class AjaxResponse {
+
+    public String getSuccessXML(boolean isSuccess, String Msg) throws
             ParserConfigurationException,
             TransformerException,
             IOException{
-        
+
         // create the success object and set the attribute values
         AjaxSuccess ajaxSuccess = new AjaxSuccess();
         ajaxSuccess.setSuccess(isSuccess);
         ajaxSuccess.setMessage(Msg);
-        
+
         XStream xstream = new XStream(new DomDriver());
         xstream.alias("results", AjaxSuccess.class);
-        
+
         String xml = xstream.toXML(ajaxSuccess);
-        
+
         return xml;
-  
+
     }
-    
+
     public String getXMLFromObject(Object obj){
         XStream xstream = new XStream(new DomDriver());
-        String xml = xstream.toXML(obj);        
+        String xml = xstream.toXML(obj);
         return xml;
     }
-    
+
 
 }

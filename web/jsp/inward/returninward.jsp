@@ -14,6 +14,9 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/returninward.js"%>"></script>
         <script type="text/javascript">
             $(document).ready(function(){
+
+                jQueryCalendar("paymentDate");
+
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=return_reason"%>","return_reason","chequeDDReturnReason");
                 if(document.getElementById("chequeDDReturnReason").value == "NULL"){
                     $("#btnPrintPreview").button("disable");
@@ -24,10 +27,12 @@
                     $("#btnEmail").button("enable");
                     //document.getElementById("btnPrintPreview").disabled = false;
                 }
-                
+
                 if(isEmptyValue($("#email").val())){
                     $("#btnEmail").button("disable");
                 }
+
+
             })
 
         </script>
@@ -112,18 +117,18 @@
                                         <label>Cheque/DD No:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxMandatory" maxlength="11" TABINDEX="-1" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
+                                        <input class="IASTextBoxMandatory" maxlength="6" TABINDEX="-1" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
                                     </span>
                                 </div>
 
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Payment Date:</label>
+                                        <label>Cheque/DD Date:</label>
                                     </span>
                                     <div class="dateDiv" id="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input type="text" class="IASDateTextBox" TABINDEX="-1" readonly size="10" name="paymentDate" id="paymentDate" value="${inwardFormBean.paymentDate}"/>
+                                        <input type="text" class="IASTextBoxMandatory" TABINDEX="-1" size="10" name="paymentDate" id="paymentDate" value="${inwardFormBean.paymentDate}"/>
                                     </span>
 
                                 </div>
@@ -134,7 +139,7 @@
                                         <label>Amount:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value="${inwardFormBean.amount}"/>
+                                        <input class="IASTextBoxMandatory" TABINDEX="-1" type="text" name="amount" id="amount" value="${inwardFormBean.amount}"/>
                                         <label>${inwardFormBean.currency}</label>
                                     </span>
                                 </div>
@@ -155,8 +160,8 @@
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv" style="margin-top: 20px;">
                                 <input onclick="setActionValue('saveReturn')" TABINDEX="2" class="IASButton" type="submit" value="Save" id="btnSaveReturn" name="btnSaveReturn"/>
-                                <input TABINDEX="3" class="IASButton" type="button" value="Print" id="btnPrintPreview" name="btnPrintPreview" onclick="showChequeDDReturnPrintPreview('print/inward/${inwardFormBean.inwardNumber}/chqreturn')"/>                               
-                                <input TABINDEX="4" class="IASButton" type="button" value="Email" id="btnEmail" name="btnEmail" onclick="jdsEmail('Email/inward/${inwardFormBean.inwardNumber}/chqreturn')"/>
+                                <input TABINDEX="3" class="IASButton" type="button" value="Print" id="btnPrintPreview" name="btnPrintPreview" onclick="showChequeDDReturnPrintPreview('print/inward/${inwardFormBean.inwardNumber}/chqreturn?chq_no=${inwardFormBean.chqddNumberAsText}')"/>
+                                <input TABINDEX="4" class="IASButton" type="button" value="Email" id="btnEmail" name="btnEmail" onclick="jdsEmail('Email/inward/${inwardFormBean.inwardNumber}/chqreturn?chq_no=${inwardFormBean.chqddNumberAsText}')"/>
                             </div>
                             <div class="actionBtnDiv" style="margin-top: 15px;color: green">
                                 <%

@@ -36,7 +36,7 @@ import org.codemonkey.simplejavamail.TransportStrategy;
 
 public class msgsend {
 
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Class.msgsend");
+    private static final Logger logger = JDSLogger.getJDSLogger(msgsend.class.getName());
     private String contentType = "text/plain";
 
     public msgsend() {
@@ -88,6 +88,7 @@ public class msgsend {
             _mailer.sendMail(email);
             return true;
         }catch(Exception e){
+            logger.error(e);
             return false;
         }
 

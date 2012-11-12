@@ -45,34 +45,33 @@ public class Email extends JDSController {
 
                 // for inward cheque return
                 if (action.equalsIgnoreCase("chqreturn")) {
+                    int chq_no = Integer.parseInt(request.getParameter("chq_no"));
+                    _inwardFormBean = _inwardModel.getChequeReturnDetails(documentID, chq_no);
                     ChequeReturnPDF _chequePdf = new ChequeReturnPDF();
-                    
+
                     // if the reason is other, then the reason for return should be from the 'others' field
-                    String returnReason = _inwardFormBean.getChequeDDReturnReason();
-                    if(returnReason.equalsIgnoreCase("others")){
-                        returnReason = _inwardFormBean.getChequeDDReturnReasonOther();
-                    }
-                    ByteArrayOutputStream baos = _chequePdf.getPDF( _inwardFormBean.getSubscriberIdAsText(), 
-                                                                    _inwardFormBean.getInwardNumber(), 
-                                                                    _inwardFormBean.getChqddNumberAsText(), 
-                                                                    _inwardFormBean.getPaymentDate(), 
-                                                                    _inwardFormBean.getAmount(), 
+                    String returnReason =  _inwardFormBean.getReturnReason();
+                    ByteArrayOutputStream baos = _chequePdf.getPDF( _inwardFormBean.getSubscriberIdAsText(),
+                                                                    _inwardFormBean.getInwardNumber(),
+                                                                    _inwardFormBean.getChqddNumberAsText(),
+                                                                    _inwardFormBean.getPaymentDate(),
+                                                                    _inwardFormBean.getAmount(),
                                                                     returnReason);
                     byte pdfData[] = baos.toByteArray();
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     msgsend _mailer = new msgsend();
                     String emailBody = _inwardModel.getChequeReturnEmailBody(_inwardFormBean.getChqddNumberAsText(),
-                                                                            _inwardFormBean.getAmount(),  
+                                                                            _inwardFormBean.getAmount(),
                                                                             _inwardFormBean.getPaymentDate(),
                                                                             returnReason);
-                    
+
                     success = _mailer.sendEmailToSubscriberWithAttachment(  _inwardFormBean.getEmail(),
                                                                             "Cheque/DD No: " + _inwardFormBean.getChqddNumber() + " Return",
                                                                             emailBody,
                                                                             fileName,
                                                                             pdfData,
                                                                             "application/pdf");
-                    
+
                 }
                 // for inward acknowledgement
                 else if (action.equalsIgnoreCase("ack")) {
@@ -83,7 +82,7 @@ public class Email extends JDSController {
                     //inwardModel _inwardModel = new inwardModel(request);
                     //inwardFormBean _inwardFormBean = new inwardFormBean();
                     _inwardFormBean = _inwardModel.GetInward(_inwardNumber);
-                    int subid = Integer.parseInt(documentID);                    
+                    int subid = Integer.parseInt(documentID);
                     Connection conn = Database.getConnection();
                     InwardAckPDF _inwardAckPdf = new InwardAckPDF(conn);
                     ByteArrayOutputStream baos = _inwardAckPdf.getPDF(subid,
@@ -100,18 +99,18 @@ public class Email extends JDSController {
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     msgsend _mailer = new msgsend();
                     String emailBody = _inwardModel.getInwardAckEmailBody(_inwardFormBean.getChqddNumberAsText(),
-                                                                            _inwardFormBean.getAmount(),  
+                                                                            _inwardFormBean.getAmount(),
                                                                             _inwardFormBean.getPaymentDate(),
                                                                             _inwardFormBean.getBankName()
                                                                             );
-                    
+
                     success = _mailer.sendEmailToSubscriberWithAttachment(  _inwardFormBean.getEmail(),
                                                                             "Acknowledgement of receipt of payment",
                                                                             emailBody,
                                                                             fileName,
                                                                             pdfData,
                                                                             "application/pdf");
-                    
+
                 }
                 // for request for invoice
                 else if (action.equalsIgnoreCase("rfi")) {
@@ -129,13 +128,13 @@ public class Email extends JDSController {
                                                                             pdfData,
                                                                             "application/pdf");
                 }
-                
+
 
             }
         } catch (SQLException | IOException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | DocumentException | NumberFormatException | ParserConfigurationException | TransformerException e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
-        } finally{            
+        } finally{
             String xml;
             try{
                 // convert true/false to 1/0
@@ -148,7 +147,7 @@ public class Email extends JDSController {
             }catch(ParserConfigurationException | TransformerException | IOException | ServletException ex){
                 throw new ServletException(ex.getMessage());
             }
-            
+
         }
     }
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

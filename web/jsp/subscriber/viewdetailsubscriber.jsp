@@ -17,6 +17,7 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/invoice/subscriberInvoice.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/reminders.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/missingissues.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/chqreturned.js"%>"></script>
         <script>
             $(document).ready(function(){
                 inwardGridCreated = false;
@@ -24,48 +25,53 @@
                 invoiceGridCreated = false;
                 reminderGridCreated = false;
                 missingIssueGridCreated = false;
+                chqReturnGridCreated = false;
                 var detail_requested = <%=request.getParameter("detail")%>
                 var tab_cookie_id = parseInt($.cookie("the_tab_cookie")) || 0;
-                
+
                 setEnterKeyAction(nextSubscriber);
-                
-                
-                
+
                 $("#subscriberDtlsTabs").tabs({
                     selected:-1,
-                    show: function(event,ui){
+                    show: function(event, ui){
                         if(detail_requested){
                             selected_index = detail_requested;
                         }else{
                             selected_index = ui.index;
                         }
-                        
+
                         $.cookie("the_tab_cookie", selected_index);
 
                         if(selected_index == 1 && inwardGridCreated==false){
                             drawInwardTable();
                             inwardGridCreated=true;
                         }
-                        if(selected_index == 2 && subscriptionGridCreated==false){
+                        else if(selected_index == 2 && subscriptionGridCreated==false){
                             listSubscription();
                             subscriptionGridCreated=true;
                             //$("#subscriptionList").jqGrid('setCaption','').trigger("reloadGrid");
                         }
-                        if(selected_index == 3 && invoiceGridCreated==false){
+                        else if(selected_index == 3 && invoiceGridCreated==false){
                             drawInvoiceTable();
                             invoiceGridCreated=true;
                         }
-                        if(selected_index == 4 && reminderGridCreated == false){
+                        else if(selected_index == 4 && reminderGridCreated == false){
                             drawReminderTable();
                             reminderGridCreated = true;
                         }
-                        if(selected_index == 5 && missingIssueGridCreated == false){
+                        else if(selected_index == 5 && missingIssueGridCreated == false){
                             drawMissingIssuesTable();
                             missingIssueGridCreated = true;
+                        }
+                        else if(selected_index == 6 && chqReturnGridCreated == false){
+                            drawChequeReturnTable();
+                            chqReturnGridCreated = true;
                         }
 
                     }
                 });
+
+
                 if(detail_requested){
                     $("#subscriberDtlsTabs" ).tabs( "select", detail_requested );
                     detail_requested = null;
@@ -78,7 +84,7 @@
                 subtypeCodeAppend();
 
             });
-            
+
             function nextSubscriber(){
                 $("#btnNextSubscriber").click();
             }
@@ -151,6 +157,7 @@
                                     <li><a href="#invoices">Invoices</a></li>
                                     <li><a href="#reminders">Reminders</a></li>
                                     <li><a href="#missing_issues">Missing Issues</a></li>
+                                    <li><a href="#chq_return">Cheque Return</a></li>
                                 </ul>
                                 <div id="subDtls" style="font-size: 12px;">
                                     <%@include file="subscriberdtls.jsp"%>
@@ -180,6 +187,10 @@
                                 <div id="missing_issues" style="font-size: 12px;width: 98%;padding: 3px;">
                                     <table id="missing_issuesTable" class="datatable"></table>
                                     <div id="pager_missing_issues"></div>
+                                </div>
+                                <div id="chq_return" style="font-size: 12px;width: 98%;padding: 3px;">
+                                    <table id="chqreturnTable" class="datatable"></table>
+                                    <div id="pager_chqreturn"></div>
                                 </div>
                             </div>
 

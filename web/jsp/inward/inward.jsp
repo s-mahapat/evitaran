@@ -156,7 +156,7 @@
                 <label>District:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="4" name="district" id="district" 
+                <input class="IASTextBox" TABINDEX="4" name="district" id="district"
                        value="<% if (inwardFormBean.getDistrict() == "" || inwardFormBean.getDistrict() == null) {
                                out.println("");
                            } else {
@@ -171,7 +171,7 @@
                 <label>City:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxMandatory" TABINDEX="5" name="city" id="city" value="<jsp:getProperty name="inwardFormBean" property="city"/>"/>        
+                <input class="IASTextBoxMandatory" TABINDEX="5" name="city" id="city" value="<jsp:getProperty name="inwardFormBean" property="city"/>"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -258,7 +258,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Subscriber ID:</label>
+                <label>Subscriber No:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}"/>
@@ -362,7 +362,7 @@
                 <label>Cheque/DD/MO No:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" maxlength="11" TABINDEX="17" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
+                <input class="IASTextBox" maxlength="6" TABINDEX="17" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
             </span>
         </div>
 

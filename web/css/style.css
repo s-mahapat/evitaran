@@ -223,11 +223,15 @@ A:active {
 }
 
 .IASDisabledTextBoxWide{
-    width: 180px;
+    width: 250px;
     background-color: #EEE;
 }
 
 .IASTextBoxWide{
+    width: 250px;
+}
+
+.IASEmailTextBox{
     width: 250px;
 }
 
