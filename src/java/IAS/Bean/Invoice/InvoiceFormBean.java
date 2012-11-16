@@ -31,39 +31,48 @@ public class InvoiceFormBean {
     private int pincode;
     private String subsciberNumber;
     private int subscriberType;
-    
-    
+    private String subscriberTypeText;
+
+
     public int getSubscriberType() {
         return this.subscriberType;
     }
 
-    public void SetSubscriberType(int _subtypeid) {
+    public void setSubscriberType(int _subtypeid) {
         this.subscriberType = _subtypeid;
     }
-    
+
+    public String getSubscriberTypeText() {
+        return this.subscriberTypeText;
+    }
+
+    public void setSubscriberTypeText(String _subtypetext) {
+        this.subscriberTypeText = _subtypetext;
+    }
+
     public String getEmail(){
         return this.email;
     }
-    
+
     public void setEmail(String _email){
         this.email = _email;
     }
-    
+
     /*
      * Subscriber Name
      */
     public String getSubscriberName(){
         return this.subscriberName;
     }
-    
+
     public void setSubscriberName(String _name){
         this.subscriberName = _name;
     }
-    
+
     public String getSubscriberNumber(){
         return this.subsciberNumber;
     }
-    
+
     public void setSubscriberNumber(String _number){
         this.subsciberNumber = _number;
     }
@@ -175,53 +184,53 @@ public class InvoiceFormBean {
     public void setShippingAddress(String _ShippingAddress) {
         this.shippingAddress = _ShippingAddress;
     }
-    
-    public String getInvoiceAddress() {        
+
+    public String getInvoiceAddress() {
         return this.invoiceAddress;
     }
 
     public void setInvoiceAddress(String _InvoiceAddress) {
         this.invoiceAddress = _InvoiceAddress;
     }
-    
-    public String getDepartment() {        
+
+    public String getDepartment() {
         return this.department;
     }
 
     public void setDepartment(String _dept) {
         this.department = _dept;
     }
-    
-    public String getInstitute() {        
+
+    public String getInstitute() {
         return this.institute;
     }
 
     public void setInstitute(String _inst) {
         this.institute = _inst;
     }
-    
-    public String getCity() {        
+
+    public String getCity() {
         return this.city;
     }
 
     public void setCity(String _city) {
         this.city = _city;
     }
-    
-    public String getCountry() {        
+
+    public String getCountry() {
         return this.country;
     }
 
     public void setCountry(String _country) {
         this.country = _country;
     }
-    
-    public int getPincode() {        
+
+    public int getPincode() {
         return this.pincode;
     }
 
     public void setPincode(int _pincode) {
         this.pincode = _pincode;
     }
- 
+
 }

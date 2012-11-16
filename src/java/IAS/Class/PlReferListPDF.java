@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
@@ -121,6 +122,7 @@ public class PlReferListPDF extends JDSPDF {
         Paragraph paragraphBody = new Paragraph();
         Paragraph paragraphctext = new Paragraph(ctext);
         Paragraph paragraphInvoiceAddress = new Paragraph();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
         paragraphOuter.setSpacingBefore(JDSPDF.LESS_OUTER_PARAGRAPH_SPACE);
         paragraphOuter.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
@@ -184,7 +186,7 @@ public class PlReferListPDF extends JDSPDF {
         paragraphBody.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
 
         // get subscription info for subscription id
-        String sql = Queries.getQuery("get_subscription_details");
+        String sql = Queries.getQuery("get_subscription_details_prl");
         //Connection _conn = Database.getConnection();
 
         PdfPTable table;
@@ -192,7 +194,7 @@ public class PlReferListPDF extends JDSPDF {
         table.setWidthPercentage(98);
 
         PdfPCell cell1 = new PdfPCell(new Paragraph("Journal Name"));
-        cell1.setHorizontalAlignment(Element.ALIGN_MIDDLE);
+        cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         cell1.setColspan(2);
 
@@ -212,17 +214,16 @@ public class PlReferListPDF extends JDSPDF {
 
         try (PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, _invoiceBean.getSubscriptionID());
+            pst.setInt(2, currentYear);
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     String journalName = rs.getString("journalGroupName");
-                    /*String startYear = String.valueOf(rs.getInt("startYear"));
-                     String endYear = String.valueOf(rs.getInt("endYear"));*/
                     String years = String.valueOf(rs.getInt("period"));
                     int _rate = rs.getInt("rate");
 
                     // in case of a legacy subscription we do not have the price group id
                     // we need to determine that here
-                    if(_rate == 0){
+                    if (_rate == 0) {
                         int subtype = _invoiceBean.getSubscriberType();
                         int endYear = rs.getInt("endYear");
                         int startYear = rs.getInt("startYear");
@@ -230,15 +231,31 @@ public class PlReferListPDF extends JDSPDF {
                         int journalGrpID = rs.getInt("journalGroupID");
                         int _years;
 
+                        if (endYear == 0 || endYear > 2012) {
+                            logger.error(String.format("End year for subscription %s is %d", _invoiceBean.getSubscriptionID(), endYear));
+                        }
+                        // increase the start year by 1, since we are calculating PRL/invoice for
+                        // next year
+                        int newstartYear = endYear + 1;
+
+                        // fix the period of subscription to 1 year
+                        //_years = 1;
+
                         // if the subscription starts from any month other than Jan, we need to calculate the
                         // subscription period differently
-                        if(startMonth > 1){
+                        if (startMonth > 1) {
                             _years = endYear - startYear;
-                        }else{
+                        } else {
                             _years = endYear - startYear + 1;
                         }
-                        _rate = getRate(journalGrpID, subtype, startYear, _years);
 
+                        // save to the global variable
+                        years = String.valueOf(_years);
+
+                        _rate = getRate(journalGrpID, subtype, newstartYear, _years);
+                        if (_rate == 0) {
+                            logger.error(String.format("Rate is Zero for JGrp=%s, subtype=%d, startYear=%d, period=%d", journalName, subtype, newstartYear, _years));
+                        }
                     }
                     total += _rate;
                     String rate = String.valueOf(_rate);
@@ -302,21 +319,21 @@ public class PlReferListPDF extends JDSPDF {
         return paragraphOuter;
     }
 
-    private int getRate(int journalGrpID, int subtypeID, int startYear, int period) throws SQLException{
+    private int getRate(int journalGrpID, int subtypeID, int startYear, int period) throws SQLException {
 
         String sql = Queries.getQuery("get_journal_grp_price");
         int _rate = 0;
-        try(PreparedStatement pst = conn.prepareStatement(sql)){
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, journalGrpID);
             pst.setInt(2, subtypeID);
             pst.setInt(3, startYear);
             pst.setInt(4, period);
-            try(ResultSet rs = pst.executeQuery()){
-                if(rs.first()){
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.first()) {
                     _rate = rs.getInt("rate");
                 }
             }
-        }finally{
+        } finally {
             return _rate;
         }
     }
