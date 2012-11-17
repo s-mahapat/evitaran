@@ -8,6 +8,7 @@
         <script src="js/subscription/prl.js"></script>
         <script>
             $(document).ready(function(){
+                $("#btnprintemail").button("disable");
                 GeneratePRLGrid();
             });
         </script>
@@ -46,7 +47,7 @@
                             </div>
 
                         </div>
-                        <div class="actionBtnDiv">                            
+                        <div class="actionBtnDiv">
                             <button id="btngenerateprl" class="IASButton" onclick="GeneratePRL()">Generate</button>
                             <button id="btnprintemail" class="IASButton" onclick="PrintOrEmail()">Email / Print</button>
                         </div>

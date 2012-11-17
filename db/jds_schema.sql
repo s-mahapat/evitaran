@@ -120,7 +120,7 @@ CREATE TABLE `cities` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `city_UNIQUE` (`city`)
-) ENGINE=InnoDB AUTO_INCREMENT=3168 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3160 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -549,6 +549,7 @@ CREATE TABLE `prl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `year` int(4) NOT NULL DEFAULT '0',
+  `ctext` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `prl_indx_1` (`year`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -653,7 +654,9 @@ CREATE TABLE `subscriber` (
   KEY `subscriberName` (`subscriberName`),
   KEY `subscriberCity` (`city`),
   KEY `subscriberPincode` (`pincode`),
-  KEY `department` (`department`,`institution`)
+  KEY `department` (`department`,`institution`),
+  KEY `subscriber_type_indx` (`subtype`),
+  KEY `subscriber_email_indx` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1369,4 +1372,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-11-12 20:59:48
+-- Dump completed on 2012-11-18  0:45:24

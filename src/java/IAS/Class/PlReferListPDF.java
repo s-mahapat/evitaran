@@ -29,17 +29,27 @@ import org.apache.log4j.Logger;
  */
 public class PlReferListPDF extends JDSPDF {
 
-    Connection conn = null;
+    private Connection conn = null;
     private InvoiceModel _InvoiceModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger(PlReferListPDF.class.getName());
+    private String ctext;
 
     public PlReferListPDF() throws SQLException {
         super();
         conn = Database.getConnection();
         _InvoiceModel = new InvoiceModel();
+        String sql = "select ctext from prl where year=?";
+        try(PreparedStatement st = conn.prepareStatement(sql)){
+            st.setInt(1, Calendar.getInstance().get(Calendar.YEAR));
+            try(ResultSet rs = st.executeQuery()){
+                if(rs.first()){
+                    ctext = rs.getString("ctext");
+                }
+            }
+        }
     }
 
-    public ByteArrayOutputStream getPDF(int medium, String ctext) throws DocumentException,
+    public ByteArrayOutputStream getPDF(int medium) throws DocumentException,
             MalformedURLException,
             IOException,
             SQLException,
@@ -69,6 +79,7 @@ public class PlReferListPDF extends JDSPDF {
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     String invoice_no = rs.getString("invoiceNumber");
+                    //String ctext = rs.getString("ctext");
                     document.newPage();
                     document.add(this.getLetterHead());
                     Paragraph _page = this.getPlReferListLetterBody(invoice_no, ctext);
@@ -89,15 +100,25 @@ public class PlReferListPDF extends JDSPDF {
 
     }
 
-    public Paragraph getPlReferListPage(int invoice_id, String ctext) throws SQLException,
+    public ByteArrayOutputStream getPlReferListPage(String invoice_no) throws SQLException,
             ParseException,
             ParserConfigurationException,
             TransformerException,
             ClassNotFoundException,
-            IOException {
+            IOException,
+            DocumentException {
 
-        String sql = Queries.getQuery("get_prl_id_for_current_year");
-        return null;
+        com.itextpdf.text.Document document = this.getPDFDocument();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        document.open();
+        document.add(this.getLetterHead());
+        Paragraph _page = this.getPlReferListLetterBody(invoice_no, ctext);
+        document.add(_page);
+        document.add(this.getLetterFooter());
+        document.close();
+        return outputStream;
 
     }
 
@@ -120,7 +141,7 @@ public class PlReferListPDF extends JDSPDF {
         PdfPTable InvoiceInfoTable = new PdfPTable(2);
         Paragraph paragraphInvoiceInfo = new Paragraph();
         Paragraph paragraphBody = new Paragraph();
-        Paragraph paragraphctext = new Paragraph(ctext);
+        Paragraph paragraphctext = new Paragraph(ctext, JDS_FONT_BODY);
         Paragraph paragraphInvoiceAddress = new Paragraph();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
@@ -129,8 +150,8 @@ public class PlReferListPDF extends JDSPDF {
         paragraphOuter.setAlignment(Element.ALIGN_LEFT);
 
         InvoiceInfoTable.setWidthPercentage(100);
-        Paragraph invoiceNumber = new Paragraph(new Chunk("Invoice No: " + invoice_no));
-        Paragraph subscriberNumber = new Paragraph(new Chunk("Sub No: " + _invoiceBean.getSubscriberNumber()));
+        Paragraph invoiceNumber = new Paragraph(new Chunk("Invoice No: " + invoice_no, JDS_FONT_BODY));
+        Paragraph subscriberNumber = new Paragraph(new Chunk("Sub No: " + _invoiceBean.getSubscriberNumber(), JDS_FONT_BODY));
         Paragraph invoiceHeader = new Paragraph("INVOICE");
         invoiceHeader.setAlignment(Element.ALIGN_CENTER);
 
@@ -160,19 +181,19 @@ public class PlReferListPDF extends JDSPDF {
         addressParagraph.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         addressParagraph.setSpacingBefore(JDSPDF.LESS_OUTER_PARAGRAPH_SPACE);
         addressTable.setWidthPercentage(100);
-        Chunk invoiceAddressHeader = new Chunk("INVOICE ADDRESS");
+        Chunk invoiceAddressHeader = new Chunk("INVOICE ADDRESS", JDS_FONT_BODY);
         invoiceAddressHeader.setTextRise(2);
         invoiceAddressHeader.setUnderline(1, 0);
 
         paragraphInvoiceAddress.add(invoiceAddressHeader);
         paragraphInvoiceAddress.add(Chunk.NEWLINE);
-        paragraphInvoiceAddress.add(new Phrase(_invoiceBean.getSubscriberName()));
+        paragraphInvoiceAddress.add(new Phrase(_invoiceBean.getSubscriberName(), JDS_FONT_BODY));
         paragraphInvoiceAddress.add(Chunk.NEWLINE);
-        paragraphInvoiceAddress.add(new Phrase(_invoiceBean.getInvoiceAddress()));
+        paragraphInvoiceAddress.add(new Phrase(_invoiceBean.getInvoiceAddress(), JDS_FONT_BODY));
 
         PdfPCell ctextCell = new PdfPCell(paragraphctext);
         ctextCell.setBorder(Rectangle.NO_BORDER);
-        ctextCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_MORE * 4);
+        ctextCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_MORE * 2);
         ctextCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         ctextCell.setVerticalAlignment(Element.ALIGN_TOP);
 
@@ -193,16 +214,16 @@ public class PlReferListPDF extends JDSPDF {
         table = new PdfPTable(4);
         table.setWidthPercentage(98);
 
-        PdfPCell cell1 = new PdfPCell(new Paragraph("Journal Name"));
+        PdfPCell cell1 = new PdfPCell(new Paragraph("Journal Name", JDS_FONT_BODY));
         cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         cell1.setColspan(2);
 
-        PdfPCell cell2 = new PdfPCell(new Paragraph("No. of Years"));
+        PdfPCell cell2 = new PdfPCell(new Paragraph("No. of Years", JDS_FONT_BODY));
         cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        PdfPCell cell3 = new PdfPCell(new Paragraph("Rs."));
+        PdfPCell cell3 = new PdfPCell(new Paragraph("Rs.", JDS_FONT_BODY));
         cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 

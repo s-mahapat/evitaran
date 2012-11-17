@@ -728,7 +728,7 @@ public class SubscriptionModel extends JDSModel {
 
     }
 
-    public String getPleaseReferList(int medium) throws SQLException,
+    public String getPleaseReferList(int medium, String ctext) throws SQLException,
             ParserConfigurationException,
             TransformerException,
             ParseException,
@@ -754,7 +754,7 @@ public class SubscriptionModel extends JDSModel {
 
         if (bExists == 0) {
             // this means that there is no existing PRL list for the year
-            this._generatePleaseReferList();
+            this._generatePleaseReferList(ctext);
         }
         return _getPleaseReferList(medium);
     }
@@ -789,7 +789,7 @@ public class SubscriptionModel extends JDSModel {
         return xml;
     }
 
-    private boolean _generatePleaseReferList() throws SQLException,
+    private boolean _generatePleaseReferList(String ctext) throws SQLException,
             ParserConfigurationException,
             TransformerException,
             ParseException,
@@ -804,9 +804,10 @@ public class SubscriptionModel extends JDSModel {
         _conn.setAutoCommit(false);
 
         // first insert the new row into prl table and get the prl id
-        sql = "insert into prl(year) values (?)";
+        sql = "insert into prl(year,ctext) values (?,?)";
         try (PreparedStatement pst = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pst.setInt(1, Calendar.getInstance().get(Calendar.YEAR));
+            pst.setString(2, ctext); // save the custom text in db
             pst.executeUpdate();
             try (ResultSet rs = pst.getGeneratedKeys()) {
                 if (rs.first()) {

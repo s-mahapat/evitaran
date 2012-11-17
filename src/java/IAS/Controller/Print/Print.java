@@ -108,8 +108,8 @@ public class Print extends JDSController {
             } // for request for invoice
             else if (document.equalsIgnoreCase("prl")) {
                 PlReferListPDF _PlReferListPDF = new PlReferListPDF();
-                ByteArrayOutputStream baos = _PlReferListPDF.getPDF(Integer.parseInt(action), "");
-                String fileName = String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + ".pdf";
+                ByteArrayOutputStream baos = _PlReferListPDF.getPDF(Integer.parseInt(action));
+                String fileName = String.valueOf(Calendar.getInstance().get(Calendar.YEAR) + 1) + "_Invoice.pdf";
                 this.sendResponse(baos, fileName, response);
             }
         } catch (SQLException | IOException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | DocumentException | NumberFormatException | ParserConfigurationException | TransformerException e) {
