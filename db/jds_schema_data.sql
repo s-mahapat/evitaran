@@ -822,7 +822,7 @@ CREATE TABLE `prl_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `prl_id` int(11) NOT NULL,
   `invoice_id` int(11) NOT NULL,
-  `status` int(11) NOT NULL DEFAULT '0',
+  `by_email` tinyint(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `prl_details_indx_1` (`prl_id`),
   KEY `prl_details_indx_2` (`invoice_id`)
@@ -2742,4 +2742,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-11-18  0:45:23
+-- Dump completed on 2012-11-18 17:54:27

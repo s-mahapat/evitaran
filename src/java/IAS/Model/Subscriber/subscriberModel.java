@@ -333,6 +333,37 @@ public class subscriberModel extends JDSModel {
         return subscriberFormBean.getSubscriberNumber();
     }
 
+    public subscriberFormBean GetSubscriber(String subscriber_number) throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
+
+        // get the connection from connection pool
+        Connection _conn = this.getConnection();
+
+        String sql;
+        subscriberFormBean _subscriberFormBean2 = null;
+
+        // the query name from the jds_sql properties files in WEB-INF/properties folder
+        sql = Queries.getQuery("get_subscriber_by_number");
+        try (PreparedStatement st = _conn.prepareStatement(sql)) {
+            st.setString(1, subscriber_number);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    _subscriberFormBean2 = bProc.toBean(rs, IAS.Bean.Subscriber.subscriberFormBean.class);
+                }
+            } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
+                throw e;
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        } finally {
+           _conn.close();
+        }
+        return _subscriberFormBean2;
+    }
+
     private void _setSubscriberStatementParams(PreparedStatement st, String mode) throws SQLException, ParseException {
         int paramIndex = 0;
         if (mode.equalsIgnoreCase("Create")) {

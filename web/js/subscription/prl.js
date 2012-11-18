@@ -81,7 +81,9 @@ function GeneratePRLGrid(){
             index:'status',
             width:15,
             align:'center',
-            sortable: false
+            xmlmap:'by_email',
+            sortable: false,
+            formatter: emailStatus
         }],
         xmlReader : {
             root: "results",
@@ -110,6 +112,14 @@ function GeneratePRLGrid(){
             }
         }
     });
+}
+
+function emailStatus(cellvalue, options, rowObject){
+    if(parseInt(cellvalue) == 1){
+        return "Success";
+    }
+    return "";
+
 }
 
 function GeneratePRL(){
@@ -154,16 +164,31 @@ function _sendEmails(){
     var rows = jQuery("#prlTable").jqGrid('getGridParam','rowNum');
     var totalpages = jQuery("#prlTable").jqGrid('getGridParam','lastpage');
 
-    for(var i=1; i< 3; i++){
+    // for every page
+    for(var i=1; i<= totalpages; i++){
         jQuery("#prlTable").jqGrid('setGridParam',{
             page: i
         });
         jQuery("#prlTable").trigger("reloadGrid");
         var invoices = jQuery("#prlTable").jqGrid('getDataIDs');
-        for(var row = 0; row < rows; row++){
+
+        // for every row in the page
+        for(var row = 0; row < invoices.length; row++){
             var invoiceno = invoices[row];
+            var is_success =  jQuery("#prlTable").jqGrid('getCell', invoiceno, "status");
+
+            if(is_success && is_success.toLowerCase() == "success"){
+                continue; // if the email was already sent do not send again
+            }
+
+            // get the subscriber number
+            var subno =  jQuery("#prlTable").jqGrid('getCell', invoiceno, "subno");
+
+            // select the row when sending an email
             jQuery("#prlTable").setSelection(invoiceno,false);
-            _sendEmail("Email/prl/" + invoiceno + "/prl", invoiceno);
+
+            // send a request to send an email
+            _sendEmail("Email/prl/" + invoiceno + "/" + subno, invoiceno);
         }
 
     }
@@ -178,16 +203,14 @@ function _sendEmail(url, rowid){
         success: function(xmlResponse){
             $(xmlResponse).find("results").each(function(){
                 var isSucess = $(this).find("success").text();
-                //console.log(isSucess);
-                //alert(rowid);
                 if(parseInt(isSucess) == 1){
                     jQuery("#prlTable").jqGrid('setRowData', rowid, {
-                        'status': "Success"
+                        'status': "1"
                     });
-                //alert(rowid);
-                //jQuery("#prlTable").setCell(rowid,"status",{'status': "Success"});
                 }else{
-                    jQuery("#prlTable").setCell(rowid,"status","Fail");
+                    jQuery("#prlTable").jqGrid('setRowData', rowid, {
+                        'status': "0"
+                    });
                 }
             });
         },

@@ -114,6 +114,9 @@
                     },
                     loadError: function(xhr,status,error){
                         alert("Failed getting data from server" + status);
+                    },
+                    onSelectRow: function(rowid, status, e){
+                        selectedSubscriberId = rowid;
                     }
 
                 });

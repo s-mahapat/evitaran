@@ -3,7 +3,9 @@ package IAS.Controller.Email;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.*;
 import IAS.Controller.JDSController;
+import IAS.Model.Invoice.InvoiceModel;
 import IAS.Model.Inward.inwardModel;
+import IAS.Model.Subscriber.subscriberModel;
 import com.itextpdf.text.DocumentException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -129,12 +131,35 @@ public class Email extends JDSController {
 
 
             } else if (document.equalsIgnoreCase("prl")) {
-                //PlReferListPDF _PlReferListPDF = new PlReferListPDF();
-                //String invoice_no = documentID;
-                //ByteArrayOutputStream baos = _PlReferListPDF.getPlReferListPage(invoice_no);
-                //String fileName = String.valueOf(Calendar.getInstance().get(Calendar.YEAR) + 1) + "_Invoice.pdf";
-                success = true;
-                //byte pdfData[] = baos.toByteArray();
+                PlReferListPDF _PlReferListPDF = new PlReferListPDF();
+                InvoiceModel _invoiceModel = new InvoiceModel();
+
+                String invoice_no = documentID;
+                ByteArrayOutputStream baos = _PlReferListPDF.getPlReferListPage(invoice_no);
+                byte pdfData[] = baos.toByteArray();
+
+                // form the file name from next year
+                String fileName = "Invoice_for_" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR) + 1) + ".pdf";
+                String subscriber_number = action;
+                subscriberModel _subModel = new subscriberModel(request);
+                IAS.Bean.Subscriber.subscriberFormBean _subscriberBean = _subModel.GetSubscriber(subscriber_number);
+                msgsend _mailer = new msgsend();
+
+                // get the email body content
+                String emailBody = _invoiceModel.getPRLEmailBody();
+
+                // send the email
+                success = _mailer.sendEmailToSubscriberWithAttachment(_subscriberBean.getEmail(),
+                        "Invoice for " + String.valueOf(Calendar.getInstance().get(Calendar.YEAR) + 1),
+                        emailBody,
+                        fileName,
+                        pdfData,
+                        "application/pdf");
+                // if the email was sent successfully update the prl_details table with the status
+                // so that it is not sent the second time
+                if(success){
+                    _invoiceModel.updatePRLEmailStatus(invoice_no);
+                }
 
             }
         } catch (SQLException | IOException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | DocumentException | NumberFormatException | ParserConfigurationException | TransformerException e) {
