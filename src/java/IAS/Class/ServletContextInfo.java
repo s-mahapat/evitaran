@@ -19,6 +19,10 @@ public class ServletContextInfo {
     public static String getContextPath(){
         return contextPath;
     }
+    
+    public static String getContextRealPath(){
+        return servletContext.getRealPath("");
+    }
 
     public static void setContextPath(String _contextpath){
         contextPath = _contextpath;

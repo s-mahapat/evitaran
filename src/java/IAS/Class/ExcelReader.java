@@ -68,6 +68,18 @@ public class ExcelReader {
         return Data;
     }
 
+    public String[] getFirstRow() throws IOException, BiffException {
+        String[] Data = new String[columnCount];
+        if (this.currentRow == 0) {
+            return null;
+        }
+        Cell rowData[] = s.getRow(0);
+        for (int j = 0; j < rowData.length; j++) {
+            Data[j] = rowData[j].getContents();
+        }
+        return Data;
+    }
+
     public String[] contentReading(InputStream fileInputStream) throws IOException, BiffException {
         WorkbookSettings ws;
         Workbook workbook;

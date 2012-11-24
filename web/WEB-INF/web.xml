@@ -212,6 +212,10 @@
         <servlet-name>districts</servlet-name>
         <servlet-class>IAS.Controller.masterdata.districts</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>templates</servlet-name>
+        <servlet-class>IAS.Controller.templates</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -377,6 +381,10 @@
     <servlet-mapping>
         <servlet-name>districts</servlet-name>
         <url-pattern>/districts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>templates</servlet-name>
+        <url-pattern>/templates</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

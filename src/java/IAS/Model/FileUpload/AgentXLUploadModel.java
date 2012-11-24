@@ -47,10 +47,6 @@ public class AgentXLUploadModel extends FileUploadBase {
     private inwardFormBean _inwardFormBean;
     private String inwardNumber;
 
-//    public AgentXLUploadModel() throws SQLException {
-//        //call the base class constructor
-//        //super(request);
-//    }
 
     public AgentXLUploadModel(Boolean uploadInd, HttpServletRequest request) throws SQLException {
         //call the base class constructor
@@ -65,6 +61,162 @@ public class AgentXLUploadModel extends FileUploadBase {
 
     }
 
+    public void validateTemplate() { // This method validates the template
+        try {
+            for (FileItem item : this.getFiles()) {
+                InputStream filecontent = item.getInputStream();
+                excelReader = new ExcelReader(filecontent);
+                returnOutList = new ArrayList<>();
+                String[] rowData = excelReader.getFirstRow(); // get the first row
+                for (int columnNo = 0; columnNo < rowData.length; columnNo++) {
+                    switch (columnNo) {
+                        case 0:
+                            if (!rowData[columnNo].equalsIgnoreCase("subscriberNumber")) { // If the column name is not subscriber number then log an error
+                                this.appendToErrorLog(columnNo, "subscriberNumber");
+                            }
+                            break;
+                        case 1:
+                            if (!rowData[columnNo].equalsIgnoreCase("subscriberName")) { // If the column name is not subscriber name then log an error
+                                this.appendToErrorLog(columnNo, "subscriberName");
+                            }
+                            break;
+                        case 2:
+                            if (!rowData[columnNo].equalsIgnoreCase("department")) {
+                                this.appendToErrorLog(columnNo, "department");
+                            }
+                            break;
+                        case 3:
+                            if (!rowData[columnNo].equalsIgnoreCase("institution")) {
+                                this.appendToErrorLog(columnNo, "institution");
+                            }
+                            break;
+                        case 4:
+                            if (!rowData[columnNo].equalsIgnoreCase("shippingAddress")) {
+                                this.appendToErrorLog(columnNo, "shippingAddress");
+                            }
+                            break;
+                        case 5:
+                            if (!rowData[columnNo].equalsIgnoreCase("invoiceAddress")) {
+                                this.appendToErrorLog(columnNo, "invoiceAddress");
+                            }
+                            break;
+                        case 6:
+                            if (!rowData[columnNo].equalsIgnoreCase("city")) {
+                                this.appendToErrorLog(columnNo, "city");
+                            }
+                            break;
+                        case 7:
+                            if (!rowData[columnNo].equalsIgnoreCase("district")) {
+                                this.appendToErrorLog(columnNo, "district");
+                            }
+                            break;
+                        case 8:
+                            if (!rowData[columnNo].equalsIgnoreCase("state")) {
+                                this.appendToErrorLog(columnNo, "state");
+                            }
+                            break;
+                        case 9:
+                            if (!rowData[columnNo].equalsIgnoreCase("country")) {
+                                this.appendToErrorLog(columnNo, "country");
+                            }
+                            break;
+                        case 10:
+                            if (!rowData[columnNo].equalsIgnoreCase("pincode")) {
+                                this.appendToErrorLog(columnNo, "pincode");
+                            }
+                            break;
+                        case 11:
+                            if (!rowData[columnNo].equalsIgnoreCase("email")) {
+                                this.appendToErrorLog(columnNo, "email");
+                            }
+                            break;
+                        case 12:
+                            if (!rowData[columnNo].equalsIgnoreCase("subtype")) {
+                                this.appendToErrorLog(columnNo, "subtype");
+                            }
+                            break;
+                        case 13:
+                            if (!rowData[columnNo].equalsIgnoreCase("subtypeDesc")) {
+                                this.appendToErrorLog(columnNo, "subtypeDesc");
+                            }
+                            break;
+                        case 14:
+                            if (!rowData[columnNo].equalsIgnoreCase("P")) {
+                                this.appendToErrorLog(columnNo, "P");
+                            }
+                            break;
+                        case 15:
+                            if (!rowData[columnNo].equalsIgnoreCase("JAA")) {
+                                this.appendToErrorLog(columnNo, "JAA");
+                            }
+                            break;
+                        case 16:
+                            if (!rowData[columnNo].equalsIgnoreCase("MS")) {
+                                this.appendToErrorLog(columnNo, "MS");
+                            }
+                            break;
+                        case 17:
+                            if (!rowData[columnNo].equalsIgnoreCase("EPS")) {
+                                this.appendToErrorLog(columnNo, "EPS");
+                            }
+                            break;
+                        case 18:
+                            if (!rowData[columnNo].equalsIgnoreCase("CS")) {
+                                this.appendToErrorLog(columnNo, "CS");
+                            }
+                            break;
+                        case 19:
+                            if (!rowData[columnNo].equalsIgnoreCase("BMS")) {
+                                this.appendToErrorLog(columnNo, "BMS");
+                            }
+                            break;
+                        case 20:
+                            if (!rowData[columnNo].equalsIgnoreCase("S")) {
+                                this.appendToErrorLog(columnNo, "S");
+                            }
+                            break;
+                        case 21:
+                            if (!rowData[columnNo].equalsIgnoreCase("JB")) {
+                                this.appendToErrorLog(columnNo, "JB");
+                            }
+                            break;
+                        case 22:
+                            if (!rowData[columnNo].equalsIgnoreCase("JG")) {
+                                this.appendToErrorLog(columnNo, "JG");
+                            }
+                            break;
+                        case 23:
+                            if (!rowData[columnNo].equalsIgnoreCase("RES")) {
+                                this.appendToErrorLog(columnNo, "RES");
+                            }
+                            break;
+                        case 24:
+                            if (!rowData[columnNo].equalsIgnoreCase("CURR")) {
+                                this.appendToErrorLog(columnNo, "CURR");
+                            }
+                            break;
+                        case 25:
+                            if (!rowData[columnNo].equalsIgnoreCase("startYear")) {
+                                this.appendToErrorLog(columnNo, "startYear");
+                            }
+                            break;
+                        case 26:
+                            if (!rowData[columnNo].equalsIgnoreCase("startMonth")) {
+                                this.appendToErrorLog(columnNo, "startMonth");
+                            }
+                            break;
+                        case 27:
+                            if (!rowData[columnNo].equalsIgnoreCase("endYear")) {
+                                this.appendToErrorLog(columnNo, "endYear");
+                            }
+                            break;
+                    }
+                }
+            }
+        } catch (IOException | BiffException e) {
+        }
+    }
+
     @Override
     public void processFiles() throws SQLException {
         try {
@@ -73,8 +225,9 @@ public class AgentXLUploadModel extends FileUploadBase {
                 excelReader = new ExcelReader(filecontent);
                 dataValiDB = new DataValidation();
                 returnOutList = new ArrayList<>();
+
                 int rowNo = 0;
-                while (true) {
+                while (true) { // process the excel - validate data/process data
                     String[] rowData = excelReader.getNextRow();
                     jrnlGrpId = new ArrayList<>();
                     jrnlCopies = new ArrayList<>();
@@ -117,20 +270,16 @@ public class AgentXLUploadModel extends FileUploadBase {
         }
     }
 
-    @Override
-    public ArrayList<String> getOutputAsLIST() {
-        return this.returnOutList;
-    }
-
     public String processData(String[] Data, int rowNo) throws SQLException { // Process each cell of the Excel
         // if uploadInd(upload indicator) is false then only validate the cells
         // if upload indicator is true then add cell from A till N to Subscriber Bean, O till AB to corresponding subscription string 
         // And then use the subscriber bean and the corresponding subscription strings to create subscriber and subscription
         String dataError = "";
+        String subscriberNo = "";
         for (int columnNo = 0; columnNo < Data.length; columnNo++) {
             switch (columnNo) {
                 case 0: // Subscriber Number
-                    String subscriberNo = Data[columnNo];
+                    subscriberNo = Data[columnNo];
                     if (!subscriberNo.isEmpty() && uploadInd == false) { //If subscriber Number is given in the excel then validate if it exists in DB
                         if (!dataValiDB.validateSubscriberNo(subscriberNo)) {
                             this.appendToErrorLog(rowNo, columnNo, "SUBSCRIBER NUMBER", subscriberNo);
@@ -144,7 +293,7 @@ public class AgentXLUploadModel extends FileUploadBase {
                     break;
                 case 1:
                     String subscriberName = Data[columnNo];
-                    if (subscriberName.isEmpty() && uploadInd == false) {
+                    if (subscriberName.isEmpty() && uploadInd == false && subscriberNo.isEmpty()) { // Subscriber name is mandatory only if it is a new subscriber
                         this.appendToErrorLog(rowNo, columnNo, "SUBSCRIBER NAME", subscriberName);
                     } else if (uploadInd == true) {
                         _subscriberFormBean.setSubscriberName(subscriberName);
@@ -164,7 +313,7 @@ public class AgentXLUploadModel extends FileUploadBase {
                     break;
                 case 4:
                     String shippingAddress = Data[columnNo];
-                    if (shippingAddress.isEmpty()) { // Shipping Address is mandatory, if not provided in the excel then log an error
+                    if (shippingAddress.isEmpty() && subscriberNo.isEmpty()) { // Shipping Address is mandatory, if not provided in the excel then log an error only if it is a new subscriber
                         this.appendToErrorLog(rowNo, columnNo, "SHIPPING ADDRESS", shippingAddress);
                     } else if (uploadInd == true) {
                         _subscriberFormBean.setShippingAddress(shippingAddress);
@@ -172,7 +321,7 @@ public class AgentXLUploadModel extends FileUploadBase {
                     break;
                 case 5:
                     String invoiceAddress = Data[columnNo];
-                    if (invoiceAddress.isEmpty()) { // Invoice Address is mandatory, if not provided in the excel then log an error
+                    if (invoiceAddress.isEmpty() && subscriberNo.isEmpty()) { // Invoice Address is mandatory, if not provided in the excel then log an error only if it is a new subscriber
                         this.appendToErrorLog(rowNo, columnNo, "INVOICE ADDRESS", invoiceAddress);
                     } else if (uploadInd == true) {
                         _subscriberFormBean.setInvoiceAddress(invoiceAddress);
@@ -180,9 +329,9 @@ public class AgentXLUploadModel extends FileUploadBase {
                     break;
                 case 6:
                     String city = Data[columnNo];
-                    if (city.isEmpty()) { // City is mandatory, if not provided in the excel then log an error
+                    if (city.isEmpty() && subscriberNo.isEmpty()) { // City is mandatory, if not provided in the excel then log an error only if it is a new subscriber
                         this.appendToErrorLog(rowNo, columnNo, "CITY", city);
-                    } else if (!city.isEmpty() && uploadInd == false) { // Validate city
+                    } else if (!city.isEmpty() && uploadInd == false && subscriberNo.isEmpty()) { // Validate city only if it is a new subscriber
                         if (!dataValiDB.validateCity(city)) {
                             this.appendToErrorLog(rowNo, columnNo, "CITY", city);
                         }
@@ -192,7 +341,7 @@ public class AgentXLUploadModel extends FileUploadBase {
                     break;
                 case 7:
                     String district = Data[columnNo];
-                    if (!district.isEmpty() && uploadInd == false) { // District is not mandatory. If district is provided, validate it 
+                    if (!district.isEmpty() && uploadInd == false && subscriberNo.isEmpty()) { // District is not mandatory. If district is provided, validate it  only if it is a new subscriber
                         if (!dataValiDB.validateDistrict(district)) {
                             this.appendToErrorLog(rowNo, columnNo, "DISTRICT", district);
                         }
@@ -202,9 +351,9 @@ public class AgentXLUploadModel extends FileUploadBase {
                     break;
                 case 8:
                     String state = Data[columnNo];
-                    if (state.isEmpty()) { // State is mandatory, if not provided in the excel then log an error
+                    if (state.isEmpty()&& subscriberNo.isEmpty()) { // State is mandatory, if not provided in the excel then log an error only if it is a new subscriber
                         this.appendToErrorLog(rowNo, columnNo, "STATE", state);
-                    } else if (!state.isEmpty() && uploadInd == false) {
+                    } else if (!state.isEmpty() && uploadInd == false && subscriberNo.isEmpty()) { // Validate state only if it is a new subscriber
                         if (!dataValiDB.validateState(state)) { // Validate State
                             this.appendToErrorLog(rowNo, columnNo, "STATE", state);
                         }
@@ -214,9 +363,9 @@ public class AgentXLUploadModel extends FileUploadBase {
                     break;
                 case 9:
                     String country = Data[columnNo];
-                    if (country.isEmpty()) { // Country is mandatory, if not provided in the excel then log an error
+                    if (country.isEmpty() && subscriberNo.isEmpty()) { // Country is mandatory, if not provided in the excel then log an error only if it is a new subscriber
                         this.appendToErrorLog(rowNo, columnNo, "COUNTRY", country);
-                    } else if (!country.isEmpty() && uploadInd == false) { // Validate Country
+                    } else if (!country.isEmpty() && uploadInd == false && subscriberNo.isEmpty()) { // Validate Country only if it is a new subscriber
                         if (!dataValiDB.validateCountry(country)) {
                             this.appendToErrorLog(rowNo, columnNo, "COUNTRY", country);
                         }
@@ -226,7 +375,7 @@ public class AgentXLUploadModel extends FileUploadBase {
                     break;
                 case 10:
                     String pincode = Data[columnNo];
-                    if (!pincode.isEmpty() && uploadInd == false) { // pincode is not mandatory, if provided then validate
+                    if (!pincode.isEmpty() && uploadInd == false && subscriberNo.isEmpty()) { // pincode is not mandatory, if provided then validate only if it is a new subscriber
                         if (!dataValiDB.validatePincode(pincode)) {
                             this.appendToErrorLog(rowNo, columnNo, "PINCODE", pincode);
                         }
@@ -243,10 +392,10 @@ public class AgentXLUploadModel extends FileUploadBase {
                 case 12:
                     String subtype = Data[columnNo];
                     String subtypedesc = Data[columnNo + 1];
-                    if (subtype.isEmpty()) { // Sub type is mandatory, if not provided log error
+                    if (subtype.isEmpty() && subscriberNo.isEmpty()) { // Sub type is mandatory, if not provided log error only if it is a new subscriber
                         this.appendToErrorLog(rowNo, columnNo, "SUBSCRIBER TYPE", subtype);
                         this.appendToErrorLog(rowNo, columnNo + 1, "SUBSCRIBER TYPE DESCRIPTION", subtypedesc);
-                    } else if (uploadInd == false) { // validate subtype and subtype description
+                    } else if (uploadInd == false && subscriberNo.isEmpty()) { // validate subtype and subtype description only if it is a new subscriber
                         if (!dataValiDB.validateSubtype(subtype, subtypedesc)) {
                             this.appendToErrorLog(rowNo, columnNo, "SUBSCRIBER TYPE", subtype);
                             this.appendToErrorLog(rowNo, columnNo + 1, "SUBSCRIBER TYPE DESCRIPTION", subtypedesc);
@@ -401,8 +550,19 @@ public class AgentXLUploadModel extends FileUploadBase {
         this.returnOutList.add(dataError);
     }
 
+    public void appendToErrorLog(int columnNo, String columnName) {
+        String dataError = " ";
+        dataError = "The template is incorrect. " + columnName + " is not found";
+        this.returnOutList.add(dataError);
+    }
+
     public void uploadData() {
         String dataError = "Success";
         this.returnOutList.add(dataError);
+    }
+
+    @Override
+    public ArrayList<String> getOutputAsLIST() {
+        return this.returnOutList;
     }
 }

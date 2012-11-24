@@ -53,7 +53,7 @@
                     }); //end of dialog block
                 }; // end of Success block
                 _fileuploader.error = function(up, args){
-                    alert("Error" + args);
+                    alert("Error in uploading XLS file");
                 }
                 _fileuploader.draw();
             }); // end of main function

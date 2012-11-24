@@ -25,7 +25,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class fileupload extends JDSController {
 
     private ArrayList<String> returnOutList;
-    
     String url = null;
     static List<FileItem> heldItems;
 
@@ -49,9 +48,9 @@ public class fileupload extends JDSController {
             if (action.equals("agentxlvalidate")) { //Agent Excel Upload - Validate Excel
                 Boolean uploadInd = false;
                 List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-                AgentXLUploadModel _agentXLUploadModel = new AgentXLUploadModel(uploadInd,request);
+                AgentXLUploadModel _agentXLUploadModel = new AgentXLUploadModel(uploadInd, request);
                 _agentXLUploadModel.addFiles(items);
-                _agentXLUploadModel.processFiles();
+                _agentXLUploadModel.validateTemplate();
                 returnOutList = new ArrayList<>();
                 returnOutList = _agentXLUploadModel.getOutputAsLIST();
                 if (!returnOutList.isEmpty()) {
@@ -59,7 +58,16 @@ public class fileupload extends JDSController {
                     request.setAttribute("xml", xml);
                     url = "/xmlserver";
                 } else {
-                    heldItems = items;
+                    _agentXLUploadModel.processFiles();
+                    returnOutList = new ArrayList<>();
+                    returnOutList = _agentXLUploadModel.getOutputAsLIST();
+                    if (!returnOutList.isEmpty()) {
+                        String xml = util.convertArrayListToXML(returnOutList, "rows");
+                        request.setAttribute("xml", xml);
+                        url = "/xmlserver";
+                    } else {
+                        heldItems = items;
+                    }
                 }
             }
 
@@ -67,7 +75,7 @@ public class fileupload extends JDSController {
                 String inwardNumber;
                 Boolean uploadInd = true;
                 if (session.getAttribute("inwardUnderProcess") != null) {
-                    AgentXLUploadModel _agentXLUploadModel = new AgentXLUploadModel(uploadInd,request);
+                    AgentXLUploadModel _agentXLUploadModel = new AgentXLUploadModel(uploadInd, request);
                     _agentXLUploadModel.addFiles(heldItems);
                     _agentXLUploadModel.processFiles();
                     returnOutList = new ArrayList<>();
