@@ -6,6 +6,7 @@ var selectedInward = 0;
 var selectedSubscriberId = 0;
 var selectedInwardRowIndex = -1;
 var selectedInwardPurpose = "";
+var bvalidsubscriber = false;
 
 function enableSubscriptionID(value){
     if(value){
@@ -265,5 +266,84 @@ function selectSubscriber(city, subscriberName, rowid){
     }else{
         selectedSubscriberId = 0;
     }
-    
+
+}
+
+function selectPaymentType(inwardType){
+    if(inwardType.toLowerCase() == "new subscription" ||
+        inwardType.toLowerCase() == "renew subscription" ||
+        inwardType.toLowerCase() == "payment"){
+        $("#paymentMode").val("Demand Draft"); // select demand draft when one of these is selected from the drop down
+        $("#chqddNumber").addClass("IASTextBoxMandatory required");
+        $("#paymentDate").addClass("IASDateTextBoxMandatory");
+        $("#amount").addClass("IASTextBoxMandatory required");
+    }else{
+        $("#chqddNumber").removeClass("IASTextBoxMandatory required");
+        $("#paymentDate").removeClass("IASDateTextBoxMandatory");
+        $("#amount").removeClass("IASTextBoxMandatory required");
+        $("#paymentMode").val("Select");
+    }
+}
+
+function ValidateSubscriber(){
+    // if the subscriber is already selected do not do anything
+    if(bvalidsubscriber)
+        return
+
+    subscriber_number = $("#subscriberId").val();
+    if(!subscriber_number){
+        return;
+    }else{
+        $.ajax({
+            url: "subscriber?action=search&page=1&rows=1&exact=true",
+            data: {
+                subscriberNumber: subscriber_number
+            },
+            success: function(data, textStatus, jqXHR){
+                var rows = $(data).find("row");
+                var rowcount = rows.length;
+                var subscribers = new Array();
+                if(rowcount == 1){
+                    var from = $(data).find( "subscriberName" ).text();
+                    var subscriber_number = $(data).find( "subscriberNumber" ).text();
+                    var city = $(data).find( "city" ).text();
+                    var state = $(data).find( "state" ).text();
+                    var country = $(data).find( "country" ).text();
+                    var pincode = $(data).find( "pincode" ).text();
+                    var department = $(data).find( "department" ).text();
+                    var institution = $(data).find( "institution" ).text();
+                    var email = $(data).find( "email" ).text();
+                    $("#from").val(from);
+                    $("#subscriberId").val(subscriber_number);
+                    $("#city").val(city);
+                    $("#state").val(state);
+                    $("#country").val(country);
+                    if(pincode != 0)
+                        $("#pincode").val(pincode);
+                    $("#department").val(department);
+                    $("#institution").val(institution);
+                    $("#email").val(email);
+                    bvalidsubscriber = true;
+                }else{
+                    /*$(data).find("subscriberNumber").each(function(){
+                        subscribers.push($(this).text());
+                    });
+                    $("#subscriberId").autocomplete({
+                        minLength: 0,
+                        source: subscribers
+                    });
+                    $("#subscriberId").autocomplete("search", $("#subscriberId").val());*/
+                    $("#subscriberId").focus();
+                    alert("No such subscriber exists. Please enter a valid subscriber id");
+                }
+            },
+            dataType: "xml"
+        });
+    }
+}
+
+function removeInvalidSubscriber(){
+    if(!bvalidsubscriber)
+        $("#subscriberId").val('');
+
 }

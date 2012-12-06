@@ -74,8 +74,7 @@ public class subscription extends JDSController {
                 IAS.Bean.Subscription.SubscriptionFormBean _SubscriptionFormBean = null;
                 while (rs.next()) {
                     BeanProcessor bProc = new BeanProcessor();
-                    Class type = Class.forName("IAS.Bean.Subscription.SubscriptionFormBean");
-                    _SubscriptionFormBean = (IAS.Bean.Subscription.SubscriptionFormBean) bProc.toBean(rs, type);
+                    _SubscriptionFormBean = bProc.toBean(rs, IAS.Bean.Subscription.SubscriptionFormBean.class);
 
                 }
                 rs.close();

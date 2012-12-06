@@ -8,6 +8,7 @@ import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
 import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
+import IAS.Model.Subscription.SubscriptionModel;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -119,7 +120,7 @@ public class inward extends JDSController {
                 int isSummerFellow = Integer.parseInt(request.getParameter("asf"));
 
                 // update the subscriber number in the inward
-                if(_inwardModel.updateSubscriberInInward(subscriberNumber, _inwardFormBean.getInwardNumber()) == 1){
+                if (_inwardModel.updateSubscriberInInward(subscriberNumber, _inwardFormBean.getInwardNumber()) == 1) {
                     logger.debug(String.format("Updated subscriber %s in inward %s", subscriberNumber, _inwardFormBean.getInwardNumber()));
                 }
 
@@ -211,26 +212,27 @@ public class inward extends JDSController {
             } else if (action.equalsIgnoreCase("followOnProcess")) {
 
                 int inwardPurposeID = Integer.parseInt(request.getParameter("purpose"));
-                //_inwardFormBean = _inwardModel.viewInward();
-                //float amount = _inwardFormBean.getAmount();
+                int subid = Integer.parseInt(request.getParameter("subid"));
+                float balance = Float.parseFloat(request.getParameter("balance"));
 
-                /*if ( amount > 0 &&
-                 (inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION ||
-                 inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)
-                 ) {
-
-                 if (_inwardFormBean != null) {
-                 request.setAttribute("inwardFormBean", _inwardFormBean);
-                 url = "/jsp/inward/ackinward.jsp";
-                 }
-                 }*/
                 // for acknowledgement amount > 0
                 if ((inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
                         || inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)) {
-                    //url = "/jsp/inward/pendinginwards.jsp";
+
+
                     subscriberFormBean _subFormBean = _inwardModel.getSubscriberDetail();
                     request.setAttribute("subscriberFormBean", _subFormBean);
-                    url = "/jsp/subscriber/viewdetailsubscriber.jsp?detail=2";
+                    // if the balance is greater than 0 redirect to pending bill amount page
+                    if (balance > 0) {
+                        //SubscriptionModel _subscriptionModel = new SubscriptionModel(request);
+                        //_subscriptionModel.
+                        InvoiceFormBean _invoiceFormBean = _inwardModel.getInvoiceDetail(); //new IAS.Bean.Invoice.InvoiceFormBean();
+                        request.setAttribute("invoiceFormBean", _invoiceFormBean);
+                        url = "/jsp/subscription/pendingamount.jsp";
+                    } else {
+                        url = "/jsp/subscriber/viewdetailsubscriber.jsp?detail=2";
+                    }
+
 
                 } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
                     InvoiceFormBean _invoiceFormBean = _inwardModel.getInvoiceDetail(); //new IAS.Bean.Invoice.InvoiceFormBean();

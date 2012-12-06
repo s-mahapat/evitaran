@@ -3,7 +3,7 @@ var subscriberType = 0;
 var subscriptionSaved = false
 
 function addJournal(){
-    
+
     // merge the old selected data and the new one, else we loose the data while saving the
     // subscription
     var userSelection = getselected(document.getElementById("journalName"));
@@ -50,19 +50,21 @@ function addJournal(){
             alert("Failed to add subscription!!! No price defined for the selected Year and Journal Group");
             bRet = bRet && false;
             return(false);
-            
+
         }
         return(true);
     });
     return(bRet);
-    
-    
+
+
 }
 
 function updateTotal(val){
     currentTotal = $("#subscriptionTotalValue").text()
     newTotal = parseInt(currentTotal) + parseInt(val);
+    var balance = newTotal - $("#amount").val();
     $("#subscriptionTotalValue").text(newTotal);
+    $("#balance").val(balance);
 }
 
 
@@ -186,6 +188,7 @@ function saveSubscription(){
                     $("#btnAddLine").button("disable");
                     $("#btnDeleteAll").button("disable");
                     $("#remarks").attr("disabled",true);
+                    $("#subid").val(subscriptionID);
                     subscriptionSaved = true;
                     document.subscriptionForm.submit();
 

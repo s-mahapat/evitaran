@@ -16,11 +16,12 @@ function drawInwardTable(){
             //scrollOffset: 50,
             emptyrecords: "No inwards to view",
             loadtext: "Loading...",
-            colNames:['Inward No','Received Date','Purpose','Amount','Currency','Ack Date','Chq/DD Return','Completed','View/Edit'],
+            colNames:['Inward No','Received Date','Purpose','Cheque No','Amount','Currency','Ack Date','Chq/DD Return','Completed','View/Edit'],
             colModel :[
                 {name:'InwardNo', index:'inwardNumber', width:40, align:'center', xmlmap:'inwardNumber'},
                 {name:'ReceivedDate', index:'inwardCreationDate', width:50, align:'center', xmlmap:'inwardCreationDate'},
                 {name:'Purpose', index:'inwardPurpose', width:80, align:'center', xmlmap:'inwardPurpose'},
+                {name:'chqno', index:'chqno', width:20, align:'center', xmlmap:'chqddNumber'},
                 {name:'amount', index:'amount', width:40, align:'center', xmlmap:'amount'},
                 {name:'currency', index:'currency', width:40, align:'center', xmlmap:'currency'},
                 {name:'ackDate', index:'ackDate', width:50, align:'center', xmlmap:'ackDate'},

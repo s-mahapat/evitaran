@@ -12,15 +12,15 @@
             var selectedSubscriberId = null;
             var selectedsubscriber;
             var isSelected = false;
-            
+
             $(document).ready(function(){
                 // search subscriber when ENTER key is pressed
                 setEnterKeyAction(searchSubscriber);
                 loadCities("<%=request.getContextPath() + "/cities"%>");
                 jdsAutoComplete("<%=request.getContextPath() + "/subscriber?action=depts"%>", "department", "department");
                 $("#subscriberNumber").focus();
-            });                       
-            
+            });
+
             $(function(){
                 $("#subscriberList").jqGrid({
                     url:"<%=request.getContextPath() + "/subscriber?action=search"%>",
@@ -57,7 +57,7 @@
                         {name:'Department', index:'department', width:45, align:'center', sortable:false, xmlmap:'department'},
                         {name:'Instituttion', index:'institute', width:45, align:'center', sortable:false, xmlmap:'institution'},
                         {name:'City', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                        {name:'PinCode', index:'pincode', width:20, align:'center', sortable:false, xmlmap:'pincode'},
+                        {name:'PinCode', index:'pincode', width:20, align:'center', sortable:false, xmlmap:'pincode', formatter: formatpincode},
                         {name:'Country', index:'country', width:20, align:'center', sortable:false, xmlmap:'country'},
                         {name:'Email', index:'email', width:50, align:'center',sortable:false, xmlmap:'email'}
                     ],
@@ -92,23 +92,23 @@
             });
 
             // this function is called when the page is unloading
-            function CheckReturnValue(){                
-                window.returnValue = selectedsubscriber;                
+            function CheckReturnValue(){
+                window.returnValue = selectedsubscriber;
             }
-            
+
             // this function is called when the user clicks on the OK/Cancel button
             function selectSubscriber(bSelected){
                 if(bSelected){
-                    selectedsubscriber = jQuery("#subscriberList").getRowData(selectedSubscriberId);                    
+                    selectedsubscriber = jQuery("#subscriberList").getRowData(selectedSubscriberId);
                 }else{
                     selectedsubscriber = null;
                 }
                 window.close();
             }
-            
+
             // called when the search button is clicked
             function searchSubscriber(){
-                if(validateSearchSubscriber()){                    
+                if(validateSearchSubscriber()){
                     jQuery("#subscriberList").setGridParam({mtype: 'POST',postData:
                             {city               : $("#city").val(),
                             department          : $("#department").val(),
@@ -121,19 +121,27 @@
                 }
 
             }
-            
+
+            function formatpincode(cell, rowid){
+                if(parseInt(cell) == 0){
+                    return "";
+                }
+                return cell;
+
+            }
+
             function validateSearchSubscriber(){
-                if(isEmptyValue($("#city").val()) && 
+                if(isEmptyValue($("#city").val()) &&
                     isEmptyValue($("#department").val()) &&
                     isEmptyValue($("#subscriberName").val()) &&
-                    isEmptyValue($("#subscriberNumber").val()) &&                    
+                    isEmptyValue($("#subscriberNumber").val()) &&
                     isEmptyValue($("#pincode").val())){
                     alert("Please fill in at least one field to search for subscriber");
                     return false;
                 }
                 return true;
             }
-                        
+
         </script>
 
     </head>
@@ -167,7 +175,7 @@
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="3" name="city" id="city" value=""/>        
+                                        <input class="IASTextBox" TABINDEX="3" name="city" id="city" value=""/>
                                     </span>
                                 </div>
 
@@ -196,7 +204,7 @@
                                 <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
                             </div>
                     </fieldset>
-                    </form>                    
+                    </form>
                     <fieldset class="subMainFieldSet">
                         <legend>Subscriber List</legend>
                         <table class="datatable" id="subscriberList"></table>

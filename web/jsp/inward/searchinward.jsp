@@ -18,14 +18,14 @@
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
 
-            $(document).ready(function(){                
+            $(document).ready(function(){
 
                 //load city autocomplete
                 loadCities();
-                
+
                 // set the default focus to inward text box.
                 $("#inwardNumber").focus();
-                
+
                 // search subscriber when ENTER key is pressed
                 setEnterKeyAction(searchInwards);
 
@@ -45,16 +45,17 @@
                     scrollOffset: 20,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','View/Edit'],
+                    colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Amount','Purpose','View/Edit'],
                     colModel :[
-                        {name:'InwardNo', index:'inwardNumber', width:50, align:'center', xmlmap:'inwardNumber'},
-                        {name:'SubscriberId', index:'subscriberId', width:50, align:'center', xmlmap:'subscriberId'},
-                        {name:'From', index:'from', sortable: false, width:80, align:'center', xmlmap:'from'},
-                        {name:'ReceivedDate', index:'inwardCreationDate', width:80, align:'center', xmlmap:'inwardCreationDate'},
+                        {name:'InwardNo', index:'inwardNumber', width:40, align:'center', xmlmap:'inwardNumber'},
+                        {name:'SubscriberId', index:'subscriberId', width:40, align:'center', xmlmap:'subscriberId'},
+                        {name:'From', index:'from', sortable: false, width:90, align:'center', xmlmap:'from'},
+                        {name:'ReceivedDate', index:'inwardCreationDate', width:40, align:'center', xmlmap:'inwardCreationDate'},
                         {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
                         {name:'Cheque', index:'chqddNumber', width:40, align:'center', xmlmap:'chqddNumber'},
-                        {name:'Purpose', index:'inwardPurpose', width:80, align:'center', xmlmap:'inwardPurpose'},
-                        {name:'Action', index:'action', sortable: false, width:80, align:'center',formatter:'showlink'}
+                        {name:'amount', index:'amount', width:25, align:'center', xmlmap:'amount'},
+                        {name:'Purpose', index:'inwardPurpose', width:60, align:'center', xmlmap:'inwardPurpose'},
+                        {name:'Action', index:'action', sortable: false, width:40, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
                         root: "results",
@@ -85,7 +86,7 @@
                             action = "<a style='color:blue;' href='inward?action=view&inwardNumber=" + inwardId + "'>View</a><a style='color:blue;' href='inward?action=edit&inwardNumber=" + inwardId + "'>Edit</a>";
                             jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
-                        sessionStorage['searchinwards'] = JSON.stringify({  
+                        sessionStorage['searchinwards'] = JSON.stringify({
                             page: jQuery("#inwardTable").jqGrid('getGridParam','page'),
                             rowNum: jQuery("#inwardTable").jqGrid('getGridParam','rowNum'),
                             totalpages: jQuery("#inwardTable").jqGrid('getGridParam','lastpage'),
@@ -93,11 +94,11 @@
                             inwardNumber    : $("#inwardNumber").val(),
                             chequeNumber    : $("#chequeNumber").val(),
                             fromDate        : $("#from").val(),
-                            toDate          : $("#to").val() 
+                            toDate          : $("#to").val()
                         });
                         //console.log(sessionStorage.searchinwards);
                     },
-                    beforeRequest: function(){                        
+                    beforeRequest: function(){
                         return isPageLoaded;
                     },
                     loadError: function(xhr,status,error){
@@ -105,7 +106,7 @@
                     }
 
                 });
-                
+
                 if(sessionStorage.searchinwards){
                     var json = JSON.parse(sessionStorage.searchinwards);
                     jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>",
@@ -128,16 +129,16 @@
                 );
                     isFirstTime = true;
                     isPageLoaded = true;
-                    
-                    
-                    
+
+
+
                 }else{
                     jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
                 }
 
 
             });
-            
+
 
             // called when the search button is clicked
             function searchInwards(){
@@ -223,7 +224,7 @@
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="4" name="city" id="city" value=""/>        
+                                        <input class="IASTextBox" TABINDEX="4" name="city" id="city" value=""/>
                                     </span>
                                 </div>
 

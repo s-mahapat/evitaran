@@ -9,6 +9,7 @@ import IAS.Class.ChequeReturnPDF;
 import IAS.Class.Database;
 import IAS.Class.InwardAckPDF;
 import IAS.Class.JDSLogger;
+import IAS.Class.OutStandingPendingBillPDF;
 import IAS.Class.PlReferListPDF;
 import IAS.Class.RequestForInvoicePDF;
 import IAS.Controller.JDSController;
@@ -99,6 +100,12 @@ public class Print extends JDSController {
                     RequestForInvoicePDF _rfiPdf = new RequestForInvoicePDF(request);
                     ByteArrayOutputStream baos = _rfiPdf.getPDF(inwardNumber);
 
+                    String fileName = inwardNumber + ".pdf";
+                    this.sendResponse(baos, fileName, response);
+                }else if(action.equalsIgnoreCase("opb")){
+                    String inwardNumber = documentID;
+                    OutStandingPendingBillPDF _opbpdf = new OutStandingPendingBillPDF(request);
+                    ByteArrayOutputStream baos = _opbpdf.getPDF(inwardNumber);
                     String fileName = inwardNumber + ".pdf";
                     this.sendResponse(baos, fileName, response);
                 }

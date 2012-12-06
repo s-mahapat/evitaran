@@ -258,6 +258,7 @@ CREATE TABLE `invoice` (
   `invoiceNumber` varchar(32) NOT NULL,
   `subscriptionId` int(15) DEFAULT NULL,
   `invoiceCreationDate` date DEFAULT NULL,
+  `invoice_type_id` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -269,6 +270,31 @@ CREATE TABLE `invoice` (
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `invoice_types`
+--
+
+DROP TABLE IF EXISTS `invoice_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `invoice_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `invoice_type` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uniq_invoice_types` (`invoice_type`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `invoice_types`
+--
+
+LOCK TABLES `invoice_types` WRITE;
+/*!40000 ALTER TABLE `invoice_types` DISABLE KEYS */;
+INSERT INTO `invoice_types` VALUES (2,'Outstanding Payment'),(1,'Request For Invoice'),(3,'Upcoming Year Invoice');
+/*!40000 ALTER TABLE `invoice_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1116,7 +1142,7 @@ CREATE TABLE `subscriber_type` (
 
 LOCK TABLES `subscriber_type` WRITE;
 /*!40000 ALTER TABLE `subscriber_type` DISABLE KEYS */;
-INSERT INTO `subscriber_type` VALUES (1,'FELJM','Fellows','Free','I','P',2,0.000),(2,'AS','Associate','Free','I','P',2,0.000),(3,'EBALL','Editorial Board Member','Free','I','P',1,0.000),(4,'EI','Indian Exchange','Free','I','I',0,0.000),(5,'EF','Foreign Exchange','Free','F','I',0,0.000),(6,'GRANT','Grant','Free','I','P',2,0.000),(7,'AUTH','AUTHOR','Free','I','P',1,0.000),(8,'II','Indian Universities and Institutions','Paid','I','I',0,0.000),(9,'IC','Indian Schools and Colleges','Paid','I','I',0,0.000),(10,'IN','Industry Corporates','Paid','I','I',0,0.000),(11,'IP','Indian Personnel','Paid','I','P',0,0.000),(12,'FP','Foreign Personnel','Paid','F','P',0,0.000),(13,'FI','Foreign Institutions','Paid','F','I',0,0.000),(14,'SF','Summer Fellows','Free','I','P',1,0.000),(15,'HONFEL','Honorary Fellow','Free','I','P',0,0.000),(16,'LSP','Life Subscriber Personal','Paid','I','P',0,0.000),(17,'LSI','Life Subscriber Institutions','Paid','I','I',0,0.000),(18,'MEMBER','Members','Free','I','P',0,0.000),(19,'WC','Working Committee','Free','I','P',0,0.000);
+INSERT INTO `subscriber_type` VALUES (1,'FELJM','Fellows','Free','I','P',2,0.000),(2,'AS','Associate','Free','I','P',2,0.000),(3,'EBALL','Editorial Board Member','Free','I','P',1,0.000),(4,'EI','Indian Exchange','Free','I','I',0,0.000),(5,'EF','Foreign Exchange','Free','F','I',0,0.000),(6,'GRANT','Grant','Free','I','P',2,0.000),(7,'AUTH','Author','Free','I','P',1,0.000),(8,'II','Indian Universities and Institutions','Paid','I','I',0,0.000),(9,'IC','Indian Schools and Colleges','Paid','I','I',0,0.000),(10,'IN','Industry Corporates','Paid','I','I',0,0.000),(11,'IP','Indian Personal','Paid','I','P',0,0.000),(12,'FP','Foreign Personal','Paid','F','P',0,0.000),(13,'FI','Foreign Institutions','Paid','F','I',0,0.000),(14,'SF','Summer Fellows','Free','I','P',1,0.000),(15,'HONFEL','Honorary Fellow','Free','I','P',0,0.000),(16,'LSP','Life Subscriber Personal','Paid','I','P',0,0.000),(17,'LSI','Life Subscriber Institutions','Paid','I','I',0,0.000),(18,'MEMBER','Members','Free','I','P',0,0.000),(19,'WC','Working Committee','Free','I','P',0,0.000);
 /*!40000 ALTER TABLE `subscriber_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2742,4 +2768,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-11-18 17:54:27
+-- Dump completed on 2012-12-06  8:42:48

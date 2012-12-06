@@ -281,6 +281,11 @@ A:active {
     background-color: #EEE;
 }
 
+.IASDateTextBoxMandatory{
+    width: 70px;
+    background-color: antiquewhite;
+}
+
 .IASButton{
     font-size: 0.9em;
     color: black;
@@ -329,12 +334,12 @@ A:active {
 
 .IASFormLeftDiv{
     float: left;
-    width: 48%;
+    width: 50%;
     padding: 5px;
 }
 
 .IASFormRightDiv{
-    width: 48%;
+    width: 45%;
     float: right;
     padding: 5px;
 }

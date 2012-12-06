@@ -33,6 +33,7 @@
         <div id="bodyContainer">
             <form name="subscriptionForm" action="inward?action=followOnProcess" method="POST">
                 <input type="hidden" name="purpose" id="purpose" value="<%=request.getParameter("purpose")%>"/>
+                <input type="hidden" name="subid" id="subid" value=""/>
 
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
@@ -59,6 +60,15 @@
                                         <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
                                     </span>
                                 </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Inward Number:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<%=inwardNumber%>"/>
+                                    </span>
+                                </div>
 
                             </div>
 
@@ -74,15 +84,6 @@
                                 </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Inward Number:</label>
-                                    </span>
-
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<%=inwardNumber%>"/>
-                                    </span>
-                                </div>
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
                                         <label>Inward Amount:</label>
                                     </span>
 
@@ -90,6 +91,16 @@
                                         <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value="<%=amount%>"/>
                                     </span>
                                 </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Balance:</label>
+                                    </span>
+
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="balance" id="balance" value=""/>
+                                    </span>
+                                </div>
+
                                 <%--<div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Remarks</label>

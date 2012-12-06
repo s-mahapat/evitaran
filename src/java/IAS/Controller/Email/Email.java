@@ -1,5 +1,6 @@
 package IAS.Controller.Email;
 
+import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.*;
 import IAS.Controller.JDSController;
@@ -127,12 +128,27 @@ public class Email extends JDSController {
                             fileName,
                             pdfData,
                             "application/pdf");
+                }else if(action.equalsIgnoreCase("opb")){
+                    String inwardNumber = documentID;
+                    InvoiceFormBean _invoiceFormBean = _inwardModel.getInvoiceDetail(inwardNumber);
+                    OutStandingPendingBillPDF _opbpdf = new OutStandingPendingBillPDF(request);
+                    ByteArrayOutputStream baos = _opbpdf.getPDF(inwardNumber);
+                    byte pdfData[] = baos.toByteArray();
+                    String fileName = _invoiceFormBean.getInvoiceNumber() + ".pdf";
+                    msgsend _mailer = new msgsend();
+                    String emailBody = new InvoiceModel(request).getOutStandingPaymentEmailBody();
+                    success = _mailer.sendEmailToSubscriberWithAttachment(_inwardFormBean.getEmail(),
+                            "Invoice for outstanding payment",
+                            emailBody,
+                            fileName,
+                            pdfData,
+                            "application/pdf");
                 }
 
 
             } else if (document.equalsIgnoreCase("prl")) {
                 PlReferListPDF _PlReferListPDF = new PlReferListPDF();
-                InvoiceModel _invoiceModel = new InvoiceModel();
+                InvoiceModel _invoiceModel = new InvoiceModel(request);
 
                 String invoice_no = documentID;
                 ByteArrayOutputStream baos = _PlReferListPDF.getPlReferListPage(invoice_no);

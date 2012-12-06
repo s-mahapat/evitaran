@@ -143,7 +143,11 @@ public class SubscriptionModel extends JDSModel {
 
                     // Update the Performa Invoice
                     if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
-                        this.updateInvoice();
+                        this.updateInvoice(1);
+                    }else if(this._inwardFormBean.getAmount() < subscriptionTotal){
+                        // create an invoice if the subscription value is greater
+                        // than what he has paid in the inward
+                        this.updateInvoice(2);
                     }
 
                     //Update inward with completed flag once the transaction is completed
@@ -668,7 +672,7 @@ public class SubscriptionModel extends JDSModel {
         return nextInvoice;
     }
 
-    private int updateInvoice() throws SQLException, ParseException,
+    private int updateInvoice(int invoice_type_id) throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
         Connection _conn = this.getConnection();
@@ -680,6 +684,7 @@ public class SubscriptionModel extends JDSModel {
         //get the next invoice number and fill the bean
         String invoiceNumber = getNextInvoiceNumber();
         invoiceFormBean.setInvoiceNumber(invoiceNumber);
+        invoiceFormBean.setInvoiceTypeID(invoice_type_id);
 
         //subscription ID
         int SubscriptionID = _subscriptionBean.getSubscriptionID();
@@ -694,6 +699,7 @@ public class SubscriptionModel extends JDSModel {
             st.setString(++paramIndex, invoiceNumber);
             st.setInt(++paramIndex, SubscriptionID);
             st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+            st.setInt(++paramIndex, invoice_type_id);
             if (st.executeUpdate() == 1) {
                 try (ResultSet rs = st.getGeneratedKeys()) {
                     rs.first();
@@ -842,6 +848,7 @@ public class SubscriptionModel extends JDSModel {
                             _st.setString(1, invoiceNumber);
                             _st.setInt(2, subscription_id);
                             _st.setDate(3, util.dateStringToSqlDate(util.getDateString()));
+                            _st.setInt(4, 3);
                             if (_st.executeUpdate() == 1) {
                                 try (ResultSet _rs = _st.getGeneratedKeys()) {
                                     _rs.first();

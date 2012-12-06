@@ -182,8 +182,24 @@ CREATE TABLE `invoice` (
   `invoiceNumber` varchar(32) NOT NULL,
   `subscriptionId` int(15) DEFAULT NULL,
   `invoiceCreationDate` date DEFAULT NULL,
+  `invoice_type_id` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `invoice_types`
+--
+
+DROP TABLE IF EXISTS `invoice_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `invoice_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `invoice_type` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uniq_invoice_types` (`invoice_type`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1372,4 +1388,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-11-18 17:54:28
+-- Dump completed on 2012-12-06  8:42:49

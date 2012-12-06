@@ -37,7 +37,7 @@
                     sortorder: 'desc',
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Select','Inward No','Subscriber Id','Agent', 'From','Received Date','City','Cheque#','Purpose','PurposeID','Action'],
+                    colNames:['Select','Inward No','Subscriber Id','Agent', 'From','Received Date','City','Cheque#','Amount','Purpose','PurposeID','Action'],
                     colModel :[
                         {
                             name:'Select',
@@ -77,6 +77,7 @@
                         },
                         {name:'City', index:'city', sortable: false, width:80, align:'center', xmlmap:'city'},
                         {name:'Cheque', index:'cheque', sortable: false, width:40, align:'center', xmlmap:'chqddNumber'},
+                        {name:'amount', index:'amount', sortable: false, width:40, align:'center', xmlmap:'amount'},
                         {name:'Purpose', index:'purpose', sortable: false, width:80, align:'center', xmlmap:'inwardPurpose'},
                         {name:'PurposeID', index:'purposeid', sortable: false, width:80, align:'center', hidden:true, xmlmap:'inwardPurposeID'},
                         {

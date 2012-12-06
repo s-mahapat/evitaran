@@ -12,20 +12,57 @@
 
         <script>
             var isCitySelected = false;
-            var isDistrictSelected = false;                    
+            var isDistrictSelected = false;
 
             $(document).ready(function() {
                 loadData();
                 jQueryCalendar("paymentDate");
                 makeReadOnly();
+                setEnterKeyAction(ValidateSubscriber);
+
+                // disable the form submit on pressing enter
+                $("#inwardForm").bind("keypress", function(e) {
+                    if (e.keyCode == 13) return false;
+                });
+
+                $("#inwardForm").validate({
+                    rules: {
+                        pincode: {
+                            required: false,
+                            digits: true
+                        },
+                        chqddNumber:{
+                            required: false,
+                            digits: true
+                        },
+                        city:{
+                            required: true
+                        }
+                    }
+                });
             });
             var myArr = new Array;
         </script>
+        <style>
+            input.error { border: 1px solid red; }
+            label.error {
+                background: url('http://dev.jquery.com/view/trunk/plugins/validate/demo/images/unchecked.gif') no-repeat;
+                padding-left: 0px;
+                margin-left: 5px;
+                font-size: small;
+            }
+            label.valid {
+                background: url('http://dev.jquery.com/view/trunk/plugins/validate/demo/images/checked.gif') no-repeat;
+                display: block;
+                width: 10px;
+                height: 16px;
+            }
+        </style>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/inward"%>" name="inwardForm" onsubmit="return validateNewInward()">
+            <form method="post" action="<%=request.getContextPath() + "/inward"%>" name="inwardForm" id="inwardForm" onsubmit="return validateNewInward()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Create Inward</legend>

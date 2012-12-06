@@ -638,24 +638,23 @@ public class inwardModel extends JDSModel {
     public InvoiceFormBean getInvoiceDetail(String InwardNumber) throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
 
         // get the connection from connection pool
-        Connection conn = this.getConnection();
+        Connection _conn = this.getConnection();
         String sql;
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
         sql = Queries.getQuery("get_invoice_detail");
-        PreparedStatement st = conn.prepareStatement(sql);
+        PreparedStatement st = _conn.prepareStatement(sql);
         st.setString(1, InwardNumber);
 
         try (ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
                 BeanProcessor bProc = new BeanProcessor();
-                Class type = Class.forName("IAS.Bean.Invoice.InvoiceFormBean");
-                invoiceFormBean = (IAS.Bean.Invoice.InvoiceFormBean) bProc.toBean(rs, type);
+                invoiceFormBean = bProc.toBean(rs, IAS.Bean.Invoice.InvoiceFormBean.class);
             }
             rs.close();
         }
 
         // return the connection back to the pool
-        this.CloseConnection(conn);
+        _conn.close();
 
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         return invoiceFormBean;

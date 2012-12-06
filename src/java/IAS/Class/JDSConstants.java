@@ -17,6 +17,10 @@ public class JDSConstants {
     public static int INWARD_PURPOSE_MANUSCRIPT = 8;
     public static int INWARD_COMPLETE = 1;
 
+    public static int INVOICE_REQUEST_FOR_INVOICE = 1;
+    public static int INVOICE_OUTSTANDING_PAYMENT_INVOICE = 2;
+    public static int INVOICE_UPCOMING_YEAR_INVOICE = 3;
+
     //IAS Address
     public static String IAS_LETTERHEAD = "Indian Academy of Sciences";
     public static String IAS_LETTERHEAD_ADDRESS = "C. V. Raman Avenue, P.B. No. 8005, Sadashivanagar, Bangalore 560 080, India";

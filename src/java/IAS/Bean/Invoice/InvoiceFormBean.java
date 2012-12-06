@@ -32,7 +32,33 @@ public class InvoiceFormBean {
     private String subsciberNumber;
     private int subscriberType;
     private String subscriberTypeText;
+    private float balance;
+    private float amount;
+    private int invoiceTypeID;
 
+    public int getInvoiceTypeID(){
+        return this.invoiceTypeID;
+    }
+
+    public void setInvoiceTypeID(int _type){
+        this.invoiceTypeID = _type;
+    }
+
+    public float getAmount(){
+        return this.amount;
+    }
+
+     public void setAmount(float _amount){
+        this.amount = _amount;
+    }
+
+    public float getBalance(){
+        return this.balance;
+    }
+
+     public void setBalance(float _balance){
+        this.balance = _balance;
+    }
 
     public int getSubscriberType() {
         return this.subscriberType;

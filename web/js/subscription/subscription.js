@@ -11,7 +11,7 @@ function getselected(selectobject) {
         if(option.selected){
             results[option.text] = value;
         }
-        
+
     }
     return results;
 }
@@ -32,7 +32,7 @@ function listSubscription(){
             //sortname:'subscriptionID',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Subscription Date','Agent','Amount Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
+            colNames:['Subscription Id','Inward No','Subscription Date','Agent','Cheque No','Amount Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
             colModel :[
             {
                 name:'subscriptionID',
@@ -67,6 +67,14 @@ function listSubscription(){
                 align:'center',
                 sortable: false,
                 xmlmap:'agentName'
+            },
+            {
+                name:'chqno',
+                index:'chqno',
+                width:20,
+                align:'center',
+                sortable: false,
+                xmlmap:'chqddNumber'
             },
             {
                 name:'amountPaid',
@@ -131,31 +139,31 @@ function listSubscription(){
 
                 var ids = jQuery("#subscriptionList").jqGrid('getDataIDs');
                 for (var i = 0; i < ids.length; i++) {
-                    
+
                     var subscription_via_agent = jQuery("#subscriptionList").getCell(ids[i], 'Agent');
                     var islegacy = parseInt(jQuery("#subscriptionList").getCell(ids[i], 'legacy'));
-                    
+
                     // if the agent value is not null then show the subscription value, balance and amount as 0
                     if(subscription_via_agent != ""){
                         jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
                             "amountPaid": 0
                         });
-                        
+
                         jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
                             "subscriptionValue": 0
                         });
-                        
+
                         jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
                             "balance": 0
                         });
                     }
-                    
+
                     action = "<a style=\"color:blue\" href=\"#\" onclick=\"getSubscriptionDetails(" + ids[i] + ")\">" + "Details" + "</a>";
                     if(islegacy != 1){
                         action += "<a style=\"color:blue\" href=\"subscription?action=edit" +
                         "&subscriberNumber=" + $("#subscriberNumber").val() +
                         "&id=" + ids[i] + "\">" + "Edit" + "</a>";
-                    }                    
+                    }
                     jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
                         "details": action
                     });
@@ -212,7 +220,7 @@ function getPrice(startYear, years, journalGroupID, subscriberTypeID){
     var _price = -1;
     var _id = -1;
     var startMonth = $("#startMonth").val();
-    var _priceDetails = new Array();    
+    var _priceDetails = new Array();
     /* if the start month is not Jan, then consider it as one year less
      * for e.g. Jul 2012 to Jun 2013, would normally be considered as 2 yrs, but its
      * actually one year. so deduct 1 from the num of years
@@ -220,7 +228,7 @@ function getPrice(startYear, years, journalGroupID, subscriberTypeID){
     if(startMonth > 1){
         years = years - 1;
     }
-    
+
     $.ajax({
         type: 'GET',
         dataType: 'xml',

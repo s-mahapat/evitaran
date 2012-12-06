@@ -116,9 +116,9 @@ function GeneratePRLGrid(){
 
 function emailStatus(cellvalue, options, rowObject){
     if(parseInt(cellvalue) == 1){
-        return "Success";
+        return "<label color=\"red\">Success</label>";
     }
-    return "";
+    return "<label color=\"red\">Email not sent</label>";
 
 }
 

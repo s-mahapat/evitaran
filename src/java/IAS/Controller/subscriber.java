@@ -121,8 +121,13 @@ public class subscriber extends JDSController {
             } else if (action.equalsIgnoreCase("printInvoice")) {
                 //InvoiceFormBean _invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
                 InvoiceFormBean _invoiceFormBean = _subscriberModel.getInvoiceDetail();
+                if(_invoiceFormBean.getInvoiceTypeID() == JDSConstants.INVOICE_OUTSTANDING_PAYMENT_INVOICE){
+                    url = "/jsp/subscription/pendingamount.jsp";
+                }else{
+                    url = "/jsp/invoice/proforma.jsp";
+                }
                 request.setAttribute("InvoiceFormBean", _invoiceFormBean);
-                url = "/jsp/invoice/proforma.jsp";
+
 
             } else if (action.equalsIgnoreCase("mil")) {
                 url = "/jsp/missingissue/missingissuelist.jsp";

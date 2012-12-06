@@ -7,11 +7,13 @@
 <script src="<%=request.getContextPath() + "/js/jdsconstants.js"%>" type="text/javascript"></script>
 
 <%-- jquery Core --%>
-<script src="<%=request.getContextPath() + "/js/jquery/jquery-1.8.2.min.js"%>" type="text/javascript"></script>
+<script src="<%=request.getContextPath() + "/js/jquery/jquery-1.8.3.min.js"%>" type="text/javascript"></script>
+<script src="<%=request.getContextPath() + "/js/jquery/jquery.validate.min.js"%>" type="text/javascript"></script>
+
 
 <%-- jquery alerts --%>
-<script src="<%=request.getContextPath() + "/js/jquery/jquery.alerts.js"%>" type="text/javascript"></script>
-<link href="<%=request.getContextPath() + "/css/jquery/jquery.alerts.css"%>" type="text/css" rel="stylesheet"/>
+<%--<script src="<%=request.getContextPath() + "/js/jquery/jquery.alerts.js"%>" type="text/javascript"></script>
+<link href="<%=request.getContextPath() + "/css/jquery/jquery.alerts.css"%>" type="text/css" rel="stylesheet"/>--%>
 <%-- jquery ui --%>
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery-ui-1.9.1.custom.min.css"%>" />
 <script src="<%=request.getContextPath() + "/js/jquery/jquery-ui-1.9.1.custom.min.js"%>" type="text/javascript"></script>

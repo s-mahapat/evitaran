@@ -471,15 +471,39 @@ public class subscriberModel extends JDSModel {
         String institution = request.getParameter("institution");
         String department = request.getParameter("department");
         String condition = " where";
-        int pageNumber = Integer.parseInt(request.getParameter("page"));
-        int pageSize = Integer.parseInt(request.getParameter("rows"));
+        String exactMatchCondition;
+        int pageNumber;
+        int pageSize;
+        boolean matchExact;
+        try{
+            pageNumber = Integer.parseInt(request.getParameter("page"));
+        }catch(NumberFormatException ex){
+            pageNumber = 1;
+        }
+        try{
+            pageSize = Integer.parseInt(request.getParameter("rows"));
+        }catch(NumberFormatException ex){
+            pageSize = 10;
+        }
+        try{
+            matchExact = Boolean.parseBoolean(request.getParameter("exact"));
+        }catch(NumberFormatException ex){
+            matchExact = false;
+        }
+
+        if(matchExact){
+            exactMatchCondition = "=";
+        }else{
+            exactMatchCondition = "LIKE";
+        }
         //String orderBy = request.getParameter("sidx");
         //String sortOrder = request.getParameter("sord");
         int totalQueryCount;
         //double totalPages = 0;
 
         if (subscriberNumber != null && subscriberNumber.length() > 0) {
-            sql += condition + " subscriberNumber like" + "'%" + subscriberNumber + "%'";
+
+            sql += condition + " subscriberNumber " + exactMatchCondition + " " +"'%" + subscriberNumber + "%'";
             condition = " and";
         }
 
@@ -558,7 +582,7 @@ public class subscriberModel extends JDSModel {
     public String subscriberInvoices() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
 
         // get the connection from connection pool
-        Connection conn = this.getConnection();
+        Connection _conn = this.getConnection();
 
         String xml;
         String sql = Queries.getQuery("search_subscriber_invoice");
@@ -570,14 +594,14 @@ public class subscriberModel extends JDSModel {
         //String orderBy = request.getParameter("sidx");
         //String sortOrder = request.getParameter("sord");
         int totalQueryCount;
-        try (PreparedStatement pst = conn.prepareStatement(ajax_sql);) {
+        try (PreparedStatement pst = _conn.prepareStatement(ajax_sql);) {
             pst.setString(1, subscriberNumber);
             pst.setInt(2, (pageSize * (pageNumber - 1)));
             pst.setInt(3, pageSize);
 
             try (ResultSet rs = pst.executeQuery();) {
                 sql = "select count(*) from (" + sql + ") as tbl";
-                PreparedStatement pst2 = conn.prepareStatement(sql);
+                PreparedStatement pst2 = _conn.prepareStatement(sql);
                 pst2.setString(1, subscriberNumber);
                 ResultSet rs_count = pst2.executeQuery();
                 rs_count.first();
@@ -585,8 +609,7 @@ public class subscriberModel extends JDSModel {
                 xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
             }
         } finally {
-            // return the connection back to the pool
-            this.CloseConnection(conn);
+            _conn.close();
         }
         return xml;
     }
@@ -594,23 +617,22 @@ public class subscriberModel extends JDSModel {
     public InvoiceFormBean getInvoiceDetail() throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
 
         // get the connection from connection pool
-        Connection conn = this.getConnection();
+        Connection _conn = this.getConnection();
 
         String sql;
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
         sql = Queries.getQuery("get_invoice_detail_usng_invno");
-        PreparedStatement st = conn.prepareStatement(sql);
+        PreparedStatement st = _conn.prepareStatement(sql);
         st.setString(1, request.getParameter("invoiceNo"));
 
         try (ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
                 BeanProcessor bProc = new BeanProcessor();
-                Class type = Class.forName("IAS.Bean.Invoice.InvoiceFormBean");
-                invoiceFormBean = (IAS.Bean.Invoice.InvoiceFormBean) bProc.toBean(rs, type);
+                invoiceFormBean = bProc.toBean(rs, IAS.Bean.Invoice.InvoiceFormBean.class);
             }
         } finally {
             // return the connection back to the pool
-            this.CloseConnection(conn);
+            _conn.close();
         }
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         return invoiceFormBean;

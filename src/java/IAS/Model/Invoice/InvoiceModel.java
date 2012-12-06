@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.log4j.Logger;
@@ -29,6 +30,12 @@ public class InvoiceModel extends JDSModel{
     Connection _conn = null;
 
     public InvoiceModel() throws SQLException{
+        //super()
+        this._conn = this.getConnection();
+    }
+
+    public InvoiceModel(HttpServletRequest request) throws SQLException{
+        super(request);
         this._conn = this.getConnection();
     }
 
@@ -91,6 +98,13 @@ public class InvoiceModel extends JDSModel{
         Properties props = new Properties();
         props.load(is);
         return props.getProperty("prl_invoice");
+    }
+
+    public String getOutStandingPaymentEmailBody() throws IOException{
+        InputStream is = request.getServletContext().getResourceAsStream("/WEB-INF/classes/email_templates.properties");
+        Properties props = new Properties();
+        props.load(is);
+        return props.getProperty("outstanding_payment");
     }
 
     @Override
