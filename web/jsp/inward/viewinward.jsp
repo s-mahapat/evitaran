@@ -21,7 +21,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="POST" action="<%=request.getContextPath() + "/inward"%>" name="inwardForm">
+            <form method="GET" action="<%=request.getContextPath() + "/inward"%>" name="inwardForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>View Inward</legend>

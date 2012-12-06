@@ -57,7 +57,7 @@
         });
 
         $(function(){
-            $("#agentName")
+            //$("#agentName")
             // disable the search subscriber and reset button
             if(!isEmptyValue($("#agentName").val())){
                 $("#btnSearchSubscriber").button("disable");
@@ -65,9 +65,9 @@
                 $("#btnUE").button("enable");
                 $("#btnResetUE").button("enable");
             }
-            else{
-                $("#btnSearchSubscriber").button("enable");
-                $("#btnResetSubscriber").button("enable");
+            else {
+                //$("#btnSearchSubscriber").button("enable");
+                //$("#btnResetSubscriber").button("enable");
                 $("#btnUE").button("disable");
                 $("#btnResetUE").button("disable");
             }

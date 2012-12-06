@@ -112,17 +112,17 @@ function makeReadOnly(){
 
     for(var i=0;i<formFields.length;i++){
         var formField = formFields[i];
-        if( formField.className == "IASTextBox"
-            || formField.className == "IASTextBoxMandatory"
-            || formField.className == "IASTextBoxMandatoryWide"
-            || formField.className == "IASEmailTextBox"
-            || formField.className == "IASCheckBox"
-            || formField.className == "IASDateTextBox"
-            || formField.className == "IASTextBoxMandatoryWide"
-            || formField.className == "IASTextBoxWide"
-            ){
-            formField.setAttribute("readonly",true);
-            formField.style.backgroundColor = "#EEE";
+        var elem = $("#" + formField.id);
+        if(elem.hasClass("IASTextBox") ||
+            elem.hasClass("IASTextBoxMandatory") ||
+            elem.hasClass("IASTextBoxMandatoryWide") ||
+            elem.hasClass("IASEmailTextBox") ||
+            elem.hasClass("IASCheckBox") ||
+            elem.hasClass("IASDateTextBox") ||
+            elem.hasClass("IASTextBoxMandatoryWide") ||
+            elem.hasClass("IASTextBoxWide")){
+                formField.setAttribute("readonly",true);
+                formField.style.backgroundColor = "#EEE";
         }
     }
 
