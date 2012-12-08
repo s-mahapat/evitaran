@@ -274,13 +274,9 @@ function selectPaymentType(inwardType){
         inwardType.toLowerCase() == "renew subscription" ||
         inwardType.toLowerCase() == "payment"){
         $("#paymentMode").val("Demand Draft"); // select demand draft when one of these is selected from the drop down
-        $("#chqddNumber").addClass("IASTextBoxMandatory required");
-        $("#paymentDate").addClass("IASDateTextBoxMandatory");
-        $("#amount").addClass("IASTextBoxMandatory required");
+        _MakePaymentFieldsMandatory(true);
     }else{
-        $("#chqddNumber").removeClass("IASTextBoxMandatory required");
-        $("#paymentDate").removeClass("IASDateTextBoxMandatory");
-        $("#amount").removeClass("IASTextBoxMandatory required");
+        _MakePaymentFieldsMandatory(false);
         $("#paymentMode").val("Select");
     }
 }
@@ -346,4 +342,25 @@ function removeInvalidSubscriber(){
     if(!bvalidsubscriber)
         $("#subscriberId").val('');
 
+}
+
+function MakePaymentFieldsMandatory(){
+    var payment_mode = $("#paymentMode").val();
+    if(!payment_mode || payment_mode.toLowerCase() == "cash"){
+        _MakePaymentFieldsMandatory(false);
+    }else{
+        _MakePaymentFieldsMandatory(true);
+    }
+}
+
+function _MakePaymentFieldsMandatory(bmandatory){
+    if(bmandatory){
+        $("#chqddNumber").addClass("IASTextBoxMandatory required");
+        $("#paymentDate").addClass("IASDateTextBoxMandatory");
+        $("#amount").addClass("IASTextBoxMandatory required");
+    }else{
+        $("#chqddNumber").removeClass("IASTextBoxMandatory required");
+        $("#paymentDate").removeClass("IASDateTextBoxMandatory");
+        $("#amount").removeClass("IASTextBoxMandatory required");
+    }
 }

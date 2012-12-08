@@ -33,8 +33,8 @@
         <li class="menu"><a href="#">Inward</a>
             <ul>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=createinward"%>">Create Inward</a></li>
-                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchinward"%>">View / Edit Inward</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=pendinginwards"%>">Pending Inwards</a></li>
+                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchinward"%>">Search Inward</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=urn"%>">Update Receipt Numbers</a></li>
             </ul>
         </li>

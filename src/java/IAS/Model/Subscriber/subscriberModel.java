@@ -472,6 +472,7 @@ public class subscriberModel extends JDSModel {
         String department = request.getParameter("department");
         String condition = " where";
         String exactMatchCondition;
+        String searchRegex;
         int pageNumber;
         int pageSize;
         boolean matchExact;
@@ -493,8 +494,10 @@ public class subscriberModel extends JDSModel {
 
         if(matchExact){
             exactMatchCondition = "=";
+            searchRegex= "";
         }else{
             exactMatchCondition = "LIKE";
+            searchRegex = "%";
         }
         //String orderBy = request.getParameter("sidx");
         //String sortOrder = request.getParameter("sord");
@@ -502,8 +505,11 @@ public class subscriberModel extends JDSModel {
         //double totalPages = 0;
 
         if (subscriberNumber != null && subscriberNumber.length() > 0) {
-
-            sql += condition + " subscriberNumber " + exactMatchCondition + " " +"'%" + subscriberNumber + "%'";
+            if(matchExact){
+                sql += condition + " subscriberNumber " + exactMatchCondition + "'" + subscriberNumber + "'";
+            }else{
+                sql += condition + " subscriberNumber " + exactMatchCondition + " " + "'%" + subscriberNumber + "%'";
+            }
             condition = " and";
         }
 

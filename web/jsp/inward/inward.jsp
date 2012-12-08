@@ -22,7 +22,7 @@
                 return false;
             })
             .next()
-            .button()
+            .button("disable")
             .click(function() {
                 clearSubscriber();
                 return false;
@@ -84,7 +84,7 @@
                 enableSubscriptionID(false);
             }
             // if the inward type is new subscription disable the search subscriber button
-            if(inward_purpose.toLowerCase() == "new subscription"){
+            if(inward_purpose.toLowerCase() == 0){
                 $( "#btnSearchSubscriber" ).button("disable");
                 $("#btnResetSubscriber").button("disable");
             }else{
@@ -278,19 +278,6 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Subscriber No:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input autocomplete="off" class="IASTextBox" TABINDEX="-1" type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}" onblur="removeInvalidSubscriber()"/>
-            </span>
-            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
-                <button type="button" id="btnSearchSubscriber" TABINDEX="10">Search Subscriber</button>
-                <button type="button" id="btnResetSubscriber" TABINDEX="11">Reset</button>
-            </span>
-        </div>
-
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
                 <label>Purpose:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
@@ -302,6 +289,19 @@
                         }
                     %>
                 </select>
+            </span>
+        </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Subscriber No:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input autocomplete="off" class="IASTextBox" TABINDEX="13" type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}" onblur="removeInvalidSubscriber()"/>
+            </span>
+            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
+                <button type="button" id="btnSearchSubscriber" TABINDEX="10">Search Subscriber</button>
+                <button type="button" id="btnResetSubscriber" TABINDEX="11">Reset</button>
             </span>
         </div>
 
@@ -355,7 +355,7 @@
                 <label>Mode Of Payment:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="15" name="paymentMode" id="paymentMode">
+                <select class="IASComboBox" TABINDEX="15" name="paymentMode" id="paymentMode" onchange="MakePaymentFieldsMandatory()">
                     <option value="">Select</option>
                     <%
                         if (inwardFormBean.getPaymentMode() != null && inwardFormBean.getPaymentMode().length() > 0) {
@@ -503,13 +503,7 @@
                 <label>Remarks:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <textarea class="IASTextArea" maxlength="100" TABINDEX="28" name="remarks" id="remarks">
-                    <%
-                        if (inwardFormBean.getRemarks() != null) {
-                            out.println(inwardFormBean.getRemarks());
-                        }
-                    %>
-                </textarea>
+                <textarea class="IASTextArea" maxlength="200" cols="40" rows="5" TABINDEX="28" name="remarks" id="remarks" style="text-align: left;">${inwardFormBean.remarks}</textarea>
             </span>
         </div>
     </div>

@@ -259,6 +259,8 @@ A:active {
     font-size: inherit;
     height: 50px;
     width: 250px;
+    max-width: 250px;
+    max-height: 50px;
 }
 
 .IASTextAreaMandatory{
@@ -266,6 +268,9 @@ A:active {
     font-size: inherit;
     background-color: antiquewhite;
     height: 50px;
+    width: 250px;
+    max-width: 250px;
+    max-height: 50px;
 }
 
 .IASCheckBox{
