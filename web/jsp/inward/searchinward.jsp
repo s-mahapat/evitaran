@@ -45,7 +45,7 @@
                     scrollOffset: 20,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Amount','Purpose','View/Edit'],
+                    colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Amount','Purpose','Completed','View/Edit'],
                     colModel :[
                         {name:'InwardNo', index:'inwardNumber', width:40, align:'center', xmlmap:'inwardNumber'},
                         {name:'SubscriberId', index:'subscriberId', width:40, align:'center', xmlmap:'subscriberId'},
@@ -55,6 +55,7 @@
                         {name:'Cheque', index:'chqddNumber', width:40, align:'center', xmlmap:'chqddNumber'},
                         {name:'amount', index:'amount', width:25, align:'center', xmlmap:'amount'},
                         {name:'Purpose', index:'inwardPurpose', width:60, align:'center', xmlmap:'inwardPurpose'},
+                        {name:'completed', index:'completed', width:35, align:'center', xmlmap:'completed', formatter:'checkbox'},
                         {name:'Action', index:'action', sortable: false, width:40, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
@@ -94,7 +95,8 @@
                             inwardNumber    : $("#inwardNumber").val(),
                             chequeNumber    : $("#chequeNumber").val(),
                             fromDate        : $("#from").val(),
-                            toDate          : $("#to").val()
+                            toDate          : $("#to").val(),
+                            inwardFrom      : $("#inwardFrom").val()
                         });
                         //console.log(sessionStorage.searchinwards);
                     },
@@ -118,6 +120,7 @@
                         $("#chequeNumber").val(json.chequeNumber);
                         $("#from").val(json.from);
                         $("#to").val(json.to);
+                        $("#inwardFrom").val(json.inwardFrom);
                         jQuery("#inwardTable").setGridParam({
                             'rowNum': json.rowNum,
                             'page': json.page
@@ -150,7 +153,8 @@
                             inwardNumber    : $("#inwardNumber").val(),
                             chequeNumber    : $("#chequeNumber").val(),
                             fromDate        : $("#from").val(),
-                            toDate          : $("#to").val()
+                            toDate          : $("#to").val(),
+                            from            : $("#inwardFrom").val()
                         }});
                     jQuery("#inwardTable").trigger("clearGridData");
                     jQuery("#inwardTable").trigger("reloadGrid");
@@ -183,13 +187,21 @@
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
 
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>From:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASTextBoxWide" TABINDEX="1" type="text" name="inwardFrom" id="inwardFrom" value=""/>
+                                    </span>
+                                </div>
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Inward Number:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="1" type="text" name="inwardNumber" id="inwardNumber" value=""/>
+                                        <input class="IASTextBox" TABINDEX="2" type="text" name="inwardNumber" id="inwardNumber" value=""/>
                                     </span>
                                 </div>
 
@@ -199,7 +211,7 @@
                                         <label>Cheque Number:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="2" type="text" name="chequeNumber" id="chequeNumber" value=""/>
+                                        <input class="IASTextBox" TABINDEX="3" type="text" name="chequeNumber" id="chequeNumber" value=""/>
                                     </span>
                                 </div>
                             </div>
@@ -235,19 +247,19 @@
                                     </span>
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="4" readonly size="10" type="text" id="from" name="from"/>
+                                        <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
                                     </span>
                                     <span class="IASFormDivSpanForHyphen">
                                         <label> to </label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="to" name="to"/>
+                                        <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <input class="IASButton" TABINDEX="6" type="button" value="Search" onclick="searchInwards()"/>
-                                <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
+                                <input class="IASButton" TABINDEX="7" type="button" value="Search" onclick="searchInwards()"/>
+                                <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>

@@ -475,6 +475,7 @@ public class inwardModel extends JDSModel {
     public String searchInward() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
         String xml;
         String sql = Queries.getQuery("search_inwards");
+        String from = request.getParameter("from");
         String inwardNumber = request.getParameter("inwardNumber");
         String chequeNumber = request.getParameter("chequeNumber");
         String city = request.getParameter("city");
@@ -491,7 +492,10 @@ public class inwardModel extends JDSModel {
         // get the connection from base class
         Connection conn = this.getConnection();
 
-        //double totalPages = 0;
+        if (from != null && from.length() > 0) {
+            sql += " and t1.from like" + "'%" + from + "%'";
+        }
+
 
         if (inwardNumber != null && inwardNumber.length() > 0) {
             sql += " and inwardNumber like" + "'%" + inwardNumber + "%'";

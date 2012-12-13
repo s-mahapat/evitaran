@@ -453,7 +453,7 @@
                 <label>Receipt Number:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" maxlength="11" TABINDEX="22" type="text" name="receiptNumber" id="receiptNumber" value="${inwardFormBean.receiptNumberAsText}"/>
+                <input class="IASDisabledTextBox" maxlength="11" disabled TABINDEX="22" type="text" name="receiptNumber" id="receiptNumber" value="${inwardFormBean.receiptNumberAsText}"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
