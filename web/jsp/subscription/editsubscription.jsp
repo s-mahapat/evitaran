@@ -13,10 +13,10 @@
         <script type="text/javascript" src="js/common.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/editsubscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/jquery/jquery.blockUI.js"%>"></script>
+        <script type="text/javascript" src="js/jquery/jquery.multiselect.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/jquery/jquery.multiselect.css"%>"/>
         <script type="text/javascript">
             $(document).ready(function(){
-                $().ajaxStart($.blockUI).ajaxStop($.unblockUI);
                 getSubscriptionInfo();
             })
         </script>

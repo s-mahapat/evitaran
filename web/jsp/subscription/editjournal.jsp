@@ -31,6 +31,12 @@
                         $("#journalName").append("<option value='" + groupid + "'>" + journalName + "</option");
                     });
                 });
+                $("#journalName").multiselect({
+                    noneSelectedText: 'Select Journals',
+                    height: 300,
+                    selectedList: 2,
+                    selectedText: "# of # selected"
+                });
             },
             complete: function(){
                 var html=null;
@@ -44,6 +50,7 @@
         var szStartYear = null;
         var szEndYear = null;
         var szStartMonth = null;
+        var szCopies = null;
         $('select#subscriptionStartYear').find('option').each(function() {
             szStartYear = (szStartYear == null) ? $(this).val() + ":" + $(this).val() : szStartYear + ";" + $(this).val() + ":" + $(this).val();
         });
@@ -54,6 +61,10 @@
 
         $('select#startMonth').find('option').each(function() {
             szStartMonth = (szStartMonth == null) ? $(this).val() + ":" + $(this).text() : szStartMonth + ";" + $(this).val() + ":" + $(this).text();
+        });
+
+        $('select#copies').find('option').each(function() {
+            szCopies = (szCopies == null) ? $(this).val() + ":" + $(this).text() : szCopies + ";" + $(this).val() + ":" + $(this).text();
         });
 
         var selectedRowID = null;
@@ -129,7 +140,7 @@
                     align:"center",
                     editable: true,
                     edittype:'select',
-                    editoptions:{value: szEndYear}
+                    editoptions:{value: szStartYear}
 
                 },
                 {
@@ -138,8 +149,9 @@
                     width:30,
                     align:"center",
                     editable: true,
-                    edittype:'text',
-                    editrules: {required: true, minValue: 1, integer: true }
+                    edittype:'select',
+                    editoptions:{value: szCopies}
+                    //editrules: {required: true, minValue: 1, integer: true }
                 },
                 {
                     name:"total",
@@ -174,6 +186,30 @@
                             reloadAfterSubmit: true,
                             recreateForm: true,
                             closeAfterEdit: true,
+                            beforeSubmit: function(postdata, formid){
+                                var subscriberTypeID = $("#subtypeid").val();
+                                // get the selected row
+                                var rowid = jQuery("#newSubscription").jqGrid('getGridParam', 'selrow');
+
+                                // get the journal group id
+                                var journalGroupID = jQuery("#newSubscription").jqGrid('getCell', rowid, 'journalGroupID');
+                                var _startyr = parseInt(postdata.startYear);
+                                var _endyr = parseInt(postdata.endYear);
+                                var _startmonth = parseInt(postdata.startMonth);
+                                var _years =  _endyr - _startyr + 1;
+                                // handle the case if startmonth is > Jan
+                                if(_startmonth > 1){
+                                    _years = _endyr - _startyr;
+                                }
+
+                                // get the price of the edited data, do not allow to save if invalid
+                                var price = getPrice(_startyr, _years, journalGroupID, subscriberTypeID);
+                                if(price[0] > -1){
+                                    return([true,""]);
+                                }else{
+                                    return([false,"Invalid subscription. Check subscription period"]);
+                                }
+                            },
                             afterSubmit:function(response, postdata){
                                 jQuery("#newSubscription").setGridParam({ datatype: "xml" });
                                 jQuery("#newSubscription").trigger("reloadGrid");
@@ -250,7 +286,7 @@
 <fieldset class="subMainFieldSet">
     <legend>Select Journal</legend>
     <%@include file="selectjournal.jsp" %>
-    
+
     <div class="IASFormFieldDiv" id="newSubscriptiondiv" style="margin-top: 15px;">
         <table class="datatable" id="newSubscription"></table>
         <div id="pager"></div>

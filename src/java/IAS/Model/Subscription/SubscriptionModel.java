@@ -446,7 +446,7 @@ public class SubscriptionModel extends JDSModel {
             sql = Queries.getQuery("get_subscription_detail_by_subscription_id");
         }
 
-        try (PreparedStatement st = conn.prepareStatement(sql);) {
+        try (PreparedStatement st = _conn.prepareStatement(sql);) {
             st.setInt(1, _id);
             try (ResultSet rs = st.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);

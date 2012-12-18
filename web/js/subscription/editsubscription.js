@@ -10,15 +10,22 @@ function addJournal(){
     var userSelection = getselected(document.getElementById("journalName"));
     $.extend(journalNameToGroupIDMap, userSelection);
     $.each(userSelection,function(selectedJournalGroupName,selectedJournalGroupCode){
-        
+
         if(isDuplicate(selectedJournalGroupName)){
             alert("An entry for the journal " + selectedJournalGroupName + " already exists. Please edit the existing entry");
             return true;
         }
 
         //else get the price details from the server
-        startYear = $("#subscriptionStartYear").val();
-        numYears = $("#endYear").val() - startYear + 1; // +1 to include the current year
+        startYear = parseInt($("#subscriptionStartYear").val());
+        numYears = parseInt($("#endYear").val());
+        startmonth = parseInt($("#startMonth").val());
+        // handle the case where the start month may not be Jan
+        if(startmonth > 1){
+            endyear = startYear + numYears;
+        }else{
+            endyear = startYear + numYears - 1;
+        }
         priceInfo = getPrice(startYear, numYears, selectedJournalGroupCode, subscriberType);
         price = priceInfo[1];
         if(price != -1){
@@ -32,7 +39,7 @@ function addJournal(){
                     journalGroupID: selectedJournalGroupCode,
                     startYear: startYear,
                     startMonth: $("#startMonth").val(),
-                    endYear: $("#endYear").val(),
+                    endYear: endyear,
                     copies: $("#copies").val(),
                     total: price * $("#copies").val(),
                     journalPriceGroupID: priceInfo[0]
@@ -59,14 +66,14 @@ function addJournal(){
         }
         return(true);
     });
-    
+
     return(bRet);
 }
 
 function isDuplicate(journalGroupName){
     var arrRowIds = $("#newSubscription").getDataIDs();
     for(i=0; i<arrRowIds.length; i++){
-        if($("#newSubscription").getCell(arrRowIds[i], "journalGroupName") == journalGroupName){            
+        if($("#newSubscription").getCell(arrRowIds[i], "journalGroupName") == journalGroupName){
             return true;
         }
     }
@@ -83,9 +90,9 @@ function getSubscriptionInfo(){
         success: function(xmlResponse, textStatus, jqXHR){
 
             $(xmlResponse).find("results").find("row").each(function(){
-                
+
                 var agentName = $(this).find("agentName").text();
-                
+
                 // if agent is present set the totalsubscription value and balance to 0
                 if(agentName.length > 0 && isEmptyValue(agentName) == false){
                     $("#subscriptionTotalValue").val(0);
@@ -97,9 +104,9 @@ function getSubscriptionInfo(){
                     $("#subscriptionTotalValue").val($(this).find("subscriptionTotal").text());
                     $("#balance").val($(this).find("balance").text());
                     $("#amount").val($(this).find("amount").text());
-                }                               
-                $("#inwardNumber").val($(this).find("inwardNumber").text());                
-                
+                }
+                $("#inwardNumber").val($(this).find("inwardNumber").text());
+
             });
         },
         error: function(jqXHR,textStatus,errorThrown){

@@ -15,7 +15,7 @@
         </span>
 
         <span class="IASFormDivSpanInputBox">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="subscriptionStartYear" id="subscriptionStartYear" onchange="setEndYear()">
+            <select class="IASComboBoxMandatory" TABINDEX="11" name="subscriptionStartYear" id="subscriptionStartYear" onchange="">
                 <%
                     int year = Integer.parseInt(util.getDateString("yyyy"));
                     for (int i = year; i <= year + 4; i++) {
