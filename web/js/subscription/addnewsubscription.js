@@ -4,6 +4,7 @@ var subscriptionSaved = false
 
 function addJournal(){
 
+    bRet = false;
     // merge the old selected data and the new one, else we loose the data while saving the
     // subscription
     var userSelection = getselected(document.getElementById("journalName"));
@@ -21,14 +22,23 @@ function addJournal(){
             * Cannot add the same journal twice.
             */
             if(intIndex > -1){
-                alert("An entry for the journal " + selectedJournalGroupName + " already exists.Cannot subscribe to the same journal twice");
+                alert("An entry for the journal " + selectedJournalGroupName + " already exists. You cannot add the same journal twice");
                 return true;
             }
         }
 
         //else get the price details from the server
-        startYear = $("#subscriptionStartYear").val();
-        numYears = $("#endYear").val() - startYear + 1; // +1 to include the current year
+        startYear = parseInt($("#subscriptionStartYear").val());
+        numYears = parseInt($("#endYear").val());
+        startmonth = parseInt($("#startMonth").val());
+        // handle the case where the start month may not be Jan
+        if(startmonth > 1){
+            endyear = startYear + numYears;
+        }else{
+            endyear = startYear + numYears - 1;
+        }
+
+        //numYears = $("#endYear").val() - startYear + 1; // +1 to include the current year
         priceDetails = getPrice(startYear, numYears, selectedJournalGroupCode, subscriberType);
         var price = priceDetails[1];
         if(price != null && price != -1){ // check if the price group id is -1
@@ -38,7 +48,7 @@ function addJournal(){
                 "journalCost": price, //get the price
                 "startYear": $("#subscriptionStartYear").val(),
                 "startMonth": $("#startMonth").val(), //_JDSConstants.monthNames[$("#startMonth").val() - 1],
-                "endYear" : $("#endYear").val(),
+                "endYear" : endyear,
                 "Copies": $("#copies").val(),
                 "Total": price * $("#copies").val(),
                 "delete":"<img src='images/delete.png' onclick=\"deleteRow('" + selectedJournalGroupName + "')\"/>"

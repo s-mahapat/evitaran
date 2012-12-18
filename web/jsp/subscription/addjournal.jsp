@@ -23,6 +23,12 @@
                         $("#journalName").append("<option value='" + groupid + "'>" + journalName + "</option");
                     });
                 });
+                $("#journalName").multiselect({
+                    noneSelectedText: 'Select Journals',
+                    height: 300,
+                    selectedList: 2,
+                    selectedText: "# of # selected"
+                });
             },
             complete: function(){
                 var html=null;
@@ -37,7 +43,7 @@
             //data: "subscriberNumber=" + $("#subscriberNumber").val(),
             datatype: 'local',
             mtype: 'GET',
-            height: 150,
+            height: 160,
             autowidth: true,
             forceFit: true,
             sortable: true,

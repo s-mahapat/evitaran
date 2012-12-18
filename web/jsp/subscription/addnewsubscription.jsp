@@ -19,14 +19,15 @@
         <script type="text/javascript" src="js/common.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/addnewsubscription.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/subscription.js"%>"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/jquery/jquery.blockUI.js"%>"></script>
+        <script type="text/javascript" src="js/jquery/jquery.multiselect.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/jquery/jquery.multiselect.css"%>"/>
         <script type="text/javascript">
             $(document).ready(function(){
-                $().ajaxStart($.blockUI).ajaxStop($.unblockUI);
-                listSubscription("View");
+                //listSubscription("View");
                 $("#purpose").val(<%=request.getParameter("purpose")%>);
             })
         </script>
+
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
@@ -49,6 +50,11 @@
 
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASDisabledTextBox" TABINDEX="1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
+                                    </span>
+
+                                    <span class="IASFormDivSpanLabelLeftAligned">
+                                        <label>Subscriber Type:</label>
+                                        <label>${subscriberFormBean.subtypedesc}</label>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -75,7 +81,7 @@
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Subscription Number:</label>
+                                        <label>Subscription No:</label>
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">

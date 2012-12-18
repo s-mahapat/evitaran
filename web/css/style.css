@@ -184,7 +184,7 @@ A:active {
 }
 
 .MainFieldset legend{
-    font-size: large;
+    font-size: medium;
     font-weight: bold;
 }
 
@@ -194,7 +194,7 @@ A:active {
     background: none repeat scroll 0 0 #F6F6F6; /*rgb(232,245,248);
     background-image: url("../images/bg.png");*/
     padding: 5px 5px 10px 5px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .subMainFieldSet legend{
@@ -339,22 +339,21 @@ A:active {
 
 .IASFormLeftDiv{
     float: left;
-    width: 50%;
+    width: 49%;
     padding: 5px;
 }
 
 .IASFormRightDiv{
-    width: 45%;
+    width: 49%;
     float: right;
     padding: 5px;
 }
 
 .IASFormFieldDiv{
-    clear: both;
+    /*clear: both;*/
     margin: 4px;
     float: left;
     width: 98%;
-    /*padding: 10px;*/
 }
 
 .IASFormCenterDiv{
@@ -370,7 +369,13 @@ A:active {
     margin-left: 0px;
     float: left;
     text-align: right;
-    width: 150px;
+    width: 120px;
+}
+
+.IASFormDivSpanLabelLeftAligned{
+    margin-left: 5px;
+    float: left;
+    text-align: left;
 }
 
 .IASFormDivSpanLabelMax{

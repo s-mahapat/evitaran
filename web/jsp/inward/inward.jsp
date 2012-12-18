@@ -211,24 +211,6 @@
                 <input class="IASEmailTextBox" maxlength="64" TABINDEX="7" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${inwardFormBean.email}"/>
             </span>
         </div>
-
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Institution:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" maxlength="64" TABINDEX="8" type="text" name="institution" id="institution" value="${inwardFormBean.institution}"/>
-            </span>
-        </div>
-
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Department:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" maxlength="64" TABINDEX="9" type="text" name="department" id="department" value="${inwardFormBean.department}"/>
-            </span>
-        </div>
     </div>
 
     <%-- Inward Info right div --%>
@@ -242,20 +224,13 @@
             <span class="IASFormDivSpanInputBox">
                 <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<jsp:getProperty name="inwardFormBean" property="inwardNumber"/>"/>
             </span>
-        </div>
-
-
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Inward Date:</label>
+            <span class="IASFormDivSpanLabelLeftAligned">
+                <label>Date:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="inwardCreationDate" id="inwardCreationDate" value="${inwardFormBean.inwardCreationDate}"/>
             </span>
         </div>
-
-
-
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Agent:</label>
@@ -317,6 +292,23 @@
                 <button type="button" id="btnResetSubscription" TABINDEX="14">Reset</button>
                 <%--<input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
                 <input class="IASButton" TABINDEX="-1" type="button" name="btnResetSubscriber" id="btnResetSubscriber" value="Reset" onclick="clearSubscriber()"/>--%>
+            </span>
+        </div>
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Institution:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBoxWide" maxlength="64" TABINDEX="8" type="text" name="institution" id="institution" value="${inwardFormBean.institution}"/>
+            </span>
+        </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Department:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBoxWide" maxlength="64" TABINDEX="9" type="text" name="department" id="department" value="${inwardFormBean.department}"/>
             </span>
         </div>
     </div>
@@ -491,7 +483,7 @@
         </div>
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Acknowledgement Date:</label>
+                <label>Ack Date:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASDateTextBox" TABINDEX="27" disabled type="text" name="ackDate" id="ackDate" value="${inwardFormBean.ackDate}"/>
