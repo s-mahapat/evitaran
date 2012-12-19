@@ -16,7 +16,9 @@
             var isPageLoaded = true;
 
             $(document).ready(function(){
-                $("#btnNext").attr("disabled","disabled");
+                //set the enter key action to search
+                setEnterKeyAction(searchInwards);
+
                 // draw the date picker.
                 jQueryDatePicker("from","to");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
@@ -38,16 +40,16 @@
                     scrollOffset: 20,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Select','Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','PurposeID','Action'],
+                    colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Purpose','PurposeID','Action'],
                     colModel :[
-                        {
+                        /*{
                             name:'Select',
                             index:'select',
                             width:50,
                             align:'center',
                             xmlmap:'inwardNumber',
                             formatter: selectInwardFormatter
-                        },
+                        },*/
                         {name:'InwardNo', index:'inward_id', sortable: false,key: true, width:50, align:'center', xmlmap:'inwardNumber'},
                         {name:'SubscriberId', index:'subscriber_id', sortable: false, width:50, align:'center', xmlmap:'subscriberId'},
                         {name:'From', index:'from', sortable: false, width:80, align:'center', xmlmap:'from'},
@@ -80,10 +82,11 @@
                     viewrecords: true,
                     gridview: true,
                     caption:'&nbsp;',
+                    scrollrows: true,
                     gridComplete: function() {
                         var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
-                            $("#btnNext").removeAttr("disabled");
+                            $("#btnNext").button("enable");
                         }
                     },
                     beforeRequest: function(){
@@ -91,9 +94,13 @@
                     },
                     loadError: function(xhr,status,error){
                         alert("Failed getting data from server" + status);
+                    },
+                    onSelectRow: function(rowid, status, e){
+                        //selectedSubscriberId = rowid;
+                        var purposeId = jQuery("#inwardTable").jqGrid('getCell', rowid, "PurposeID");
+                        setInwardSubscriber(rowid, purposeId);
                     }
                 });
-
             });
 
 
@@ -112,6 +119,8 @@
                         }});
                     jQuery("#inwardTable").trigger("clearGridData");
                     jQuery("#inwardTable").trigger("reloadGrid");
+                }else{
+                    $("#btnNext").button("disable");
                 }
 
             }
@@ -123,7 +132,7 @@
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
             <%--<form method="post" action="<%=request.getParameter("next")%>" name="searchInwardForm" onsubmit="return isInwardSelected()">--%>
-            <form method="post" action="inward?action=processinward" name="processInwardForm" onsubmit="return isInwardSelected()">
+            <form method="post" action="inward?action=processinward" name="processInwardForm" id="processInwardForm" onsubmit="return isInwardSelected()">
                 <%--<input type="hidden" id="nextAction" name ="nextAction" value="<%=request.getParameter("nextAction")%>"/>
                 <input type="hidden" id="inwardPurpose" name ="inwardPurpose" value="<%=request.getParameter("inwardPurpose")%>"/>
 
@@ -227,7 +236,7 @@
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
-                                    <input class="IASButton" TABINDEX="8" type="submit" value="Next" id="btnNext" name="btnNext"/>
+                                    <input class="IASButton" TABINDEX="8" type="submit" disabled value="Next" id="btnNext" name="btnNext"/>
                                 </div>
                             </div>
                         </fieldset>

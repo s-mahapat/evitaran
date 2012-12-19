@@ -37,17 +37,17 @@
                     sortorder: 'desc',
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Select','Inward No','Subscriber Id','Agent', 'From','Received Date','City','Cheque#','Amount','Purpose','PurposeID','Action'],
+                    colNames:['Inward No','Subscriber Id','Agent', 'From','Received Date','City','Cheque#','Amount','Purpose','PurposeID','Action'],
                     colModel :[
-                        {
+                        /*{
                             name:'Select',
                             index:'select',
                             width:30,
                             align:'center',
                             xmlmap:'inwardNumber',
-                            sortable: false,
-                            formatter: selectInwardFormatter
-                        },
+                            sortable: false
+                            //formatter: selectInwardFormatter
+                        },*/
                         {name:'InwardNo', sortable: false, index:'inward_id', width:40, align:'center', xmlmap:'inwardNumber'},
                         {name:'SubscriberId'
                             , index:'subscriber_id'
@@ -108,6 +108,7 @@
                         var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
                             $("#btnNext").button("enable");
+                            jQuery("#inwardTable").jqGrid('setSelection', ids[0]);
                         }
                     },
                     beforeRequest: function(){
@@ -117,15 +118,27 @@
                         alert("Failed getting data from server" + status);
                     },
                     onSelectRow: function(rowid, status, e){
-                        selectedSubscriberId = rowid;
+                        selectRow(rowid);
                     }
 
                 });
 
+                // enable scrolling of the Grid with the arrow keys
+                // Pressing ENTER will process the Inward
+                jQuery("#inwardTable").jqGrid('bindKeys',{scrollingRows: true, onEnter: function(rowid){
+                        selectRow(rowid);
+                        $("#processInwardForm").submit();
+                    }});
+
             });
 
-            // jquery date picker
-            //jQueryDatePicker("from", "to");
+            /*
+             * selects a row and highlights the selected row
+             */
+            function selectRow(rowid){
+                var purposeId = jQuery("#inwardTable").jqGrid('getCell', rowid, "PurposeID");
+                setInwardSubscriber(rowid, purposeId);
+            }
 
             // called when the search button is clicked
             function searchInwards(){
@@ -175,7 +188,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="inward?action=processinward" name="processInwardForm" onsubmit="return isInwardSelected()">
+            <form method="post" action="inward?action=processinward" name="processInwardForm" id="processInwardForm" onsubmit="return isInwardSelected()">
                 <input type="hidden" id="inwardNumber" name ="inwardNumber" value=""/>
                 <input type="hidden" id="subscriberNumber" name ="subscriberNumber" value=""/>
                 <input type="hidden" id="purpose" name ="purpose" value=""/>

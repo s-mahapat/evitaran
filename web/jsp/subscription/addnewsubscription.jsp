@@ -53,8 +53,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanLabelLeftAligned">
-                                        <label>Subscriber Type:</label>
-                                        <label>${subscriberFormBean.subtypedesc}</label>
+                                        <label>Subscriber Type: ${subscriberFormBean.subtypeCode}</label>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">

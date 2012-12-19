@@ -57,7 +57,7 @@
                         html += "<tr>";
                         var _rowspan = 1;
                         for(var id in JournalNamesHash){
-                            _total += JournalPriceHash[id];
+                            //_total += JournalPriceHash[id];
                             _rowspan = JournalNamesHash[id].length;
                             var _journals = JournalNamesHash[id];
                             var bprinted = false;
@@ -74,6 +74,7 @@
 
 
                         }
+                        _total = ${invoiceFormBean.amount};
                         html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Total</td><td>" + _total + "</td></tr>"
                         html += "</tbody>";
                         var _orightml = $(".datatable").html();

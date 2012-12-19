@@ -10,7 +10,7 @@ public class subscriberFormBean extends JDSBean {
     private String subscriberCreationDate = util.getDateString();
     private String subscriberName = "";
     private String invoiceAddress = "";
-    private String shippingAddress = "";    
+    private String shippingAddress = "";
     private String city = "";
     private String district = "";
     private String state = "";
@@ -18,6 +18,7 @@ public class subscriberFormBean extends JDSBean {
     private int pincode = 0;
     private String subtype = "";
     private String subtypedesc = "";
+    private String subtypecode;
     private String department = "";
     private String institution = "";
     private String email = "";
@@ -36,7 +37,7 @@ public class subscriberFormBean extends JDSBean {
     public void setSubscriberNumber(String _SubscriberNumber) {
         this.subscriberNumber = _SubscriberNumber;
     }
-    
+
     public int getSubscriberID() {
         return this.subscriberID;
     }
@@ -44,7 +45,7 @@ public class subscriberFormBean extends JDSBean {
     public void setSubscriberID(int _SubscriberID) {
         this.subscriberID = _SubscriberID;
     }
-    
+
     public int getSubtypeID() {
         return this.subtypeID;
     }
@@ -80,7 +81,7 @@ public class subscriberFormBean extends JDSBean {
     public void setShippingAddress(String _ShippingAddress) {
         this.shippingAddress = _ShippingAddress;
     }
-    
+
     public String getInvoiceAddress() {
         if(this.sameInvoiceAddress == true){
             return this.shippingAddress;
@@ -104,7 +105,7 @@ public class subscriberFormBean extends JDSBean {
 
     /* Subscriber District */
     public String getDistrict() {
-        String lclDistrict = "";
+        String lclDistrict;
         if (this.district == null || this.district.equals("0")) {
             lclDistrict = "";
         } else {
@@ -169,6 +170,15 @@ public class subscriberFormBean extends JDSBean {
         this.subtypedesc = _subtypedesc;
     }
 
+    /*Subscriber Type code*/
+    public void setSubtypeCode(String _subtypecode) {
+        this.subtypecode = _subtypecode;
+    }
+
+    public String getSubtypeCode() {
+        return this.subtypecode;
+    }
+
     /*Department*/
     public String getDepartment() {
         return this.department;
@@ -219,11 +229,11 @@ public class subscriberFormBean extends JDSBean {
     public void setDeactivationDate(String _deactivationDate){
         this.deactivationDate = _deactivationDate;
     }
-    
+
     public boolean isSameInvoiceAddress(){
         return this.sameInvoiceAddress;
     }
-    
+
     public void setSameInvoiceAddress(boolean _sameInvoiceAddress){
         this.sameInvoiceAddress = _sameInvoiceAddress;
     }

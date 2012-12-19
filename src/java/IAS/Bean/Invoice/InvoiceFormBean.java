@@ -34,29 +34,38 @@ public class InvoiceFormBean {
     private String subscriberTypeText;
     private float balance;
     private float amount;
+    private float inwardamount;
     private int invoiceTypeID;
 
-    public int getInvoiceTypeID(){
+    public int getInvoiceTypeID() {
         return this.invoiceTypeID;
     }
 
-    public void setInvoiceTypeID(int _type){
+    public void setInvoiceTypeID(int _type) {
         this.invoiceTypeID = _type;
     }
 
-    public float getAmount(){
+    public float getAmount() {
         return this.amount;
     }
 
-     public void setAmount(float _amount){
+    public void setAmount(float _amount) {
         this.amount = _amount;
     }
 
-    public float getBalance(){
+    public float getInwardAmount() {
+        return this.inwardamount;
+    }
+
+    public void setInwardAmount(float _amount) {
+        this.inwardamount = _amount;
+    }
+
+    public float getBalance() {
         return this.balance;
     }
 
-     public void setBalance(float _balance){
+    public void setBalance(float _balance) {
         this.balance = _balance;
     }
 
@@ -76,36 +85,37 @@ public class InvoiceFormBean {
         this.subscriberTypeText = _subtypetext;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return this.email;
     }
 
-    public void setEmail(String _email){
+    public void setEmail(String _email) {
         this.email = _email;
     }
 
     /*
      * Subscriber Name
      */
-    public String getSubscriberName(){
+    public String getSubscriberName() {
         return this.subscriberName;
     }
 
-    public void setSubscriberName(String _name){
+    public void setSubscriberName(String _name) {
         this.subscriberName = _name;
     }
 
-    public String getSubscriberNumber(){
+    public String getSubscriberNumber() {
         return this.subsciberNumber;
     }
 
-    public void setSubscriberNumber(String _number){
+    public void setSubscriberNumber(String _number) {
         this.subsciberNumber = _number;
     }
     /*
      * -----------------------------------------------------------------------
      * Invoice ID
      */
+
     public int getInvoiceID() {
         return this.invoiceID;
     }
@@ -258,5 +268,4 @@ public class InvoiceFormBean {
     public void setPincode(int _pincode) {
         this.pincode = _pincode;
     }
-
 }

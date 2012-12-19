@@ -8,6 +8,10 @@ function addJournal(){
     // merge the old selected data and the new one, else we loose the data while saving the
     // subscription
     var userSelection = getselected(document.getElementById("journalName"));
+    if(jQuery.isEmptyObject( userSelection )){
+        alert("Please select journals from the list");
+        return false;
+    }
     $.extend(journalNameToGroupIDMap, userSelection);
 
     if(subscriberType == 0){
@@ -65,8 +69,6 @@ function addJournal(){
         return(true);
     });
     return(bRet);
-
-
 }
 
 function updateTotal(val){

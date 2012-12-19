@@ -104,13 +104,6 @@ function clearSubscription(){
     $("#subscriptionid").val("");
 }
 
-
-/*function setInwardSubscriber(inwardId,subscriberId, purpose){
-    selectedInward = inwardId;
-    selectedSubscriberId = subscriberId || null;
-    selectedInwardPurpose = purpose;
-}*/
-
 function setInwardSubscriber(rowid, purpose){
     selectedSubscriberId = jQuery("#inwardTable").jqGrid('getCell',rowid,'SubscriberId').toString();
     selectedInward = rowid;

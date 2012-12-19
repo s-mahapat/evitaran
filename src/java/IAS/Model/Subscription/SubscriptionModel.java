@@ -34,6 +34,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.log4j.Logger;
+
 /**
  *
  * @author Shailendra Mahapatra
@@ -65,6 +66,10 @@ public class SubscriptionModel extends JDSModel {
         } else {
             this.inwardNumber = null;
         }
+    }
+
+    public SubscriptionModel() throws SQLException{
+
     }
 
     public String addSubscription() throws IllegalAccessException, ParseException,
@@ -144,9 +149,10 @@ public class SubscriptionModel extends JDSModel {
                     // Update the Performa Invoice
                     if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
                         this.updateInvoice(1);
-                    }else if(this._inwardFormBean.getAmount() < subscriptionTotal){
+                    } else if (this._inwardFormBean.getAmount() < subscriptionTotal) {
                         // create an invoice if the subscription value is greater
                         // than what he has paid in the inward
+                        _subscriptionBean.setBalance(subscriptionTotal - this._inwardFormBean.getAmount());
                         this.updateInvoice(2);
                     }
 
@@ -506,7 +512,7 @@ public class SubscriptionModel extends JDSModel {
             xml = xstream.toXML(sub_details);
         } catch (Exception e) {
             logger.error(e);
-        }finally{
+        } finally {
             return xml;
         }
     }
@@ -536,11 +542,11 @@ public class SubscriptionModel extends JDSModel {
             // as JournalGrpPrice * no of journal in the grp
             // work around for the sql query
             Iterator iterator = sub_details.iterator();
-            while(iterator.hasNext()){
-                IAS.Bean.Subscription.SubscriptionDetail detail = (IAS.Bean.Subscription.SubscriptionDetail)iterator.next();
-                if(JournalGrpIDsMap.containsKey(detail.getJournalGroupID())){
+            while (iterator.hasNext()) {
+                IAS.Bean.Subscription.SubscriptionDetail detail = (IAS.Bean.Subscription.SubscriptionDetail) iterator.next();
+                if (JournalGrpIDsMap.containsKey(detail.getJournalGroupID())) {
                     detail.setRate(0);
-                }else{
+                } else {
                     JournalGrpIDsMap.put(detail.getJournalGroupID(), 1);
                 }
             }
@@ -688,6 +694,10 @@ public class SubscriptionModel extends JDSModel {
 
         //subscription ID
         int SubscriptionID = _subscriptionBean.getSubscriptionID();
+        float amount = _subscriptionBean.getSubscriptionTotal();
+        if (invoice_type_id == 2) {
+            amount = _subscriptionBean.getBalance();
+        }
         invoiceFormBean.setSubscriptionID(SubscriptionID);
 
         //upadte _invoiceFormBean
@@ -700,6 +710,7 @@ public class SubscriptionModel extends JDSModel {
             st.setInt(++paramIndex, SubscriptionID);
             st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
             st.setInt(++paramIndex, invoice_type_id);
+            st.setFloat(++paramIndex, amount);
             if (st.executeUpdate() == 1) {
                 try (ResultSet rs = st.getGeneratedKeys()) {
                     rs.first();
@@ -840,6 +851,7 @@ public class SubscriptionModel extends JDSModel {
                         invoiceNumber = this.getNextInvoiceNumber(invoiceNumber);
                         int subscription_id = rs.getInt(2);
                         int invoice_id = 0;
+                        float rate = getNextYearSubscriptionRate(subscription_id);
 
                         // insert the invoice and get the invoice id
                         // the query name from the jds_sql properties files in WEB-INF/properties folder
@@ -848,7 +860,8 @@ public class SubscriptionModel extends JDSModel {
                             _st.setString(1, invoiceNumber);
                             _st.setInt(2, subscription_id);
                             _st.setDate(3, util.dateStringToSqlDate(util.getDateString()));
-                            _st.setInt(4, 3);
+                            _st.setInt(4, 3); // invoice type
+                            _st.setFloat(5, rate);
                             if (_st.executeUpdate() == 1) {
                                 try (ResultSet _rs = _st.getGeneratedKeys()) {
                                     _rs.first();
@@ -874,5 +887,87 @@ public class SubscriptionModel extends JDSModel {
             _conn.close();
         }
         return true;
+    }
+
+    private float getNextYearSubscriptionRate(int subscription_id) throws SQLException {
+
+        // get subscription info for subscription id
+        String sql = Queries.getQuery("get_subscription_details_prl");
+        float _rate = 0;
+
+        Connection _conn = this.getConnection();
+
+        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+            pst.setInt(1, subscription_id);
+            pst.setInt(2, Calendar.getInstance().get(Calendar.YEAR));
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    String journalName = rs.getString("journalGroupName");
+                    int period = rs.getInt("period");
+                    int subtype = rs.getInt("subtype");
+                    int journalGrpID = rs.getInt("journalGroupID");
+                    int startYear = rs.getInt("startYear");
+                    int endYear = rs.getInt("endYear");
+                    int startMonth = rs.getInt("startMonth");
+                    int _years;
+
+                    // increase the start year by 1, since we are calculating PRL/invoice for
+                    // next year
+                    int newstartYear = endYear + 1;
+
+                    _rate = getRate(journalGrpID, subtype, newstartYear, period);
+
+                    // in case of a legacy subscription we do not have the price group id
+                    // we need to determine that here
+                    if (_rate == 0) {
+                        if (endYear == 0 || endYear > 2012) {
+                            logger.error(String.format("End year for subscription %s is %d", subscription_id, endYear));
+                        }
+
+                        // fix the period of subscription to 1 year if we do not have an entry for this subscription period
+                        //_years = 1;
+
+                        // save to the global variable
+                        //years = String.valueOf(_years);
+
+                        // if the subscription starts from any month other than Jan, we need to calculate the
+                        // subscription period differently
+                        if (startMonth > 1) {
+                            _years = endYear - startYear;
+                        } else {
+                            _years = endYear - startYear + 1;
+                        }
+
+                        _rate = getRate(journalGrpID, subtype, newstartYear, _years);
+                        if (_rate == 0) {
+                            logger.error(String.format("Rate is Zero for JGrp=%s, subtype=%d, startYear=%d, period=%d", journalName, subtype, newstartYear, _years));
+                        }
+                    }
+                }
+            }
+        }
+        finally{
+            _conn.close();
+        }
+        return _rate;
+    }
+
+    private float getRate(int journalGrpID, int subtypeID, int startYear, int period) throws SQLException {
+
+        String sql = Queries.getQuery("get_journal_grp_price");
+        int _rate = 0;
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, journalGrpID);
+            pst.setInt(2, subtypeID);
+            pst.setInt(3, startYear);
+            pst.setInt(4, period);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.first()) {
+                    _rate = rs.getInt("rate");
+                }
+            }
+        } finally {
+            return (float) _rate;
+        }
     }
 }

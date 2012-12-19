@@ -376,6 +376,7 @@ A:active {
     margin-left: 5px;
     float: left;
     text-align: left;
+    max-width: 280px;
 }
 
 .IASFormDivSpanLabelMax{

@@ -6,6 +6,7 @@ package IAS.Class;
 
 import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Model.Invoice.InvoiceModel;
+import IAS.Model.Subscription.SubscriptionModel;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -31,6 +32,7 @@ public class PlReferListPDF extends JDSPDF {
 
     private Connection conn = null;
     private InvoiceModel _InvoiceModel = null;
+    private SubscriptionModel _SubscriptionModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger(PlReferListPDF.class.getName());
     private String ctext;
 
@@ -38,6 +40,7 @@ public class PlReferListPDF extends JDSPDF {
         super();
         conn = Database.getConnection();
         _InvoiceModel = new InvoiceModel();
+        _SubscriptionModel = new SubscriptionModel();
         String sql = "select ctext from prl where year=?";
         try(PreparedStatement st = conn.prepareStatement(sql)){
             st.setInt(1, Calendar.getInstance().get(Calendar.YEAR));
@@ -231,7 +234,7 @@ public class PlReferListPDF extends JDSPDF {
         table.addCell(cell2);
         table.addCell(cell3);
 
-        int total = 0;
+        float total = 0;
 
         try (PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, _invoiceBean.getSubscriptionID());
@@ -240,44 +243,8 @@ public class PlReferListPDF extends JDSPDF {
                 while (rs.next()) {
                     String journalName = rs.getString("journalGroupName");
                     String years = String.valueOf(rs.getInt("period"));
-                    int _rate = rs.getInt("rate");
+                    float _rate = _invoiceBean.getAmount();
 
-                    // in case of a legacy subscription we do not have the price group id
-                    // we need to determine that here
-                    if (_rate == 0) {
-                        int subtype = _invoiceBean.getSubscriberType();
-                        int endYear = rs.getInt("endYear");
-                        int startYear = rs.getInt("startYear");
-                        int startMonth = rs.getInt("startMonth");
-                        int journalGrpID = rs.getInt("journalGroupID");
-                        int _years;
-
-                        if (endYear == 0 || endYear > 2012) {
-                            logger.error(String.format("End year for subscription %s is %d", _invoiceBean.getSubscriptionID(), endYear));
-                        }
-                        // increase the start year by 1, since we are calculating PRL/invoice for
-                        // next year
-                        int newstartYear = endYear + 1;
-
-                        // fix the period of subscription to 1 year
-                        //_years = 1;
-
-                        // if the subscription starts from any month other than Jan, we need to calculate the
-                        // subscription period differently
-                        if (startMonth > 1) {
-                            _years = endYear - startYear;
-                        } else {
-                            _years = endYear - startYear + 1;
-                        }
-
-                        // save to the global variable
-                        years = String.valueOf(_years);
-
-                        _rate = getRate(journalGrpID, subtype, newstartYear, _years);
-                        if (_rate == 0) {
-                            logger.error(String.format("Rate is Zero for JGrp=%s, subtype=%d, startYear=%d, period=%d", journalName, subtype, newstartYear, _years));
-                        }
-                    }
                     total += _rate;
                     String rate = String.valueOf(_rate);
 
@@ -338,24 +305,5 @@ public class PlReferListPDF extends JDSPDF {
         // add the letter body to the outer paragraph
         paragraphOuter.add(paragraphBody);
         return paragraphOuter;
-    }
-
-    private int getRate(int journalGrpID, int subtypeID, int startYear, int period) throws SQLException {
-
-        String sql = Queries.getQuery("get_journal_grp_price");
-        int _rate = 0;
-        try (PreparedStatement pst = conn.prepareStatement(sql)) {
-            pst.setInt(1, journalGrpID);
-            pst.setInt(2, subtypeID);
-            pst.setInt(3, startYear);
-            pst.setInt(4, period);
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.first()) {
-                    _rate = rs.getInt("rate");
-                }
-            }
-        } finally {
-            return _rate;
-        }
     }
 }

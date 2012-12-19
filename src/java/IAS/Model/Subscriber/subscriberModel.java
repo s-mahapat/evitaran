@@ -315,8 +315,7 @@ public class subscriberModel extends JDSModel {
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     BeanProcessor bProc = new BeanProcessor();
-                    Class type = Class.forName("IAS.Bean.Subscriber.subscriberFormBean");
-                    subscriberFormBean = (IAS.Bean.Subscriber.subscriberFormBean) bProc.toBean(rs, type);
+                    subscriberFormBean = bProc.toBean(rs, IAS.Bean.Subscriber.subscriberFormBean.class);
                 }
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);

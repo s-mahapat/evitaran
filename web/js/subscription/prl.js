@@ -9,7 +9,7 @@ function GeneratePRLGrid(){
         url:'subscription?action=genprlist',
         datatype: 'xml',
         mtype: 'GET',
-        height: 350,
+        height: 320,
         autowidth: true,
         forceFit: true,
         sortable: false,
@@ -17,12 +17,12 @@ function GeneratePRLGrid(){
         rownumbers: true,
         emptyrecords: "No record(s) to view",
         loadtext: "Loading...",
-        colNames:['Subscriber ID','Subscriber Number','Invoice Number','Subscriber Name','Subscription ID','End Year','Email','Status'],
+        colNames:['Subscriber ID','Subscriber Number','Invoice Number','Amount','Subscriber Name','Subscription ID','End Year','Email','Status'],
         colModel :[
         {
             name:'subid',
             index:'subid',
-            width:25,
+            width:22,
             align:'center',
             xmlmap:'subscriberID',
             sortable: false
@@ -45,6 +45,14 @@ function GeneratePRLGrid(){
             key: true
         },
         {
+            name:'amount',
+            index:'amount',
+            width:15,
+            align:'center',
+            xmlmap:'amount',
+            sortable: false
+        },
+        {
             name:'name',
             index:'name',
             width:50,
@@ -63,7 +71,7 @@ function GeneratePRLGrid(){
         {
             name:'endYear',
             index:'endYear',
-            width:10,
+            width:15,
             align:'center',
             sortable: true,
             xmlmap:'endYear'
@@ -71,7 +79,7 @@ function GeneratePRLGrid(){
         {
             name:'email',
             index:'email',
-            width:40,
+            width:35,
             align:'center',
             sortable: true,
             xmlmap:'email'
@@ -79,7 +87,7 @@ function GeneratePRLGrid(){
         {
             name:'status',
             index:'status',
-            width:15,
+            width:20,
             align:'center',
             xmlmap:'by_email',
             sortable: false,
