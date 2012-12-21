@@ -15,6 +15,7 @@ public class JDSConstants {
     public static int INWARD_PURPOSE_REPRINT = 6;
     public static int INWARD_PURPOSE_ADVERTISEMENT = 7;
     public static int INWARD_PURPOSE_MANUSCRIPT = 8;
+    public static int INWARD_PURPOSE_PAYMENT = 10;
     public static int INWARD_COMPLETE = 1;
 
     public static int INVOICE_REQUEST_FOR_INVOICE = 1;

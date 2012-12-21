@@ -133,10 +133,10 @@ function validateNewInward(){
         alert("Since you have created a miscellaneous inward, please fill in the remarks section");
         isInwardValid = false;
     }
-    else if(InwardPurpose == 'payment' && isEmptyValue($("#subscriptionid").val())){
+    /*else if(InwardPurpose == 'payment' && isEmptyValue($("#subscriptionid").val())){
         alert("Payment Inward cannot be saved without subscription.Please select a subscription to save the Inward.");
         return false;
-    }
+    }*/
     else if(InwardPurpose == 'payment' &&  ((parseFloat($("#amount").val()) <= 0) || isEmptyValue($("#paymentMode").val()))){
         alert("Payment Inward cannot be saved without amount and payment mode.\nPlease enter the amount and payment mode to save the Inward.");
         return false;

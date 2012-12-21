@@ -183,6 +183,7 @@ CREATE TABLE `invoice` (
   `subscriptionId` int(15) DEFAULT NULL,
   `invoiceCreationDate` date DEFAULT NULL,
   `invoice_type_id` int(11) NOT NULL DEFAULT '1',
+  `amount` float unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -258,9 +259,10 @@ DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`complete_non_process_inward` BEFORE INSERT
     ON jds.inward FOR EACH ROW
 BEGIN
-    if new.inwardPurpose in (6,7,8,9,10) then
+    if new.inwardPurpose in (6,7,8,9) then
       set new.completed = true;
-     end if;
+    end if;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -861,7 +863,11 @@ CREATE TABLE `subscription_rates` (
   `year` int(11) NOT NULL,
   `period` int(11) NOT NULL,
   `rate` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `subscription_rates_idx1` (`journalGroupId`),
+  KEY `subscription_rates_idx2` (`subtypeId`),
+  KEY `subscription_rates_idx3` (`year`),
+  KEY `subscription_rates_idx4` (`period`)
 ) ENGINE=InnoDB AUTO_INCREMENT=612 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1388,4 +1394,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-06  8:42:49
+-- Dump completed on 2012-12-21  8:22:36

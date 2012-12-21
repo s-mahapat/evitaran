@@ -201,6 +201,11 @@ public class inward extends JDSController {
                     request.setAttribute("missingissueFormBean", _missingissueFormBean);
                     url = "/missingissue?action=addInfo";
 
+                }else if (purposeID == JDSConstants.INWARD_PURPOSE_PAYMENT){
+                    request.setAttribute("inwardFormBean", _inwardFormBean);
+                    subscriberFormBean _subFormBean = _inwardModel.getSubscriberDetail();
+                    request.setAttribute("subscriberFormBean", _subFormBean);
+                    url = "/jsp/subscription/payment.jsp";
                 }
 
             } else if (action.equalsIgnoreCase("saveReturn")) {

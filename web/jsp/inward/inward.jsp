@@ -67,7 +67,7 @@
             }
             else {
                 //$("#btnSearchSubscriber").button("enable");
-                //$("#btnResetSubscriber").button("enable");
+                $("#btnResetSubscriber").button("enable");
                 $("#btnUE").button("disable");
                 $("#btnResetUE").button("disable");
             }
@@ -77,12 +77,12 @@
         $("#inwardPurpose").change(function(){
             var inward_purpose = $("#inwardPurpose").val();
             // enable the search subscription button only for inward of type 'payment'
-            if(inward_purpose.toLowerCase() == "payment"){
+            /*if(inward_purpose.toLowerCase() == "payment"){
                 enableSubscriptionID(true);
             }
             else{
                 enableSubscriptionID(false);
-            }
+            }*/
             // if the inward type is new subscription disable the search subscriber button
             if(inward_purpose.toLowerCase() == 0){
                 $( "#btnSearchSubscriber" ).button("disable");
@@ -280,20 +280,20 @@
             </span>
         </div>
 
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Subscription ID:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASDisabledTextBox" TABINDEX="-1" disabled type="text" name="subscriptionID" id="subscriptionid" value="${inwardFormBean.subscriptionIDAsText}"/>
-            </span>
-            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
-                <button type="button" id="btnSearchSubscription" TABINDEX="13">Search Subscription</button>
-                <button type="button" id="btnResetSubscription" TABINDEX="14">Reset</button>
-                <%--<input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
-                <input class="IASButton" TABINDEX="-1" type="button" name="btnResetSubscriber" id="btnResetSubscriber" value="Reset" onclick="clearSubscriber()"/>--%>
-            </span>
-        </div>
+        <%--<div class="IASFormFieldDiv">
+    <span class="IASFormDivSpanLabel">
+        <label>Subscription ID:</label>
+    </span>
+    <span class="IASFormDivSpanInputBox">
+        <input class="IASDisabledTextBox" TABINDEX="-1" disabled type="text" name="subscriptionID" id="subscriptionid" value="${inwardFormBean.subscriptionIDAsText}"/>
+    </span>
+    <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
+        <button type="button" id="btnSearchSubscription" TABINDEX="13">Search Subscription</button>
+        <button type="button" id="btnResetSubscription" TABINDEX="14">Reset</button>
+        <%--<input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
+        <input class="IASButton" TABINDEX="-1" type="button" name="btnResetSubscriber" id="btnResetSubscriber" value="Reset" onclick="clearSubscriber()"/>
+        </span>
+    </div>--%>
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Institution:</label>

@@ -9,7 +9,6 @@ body{
     margin:0px;
     padding:0px;
     background-color: #F6F6F6;
-    /*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;*/
     font-family: arial,sans-serif;
     font-size: 13px;
 }
@@ -34,13 +33,12 @@ A:active {
     position: fixed;
     top: 0px;
     height: auto;
-    background-color: #F6F6F6;/*rgb(255, 237, 202)*/;
+    background-color: #F6F6F6;
     z-index: 2;
-    /*background-image: url("../images/jds.gif");*/
 }
 
 #darksubheader{
-    background-color: #F6F6F6;/*#cc9b00;*/
+    background-color: #F6F6F6;
     height: 40px;
     margin-bottom: 1px;
     width: 100%;
@@ -48,7 +46,7 @@ A:active {
 }
 
 #smalldarksubheader{
-    background-color: white/*#cc9b00*/;
+    background-color: white;
     height: 26px;
     margin-left: 0px;
     margin-bottom: 1px;
@@ -70,7 +68,7 @@ A:active {
 }
 
 #lightsubheader{
-    background-color: #335C85;/*#75A3FF;/*#dfeffc;/*#FBDA81*/;
+    background-color: #335C85;
     margin-left :0%;
     height: 26px;
     width: 100%;
@@ -139,17 +137,6 @@ A:active {
     margin: 5% 24%;
 }
 
-/*.dateDiv{
-    position:fixed;
-    visibility:hidden;
-    width: auto;
-    background-color: #ECE5B6;
-    border: 1px solid lightslategray;
-    font-family: "Cambria",serif;
-    font-size: 12px;
-    z-index: 5;
-}*/
-
 .dateDiv{
     width: 100%;
 }
@@ -165,21 +152,19 @@ A:active {
 }
 
 .MainDiv{
-    background-color: #F6F6F6;/*#ECE5B6;*/
+    background-color: #F6F6F6;
     padding: 2px 2px;
     height: auto;
 }
 
 .subMainDiv{
-    /*background-color: #ECE5B6;*/
     padding: 5px;
     height: auto;
 }
 
 
 .MainFieldset{
-    background-color: rgb(232,245,248);/*#F6F6F6; #ECE5B6;*/
-    /*background-image: url("../images/bg.png");*/
+    background-color: rgb(232,245,248);
     padding: 5px;
 }
 
@@ -190,10 +175,8 @@ A:active {
 
 
 .subMainFieldSet{
-    /*background-color: #FBDA81;*/
-    background: none repeat scroll 0 0 #F6F6F6; /*rgb(232,245,248);
-    background-image: url("../images/bg.png");*/
-    padding: 5px 5px 10px 5px;
+    background: none repeat scroll 0 0 #F6F6F6;
+    padding: 5px 5px 5px 5px;
     margin-bottom: 5px;
 }
 
@@ -343,8 +326,20 @@ A:active {
     padding: 5px;
 }
 
+.IASFormLeftDivSmaller{
+    float: left;
+    width: 35%;
+    padding: 5px;
+}
+
 .IASFormRightDiv{
     width: 49%;
+    float: right;
+    padding: 5px;
+}
+
+.IASFormRightDivBigger{
+    width: 62%;
     float: right;
     padding: 5px;
 }
