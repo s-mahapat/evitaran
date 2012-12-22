@@ -132,6 +132,7 @@ public class inward extends JDSController {
                         && (purposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
                         || purposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE)) {
 
+                    // create subscription if subscriber already exists
                     if (subscriberNumber != null
                             && !subscriberNumber.equalsIgnoreCase("null")
                             && !subscriberNumber.isEmpty()

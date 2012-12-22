@@ -57,7 +57,7 @@ public class subscriberModel extends JDSModel {
         String mode = "Create";
 
         // get the connection from connection pool
-        Connection conn = this.getConnection();
+        Connection _conn = this.getConnection();
 
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, subscriberFormBean);
@@ -76,7 +76,7 @@ public class subscriberModel extends JDSModel {
             if (mode.equalsIgnoreCase("Create")) {
                 if (this.inwardNumber != null) {
                     String _sql = Queries.getQuery("update_subscriber_in_inward");
-                    try (PreparedStatement pst = conn.prepareStatement(_sql)) {
+                    try (PreparedStatement pst = _conn.prepareStatement(_sql)) {
                         pst.setInt(1, _subscriberId);
                         pst.setString(2, this.inwardNumber);
                         pst.executeUpdate();
@@ -88,7 +88,7 @@ public class subscriberModel extends JDSModel {
             }
 
             // return the connection back to the pool
-            this.CloseConnection(conn);
+            _conn.close();
 
             return _subscriberId;
 

@@ -18,11 +18,14 @@
                 loadData();
                 jQueryCalendar("paymentDate");
                 makeReadOnly();
-                setEnterKeyAction(ValidateSubscriber);
+                //setEnterKeyAction(ValidateSubscriber);
 
                 // disable the form submit on pressing enter
-                $("#inwardForm").bind("keypress", function(e) {
-                    if (e.keyCode == 13) return false;
+                $("#subscriberId").bind("keypress", function(e) {
+                    if (e.keyCode == 13) {
+                        ValidateSubscriber();
+                        return false;
+                    }
                 });
 
                 $("#inwardForm").validate({
@@ -67,11 +70,10 @@
                     <fieldset class="MainFieldset">
                         <legend>Create Inward</legend>
                         <%@include file="inward.jsp"%>
-
                     </fieldset>
                 </div>
             </form>
-            <%@include file="/jsp/fileupload/fileupload.jsp"%>
+            <%--@include file="/jsp/fileupload/fileupload.jsp"--%>
         </div>
     </body>
 </html>

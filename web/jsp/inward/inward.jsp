@@ -236,7 +236,7 @@
                 <label>Agent:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxWide" TABINDEX="5" name="agentName" id="agentName">
+                <select class="IASComboBoxWide" TABINDEX="8" name="agentName" id="agentName">
                     <option value="" selected >Select</option>
                     <%
                         if (inwardFormBean.getagentName() != null && !inwardFormBean.getagentName().isEmpty()) {
@@ -256,7 +256,7 @@
                 <label>Purpose:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="12" name="inwardPurpose" id="inwardPurpose" onchange="selectPaymentType(this.value)">
+                <select class="IASComboBoxMandatory" TABINDEX="9" name="inwardPurpose" id="inwardPurpose" onchange="selectPaymentType(this.value)">
                     <option value="0">Select</option>
                     <%
                         if (inwardFormBean.getInwardPurpose() != null && !inwardFormBean.getInwardPurpose().isEmpty()) {
@@ -272,11 +272,11 @@
                 <label>Subscriber No:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input autocomplete="off" class="IASTextBox" TABINDEX="13" type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}" onblur="removeInvalidSubscriber()"/>
+                <input autocomplete="off" class="IASTextBox" TABINDEX="10" type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}" onblur="removeInvalidSubscriber()" />
             </span>
             <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
-                <button type="button" id="btnSearchSubscriber" TABINDEX="10">Search Subscriber</button>
-                <button type="button" id="btnResetSubscriber" TABINDEX="11">Reset</button>
+                <button type="button" id="btnSearchSubscriber" TABINDEX="11">Search Subscriber</button>
+                <button type="button" id="btnResetSubscriber" TABINDEX="12">Reset</button>
             </span>
         </div>
 
@@ -299,7 +299,7 @@
                 <label>Institution:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxWide" maxlength="64" TABINDEX="8" type="text" name="institution" id="institution" value="${inwardFormBean.institution}"/>
+                <input class="IASTextBoxWide" maxlength="64" TABINDEX="13" type="text" name="institution" id="institution" value="${inwardFormBean.institution}"/>
             </span>
         </div>
 
@@ -308,7 +308,7 @@
                 <label>Department:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxWide" maxlength="64" TABINDEX="9" type="text" name="department" id="department" value="${inwardFormBean.department}"/>
+                <input class="IASTextBoxWide" maxlength="64" TABINDEX="14" type="text" name="department" id="department" value="${inwardFormBean.department}"/>
             </span>
         </div>
     </div>

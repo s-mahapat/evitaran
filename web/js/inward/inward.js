@@ -218,12 +218,13 @@ function isInwardSelected(){
     if(parseInt(selectedInward) == 0){
         alert("Please select an Inward");
         return false;
-    }else if(selectedSubscriberId == null && selectedInwardPurpose != _JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION){
+    }/*else if(selectedSubscriberId == null
+        && selectedInwardPurpose != _JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION){
         if(confirm("Do you want to continue without selecting subscriber ?") == false){
             return false;
         }
-    }
-    else if((selectedSubscriberId == "undefined" || selectedSubscriberId == null || selectedSubscriberId == 0)
+    }*/
+    else if((selectedSubscriberId == "undefined" || selectedSubscriberId == null || selectedSubscriberId == 0 || selectedSubscriberId.length == 0)
         && (selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION ||
             selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_ADDRESS_CHANGE ||
             //selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE ||
@@ -248,7 +249,7 @@ function isInwardSelected(){
 function selectSubscriber(city, subscriberName, rowid){
     selectedSubscriberId = searchSubscriber(subscriberName,"","",city);
     // ensure that user has selected a subscriber
-    if(!isEmptyValue(selectedSubscriberId.SubscriberNumber)){
+    if(selectedSubscriberId != null && !isEmptyValue(selectedSubscriberId.SubscriberNumber)){
         jQuery("#inwardTable").jqGrid('setRowData', rowid, {
             'SubscriberId': selectedSubscriberId.SubscriberNumber
         });
@@ -291,7 +292,7 @@ function ValidateSubscriber(){
             success: function(data, textStatus, jqXHR){
                 var rows = $(data).find("row");
                 var rowcount = rows.length;
-                var subscribers = new Array();
+                //var subscribers = new Array();
                 if(rowcount == 1){
                     var from = $(data).find( "subscriberName" ).text();
                     var subscriber_number = $(data).find( "subscriberNumber" ).text();

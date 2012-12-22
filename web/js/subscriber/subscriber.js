@@ -8,6 +8,7 @@ function subtypeCodeAppend(){
         success: function(xml){
             $(xml).find("subtypecode").each(function(){
                 $("#subtypecode").text($(this).text());
+                $("#subtypecode_hidden").val($(this).text());
             });
         },
         error: function() {
@@ -30,5 +31,5 @@ function copyShippingAddress(){
         $("#invoiceAddress").val("");
         $("#invoiceAddress").attr("disabled",false);
     }
-    
+
 }

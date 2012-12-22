@@ -32,7 +32,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <textarea onkeydown="return imposeMaxLength(event, this, 128);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="3" name="shippingAddress" id="shippingAddress">${subscriberFormBean.shippingAddress}</textarea>
+                <textarea onkeydown="return imposeMaxLength(event, this, 128);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="2" name="shippingAddress" id="shippingAddress">${subscriberFormBean.shippingAddress}</textarea>
             </span>
         </div>
 
@@ -41,7 +41,7 @@
                 <label>Invoice Address:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input type="checkbox" id="copyshipaddress" name="sameInvoiceAddress" onchange="copyShippingAddress()"><label>Same as Shipping Address</label>
+                <input type="checkbox" id="copyshipaddress" TABINDEX="3" name="sameInvoiceAddress" onchange="copyShippingAddress()"><label>Same as Shipping Address</label>
             </span>
 
         </div>
@@ -50,7 +50,7 @@
                 <label>&nbsp;</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <textarea onkeydown="return imposeMaxLength(event, this, 128);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="2" name="invoiceAddress" id="invoiceAddress">${subscriberFormBean.invoiceAddress}</textarea>
+                <textarea onkeydown="return imposeMaxLength(event, this, 128);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="4" name="invoiceAddress" id="invoiceAddress">${subscriberFormBean.invoiceAddress}</textarea>
             </span>
         </div>
 
@@ -60,7 +60,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="3" name="city" id="city">
+                <select class="IASComboBoxMandatory" TABINDEX="5" name="city" id="city">
                     <option value="0" selected >Select</option>
                     <%
                         if (subscriberFormBean.getCity() != null && !subscriberFormBean.getCity().isEmpty()) {
@@ -77,7 +77,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="4" name="district" id="district">
+                <select class="IASComboBox" TABINDEX="6" name="district" id="district">
                     <option value="0" selected >Select</option>
                     <%
                         if (subscriberFormBean.getDistrict() != null && !subscriberFormBean.getDistrict().isEmpty()) {
@@ -94,7 +94,7 @@
                 <label>State:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="5" name="state" id="state">
+                <select class="IASComboBoxMandatory" TABINDEX="7" name="state" id="state">
                     <option value="0" selected >Select</option>
                     <%
                         if (subscriberFormBean.getState() != null && !subscriberFormBean.getState().isEmpty()) {
@@ -112,7 +112,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="6" name="country" id="country">
+                <select class="IASComboBoxMandatory" TABINDEX="8" name="country" id="country">
                     <option value="0" selected >Select</option>
                     <%
                         if (subscriberFormBean.getCountry() != null && !subscriberFormBean.getCountry().isEmpty()) {
@@ -129,7 +129,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" maxlength="6" TABINDEX="7" type="text" name="pincode" id="pincode" value="${subscriberFormBean.pincodeAsText}"/>
+                <input class="IASTextBox" maxlength="6" TABINDEX="9" type="text" name="pincode" id="pincode" value="${subscriberFormBean.pincodeAsText}"/>
             </span>
         </div>
 
@@ -140,9 +140,9 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxSmallMandatory" TABINDEX="8" name="subtype" id="subtype"
+                <select class="IASComboBoxSmallMandatory" TABINDEX="10" name="subtype" id="subtype"
                         onchange="subtypeAppend()">
-                    <option value="0" selected >Select</option>
+                    <option value="" selected >Select</option>
                     <%
                         if (subscriberFormBean.getSubtype() != null && !subscriberFormBean.getSubtype().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getSubtype() + "\"" + " selected >" + subscriberFormBean.getSubtype() + "</option>");
@@ -156,9 +156,9 @@
                 <label>Description:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="9" name="subtypedesc" id="subtypedesc"
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="subtypedesc" id="subtypedesc"
                         onchange="subtypeCodeAppend()">
-                    <option value="0">Select</option>
+                    <option value="">Select</option>
                     <%
                         if (subscriberFormBean.getSubtypedesc() != null && !subscriberFormBean.getSubtypedesc().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getSubtypedesc() + "\"" + " selected >" + subscriberFormBean.getSubtypedesc() + "</option>");
@@ -173,7 +173,8 @@
                 <label>Subscriber Code:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <label class="IASLabelOnly" id="subtypecode"></label>
+                <input type="hidden" id="subtypecode_hidden" name="subtypecode" />
+                <label id="subtypecode" name="subtypecode"></label>
             </span>
 
         </div>
@@ -198,7 +199,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxWide" TABINDEX="10" maxlength="64" type="text" name="department" id="department" value="${subscriberFormBean.department}"/>
+                <input class="IASTextBoxWide" TABINDEX="12" maxlength="64" type="text" name="department" id="department" value="${subscriberFormBean.department}"/>
             </span>
         </div>
 
@@ -208,7 +209,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxWide" TABINDEX="11" maxlength="64" type="text" name="institution" id="institution" value="${subscriberFormBean.institution}"/>
+                <input class="IASTextBoxWide" TABINDEX="13" maxlength="64" type="text" name="institution" id="institution" value="${subscriberFormBean.institution}"/>
             </span>
         </div>
 
@@ -219,7 +220,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxWide" TABINDEX="12" maxlength="64" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${subscriberFormBean.email}"/>
+                <input class="IASTextBoxWide" TABINDEX="14" maxlength="64" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${subscriberFormBean.email}"/>
             </span>
         </div>
 
@@ -247,7 +248,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input type="checkbox" class="IASCheckBox" disabled TABINDEX="14" name="deactive" id="deactive" onclick="deActivateSubscriber()"
+                <input type="checkbox" class="IASCheckBox" disabled TABINDEX="15" name="deactive" id="deactive" onclick="deActivateSubscriber()"
                        <%
                            String isEnabled = "enabled";
                            if (subscriberFormBean.isDeactive() == true) {
@@ -277,9 +278,9 @@
 
 <fieldset class="subMainFieldSet">
     <div class="actionBtnDiv">
-        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="15" type="submit" value="Edit" id="btnEditSubscriber" name="btnSubmitAction"/>
-        <input onclick="setActionValue('save')" class="IASButton" TABINDEX="16" type="submit" value="Save" id="btnSaveSubscriber" name="btnSubmitAction"/>
-        <input onclick="setActionValue('display')" class="IASButton" TABINDEX="17" type="submit" value="View Subscriber" id="btnDisplaySubscriber" name="btnSubmitAction"/>
+        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="16" type="submit" value="Edit" id="btnEditSubscriber" name="btnSubmitAction"/>
+        <input onclick="setActionValue('save')" class="IASButton" TABINDEX="17" type="submit" value="Save" id="btnSaveSubscriber" name="btnSubmitAction"/>
+        <input onclick="setActionValue('display')" class="IASButton" TABINDEX="18" type="submit" value="View Subscriber" id="btnDisplaySubscriber" name="btnSubmitAction"/>
         <%--<input onclick="setActionValue('viewsubscription')" class="IASButton" TABINDEX="18" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
         <input onclick="setActionValue('editsubscription')" class="IASButton" TABINDEX="19" type="submit" value="Subscription" id="btnEditSubscription" name="btnSubmitAction"/>--%>
         <%--<input onclick="setActionValue('add')" class="IASButton" TABINDEX="20" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction" <%out.println(isEnabled);%>/>--%>

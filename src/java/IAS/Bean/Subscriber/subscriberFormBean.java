@@ -171,11 +171,11 @@ public class subscriberFormBean extends JDSBean {
     }
 
     /*Subscriber Type code*/
-    public void setSubtypeCode(String _subtypecode) {
+    public void setSubtypecode(String _subtypecode) {
         this.subtypecode = _subtypecode;
     }
 
-    public String getSubtypeCode() {
+    public String getSubtypecode() {
         return this.subtypecode;
     }
 
