@@ -292,7 +292,7 @@ public class PlReferListPDF extends JDSPDF {
         // amount in words
         EnglishNumberToWords _EnglishNumberToWords = new EnglishNumberToWords();
         paragraphBody.add(Chunk.NEWLINE);
-        paragraphBody.add(new Phrase(_EnglishNumberToWords.convertDouble(total).toUpperCase(), JDSPDF.JDS_FONT_NORMAL_SMALL));//Convert total value in words
+        paragraphBody.add(new Phrase(_EnglishNumberToWords.convertDouble(_invoiceBean.getAmount()).toUpperCase(), JDSPDF.JDS_FONT_NORMAL_SMALL));//Convert total value in words
 
 
         // add the invoice header, subscriber number and invoice number
