@@ -184,7 +184,8 @@ CREATE TABLE `invoice` (
   `invoiceCreationDate` date DEFAULT NULL,
   `invoice_type_id` int(11) NOT NULL DEFAULT '1',
   `amount` float unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `invoice_idx1` (`subscriptionId`,`invoice_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -281,7 +282,9 @@ CREATE TABLE `inward_agent_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `inwardId` int(11) NOT NULL,
   `agentId` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `inward_agent_details_idx1` (`inwardId`),
+  KEY `inward_agent_details_idx2` (`agentId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -518,9 +521,12 @@ DROP TABLE IF EXISTS `payment`;
 CREATE TABLE `payment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `inwardID` int(11) NOT NULL,
-  `subscriptionID` int(11) NOT NULL,
+  `invoice_id` int(10) unsigned NOT NULL,
+  `amount` float unsigned NOT NULL DEFAULT '0',
+  `remarks` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_inward` (`inwardID`) USING BTREE
+  KEY `payment_idx1` (`invoice_id`),
+  KEY `payment_idx2` (`inwardID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Save the relation between different inwards and a subscription. Subscriber can pay multiple times for the same subscription';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -893,6 +899,7 @@ CREATE TABLE `subscriptiondetails` (
   UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalGroupID`),
   KEY `startYear` (`startYear`),
   KEY `endYear` (`endYear`),
+  KEY `journalPriceGroupID` (`journalPriceGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1394,4 +1401,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-21  8:22:36
+-- Dump completed on 2012-12-23 17:16:14

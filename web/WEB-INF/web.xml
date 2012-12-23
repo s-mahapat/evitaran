@@ -216,6 +216,10 @@
         <servlet-name>templates</servlet-name>
         <servlet-class>IAS.Controller.templates</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>payment</servlet-name>
+        <servlet-class>IAS.Controller.payment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -385,6 +389,10 @@
     <servlet-mapping>
         <servlet-name>templates</servlet-name>
         <url-pattern>/templates</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>payment</servlet-name>
+        <url-pattern>/payment</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

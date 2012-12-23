@@ -48,7 +48,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanLabelLeftAligned">
-                                        <label>Subscriber Type: ${subscriberFormBean.subtypeCode}</label>
+                                        <label>Subscriber Type: ${subscriberFormBean.subtypecode}</label>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -71,6 +71,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
+                                        <input type="hidden" disabled name="inwardID" id="inwardID" value="${inwardFormBean.inwardID}"/>
                                         <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="${inwardFormBean.inwardNumber}"/>
                                     </span>
                                 </div>

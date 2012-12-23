@@ -5,7 +5,11 @@
 
 function drawPaymentTable(inward_amount){
     $("#paymentTable").jqGrid({
-        url:'subscription?oper=getsubscription&subscriberNumber=' + $("#subscriberNumber").val(),
+        url:'subscriber?action=subscriberInvoice',
+        postData: {
+            'pending': true,
+            'subscriberNumber': $("#subscriberNumber").val()
+        },
         datatype: 'xml',
         mtype: 'GET',
         width: '100%',
@@ -16,54 +20,52 @@ function drawPaymentTable(inward_amount){
         loadonce: true,
         rownumbers: true,
         cellEdit: true,
-        cellsubmit: 'clientArray',
+        cellsubmit: 'remote',
         emptyrecords: "No Records to view",
         loadtext: "Loading...",
-        subGrid: true,
-        subGridWidth: 20,
-        subgridtype: 'xml',
-        subGridUrl: 'subscription?oper=detail&subtypeid=' + $("#subtypeid").val(),
-        colNames:['Subscription ID','Subscription Date','Subscription Total','Amount Paid','Balance','Payment'],
+        //subGrid: true,
+        //subGridWidth: 20,
+        //subgridtype: 'xml',
+        //subGridUrl: 'subscription?oper=detail&subtypeid=' + $("#subtypeid").val(),
+        cellurl: 'payment',
+        colNames:['Invoice No','Invoice ID','Invoice Date','Invoice Amount','Amount Paid','Payment','Balance','Remarks','Subscription ID'],
         colModel :[
         {
-            name:'subscriptionid',
-            index:'subscriptionid',
+            name:'invoiceno',
+            index:'invoiceno',
             width:50,
             align:'center',
-            xmlmap:'id',
-            key: true
+            xmlmap:'invoiceNumber'
         },
-
         {
-            name:'subscriptionDate',
-            index:'subscriptionDate',
+            name:'invoiceid',
+            index:'invoiceid',
             width:50,
             align:'center',
-            xmlmap:'subscriptionDate'
+            xmlmap:'invoiceID',
+            key: true,
+            hidden: true
         },
-
         {
-            name:'subscriptiontotal',
-            index:'subscriptiontotal',
+            name:'invoiceCreationDate',
+            index:'invoiceCreationDate',
+            width:50,
+            align:'center',
+            xmlmap:'invoiceCreationDate'
+        },
+        {
+            name:'invoiceAmount',
+            index:'invoiceAmount',
             width:80,
             align:'center',
-            xmlmap:'subscriptionTotal'
+            xmlmap:'invoiceAmount'
         },
-
         {
             name:'amountPaid',
             index:'amountPaid',
-            width:40,
+            width:60,
             align:'center',
-            xmlmap:'amount'
-        },
-
-        {
-            name:'balance',
-            index:'balance',
-            width:40,
-            align:'center',
-            xmlmap:'balance'
+            xmlmap:'amountPaid'
         },
         {
             name:'payment',
@@ -72,12 +74,35 @@ function drawPaymentTable(inward_amount){
             align:'center',
             xmlmap:'payment',
             editable: true,
-            edittype: 'text',
             editrules: {
-                number: true,
-                minValue: 0,
-                maxValue: inward_amount
+                custom: true,
+                custom_func: function(value, colname){
+                    return validateCell(value, colname, inward_amount);
+                }
             }
+
+        },
+        {
+            name:'balance',
+            index:'balance',
+            width:40,
+            align:'center',
+            xmlmap:'balance'
+        },
+        {
+            name:'remarks',
+            index:'remarks',
+            width:80,
+            align:'center',
+            xmlmap:'remarks'
+        },
+        {
+            name:'subscriptionID',
+            index:'subscriptionID',
+            width:50,
+            align:'center',
+            xmlmap:'subscriptionID',
+            key: true
         }
         ],
         xmlReader : {
@@ -103,31 +128,86 @@ function drawPaymentTable(inward_amount){
         loadError: function(xhr,status,error){
             alert("Failed getting data from server " + status);
         },
-        afterSaveCell: function(rowid, cellname, value, iRow, iCol){
-            var changed_cells = $("#paymentTable").jqGrid('getChangedCells', 'dirty');
-            var current_total = 0;
-            for(var i=0; i<changed_cells.length; i++){
-                var payment_value = parseInt(changed_cells[i].payment);
-                current_total = current_total + payment_value;
-            }
-            if(current_total > inward_amount){
-                alert("The total payment " + current_total + " amount exceeds the inward amount " + inward_amount);
-                $("#paymentTable").jqGrid('restoreCell', iRow, iCol);
-            }
+        beforeSubmitCell: function(rowid, cellname, value, iRow, iCol){
+            var remarks = $("#paymentTable").jqGrid('getCell', rowid, 'remarks');
+            var subscriptionid = $("#paymentTable").jqGrid('getCell', rowid, 'subscriptionID');
+            var inwardid = $("#inwardID").val();
+            return {
+                subscriptionid: subscriptionid,
+                remarks: remarks,
+                inwardid: inwardid
+            };
+
         },
-        subGridModel: [
-        {
-            name:['Journal Name', 'Start Year', 'End Year', 'Start Month', 'Copies', 'Active'],
-            width: [120, 30, 30, 30, 30, 30],
-            align: ['center','center','center'],
-            mapping: ['journalGroupName','startYear','endYear','startMonth','copies','active']
-            //params: ['subscriptionid'],
+        afterSubmitCell: function(serverresponse, rowid, cellname, value, iRow, iCol){
+            if($(serverresponse.responseText).find("success").text() == "false"){
+                return [false, "Failed to update payment"];
+            }else{
+                $("#paymentTable").setGridParam({ datatype: "xml" });
+                $("#paymentTable").trigger('reloadGrid');
+                return [true, ""];
+            }
 
         }
-        ]
     });
 
     $("#paymentTable").jqGrid('setLabel','payment','','',{
         'title':'Click on cell to edit'
     });
+}
+
+
+function validateCell(value, colname, inward_amount){
+
+    var success = true;
+    var msg = "";
+    var changed_cells = $("#paymentTable").jqGrid('getChangedCells', 'dirty');
+    var rowid = $("#paymentTable").jqGrid('getGridParam', 'selrow');
+    var balance = parseInt($("#paymentTable").jqGrid('getCell', rowid, 'balance'));
+
+    // check that a valid number is entered
+    if(isNaN(value)){
+        success = false;
+        msg = "Please enter a valid number";
+    }else{
+        value = parseInt(value);
+    }
+
+
+    // the value entered should not be greater than inward amount, i.e that amount that
+    // the subscriber pays
+    if(value > inward_amount){
+        success = false;
+        msg = 'The amount entered is greater than inward amount';
+    }else if(value > balance){
+        // value cannot be greater than invoice balance
+        msg = "The payment amount " + value + " exceeds the balance " + balance;
+        success = false;
+    }
+    else{
+        // check that sum of all amounts entered by the user does not exceed the inward amount
+        var current_total = 0;
+        for(var i=0; i<changed_cells.length; i++){
+            var payment_value = parseInt(changed_cells[i].payment);
+            current_total = current_total + payment_value;
+        }
+        if(current_total > inward_amount){
+            restoreRow(rowid);
+            success = false;
+            msg = "The total payment " + current_total + " amount exceeds the inward amount " + inward_amount;
+        }
+    }
+
+    // set the remarks as part/full payment
+    if(value == balance){
+        $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Full Payment');
+    }else if(value < balance){
+        $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Part Payment');
+    }
+
+    return [success, msg];
+}
+
+function restoreRow(rowid){
+    $("#paymentTable").jqGrid('restoreRow', rowid);
 }

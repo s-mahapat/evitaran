@@ -32,7 +32,7 @@ function listSubscription(){
             //sortname:'subscriptionID',
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Subscription Date','Agent','Cheque No','Amount Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
+            colNames:['Subscription Id','Inward No','Date','Agent','Cheque No','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
             colModel :[
             {
                 name:'subscriptionID',
@@ -77,17 +77,33 @@ function listSubscription(){
                 xmlmap:'chqddNumber'
             },
             {
+                name:'inwardAmount',
+                index:'inwardAmount',
+                width:20,
+                align:'center',
+                sortable: false,
+                xmlmap:'inwardAmount'
+            },
+            {
+                name:'payment',
+                index:'payment',
+                width:20,
+                align:'center',
+                sortable: false,
+                xmlmap:'payment'
+            },
+            {
                 name:'amountPaid',
                 index:'amountPaid',
                 width:20,
                 align:'center',
                 sortable: false,
-                xmlmap:'amount'
+                xmlmap:'amountPaid'
             },
             {
                 name:'subscriptionValue',
                 index:'subscriptionValue',
-                width:30,
+                width:25,
                 align:'center',
                 sortable: false,
                 xmlmap:'subscriptionTotal'
@@ -95,7 +111,7 @@ function listSubscription(){
             {
                 name:'balance',
                 index:'balance',
-                width:20,
+                width: 15,
                 align:'center',
                 sortable: false,
                 xmlmap:'balance'

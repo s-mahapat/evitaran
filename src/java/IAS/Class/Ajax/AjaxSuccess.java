@@ -25,7 +25,7 @@ public class AjaxSuccess {
         return this.message;
     }
 
-    public boolean setSuccess() {
+    public boolean getSuccess() {
         return this.success;
     }
 }

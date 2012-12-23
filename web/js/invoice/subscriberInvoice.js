@@ -13,10 +13,9 @@ function drawInvoiceTable(){
             loadonce: false,
             rownumbers: true,
             //scrollOffset: 20,
-
             emptyrecords: "No invoice to view",
             loadtext: "Loading...",
-            colNames:['Invoice No','Invoice Type','Invoice Type ID','Invoice Date','Subscription Number','Invoice Amount','Balance','Action'],
+            colNames:['Invoice No','Invoice Type','Invoice Type ID','Invoice Date','Subscription Number','Invoice Amount','Amount Paid','Balance','Action'],
             colModel :[
                 {name:'InvoiceNo', index:'invoiceNumber', width:50, align:'center', xmlmap:'invoiceNumber'},
                 {name:'invoice_type', index:'invoice_type', width:50, align:'center', xmlmap:'invoice_type'},
@@ -24,7 +23,8 @@ function drawInvoiceTable(){
                 {name:'InvoiceDate', index:'invoiceCreationDate', width:60, align:'center', xmlmap:'invoiceCreationDate'},
                 {name:'SubscriptionID', index:'subscriptionID', width:80, align:'center', xmlmap:'subscriptionID'},
                 {name:'InvoiceAmount', index:'invoiceAmount', width:40, align:'center', xmlmap:'invoiceAmount'},
-                {name:'balance', index:'balance', width:40, align:'center', xmlmap:'balance', hidden: true},
+                {name:'AmountPaid', index:'AmountPaid', width:40, align:'center', xmlmap:'amountPaid'},
+                {name:'balance', index:'balance', width:40, align:'center', xmlmap:'balance', hidden: false},
                 {name:'Action', index:'action', sortable: false, width:60, align:'center',formatter:'showlink'}
             ],
             xmlReader : {
@@ -44,15 +44,14 @@ function drawInvoiceTable(){
             //caption: '&nbsp;',
             gridComplete: function() {
                 var ids = jQuery("#invoiceTable").jqGrid('getDataIDs');
-                //var _JDSConstants = new JDSConstants();
                 for (var i = 0; i < ids.length; i++) {
                     var invoiceId = ids[i];
-                    var invoice_type_id = $("#invoiceTable").getCell(invoiceId, "invoice_type_id");
+                    /*var invoice_type_id = $("#invoiceTable").getCell(invoiceId, "invoice_type_id");
                     var balance = $("#invoiceTable").getCell(invoiceId, "balance");
                     if(invoice_type_id == 2){
                         $("#invoiceTable").setRowData(invoiceId, {InvoiceAmount: balance});
-                    }
-                    action = "<a style='color:blue;' href='subscriber?action=printInvoice&invoiceNo=" + invoiceId + "'>Print</a>";
+                    }*/
+                    action = "<a style='color:blue;' href='subscriber?action=printInvoice&invoiceNo=" + invoiceId + "'>View</a>";
                     jQuery("#invoiceTable").jqGrid('setRowData', ids[i], { Action: action });
                 }
             },
