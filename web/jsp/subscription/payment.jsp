@@ -31,7 +31,7 @@
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="GET" action="" name="paymentForm">
+            <form method="POST" action="inward?action=followOnProcess" name="paymentForm">
                 <input type="hidden" id="subtypeid" value="${subscriberFormBean.subtypeID}">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
@@ -72,6 +72,7 @@
 
                                     <span class="IASFormDivSpanInputBox">
                                         <input type="hidden" disabled name="inwardID" id="inwardID" value="${inwardFormBean.inwardID}"/>
+                                        <input type="hidden" name="purpose" id="purpose" value="${inwardFormBean.inwardPurposeID}"/>
                                         <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="${inwardFormBean.inwardNumber}"/>
                                     </span>
                                 </div>
@@ -91,6 +92,11 @@
                         <fieldset class="subMainFieldSet">
                             <table class="datatable" id="paymentTable"></table>
                             <div id="pager"></div>
+                        </fieldset>
+                        <fieldset class="subMainFieldSet">
+                            <div class="actionBtnDiv">
+                                <input class="IASButton" TABINDEX="1" type="submit" value="Save"/>
+                            </div>
                         </fieldset>
                     </fieldset>
                 </div>

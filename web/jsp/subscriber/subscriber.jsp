@@ -95,7 +95,7 @@
             </span>
             <span class="IASFormDivSpanInputBox">
                 <select class="IASComboBoxMandatory" TABINDEX="7" name="state" id="state">
-                    <option value="0" selected >Select</option>
+                    <option value="" selected >Select</option>
                     <%
                         if (subscriberFormBean.getState() != null && !subscriberFormBean.getState().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getState() + "\"" + " selected >" + subscriberFormBean.getState() + "</option>");

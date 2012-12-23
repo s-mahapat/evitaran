@@ -202,7 +202,7 @@ public class inward extends JDSController {
                     request.setAttribute("missingissueFormBean", _missingissueFormBean);
                     url = "/missingissue?action=addInfo";
 
-                }else if (purposeID == JDSConstants.INWARD_PURPOSE_PAYMENT){
+                } else if (purposeID == JDSConstants.INWARD_PURPOSE_PAYMENT) {
                     request.setAttribute("inwardFormBean", _inwardFormBean);
                     subscriberFormBean _subFormBean = _inwardModel.getSubscriberDetail();
                     request.setAttribute("subscriberFormBean", _subFormBean);
@@ -217,9 +217,28 @@ public class inward extends JDSController {
 
             } else if (action.equalsIgnoreCase("followOnProcess")) {
 
-                int inwardPurposeID = Integer.parseInt(request.getParameter("purpose"));
-                int subid = Integer.parseInt(request.getParameter("subid"));
-                float balance = Float.parseFloat(request.getParameter("balance"));
+                int inwardPurposeID;
+                int subid;
+                float balance;
+
+                try {
+                    inwardPurposeID = Integer.parseInt(request.getParameter("purpose"));
+                }catch(NumberFormatException ex){
+                    inwardPurposeID = 0;
+                }
+
+                try {
+                    subid = Integer.parseInt(request.getParameter("subid"));
+                }catch(NumberFormatException ex){
+                    subid = 0;
+                }
+
+                try {
+                    balance = Float.parseFloat(request.getParameter("balance"));
+                }catch(Exception ex){
+                    balance = 0;
+                }
+
 
                 // for acknowledgement amount > 0
                 if ((inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
@@ -244,6 +263,12 @@ public class inward extends JDSController {
                     InvoiceFormBean _invoiceFormBean = _inwardModel.getInvoiceDetail(); //new IAS.Bean.Invoice.InvoiceFormBean();
                     request.setAttribute("invoiceFormBean", _invoiceFormBean);
                     url = "/jsp/invoice/proforma.jsp";
+                } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_PAYMENT) {
+                    _inwardFormBean = _inwardModel.GetInward();
+                    if(_inwardModel.CompleteInward(_inwardFormBean.getInwardID()) == 1){
+                        url = "/jsp/inward/pendinginwards.jsp";
+                    }
+
                 } else {
                     url = "/home";
                 }

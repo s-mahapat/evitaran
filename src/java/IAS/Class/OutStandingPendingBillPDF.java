@@ -311,7 +311,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         amountPaidCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         amountPaidCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        PdfPCell amountPaidValueCell = new PdfPCell(new Phrase(String.valueOf(_invoiceBean.getAmount()), JDSPDF.JDS_FONT_NORMAL_SMALL));
+        PdfPCell amountPaidValueCell = new PdfPCell(new Phrase(String.valueOf(_invoiceBean.getInwardAmount()), JDSPDF.JDS_FONT_NORMAL_SMALL));
         amountPaidValueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         amountPaidValueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 

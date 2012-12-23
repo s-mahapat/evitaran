@@ -243,9 +243,9 @@ public class PlReferListPDF extends JDSPDF {
                 while (rs.next()) {
                     String journalName = rs.getString("journalGroupName");
                     String years = String.valueOf(rs.getInt("period"));
-                    float _rate = _invoiceBean.getAmount();
+                    float _rate = rs.getFloat("rate");
 
-                    total += _rate;
+                    //total += _rate;
                     String rate = String.valueOf(_rate);
 
                     PdfPCell c1 = new PdfPCell(new Phrase(journalName, JDSPDF.JDS_FONT_NORMAL_SMALL));
@@ -278,7 +278,7 @@ public class PlReferListPDF extends JDSPDF {
         totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         totalCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        PdfPCell totalValue = new PdfPCell(new Phrase(String.valueOf(total), JDSPDF.JDS_FONT_NORMAL_SMALL));
+        PdfPCell totalValue = new PdfPCell(new Phrase(String.valueOf(_invoiceBean.getAmount()), JDSPDF.JDS_FONT_NORMAL_SMALL));
         totalValue.setHorizontalAlignment(Element.ALIGN_CENTER);
         totalValue.setVerticalAlignment(Element.ALIGN_MIDDLE);
 

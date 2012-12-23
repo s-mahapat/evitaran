@@ -915,7 +915,7 @@ public class SubscriptionModel extends JDSModel {
                     // next year
                     int newstartYear = endYear + 1;
 
-                    _rate = getRate(journalGrpID, subtype, newstartYear, period);
+                    _rate += getRate(journalGrpID, subtype, newstartYear, period);
 
                     // in case of a legacy subscription we do not have the price group id
                     // we need to determine that here
@@ -954,9 +954,10 @@ public class SubscriptionModel extends JDSModel {
 
     private float getRate(int journalGrpID, int subtypeID, int startYear, int period) throws SQLException {
 
+        Connection _conn = this.getConnection();
         String sql = Queries.getQuery("get_journal_grp_price");
         int _rate = 0;
-        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setInt(1, journalGrpID);
             pst.setInt(2, subtypeID);
             pst.setInt(3, startYear);
@@ -967,6 +968,7 @@ public class SubscriptionModel extends JDSModel {
                 }
             }
         } finally {
+            _conn.close();
             return (float) _rate;
         }
     }
