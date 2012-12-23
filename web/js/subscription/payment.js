@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
+var current_total = 0;
 function drawPaymentTable(inward_amount){
     $("#paymentTable").jqGrid({
         url:'subscriber?action=subscriberInvoice',
@@ -58,14 +58,18 @@ function drawPaymentTable(inward_amount){
             index:'invoiceAmount',
             width:80,
             align:'center',
-            xmlmap:'invoiceAmount'
+            xmlmap:'invoiceAmount',
+            formatter: "currency",
+            formatoptions: {decimalPlaces: 1, thousandsSeparator: ""}
         },
         {
             name:'amountPaid',
             index:'amountPaid',
             width:60,
             align:'center',
-            xmlmap:'amountPaid'
+            xmlmap:'amountPaid',
+            formatter: "currency",
+            formatoptions: {decimalPlaces: 1, thousandsSeparator: ""}
         },
         {
             name:'payment',
@@ -77,7 +81,31 @@ function drawPaymentTable(inward_amount){
             editrules: {
                 custom: true,
                 custom_func: function(value, colname){
-                    return validateCell(value, colname, inward_amount);
+                    value = parseFloat(value);
+                    var rc = validateCell(value, colname, inward_amount);
+                    if(rc[0] == true){
+                        var rowid = $("#paymentTable").jqGrid('getGridParam', 'selrow');
+                        var balance = parseFloat($("#paymentTable").jqGrid('getCell', rowid, 'balance'));
+                        var payment = parseFloat($("#paymentTable").jqGrid('getCell', rowid, 'amountPaid'));
+
+                        var new_balance = balance - value;
+                        var new_payment = payment + value;
+
+                        //set the balance since we are not refreshing the grid
+                        $("#paymentTable").jqGrid('setCell', rowid, 'balance', new_balance)
+
+                        //update the payment on the UI since we are not refreshing the UI
+                        $("#paymentTable").jqGrid('setCell', rowid, 'amountPaid', new_payment)
+
+                        // set the remarks as part/full payment
+                        if(value == balance){
+                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Full Payment');
+                        }else if(value < balance){
+                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Part Payment');
+                        }
+                    }
+                    return rc;
+
                 }
             }
 
@@ -87,7 +115,9 @@ function drawPaymentTable(inward_amount){
             index:'balance',
             width:40,
             align:'center',
-            xmlmap:'balance'
+            xmlmap:'balance',
+            formatter: "currency",
+            formatoptions: {decimalPlaces: 1, thousandsSeparator: ""}
         },
         {
             name:'remarks',
@@ -143,8 +173,10 @@ function drawPaymentTable(inward_amount){
             if($(serverresponse.responseText).find("success").text() == "false"){
                 return [false, "Failed to update payment"];
             }else{
-                $("#paymentTable").setGridParam({ datatype: "xml" });
-                $("#paymentTable").trigger('reloadGrid');
+                /*$("#paymentTable").setGridParam({
+                    datatype: "xml"
+                });
+                $("#paymentTable").trigger('reloadGrid');*/
                 return [true, ""];
             }
 
@@ -161,7 +193,7 @@ function validateCell(value, colname, inward_amount){
 
     var success = true;
     var msg = "";
-    var changed_cells = $("#paymentTable").jqGrid('getChangedCells', 'dirty');
+    //var changed_cells = $("#paymentTable").jqGrid('getChangedCells', 'dirty');
     var rowid = $("#paymentTable").jqGrid('getGridParam', 'selrow');
     var balance = parseInt($("#paymentTable").jqGrid('getCell', rowid, 'balance'));
 
@@ -186,23 +218,13 @@ function validateCell(value, colname, inward_amount){
     }
     else{
         // check that sum of all amounts entered by the user does not exceed the inward amount
-        var current_total = 0;
-        for(var i=0; i<changed_cells.length; i++){
-            var payment_value = parseInt(changed_cells[i].payment);
-            current_total = current_total + payment_value;
-        }
+        //var payment_value = parseInt(c);
+        current_total = current_total + value;
         if(current_total > inward_amount){
             restoreRow(rowid);
             success = false;
             msg = "The total payment " + current_total + " amount exceeds the inward amount " + inward_amount;
         }
-    }
-
-    // set the remarks as part/full payment
-    if(value == balance){
-        $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Full Payment');
-    }else if(value < balance){
-        $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Part Payment');
     }
 
     return [success, msg];
