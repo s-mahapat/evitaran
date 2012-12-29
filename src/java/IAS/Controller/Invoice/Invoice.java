@@ -4,13 +4,20 @@
  */
 package IAS.Controller.Invoice;
 
+import IAS.Class.Ajax.AjaxResponse;
 import IAS.Class.JDSLogger;
+import IAS.Class.util;
 import IAS.Controller.JDSController;
+import IAS.Model.Invoice.InvoiceModel;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 /**
  *
@@ -26,15 +33,22 @@ public class Invoice extends JDSController {
 
         String action = request.getParameter("action");
         String url = null;
-        String inwardNumber = request.getParameter("inwardNumber");
-        String subscriberNumber = request.getParameter("subscriberNumber");
+        //String inwardNumber = request.getParameter("inwardNumber");
+        //String subscriberNumber = request.getParameter("subscriberNumber");
         try {
 
             if (action.equalsIgnoreCase("new")) {
                 //Request for Invoice
                 url = "/jsp/invoice/proforma.jsp";
+            }else if(action.equalsIgnoreCase("paymentinfo")){
+                int invoice_id = Integer.parseInt(request.getParameter("invoiceid"));
+                InvoiceModel _invoiceModel = new InvoiceModel();
+                String xml = _invoiceModel.getInvoicePaymentInfo(invoice_id);
+                response.setContentType("text/xml");
+                response.getWriter().write(xml);
+
             }
-        } catch (Exception e) {
+        } catch (NumberFormatException | SQLException | IOException e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
 

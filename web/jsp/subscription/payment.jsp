@@ -19,14 +19,6 @@
                 drawPaymentTable(inward_amount);
             });
         </script>
-        <style>
-            .datatable table{
-                width: 99%;
-            }
-            .datatable table tr td{
-                font-size: small;
-            }
-        </style>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>

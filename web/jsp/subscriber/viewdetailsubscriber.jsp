@@ -26,6 +26,7 @@
                 reminderGridCreated = false;
                 missingIssueGridCreated = false;
                 chqReturnGridCreated = false;
+                //paymentGridCreated = false;
                 var detail_requested = <%=request.getParameter("detail")%>
                 var tab_cookie_id = parseInt($.cookie("the_tab_cookie")) || 0;
 
@@ -55,6 +56,10 @@
                             drawInvoiceTable();
                             invoiceGridCreated=true;
                         }
+                        /*else if(selected_index == 4 && paymentGridCreated==false){
+                            drawPaymentTable();
+                            paymentGridCreated=true;
+                        }*/
                         else if(selected_index == 4 && reminderGridCreated == false){
                             drawReminderTable();
                             reminderGridCreated = true;
@@ -89,6 +94,14 @@
                 $("#btnNextSubscriber").click();
             }
         </script>
+        <style>
+            .datatable table{
+                width: 99%;
+            }
+            .datatable table tr td{
+                font-size: small;
+            }
+        </style>
     </head>
     <body>
 
@@ -152,6 +165,7 @@
                                     <li><a href="#inwards">Inwards</a></li>
                                     <li><a href="#subscriptions">Subscriptions</a></li>
                                     <li><a href="#invoices">Invoices</a></li>
+                                    <li><a href="#payments">Payments</a></li>
                                     <li><a href="#reminders">Reminders</a></li>
                                     <li><a href="#missing_issues">Missing Issues</a></li>
                                     <li><a href="#chq_return">Cheque Return</a></li>
@@ -174,6 +188,11 @@
                                 <div id="invoices" style="font-size: 12px;width: 98%;padding: 3px;">
                                     <table id="invoiceTable" class="datatable"></table>
                                     <div id="pager_invoice"></div>
+                                </div>
+
+                                <div id="payments" style="font-size: 12px;width: 98%;padding: 3px;">
+                                    <table id="paymentTable" class="datatable"></table>
+                                    <div id="pager_payments"></div>
                                 </div>
 
                                 <div id="reminders" style="font-size: 12px;width: 98%;padding: 3px;">

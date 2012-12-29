@@ -524,6 +524,7 @@ CREATE TABLE `payment` (
   `invoice_id` int(10) unsigned NOT NULL,
   `amount` float unsigned NOT NULL DEFAULT '0',
   `remarks` varchar(20) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `payment_idx1` (`invoice_id`),
   KEY `payment_idx2` (`inwardID`)
@@ -1401,4 +1402,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-23 19:33:53
+-- Dump completed on 2012-12-29 12:31:33

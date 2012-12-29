@@ -7,6 +7,7 @@ package IAS.Model.Invoice;
 import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
+import IAS.Class.util;
 import IAS.Model.JDSModel;
 import java.io.IOException;
 import java.io.InputStream;
@@ -105,6 +106,26 @@ public class InvoiceModel extends JDSModel{
         Properties props = new Properties();
         props.load(is);
         return props.getProperty("outstanding_payment");
+    }
+
+    public String getInvoicePaymentInfo(int invoice_id){
+
+        try{
+            //Connection _conn = this.getConnection();
+            String sql = Queries.getQuery("invoice_payments");
+            try(PreparedStatement pst = _conn.prepareStatement(sql)){
+                pst.setInt(1, invoice_id);
+                try(ResultSet rs = pst.executeQuery()){
+                   return util.convertResultSetToXML(rs);
+                }
+            }catch(Exception ex){
+                logger.error(ex);
+                return null;
+            }
+        }catch(SQLException ex){
+            logger.error(ex);
+            return null;
+        }
     }
 
     @Override
