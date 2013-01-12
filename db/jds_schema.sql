@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.25, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
@@ -186,7 +186,7 @@ CREATE TABLE `invoice` (
   `amount` float unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `invoice_idx1` (`subscriptionId`,`invoice_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,7 +246,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -334,6 +334,25 @@ CREATE TABLE `issues` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `journal_details`
+--
+
+DROP TABLE IF EXISTS `journal_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `journals_id` int(11) NOT NULL,
+  `year` int(11) NOT NULL,
+  `pages` varchar(11) DEFAULT '0',
+  `issues` int(11) NOT NULL,
+  `page_size` varchar(11) DEFAULT 'A4',
+  `no_of_volumes` int(11) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `journal_group_contents`
 --
 
@@ -363,6 +382,22 @@ CREATE TABLE `journal_groups` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `journal_volume_details`
+--
+
+DROP TABLE IF EXISTS `journal_volume_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_volume_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `journal_details_id` int(11) NOT NULL,
+  `volume_number` int(11) DEFAULT NULL,
+  `start_month` varchar(11) DEFAULT 'January',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `journals`
 --
 
@@ -374,9 +409,7 @@ CREATE TABLE `journals` (
   `journalCode` varchar(4) NOT NULL,
   `journalName` varchar(128) NOT NULL,
   `issnNo` text NOT NULL,
-  `pages` int(11) NOT NULL DEFAULT '0',
   `startYear` int(11) DEFAULT NULL,
-  `issues` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`,`journalName`,`journalCode`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -524,7 +557,6 @@ CREATE TABLE `payment` (
   `invoice_id` int(10) unsigned NOT NULL,
   `amount` float unsigned NOT NULL DEFAULT '0',
   `remarks` varchar(20) DEFAULT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `payment_idx1` (`invoice_id`),
   KEY `payment_idx2` (`inwardID`)
@@ -682,7 +714,7 @@ CREATE TABLE `subscriber` (
   KEY `department` (`department`,`institution`),
   KEY `subscriber_type_indx` (`subtype`),
   KEY `subscriber_email_indx` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -853,7 +885,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -902,7 +934,7 @@ CREATE TABLE `subscriptiondetails` (
   KEY `endYear` (`endYear`),
   KEY `journalPriceGroupID` (`journalPriceGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1402,4 +1434,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-29 12:31:33
+-- Dump completed on 2013-01-12 17:03:02

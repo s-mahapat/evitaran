@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.25, for Win32 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
@@ -262,7 +262,7 @@ CREATE TABLE `invoice` (
   `amount` float unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `invoice_idx1` (`subscriptionId`,`invoice_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,6 +271,7 @@ CREATE TABLE `invoice` (
 
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
+INSERT INTO `invoice` VALUES (1,'12L-I-00001',1,'2012-12-29',1,700);
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -341,7 +342,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,6 +351,7 @@ CREATE TABLE `inward` (
 
 LOCK TABLES `inward` WRITE;
 /*!40000 ALTER TABLE `inward` DISABLE KEYS */;
+INSERT INTO `inward` VALUES (1,'12L-00001','Alok Modak',33,NULL,NULL,32,0,'modak.alok@gmail.com','','','2012-12-29',1,4,NULL,0,NULL,0,1,0,NULL,'',0,NULL,'','',NULL,1,1);
 /*!40000 ALTER TABLE `inward` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -477,6 +479,35 @@ INSERT INTO `issues` VALUES (1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),(9,9
 UNLOCK TABLES;
 
 --
+-- Table structure for table `journal_details`
+--
+
+DROP TABLE IF EXISTS `journal_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `journals_id` int(11) NOT NULL,
+  `year` int(11) NOT NULL,
+  `pages` varchar(11) DEFAULT '0',
+  `issues` int(11) NOT NULL,
+  `page_size` varchar(11) DEFAULT 'A4',
+  `no_of_volumes` int(11) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `journal_details`
+--
+
+LOCK TABLES `journal_details` WRITE;
+/*!40000 ALTER TABLE `journal_details` DISABLE KEYS */;
+INSERT INTO `journal_details` VALUES (1,1,2012,'1800',12,'A4',2),(2,2,2012,'400',4,'A4',1),(3,3,2012,'400',4,'A4',1),(4,4,2012,'600',6,'Other',1),(5,5,2012,'600',6,'Other',1),(6,6,2012,'600',6,'Other',1),(7,7,2012,'600',6,'A4',1),(8,8,2012,'500',4,'Other',1),(9,9,2012,'400',3,'Other',1),(10,10,2012,'1200',12,'A4',1),(11,11,2012,'3000',24,'Other',2),(12,1,2013,'1800',12,'A4',2),(13,2,2013,'400',4,'A4',1),(14,3,2013,'400',4,'A4',1),(15,4,2013,'600',6,'Other',1),(16,5,2013,'600',6,'Other',1),(17,6,2013,'600',6,'Other',1),(18,7,2013,'600',6,'A4',1),(19,8,2013,'500',4,'Other',1),(20,9,2013,'400',3,'Other',1),(21,10,2013,'1200',12,'A4',1),(22,11,2013,'3000',24,'Other',2);
+/*!40000 ALTER TABLE `journal_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `journal_group_contents`
 --
 
@@ -526,6 +557,32 @@ INSERT INTO `journal_groups` VALUES (1,'Pramana - Journal of Physics'),(2,'Journ
 UNLOCK TABLES;
 
 --
+-- Table structure for table `journal_volume_details`
+--
+
+DROP TABLE IF EXISTS `journal_volume_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `journal_volume_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `journal_details_id` int(11) NOT NULL,
+  `volume_number` int(11) DEFAULT NULL,
+  `start_month` varchar(11) DEFAULT 'January',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `journal_volume_details`
+--
+
+LOCK TABLES `journal_volume_details` WRITE;
+/*!40000 ALTER TABLE `journal_volume_details` DISABLE KEYS */;
+INSERT INTO `journal_volume_details` VALUES (1,1,78,'January'),(2,1,79,'July'),(3,2,33,'January'),(4,3,122,'January'),(5,4,121,'January'),(6,5,124,'January'),(7,6,35,'January'),(8,7,37,'January'),(9,8,37,'January'),(10,9,91,'January'),(11,10,17,'January'),(12,11,102,'January'),(13,11,103,'July'),(14,12,80,'January'),(15,12,81,'July'),(16,13,34,'January'),(17,14,123,'January'),(18,15,122,'January'),(19,16,125,'January'),(20,17,36,'January'),(21,18,38,'January'),(22,19,38,'January'),(23,20,92,'January'),(24,21,18,'January'),(25,22,104,'January'),(26,22,105,'July');
+/*!40000 ALTER TABLE `journal_volume_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `journals`
 --
 
@@ -537,9 +594,7 @@ CREATE TABLE `journals` (
   `journalCode` varchar(4) NOT NULL,
   `journalName` varchar(128) NOT NULL,
   `issnNo` text NOT NULL,
-  `pages` int(11) NOT NULL DEFAULT '0',
   `startYear` int(11) DEFAULT NULL,
-  `issues` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`,`journalName`,`journalCode`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -550,7 +605,7 @@ CREATE TABLE `journals` (
 
 LOCK TABLES `journals` WRITE;
 /*!40000 ALTER TABLE `journals` DISABLE KEYS */;
-INSERT INTO `journals` VALUES (1,'P','Pramana - Journal of Physics','0304-4289',1800,1987,12),(2,'JAA','Journal of Astrophysics and Astronomy','0250-6335',400,1234,4),(3,'MS','Proceedings (Mathematical Sciences)','0253-4142',400,2010,4),(4,'EPS','Journal of Earth System Science (formerly Proc. Earth Planet Sci.)','0253-4126',600,1991,6),(5,'CS','Journal of Chemical Sciences (formerly Proc. Chemical Sci.)','0253-4134',600,2000,6),(6,'BMS','Bulletin of Materials Science','0250-4707',600,1995,6),(7,'S','Sadhana (Engineering Sciences)','0256-2499',600,1980,6),(8,'JB','Journal of Biosciences','0250-5991',500,2010,4),(9,'JG','Journal of Genetics','0022-1333',400,2011,3),(10,'RES','Resonanace - Journal of Science Education','0971-8044',1200,2000,12),(11,'CURR','Current Science','0011-3891',3000,2000,24);
+INSERT INTO `journals` VALUES (1,'P','Pramana - Journal of Physics','0304-4289',1987),(2,'JAA','Journal of Astrophysics and Astronomy','0250-6335',1978),(3,'MS','Proceedings (Mathematical Sciences)','0253-4142',2010),(4,'EPS','Journal of Earth System Science (formerly Proc. Earth Planet Sci.)','0253-4126',1991),(5,'CS','Journal of Chemical Sciences (formerly Proc. Chemical Sci.)','0253-4134',2000),(6,'BMS','Bulletin of Materials Science','0250-4707',1995),(7,'S','Sadhana (Engineering Sciences)','0256-2499',1980),(8,'JB','Journal of Biosciences','0250-5991',2010),(9,'JG','Journal of Genetics','0022-1333',2011),(10,'RES','Resonanace - Journal of Science Education','0971-8044',2000),(11,'CURR','Current Science','0011-3891',2000);
 /*!40000 ALTER TABLE `journals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -753,7 +808,6 @@ CREATE TABLE `payment` (
   `invoice_id` int(10) unsigned NOT NULL,
   `amount` float unsigned NOT NULL DEFAULT '0',
   `remarks` varchar(20) DEFAULT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `payment_idx1` (`invoice_id`),
   KEY `payment_idx2` (`inwardID`)
@@ -985,7 +1039,7 @@ CREATE TABLE `subscriber` (
   KEY `department` (`department`,`institution`),
   KEY `subscriber_type_indx` (`subtype`),
   KEY `subscriber_email_indx` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -994,6 +1048,7 @@ CREATE TABLE `subscriber` (
 
 LOCK TABLES `subscriber` WRITE;
 /*!40000 ALTER TABLE `subscriber` DISABLE KEYS */;
+INSERT INTO `subscriber` VALUES (1,'12L-S-00001','2012-12-29','Alok Modak','','','Kasturinagar Bangalore','Kasturinagar Bangalore',32,NULL,15,33,0,'modak.alok@gmail.com',11,NULL,0,NULL);
 /*!40000 ALTER TABLE `subscriber` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1175,7 +1230,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1184,6 +1239,7 @@ CREATE TABLE `subscription` (
 
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
+INSERT INTO `subscription` VALUES (1,1,1,0,1,'2012-12-29',0,0,0);
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1243,7 +1299,7 @@ CREATE TABLE `subscriptiondetails` (
   KEY `endYear` (`endYear`),
   KEY `journalPriceGroupID` (`journalPriceGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1252,6 +1308,7 @@ CREATE TABLE `subscriptiondetails` (
 
 LOCK TABLES `subscriptiondetails` WRITE;
 /*!40000 ALTER TABLE `subscriptiondetails` DISABLE KEYS */;
+INSERT INTO `subscriptiondetails` VALUES (1,1,1,1,2012,1,12,2013,1,103);
 /*!40000 ALTER TABLE `subscriptiondetails` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -2782,4 +2839,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-29 12:31:31
+-- Dump completed on 2013-01-12 17:03:00
