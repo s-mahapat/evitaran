@@ -39,15 +39,13 @@
                     rownumbers: true,
                     emptyrecords: "No Journal",
                     loadtext: "Loading...",
-                    colNames:['Journal Id','Journal Code','Journal Name','ISSN No','No of Pages', 'Start Year','issues'],
+                    colNames:['Journal Id','Journal Code','Journal Name','ISSN No','Start Year'],
                     colModel :[
                         {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
                         {name:'issnNo', index:'issnNo', width:80, align:'center', xmlmap:'issnNo'},
-                        {name:'pages', index:'pages', width:80, align:'center', xmlmap:'pages'},
-                        {name:'startYear', index:'startYear', width:80, align:'center', xmlmap:'startYear'},
-                        {name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'}
+                        {name:'startYear', index:'startYear', width:80, align:'center', xmlmap:'startYear'}
                     ],
                     xmlReader : {
                         root: "results",

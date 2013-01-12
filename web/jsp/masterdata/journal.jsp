@@ -41,8 +41,8 @@
                     <input class="IASTextBox" TABINDEX="4" type="text" name="issnNo" id="issnNo" value="<jsp:getProperty name="journalFormBean" property="issnNo"/>"/>
                 </span>
             </div>
-
-           <div class="IASFormFieldDiv">
+            <%--
+            <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
                     <label>No of Pages:</label>
                 </span>
@@ -50,8 +50,8 @@
                     <input class="IASTextBox" TABINDEX="5" type="text" name="pages" id="pages" value="<jsp:getProperty name="journalFormBean" property="pages"/>" onchange="isNumber(this.id)"/>
                 </span>
             </div>
-
-           <div class="IASFormFieldDiv">
+            --%>
+            <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
                     <label>Start Year:</label>
                 </span>
@@ -59,7 +59,7 @@
                     <input class="IASTextBox" TABINDEX="6" type="text" name="startYear" id="startYear" value="<jsp:getProperty name="journalFormBean" property="startYear"/>" onchange="isNumber(this.id)"/>
                 </span>
             </div>
-
+            <%--
             <div class="IASFormFieldDiv">
                 <span class="IASFormDivSpanLabel">
                     <label>No of Issues:</label>
@@ -68,6 +68,16 @@
                     <input class="IASTextBox" TABINDEX="7" type="text" name="issues" id="issues" value="<jsp:getProperty name="journalFormBean" property="issues"/>" onchange="isNumber(this.id)"/>
                 </span>
             </div>
+
+            <div class="IASFormFieldDiv">
+                <span class="IASFormDivSpanLabel">
+                    <label>Page Size:</label>
+                </span>
+                <span class="IASFormDivSpanInputBox">
+                    <input class="IASTextBox" TABINDEX="8" type="text" name="pageSize" id="pageSize" value="<jsp:getProperty name="journalFormBean" property="pageSize"/>" onchange="isNumber(this.id)"/>
+                </span>
+            </div>
+            --%>
          </div>
     </div>
 </fieldset>

@@ -54,9 +54,7 @@ public class journalModel extends JDSModel{
             st.setString(paramIndex, _journalFormBean.getJournalCode());
             st.setString(++paramIndex, _journalFormBean.getJournalName());
             st.setString(++paramIndex, _journalFormBean.getIssnNo());
-            st.setInt(++paramIndex, _journalFormBean.getPages());
             st.setInt(++paramIndex, _journalFormBean.getStartYear());
-            st.setInt(++paramIndex, _journalFormBean.getIssues());
 
             try
             {
@@ -134,9 +132,7 @@ public class journalModel extends JDSModel{
         st.setString(paramIndex, _journalFormBean.getJournalCode());
         st.setString(++paramIndex, _journalFormBean.getJournalName());
         st.setString(++paramIndex, _journalFormBean.getIssnNo());
-        st.setInt(++paramIndex, _journalFormBean.getPages());
         st.setInt(++paramIndex, _journalFormBean.getStartYear());
-        st.setInt(++paramIndex, _journalFormBean.getIssues());
         st.setInt(++paramIndex, _journalFormBean.getId());
 
         try

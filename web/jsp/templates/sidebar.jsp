@@ -138,8 +138,14 @@
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addJournal"%>">Add Journal</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchJournal"%>">Search Journal</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=jsGroup"%>">Journal Group</a></li>
-                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=subRate"%>">Annual Subscription Rate</a></li>
-                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=printOrder"%>">Print Order</a></li>
+                        <li class="menu"><a href="#">Annual Information</a>
+                            <ul>
+                                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=journalDetails"%>">Journal Details</a></li>
+                                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=journalVolumeDetails"%>">Volume Information</a></li>
+                                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=subRate"%>">Annual Subscription Rate</a></li>
+                                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=printOrder"%>">Print Order</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 <li class="menu"><a href="#">Agents</a>

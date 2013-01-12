@@ -10,6 +10,7 @@ public class journalFormBean {
     private int pages = 0;
     private int startYear = 0;
     private int issues = 0;
+    private String pageSize = "";
 /* Methods - Getter and Setter */
 public int getId() {
         return (this.id);
@@ -65,5 +66,13 @@ public int getIssues() {
 
 public void setIssues(int _Issues) {
         this.issues = _Issues;
+    }
+
+public String getPageSize() {
+        return (this.pageSize);
+    }
+
+public void setPageSize(String _pageSize) {
+        this.pageSize = _pageSize;
     }
 }

@@ -95,6 +95,7 @@ public class printOrderModel extends JDSModel{
         String sql = Queries.getQuery("getNoOfIssues");
         PreparedStatement st = conn.prepareStatement(sql);
         st.setString(1, this._printOrderFormBean.getJournalName());
+        st.setInt(2, this._printOrderFormBean.getYear());
 
         ResultSet rs = this.db.executeQueryPreparedStatement(st);
         //xml = util.convertResultSetToXML(rs);

@@ -96,6 +96,14 @@ public class main extends JDSController {
 
             url = "/jsp/masterdata/searchJournal.jsp";
 
+        } else if (action.equalsIgnoreCase("journalDetails")) {
+
+            url = "/jsp/masterdata/journalDetails.jsp";
+
+        } else if (action.equalsIgnoreCase("journalVolumeDetails")) {
+
+            url = "/jsp/masterdata/journalVolumeDetails.jsp";
+
         } else if (action.equalsIgnoreCase("searchAgent")) {
 
             url = "/jsp/masterdata/searchAgent.jsp";

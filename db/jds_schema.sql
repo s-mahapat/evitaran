@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.28
+-- Server version	5.5.25
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -259,11 +259,11 @@ CREATE TABLE `inward` (
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`complete_non_process_inward` BEFORE INSERT
     ON jds.inward FOR EACH ROW
-BEGIN
-    if new.inwardPurpose in (6,7,8,9) then
-      set new.completed = true;
-    end if;
-
+BEGIN
+    if new.inwardPurpose in (6,7,8,9) then
+      set new.completed = true;
+    end if;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -490,7 +490,7 @@ CREATE TABLE `missing_issue_journals` (
   `missingCopies` int(11) NOT NULL,
   `action` char(1) DEFAULT NULL,
   `sentOn` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `mailinglistid` int(11) DEFAULT NULL,
+  `mailinglistid` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `foreign_key_index` (`missingissueId`),
   KEY `journal_id_index` (`journalId`)
@@ -693,118 +693,118 @@ CREATE TABLE `subscriber` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
-
-
-
-
-
-
-
-    ON jds.subscriber FOR EACH ROW
-
-
-
-
-
-
-
-BEGIN
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    IF new.deactive = True THEN
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      SET new.deactivationDate = CURRENT_DATE;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ELSE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      SET new.deactivationDate = NULL;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    END IF;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE
+
+
+
+
+
+
+
+    ON jds.subscriber FOR EACH ROW
+
+
+
+
+
+
+
+BEGIN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    IF new.deactive = True THEN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      SET new.deactivationDate = CURRENT_DATE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ELSE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      SET new.deactivationDate = NULL;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    END IF;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -913,12 +913,12 @@ CREATE TABLE `subscriptiondetails` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_back_issues` AFTER INSERT
-    ON jds.subscriptiondetails FOR EACH ROW
-BEGIN
-
-    call addBackIssues(new.id, new.startMonth, new.startYear, new.journalGroupID, new.copies);
-
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_back_issues` AFTER INSERT
+    ON jds.subscriptiondetails FOR EACH ROW
+BEGIN
+
+    call addBackIssues(new.id, new.startMonth, new.startYear, new.journalGroupID, new.copies);
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -934,394 +934,394 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`edit_bil` BEFORE UPDATE
-    ON jds.subscriptiondetails FOR EACH ROW
-BEGIN
-
-    begin_level_1: BEGIN
-
-    declare is_sent_to_subscriber tinyint default 0;
-
-    declare proceed_further tinyint default true;
-
-    declare done int default 0;
-
-    declare _journal_id int;
-
-    declare _month int ;
-
-    declare _year int ;
-
-    declare _copies int;
-
-    declare _issue_number int;
-
-    declare _active tinyint default 0;
-
-    declare diff int default 0;
-
-    declare back_issue_list_id int;
-
-    declare updated_flag tinyint default 0;
-
-    declare count_not_sent int default 0;
-
-    declare count_sent int default 0;
-
-    declare copies_already_sent_subscriber int default 0;
-
-    declare cur1 cursor for select t3.id,
-
-                                   t3.journal_id,
-
-                                   t3.month,
-
-                                   t3.`year`,
-
-                                   t3.copies,
-
-                                   t3.issue_number,
-
-                                   t3.sent_to_subscriber,
-
-                                   t3.active 
-
-                            from  subscriptiondetails t1, 
-
-                                  journal_group_contents t2, 
-
-                                  back_issue_list t3 
-
-                            where t1.journalGroupID=t2.journalGroupId 
-
-                            and t3.journal_id=t2.journalId 
-
-                            and t3.subscription_detail_id=old.id 
-
-                            and t3.active=true
-
-                            and t3.sent_to_subscriber=true
-
-                            group by t3.id,t3.journal_id,t3.month,t3.`year`,t3.issue_number,t3.sent_to_subscriber,t3.active;
-
-                            
-
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-
-    
-
-    if new.startYear > old.startYear and new.startYear > year(CURRENT_DATE()) then
-
-      update back_issue_list set active=false
-
-        where subscription_detail_id=old.id
-
-        and sent_to_subscriber=false
-
-        and back_issue_list.year = old.startYear;
-
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`edit_bil` BEFORE UPDATE
+    ON jds.subscriptiondetails FOR EACH ROW
+BEGIN
+
+    begin_level_1: BEGIN
+
+    declare is_sent_to_subscriber tinyint default 0;
+
+    declare proceed_further tinyint default true;
+
+    declare done int default 0;
+
+    declare _journal_id int;
+
+    declare _month int ;
+
+    declare _year int ;
+
+    declare _copies int;
+
+    declare _issue_number int;
+
+    declare _active tinyint default 0;
+
+    declare diff int default 0;
+
+    declare back_issue_list_id int;
+
+    declare updated_flag tinyint default 0;
+
+    declare count_not_sent int default 0;
+
+    declare count_sent int default 0;
+
+    declare copies_already_sent_subscriber int default 0;
+
+    declare cur1 cursor for select t3.id,
+
+                                   t3.journal_id,
+
+                                   t3.month,
+
+                                   t3.`year`,
+
+                                   t3.copies,
+
+                                   t3.issue_number,
+
+                                   t3.sent_to_subscriber,
+
+                                   t3.active 
+
+                            from  subscriptiondetails t1, 
+
+                                  journal_group_contents t2, 
+
+                                  back_issue_list t3 
+
+                            where t1.journalGroupID=t2.journalGroupId 
+
+                            and t3.journal_id=t2.journalId 
+
+                            and t3.subscription_detail_id=old.id 
+
+                            and t3.active=true
+
+                            and t3.sent_to_subscriber=true
+
+                            group by t3.id,t3.journal_id,t3.month,t3.`year`,t3.issue_number,t3.sent_to_subscriber,t3.active;
+
+                            
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    
+
+    if new.startYear > old.startYear and new.startYear > year(CURRENT_DATE()) then
+
+      update back_issue_list set active=false
+
+        where subscription_detail_id=old.id
+
+        and sent_to_subscriber=false
+
+        and back_issue_list.year = old.startYear;
+
       
-
-      leave begin_level_1;
-
-        
-
-    elseif new.startYear < old.startYear and new.startYear = year(CURRENT_DATE()) then
-
-      
-
-      select copies into copies_already_sent_subscriber 
-
-      from back_issue_list
-
-      where subscription_detail_id=old.id
-
-      and sent_to_subscriber=true
-
-      and active=true LIMIT 1;
-
-      set diff := old.copies - copies_already_sent_subscriber;     
-
-      if diff > 0 then
-
+
+      leave begin_level_1;
+
         
-
-        call addBackIssues(old.id, new.startMonth, new.startYear, new.journalGroupID, diff);
-
-      end if;
-
-      
-
-    end if;
-
-   
-
-   
-
-   
-
-    if new.startMonth > old.startMonth then
-
-      update back_issue_list set active=false
-
-      where subscription_detail_id=old.id
-
-      and sent_to_subscriber=false
-
-      and back_issue_list.month < new.startMonth;
-
-    ELSEIF new.startMonth < old.startMonth then
-
-    	
-
-    	
-
-    	update back_issue_list set active=false
-
-    	where subscription_detail_id=old.id
-
-    	AND sent_to_subscriber=FALSE
-
-    	AND back_issue_list.month >= new.startMonth;
-
-      set diff := getDeltaCopies(old.id);
-
-      if diff > 0 then
-
+
+    elseif new.startYear < old.startYear and new.startYear = year(CURRENT_DATE()) then
+
+      
+
+      select copies into copies_already_sent_subscriber 
+
+      from back_issue_list
+
+      where subscription_detail_id=old.id
+
+      and sent_to_subscriber=true
+
+      and active=true LIMIT 1;
+
+      set diff := old.copies - copies_already_sent_subscriber;     
+
+      if diff > 0 then
+
         
-
-        call addBackIssues(old.id, new.startMonth, new.startYear, new.journalGroupID, diff);
-
-      else
-
-        call addBackIssues(old.id, new.startMonth, new.startYear, new.journalGroupID, new.copies);
-
-      end if;
-
-      
-
-    end if;
-
-    
-
-    if new.active=false and old.active=true then
-
-      update back_issue_list set active=false
-
-      where subscription_detail_id=old.id
-
-      and sent_to_subscriber=false;
-
+
+        call addBackIssues(old.id, new.startMonth, new.startYear, new.journalGroupID, diff);
+
+      end if;
+
+      
+
+    end if;
+
+   
+
+   
+
+   
+
+    if new.startMonth > old.startMonth then
+
+      update back_issue_list set active=false
+
+      where subscription_detail_id=old.id
+
+      and sent_to_subscriber=false
+
+      and back_issue_list.month < new.startMonth;
+
+    ELSEIF new.startMonth < old.startMonth then
+
+    	
+
+    	
+
+    	update back_issue_list set active=false
+
+    	where subscription_detail_id=old.id
+
+    	AND sent_to_subscriber=FALSE
+
+    	AND back_issue_list.month >= new.startMonth;
+
+      set diff := getDeltaCopies(old.id);
+
+      if diff > 0 then
+
+        
+
+        call addBackIssues(old.id, new.startMonth, new.startYear, new.journalGroupID, diff);
+
+      else
+
+        call addBackIssues(old.id, new.startMonth, new.startYear, new.journalGroupID, new.copies);
+
+      end if;
+
+      
+
+    end if;
+
+    
+
+    if new.active=false and old.active=true then
+
+      update back_issue_list set active=false
+
+      where subscription_detail_id=old.id
+
+      and sent_to_subscriber=false;
+
       leave begin_level_1; 
-
-    elseif new.active=true and old.active=false then
-
-      update back_issue_list set active=true
-
-      where subscription_detail_id=old.id
-
-      and sent_to_subscriber=false;
-
-    end if;
-
-    
-
-    if old.copies <> new.copies then
-
-    
-
+
+    elseif new.active=true and old.active=false then
+
+      update back_issue_list set active=true
+
+      where subscription_detail_id=old.id
+
+      and sent_to_subscriber=false;
+
+    end if;
+
+    
+
+    if old.copies <> new.copies then
+
+    
+
       
-
+
       
-
+
       
-
-      select count(*) into count_sent 
-
-        from back_issue_list
-
-        where subscription_detail_id=old.id
-
-        and sent_to_subscriber=true 
-
-        and active=true limit 1;
-
-      
-
+
+      select count(*) into count_sent 
+
+        from back_issue_list
+
+        where subscription_detail_id=old.id
+
+        and sent_to_subscriber=true 
+
+        and active=true limit 1;
+
       
-
+
       
-
-      if count_sent = 0 then
-
-        update back_issue_list set copies=new.copies
-
-        where subscription_detail_id=old.id
-
-        and sent_to_subscriber=false 
-
-        and active=true;
-
-      end if;
-
-      
-
+
       
-
-      OPEN cur1;
-
-      read_loop: LOOP
-
-        FETCH cur1 into back_issue_list_id, _journal_id, _month, _year, _copies, _issue_number, is_sent_to_subscriber, _active;
-
-        IF done = 1 THEN
-
-            LEAVE read_loop;
-
-        END IF;
-
-        
-
+
+      if count_sent = 0 then
+
+        update back_issue_list set copies=new.copies
+
+        where subscription_detail_id=old.id
+
+        and sent_to_subscriber=false 
+
+        and active=true;
+
+      end if;
+
+      
+
+      
+
+      OPEN cur1;
+
+      read_loop: LOOP
+
+        FETCH cur1 into back_issue_list_id, _journal_id, _month, _year, _copies, _issue_number, is_sent_to_subscriber, _active;
+
+        IF done = 1 THEN
+
+            LEAVE read_loop;
+
+        END IF;
+
         
-
-        SET diff := new.copies - _copies;
-
-      
-
+
         
-
+
+        SET diff := new.copies - _copies;
+
+      
+
         
-
-        select count(*) into count_not_sent 
-
-        from back_issue_list t1
-
-        where t1.subscription_detail_id=old.id
-
-        and t1.journal_id=_journal_id
-
-        and t1.month=_month
-
-        and t1.`year`=_year
-
-        and t1.issue_number=_issue_number
-
-        and sent_to_subscriber=0 
-
-        and active=true limit 1;
-
-        
-
-        if diff > 0 then
-
-          
-
+
+        
+
+        select count(*) into count_not_sent 
+
+        from back_issue_list t1
+
+        where t1.subscription_detail_id=old.id
+
+        and t1.journal_id=_journal_id
+
+        and t1.month=_month
+
+        and t1.`year`=_year
+
+        and t1.issue_number=_issue_number
+
+        and sent_to_subscriber=0 
+
+        and active=true limit 1;
+
+        
+
+        if diff > 0 then
+
           
-
+
           
-
-          if count_not_sent = 1 then
-
-            update back_issue_list t1 set t1.copies=diff 
-
-            where t1.id <> back_issue_list_id
-
-            and t1.journal_id=_journal_id
-
-            and t1.month=_month
-
-            and t1.`year`=_year
-
-            and t1.issue_number=_issue_number
-
-            and sent_to_subscriber=0 
-
-            and active=true;
-
-          else
-
+
+          
+
+          if count_not_sent = 1 then
+
+            update back_issue_list t1 set t1.copies=diff 
+
+            where t1.id <> back_issue_list_id
+
+            and t1.journal_id=_journal_id
+
+            and t1.month=_month
+
+            and t1.`year`=_year
+
+            and t1.issue_number=_issue_number
+
+            and sent_to_subscriber=0 
+
+            and active=true;
+
+          else
+
             
-
+
             
-
-            insert into back_issue_list(subscription_detail_id,
-
-                                        journal_id,
-
-                                        `month`,
-
-                                        `year`,
-
-                                        issue_number,
-
-                                        copies,
-
-                                        sent_to_subscriber,
-
-                                        added_on,
-
-                                        active)
-
-                                  values( old.id,
-
-                                          _journal_id,
-
-                                          _month,
-
-                                          _year,
-
-                                          _issue_number,
-
-                                          diff,
-
-                                          false,
-
-                                          CURRENT_DATE(),
-
-                                          true );
-
-          end if;
-
-        else
-
+
+            insert into back_issue_list(subscription_detail_id,
+
+                                        journal_id,
+
+                                        `month`,
+
+                                        `year`,
+
+                                        issue_number,
+
+                                        copies,
+
+                                        sent_to_subscriber,
+
+                                        added_on,
+
+                                        active)
+
+                                  values( old.id,
+
+                                          _journal_id,
+
+                                          _month,
+
+                                          _year,
+
+                                          _issue_number,
+
+                                          diff,
+
+                                          false,
+
+                                          CURRENT_DATE(),
+
+                                          true );
+
+          end if;
+
+        else
+
           
-
+
           
-
+
           
-
+
           
-
-          if count_not_sent = 1 then
-
-            update back_issue_list t1 set t1.copies=new.copies 
-
-            where t1.id <> back_issue_list_id
-
-            and t1.journal_id=_journal_id
-
-            and t1.month=_month
-
-            and t1.`year`=_year
-
-            and t1.issue_number=_issue_number
-
-            and sent_to_subscriber=0 
-
-            and active=true;
-
-          end if;
-
-        end if;
-
-      END LOOP;
-
-      CLOSE cur1;
-
-    end if;
-
-    END begin_level_1;
-
+
+          if count_not_sent = 1 then
+
+            update back_issue_list t1 set t1.copies=new.copies 
+
+            where t1.id <> back_issue_list_id
+
+            and t1.journal_id=_journal_id
+
+            and t1.month=_month
+
+            and t1.`year`=_year
+
+            and t1.issue_number=_issue_number
+
+            and sent_to_subscriber=0 
+
+            and active=true;
+
+          end if;
+
+        end if;
+
+      END LOOP;
+
+      CLOSE cur1;
+
+    end if;
+
+    END begin_level_1;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;

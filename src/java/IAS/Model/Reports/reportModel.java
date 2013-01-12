@@ -1123,6 +1123,7 @@ public class reportModel extends JDSModel {
 
         String sql = Queries.getQuery("get_max_no_of_issues");
         PreparedStatement st = conn.prepareStatement(sql);
+        st.setInt(1, year);
         ResultSet rs = db.executeQueryPreparedStatement(st);
         int maxNoOfIssues = 0;
         if(rs.next()) {
@@ -1149,6 +1150,7 @@ public class reportModel extends JDSModel {
             sql = Queries.getQuery("get_no_of_issues");
             st = conn.prepareStatement(sql);
             st.setString(1, journalCode);
+            st.setInt(2, year);
             ResultSet rsNI = db.executeQueryPreparedStatement(st);
             int noOfIssues = 0;
             if(rsNI.next()) {
@@ -1192,8 +1194,11 @@ public class reportModel extends JDSModel {
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         //FillBean(this.request, _printOrderFormBeanReport);
 
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+
         String sql = Queries.getQuery("get_max_no_of_issues");
         PreparedStatement st = conn.prepareStatement(sql);
+        st.setInt(1, year);
         ResultSet rs = db.executeQueryPreparedStatement(st);
         int maxNoOfIssues = 0;
         if(rs.next()) {
