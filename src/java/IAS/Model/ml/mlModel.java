@@ -38,8 +38,10 @@ public class mlModel extends JDSModel {
         try (PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setString(paramIndex, request.getParameter("journalName"));
-            stGet.setString(++paramIndex, request.getParameter("issue"));
             stGet.setString(++paramIndex, request.getParameter("year"));
+            stGet.setString(++paramIndex, request.getParameter("volume"));
+            stGet.setString(++paramIndex, request.getParameter("issue"));
+            
             try (ResultSet rs = stGet.executeQuery();) {
                 if (rs.next()) {
                     return rs.getInt(1);
@@ -140,6 +142,7 @@ public class mlModel extends JDSModel {
         String journalName = request.getParameter("journalName");
         String issue = request.getParameter("issue");
         String year = request.getParameter("year");
+        String volumeNumber = request.getParameter("volume");
         String month = request.getParameter("month");
 
         // Check if the record exists in mialing_list for that journal and issue.
@@ -158,6 +161,8 @@ public class mlModel extends JDSModel {
                 st.setString(++paramIndex, issue);
                 st.setString(++paramIndex, year);
                 st.setString(++paramIndex, month);
+                st.setString(++paramIndex, volumeNumber);                
+                
 
                 if (st.executeUpdate() == 1) {
                     try(ResultSet rsml = st.getGeneratedKeys();){
@@ -196,10 +201,10 @@ public class mlModel extends JDSModel {
                                     stmldtl.setString(++paramIndex, value.toString());
                                 }
                             }
-
-                            stmldtl.setString(++paramIndex, request.getParameter("issue"));
-                            stmldtl.setString(++paramIndex, request.getParameter("month"));
-                            stmldtl.setString(++paramIndex, request.getParameter("year"));
+                            stmldtl.setString(++paramIndex, volumeNumber);
+                            stmldtl.setString(++paramIndex, issue);
+                            stmldtl.setString(++paramIndex, month);
+                            stmldtl.setString(++paramIndex, year);
                             stmldtl.executeUpdate();
                             //stmldtl.close();
                         }

@@ -25,7 +25,6 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=month"%>","month","month");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
-                //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=getissues"%>","issueNumber","issue");
                 jQuery("#btnAdd,#btnPrintLabel,#btnPrintSticker").button("disable");
 
             });
@@ -45,8 +44,8 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
-                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city',
-                        'state', 'country', 'pincode', 'copies', 'issue', 'month', 'year'],
+                    colNames:['journalCode', 'subtypecode', 'Subscriber Number', 'subscriber Name', 'city',
+                        'state', 'country', 'pincode', 'copies', 'volume','issue', 'month', 'year'],
                     colModel :[
                         {name:'journalCode', index:'journalCode', width:35, align:'center', xmlmap:'journalCode'},
                         {name:'subtypecode', index:'subtypecode', width:35, align:'center', xmlmap:'subtypecode'},
@@ -57,6 +56,7 @@
                         {name:'country', index:'country', width:40, align:'center', xmlmap:'country'},
                         {name:'pincode', index:'pincode', width:20, align:'center', xmlmap:'pincode'},
                         {name:'copies', index:'copies', width:20, align:'center', xmlmap:'copies'},
+                        {name:'volumeNumber', index:'volumeNumber', width:20, align:'center', xmlmap:'volumeNumber'},
                         {name:'issue', index:'issue', width:20, align:'center', xmlmap:'issue'},
                         {name:'month', index:'month', width:20, align:'center', xmlmap:'month'},
                         {name:'year', index:'year', width:20, align:'center', xmlmap:'year'},
@@ -109,7 +109,9 @@
                 else if ($("#month").val() == 0){
                     alert("Select Month");
                 }
-
+                else if ($("#volume").val() == 0){
+                    alert("Select Volume Number");
+                }
                 else if ($("#issue").val() == 'value'){
                     alert("Select Issue");
                 }
@@ -125,6 +127,7 @@
                             year                    : $("#year").val(),
                             journalName             : $("#journalName").val(),
                             month                   : $("#month").val(),
+                            volume                  : $("#volume").val(),
                             mlCreationDate          : $("#mlCreationDate").val(),
                             issue                   : $("#issue").val(),
                             action                  : "generate"
@@ -150,7 +153,7 @@
                     data:
                         {year                   : $("#year").val(),
                         journalName             : $("#journalName").val(),
-                        month                   : $("#month").val(),
+                        volume                   : $("#volume").val(),
                         mlCreationDate          : $("#mlCreationDate").val(),
                         issue                   : $("#issue").val(),
                         printOption             : $("#printOption").val(),
@@ -166,22 +169,6 @@
                     }
                 });
 
-
-                /*
-                jQuery("#mlTable").setGridParam({postData:
-                        {year                   : $("#year").val(),
-                        journalName             : $("#journalName").val(),
-                        month                   : $("#month").val(),
-                        mlCreationDate          : $("#mlCreationDate").val(),
-                        issue                   : $("#issue").val(),
-                        action                  : "print"
-                    }});
-
-                jQuery("#mlTable").setGridParam({ datatype: "xml" });
-                jQuery("#mlTable").trigger("clearGridData");
-                jQuery("#mlTable").trigger("reloadGrid");
-                 */
-
             }
 
 
@@ -193,8 +180,20 @@
                 $(newOption).html("Select");
                 $("#issue").append(newOption);
 
-                requestURL = "/JDS/CMasterData?md=getissues&mdvalue=" +  $("#journalName").val();
+                requestURL = "/JDS/CMasterData?md=getissues&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#volume").val();
                 jdsAppend(requestURL,"issueNumber","issue");
+            }
+            
+             function loadvolumes(){
+                $("#volume").empty();
+                //text("");
+
+                var newOption = new Option("Select", "value");
+                $(newOption).html("Select");
+                $("#volume").append(newOption);
+
+                requestURL = "/JDS/CMasterData?md=getvolumes&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#year").val();
+                jdsAppend(requestURL,"volumeNumber","volume");
             }
 
             function printLabel()
@@ -246,7 +245,40 @@
                                             <label>Journal Name:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName" onchange="loadIssues()">
+                                            <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName" onchange="loadvolumes()">
+                                                <option value="0">Select</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                    <div class="IASFormFieldDiv">
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Year:</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <select class="IASComboBox" TABINDEX="3" name="year" id="year" onchange="loadvolumes()">                                                
+                                            </select>
+                                        </span>
+                                    </div>                                
+                                    <div class="IASFormFieldDiv">
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Month:</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <select class="IASComboBox" TABINDEX="3" name="month" id="month">                                                
+                                            </select>
+                                        </span>
+                                    </div>   
+                                </div>
+                            </div>
+                            <%-- Search Criteria right div --%>
+                            <div class="IASFormRightDiv">
+                                <div class="IASFormFieldDiv">
+                                    <div class="IASFormFieldDiv">
+                                        <span class="IASFormDivSpanLabel">
+                                            <label>Volume Number:</label>
+                                        </span>
+                                        <span class="IASFormDivSpanInputBox">
+                                            <select class="IASComboBox" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
                                                 <option value="0">Select</option>
                                             </select>
                                         </span>
@@ -261,37 +293,12 @@
                                             </select>
                                         </span>
                                     </div>
-                                </div>
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Creation Date:</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="mlCreationDate" id="mlCreationDate" value="<jsp:getProperty name="mlFormBean" property="mlCreationDate"/>"/>
-                                    </span>
-                                </div>
-                            </div>
-                            <%-- Search Criteria right div --%>
-                            <div class="IASFormRightDiv">
-                                <div class="IASFormFieldDiv">
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
-                                            <label>Year:</label>
+                                            <label>Creation Date:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBox" TABINDEX="3" name="year" id="year">
-                                                <option value="0">Select</option>
-                                            </select>
-                                        </span>
-                                    </div>
-                                    <div class="IASFormFieldDiv">
-                                        <span class="IASFormDivSpanLabel">
-                                            <label>Month:</label>
-                                        </span>
-                                        <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBox" TABINDEX="4" name="month" id="month">
-                                                <option value="0">Select</option>
-                                            </select>
+                                            <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="mlCreationDate" id="mlCreationDate" value="<jsp:getProperty name="mlFormBean" property="mlCreationDate"/>"/>
                                         </span>
                                     </div>
                                 </div>

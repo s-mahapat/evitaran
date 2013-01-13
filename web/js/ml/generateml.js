@@ -107,8 +107,11 @@ function checkMl(){
         alert("Select Journal");
     }
 
-    else if ($("#month").val() == 0){
+    else if ($("#month").val() == 'value'){
         alert("Select Month");
+    }
+    else if ($("#volume").val() == 'value'){
+        alert("Select Volume Number");
     }
 
     else if ($("#issue").val() == 'value'){
@@ -127,7 +130,7 @@ function checkMl(){
             async: false,
             url: "generateml?action=checkml&year=" +  $("#year").val()
             + "&journalName=" + $("#journalName").val()
-            + "&month=" + $("#month").val()
+            + "&volume=" + $("#volume").val()
             + "&mlCreationDate=" + $("#mlCreationDate").val()
             + "&issue=" + $("#issue").val(),
 
@@ -141,7 +144,7 @@ function checkMl(){
                 }
                 else {
                     alert("Mailing List already generated for Year: " +  $("#year").val() + ", Journal Name: " + $("#journalName").val()
-                            + ", Month: " + $("#month").val() + ", Issue: " + $("#issue").val());
+                            + ", Volume Number: " + $("#volume").val() + ", Issue: " + $("#issue").val());
                 }
                 return true;
             },
@@ -158,19 +161,18 @@ function checkMl(){
     if ($("#year").val() == 0) {
         alert("Select Year");
     }
-
-    else if ($("#journalName").val() == 0){
-        alert("Select Journal");
-    }
-
     else if ($("#month").val() == 0){
         alert("Select Month");
     }
-
+    else if ($("#journalName").val() == 0){
+        alert("Select Journal");
+    }
+    else if ($("#volume").val() == 'value'){
+        alert("Select Volume Number");
+    }
     else if ($("#issue").val() == 'value'){
         alert("Select Issue");
     }
-
     else if($("#mlCreationDate").val() == "") {
         alert("Please try again after logging in again ");
     }
@@ -183,7 +185,7 @@ function checkMl(){
             async: false,
             url: "generateml?action=checkml&year=" +  $("#year").val()
             + "&journalName=" + $("#journalName").val()
-            + "&month=" + $("#month").val()
+            + "&volume=" + $("#volume").val()
             + "&mlCreationDate=" + $("#mlCreationDate").val()
             + "&issue=" + $("#issue").val(),
 
@@ -194,7 +196,7 @@ function checkMl(){
                 });
                 if (mlid == 0){
                     alert("Mailing List not generated for Year: " +  $("#year").val() + ", Journal Name: " + $("#journalName").val()
-                            + ", Month: " + $("#month").val() + ", Issue: " + $("#issue").val());
+                            + ", Volume Number: " + $("#volume").val() + ", Issue: " + $("#issue").val());
 
                 }
                 else {
