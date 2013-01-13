@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -187,7 +187,7 @@ CREATE TABLE `invoice` (
   `amount` float unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `invoice_idx1` (`subscriptionId`,`invoice_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,7 +247,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -258,8 +258,10 @@ CREATE TABLE `inward` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`complete_non_process_inward` BEFORE INSERT
-    ON jds.inward FOR EACH ROW
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`complete_non_process_inward` BEFORE INSERT
+
+    ON jds.inward FOR EACH ROW
+
 BEGIN
     if new.inwardPurpose in (6,7,8,9) then
       set new.completed = true;
@@ -560,7 +562,9 @@ CREATE TABLE `payment` (
   `invoice_id` int(10) unsigned NOT NULL,
   `amount` float unsigned NOT NULL DEFAULT '0',
   `remarks` varchar(20) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_inward_id` (`inwardID`),
   KEY `payment_idx1` (`invoice_id`),
   KEY `payment_idx2` (`inwardID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Save the relation between different inwards and a subscription. Subscriber can pay multiple times for the same subscription';
@@ -717,7 +721,7 @@ CREATE TABLE `subscriber` (
   KEY `department` (`department`,`institution`),
   KEY `subscriber_type_indx` (`subtype`),
   KEY `subscriber_email_indx` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -888,7 +892,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -937,7 +941,7 @@ CREATE TABLE `subscriptiondetails` (
   KEY `endYear` (`endYear`),
   KEY `journalPriceGroupID` (`journalPriceGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1055,8 +1059,9 @@ BEGIN
 
         and back_issue_list.year = old.startYear;
 
-      
+      
 
+
       leave begin_level_1;
 
         
@@ -1079,8 +1084,9 @@ BEGIN
 
       if diff > 0 then
 
-        
+        
 
+
         call addBackIssues(old.id, new.startMonth, new.startYear, new.journalGroupID, diff);
 
       end if;
@@ -1091,9 +1097,10 @@ BEGIN
 
    
 
-   
+   
 
-   
+   
+
 
     if new.startMonth > old.startMonth then
 
@@ -1107,9 +1114,10 @@ BEGIN
 
     ELSEIF new.startMonth < old.startMonth then
 
-    	
+    	
 
-    	
+    	
+
 
     	update back_issue_list set active=false
 
@@ -1123,8 +1131,9 @@ BEGIN
 
       if diff > 0 then
 
-        
+        
 
+
         call addBackIssues(old.id, new.startMonth, new.startYear, new.journalGroupID, diff);
 
       else
@@ -1147,8 +1156,9 @@ BEGIN
 
       and sent_to_subscriber=false;
 
-      leave begin_level_1; 
+      leave begin_level_1; 
 
+
     elseif new.active=true and old.active=false then
 
       update back_issue_list set active=true
@@ -1165,11 +1175,13 @@ BEGIN
 
     
 
-      
+      
 
-      
+      
 
-      
+      
+
+
 
       select count(*) into count_sent 
 
@@ -1183,9 +1195,10 @@ BEGIN
 
       
 
-      
+      
 
-      
+      
+
 
       if count_sent = 0 then
 
@@ -1201,8 +1214,9 @@ BEGIN
 
       
 
-      
+      
 
+
       OPEN cur1;
 
       read_loop: LOOP
@@ -1217,15 +1231,17 @@ BEGIN
 
         
 
-        
+        
 
+
         SET diff := new.copies - _copies;
 
       
 
-        
+        
 
-        
+        
+
 
         select count(*) into count_not_sent 
 
@@ -1251,9 +1267,10 @@ BEGIN
 
           
 
-          
+          
 
-          
+          
+
 
           if count_not_sent = 1 then
 
@@ -1275,9 +1292,10 @@ BEGIN
 
           else
 
-            
+            
 
-            
+            
+
 
             insert into back_issue_list(subscription_detail_id,
 
@@ -1319,11 +1337,13 @@ BEGIN
 
         else
 
-          
+          
 
-          
+          
 
-          
+          
+
+          
 
           
 
@@ -1437,4 +1457,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-13 17:29:37
+-- Dump completed on 2013-01-13 20:17:16

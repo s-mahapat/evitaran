@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -263,7 +263,7 @@ CREATE TABLE `invoice` (
   `amount` float unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `invoice_idx1` (`subscriptionId`,`invoice_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -272,6 +272,7 @@ CREATE TABLE `invoice` (
 
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
+INSERT INTO `invoice` VALUES (1,'13A-I-00001',1,'2013-01-13',2,1100);
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -342,7 +343,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -351,6 +352,7 @@ CREATE TABLE `inward` (
 
 LOCK TABLES `inward` WRITE;
 /*!40000 ALTER TABLE `inward` DISABLE KEYS */;
+INSERT INTO `inward` VALUES (1,'13A-00001','Shailendra M',33,15,NULL,32,560067,'shailendra.mahapatra@gmail.com','','','2013-01-13',1,1,NULL,0,NULL,0,1,0,NULL,NULL,0,NULL,'','',NULL,1,1);
 /*!40000 ALTER TABLE `inward` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -362,8 +364,10 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`complete_non_process_inward` BEFORE INSERT
-    ON jds.inward FOR EACH ROW
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`complete_non_process_inward` BEFORE INSERT
+
+    ON jds.inward FOR EACH ROW
+
 BEGIN
     if new.inwardPurpose in (6,7,8,9) then
       set new.completed = true;
@@ -809,7 +813,9 @@ CREATE TABLE `payment` (
   `invoice_id` int(10) unsigned NOT NULL,
   `amount` float unsigned NOT NULL DEFAULT '0',
   `remarks` varchar(20) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_inward_id` (`inwardID`),
   KEY `payment_idx1` (`invoice_id`),
   KEY `payment_idx2` (`inwardID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Save the relation between different inwards and a subscription. Subscriber can pay multiple times for the same subscription';
@@ -1040,7 +1046,7 @@ CREATE TABLE `subscriber` (
   KEY `department` (`department`,`institution`),
   KEY `subscriber_type_indx` (`subtype`),
   KEY `subscriber_email_indx` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1049,6 +1055,7 @@ CREATE TABLE `subscriber` (
 
 LOCK TABLES `subscriber` WRITE;
 /*!40000 ALTER TABLE `subscriber` DISABLE KEYS */;
+INSERT INTO `subscriber` VALUES (1,'13A-S-00001','2013-01-13','Shailendra M','','','Kanna','Kanna',32,NULL,15,33,560067,'shailendra.mahapatra@gmail.com',11,NULL,0,NULL);
 /*!40000 ALTER TABLE `subscriber` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1230,7 +1237,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1239,6 +1246,7 @@ CREATE TABLE `subscription` (
 
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
+INSERT INTO `subscription` VALUES (1,1,1,0,1,'2013-01-13',0,0,0);
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1298,7 +1306,7 @@ CREATE TABLE `subscriptiondetails` (
   KEY `endYear` (`endYear`),
   KEY `journalPriceGroupID` (`journalPriceGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1307,6 +1315,7 @@ CREATE TABLE `subscriptiondetails` (
 
 LOCK TABLES `subscriptiondetails` WRITE;
 /*!40000 ALTER TABLE `subscriptiondetails` DISABLE KEYS */;
+INSERT INTO `subscriptiondetails` VALUES (1,1,1,1,2013,1,12,2014,1,49),(2,1,2,1,2013,1,12,2014,1,50);
 /*!40000 ALTER TABLE `subscriptiondetails` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1425,8 +1434,9 @@ BEGIN
 
         and back_issue_list.year = old.startYear;
 
-      
+      
 
+
       leave begin_level_1;
 
         
@@ -1449,8 +1459,9 @@ BEGIN
 
       if diff > 0 then
 
-        
+        
 
+
         call addBackIssues(old.id, new.startMonth, new.startYear, new.journalGroupID, diff);
 
       end if;
@@ -1461,9 +1472,10 @@ BEGIN
 
    
 
-   
+   
 
-   
+   
+
 
     if new.startMonth > old.startMonth then
 
@@ -1477,9 +1489,10 @@ BEGIN
 
     ELSEIF new.startMonth < old.startMonth then
 
-    	
+    	
 
-    	
+    	
+
 
     	update back_issue_list set active=false
 
@@ -1493,8 +1506,9 @@ BEGIN
 
       if diff > 0 then
 
-        
+        
 
+
         call addBackIssues(old.id, new.startMonth, new.startYear, new.journalGroupID, diff);
 
       else
@@ -1517,8 +1531,9 @@ BEGIN
 
       and sent_to_subscriber=false;
 
-      leave begin_level_1; 
+      leave begin_level_1; 
 
+
     elseif new.active=true and old.active=false then
 
       update back_issue_list set active=true
@@ -1535,11 +1550,13 @@ BEGIN
 
     
 
-      
+      
 
-      
+      
 
-      
+      
+
+
 
       select count(*) into count_sent 
 
@@ -1553,9 +1570,10 @@ BEGIN
 
       
 
-      
+      
 
-      
+      
+
 
       if count_sent = 0 then
 
@@ -1571,8 +1589,9 @@ BEGIN
 
       
 
-      
+      
 
+
       OPEN cur1;
 
       read_loop: LOOP
@@ -1587,15 +1606,17 @@ BEGIN
 
         
 
-        
+        
 
+
         SET diff := new.copies - _copies;
 
       
 
-        
+        
 
-        
+        
+
 
         select count(*) into count_not_sent 
 
@@ -1621,9 +1642,10 @@ BEGIN
 
           
 
-          
+          
 
-          
+          
+
 
           if count_not_sent = 1 then
 
@@ -1645,9 +1667,10 @@ BEGIN
 
           else
 
-            
+            
 
-            
+            
+
 
             insert into back_issue_list(subscription_detail_id,
 
@@ -1689,11 +1712,13 @@ BEGIN
 
         else
 
-          
+          
 
-          
+          
 
-          
+          
+
+          
 
           
 
@@ -1877,8 +1902,9 @@ BEGIN
 
   
 
+
 
-
+
   DECLARE cur1 CURSOR FOR  select t2.journalID, 
 
                                   t3.month, 
@@ -1899,14 +1925,16 @@ BEGIN
 
                             and t3.year = _new_startYear;
 
-
+
 
   
 
+
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
+
 
-
+
   OPEN cur1;
 
   read_loop: LOOP
@@ -1996,12 +2024,12 @@ BEGIN
       DECLARE balance_copies             int default 0;    
       
       DECLARE done int default 0;
-
+
       
+
 
 	    DECLARE
-
- 
+  
         cur1 CURSOR FOR SELECT id, journalCode, journalName from journals;
  
       DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
@@ -2013,30 +2041,33 @@ BEGIN
      read_loop: LOOP
 
           FETCH cur1 INTO journal_id, journal_code, journal_name;
-
+
+
 
           IF done = 1 THEN
 
             LEAVE read_loop;
-
-          
+                    
           END IF;       
-
+
+
 
           select printOrder into print_order_value from print_order where `year` = cir_year and journalId = journal_id;
-
+
           
+
 
           select sum(mailing_list_detail.copies) into inst_i
           from mailing_list_detail left join subscriber_type on mailing_list_detail.subtypecode = subscriber_type.subtypecode
           where subscriber_type.nationality = 'I' AND subscriber_type.institutional = 'I'
           and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
           and mailing_list_detail.journalId = journal_id
-          group by
-          
+          group by                    
           mailing_list_detail.journalId, mailing_list_detail.`year`, subscriber_type.institutional, subscriber_type.nationality;
-
-
+
+
+
+
 
 
           select sum(mailing_list_detail.copies) into inst_f
@@ -2044,21 +2075,22 @@ BEGIN
           where subscriber_type.nationality = 'F' AND subscriber_type.institutional = 'I'
           and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
           and mailing_list_detail.journalId = journal_id
-          group by
-          
+          group by                    
           mailing_list_detail.journalId, mailing_list_detail.`year`, subscriber_type.institutional, subscriber_type.nationality;
-
+
+
 
           select sum(mailing_list_detail.copies) into ind_i
           from mailing_list_detail left join subscriber_type on mailing_list_detail.subtypecode = subscriber_type.subtypecode
           where subscriber_type.nationality = 'I' AND subscriber_type.institutional = 'P'
           and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
           and mailing_list_detail.journalId = journal_id
-          group by
-          
+          group by                    
           mailing_list_detail.journalId, mailing_list_detail.`year`, subscriber_type.institutional, subscriber_type.nationality;
-
-
+
+
+
+
 
 
           select sum(mailing_list_detail.copies) into ind_f
@@ -2066,34 +2098,34 @@ BEGIN
           where subscriber_type.nationality = 'F' AND subscriber_type.institutional = 'P'
           and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
           and mailing_list_detail.journalId = journal_id
-          group by
-          
+          group by                    
           mailing_list_detail.journalId, mailing_list_detail.`year`, subscriber_type.institutional, subscriber_type.nationality;
-
+
+
 
           select sum(mailing_list_detail.copies) into auth
           from mailing_list_detail left join subscriber_type on mailing_list_detail.subtypecode = subscriber_type.subtypecode
           where subscriber_type.subtypecode = 'AUTH'
           and mailing_list_detail.`year` = cir_year
           and mailing_list_detail.journalId = journal_id
-          group by
-          
+          group by                    
           mailing_list_detail.journalId, mailing_list_detail.`year`;
-
+
+
 
           select sum(mailing_list_detail.copies) into comp
           from mailing_list_detail left join subscriber_type on mailing_list_detail.subtypecode = subscriber_type.subtypecode
           where subscriber_type.subtype = 'FREE'
           and mailing_list_detail.`year` = cir_year
           and mailing_list_detail.journalId = journal_id
-          group by
-          
+          group by                    
           mailing_list_detail.journalId, mailing_list_detail.`year`;        
           
           SET total_copies = inst_i + inst_f + ind_i + ind_f + auth + comp;
           
           set balance_copies = print_order_value - total_copies;
-
+
+
 
             insert into circulation_figure ( journalCode ,journalName, instIndia, instAbroad, indiIndia, 
             indiAbroad, comp, auth, totalCopies, printOrder, balanceCopies) 
@@ -2135,41 +2167,49 @@ DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `cir_subscription_rates`(IN cir_year        int,
                                               IN sub_type_desc   varchar(64))
 BEGIN
-
+
+
 
  DECLARE price_rate int default 0;
  DECLARE rat_period int default 0;
  DECLARE journal_gp_id int;
  DECLARE journal_gp_name varchar(128);
  declare done int default 0;
-
-
+
+
 DECLARE
 
      cur1 CURSOR FOR select id, journalGroupName from journal_groups;
-
+
+
 
       DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-
+
+
 
       delete from temp_sub_rate;
-
+
+
 
       OPEN cur1;
-
+
+
 
       read_loop: LOOP
-
+
+
 
       fetch cur1 into journal_gp_id, journal_gp_name;
-
+
+
 
         IF done = 1 THEN
 
             LEAVE read_loop;
 
          END IF;
-
+
+
 
         select subscription_rates.rate into price_rate 
           from 
@@ -2178,16 +2218,18 @@ DECLARE
           subscription_rates.`year` = cir_year AND subscription_rates.period = 1 
           AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id 
           and subscriber_type.subtypedesc = sub_type_desc;
-
+
+
 
           insert into temp_sub_rate 
           (journalGroupId, journalGroupName, subTypeDesc, `year`, year1) 
           VALUES 
           (journal_gp_id, journal_gp_name, sub_type_desc, cir_year, price_rate);
-
-
+
+
           set price_rate = 0;
-
+
+
 
         select subscription_rates.rate into price_rate 
           from 
@@ -2196,17 +2238,20 @@ DECLARE
           subscription_rates.`year` = cir_year AND subscription_rates.period = 2 
           AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id 
           and subscriber_type.subtypedesc = sub_type_desc;
-
+
+
 
           update temp_sub_rate SET
             year2 = price_rate 
             where 
               journalGroupId = journal_gp_id AND journalGroupName = journal_gp_name 
               AND subTypeDesc = sub_type_desc and `year` = cir_year;
-
+
+
 
           set price_rate = 0;
-
+
+
 
         select subscription_rates.rate into price_rate 
           from 
@@ -2215,17 +2260,19 @@ DECLARE
           subscription_rates.`year` = cir_year AND subscription_rates.period = 3 
           AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id 
           and subscriber_type.subtypedesc = sub_type_desc;   
-
-
+
+
           update temp_sub_rate SET
             year3 = price_rate 
             where 
               journalGroupId = journal_gp_id AND journalGroupName = journal_gp_name 
               AND subTypeDesc = sub_type_desc and `year` = cir_year;
-
+
+
 
           set price_rate = 0;
-
+
+
 
         select subscription_rates.rate into price_rate 
           from 
@@ -2240,14 +2287,17 @@ DECLARE
             where 
               journalGroupId = journal_gp_id AND journalGroupName = journal_gp_name 
               AND subTypeDesc = sub_type_desc and `year` = cir_year;
-
+
+
 
           set price_rate = 0;
       END LOOP;
-
+
+
 
       CLOSE cur1;  
-
+
+
 
    END */;;
 DELIMITER ;
@@ -2810,33 +2860,48 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `update_back_issue`()
-begin
+begin
+
 
-  declare current_month int default MONTH(CURRENT_DATE());
+  declare current_month int default MONTH(CURRENT_DATE());
+
 
-  declare current_year int default YEAR(CURRENT_DATE());
+  declare current_year int default YEAR(CURRENT_DATE());
+
 
-  declare is_mailing_list_generated_for_month tinyint default 0;
-
-  
-
-  
-
-  select generated into is_mailing_list_generated_for_month 
-
-  from mailing_list_summary 
-
-  where mailing_list_summary.month=current_month and mailing_list_summary.year=current_year;
+  declare is_mailing_list_generated_for_month tinyint default 0;
+
+  
+
+  
+
 
   
 
-  if is_mailing_list_generated_for_month = 0 then
+  select generated into is_mailing_list_generated_for_month 
+
 
-    select is_mailing_list_generated_for_month;
+  from mailing_list_summary 
+
 
-  end if;
-
+  where mailing_list_summary.month=current_month and mailing_list_summary.year=current_year;
+
+  
+
   
+
+  if is_mailing_list_generated_for_month = 0 then
+
+
+    select is_mailing_list_generated_for_month;
+
+
+  end if;
+
+  
+
+  
+
 
   
 
@@ -2856,4 +2921,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-13 17:29:36
+-- Dump completed on 2013-01-13 20:17:14
