@@ -263,7 +263,7 @@ CREATE TABLE `invoice` (
   `amount` float unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `invoice_idx1` (`subscriptionId`,`invoice_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -272,7 +272,6 @@ CREATE TABLE `invoice` (
 
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
-INSERT INTO `invoice` VALUES (1,'13A-I-00001',1,'2013-01-13',2,1100);
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -343,7 +342,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -352,7 +351,6 @@ CREATE TABLE `inward` (
 
 LOCK TABLES `inward` WRITE;
 /*!40000 ALTER TABLE `inward` DISABLE KEYS */;
-INSERT INTO `inward` VALUES (1,'13A-00001','Shailendra M',33,15,NULL,32,560067,'shailendra.mahapatra@gmail.com','','','2013-01-13',1,1,NULL,0,NULL,0,1,0,NULL,NULL,0,NULL,'','',NULL,1,1);
 /*!40000 ALTER TABLE `inward` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1046,7 +1044,7 @@ CREATE TABLE `subscriber` (
   KEY `department` (`department`,`institution`),
   KEY `subscriber_type_indx` (`subtype`),
   KEY `subscriber_email_indx` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1055,7 +1053,6 @@ CREATE TABLE `subscriber` (
 
 LOCK TABLES `subscriber` WRITE;
 /*!40000 ALTER TABLE `subscriber` DISABLE KEYS */;
-INSERT INTO `subscriber` VALUES (1,'13A-S-00001','2013-01-13','Shailendra M','','','Kanna','Kanna',32,NULL,15,33,560067,'shailendra.mahapatra@gmail.com',11,NULL,0,NULL);
 /*!40000 ALTER TABLE `subscriber` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1237,7 +1234,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1246,7 +1243,6 @@ CREATE TABLE `subscription` (
 
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
-INSERT INTO `subscription` VALUES (1,1,1,0,1,'2013-01-13',0,0,0);
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1306,7 +1302,7 @@ CREATE TABLE `subscriptiondetails` (
   KEY `endYear` (`endYear`),
   KEY `journalPriceGroupID` (`journalPriceGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1315,7 +1311,6 @@ CREATE TABLE `subscriptiondetails` (
 
 LOCK TABLES `subscriptiondetails` WRITE;
 /*!40000 ALTER TABLE `subscriptiondetails` DISABLE KEYS */;
-INSERT INTO `subscriptiondetails` VALUES (1,1,1,1,2013,1,12,2014,1,49),(2,1,2,1,2013,1,12,2014,1,50);
 /*!40000 ALTER TABLE `subscriptiondetails` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -2921,4 +2916,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-13 20:17:14
+-- Dump completed on 2013-01-13 20:20:50
