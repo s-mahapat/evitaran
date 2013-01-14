@@ -165,7 +165,6 @@
                                     <li><a href="#inwards">Inwards</a></li>
                                     <li><a href="#subscriptions">Subscriptions</a></li>
                                     <li><a href="#invoices">Invoices</a></li>
-                                    <li><a href="#payments">Payments</a></li>
                                     <li><a href="#reminders">Reminders</a></li>
                                     <li><a href="#missing_issues">Missing Issues</a></li>
                                     <li><a href="#chq_return">Cheque Return</a></li>
@@ -188,11 +187,6 @@
                                 <div id="invoices" style="font-size: 12px;width: 98%;padding: 3px;">
                                     <table id="invoiceTable" class="datatable"></table>
                                     <div id="pager_invoice"></div>
-                                </div>
-
-                                <div id="payments" style="font-size: 12px;width: 98%;padding: 3px;">
-                                    <table id="paymentTable" class="datatable"></table>
-                                    <div id="pager_payments"></div>
                                 </div>
 
                                 <div id="reminders" style="font-size: 12px;width: 98%;padding: 3px;">

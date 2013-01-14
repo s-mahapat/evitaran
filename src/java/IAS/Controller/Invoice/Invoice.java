@@ -4,20 +4,15 @@
  */
 package IAS.Controller.Invoice;
 
-import IAS.Class.Ajax.AjaxResponse;
 import IAS.Class.JDSLogger;
-import IAS.Class.util;
 import IAS.Controller.JDSController;
 import IAS.Model.Invoice.InvoiceModel;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 /**
  *

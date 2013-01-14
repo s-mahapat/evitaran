@@ -136,7 +136,7 @@
                 <label>From:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxMandatoryWide required" maxlength="64" TABINDEX="1" type="text" name="from" id="from" value="<jsp:getProperty name="inwardFormBean" property="from"/>"/>
+                <input class="IASTextBoxMandatoryWide required" autofocus maxlength="64" TABINDEX="1" type="text" name="from" id="from" value="<jsp:getProperty name="inwardFormBean" property="from"/>"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -208,7 +208,7 @@
                 <label>Email:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" maxlength="64" TABINDEX="7" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${inwardFormBean.email}"/>
+                <input class="IASEmailTextBox" maxlength="64" TABINDEX="7" type="email" name="email" id="email" value="${inwardFormBean.email}"/>
             </span>
         </div>
     </div>
@@ -344,7 +344,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Mode Of Payment:</label>
+                <label>Payment Mode:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <select class="IASComboBox" TABINDEX="15" name="paymentMode" id="paymentMode" onchange="MakePaymentFieldsMandatory()">
@@ -369,7 +369,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Cheque/DD/MO No:</label>
+                <label>Cheque/DD No:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASTextBox" maxlength="6" TABINDEX="17" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
@@ -450,7 +450,7 @@
         </div>
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Cheque/DD Return:</label>
+                <label>Cheque Return:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASCheckBox" TABINDEX="23" type="checkbox" name="chequeDDReturn" id="chequeDDReturn" value="1" disabled
