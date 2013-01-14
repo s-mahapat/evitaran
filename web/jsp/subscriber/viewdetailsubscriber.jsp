@@ -18,6 +18,7 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/reminders.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/missingissues.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/chqreturned.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/paymentinfo.js"%>"></script>
         <script>
             $(document).ready(function(){
                 inwardGridCreated = false;
@@ -201,6 +202,9 @@
                                 <div id="chq_return" style="font-size: 12px;width: 98%;padding: 3px;">
                                     <table id="chqreturnTable" class="datatable"></table>
                                     <div id="pager_chqreturn"></div>
+                                </div>
+                                <div id="paymentDetails" title="Payment Details">
+                                    <table id="paymentDetailsTable" class="datatable"></table>
                                 </div>
                             </div>
 

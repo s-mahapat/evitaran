@@ -15,6 +15,13 @@
         <title>Subscription Payment</title>
         <script type="text/javascript">
             $(document).ready(function(){
+                var warnMessage = "You have unsaved changes on this page!";
+                window.onbeforeunload = function () {
+                    if (warnMessage != null) return warnMessage;
+                }
+                $('input:submit').click(function(e) {
+                    warnMessage = null;
+                });
                 var inward_amount = ${inwardFormBean.amount};
                 drawPaymentTable(inward_amount);
             });

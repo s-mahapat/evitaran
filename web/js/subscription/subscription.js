@@ -102,7 +102,8 @@ function listSubscription(){
                 width:20,
                 align:'center',
                 sortable: false,
-                xmlmap:'payment'
+                xmlmap:'payment',
+                formatter: paymentInfoLink
             },
             {
                 name:'amountPaid',
@@ -292,4 +293,31 @@ function getPrice(startYear, years, journalGroupID, subscriberTypeID){
 
     });
     return _priceDetails;
+}
+
+function paymentInfoLink(cellvalue, options, rowObject){
+    var subscription_id = rowObject.childNodes[0].textContent;
+    var link = '<a href="#" title="Click here for details" onclick="showPaymentInfo(' + subscription_id + ')">' + cellvalue + '</a>';
+    return link;
+}
+
+function showPaymentInfo(subscription_id){
+
+    $( "#paymentDetails" ).dialog({
+        modal: true,
+        width: 800,
+        height: 450,
+        maxHeight: 500,
+        maxWidth: 800,
+        position: 'center',
+        resizable: false,
+        buttons: {
+            Ok: function() {
+                $( this ).dialog( "close" );
+            }
+        },
+        open: function(){
+            drawPaymenDetailstInfo(subscription_id);
+        }
+    });
 }

@@ -972,4 +972,20 @@ public class SubscriptionModel extends JDSModel {
             return (float) _rate;
         }
     }
+
+    public String getPaymentsForSubscription(int subscription_id) throws SQLException, ParserConfigurationException, TransformerException{
+        Connection _conn = this.getConnection();
+        String sql = Queries.getQuery("get_payments_for_subscription");
+        String xml = null;
+        try(PreparedStatement pst = _conn.prepareStatement(sql)){
+            pst.setInt(1, subscription_id);
+            try(ResultSet rs = pst.executeQuery()){
+                xml = util.convertResultSetToXML(rs);
+            }
+        }finally{
+            _conn.close();
+            return xml;
+        }
+
+    }
 }
