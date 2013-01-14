@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.25, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.25
+-- Server version	5.5.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -69,7 +69,7 @@ CREATE TABLE `back_issue_list` (
   `added_on` date NOT NULL,
   `active` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,7 +78,6 @@ CREATE TABLE `back_issue_list` (
 
 LOCK TABLES `back_issue_list` WRITE;
 /*!40000 ALTER TABLE `back_issue_list` DISABLE KEYS */;
-INSERT INTO `back_issue_list` VALUES (1,5,1,1,2013,78,1,1,0,NULL,'2013-01-14',1),(2,5,1,1,2013,78,2,1,0,NULL,'2013-01-14',1),(3,5,1,1,2013,78,3,1,0,NULL,'2013-01-14',1),(4,6,10,1,2013,91,1,1,0,NULL,'2013-01-14',1),(5,6,10,1,2013,91,2,1,0,NULL,'2013-01-14',1),(6,6,10,1,2013,91,3,1,0,NULL,'2013-01-14',1),(7,7,11,1,2013,102,1,1,0,NULL,'2013-01-14',1),(8,7,11,1,2013,102,2,1,0,NULL,'2013-01-14',1),(9,7,11,1,2013,102,3,1,0,NULL,'2013-01-14',1);
 /*!40000 ALTER TABLE `back_issue_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -264,7 +263,7 @@ CREATE TABLE `invoice` (
   `amount` float unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `invoice_idx1` (`subscriptionId`,`invoice_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -273,7 +272,6 @@ CREATE TABLE `invoice` (
 
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
-INSERT INTO `invoice` VALUES (1,'13A-I-00001',1,'2013-01-13',2,5150),(2,'13A-I-00002',2,'2013-01-13',2,4600),(3,'13A-I-00003',3,'2013-01-14',1,5250);
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,7 +342,7 @@ CREATE TABLE `inward` (
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
   KEY `inwardPurpose` (`inwardPurpose`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -353,7 +351,6 @@ CREATE TABLE `inward` (
 
 LOCK TABLES `inward` WRITE;
 /*!40000 ALTER TABLE `inward` DISABLE KEYS */;
-INSERT INTO `inward` VALUES (1,'13A-00001','Alok Modak',33,NULL,NULL,205,0,'modak.alok@gmail.com','VIT','Instrumentation','2013-01-13',1,1,2,420420,'2013-01-13',100,1,0,NULL,NULL,0,NULL,'','',NULL,1,1),(2,'13A-00002','Deepali Gokhale',33,NULL,NULL,1608,0,'','','','2013-01-13',2,1,2,100100,'2013-01-13',5000,1,0,NULL,NULL,0,NULL,'','',NULL,1,1),(3,'13A-00003','backissue',33,NULL,NULL,32,0,'','','','2013-01-14',3,4,NULL,0,NULL,0,1,0,NULL,NULL,0,NULL,'','',NULL,1,1);
 /*!40000 ALTER TABLE `inward` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -672,7 +669,7 @@ CREATE TABLE `mailing_list` (
   `month` int(11) NOT NULL,
   `mlDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -681,7 +678,6 @@ CREATE TABLE `mailing_list` (
 
 LOCK TABLES `mailing_list` WRITE;
 /*!40000 ALTER TABLE `mailing_list` DISABLE KEYS */;
-INSERT INTO `mailing_list` VALUES (2,1,2013,80,1,1,'2013-01-13 13:08:27'),(3,1,2013,80,2,1,'2013-01-14 01:10:15'),(4,1,2013,80,3,1,'2013-01-14 01:10:23'),(5,10,2013,18,1,1,'2013-01-14 01:10:40'),(6,10,2013,18,2,1,'2013-01-14 01:10:46'),(7,10,2013,18,3,1,'2013-01-14 01:10:51'),(8,11,2013,104,1,1,'2013-01-14 01:11:03'),(9,11,2013,104,2,1,'2013-01-14 01:11:07'),(10,11,2013,104,3,1,'2013-01-14 01:11:11');
 /*!40000 ALTER TABLE `mailing_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -724,7 +720,7 @@ CREATE TABLE `mailing_list_detail` (
   `miId` int(11) DEFAULT '0',
   `bildate` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -733,7 +729,6 @@ CREATE TABLE `mailing_list_detail` (
 
 LOCK TABLES `mailing_list_detail` WRITE;
 /*!40000 ALTER TABLE `mailing_list_detail` DISABLE KEYS */;
-INSERT INTO `mailing_list_detail` VALUES (1,2,1,1,1,1,'P','II','13A-S-00001','Alok Modak','Instrumentation','VIT','#20, Jaya Opal, 3rd Cross, Doctors Layout. B. Channasandra','Pune','','Maharashtra','India',560043,1,2013,1,2013,80,1,12,1,2013,0,0,NULL),(2,2,2,2,4,1,'P','IC','13A-S-00002','Deepali Gokhale','Computer Science','khandwa Engg College','Gokhale Wada, Hariganj','Khandwa','','Madhya Pradesh','India',400400,2,2013,1,2013,80,1,12,1,2013,0,0,NULL),(3,3,1,1,1,1,'P','II','13A-S-00001','Alok Modak','Instrumentation','VIT','#20, Jaya Opal, 3rd Cross, Doctors Layout. B. Channasandra','Pune','','Maharashtra','India',560043,1,2013,1,2013,80,2,12,1,2013,0,0,NULL),(4,3,2,2,4,1,'P','IC','13A-S-00002','Deepali Gokhale','Computer Science','khandwa Engg College','Gokhale Wada, Hariganj','Khandwa','','Madhya Pradesh','India',400400,2,2013,1,2013,80,2,12,1,2013,0,0,NULL),(5,4,1,1,1,1,'P','II','13A-S-00001','Alok Modak','Instrumentation','VIT','#20, Jaya Opal, 3rd Cross, Doctors Layout. B. Channasandra','Pune','','Maharashtra','India',560043,1,2013,1,2013,80,3,12,1,2013,0,0,NULL),(6,4,2,2,4,1,'P','IC','13A-S-00002','Deepali Gokhale','Computer Science','khandwa Engg College','Gokhale Wada, Hariganj','Khandwa','','Madhya Pradesh','India',400400,2,2013,1,2013,80,3,12,1,2013,0,0,NULL),(7,5,1,1,2,10,'RES','II','13A-S-00001','Alok Modak','Instrumentation','VIT','#20, Jaya Opal, 3rd Cross, Doctors Layout. B. Channasandra','Pune','','Maharashtra','India',560043,1,2013,1,2013,18,1,12,1,2013,0,0,NULL),(8,5,2,2,4,10,'RES','IC','13A-S-00002','Deepali Gokhale','Computer Science','khandwa Engg College','Gokhale Wada, Hariganj','Khandwa','','Madhya Pradesh','India',400400,2,2013,1,2013,18,1,12,1,2013,0,0,NULL),(9,6,1,1,2,10,'RES','II','13A-S-00001','Alok Modak','Instrumentation','VIT','#20, Jaya Opal, 3rd Cross, Doctors Layout. B. Channasandra','Pune','','Maharashtra','India',560043,1,2013,1,2013,18,2,12,1,2013,0,0,NULL),(10,6,2,2,4,10,'RES','IC','13A-S-00002','Deepali Gokhale','Computer Science','khandwa Engg College','Gokhale Wada, Hariganj','Khandwa','','Madhya Pradesh','India',400400,2,2013,1,2013,18,2,12,1,2013,NULL,0,NULL),(11,7,1,1,2,10,'RES','II','13A-S-00001','Alok Modak','Instrumentation','VIT','#20, Jaya Opal, 3rd Cross, Doctors Layout. B. Channasandra','Pune','','Maharashtra','India',560043,1,2013,1,2013,18,3,12,1,2013,0,0,NULL),(12,7,2,2,4,10,'RES','IC','13A-S-00002','Deepali Gokhale','Computer Science','khandwa Engg College','Gokhale Wada, Hariganj','Khandwa','','Madhya Pradesh','India',400400,2,2013,1,2013,18,3,12,1,2013,0,0,NULL),(13,8,1,1,3,11,'CURR','II','13A-S-00001','Alok Modak','Instrumentation','VIT','#20, Jaya Opal, 3rd Cross, Doctors Layout. B. Channasandra','Pune','','Maharashtra','India',560043,1,2013,1,2013,104,1,12,1,2013,0,0,NULL),(14,8,2,2,4,11,'CURR','IC','13A-S-00002','Deepali Gokhale','Computer Science','khandwa Engg College','Gokhale Wada, Hariganj','Khandwa','','Madhya Pradesh','India',400400,2,2013,1,2013,104,1,12,1,2013,0,0,NULL),(15,9,1,1,3,11,'CURR','II','13A-S-00001','Alok Modak','Instrumentation','VIT','#20, Jaya Opal, 3rd Cross, Doctors Layout. B. Channasandra','Pune','','Maharashtra','India',560043,1,2013,1,2013,104,2,12,1,2013,0,0,NULL),(16,9,2,2,4,11,'CURR','IC','13A-S-00002','Deepali Gokhale','Computer Science','khandwa Engg College','Gokhale Wada, Hariganj','Khandwa','','Madhya Pradesh','India',400400,2,2013,1,2013,104,2,12,1,2013,0,0,NULL),(17,10,1,1,3,11,'CURR','II','13A-S-00001','Alok Modak','Instrumentation','VIT','#20, Jaya Opal, 3rd Cross, Doctors Layout. B. Channasandra','Pune','','Maharashtra','India',560043,1,2013,1,2013,104,3,12,1,2013,0,0,NULL),(18,10,2,2,4,11,'CURR','IC','13A-S-00002','Deepali Gokhale','Computer Science','khandwa Engg College','Gokhale Wada, Hariganj','Khandwa','','Madhya Pradesh','India',400400,2,2013,1,2013,104,3,12,1,2013,0,0,NULL);
 /*!40000 ALTER TABLE `mailing_list_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1068,7 +1063,7 @@ CREATE TABLE `subscriber` (
   KEY `department` (`department`,`institution`),
   KEY `subscriber_type_indx` (`subtype`),
   KEY `subscriber_email_indx` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1077,7 +1072,6 @@ CREATE TABLE `subscriber` (
 
 LOCK TABLES `subscriber` WRITE;
 /*!40000 ALTER TABLE `subscriber` DISABLE KEYS */;
-INSERT INTO `subscriber` VALUES (1,'13A-S-00001','2013-01-13','Alok Modak','Instrumentation','VIT','#20, Jaya Opal, 3rd Cross, Doctors Layout. B. Channasandra','#20, Jaya Opal, 3rd Cross, Doctors Layout. B. Channasandra',205,NULL,18,33,560043,'modak.alok@gmail.com',8,NULL,0,NULL),(2,'13A-S-00002','2013-01-13','Deepali Gokhale','Computer Science','khandwa Engg College','Gokhale Wada, Hariganj','Gokhale Wada, Hariganj',1608,NULL,17,33,400400,'modak.alok@gmail.com',9,NULL,0,NULL),(3,'13A-S-00003','2013-01-14','backissue','backissue department','backissue institute','back issue address','back issue address',32,NULL,15,33,0,'',8,NULL,0,NULL);
 /*!40000 ALTER TABLE `subscriber` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1595,7 +1589,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1604,7 +1598,6 @@ CREATE TABLE `subscription` (
 
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
-INSERT INTO `subscription` VALUES (1,1,1,0,1,'2013-01-13',0,0,0),(2,2,2,0,1,'2013-01-13',0,0,0),(3,3,3,0,1,'2013-01-14',0,0,0);
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1664,7 +1657,7 @@ CREATE TABLE `subscriptiondetails` (
   KEY `endYear` (`endYear`),
   KEY `journalPriceGroupID` (`journalPriceGroupID`),
   CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1673,7 +1666,6 @@ CREATE TABLE `subscriptiondetails` (
 
 LOCK TABLES `subscriptiondetails` WRITE;
 /*!40000 ALTER TABLE `subscriptiondetails` DISABLE KEYS */;
-INSERT INTO `subscriptiondetails` VALUES (1,1,1,1,2013,1,12,2013,1,11),(2,1,10,1,2013,1,12,2013,1,20),(3,1,11,1,2013,1,12,2013,1,21),(4,2,12,2,2013,1,12,2013,1,41),(5,3,1,1,2013,1,12,2013,1,11),(6,3,10,1,2013,1,12,2013,1,20),(7,3,11,1,2013,1,12,2013,1,21);
 /*!40000 ALTER TABLE `subscriptiondetails` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -2459,40 +2451,13 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `addBackIssues`(IN _subscription_detail_id int,
-
-
-
-
-
-
-
-                                  IN _new_startMonth int, 
-
-
-
-
-
-
-
-                                  IN _new_startYear int,
-
-
-
-
-
-
-
-                                  IN _new_journalGroupID int,
-
-
-
-
-
-
-
-                                  IN _new_copies int)
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `addBackIssues`(IN _subscription_detail_id   int,
+                                     IN _new_startMonth           int,
+                                     IN _new_startYear            int,
+                                     IN _new_journalGroupID       int,
+                                     IN _new_copies               int)
 BEGIN
+  DECLARE journal_id int;
 
 
 
@@ -2500,7 +2465,7 @@ BEGIN
 
 
 
-  declare journal_id int;
+  DECLARE _month int;
 
 
 
@@ -2508,7 +2473,7 @@ BEGIN
 
 
 
-  declare _month int ;
+  DECLARE _year int;
 
 
 
@@ -2516,7 +2481,7 @@ BEGIN
 
 
 
-  declare _year int ;
+  DECLARE issue_number int;
 
 
 
@@ -2524,23 +2489,15 @@ BEGIN
 
 
 
-  declare issue_number int ;
+  DECLARE volume_number int;
 
 
 
-
-
-  
-
-  declare volume_number int ;
+  DECLARE dummy int;
 
 
 
-  declare dummy int;
-
-
-
-  declare done int default 0;
+  DECLARE done int DEFAULT 0;
 
 
 
@@ -2549,50 +2506,16 @@ BEGIN
 
 
   DECLARE cur1 CURSOR FOR  SELECT t2.journalID,
-
        t3.month,
-
        t3.year,
-
        t3.issue,
-
-       t5.volume_number
-
+       t3.volumenumber
   FROM journal_group_contents t2,
-
-       mailing_list t3,
-
-       journal_details t4,
-
-       journal_volume_details t5,
-
-       months t6
-
+       mailing_list t3
  WHERE     t2.journalGroupID = _new_journalGroupID
-
        AND t2.journalID = t3.journalid
-
-       AND t4.journals_id = t2.journalId
-
-       AND t4.`year` = _new_startYear
-
-       AND t5.journal_details_id = t4.id
-
-       AND t5.start_month = t6.month
-
-       AND t3.month >= _new_startMonth
-
-       AND t3.year = _new_startYear
-
-GROUP BY t2.journalID,
-
-         t3.month,
-
-         t3.year,
-
-         t3.issue,
-
-         t5.volume_number;
+       -- AND t3.month = 1
+       AND t3.year = _new_startYear;
 
 
 
@@ -2602,191 +2525,46 @@ GROUP BY t2.journalID,
 
 
 
+      OPEN cur1;
 
 
 
+     read_loop:
+      LOOP
+         FETCH cur1
+           INTO journal_id, _month, _year, issue_number, volume_number;
 
 
 
+         IF done = 1
+         THEN
+            LEAVE read_loop;
+         END IF;
 
 
-  OPEN cur1;
 
+         INSERT INTO back_issue_list(subscription_detail_id,
+                                     journal_id,
+                                     back_issue_list.month,
+                                     back_issue_list.year,
+                                     copies,
+                                     issue_number,
+                                     volume_number,
+                                     added_on)
+         VALUES (_subscription_detail_id,
+                 journal_id,
+                 _month,
+                 _year,
+                 _new_copies,
+                 issue_number,
+                 volume_number,
+                 CURRENT_DATE());
+      END LOOP;
 
 
 
-
-
-
-  read_loop: LOOP
-
-
-
-    FETCH cur1 into journal_id, _month, _year, issue_number, volume_number;
-
-
-
-
-
-
-
-    IF done = 1 THEN
-
-
-
-
-
-
-
-        LEAVE read_loop;
-
-
-
-
-
-
-
-    END IF;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    insert into back_issue_list(subscription_detail_id,
-
-
-
-
-
-
-
-                                journal_id,
-
-
-
-
-
-
-
-                                back_issue_list.month,
-
-
-
-
-
-
-
-                                back_issue_list.year,
-
-
-
-
-
-
-
-                                copies,
-
-
-
-
-
-
-
-                                issue_number,
-
-                                
-
-                                volume_number,
-
-
-
-                                added_on)
-
-
-
-
-
-
-
-                        values(_subscription_detail_id,
-
-
-
-
-
-
-
-                                journal_id,
-
-
-
-
-
-
-
-                                _month,
-
-
-
-
-
-
-
-                                _year,
-
-
-
-
-
-
-
-                                _new_copies,
-
-
-
-
-
-
-
-                                issue_number,
-
-                                
-
-                                volume_number,
-
-
-
-                                CURRENT_DATE());
-
-
-
-
-
-
-
-  END LOOP;
-
-
-
-
-
-
-
-  CLOSE cur1;
-
-
-
-  END */;;
+      CLOSE cur1;
+   END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -6040,4 +5818,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-14 16:58:12
+-- Dump completed on 2013-01-14 17:39:10
