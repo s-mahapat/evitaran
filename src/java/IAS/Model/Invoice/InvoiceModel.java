@@ -101,11 +101,11 @@ public class InvoiceModel extends JDSModel{
         return props.getProperty("prl_invoice");
     }
 
-    public String getOutStandingPaymentEmailBody() throws IOException{
+    public String getOutStandingPaymentEmailBody(float amount) throws IOException{
         InputStream is = request.getServletContext().getResourceAsStream("/WEB-INF/classes/email_templates.properties");
         Properties props = new Properties();
         props.load(is);
-        return props.getProperty("outstanding_payment");
+        return String.format(props.getProperty("outstanding_payment"), amount);
     }
 
     public String getInvoicePaymentInfo(int invoice_id){

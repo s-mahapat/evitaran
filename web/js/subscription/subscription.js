@@ -296,8 +296,13 @@ function getPrice(startYear, years, journalGroupID, subscriberTypeID){
 }
 
 function paymentInfoLink(cellvalue, options, rowObject){
-    var subscription_id = rowObject.childNodes[0].textContent;
-    var link = '<a href="#" title="Click here for details" onclick="showPaymentInfo(' + subscription_id + ')">' + cellvalue + '</a>';
+    var payment_amount = parseInt(cellvalue);
+    var link = 0;
+    // enable the link only if payment amount > 0
+    if(payment_amount > 0){
+        var subscription_id = rowObject.childNodes[0].textContent;
+        link = '<a href="#" title="Click here for details" onclick="showPaymentInfo(' + subscription_id + ')">' + cellvalue + '</a>';
+    }
     return link;
 }
 

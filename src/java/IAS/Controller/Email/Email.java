@@ -136,7 +136,7 @@ public class Email extends JDSController {
                     byte pdfData[] = baos.toByteArray();
                     String fileName = _invoiceFormBean.getInvoiceNumber() + ".pdf";
                     msgsend _mailer = new msgsend();
-                    String emailBody = new InvoiceModel(request).getOutStandingPaymentEmailBody();
+                    String emailBody = new InvoiceModel(request).getOutStandingPaymentEmailBody(_invoiceFormBean.getAmount());
                     success = _mailer.sendEmailToSubscriberWithAttachment(_inwardFormBean.getEmail(),
                             "Invoice for outstanding payment",
                             emailBody,
