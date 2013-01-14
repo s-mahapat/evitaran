@@ -30,14 +30,18 @@ function listSubscription(){
             loadonce: true,
             rownumbers: true,
             //sortname:'subscriptionID',
+            subGrid: true,
+            subGridWidth: 20,
+            subgridtype: 'xml',
+            subGridUrl: 'subscription?oper=detail&subtypeid='+$("#subtypeid").val(),
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Date','Agent','Cheque No','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
+            colNames:['Subscription Id','Inward No','Receipt No.','Date','Agent','Cheque No.','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
             colModel :[
             {
                 name:'subscriptionID',
                 index:'id',
-                width:20,
+                width:25,
                 align:'center',
                 xmlmap:'id',
                 sortable: false,
@@ -51,6 +55,14 @@ function listSubscription(){
                 align:'center',
                 sortable: false,
                 xmlmap:'inwardNumber'
+            },
+            {
+                name:'receiptNumber',
+                index:'receiptNumber',
+                width:20,
+                align:'center',
+                sortable: false,
+                xmlmap:'receiptNumber'
             },
             {
                 name:'subscriptionDate',
@@ -79,7 +91,7 @@ function listSubscription(){
             {
                 name:'inwardAmount',
                 index:'inwardAmount',
-                width:20,
+                width:25,
                 align:'center',
                 sortable: false,
                 xmlmap:'inwardAmount'
@@ -95,7 +107,7 @@ function listSubscription(){
             {
                 name:'amountPaid',
                 index:'amountPaid',
-                width:20,
+                width:15,
                 align:'center',
                 sortable: false,
                 xmlmap:'amountPaid'
@@ -103,7 +115,7 @@ function listSubscription(){
             {
                 name:'subscriptionValue',
                 index:'subscriptionValue',
-                width:25,
+                width:30,
                 align:'center',
                 sortable: false,
                 xmlmap:'subscriptionTotal'
@@ -139,11 +151,23 @@ function listSubscription(){
                 hidden: true,
                 sortable: false
             }],
+            subGridModel: [{
+                name: ['Journal Group', 'Start Year', 'End Year', 'Copies', 'Total', 'Active'],
+                width: [120, 40, 40, 20, 30, 30],
+                align: ['center', 'center', 'center', 'center', 'center', 'center'],
+                mapping: ['journalGroupName', 'startYear', 'endYear', 'copies', 'total', 'active'],
+                params: ['invoiceid']
+            }],
             xmlReader : {
                 root: "results",
                 row: "row",
                 repeatitems: false,
-                id: "id"
+                id: "id",
+                subgrid: {
+                    root: "results",
+                    row: "row",
+                    repeatitems: false
+                }
             },
             pager: '#pager',
             rowNum:10,
@@ -174,9 +198,9 @@ function listSubscription(){
                         });
                     }
 
-                    action = "<a style=\"color:blue\" href=\"#\" onclick=\"getSubscriptionDetails(" + ids[i] + ")\">" + "Details" + "</a>";
+                    //action = "<a style=\"color:blue\" href=\"#\" onclick=\"getSubscriptionDetails(" + ids[i] + ")\">" + "Details" + "</a>";
                     if(islegacy != 1){
-                        action += "<a style=\"color:blue\" href=\"subscription?action=edit" +
+                        action = "<a style=\"color:blue\" href=\"subscription?action=edit" +
                         "&subscriberNumber=" + $("#subscriberNumber").val() +
                         "&id=" + ids[i] + "\">" + "Edit" + "</a>";
                     }
