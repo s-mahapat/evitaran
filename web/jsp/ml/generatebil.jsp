@@ -42,7 +42,7 @@
                     emptyrecords: "No Mailing List Found",
                     loadtext: "Loading...",
                     colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city',
-                                'state', 'country', 'pincode', 'copies', 'issue', 'month', '`year`'],
+                                'state', 'country', 'pincode', 'copies', 'Volume','issue', 'month', '`year`', 'Page Size'],
                     colModel :[
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
@@ -53,9 +53,11 @@
                         {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
                         {name:'pincode', index:'pincode', width:80, align:'center', xmlmap:'pincode'},
                         {name:'copies', index:'copies', width:80, align:'copies', xmlmap:'copies'},
+                        {name:'volumeNumber', index:'volumeNumber', width:80, align:'center', xmlmap:'volumeNumber'},
                         {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
                         {name:'month', index:'month', width:80, align:'center', xmlmap:'month'},
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
+                        {name:'page_size', index:'page_size', width:80, align:'center', xmlmap:'page_size'},
                     ],
                     xmlReader : {
                         root: "results",

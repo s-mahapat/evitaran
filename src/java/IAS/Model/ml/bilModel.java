@@ -153,14 +153,14 @@ public class bilModel extends JDSModel {
                     String bilid = null;
                     int paramIndex = 0;
                     Object value = null;
-                    for (int j = 1; j <= 26; j++) {
+                    for (int j = 1; j <= 27; j++) {
                         value = rs.getObject(j);
                         if (value == null) {
                             stInsMlBil.setString(++paramIndex, "");
                         } else {
                             stInsMlBil.setString(++paramIndex, value.toString());
                         }
-                        if (j == 26) {
+                        if (j == 27) {
                             bilid = value.toString();
                         }
                     }
