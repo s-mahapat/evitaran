@@ -262,7 +262,15 @@ DELIMITER ;;
 
 
 
+
+
+
+
     ON jds.inward FOR EACH ROW
+
+
+
+
 
 
 
@@ -270,7 +278,15 @@ BEGIN
 
 
 
+
+
+
+
     if new.inwardPurpose in (6,7,8,9) then
+
+
+
+
 
 
 
@@ -278,7 +294,19 @@ BEGIN
 
 
 
+
+
+
+
     end if;
+
+
+
+
+
+
+
+
 
 
 
@@ -783,6 +811,38 @@ DELIMITER ;;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     ON jds.subscriber FOR EACH ROW
 
 
@@ -815,7 +875,103 @@ DELIMITER ;;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 BEGIN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -943,7 +1099,135 @@ BEGIN
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       SET new.deactivationDate = CURRENT_DATE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1071,6 +1355,70 @@ BEGIN
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       SET new.deactivationDate = NULL;
 
 
@@ -1135,7 +1483,135 @@ BEGIN
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     END IF;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1307,30 +1783,24 @@ CREATE TABLE `subscriptiondetails` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_back_issues` AFTER INSERT
-
-
-
-    ON jds.subscriptiondetails FOR EACH ROW
-
-
-
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_back_issues`
+   BEFORE INSERT
+   ON jds.subscriptiondetails
+   FOR EACH ROW
 BEGIN
+   /*this code set the subscription detail row to inactive if the end year
+   is less than the current year
+   */
+   IF new.endyear < YEAR(CURRENT_TIMESTAMP)
+   THEN
+      SET new.active = FALSE;
+   END IF;
 
-
-
-
-
-
-
-    call addBackIssues(new.id, new.startMonth, new.startYear, new.journalGroupID, new.copies);
-
-
-
-
-
-
-
+   CALL addBackIssues(new.id,
+                      new.startMonth,
+                      new.startYear,
+                      new.journalGroupID,
+                      new.copies);
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1348,19 +1818,37 @@ DELIMITER ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`edit_bil`
 
+
+
    BEFORE UPDATE
+
+
 
    ON jds.subscriptiondetails
 
+
+
    FOR EACH ROW
+
+
 
 BEGIN
 
+
+
   begin_level_1:
+
+
 
    BEGIN
 
+
+
     DECLARE is_sent_to_subscriber tinyint DEFAULT 0;
+
+
+
+
 
 
 
@@ -1368,7 +1856,15 @@ BEGIN
 
 
 
+
+
+
+
     DECLARE done int DEFAULT 0;
+
+
+
+
 
 
 
@@ -1376,7 +1872,15 @@ BEGIN
 
 
 
+
+
+
+
     DECLARE _month int;
+
+
+
+
 
 
 
@@ -1384,7 +1888,15 @@ BEGIN
 
 
 
+
+
+
+
     DECLARE _copies int;
+
+
+
+
 
 
 
@@ -1392,7 +1904,15 @@ BEGIN
 
 
 
+
+
+
+
     DECLARE _volume_number int;
+
+
+
+
 
 
 
@@ -1400,7 +1920,15 @@ BEGIN
 
 
 
+
+
+
+
     DECLARE diff int DEFAULT 0;
+
+
+
+
 
 
 
@@ -1408,7 +1936,15 @@ BEGIN
 
 
 
+
+
+
+
     DECLARE updated_flag tinyint DEFAULT 0;
+
+
+
+
 
 
 
@@ -1416,7 +1952,15 @@ BEGIN
 
 
 
+
+
+
+
     DECLARE count_sent int DEFAULT 0;
+
+
+
+
 
 
 
@@ -1424,7 +1968,19 @@ BEGIN
 
 
 
+
+
+
+
     DECLARE cur1 CURSOR FOR SELECT t3.id,
+
+
+
+
+
+
+
+
 
 
 
@@ -1440,7 +1996,23 @@ BEGIN
 
 
 
+
+
+
+
+
+
+
+
                                    t3.month,
+
+
+
+
+
+
+
+
 
 
 
@@ -1456,7 +2028,23 @@ BEGIN
 
 
 
+
+
+
+
+
+
+
+
                                    t3.copies,
+
+
+
+
+
+
+
+
 
 
 
@@ -1468,7 +2056,15 @@ BEGIN
 
 
 
+
+
+
+
                                    t3.volume_number,
+
+
+
+
 
 
 
@@ -1476,7 +2072,15 @@ BEGIN
 
 
 
+
+
+
+
                                    t3.active
+
+
+
+
 
 
 
@@ -1484,7 +2088,15 @@ BEGIN
 
 
 
+
+
+
+
                                   journal_group_contents t2,
+
+
+
+
 
 
 
@@ -1492,7 +2104,15 @@ BEGIN
 
 
 
+
+
+
+
                             WHERE t1.journalGroupID=t2.journalGroupId
+
+
+
+
 
 
 
@@ -1500,7 +2120,15 @@ BEGIN
 
 
 
+
+
+
+
                             AND t3.subscription_detail_id=old.id
+
+
+
+
 
 
 
@@ -1508,11 +2136,27 @@ BEGIN
 
 
 
+
+
+
+
                             AND t3.sent_to_subscriber=TRUE
 
 
 
+
+
+
+
                             GROUP BY t3.id,t3.journal_id,t3.month,t3.`year`,t3.issue_number,t3.volume_number,t3.sent_to_subscriber,t3.active;
+
+
+
+
+
+
+
+
 
 
 
@@ -1526,55 +2170,109 @@ BEGIN
 
 
 
-      
 
-      
+
+
+
+
+
+      
+
+
+      
+
 
       IF     new.startYear > old.startYear
 
+
+
          AND new.startYear > year(CURRENT_DATE())
+
+
 
       THEN
 
+
+
          UPDATE back_issue_list
+
+
 
             SET active = FALSE
 
+
+
           WHERE     subscription_detail_id = old.id
 
+
+
                 AND sent_to_subscriber = FALSE
+
+
 
                 AND back_issue_list.year = old.startYear;
 
 
 
+
+
+
+
          LEAVE begin_level_1;
+
+
 
       ELSEIF     new.startYear < old.startYear
 
+
+
              AND new.startYear = year(CURRENT_DATE())
+
+
 
       THEN
 
-         
 
-         
+
+         
+
+
+         
+
+
+
 
 
 
          SELECT copies
 
+
+
            INTO copies_already_sent_subscriber
+
+
 
            FROM back_issue_list
 
+
+
           WHERE     subscription_detail_id = old.id
+
+
 
                 AND sent_to_subscriber = TRUE
 
+
+
                 AND active = TRUE
 
+
+
           LIMIT 1;
+
+
+
+
 
 
 
@@ -1582,59 +2280,117 @@ BEGIN
 
 
 
+
+
+
+
          IF diff > 0
+
+
 
          THEN
 
+
+
             CALL addBackIssues(old.id,
+
+
 
                                new.startMonth,
 
+
+
                                new.startYear,
+
+
 
                                new.journalGroupID,
 
+
+
                                diff);
 
+
+
          END IF;
+
+
 
       END IF;
 
 
 
-      
 
-      
 
-      IF new.startMonth > old.startMonth
 
-      THEN
-
-         UPDATE back_issue_list
-
-            SET active = FALSE
-
-          WHERE     subscription_detail_id = old.id
-
-                AND sent_to_subscriber = FALSE
-
-                AND back_issue_list.month < new.startMonth;
-
-      ELSEIF new.startMonth < old.startMonth
 
       
 
+
+      
+
+
+      IF new.startMonth > old.startMonth
+
+
+
       THEN
+
+
 
          UPDATE back_issue_list
 
+
+
             SET active = FALSE
+
+
 
           WHERE     subscription_detail_id = old.id
 
+
+
                 AND sent_to_subscriber = FALSE
 
+
+
+                AND back_issue_list.month < new.startMonth;
+
+
+
+      ELSEIF new.startMonth < old.startMonth
+
+
+
+      
+
+
+
+      THEN
+
+
+
+         UPDATE back_issue_list
+
+
+
+            SET active = FALSE
+
+
+
+          WHERE     subscription_detail_id = old.id
+
+
+
+                AND sent_to_subscriber = FALSE
+
+
+
                 AND back_issue_list.month >= new.startMonth;
+
+
+
+
 
 
 
@@ -1642,35 +2398,75 @@ BEGIN
 
 
 
+
+
+
+
          IF diff > 0
+
+
 
          THEN
 
+
+
             CALL addBackIssues(old.id,
+
+
 
                                new.startMonth,
 
+
+
                                new.startYear,
 
+
+
                                new.journalGroupID,
+
+
 
                                diff);
 
+
+
          ELSE
+
+
 
             CALL addBackIssues(old.id,
 
+
+
                                new.startMonth,
+
+
 
                                new.startYear,
 
+
+
                                new.journalGroupID,
+
+
 
                                new.copies);
 
+
+
          END IF;
 
+
+
       END IF;
+
+
+
+
+
+
+
+
 
 
 
@@ -1680,31 +2476,59 @@ BEGIN
 
       IF new.active = FALSE AND old.active = TRUE
 
+
+
       THEN
+
+
 
          UPDATE back_issue_list
 
+
+
             SET active = FALSE
+
+
 
           WHERE     subscription_detail_id = old.id
 
+
+
                 AND sent_to_subscriber = FALSE;
+
+
+
+
 
 
 
          LEAVE begin_level_1;
 
+
+
       ELSEIF new.active = TRUE AND old.active = FALSE
+
+
 
       THEN
 
+
+
          UPDATE back_issue_list
+
+
 
             SET active = TRUE
 
+
+
           WHERE     subscription_detail_id = old.id
 
+
+
                 AND sent_to_subscriber = FALSE;
+
+
 
       END IF;
 
@@ -1714,21 +2538,45 @@ BEGIN
 
 
 
+
+
+
+
+
+
+
+
       IF old.copies <> new.copies
+
+
 
       THEN
 
+
+
          SELECT count(*)
+
+
 
            INTO count_sent
 
+
+
            FROM back_issue_list
+
+
 
           WHERE     subscription_detail_id = old.id
 
+
+
                 AND sent_to_subscriber = TRUE
 
+
+
                 AND active = TRUE
+
+
 
           LIMIT 1;
 
@@ -1738,21 +2586,51 @@ BEGIN
 
 
 
+
+
+
+
+
+
+
+
          IF count_sent = 0
+
+
 
          THEN
 
+
+
             UPDATE back_issue_list
+
+
 
                SET copies = new.copies
 
+
+
              WHERE     subscription_detail_id = old.id
+
+
 
                    AND sent_to_subscriber = FALSE
 
+
+
                    AND active = TRUE;
 
+
+
          END IF;
+
+
+
+
+
+
+
+
 
 
 
@@ -1764,39 +2642,83 @@ BEGIN
 
 
 
+
+
+
+
         read_loop:
+
+
 
          LOOP
 
+
+
             FETCH cur1
+
+
 
               INTO back_issue_list_id,
 
+
+
                    _journal_id,
+
+
 
                    _month,
 
+
+
                    _year,
+
+
 
                    _copies,
 
+
+
                    _issue_number,
+
+
 
                    _volume_number,
 
+
+
                    is_sent_to_subscriber,
+
+
 
                    _active;
 
 
 
+
+
+
+
             IF done = 1
+
+
 
             THEN
 
+
+
                LEAVE read_loop;
 
+
+
             END IF;
+
+
+
+
+
+
+
+
 
 
 
@@ -1812,27 +2734,57 @@ BEGIN
 
 
 
+
+
+
+
+
+
+
+
             SELECT count(*)
+
+
 
               INTO count_not_sent
 
+
+
               FROM back_issue_list t1
+
+
 
              WHERE     t1.subscription_detail_id = old.id
 
+
+
                    AND t1.journal_id = _journal_id
+
+
 
                    AND t1.month = _month
 
+
+
                    AND t1.`year` = _year
+
+
 
                    AND t1.issue_number = _issue_number
 
+
+
                    AND t1.volume_number = _volume_number
+
+
 
                    AND sent_to_subscriber = 0
 
+
+
                    AND active = TRUE
+
+
 
              LIMIT 1;
 
@@ -1842,117 +2794,241 @@ BEGIN
 
 
 
+
+
+
+
+
+
+
+
             IF diff > 0
+
+
 
             THEN
 
+
+
                IF count_not_sent = 1
+
+
 
                THEN
 
+
+
                   UPDATE back_issue_list t1
+
+
 
                      SET t1.copies = diff
 
+
+
                    WHERE     t1.id <> back_issue_list_id
+
+
 
                          AND t1.journal_id = _journal_id
 
+
+
                          AND t1.month = _month
+
+
 
                          AND t1.`year` = _year
 
+
+
                          AND t1.issue_number = _issue_number
+
+
 
                          AND t1.volume_number = _volume_number
 
+
+
                          AND sent_to_subscriber = 0
 
+
+
                          AND active = TRUE;
+
+
 
                ELSE
 
+
+
                   INSERT INTO back_issue_list(subscription_detail_id,
+
+
 
                                               journal_id,
 
+
+
                                               `month`,
+
+
 
                                               `year`,
 
+
+
                                               issue_number,
+
+
 
                                               volume_number,
 
+
+
                                               copies,
+
+
 
                                               sent_to_subscriber,
 
+
+
                                               added_on,
+
+
 
                                               active)
 
+
+
                   VALUES (old.id,
+
+
 
                           _journal_id,
 
+
+
                           _month,
+
+
 
                           _year,
 
+
+
                           _issue_number,
+
+
 
                           volume_number,
 
+
+
                           diff,
+
+
 
                           FALSE,
 
+
+
                           CURRENT_DATE(),
+
+
 
                           TRUE);
 
+
+
                END IF;
+
+
 
             ELSE
 
+
+
                IF count_not_sent = 1
+
+
 
                THEN
 
+
+
                   UPDATE back_issue_list t1
+
+
 
                      SET t1.copies = new.copies
 
+
+
                    WHERE     t1.id <> back_issue_list_id
+
+
 
                          AND t1.journal_id = _journal_id
 
+
+
                          AND t1.month = _month
+
+
 
                          AND t1.`year` = _year
 
+
+
                          AND t1.issue_number = _issue_number
+
+
 
                          AND t1.volume_number = _volume_number
 
+
+
                          AND sent_to_subscriber = 0
+
+
 
                          AND active = TRUE;
 
+
+
                END IF;
 
+
+
             END IF;
+
+
 
          END LOOP;
 
 
 
+
+
+
+
          CLOSE cur1;
+
+
 
       END IF;
 
+
+
    END begin_level_1;
+
+
+
+
+
+
 
 
 
@@ -2038,4 +3114,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-14 17:39:12
+-- Dump completed on 2013-01-20 23:10:28

@@ -200,6 +200,7 @@ function listSubscription(){
                     }
 
                     //action = "<a style=\"color:blue\" href=\"#\" onclick=\"getSubscriptionDetails(" + ids[i] + ")\">" + "Details" + "</a>";
+                    var action = "";
                     if(islegacy != 1){
                         action = "<a style=\"color:blue\" href=\"subscription?action=edit" +
                         "&subscriberNumber=" + $("#subscriberNumber").val() +
