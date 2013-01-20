@@ -163,6 +163,38 @@ public class pdfserver extends JDSController {
                 os.flush();
                 os.close();
 
+            } else if(action.equalsIgnoreCase("generatebilPrintSticker")){
+                logger.debug("Start of back issue list sticker generation");
+                ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
+
+                String noHeader = request.getParameter("noHeader");
+                String periodicals = request.getParameter("periodicals");
+
+                convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, true);
+                c2Pdf.prepareBILLabelContent(rs);
+                c2Pdf.addStickerContent(rs, os);
+
+                response.setContentType("application/pdf");
+                response.setHeader("Content-disposition", "attachment; filename=ml.pdf");
+                os.flush();
+                logger.debug("End of back issue list sticker generation");
+
+            }else if(action.equalsIgnoreCase("generatebilPrintLabel")){
+                logger.debug("Start of back issue list label generation");
+                ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
+
+                String noHeader = request.getParameter("noHeader");
+                String periodicals = request.getParameter("periodicals");
+
+                convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, true);
+                c2Pdf.prepareBILLabelContent(rs);
+                c2Pdf.addLabelContent(rs, os);
+
+                response.setContentType("application/pdf");
+                response.setHeader("Content-disposition", "attachment; filename=ml.pdf");
+                os.flush();
+                logger.debug("End of back issue list label generation");
+
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

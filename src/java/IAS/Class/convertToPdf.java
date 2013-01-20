@@ -27,8 +27,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import javax.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
@@ -70,21 +73,9 @@ public class convertToPdf extends JDSPDF {
     String reminderType2Text = "";
     String reminderType3Text = "";
 
-    /*
-    String subscriberName   = "";
-    String department       = "";
-    String institution      = "";
-    String s_address        = "";
-    String m_address        = "";
-    String city             = "";
-    String pincode          = "";
-    String state            = "";
-    String country          = "";
-    int subNo;
-    String invoiceDate = "";
-    int invoiceNo;
-    float invoiceAmount;
-    */
+    // Used for back issue
+    boolean backIssue = false;
+    ArrayList BILlabels = new ArrayList();
 
 public convertToPdf(String _noHeader, String _periodicals){
         super();
@@ -94,6 +85,17 @@ public convertToPdf(String _noHeader, String _periodicals){
         if(_periodicals!= null && _periodicals.equals("on")){
             periodicals = true;
         }
+    }
+
+public convertToPdf(String _noHeader, String _periodicals, boolean _backIssue){
+        super();
+        if(_noHeader!= null && _noHeader.equals("on")){
+            noHeader    = true;
+        }
+        if(_periodicals!= null && _periodicals.equals("on")){
+            periodicals = true;
+        }
+        backIssue = _backIssue;
     }
 
 public convertToPdf(){
@@ -770,10 +772,20 @@ public convertToPdf(){
         int numberOfColumns = 2, count=0;
         int serialNo=1, noOfPages=0;
 
+        Iterator bilLabelIter = BILlabels.iterator();
+
         while(true)
         {
             // Get the content
-            Paragraph info = getLabelContent(rs);
+            Paragraph info = null;
+            if(backIssue){
+                if(bilLabelIter.hasNext()) {
+                    info = (Paragraph)bilLabelIter.next();
+                }
+            } else {
+            info = getLabelContent(rs);
+            }
+
             if(info == null)
             {
                 // step 5
@@ -898,6 +910,203 @@ public convertToPdf(){
         return properties;
     }
 
+    public void prepareBILLabelContent(ResultSet rs) throws SQLException {
+
+        HashMap<String, SubscriberInfo> subscriber = new HashMap<>();
+
+        // Key is subscriber no, value is SubscriberInfo
+        // Key is page_size, value is journalType
+        // Key is journalCode, value is journalInfo
+        // Key is volumeNo, value is volumeInfo
+
+        while(rs.next()) {
+            subInfo sInfo = new subInfo(rs);
+
+            SubscriberInfo subInfo = subscriber.get(sInfo.getsubscriberNumber());
+            // Null means subscriber does not exist
+            if(subInfo == null) {
+
+                // If subscriber does not exist, then add him to the subscribers list
+
+                // 1. Create the volume info
+                volumeInfo vInfo = new volumeInfo();
+                vInfo.setEndIssue(sInfo.getissue());
+                vInfo.setStartIssue(sInfo.getissue());
+
+                // 2. Create the journal info and add the volume info
+                journalInfo jInfo = new journalInfo();
+                jInfo.getvolumeInfo().put(Integer.toString(sInfo.getvolume_number()), vInfo);
+
+                // 3. Create the journal type and add the journal info
+                journalType jType = new journalType();
+                jType.getjournalInfo().put(sInfo.getjournalCode(), jInfo);
+
+                // 4. Create subscriberInfo and Add the journal type to the subscriber info
+                SubscriberInfo SInfo = new SubscriberInfo();
+                SInfo.getjournalType().put(sInfo.getpage_size(), jType);
+                SInfo.setSubscriberLabelInfo(sInfo);
+
+                // 5. Add the subscriber info in the list of subscriber
+                subscriber.put(sInfo.getsubscriberNumber(), SInfo);
+
+            }
+            // Subscriber exists
+            else {
+                // Subscriber exists, check if the journalType exists
+
+                if(subInfo.getjournalType().get(sInfo.getpage_size()) != null){
+                    // JournalType exists, now check if the journalInfo exists
+                    if(subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()) != null) {
+                        // JournalInfo exists, now check if the volume number exists
+                        if(subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())) != null) {
+                            // Volume number exists, check if the issue no crosses either the max or min
+                            if(subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).getEndIssue() < sInfo.getissue()) {
+                                subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).setEndIssue(sInfo.getissue());
+                            }
+                            if(subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).getStartIssue() > sInfo.getissue()) {
+                                subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).setStartIssue(sInfo.getissue());
+                            }
+
+                        } else {
+                            // volume number does not exist
+                            volumeInfo vInfo = new volumeInfo();
+                            vInfo.setEndIssue(sInfo.getissue());
+                            vInfo.setStartIssue(sInfo.getissue());
+                            subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().put(Integer.toString(sInfo.getvolume_number()), vInfo);
+                        }
+
+                    } else {
+                        // journalInfo does not exist
+                        // 1. Create the volume info
+                        volumeInfo vInfo = new volumeInfo();
+                        vInfo.setEndIssue(sInfo.getissue());
+                        vInfo.setStartIssue(sInfo.getissue());
+
+                        // 2. Create the journal info and add the volume info
+                        journalInfo jInfo = new journalInfo();
+                        jInfo.getvolumeInfo().put(Integer.toString(sInfo.getvolume_number()), vInfo);
+
+                        subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().put(sInfo.getjournalCode(), jInfo);
+                    }
+
+                } else {
+                    // Journal Type does not exist
+                    // 1. Create the volume info
+                    volumeInfo vInfo = new volumeInfo();
+                    vInfo.setEndIssue(sInfo.getissue());
+                    vInfo.setStartIssue(sInfo.getissue());
+
+                    // 2. Create the journal info and add the volume info
+                    journalInfo jInfo = new journalInfo();
+                    jInfo.getvolumeInfo().put(Integer.toString(sInfo.getvolume_number()), vInfo);
+
+                    // 3. Create the journal type and add the journal info
+                    journalType jType = new journalType();
+                    jType.getjournalInfo().put(sInfo.getjournalCode(), jInfo);
+
+                    // 4. Add the journalType to the subscriberInfo
+                    subInfo.getjournalType().put(sInfo.getpage_size(), jType);
+                }
+            }
+        }
+
+        //Now extract the labels
+        Iterator subscriberIterator = subscriber.entrySet().iterator();
+        while(subscriberIterator.hasNext())
+        {
+            Map.Entry pairs1 = (Map.Entry)subscriberIterator.next();
+            String subscriberNumber = pairs1.getKey().toString();
+            SubscriberInfo sInfo = (SubscriberInfo)pairs1.getValue();
+
+            Iterator journalTypeIter = sInfo.getjournalType().entrySet().iterator();
+
+            while(journalTypeIter.hasNext()) {
+                Map.Entry pairs2 = (Map.Entry)journalTypeIter.next();
+                String journalType = pairs2.getKey().toString();
+                journalType jType = (journalType)pairs2.getValue();
+
+                Iterator journalInfoIter = jType.getjournalInfo().entrySet().iterator();
+
+                subInfo sLabelInfo = sInfo.getSubscriberLabelInfo();
+
+                String label="";
+                while(journalInfoIter.hasNext()) {
+                    Map.Entry pairs3 = (Map.Entry)journalInfoIter.next();
+                    String journalCode = pairs3.getKey().toString();
+                    journalInfo jInfo = (journalInfo)pairs3.getValue();
+
+                    Iterator vInfoIter = jInfo.getvolumeInfo().entrySet().iterator();
+
+                    label = label + journalCode + "/";
+
+                    while(vInfoIter.hasNext()) {
+                        Map.Entry pairs4 = (Map.Entry)vInfoIter.next();
+                        String volume_number = pairs4.getKey().toString();
+                        volumeInfo vInfo = (volumeInfo)pairs4.getValue();
+
+                        label = label + volume_number + " " + vInfo.getStartIssue() + "-" + vInfo.getEndIssue() + " ";
+                    }
+                }
+                Paragraph p = prepareBILLabelPDFContent(sLabelInfo, label);
+                BILlabels.add(p);
+            }
+        }
+    }
+
+    public Paragraph prepareBILLabelPDFContent(subInfo sLabelInfo, String bilLabel) {
+        Paragraph info = null;
+
+        info = new Paragraph();
+        info.setLeading(leading);
+        info.setAlignment(textAlignment);
+
+        Font font;
+        font = new Font(sfontType, sfontSizeHeader, sfontStyle, BaseColor.BLACK);
+        info.add(new Chunk(bilLabel, font));
+        info.add(Chunk.NEWLINE);
+
+        if(!noHeader){
+            font = new Font(sfontType, sfontSizeHeader, sfontStyle, BaseColor.BLACK);
+            String firstLine = sLabelInfo.getsubscriberNumber() + " " + sLabelInfo.getjournalCode();
+
+            if(sLabelInfo.getcopies() > 1){
+                firstLine = firstLine + " " + sLabelInfo.getcopies();
+            }
+
+            firstLine = firstLine + " " + sLabelInfo.getsubtypecode();
+
+            if(sLabelInfo.equals("Paid")) {
+                firstLine = firstLine + " " + sLabelInfo.getstartDate()+
+                    " " + "to" +
+                    " " + sLabelInfo.getendDate();
+            }
+            info.add(new Chunk(firstLine, font));
+            info.add(Chunk.NEWLINE);
+        }
+        font = new Font(sfontType, sfontSize, sfontStyle, BaseColor.BLACK);
+        info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk(sLabelInfo.getdepartment(), font));
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk(sLabelInfo.getinstitution(), font));
+        info.add(Chunk.NEWLINE);
+        info.add(new Chunk(sLabelInfo.getaddress(), font));
+        info.add(Chunk.NEWLINE);
+        font = new Font(sfontType, sfontSize, Font.BOLD);
+        String lastLine = sLabelInfo.getcity() +
+                " " + sLabelInfo.getpincode() +
+                " " + sLabelInfo.getstate() +
+                " ";
+        if(!sLabelInfo.getcountry().equals("India")){
+            lastLine = lastLine + sLabelInfo.getcountry();
+        }
+
+        info.add(new Chunk(lastLine, font));
+
+        return info;
+
+    }
+
     public void addStickerContent(ResultSet rs, OutputStream os) throws DocumentException, IOException, SQLException
     {
         // step 1
@@ -938,14 +1147,23 @@ public convertToPdf(){
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
 
+        Iterator bilLabelIter = BILlabels.iterator();
+
         while(true)
         {
-            for (int i=1; i<=stickerRows; i++)
+            for (int i=1, k=0; i<=stickerRows; i++)
             {
-                for (int r=1; r<=stickerColumns; r++)
+                for (int r=1; r<=stickerColumns; r++, k++)
                 {
                     // Get the content
-                    Paragraph info = getStickerContent(rs);
+                    Paragraph info = null;
+                    if(backIssue){
+                        if(bilLabelIter.hasNext()) {
+                            info = (Paragraph)bilLabelIter.next();
+                        }
+                    }else {
+                        info = getStickerContent(rs);
+                    }
                     if(info == null)
                     {
                         // step 5
@@ -1044,79 +1262,19 @@ public convertToPdf(){
 
     public Paragraph getLabelContent(ResultSet rs) throws SQLException
     {
-        //String subscriberNumber = "36207";
-        //String journalCode      = "RES";
-        //String subtypecode      = "II";
-        //String startDate        = "Jan 2010";
-        //String endDate          = "Dec 2010";
-        //String subscriberName   = "(Ref: ID 123 IMS Engg College)";
-        //String department       = "South Asia Distributors & Publisher";
-        //String institution      = "92-C (Part), 1st Floor, SPAN House";
-        //String address          =  "Gurudwara Road, Madangir";
-        //String city             = "New Delhi";
-        //String pincode          = "110 062";
-        //String state            = "New Delhi";
-        //String country          = "India";
-
+        /*
         String subscriberNumber = null, journalCode = null, subtypecode = null, startDate = null, endDate = null;
         String subscriberName   = null, department = null, institution = null, address = null;
         String city             = null, pincode = null, state = null, country = null;
         String startYear=null, startMonth=null, endYear=null, endMonth=null;
         String subType=null; int copies = 0;
+        */
 
         Paragraph info = null;
 
         if(rs.next())
         {
-            java.sql.ResultSetMetaData rsmd = rs.getMetaData();
-            int numberOfColumns = rsmd.getColumnCount();
-            for (int i = 1; i <= numberOfColumns; i++)
-            {
-                String columnName = rsmd.getColumnName(i);
-                if(columnName.equals("subscriberNumber"))
-                    subscriberNumber = rs.getString(i);
-                if(columnName.equals("journalCode"))
-                    journalCode = rs.getString(i);
-                if(columnName.equals("subtypecode"))
-                    subtypecode = rs.getString(i);
-                if(columnName.equals("startYear"))
-                    startYear = rs.getString(i);
-                if(columnName.equals("startMonth"))
-                    startMonth = rs.getString(i);
-                startDate = startMonth + " " + startYear;
-
-                if(columnName.equals("endYear"))
-                    endYear = rs.getString(i);
-                if(columnName.equals("endMonth"))
-                    endMonth = rs.getString(i);
-                endDate = endMonth + " " + endYear;
-
-                if(columnName.equals("subscriberName"))
-                    subscriberName = rs.getString(i);
-                if(columnName.equals("department"))
-                    department = rs.getString(i);
-                if(columnName.equalsIgnoreCase("institution"))
-                    institution = rs.getString(i);
-                if(columnName.equalsIgnoreCase("address"))
-                    address = rs.getString(i);
-                if(columnName.equalsIgnoreCase("city"))
-                    city = rs.getString(i);
-                if(columnName.equalsIgnoreCase("pincode")){
-                    pincode = rs.getString(i);
-                    // If pincode is found to be zero, then do not print
-                    if(pincode.equalsIgnoreCase("0")){
-                        pincode = "";
-                    }
-                }
-                if(columnName.equalsIgnoreCase("state"))
-                    state = rs.getString(i);
-                if(columnName.equalsIgnoreCase("country"))
-                    country = rs.getString(i);
-                if(columnName.equalsIgnoreCase("subType"))
-                    subType = rs.getString(i);
-                if(columnName.equalsIgnoreCase("copies"))
-                    copies = rs.getInt(i);
-            }
+            subInfo sLabelInfo = new subInfo(rs);
 
             info = new Paragraph();
             info.setLeading(lfixedLeading, lmultipliedLeading);
@@ -1126,38 +1284,38 @@ public convertToPdf(){
 
             if(!noHeader){
                 font = new Font(lfontType, lfontSizeHeader, lfontStyle, BaseColor.BLACK);
-                String firstLine = subscriberNumber + " " + journalCode;
+                String firstLine = sLabelInfo.getsubscriberNumber() + " " + sLabelInfo.getjournalCode();
 
-                if(copies > 1){
-                    firstLine = firstLine + " " + copies;
+                if(sLabelInfo.getcopies() > 1){
+                    firstLine = firstLine + " " + sLabelInfo.getcopies();
                 }
 
-                firstLine = firstLine + " " + subtypecode;
+                firstLine = firstLine + " " + sLabelInfo.getsubtypecode();
 
-                if(subType.equals("Paid")) {
-                    firstLine = firstLine + " " + startDate +
+                if(sLabelInfo.getsubType().equals("Paid")) {
+                    firstLine = firstLine + " " + sLabelInfo.getstartDate() +
                         " " + "to" +
-                        " " + endDate;
+                        " " + sLabelInfo.getendDate();
                 }
                 info.add(new Chunk(firstLine, font));
                 info.add(Chunk.NEWLINE);
             }
             font = new Font(lfontType, lfontSize, lfontStyle, BaseColor.BLACK);
-            info.add(new Chunk(subscriberName, font));
+            info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
             info.add(Chunk.NEWLINE);
-            info.add(new Chunk(department, font));
+            info.add(new Chunk(sLabelInfo.getdepartment(), font));
             info.add(Chunk.NEWLINE);
-            info.add(new Chunk(institution, font));
+            info.add(new Chunk(sLabelInfo.getinstitution(), font));
             info.add(Chunk.NEWLINE);
-            info.add(new Chunk(address, font));
+            info.add(new Chunk(sLabelInfo.getaddress(), font));
             info.add(Chunk.NEWLINE);
             font = new Font(lfontType, lfontSize, Font.BOLD);
-            String lastLine = city +
-                    " " + pincode +
-                    " " + state +
+            String lastLine = sLabelInfo.getcity() +
+                    " " + sLabelInfo.getpincode() +
+                    " " + sLabelInfo.getstate() +
                     " ";
-            if(!country.equals("India")){
-                lastLine = lastLine + country;
+            if(!sLabelInfo.getcountry().equals("India")){
+                lastLine = lastLine + sLabelInfo.getcountry();
             }
 
             info.add(new Chunk(lastLine, font));
@@ -1167,79 +1325,19 @@ public convertToPdf(){
 
     public Paragraph getStickerContent(ResultSet rs) throws SQLException
     {
-        //String subscriberNumber = "36207";
-        //String journalCode      = "RES";
-        //String subtypecode      = "II";
-        //String startDate        = "Jan 2010";
-        //String endDate          = "Dec 2010";
-        //String subscriberName   = "(Ref: ID 123 IMS Engg College)";
-        //String department       = "South Asia Distributors & Publisher";
-        //String institution      = "92-C (Part), 1st Floor, SPAN House";
-        //String address          =  "Gurudwara Road, Madangir";
-        //String city             = "New Delhi";
-        //String pincode          = "110 062";
-        //String state            = "New Delhi";
-        //String country          = "India";
-
+        /*
         String subscriberNumber = null, journalCode = null, subtypecode = null, startDate = null, endDate = null;
         String subscriberName   = null, department = null, institution = null, address = null;
         String city             = null, pincode = null, state = null, country = null;
         String startYear=null, startMonth=null, endYear=null, endMonth=null;
         String subType=null; int copies = 0;
+        */
 
         Paragraph info = null;
 
         if(rs.next())
         {
-            java.sql.ResultSetMetaData rsmd = rs.getMetaData();
-            int numberOfColumns = rsmd.getColumnCount();
-            for (int i = 1; i <= numberOfColumns; i++)
-            {
-                String columnName = rsmd.getColumnName(i);
-                if(columnName.equals("subscriberNumber"))
-                    subscriberNumber = rs.getString(i);
-                if(columnName.equals("journalCode"))
-                    journalCode = rs.getString(i);
-                if(columnName.equals("subtypecode"))
-                    subtypecode = rs.getString(i);
-                if(columnName.equals("startYear"))
-                    startYear = rs.getString(i);
-                if(columnName.equals("startMonth"))
-                    startMonth = rs.getString(i);
-                startDate = startMonth + " " + startYear;
-
-                if(columnName.equals("endYear"))
-                    endYear = rs.getString(i);
-                if(columnName.equals("endMonth"))
-                    endMonth = rs.getString(i);
-                endDate = endMonth + " " + endYear;
-
-                if(columnName.equals("subscriberName"))
-                    subscriberName = rs.getString(i);
-                if(columnName.equals("department"))
-                    department = rs.getString(i);
-                if(columnName.equalsIgnoreCase("institution"))
-                    institution = rs.getString(i);
-                if(columnName.equalsIgnoreCase("address"))
-                    address = rs.getString(i);
-                if(columnName.equalsIgnoreCase("city"))
-                    city = rs.getString(i);
-                if(columnName.equalsIgnoreCase("pincode")){
-                    pincode = rs.getString(i);
-                    // If pincode is found to be zero, then do not print
-                    if(pincode.equalsIgnoreCase("0")){
-                        pincode = "";
-                    }
-                }
-                if(columnName.equalsIgnoreCase("state"))
-                    state = rs.getString(i);
-                if(columnName.equalsIgnoreCase("country"))
-                    country = rs.getString(i);
-                if(columnName.equalsIgnoreCase("subType"))
-                    subType = rs.getString(i);
-                if(columnName.equalsIgnoreCase("copies"))
-                    copies = rs.getInt(i);
-            }
+            subInfo sLabelInfo = new subInfo(rs);
 
             info = new Paragraph();
             info.setLeading(leading);
@@ -1248,38 +1346,38 @@ public convertToPdf(){
             Font font;
             if(!noHeader){
                 font = new Font(sfontType, sfontSizeHeader, sfontStyle, BaseColor.BLACK);
-                String firstLine = subscriberNumber + " " + journalCode;
+                String firstLine = sLabelInfo.getsubscriberNumber() + " " + sLabelInfo.getjournalCode();
 
-                if(copies > 1){
-                    firstLine = firstLine + " " + copies;
+                if(sLabelInfo.getcopies() > 1){
+                    firstLine = firstLine + " " + sLabelInfo.getcopies();
                 }
 
-                firstLine = firstLine + " " + subtypecode;
+                firstLine = firstLine + " " + sLabelInfo.getsubtypecode();
 
-                if(subType.equals("Paid")) {
-                    firstLine = firstLine + " " + startDate +
+                if(sLabelInfo.equals("Paid")) {
+                    firstLine = firstLine + " " + sLabelInfo.getstartDate()+
                         " " + "to" +
-                        " " + endDate;
+                        " " + sLabelInfo.getendDate();
                 }
                 info.add(new Chunk(firstLine, font));
                 info.add(Chunk.NEWLINE);
             }
             font = new Font(sfontType, sfontSize, sfontStyle, BaseColor.BLACK);
-            info.add(new Chunk(subscriberName, font));
+            info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
             info.add(Chunk.NEWLINE);
-            info.add(new Chunk(department, font));
+            info.add(new Chunk(sLabelInfo.getdepartment(), font));
             info.add(Chunk.NEWLINE);
-            info.add(new Chunk(institution, font));
+            info.add(new Chunk(sLabelInfo.getinstitution(), font));
             info.add(Chunk.NEWLINE);
-            info.add(new Chunk(address, font));
+            info.add(new Chunk(sLabelInfo.getaddress(), font));
             info.add(Chunk.NEWLINE);
             font = new Font(sfontType, sfontSize, Font.BOLD);
-            String lastLine = city +
-                    " " + pincode +
-                    " " + state +
+            String lastLine = sLabelInfo.getcity() +
+                    " " + sLabelInfo.getpincode() +
+                    " " + sLabelInfo.getstate() +
                     " ";
-            if(!country.equals("India")){
-                lastLine = lastLine + country;
+            if(!sLabelInfo.getcountry().equals("India")){
+                lastLine = lastLine + sLabelInfo.getcountry();
             }
 
             info.add(new Chunk(lastLine, font));

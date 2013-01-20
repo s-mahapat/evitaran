@@ -43,29 +43,17 @@ public class generatebil extends JDSController {
 
             }else if(action.equalsIgnoreCase("printLabel")){
 
-                /*
-                String pdf = _bilModel.printbil(response, "LABEL");
-                //request.setAttribute("pdf", pdf);
-                url = "/pdfserver";
-                //url = "";
-                 *
-                 */
                 ResultSet rs = _bilModel.printbil();
                 request.setAttribute("ResultSet", rs);
-                url = "/pdfserver?action=generatemlPrintLabel";
+                //url = "/pdfserver?action=generatemlPrintLabel";
+                url = "/pdfserver?action=generatebilPrintLabel";
 
             }else if(action.equalsIgnoreCase("printSticker")){
 
-                /*
-                String pdf = _bilModel.printbil(response, "STICKER");
-                //request.setAttribute("pdf", pdf);
-                url = "/pdfserver";
-                //url = "";
-                 *
-                 */
                 ResultSet rs = _bilModel.printbil();
                 request.setAttribute("ResultSet", rs);
-                url = "/pdfserver?action=generatemlPrintSticker";
+                //url = "/pdfserver?action=generatemlPrintSticker";
+                url = "/pdfserver?action=generatebilPrintSticker";
             }
 
         } catch (Exception e) {
