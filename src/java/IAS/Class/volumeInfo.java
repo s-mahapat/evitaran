@@ -11,6 +11,7 @@ package IAS.Class;
 public class volumeInfo {
     private int startIssue = 0;
     private int endIssue = 0;
+    private int no_of_copies;
     //private String volume_number = "";
 
 public int getStartIssue() {
@@ -27,6 +28,14 @@ public void setEndIssue(int _EndIssue) {
 
 public int getEndIssue() {
         return (this.endIssue);
+    }
+
+public void setNo_of_copies(int _no_of_copies) {
+        this.no_of_copies = _no_of_copies;
+    }
+
+public int getNo_of_copies() {
+        return (this.no_of_copies);
     }
 /*
 public String getVolume_number() {

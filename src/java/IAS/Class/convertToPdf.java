@@ -914,10 +914,16 @@ public convertToPdf(){
 
         HashMap<String, SubscriberInfo> subscriber = new HashMap<>();
 
-        // Key is subscriber no, value is SubscriberInfo
-        // Key is page_size, value is journalType
-        // Key is journalCode, value is journalInfo
-        // Key is volumeNo, value is volumeInfo
+        // Subscriber: Key is subscriber no, value is SubscriberInfo
+        // SubscriberInfo: Key is page_size, value is journalType
+        // journalType: Key is journalCode, value is journalInfo
+        // journalInfo: Key is volumeNo, value is volumeInfo
+
+        // Subscriber: Key is subscriber no, value is SubscriberInfo
+        // SubscriberInfo: Key is subscriptionId, value is SubscriptionInfo
+        // sunbscriptionInfo: Key is page_size, value is journalType
+        // journalType: Key is journalCode, value is journalInfo
+        // journalInfo: Key is volumeNo, value is volumeInfo
 
         while(rs.next()) {
             subInfo sInfo = new subInfo(rs);
@@ -932,6 +938,7 @@ public convertToPdf(){
                 volumeInfo vInfo = new volumeInfo();
                 vInfo.setEndIssue(sInfo.getissue());
                 vInfo.setStartIssue(sInfo.getissue());
+                vInfo.setNo_of_copies(sInfo.getcopies());
 
                 // 2. Create the journal info and add the volume info
                 journalInfo jInfo = new journalInfo();
@@ -941,60 +948,87 @@ public convertToPdf(){
                 journalType jType = new journalType();
                 jType.getjournalInfo().put(sInfo.getjournalCode(), jInfo);
 
-                // 4. Create subscriberInfo and Add the journal type to the subscriber info
+                // 4. Create subscriptionInfo and add the journal type to the subscription info
+                SubscriptionInfo subscriptionInfo = new SubscriptionInfo();
+                subscriptionInfo.getjournalType().put(sInfo.getpage_size(), jType);
+
+                // 5. Create subscriberInfo and Add the journal type to the subscriber info
                 SubscriberInfo SInfo = new SubscriberInfo();
-                SInfo.getjournalType().put(sInfo.getpage_size(), jType);
+                SInfo.getSubscriberInfo().put(sInfo.getSubscriptionId(), subscriptionInfo);
                 SInfo.setSubscriberLabelInfo(sInfo);
 
-                // 5. Add the subscriber info in the list of subscriber
+                // 6. Add the subscriber info in the list of subscriber
                 subscriber.put(sInfo.getsubscriberNumber(), SInfo);
 
             }
             // Subscriber exists
             else {
-                // Subscriber exists, check if the journalType exists
+                // Subscriber exists, check if the subscription exists
+                if(subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()) != null) {
+                    // Subscription exists, check if the journalType exists
+                    if(subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()) != null) {
+                        // JournalType exists, now check if the journalInfo exists
+                        if(subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()) != null) {
+                            // JournalInfo exists, now check if the volume number exists
+                            if(subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())) != null) {
+                                // Volume number exists, check if the issue no crosses either the max or min
+                                if(subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).getEndIssue() < sInfo.getissue()) {
+                                    subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).setEndIssue(sInfo.getissue());
+                                }
+                                if(subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).getStartIssue() > sInfo.getissue()) {
+                                    subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).setStartIssue(sInfo.getissue());
+                                }
+                                subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).setNo_of_copies(sInfo.getcopies());
 
-                if(subInfo.getjournalType().get(sInfo.getpage_size()) != null){
-                    // JournalType exists, now check if the journalInfo exists
-                    if(subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()) != null) {
-                        // JournalInfo exists, now check if the volume number exists
-                        if(subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())) != null) {
-                            // Volume number exists, check if the issue no crosses either the max or min
-                            if(subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).getEndIssue() < sInfo.getissue()) {
-                                subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).setEndIssue(sInfo.getissue());
-                            }
-                            if(subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).getStartIssue() > sInfo.getissue()) {
-                                subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).setStartIssue(sInfo.getissue());
+                            } else {
+                                // volume number does not exist
+                                volumeInfo vInfo = new volumeInfo();
+                                vInfo.setEndIssue(sInfo.getissue());
+                                vInfo.setStartIssue(sInfo.getissue());
+                                vInfo.setNo_of_copies(sInfo.getcopies());
+                                subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().put(Integer.toString(sInfo.getvolume_number()), vInfo);
                             }
 
                         } else {
-                            // volume number does not exist
+                            // journalInfo does not exist
+                            // 1. Create the volume info
                             volumeInfo vInfo = new volumeInfo();
                             vInfo.setEndIssue(sInfo.getissue());
                             vInfo.setStartIssue(sInfo.getissue());
-                            subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().put(Integer.toString(sInfo.getvolume_number()), vInfo);
+                            vInfo.setNo_of_copies(sInfo.getcopies());
+
+                            // 2. Create the journal info and add the volume info
+                            journalInfo jInfo = new journalInfo();
+                            jInfo.getvolumeInfo().put(Integer.toString(sInfo.getvolume_number()), vInfo);
+
+                            subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().put(sInfo.getjournalCode(), jInfo);
                         }
 
                     } else {
-                        // journalInfo does not exist
+                        // Journal Type does not exist
                         // 1. Create the volume info
                         volumeInfo vInfo = new volumeInfo();
                         vInfo.setEndIssue(sInfo.getissue());
                         vInfo.setStartIssue(sInfo.getissue());
+                        vInfo.setNo_of_copies(sInfo.getcopies());
 
                         // 2. Create the journal info and add the volume info
                         journalInfo jInfo = new journalInfo();
                         jInfo.getvolumeInfo().put(Integer.toString(sInfo.getvolume_number()), vInfo);
 
-                        subInfo.getjournalType().get(sInfo.getpage_size()).getjournalInfo().put(sInfo.getjournalCode(), jInfo);
-                    }
+                        // 3. Create the journal type and add the journal info
+                        journalType jType = new journalType();
+                        jType.getjournalInfo().put(sInfo.getjournalCode(), jInfo);
 
+                        // 4. Add the journalType to the subscriberInfo
+                        subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().put(sInfo.getpage_size(), jType);
+                    }
                 } else {
-                    // Journal Type does not exist
                     // 1. Create the volume info
                     volumeInfo vInfo = new volumeInfo();
                     vInfo.setEndIssue(sInfo.getissue());
                     vInfo.setStartIssue(sInfo.getissue());
+                    vInfo.setNo_of_copies(sInfo.getcopies());
 
                     // 2. Create the journal info and add the volume info
                     journalInfo jInfo = new journalInfo();
@@ -1004,51 +1038,69 @@ public convertToPdf(){
                     journalType jType = new journalType();
                     jType.getjournalInfo().put(sInfo.getjournalCode(), jInfo);
 
-                    // 4. Add the journalType to the subscriberInfo
-                    subInfo.getjournalType().put(sInfo.getpage_size(), jType);
+                    // 4. Create subscriptionInfo and add the journal type to the subscription info
+                    SubscriptionInfo subscriptionInfo = new SubscriptionInfo();
+                    subscriptionInfo.getjournalType().put(sInfo.getpage_size(), jType);
+
+                    // 5. Create subscriberInfo and Add the journal type to the subscriber info
+                    subInfo.getSubscriberInfo().put(sInfo.getSubscriptionId(), subscriptionInfo);
                 }
             }
         }
 
         //Now extract the labels
         Iterator subscriberIterator = subscriber.entrySet().iterator();
+
+        // Loop over subscribers
         while(subscriberIterator.hasNext())
         {
             Map.Entry pairs1 = (Map.Entry)subscriberIterator.next();
             String subscriberNumber = pairs1.getKey().toString();
             SubscriberInfo sInfo = (SubscriberInfo)pairs1.getValue();
 
-            Iterator journalTypeIter = sInfo.getjournalType().entrySet().iterator();
+            Iterator subscriberInfoIter = sInfo.getSubscriberInfo().entrySet().iterator();
 
-            while(journalTypeIter.hasNext()) {
-                Map.Entry pairs2 = (Map.Entry)journalTypeIter.next();
-                String journalType = pairs2.getKey().toString();
-                journalType jType = (journalType)pairs2.getValue();
+            // Loop over subscriberInfo
+            while(subscriberInfoIter.hasNext()) {
+                Map.Entry pairs2 = (Map.Entry)subscriberInfoIter.next();
+                String SubscriptionId = pairs2.getKey().toString();
+                SubscriptionInfo subscriptionInfo = (SubscriptionInfo)pairs2.getValue();
 
-                Iterator journalInfoIter = jType.getjournalInfo().entrySet().iterator();
+                Iterator SubscriptionInfoIter = subscriptionInfo.getjournalType().entrySet().iterator();
 
-                subInfo sLabelInfo = sInfo.getSubscriberLabelInfo();
+                // Loop over subscriptionInfo
+                while(SubscriptionInfoIter.hasNext()) {
+                    Map.Entry pairs3 = (Map.Entry)SubscriptionInfoIter.next();
+                    String journalType = pairs3.getKey().toString();
+                    journalType jType = (journalType)pairs3.getValue();
 
-                String label="";
-                while(journalInfoIter.hasNext()) {
-                    Map.Entry pairs3 = (Map.Entry)journalInfoIter.next();
-                    String journalCode = pairs3.getKey().toString();
-                    journalInfo jInfo = (journalInfo)pairs3.getValue();
+                    Iterator journalTypeIter = jType.getjournalInfo().entrySet().iterator();
 
-                    Iterator vInfoIter = jInfo.getvolumeInfo().entrySet().iterator();
+                    subInfo sLabelInfo = sInfo.getSubscriberLabelInfo();
 
-                    label = label + journalCode + "/";
+                    String label="";
+                    // Loop over journalType
+                    while(journalTypeIter.hasNext()) {
+                        Map.Entry pairs4 = (Map.Entry)journalTypeIter.next();
+                        String journalCode = pairs4.getKey().toString();
+                        journalInfo jInfo = (journalInfo)pairs4.getValue();
 
-                    while(vInfoIter.hasNext()) {
-                        Map.Entry pairs4 = (Map.Entry)vInfoIter.next();
-                        String volume_number = pairs4.getKey().toString();
-                        volumeInfo vInfo = (volumeInfo)pairs4.getValue();
+                        Iterator journalInfoIter = jInfo.getvolumeInfo().entrySet().iterator();
 
-                        label = label + volume_number + " " + vInfo.getStartIssue() + "-" + vInfo.getEndIssue() + " ";
+                        // Loop over journalInfo
+                        while(journalInfoIter.hasNext()) {
+                            Map.Entry pairs5 = (Map.Entry)journalInfoIter.next();
+                            String volume_number = pairs5.getKey().toString();
+                            volumeInfo vInfo = (volumeInfo)pairs5.getValue();
+
+                            label = label + journalCode + "/";
+
+                            label = label + volume_number + " " + vInfo.getStartIssue() + "-" + vInfo.getEndIssue() + " " + "(" + vInfo.getNo_of_copies() + ")" + " ";
+                        }
                     }
+                    Paragraph p = prepareBILLabelPDFContent(sLabelInfo, label);
+                    BILlabels.add(p);
                 }
-                Paragraph p = prepareBILLabelPDFContent(sLabelInfo, label);
-                BILlabels.add(p);
             }
         }
     }
@@ -1065,13 +1117,16 @@ public convertToPdf(){
         info.add(new Chunk(bilLabel, font));
         info.add(Chunk.NEWLINE);
 
-        if(!noHeader){
-            font = new Font(sfontType, sfontSizeHeader, sfontStyle, BaseColor.BLACK);
-            String firstLine = sLabelInfo.getsubscriberNumber() + " " + sLabelInfo.getjournalCode();
+        font = new Font(sfontType, sfontSizeHeader, sfontStyle, BaseColor.BLACK);
+        String firstLine = sLabelInfo.getsubscriberNumber() + " " + sLabelInfo.getjournalCode();
 
+        if(!noHeader){
+
+            /*
             if(sLabelInfo.getcopies() > 1){
                 firstLine = firstLine + " " + sLabelInfo.getcopies();
             }
+            */
 
             firstLine = firstLine + " " + sLabelInfo.getsubtypecode();
 

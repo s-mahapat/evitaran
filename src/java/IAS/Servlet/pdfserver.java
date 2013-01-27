@@ -161,7 +161,6 @@ public class pdfserver extends JDSController {
                     os.write(bytes, 0, read);
                 }
                 os.flush();
-                os.close();
 
             } else if(action.equalsIgnoreCase("generatebilPrintSticker")){
                 logger.debug("Start of back issue list sticker generation");

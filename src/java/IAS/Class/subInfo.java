@@ -20,6 +20,7 @@ public class subInfo {
     private String subType=null; int copies = 0;
     private String page_size=null;
     private int volume_number=0, issue=0;
+    private String subscriptionId = null;
 
     subInfo(ResultSet rs) throws SQLException {
         java.sql.ResultSetMetaData rsmd = rs.getMetaData();
@@ -27,6 +28,9 @@ public class subInfo {
         for (int i = 1; i <= numberOfColumns; i++)
         {
             String columnName = rsmd.getColumnName(i);
+            if(columnName.equals("subscriptionId")) {
+                subscriptionId = Integer.toString(rs.getInt(i));
+            }
             if(columnName.equals("page_size")) {
                 page_size = rs.getString(i);
             }
@@ -81,6 +85,14 @@ public class subInfo {
                 copies = rs.getInt(i);
             }
         }
+    }
+
+public String getSubscriptionId() {
+        return (this.subscriptionId);
+    }
+
+public void setSubscriptionId(String _subscriptionId) {
+        this.subscriptionId = _subscriptionId;
     }
 
 public String getpage_size() {

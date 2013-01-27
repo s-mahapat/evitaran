@@ -12,8 +12,8 @@ import java.util.HashMap;
  * @author aloko
  */
 public class SubscriberInfo {
-    // Key is page_size, value is journalType
-    private HashMap<String, journalType> journalType = new HashMap();
+    // Key is subscriptionId, value is SubscriptionInfo
+    private HashMap<String, SubscriptionInfo> SubscriptionInfo = new HashMap();
     private subInfo sLabelInfo;
 
 public subInfo getSubscriberLabelInfo() {
@@ -24,7 +24,8 @@ public void setSubscriberLabelInfo(subInfo _SubscriberLabelInfo) {
         this.sLabelInfo = _SubscriberLabelInfo;
     }
 
-public HashMap<String, journalType> getjournalType() {
-        return journalType;
-    }
+public HashMap<String, SubscriptionInfo> getSubscriberInfo() {
+    return SubscriptionInfo;
+}
+
 }
