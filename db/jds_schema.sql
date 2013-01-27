@@ -236,6 +236,7 @@ CREATE TABLE `inward` (
   `chequeDDReturnReason` int(11) unsigned DEFAULT NULL,
   `chequeDDReturnReasonOther` varchar(64) DEFAULT NULL,
   `receiptNumber` int(11) DEFAULT NULL,
+  `receiptDate` date DEFAULT NULL,
   `ackDate` date DEFAULT NULL,
   `remarks` text,
   `bankName` varchar(64) DEFAULT NULL,
@@ -1717,12 +1718,26 @@ CREATE TABLE `subscription` (
   `agentID` int(11) DEFAULT '0',
   `active` tinyint(4) NOT NULL DEFAULT '1',
   `subscriptionDate` date NOT NULL DEFAULT '0000-00-00',
-  `legacy` tinyint(4) NOT NULL DEFAULT '0',
-  `legacy_amount` float NOT NULL DEFAULT '0',
-  `legacy_balance` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `subscription_legacy`
+--
+
+DROP TABLE IF EXISTS `subscription_legacy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subscription_legacy` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subscription_id` int(11) NOT NULL,
+  `legacy` tinyint(4) NOT NULL DEFAULT '1',
+  `legacy_amount` float NOT NULL DEFAULT '0',
+  `legacy_balance` float NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1784,16 +1799,23 @@ CREATE TABLE `subscriptiondetails` (
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_back_issues`
-   BEFORE INSERT   ON jds.subscriptiondetails
-   FOR EACH ROWBEGIN
-   /*this code set the subscription detail row to inactive if the end year   is less than the current year
+   BEFORE INSERT
+   ON jds.subscriptiondetails
+   FOR EACH ROW
+BEGIN
+   /*this code set the subscription detail row to inactive if the end year
+   is less than the current year
    */
-   IF new.endyear < YEAR(CURRENT_TIMESTAMP)   THEN
-      SET new.active = FALSE;   END IF;
+   IF new.endyear < YEAR(CURRENT_TIMESTAMP)
+   THEN
+      SET new.active = FALSE;
+   END IF;
 
    CALL addBackIssues(new.id,
-                      new.startMonth,                      new.startYear,
-                      new.journalGroupID,                      new.copies);
+                      new.startMonth,
+                      new.startYear,
+                      new.journalGroupID,
+                      new.copies);
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1809,31 +1831,31 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`edit_bil`
-
-
-   BEFORE UPDATE
-
-
-
-   ON jds.subscriptiondetails
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`edit_bil`
 
 
 
-   FOR EACH ROW
+   BEFORE UPDATE
 
-
+
+
+   ON jds.subscriptiondetails
+
+
+
+   FOR EACH ROW
+
+
 
 BEGIN
 
-
 
-
-  begin_level_1:
-
 
-
-   BEGIN
+  begin_level_1:
+
+
+
+   BEGIN
 
 
 
@@ -2169,13 +2191,11 @@ BEGIN
 
 
 
-      
+      
 
-
 
-      
+      
 
-
 
       IF     new.startYear > old.startYear
 
@@ -2229,15 +2249,13 @@ BEGIN
 
 
 
-         
-
-
-
-         
+         
 
 
+         
 
-
+
+
 
 
 
@@ -2321,13 +2339,11 @@ BEGIN
 
 
 
-      
+      
 
-
 
-      
+      
 
-
 
       IF new.startMonth > old.startMonth
 
@@ -3113,4 +3129,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-27 15:33:24
+-- Dump completed on 2013-01-27 21:06:07

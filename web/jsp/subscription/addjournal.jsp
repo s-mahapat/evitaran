@@ -116,7 +116,7 @@
                 }
 
             ],
-            caption: '&nbsp;',
+            //caption: '&nbsp;',
             viewrecords: true,
             gridview: true,
             rowNum:20

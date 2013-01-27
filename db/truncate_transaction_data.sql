@@ -12,6 +12,9 @@ ALTER TABLE subscriptiondetails AUTO_INCREMENT = 1;
 delete from subscription;
 ALTER TABLE subscription AUTO_INCREMENT = 1;
 
+delete from subscription_legacy;
+ALTER TABLE subscription_legacy AUTO_INCREMENT = 1;
+
 delete from mailing_list;
 ALTER TABLE mailing_list AUTO_INCREMENT = 1;
 

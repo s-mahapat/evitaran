@@ -34,9 +34,10 @@ function listSubscription(){
             subGridWidth: 20,
             subgridtype: 'xml',
             subGridUrl: 'subscription?oper=detail&subtypeid='+$("#subtypeid").val(),
+            subGridOptions: {reloadOnExpand: false},
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Receipt No.','Date','Agent','Cheque No.','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
+            colNames:['Subscription Id','Inward No','Inward Date','Agent','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
             colModel :[
             {
                 name:'subscriptionID',
@@ -57,14 +58,6 @@ function listSubscription(){
                 xmlmap:'inwardNumber'
             },
             {
-                name:'receiptNumber',
-                index:'receiptNumber',
-                width:20,
-                align:'center',
-                sortable: false,
-                xmlmap:'receiptNumber'
-            },
-            {
                 name:'subscriptionDate',
                 index:'subscriptionDate',
                 width:20,
@@ -79,14 +72,6 @@ function listSubscription(){
                 align:'center',
                 sortable: false,
                 xmlmap:'agentName'
-            },
-            {
-                name:'chqno',
-                index:'chqno',
-                width:20,
-                align:'center',
-                sortable: false,
-                xmlmap:'chqddNumber'
             },
             {
                 name:'inwardAmount',
@@ -153,10 +138,10 @@ function listSubscription(){
                 sortable: false
             }],
             subGridModel: [{
-                name: ['Journal Group', 'Start Year', 'End Year', 'Copies', 'Total', 'Active'],
-                width: [120, 40, 40, 20, 30, 30],
-                align: ['center', 'center', 'center', 'center', 'center', 'center'],
-                mapping: ['journalGroupName', 'startYear', 'endYear', 'copies', 'total', 'active'],
+                name: ['Journal Group', 'Start Year', 'End Year', 'Start Month','Copies', 'Total', 'Active'],
+                width: [120, 40, 40, 40,20, 30, 30],
+                align: ['center', 'center', 'center', 'center', 'center', 'center', 'center'],
+                mapping: ['journalGroupName', 'startYear', 'endYear', 'startMonth','copies', 'total', 'active'],
                 params: ['invoiceid']
             }],
             xmlReader : {
@@ -175,7 +160,7 @@ function listSubscription(){
             rowList:[10,30,50],
             viewrecords: true,
             gridview: true,
-            caption: '&nbsp;',
+            //caption: '&nbsp;',
             gridComplete: function() {
 
                 var ids = jQuery("#subscriptionList").jqGrid('getDataIDs');

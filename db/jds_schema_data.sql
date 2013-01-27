@@ -331,6 +331,7 @@ CREATE TABLE `inward` (
   `chequeDDReturnReason` int(11) unsigned DEFAULT NULL,
   `chequeDDReturnReasonOther` varchar(64) DEFAULT NULL,
   `receiptNumber` int(11) DEFAULT NULL,
+  `receiptDate` date DEFAULT NULL,
   `ackDate` date DEFAULT NULL,
   `remarks` text,
   `bankName` varchar(64) DEFAULT NULL,
@@ -2059,9 +2060,6 @@ CREATE TABLE `subscription` (
   `agentID` int(11) DEFAULT '0',
   `active` tinyint(4) NOT NULL DEFAULT '1',
   `subscriptionDate` date NOT NULL DEFAULT '0000-00-00',
-  `legacy` tinyint(4) NOT NULL DEFAULT '0',
-  `legacy_amount` float NOT NULL DEFAULT '0',
-  `legacy_balance` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `subscription_idx_1` (`subscriberID`) USING BTREE,
   KEY `subscription_idx_4` (`active`)
@@ -2075,6 +2073,32 @@ CREATE TABLE `subscription` (
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `subscription_legacy`
+--
+
+DROP TABLE IF EXISTS `subscription_legacy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subscription_legacy` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subscription_id` int(11) NOT NULL,
+  `legacy` tinyint(4) NOT NULL DEFAULT '1',
+  `legacy_amount` float NOT NULL DEFAULT '0',
+  `legacy_balance` float NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `subscription_legacy`
+--
+
+LOCK TABLES `subscription_legacy` WRITE;
+/*!40000 ALTER TABLE `subscription_legacy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `subscription_legacy` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -10143,4 +10167,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-20 23:10:27
+-- Dump completed on 2013-01-27 21:06:06

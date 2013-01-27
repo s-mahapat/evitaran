@@ -9,7 +9,7 @@ function addJournal(){
     // subscription
     var userSelection = getselected(document.getElementById("journalName"));
     if(jQuery.isEmptyObject( userSelection )){
-        alert("Please select journals from the list");
+        alert("Please select atleast one Journal from the list");
         return false;
     }
     $.extend(journalNameToGroupIDMap, userSelection);
