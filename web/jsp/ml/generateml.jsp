@@ -44,8 +44,8 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
-                    colNames:['journalCode', 'subtypecode', 'Subscriber Number', 'subscriber Name', 'city',
-                        'state', 'country', 'pincode', 'copies', 'volume','issue', 'month', 'year'],
+                    colNames:['Journal Code', 'Sub. Type', 'Subscriber Number', 'Subscriber Name', 'City',
+                        'State', 'Country', 'PIN code', 'Copies', 'Volume','Issue', 'Month', 'Year'],
                     colModel :[
                         {name:'journalCode', index:'journalCode', width:35, align:'center', xmlmap:'journalCode'},
                         {name:'subtypecode', index:'subtypecode', width:35, align:'center', xmlmap:'subtypecode'},

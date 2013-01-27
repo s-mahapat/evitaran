@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.28
+-- Server version	5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1784,23 +1784,16 @@ CREATE TABLE `subscriptiondetails` (
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_back_issues`
-   BEFORE INSERT
-   ON jds.subscriptiondetails
-   FOR EACH ROW
-BEGIN
-   /*this code set the subscription detail row to inactive if the end year
-   is less than the current year
+   BEFORE INSERT   ON jds.subscriptiondetails
+   FOR EACH ROWBEGIN
+   /*this code set the subscription detail row to inactive if the end year   is less than the current year
    */
-   IF new.endyear < YEAR(CURRENT_TIMESTAMP)
-   THEN
-      SET new.active = FALSE;
-   END IF;
+   IF new.endyear < YEAR(CURRENT_TIMESTAMP)   THEN
+      SET new.active = FALSE;   END IF;
 
    CALL addBackIssues(new.id,
-                      new.startMonth,
-                      new.startYear,
-                      new.journalGroupID,
-                      new.copies);
+                      new.startMonth,                      new.startYear,
+                      new.journalGroupID,                      new.copies);
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1816,31 +1809,31 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`edit_bil`
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`edit_bil`
+
+
+   BEFORE UPDATE
+
+
+
+   ON jds.subscriptiondetails
 
 
 
-   BEFORE UPDATE
+   FOR EACH ROW
 
-
-
-   ON jds.subscriptiondetails
-
-
-
-   FOR EACH ROW
-
-
+
 
 BEGIN
 
+
 
+
+  begin_level_1:
+
 
-  begin_level_1:
-
-
-
-   BEGIN
+
+   BEGIN
 
 
 
@@ -2176,11 +2169,13 @@ BEGIN
 
 
 
-      
+      
 
+
 
-      
+      
 
+
 
       IF     new.startYear > old.startYear
 
@@ -2234,13 +2229,15 @@ BEGIN
 
 
 
-         
+         
+
+
+
+         
 
 
-         
 
-
-
+
 
 
 
@@ -2324,11 +2321,13 @@ BEGIN
 
 
 
-      
+      
 
+
 
-      
+      
 
+
 
       IF new.startMonth > old.startMonth
 
@@ -3114,4 +3113,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-20 23:10:28
+-- Dump completed on 2013-01-27 15:33:24
