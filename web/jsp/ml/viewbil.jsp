@@ -14,6 +14,9 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/ml/generatebil.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
+        <script type="text/javascript" src="js/jquery/grid.formedit.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.jqGrid.src.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.jqGrid.min.js"></script>
 
 
         <script type="text/javascript">
@@ -93,6 +96,22 @@
 
             });
 
+            //jQuery("#mlTable").jqGrid('searchGrid', {multipleSearch:true} );
+
+
+            jQuery("#bilTable").jqGrid('navGrid','#pager',
+                // Which buttons to show
+                {edit:false,add:false,del:false,search:true},
+                // Edit options
+                {},
+                // Add options
+                {},
+                // Delete options
+                {},
+                // Search options
+                {multipleGroup:true, multipleSearch:true}
+            );
+
             function search(){
 
                 if (($("#subscriberNumber").val() == 0) && (($("#to").val()) == 0 && ($("#from").val()) == 0)){
@@ -111,6 +130,22 @@
                         jQuery("#bilTable").setGridParam({ datatype: "xml" });
                         jQuery("#bilTable").trigger("clearGridData");
                         jQuery("#bilTable").trigger("reloadGrid");
+
+                        //jQuery("#mlTable").jqGrid('searchGrid', {multipleSearch:true} );
+
+                        jQuery("#bilTable").jqGrid('navGrid','#pager',
+                            // Which buttons to show
+                            {edit:false,add:false,del:false,search:true},
+                            // Edit options
+                            {},
+                            // Add options
+                            {},
+                            // Delete options
+                            {},
+                            // Search options
+                            {multipleGroup:true, multipleSearch:true}
+                        );
+
                     }
                 jQuery("#btnPrint").attr("disabled",false);
             }
@@ -143,10 +178,10 @@
                 var x = "printSticker";
                 $('#action').val(x);
             }
-                        
+
             // draw the date picker.
             jQueryDatePicker("from","to");
-            
+
         </script>
     </head>
     <body>
@@ -181,7 +216,7 @@
                                                         <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="bilCreationDate" id="bilCreationDate" value="<jsp:getProperty name="bilFormBean" property="bilCreationDate"/>"/>
                                                     </span>
                                                 </div>
-                                            </div>                                        
+                                            </div>
                                     </div>
                                     <%-- Search Criteria right div --%>
                                     <div class="IASFormRightDiv">

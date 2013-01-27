@@ -14,6 +14,9 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/ml/generateml.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
+        <script type="text/javascript" src="js/jquery/grid.formedit.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.jqGrid.src.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.jqGrid.min.js"></script>
 
 
         <script type="text/javascript">
@@ -49,8 +52,8 @@
                     colModel :[
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
-                        {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
-                        {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
+                        {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber', search: true},
+                        {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName', search: true},
                         {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
                         {name:'state', index:'state', width:80, align:'center', xmlmap:'state'},
                         {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
@@ -95,6 +98,22 @@
 
             });
 
+            //jQuery("#mlTable").jqGrid('searchGrid', {multipleSearch:true} );
+
+
+            jQuery("#mlTable").jqGrid('navGrid','#pager',
+                // Which buttons to show
+                {edit:false,add:false,del:false,search:true},
+                // Edit options
+                {},
+                // Add options
+                {},
+                // Delete options
+                {},
+                // Search options
+                {multipleGroup:true, multipleSearch:true}
+            );
+
 
             function search(){
 
@@ -138,6 +157,21 @@
                         //jQuery("#btnPrintLabel,#btnPrintSticker").attr("disabled",false);
                         jQuery("#btnPrintLabel,#btnPrintSticker").button("enable");
                         jQuery("#btnSearch").button("disable");
+
+                        //jQuery("#mlTable").jqGrid('searchGrid', {multipleSearch:true} );
+
+                        jQuery("#mlTable").jqGrid('navGrid','#pager',
+                            // Which buttons to show
+                            {edit:false,add:false,del:false,search:true},
+                            // Edit options
+                            {},
+                            // Add options
+                            {},
+                            // Delete options
+                            {},
+                            // Search options
+                            {multipleGroup:true, multipleSearch:true}
+                        );
                     }
             }
 
@@ -182,7 +216,7 @@
                 requestURL = "/JDS/CMasterData?md=getissues&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#volume").val();
                 jdsAppend(requestURL,"issueNumber","issue");
             }
-            
+
              function loadvolumes(){
                 $("#volume").empty();
                 //text("");
@@ -254,19 +288,19 @@
                                                     <label>Year:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="3" name="year" id="year" onchange="loadvolumes()">                                                
+                                                    <select class="IASComboBox" TABINDEX="3" name="year" id="year" onchange="loadvolumes()">
                                                     </select>
                                                 </span>
-                                            </div>  
+                                            </div>
                                             <div class="IASFormFieldDiv">
                                                 <span class="IASFormDivSpanLabel">
                                                     <label>Month:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="3" name="month" id="month">                                                
+                                                    <select class="IASComboBox" TABINDEX="3" name="month" id="month">
                                                     </select>
                                                 </span>
-                                            </div>          
+                                            </div>
                                          </div>
                                     </div>
                                     <%-- Search Criteria right div --%>
@@ -299,7 +333,7 @@
                                                 <span class="IASFormDivSpanInputBox">
                                                     <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="mlCreationDate" id="mlCreationDate" value="<jsp:getProperty name="mlFormBean" property="mlCreationDate"/>"/>
                                                 </span>
-                                            </div>                                            
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="actionBtnDiv">
