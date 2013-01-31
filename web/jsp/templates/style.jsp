@@ -7,7 +7,7 @@
 <script src="<%=request.getContextPath() + "/js/jdsconstants.js"%>" type="text/javascript"></script>
 
 <%-- jquery Core --%>
-<script src="<%=request.getContextPath() + "/js/jquery/jquery-1.8.3.min.js"%>" type="text/javascript"></script>
+<script src="<%=request.getContextPath() + "/js/jquery/jquery-1.9.0.min.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.validate.min.js"%>" type="text/javascript"></script>
 
 
@@ -16,14 +16,14 @@
 <link href="<%=request.getContextPath() + "/css/jquery/jquery.alerts.css"%>" type="text/css" rel="stylesheet"/>--%>
 <%-- jquery ui --%>
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery-ui-1.9.1.custom.min.css"%>" />
-<script src="<%=request.getContextPath() + "/js/jquery/jquery-ui-1.9.1.custom.min.js"%>" type="text/javascript"></script>
+<script src="<%=request.getContextPath() + "/js/jquery/jquery-ui-1.10.0.custom.min.js"%>" type="text/javascript"></script>
 <%-- jquery grid --%>
 <script src="<%=request.getContextPath() + "/js/jquery/grid.locale-en.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.jqGrid.min.js"%>" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/ui.jqgrid.css"%>"/>
 
 <%-- Block UI --%>
-<script src="<%=request.getContextPath() + "/js/jquery/jquery.blockUI.js"%>" type="text/javascript"></script>
+<%--<script src="<%=request.getContextPath() + "/js/jquery/jquery.blockUI.js"%>" type="text/javascript"></script>--%>
 
 <script>
     $(document).ready(function(){

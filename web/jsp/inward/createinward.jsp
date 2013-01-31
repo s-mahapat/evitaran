@@ -49,13 +49,12 @@
         <style>
             input.error { border: 1px solid red; }
             label.error {
-                background: url('http://dev.jquery.com/view/trunk/plugins/validate/demo/images/unchecked.gif') no-repeat;
+                /*background-color: red;*/
                 padding-left: 0px;
                 margin-left: 5px;
                 font-size: small;
             }
             label.valid {
-                background: url('http://dev.jquery.com/view/trunk/plugins/validate/demo/images/checked.gif') no-repeat;
                 display: block;
                 width: 10px;
                 height: 16px;

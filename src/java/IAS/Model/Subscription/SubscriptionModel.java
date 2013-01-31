@@ -68,8 +68,7 @@ public class SubscriptionModel extends JDSModel {
         }
     }
 
-    public SubscriptionModel() throws SQLException{
-
+    public SubscriptionModel() throws SQLException {
     }
 
     public String addSubscription() throws IllegalAccessException, ParseException,
@@ -843,9 +842,17 @@ public class SubscriptionModel extends JDSModel {
 
         String sql_insert_prl_details = "insert into prl_details(prl_id, invoice_id) values (?, ?)";
         String invoiceNumber = null;
+        boolean isNullRs = false;
         try (PreparedStatement pst = _conn.prepareStatement(sql_insert_prl_details)) {
             try (PreparedStatement st = _conn.prepareStatement(sql)) {
                 try (ResultSet rs = st.executeQuery()) {
+                    if (!rs.isBeforeFirst()) {
+                        isNullRs = true;   // set this if there is atleast 1 record is the resultset, this ensures
+                                           // we do not save PRL for an empty list
+                    } else {
+                        rs.beforeFirst();   // move it back to the starting of the resultset
+                    }
+
                     while (rs.next()) {  // for each record from the query insert into the prl_details table
 
                         invoiceNumber = this.getNextInvoiceNumber(invoiceNumber);
@@ -875,7 +882,7 @@ public class SubscriptionModel extends JDSModel {
                         pst.addBatch();  // add all to the batch
                     }
                     pst.executeBatch();
-                    _conn.commit(); // now save the data since all went well in the transaction
+                    //_conn.commit(); // now save the data since all went well in the transaction
 
                 }
             }
@@ -883,6 +890,11 @@ public class SubscriptionModel extends JDSModel {
             logger.error(ex);
             _conn.rollback();
         } finally {
+            if(isNullRs){
+                _conn.rollback();
+            }else{
+                _conn.commit();
+            }
             _conn.setAutoCommit(true);
             _conn.close();
         }
@@ -945,8 +957,7 @@ public class SubscriptionModel extends JDSModel {
                     }
                 }
             }
-        }
-        finally{
+        } finally {
             _conn.close();
         }
         return _rate;
@@ -973,16 +984,16 @@ public class SubscriptionModel extends JDSModel {
         }
     }
 
-    public String getPaymentsForSubscription(int subscription_id) throws SQLException, ParserConfigurationException, TransformerException{
+    public String getPaymentsForSubscription(int subscription_id) throws SQLException, ParserConfigurationException, TransformerException {
         Connection _conn = this.getConnection();
         String sql = Queries.getQuery("get_payments_for_subscription");
         String xml = null;
-        try(PreparedStatement pst = _conn.prepareStatement(sql)){
+        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setInt(1, subscription_id);
-            try(ResultSet rs = pst.executeQuery()){
+            try (ResultSet rs = pst.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
             }
-        }finally{
+        } finally {
             _conn.close();
             return xml;
         }
