@@ -35,61 +35,61 @@
 
                 $("#subscriberDtlsTabs").tabs({
                     selected:-1,
-                    show: function(event, ui){
-                        if(detail_requested){
-                            selected_index = detail_requested;
-                        }else{
-                            selected_index = ui.index;
-                        }
+                    show: false
+                });
 
-                        $.cookie("the_tab_cookie", selected_index);
-
-                        if(selected_index == 1 && inwardGridCreated==false){
-                            drawInwardTable();
-                            inwardGridCreated=true;
-                        }
-                        else if(selected_index == 2 && subscriptionGridCreated==false){
-                            listSubscription();
-                            subscriptionGridCreated=true;
-                            //$("#subscriptionList").jqGrid('setCaption','').trigger("reloadGrid");
-                        }
-                        else if(selected_index == 3 && invoiceGridCreated==false){
-                            drawInvoiceTable();
-                            invoiceGridCreated=true;
-                        }
-                        /*else if(selected_index == 4 && paymentGridCreated==false){
-                            drawPaymentTable();
-                            paymentGridCreated=true;
-                        }*/
-                        else if(selected_index == 4 && reminderGridCreated == false){
-                            drawReminderTable();
-                            reminderGridCreated = true;
-                        }
-                        else if(selected_index == 5 && missingIssueGridCreated == false){
-                            drawMissingIssuesTable();
-                            missingIssueGridCreated = true;
-                        }
-                        else if(selected_index == 6 && chqReturnGridCreated == false){
-                            drawChequeReturnTable();
-                            chqReturnGridCreated = true;
-                        }
-
-                    }
+                $("#subscriberDtlsTabs").on('tabsactivate', function(event, ui){
+                    var index = ui.newTab.index();
+                    drawTab(index);
+                    $.cookie("the_tab_cookie", index);
+                    detail_requested = null;
                 });
 
 
                 if(detail_requested){
-                    $("#subscriberDtlsTabs" ).tabs( "select", detail_requested );
-                    detail_requested = null;
-                }else{
-                    $("#subscriberDtlsTabs" ).tabs( "select", tab_cookie_id );
+                    $("#subscriberDtlsTabs").tabs("option", "active", 2);
+                    //$("#subscriberDtlsTabs").tabs({ show: false });
+                }else if(tab_cookie_id){
+                    $("#subscriberDtlsTabs" ).tabs( "option", "active", tab_cookie_id );
                 }
-
                 makeReadOnly();
                 makeViewSubscriberReadOnly();
                 subtypeCodeAppend();
 
             });
+
+            function drawTab(selected_index){
+                if(selected_index == 1 && inwardGridCreated==false){
+                    drawInwardTable();
+                    inwardGridCreated=true;
+                }
+                else if(selected_index == 2 && subscriptionGridCreated==false){
+                    listSubscription();
+                    subscriptionGridCreated=true;
+                    //$("#subscriptionList").jqGrid('setCaption','').trigger("reloadGrid");
+                }
+                else if(selected_index == 3 && invoiceGridCreated==false){
+                    drawInvoiceTable();
+                    invoiceGridCreated=true;
+                }
+                /*else if(selected_index == 4 && paymentGridCreated==false){
+                            drawPaymentTable();
+                            paymentGridCreated=true;
+                        }*/
+                else if(selected_index == 4 && reminderGridCreated == false){
+                    drawReminderTable();
+                    reminderGridCreated = true;
+                }
+                else if(selected_index == 5 && missingIssueGridCreated == false){
+                    drawMissingIssuesTable();
+                    missingIssueGridCreated = true;
+                }
+                else if(selected_index == 6 && chqReturnGridCreated == false){
+                    drawChequeReturnTable();
+                    chqReturnGridCreated = true;
+                }
+
+            }
 
             function nextSubscriber(){
                 $("#btnNextSubscriber").click();
