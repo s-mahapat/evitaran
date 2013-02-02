@@ -161,7 +161,9 @@ function _getMediumSelected(){
 function PrintOrEmail(){
     var medium = $("#prlmedium").val();
     if(medium == 1){
-        _sendEmails();
+        if(confirm("Do you want to start sending emails now?")){
+            _sendEmails();
+        }
     }else if(medium == 2 || medium == 3){
         jdsPrint("print/prl/1/" + medium, "Invoice")
     }

@@ -27,11 +27,11 @@ function drawInwardTable(){
                 {name:'amount', index:'amount', width:30, align:'center', xmlmap:'amount'},
                 {name:'receiptNumber', index:'receiptNumber', width:30, align:'center', xmlmap:'receiptNumber'},
                 {name:'receiptDate', index:'receiptDate', width:40, align:'center', xmlmap:'receiptDate'},
-                {name:'currency', index:'currency', width:40, align:'center', xmlmap:'currency'},
+                {name:'currency', index:'currency', width:30, align:'center', xmlmap:'currency'},
                 {name:'ackDate', index:'ackDate', width:30, align:'center', xmlmap:'ackDate'},
                 {name:'chequeDDReturn', index:'chequeDDReturn', width:40, align:'center', xmlmap:'chequeDDReturn', formatter: "checkbox"},
                 {name:'completed', index:'completed', width:30, align:'center', xmlmap:'completed', formatter: "checkbox"},
-                {name:'Action', index:'action', sortable: false, width:30, align:'center',formatter:'showlink'}
+                {name:'Action', index:'action', sortable: false, width:40, align:'center',formatter:'showlink'}
             ],
             xmlReader : {
                 root: "results",
