@@ -36,6 +36,7 @@
                     width: '100%',
                     height: 240,
                     autowidth: true,
+                    shrinkToFit: true,
                     forceFit: true,
                     sortable: true,
                     sortname: 'inwardCreationDate',
@@ -69,7 +70,7 @@
                     },
                     pager: '#pager',
                     rowNum:10,
-                    rowList:[10,20,30],
+                    rowList:[10,30,50],
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
@@ -182,7 +183,7 @@
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Search Criteria</legend>
+                            <%--<legend>Search Criteria</legend>--%>
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
@@ -270,7 +271,7 @@
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Search Result</legend>
+                             <%--<legend>Search Result</legend>--%>
 
                             <table class="datatable" id="inwardTable"></table>
                             <div id="pager"></div>

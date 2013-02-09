@@ -16,7 +16,7 @@
 
             $(document).ready(function() {
                 loadData();
-                jQueryCalendar("paymentDate");
+                jQueryCalendar("paymentDate", true);
                 makeReadOnly();
                 //setEnterKeyAction(ValidateSubscriber);
 

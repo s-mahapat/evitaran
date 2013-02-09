@@ -191,12 +191,17 @@ function jdsConfirm(msg,title,callback){
 }
 
 
-function jQueryCalendar(divId){
+function jQueryCalendar(divId, disablefuturedates){
 
+    var _maxdate = null;
+    if(disablefuturedates == true){
+        _maxdate = 0;
+    }
     var div = "#" + divId;
     $(function() {
         $( div ).datepicker({
             dateFormat: 'dd/mm/yy',
+            maxDate: _maxdate,
             changeMonth: true,
             changeYear: true
         });

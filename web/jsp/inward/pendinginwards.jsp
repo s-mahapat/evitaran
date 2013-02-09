@@ -28,6 +28,7 @@
                     mtype: 'GET',
                     width: '100%',
                     autowidth: true,
+                    shrinkToFit: true,
                     height: 240,
                     forceFit: true,
                     sortable: true,
@@ -202,7 +203,7 @@
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Filter Criteria</legend>
+                            <%--<legend>Filter Criteria</legend>--%>
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
@@ -212,7 +213,7 @@
                                         <label>Purpose:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="1" name="inwardPurpose" id="inwardPurpose">
+                                        <select class="IASComboBoxWide" TABINDEX="1" name="inwardPurpose" id="inwardPurpose" title="Select Inward purpose to filter">
                                             <option value ="NULL">All</option>
                                         </select>
                                     </span>
@@ -254,7 +255,7 @@
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Inwards</legend>
+                            <%--<legend>Inwards</legend>--%>
 
                             <table class="datatable" id="inwardTable"></table>
                             <div id="pager"></div>

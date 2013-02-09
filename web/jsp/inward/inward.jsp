@@ -126,7 +126,7 @@
 <%-- Inward Info Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>
 <fieldset class="subMainFieldSet">
-    <legend>Inward Info</legend>
+    <%--<legend>Inward Info</legend>--%>
 
     <%-- Inward Info left div --%>
     <div class="IASFormLeftDiv">
@@ -319,7 +319,7 @@
 <%-- Inward Details Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>
 <fieldset class="subMainFieldSet">
-    <legend>Inward Details</legend>
+    <%--<legend>Inward Details</legend>--%>
 
     <%-- Inward Info left div --%>
     <div class="IASFormLeftDiv">

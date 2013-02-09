@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.16, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version	5.5.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -121,7 +121,7 @@ CREATE TABLE `cities` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `city_UNIQUE` (`city`)
-) ENGINE=InnoDB AUTO_INCREMENT=3160 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3079 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,7 +247,8 @@ CREATE TABLE `inward` (
   UNIQUE KEY `inward_no_UNIQUE` (`inwardNumber`),
   KEY `city` (`city`),
   KEY `inwardCreationDate` (`inwardCreationDate`),
-  KEY `inwardPurpose` (`inwardPurpose`)
+  KEY `inwardPurpose` (`inwardPurpose`),
+  KEY `inward_completed_index` (`completed`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1736,8 +1737,9 @@ CREATE TABLE `subscription_legacy` (
   `subscription_id` int(11) NOT NULL,
   `legacy` tinyint(4) NOT NULL DEFAULT '1',
   `legacy_amount` float NOT NULL DEFAULT '0',
-  `legacy_balance` float NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `legacy_balance` float unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `subscription_legacy_indx1` (`subscription_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1799,23 +1801,15 @@ CREATE TABLE `subscriptiondetails` (
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_back_issues`
-   BEFORE INSERT
-   ON jds.subscriptiondetails
-   FOR EACH ROW
-BEGIN
-   /*this code set the subscription detail row to inactive if the end year
-   is less than the current year
-   */
-   IF new.endyear < YEAR(CURRENT_TIMESTAMP)
-   THEN
-      SET new.active = FALSE;
-   END IF;
+   BEFORE INSERT   ON jds.subscriptiondetails
+   FOR EACH ROWBEGIN
+   
+   IF new.endyear < YEAR(CURRENT_TIMESTAMP)   THEN
+      SET new.active = FALSE;   END IF;
 
    CALL addBackIssues(new.id,
-                      new.startMonth,
-                      new.startYear,
-                      new.journalGroupID,
-                      new.copies);
+                      new.startMonth,                      new.startYear,
+                      new.journalGroupID,                      new.copies);
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1831,31 +1825,31 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`edit_bil`
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`edit_bil`
+
+
+   BEFORE UPDATE
+
+
+
+   ON jds.subscriptiondetails
 
 
 
-   BEFORE UPDATE
+   FOR EACH ROW
 
-
-
-   ON jds.subscriptiondetails
-
-
-
-   FOR EACH ROW
-
-
+
 
 BEGIN
 
+
 
+
+  begin_level_1:
+
 
-  begin_level_1:
-
-
-
-   BEGIN
+
+   BEGIN
 
 
 
@@ -2191,11 +2185,13 @@ BEGIN
 
 
 
-      
+      
 
+
 
-      
+      
 
+
 
       IF     new.startYear > old.startYear
 
@@ -2249,13 +2245,15 @@ BEGIN
 
 
 
-         
+         
+
+
+
+         
 
 
-         
 
-
-
+
 
 
 
@@ -2339,11 +2337,13 @@ BEGIN
 
 
 
-      
+      
 
+
 
-      
+      
 
+
 
       IF new.startMonth > old.startMonth
 
@@ -3129,4 +3129,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-01-27 21:06:07
+-- Dump completed on 2013-02-10  0:04:45

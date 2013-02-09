@@ -153,7 +153,7 @@
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Search Criteria</legend>
+                            <%--<legend>Search Criteria</legend>--%>
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
@@ -228,7 +228,7 @@
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Search Result</legend>
+                            <%--<legend>Search Result</legend>--%>
 
                             <table class="datatable" id="inwardTable"></table>
                             <div id="pager"></div>

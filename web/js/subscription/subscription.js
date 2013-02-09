@@ -23,9 +23,10 @@ function listSubscription(){
             url:'subscription?oper=getsubscription&subscriberNumber=' + $("#subscriberNumber").val(),
             datatype: 'xml',
             mtype: 'GET',
-            height: 300,
+            height: 255,
             autowidth: true,
             forceFit: true,
+            shrinkToFit: true,
             sortable: false,
             loadonce: true,
             rownumbers: true,
@@ -37,12 +38,12 @@ function listSubscription(){
             subGridOptions: {reloadOnExpand: false},
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Inward Date','Agent','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Currency','Action', 'Legacy'],
+            colNames:['Subscription Id','Inward No','Subscription Date','Agent','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Legacy Balance','Currency','Action', 'Legacy'],
             colModel :[
             {
                 name:'subscriptionID',
                 index:'id',
-                width:25,
+                width:20,
                 align:'center',
                 xmlmap:'id',
                 sortable: false,
@@ -60,7 +61,7 @@ function listSubscription(){
             {
                 name:'subscriptionDate',
                 index:'subscriptionDate',
-                width:20,
+                width:25,
                 align:'center',
                 sortable: true,
                 xmlmap:'subscriptionDate'
@@ -115,6 +116,15 @@ function listSubscription(){
                 xmlmap:'balance'
             },
             {
+                name:'legacy_balance',
+                index:'legacy_balance',
+                width: 15,
+                align:'center',
+                sortable: false,
+                hidden: true,
+                xmlmap:'legacy_balance'
+            },
+            {
                 name:'currency',
                 index:'currency',
                 width:15,
@@ -156,8 +166,8 @@ function listSubscription(){
                 }
             },
             pager: '#pager',
-            rowNum:10,
-            rowList:[10,30,50],
+            rowNum:5,
+            rowList:[5,10,20],
             viewrecords: true,
             gridview: true,
             //caption: '&nbsp;',
@@ -168,6 +178,7 @@ function listSubscription(){
 
                     var subscription_via_agent = jQuery("#subscriptionList").getCell(ids[i], 'Agent');
                     var islegacy = parseInt(jQuery("#subscriptionList").getCell(ids[i], 'legacy'));
+                    var legacy_balance = parseInt(jQuery("#subscriptionList").getCell(ids[i], 'legacy_balance'));
 
                     // if the agent value is not null then show the subscription value, balance and amount as 0
                     if(subscription_via_agent != ""){
@@ -182,6 +193,14 @@ function listSubscription(){
                         jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
                             "balance": 0
                         });
+                    }
+
+                    // if the legacy_balance!=0 then override the balance with legacy_balance
+                    if(legacy_balance > 0){
+                        jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
+                            "balance": legacy_balance
+                        });
+                        jQuery("#subscriptionList").jqGrid('setCell', ids[i], 'balance', "", "", {title: 'The balance displayed here comes from the old DBASE system'});
                     }
 
                     //action = "<a style=\"color:blue\" href=\"#\" onclick=\"getSubscriptionDetails(" + ids[i] + ")\">" + "Details" + "</a>";

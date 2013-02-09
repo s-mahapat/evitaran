@@ -10,21 +10,21 @@
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/subscriber.css"%>"/>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/city.js"%>"></script>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/searchsubscriber.js"%>"></script>        
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/searchsubscriber.js"%>"></script>
         <script type="text/javascript">
             //initally set to false, after the first search the flag is set to true
 
             var isPageLoaded = false;
-            //var isCitySelected = false;          
-                        
+            //var isCitySelected = false;
+
             $(document).ready(function (){
-                
+
                 //load city autocomplete
                 loadCities();
-                
+
                 // search subscriber when ENTER key is pressed
                 setEnterKeyAction(searchSubscriber);
-                
+
                 //});
                 $("#subscriberNumber").focus()
 
@@ -33,8 +33,9 @@
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
-                    height: 230,
+                    height: 235,
                     autowidth: true,
+                    shrinkToFit: true,
                     forceFit: true,
                     sortable: true,
                     sortname: 'subscriberNumber',
@@ -80,7 +81,7 @@
                                 "<a style='color:blue;' href='subscriber?action=display&subscriberNumber=" + subscriberId + "&detail=2" + "'>Subscription</a>";
                             jQuery("#subscriberTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
-                        sessionStorage['searchsubscriber'] = JSON.stringify({  
+                        sessionStorage['searchsubscriber'] = JSON.stringify({
                             page: jQuery("#subscriberTable").jqGrid('getGridParam','page'),
                             rowNum: jQuery("#subscriberTable").jqGrid('getGridParam','rowNum'),
                             totalpages: jQuery("#subscriberTable").jqGrid('getGridParam','lastpage'),
@@ -88,7 +89,7 @@
                             subscriberNumber    : $("#subscriberNumber").val(),
                             subscriberName      : $("#subscriberName").val(),
                             email               : $("#email").val(),
-                            pincode             : $("#pincode").val() 
+                            pincode             : $("#pincode").val()
                         });
 
                     },
@@ -117,8 +118,8 @@
                     });
                     searchSubscriber();
                 }
-                
-                
+
+
             });
 
 
@@ -174,7 +175,7 @@
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Search Criteria</legend>
+                            <%--<legend>Search Criteria</legend>--%>
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
@@ -217,7 +218,7 @@
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="4" name="city" id="city" value=""/>        
+                                        <input class="IASTextBox" TABINDEX="4" name="city" id="city" value=""/>
                                     </span>
                                 </div>
 
@@ -240,7 +241,7 @@
                         </fieldset>
 
                         <fieldset class="subMainFieldSet">
-                            <legend>Subscriber List</legend>
+                            <%--<legend>Subscriber List</legend>--%>
                             <table class="datatable" id="subscriberTable" TABINDEX="8"></table>
                             <div id="pager"></div>
                         </fieldset>
