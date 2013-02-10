@@ -234,7 +234,7 @@
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <input class="IASButton" TABINDEX="10" type="button" value="Search" onclick="searchInwards()"/>
+                                <button class="IASButton SearchButton" TABINDEX="10" onclick="searchInwards()"/>Search</button>
                                 <input class="IASButton" TABINDEX="11" type="reset" value="Reset"/>
                             </div>
 

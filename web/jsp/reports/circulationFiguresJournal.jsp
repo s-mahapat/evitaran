@@ -89,7 +89,7 @@
                     jQuery("#circulationTable").setGridParam({postData:
                             {year            : $("#year").val(),
                              month            : $("#month").val()
-                            
+
                         }});
                     jQuery("#circulationTable").setGridParam({ datatype: "xml" });
                     jQuery("#circulationTable").trigger("clearGridData");
@@ -122,13 +122,13 @@
                                         <label>Year</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="year" id="year">
+                                        <select class="IASComboBoxMandatory" TABINDEX="1" name="year" id="year">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
                                 </div>
                             </div>
- 
+
                             <%-- Search Criteria Right div --%>
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
@@ -136,20 +136,15 @@
                                         <label>Month:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                    <select class="IASComboBox" TABINDEX="4" name="month" id="month">
+                                    <select class="IASComboBoxMandatory" TABINDEX="4" name="month" id="month">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
                                 </div>
                             </div>
-                            <div class="IASFormFieldDiv">
-                                <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="2" type="button" onclick="getReport()" value="Search"/>
-                                </div>
-                                    
-                                <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="reset" value="Reset"/>
-                                </div>
+                            <div class="actionBtnDiv">
+                                <button class="IASButton SearchButton" TABINDEX="2" onclick="getReport()"/>Search</button>
+                                <input class="IASButton" TABINDEX="3" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>
@@ -164,12 +159,12 @@
                             <table class="circulationTable" id="circulationTable"></table>
                             <div id="pager"></div>
                         </fieldset>
-                        
+
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Print Action Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-                        
-                        
+
+
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">

@@ -116,7 +116,7 @@
                     document.getElementById("selall").value = 1;
                 }
             }
-            
+
             // draw the date picker.
             jQueryDatePicker("from","to");
         </script>
@@ -260,11 +260,11 @@
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
-                                </div>                                    
+                                </div>
                             </div>
 
                             <div class="actionBtnDiv">
-                                <input class="IASButton" TABINDEX="6" type="button" value="Search" onclick="searchSubscriber()"/>
+                                <button class="IASButton SearchButton" TABINDEX="6" onclick="searchSubscriber()"/>Search</button>
                                 <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
                             </div>
 

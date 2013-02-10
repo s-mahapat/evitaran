@@ -162,7 +162,7 @@
                                                     <label>Journal Name:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName" onchange="loadIssues()">
+                                                    <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName" onchange="loadIssues()">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
@@ -193,7 +193,7 @@
                                             </div>
                                     </div>
                                     <div class="actionBtnDiv">
-                                        <input class="IASButton" TABINDEX="4" type="button" value="Search" id="btnSearch" name="btnSearch" onclick="search()"/>
+                                        <button class="IASButton SearchButton" TABINDEX="4" id="btnSearch" name="btnSearch" onclick="search()"/>Search</button>
                                     </div>
                             </fieldset>
 

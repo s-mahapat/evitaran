@@ -243,7 +243,7 @@
 
                             <div class="IASFormFieldDiv">
                                 <div class="actionBtnDiv">
-                                    <input class="IASButton" type="button" onclick="searchInwards()" value="Filter"  TABINDEX="4"/>
+                                    <button class="IASButton SearchButton" type="button" onclick="searchInwards()" TABINDEX="4">Filter</button>
                                     <input class="IASButton" type="reset" value="Reset"  TABINDEX="5"/>
                                 </div>
                             </div>

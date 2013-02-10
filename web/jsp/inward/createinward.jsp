@@ -16,7 +16,6 @@
 
             $(document).ready(function() {
                 loadData();
-                jQueryCalendar("paymentDate", true);
                 makeReadOnly();
                 //setEnterKeyAction(ValidateSubscriber);
 
@@ -43,6 +42,7 @@
                         }
                     }
                 });
+                jQueryCalendar("paymentDate", true);
             });
             var myArr = new Array;
         </script>

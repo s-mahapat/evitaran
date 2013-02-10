@@ -183,14 +183,9 @@
                                 </div>
 
                             </div>
-                            <div class="IASFormFieldDiv">
-                                <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="button" value="Search" onclick="getStatements()"/>
-                                </div>
-
-                                <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
-                                </div>
+                            <div class="actionBtnDiv">
+                                <button class="IASButton SearchButton" TABINDEX="6" onclick="getStatements()"/>Search</button>
+                                <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>

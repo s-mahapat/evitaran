@@ -166,7 +166,7 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="submit" onclick="reLoadPage()" value="Search"/>
+                                    <button class="IASButton SearchButton" TABINDEX="3" onclick="reLoadPage()" value="Search"/>Search</button>
                                 </div>
                             </div>
 

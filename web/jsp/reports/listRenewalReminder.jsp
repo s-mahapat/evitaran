@@ -16,7 +16,7 @@
             var selectedId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
-            
+
             $(document).ready(function(){
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
@@ -44,9 +44,9 @@
                       {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
                       {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
                       {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
-                      {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},                       
+                      {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},
                       {name:'reminderType', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderType'},
-                      {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},   
+                      {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},
                       {name:'emailId', index:'emailId', width:50, align:'center', xmlmap:'emailId'}
                     ],
                     xmlReader : {
@@ -94,10 +94,10 @@
                         jQuery("#remTable").setGridParam({ datatype: "xml" });
                         jQuery("#remTable").trigger("clearGridData");
                         jQuery("#remTable").trigger("reloadGrid");
-                   
+
             }
 
-            
+
             // draw the date picker.
             jQueryDatePicker("from","to");
         </script>
@@ -124,13 +124,13 @@
                                         <label>Reminder Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                     <select class="IASComboBox" TABINDEX="6" name="remType" id="remType">
+                                     <select class="IASComboBoxWide" TABINDEX="6" name="remType" id="remType">
                                         <option value ="G">Gentle Reminder</option>
                                         <option value ="S">Strong Reminder</option>
                                         <option value ="S">Harsh Reminder</option>
                                      </select>
                                     </span>
-                                </div>                            
+                                </div>
                             </div>
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
@@ -149,14 +149,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="IASFormFieldDiv">
-                                <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="button" onclick="getList()" value="Search"/>
-                                </div>
-
-                                <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
-                                </div>
+                            <div class="actionBtnDiv">
+                                <button class="IASButton SearchButton" TABINDEX="3" onclick="getList()" value="Search"/>Search</button>
+                                <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                             </div>
                         </fieldset>
                         <%-----------------------------------------------------------------------------------------------------%>

@@ -215,7 +215,7 @@
 
                             <div class="IASFormFieldDiv">
                                 <div class="actionBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="button" value="Search" onclick="searchInwards()"/>
+                                    <button class="IASButton SearchButton" TABINDEX="6" type="button" value="Search" onclick="searchInwards()">Search</button>
                                     <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
                                 </div>
                             </div>

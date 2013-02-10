@@ -16,11 +16,11 @@
             var selectedId = 0;
             //initally set to false, after the first search the flag is set to true
             var isPageLoaded = false;
-            
+
             $(document).ready(function(){
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
-             });
+            });
 
             $(function(){
 
@@ -83,22 +83,22 @@
 
             // called when the search button is clicked
             function getList(){
-                        isPageLoaded = true;
+                isPageLoaded = true;
 
-                        jQuery("#subTypeTable").setGridParam({postData:
-                                {subtype             : $("#subscriberType").val(),
-                                journalName         : $("#journalName").val(),
-                                from                : $("#from").val(),
-                                to                  : $("#to").val(),
-                                action              : "listInvoice"
-                            }});
-                        jQuery("#subTypeTable").setGridParam({ datatype: "xml" });
-                        jQuery("#subTypeTable").trigger("clearGridData");
-                        jQuery("#subTypeTable").trigger("reloadGrid");
-                   
+                jQuery("#subTypeTable").setGridParam({postData:
+                        {subtype             : $("#subscriberType").val(),
+                        journalName         : $("#journalName").val(),
+                        from                : $("#from").val(),
+                        to                  : $("#to").val(),
+                        action              : "listInvoice"
+                    }});
+                jQuery("#subTypeTable").setGridParam({ datatype: "xml" });
+                jQuery("#subTypeTable").trigger("clearGridData");
+                jQuery("#subTypeTable").trigger("reloadGrid");
+
             }
 
-            
+
             // draw the date picker.
             jQueryDatePicker("from","to");
         </script>
@@ -120,7 +120,7 @@
 
                             <%-- Search Criteria left div --%>
                             <div class="IASFormLeftDiv">
-                               <div class="IASFormFieldDiv">
+                                <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Subscriber Type</label>
                                     </span>
@@ -139,7 +139,7 @@
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
-                                </div>                                
+                                </div>
                             </div>
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
@@ -158,14 +158,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="IASFormFieldDiv">
-                                <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="button" onclick="getList()" value="Search"/>
-                                </div>
-
-                                <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
-                                </div>
+                            <div class="actionBtnDiv">
+                                <button class="IASButton SearchButton" TABINDEX="3" onclick="getList()" value="Search"/>Search</button>
+                                <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                             </div>
                         </fieldset>
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -176,7 +171,7 @@
                             <table class="datatable" id="subTypeTable"></table>
                             <div id="pager"></div>
                         </fieldset>
-                         <fieldset class="subMainFieldSet">
+                        <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>

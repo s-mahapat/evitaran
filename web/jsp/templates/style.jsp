@@ -9,14 +9,15 @@
 <%-- jquery Core --%>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery-1.9.0.min.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.validate.min.js"%>" type="text/javascript"></script>
-
+<script src="<%=request.getContextPath() + "/js/jquery/jquery-ui-1.10.0.custom.min.js"%>" type="text/javascript"></script>
 
 <%-- jquery alerts --%>
 <%--<script src="<%=request.getContextPath() + "/js/jquery/jquery.alerts.js"%>" type="text/javascript"></script>
 <link href="<%=request.getContextPath() + "/css/jquery/jquery.alerts.css"%>" type="text/css" rel="stylesheet"/>--%>
 <%-- jquery ui --%>
-<link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery-ui-1.9.1.custom.min.css"%>" />
-<script src="<%=request.getContextPath() + "/js/jquery/jquery-ui-1.10.0.custom.min.js"%>" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery.ui.theme.css"%>" />
+<link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery-ui.css"%>" />
+
 <%-- jquery grid --%>
 <script src="<%=request.getContextPath() + "/js/jquery/grid.locale-en.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.jqGrid.min.js"%>" type="text/javascript"></script>
@@ -28,6 +29,8 @@
 <script>
     $(document).ready(function(){
         $("input:submit, input:button, input:reset, button", "#bodyContainer,.subMainDiv" ).button();
+        $(".SaveButton").button({ icons: { primary: "ui-icon-disk"} });
+        $(".SearchButton").button({ icons: { primary: "ui-icon-search"} })
         $("input:reset").on("click", function(){
             resetGrid(".datatable");
         });

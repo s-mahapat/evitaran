@@ -16,36 +16,22 @@
 
         $(function() {
             $( "#btnSearchSubscriber" )
-            .button()
+            .button({ icons: { primary: "ui-icon-circle-zoomin"} })
             .click(function() {
                 validateSearchSubscriber();
                 return false;
             })
-            .next()
-            .button("disable")
+        });
+
+        //$( "#btnSaveInward" ).button({ icons: { primary: "ui-icon-circle-zoomin"} });
+
+        $(function() {
+            $( "#btnResetSubscriber" )
+            .button({ icons: { primary: "ui-icon-trash"} })
             .click(function() {
                 clearSubscriber();
                 return false;
             })
-            .parent()
-            .buttonset();
-        });
-
-        $(function() {
-            $( "#btnSearchSubscription" )
-            .button("disable")
-            .click(function() {
-                validateSearchSubscription();
-                return false;
-            })
-            .next()
-            .button("disable")
-            .click(function() {
-                clearSubscription();
-                return false;
-            })
-            .parent()
-            .buttonset();
         });
 
         $(function() {
@@ -108,7 +94,6 @@
                 $("#btnResetUE").button("disable");
             }
         });
-
         /*$("#subscriberId").bind( "autocompleteselect", function(event, ui) {
             alert("change");
             if(!ui.item){
@@ -507,7 +492,7 @@
 <%-----------------------------------------------------------------------------------------------------%>
 <fieldset class="subMainFieldSet">
     <div class="actionBtnDiv">
-        <input onclick="setActionValue('save')" TABINDEX="29" class="IASButton" type="submit" value="Save" id="btnSaveInward" name="submitAction"/>
+        <button onclick="setActionValue('save')" TABINDEX="29" class="IASButton SaveButton" id="btnSaveInward" name="submitAction"/>Save</button>
         <input onclick="location.href='main?action=createinward'" TABINDEX="30" class="IASButton" type="button" value="New Inward" id="btnNewInward" name="btnNewInward"/>
         <input onclick="setActionValue('edit')" TABINDEX="31" class="IASButton" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
         <input onclick="setActionValue('sendAck')" TABINDEX="32" class="IASButton" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>

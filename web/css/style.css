@@ -8,9 +8,9 @@ root {
 body{
     margin:0px;
     padding:0px;
-    background-color: #F6F6F6;
+    /*background-color: #F6F6F6;*/
     font-family: arial,sans-serif;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 A:link {
@@ -152,7 +152,7 @@ A:active {
 }
 
 .MainDiv{
-    background-color: #F6F6F6;
+    /*background-color: #F6F6F6;*/
     padding: 2px 2px;
     height: auto;
 }
@@ -162,14 +162,24 @@ A:active {
     height: auto;
 }
 
+fieldset {
+    padding: 3px;
+    text-shadow: 0px 1px 0px #fff;
+    outline: none;
+    border: 1px solid #ababab;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    margin: 2px;
+}
 
 .MainFieldset{
-    background-color: rgb(232,245,248);
-    padding: 5px;
+    /*background-color: rgb(232,245,248);*/
+    padding: 3px;
 }
 
 .MainFieldset legend{
-    font-size: medium;
+    font-size: small;
     font-weight: bold;
 }
 
@@ -181,8 +191,8 @@ A:active {
 }
 
 .subMainFieldSet legend{
-    font-weight: bold;
-    font-size: small;
+    font-weight: 600;
+    font-size: 11px;
 }
 
 
@@ -266,7 +276,7 @@ A:active {
 
 .IASDateTextBox{
     width: 70px;
-    background-color: #EEE;
+    background-color: #F6F6F6
 }
 
 .IASDateTextBoxMandatory{
@@ -275,11 +285,27 @@ A:active {
 }
 
 .IASButton{
-    font-size: 0.9em;
+    font-size: 1em;
     color: black;
     text-transform: capitalize;
     margin: 0px 10px;
     z-index: 0;
+    height: 25px;
+    moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    /*padding: 5px;*/
+    background: -moz-linear-gradient(0% 100% 90deg, #D7D7D7, #F6F6F6) repeat scroll 0 0 transparent;
+    border-color: #ABABAB;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.SaveButton{
+    color: blue;
+}
+
+.SearchButton{
+    color: blue;
 }
 
 .JDSFileInput{
@@ -297,26 +323,23 @@ A:active {
 }
 
 .IASComboBoxWideMandatory{
-    font-size: inherit;
     width: 220px;
     background-color: antiquewhite;
 }
 
 .IASComboBoxMediumMandatory{
-    font-size: inherit;
     width: 160px;
     background-color: antiquewhite;
 }
 
 .IASComboBoxSmallMandatory{
-    font-size: inherit;
     width: 100px;
     background-color: antiquewhite;
 }
 
 .IASComboBoxMandatory{
-    /*font-family: "Cambria",serif;*/
-    font-size: inherit;
+    /*font-family: "Cambria",serif;
+    font-size: inherit;*/
     background-color: antiquewhite;
 }
 
@@ -345,7 +368,7 @@ A:active {
 }
 
 .IASFormFieldDiv{
-    /*clear: both;*/
+    clear: both;
     margin: 4px;
     float: left;
     width: 98%;
@@ -509,6 +532,7 @@ A:active {
     text-align: center;
     width: 90%;
     margin-right: 10%;
+    margin-bottom: 10px;
     float: left;
 }
 
@@ -662,4 +686,35 @@ A:active {
     overflow-x: hidden;
     /* add padding to account for vertical scrollbar */
     padding-right: 20px;
+}
+
+
+div.uploader,
+.ui-autocomplete-input,
+.wijmo-wijtextbox.ui-widget,
+input.text,
+input.email,
+input.password,
+textarea.uniform,
+textarea,
+select,
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='file'] {
+    padding: 2px;
+    text-shadow: 0px 1px 0px #fff;
+    outline: none;
+    border: 1px solid #ababab;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    /*background-color: #f8f8f8;
+    background: white;*/
+    filter: expression("progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8',endColorstr='white')");
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8',endColorstr='white')";
+    /*background: -moz-linear-gradient(0% 100% 90deg, white, #f8f8f8);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(white));
+    background: -o-linear-gradient(0% 100% 90deg, white, #f8f8f8);
+    background: -ms-linear-gradient(0% 100% 90deg, white, #f8f8f8);*/
 }

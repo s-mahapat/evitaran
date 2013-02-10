@@ -96,7 +96,7 @@
 
             });
 
-            
+
             function search(){
                 //check if search criteria is initial, raise alert else enable search for Records
                 if ($("#year").val() == 0) {
@@ -141,7 +141,7 @@
                 requestURL = "/JDS/CMasterData?md=getissues&mdvalue=" +  $("#journalName").val();
                 jdsAppend(requestURL,"issueNumber","issue");
             }
-            
+
             // draw the date picker.
             jQueryDatePicker("from","to");
 
@@ -189,7 +189,7 @@
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
-                                            </div>                                            
+                                            </div>
                                         </div>
                                     </div>
                                     <%-- Search Criteria right div --%>
@@ -203,7 +203,7 @@
                                                     <option value="0" selected>Select</option>
                                                 </select>
                                             </span>
-                                        </div> 
+                                        </div>
                                         <div class="IASFormFieldDiv">
                                             <span class="IASFormDivSpanLabel">
                                                 <label>Date Range:</label>
@@ -221,8 +221,8 @@
                                         </div>
                                     </div>
                                     <div class="actionBtnDiv">
-                                        <input class="IASButton" TABINDEX="5" type="button" value="Search" id="btnSearch" name="btnSearch" onclick="search()"/>
-                                    </div>                                    
+                                        <button class="IASButton SearchButton" TABINDEX="5" id="btnSearch" name="btnSearch" onclick="search()"/>Search</button>
+                                    </div>
                             </fieldset>
 
                             <%-----------------------------------------------------------------------------------------------------%>
@@ -234,19 +234,15 @@
                                 <table class="datatable" id="bilTable"></table>
                                 <div id="pager"></div>
                             </fieldset>
-                            
+
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Actions Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>
 
                             <fieldset class="subMainFieldSet">
-                                <div class="IASFormFieldDiv">
-                                    <div class="printBtnDiv">
-                                        <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
-                                    </div>
-                                    <div id="resetBtnDiv">
-                                        <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
-                                    </div>
+                                <div class="actionBtnDiv">
+                                    <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
                                 </div>
                             </fieldset>
                     </fieldset>

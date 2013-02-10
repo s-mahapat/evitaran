@@ -21,7 +21,7 @@
 
             $(document).ready(function(){
                 jQuery("#btnPrintSend").attr("disabled",true);
-             });
+            });
 
             $(function(){
 
@@ -39,17 +39,17 @@
                     emptyrecords: "No Reminders Found",
                     loadtext: "Loading...",
                     colNames:['Subscription Id','Subscriber Type','Subscriber Number','Subscriber Name',
-                            'Balance','reminder Type','Reminder date','Email'],
-                        colModel :[
-                          {name:'subId', index:'subId', width:10, align:'center', xmlmap:'subId'},
-                          {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
-                          {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
-                          {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
-                          {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},
-                          {name:'reminderType', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderType'},
-                          {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},
-                          {name:'email', index:'email', width:50, align:'center', xmlmap:'email'}
-                        ],
+                        'Balance','reminder Type','Reminder date','Email'],
+                    colModel :[
+                        {name:'subId', index:'subId', width:10, align:'center', xmlmap:'subId'},
+                        {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
+                        {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
+                        {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
+                        {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},
+                        {name:'reminderType', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderType'},
+                        {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},
+                        {name:'email', index:'email', width:50, align:'center', xmlmap:'email'}
+                    ],
                     xmlReader : {
                         root: "results",
                         row: "row",
@@ -86,19 +86,19 @@
                     alert("Select Reminder Type and Date Range");
                 }
                 else {
-                        isPageLoaded = true;
-                        jQuery("#reminderTable").setGridParam({postData:
-                                {
-                                reminderType            : $("#reminderType").val(),
-                                to                      : $("#to").val(),
-                                from                      : $("#from").val(),
-                                action                  : "search"
-                            }});
-                        jQuery("#reminderTable").setGridParam({ datatype: "xml" });
-                        jQuery("#reminderTable").trigger("clearGridData");
-                        jQuery("#reminderTable").trigger("reloadGrid");
-                        jQuery("#btnPrintSend").attr("disabled",false);
-                    }
+                    isPageLoaded = true;
+                    jQuery("#reminderTable").setGridParam({postData:
+                            {
+                            reminderType            : $("#reminderType").val(),
+                            to                      : $("#to").val(),
+                            from                      : $("#from").val(),
+                            action                  : "search"
+                        }});
+                    jQuery("#reminderTable").setGridParam({ datatype: "xml" });
+                    jQuery("#reminderTable").trigger("clearGridData");
+                    jQuery("#reminderTable").trigger("reloadGrid");
+                    jQuery("#btnPrintSend").attr("disabled",false);
+                }
             }
 
             function resendReminders(){
@@ -117,13 +117,13 @@
                     emailReminders();
                 }
                 else {
-                        isPageLoaded = true;
-                        $("#reminderFormId1").submit();
-                        jQuery("#btnPrintSend").attr("disabled",false);
-                    }
+                    isPageLoaded = true;
+                    $("#reminderFormId1").submit();
+                    jQuery("#btnPrintSend").attr("disabled",false);
+                }
             }
 
-// draw the date picker.
+            // draw the date picker.
             jQueryDatePicker("from","to");
         </script>
 
@@ -141,68 +141,63 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-                     <fieldset class="subMainFieldSet">
-                         <legend>Selection Criteria - Reminders</legend>
-                        <div class="IASFormLeftDiv">
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Reminder Type</label>
-                                </span>
-                                <span class="IASFormDivSpanInputBoxLessMargin">
-                                 <select class="IASComboBoxWideMandatory" TABINDEX="1" name="reminderType" id="reminderType">
-                                    <option value ="1">Type 1 Reminder - Gentle</option>
-                                    <option value ="2">Type 2 Reminder - Strong</option>
-                                    <option value ="3">Type 3 Reminder - Harsh</option>
-                                 </select>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="IASFormRightDiv">
-                            <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Reminder Date:</label>
-                                </span>
-                                <div class="dateDiv"></div>
-                                <span class="IASFormDivSpanInputBox">
-                                    <input class="IASDateTextBox" TABINDEX="2" readonly size="10" type="text" id="from" name="from"/>
-                                </span>
-                                <span class="IASFormDivSpanForHyphen">
-                                    <label> to </label>
-                                </span>
-                                <span class="IASFormDivSpanInputBox">
-                                    <input class="IASDateTextBox" TABINDEX="3" readonly size="10" type="text" id="to" name="to"/>
-                                </span>
-                            </div>
-                        </div>
-                      </fieldset>
                         <fieldset class="subMainFieldSet">
-                            <legend>Actions - Display</legend>
+                            <legend>Selection Criteria - Reminders</legend>
+                            <div class="IASFormLeftDiv">
                                 <div class="IASFormFieldDiv">
-                                    <div id="searchBtnDiv">
-                                         <input class="IASButton" TABINDEX="4" type="button" value="Display" id="btnSearch" name="btnSearch" onclick="search()"/>
-                                    </div>
-                                 </div>
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Reminder Type</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBoxLessMargin">
+                                        <select class="IASComboBoxWideMandatory" TABINDEX="1" name="reminderType" id="reminderType">
+                                            <option value ="1">Type 1 Reminder - Gentle</option>
+                                            <option value ="2">Type 2 Reminder - Strong</option>
+                                            <option value ="3">Type 3 Reminder - Harsh</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="IASFormRightDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Reminder Date:</label>
+                                    </span>
+                                    <div class="dateDiv"></div>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDateTextBox" TABINDEX="2" readonly size="10" type="text" id="from" name="from"/>
+                                    </span>
+                                    <span class="IASFormDivSpanForHyphen">
+                                        <label> to </label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASDateTextBox" TABINDEX="3" readonly size="10" type="text" id="to" name="to"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="actionBtnDiv">
+                                <input class="IASButton" TABINDEX="4" type="button" value="Display" id="btnSearch" name="btnSearch" onclick="search()"/>
+                            </div>
                         </fieldset>
+
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-                       <fieldset class="subMainFieldSet">
-                            <legend>Result</legend>
+                        <fieldset class="subMainFieldSet">
                             <table class="reminderTable" id="reminderTable"></table>
                             <div id="pager"></div>
                         </fieldset>
                         <fieldset class="subMainFieldSet">
-                           <div class="IASFormFieldDiv">
-                               <div id="printMedium">
+                            <div class="IASFormFieldDiv">
+                                <div id="printMedium">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Medium</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                     <select class="IASComboBox" TABINDEX="5" name="medium" id="medium">
-                                        <option value ="E">Email Only</option>
-                                        <option value ="P">Print Only</option>
-                                        <option value ="A">Print All</option>
-                                     </select>
+                                        <select class="IASComboBox" TABINDEX="5" name="medium" id="medium">
+                                            <option value ="E">Email Only</option>
+                                            <option value ="P">Print Only</option>
+                                            <option value ="A">Print All</option>
+                                        </select>
                                     </span>
                                 </div>
                                 <div id="printSendBtnDiv">
