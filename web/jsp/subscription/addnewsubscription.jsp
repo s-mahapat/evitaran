@@ -123,7 +123,7 @@
 
                             <div class="actionBtnDiv">
                                 <input type="hidden" name="action" id="action"/>
-                                <input onclick="saveSubscription()" class="IASButton" TABINDEX="101" type="button" value="Save" id="btnSaveSubscription" name="btnSubmitAction"/>
+                                <button onclick="saveSubscription()" class="IASButton SaveButton" TABINDEX="101" type="button" value="Save" id="btnSaveSubscription" name="btnSubmitAction"/>Save</button>
                             </div>
 
                         </fieldset>

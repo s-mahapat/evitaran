@@ -60,7 +60,10 @@ function drawPaymentTable(inward_amount){
             align:'center',
             xmlmap:'invoiceAmount',
             formatter: "currency",
-            formatoptions: {decimalPlaces: 1, thousandsSeparator: ""}
+            formatoptions: {
+                decimalPlaces: 1,
+                thousandsSeparator: ""
+            }
         },
         {
             name:'amountPaid',
@@ -69,7 +72,10 @@ function drawPaymentTable(inward_amount){
             align:'center',
             xmlmap:'amountPaid',
             formatter: "currency",
-            formatoptions: {decimalPlaces: 1, thousandsSeparator: ""}
+            formatoptions: {
+                decimalPlaces: 1,
+                thousandsSeparator: ""
+            }
         },
         {
             name:'payment',
@@ -117,7 +123,10 @@ function drawPaymentTable(inward_amount){
             align:'center',
             xmlmap:'balance',
             formatter: "currency",
-            formatoptions: {decimalPlaces: 1, thousandsSeparator: ""}
+            formatoptions: {
+                decimalPlaces: 1,
+                thousandsSeparator: ""
+            }
         },
         {
             name:'remarks',
@@ -187,7 +196,6 @@ function drawPaymentTable(inward_amount){
         'title':'Click on cell to edit'
     });
 }
-
 
 function validateCell(value, colname, inward_amount){
 

@@ -14,7 +14,7 @@
             $(document).ready(function(){
                 makeReadOnly();
                 makeInwardReadOnly();
-            })
+            });
         </script>
     </head>
     <body>

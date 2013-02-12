@@ -42,23 +42,6 @@
             .buttonset();
         });
 
-        $(function(){
-            //$("#agentName")
-            // disable the search subscriber and reset button
-            if(!isEmptyValue($("#agentName").val())){
-                $("#btnSearchSubscriber").button("disable");
-                $("#btnResetSubscriber").button("disable");
-                $("#btnUE").button("enable");
-                $("#btnResetUE").button("enable");
-            }
-            else {
-                //$("#btnSearchSubscriber").button("enable");
-                $("#btnResetSubscriber").button("enable");
-                $("#btnUE").button("disable");
-                $("#btnResetUE").button("disable");
-            }
-        });
-
 
         $("#inwardPurpose").change(function(){
             var inward_purpose = $("#inwardPurpose").val();

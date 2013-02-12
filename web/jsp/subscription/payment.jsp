@@ -19,7 +19,7 @@
                 window.onbeforeunload = function () {
                     if (warnMessage != null) return warnMessage;
                 }
-                $('input:submit').click(function(e) {
+                $('#savepayments').click(function(e) {
                     warnMessage = null;
                 });
                 var inward_amount = ${inwardFormBean.amount};
@@ -94,7 +94,7 @@
                         </fieldset>
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv">
-                                <input class="IASButton" TABINDEX="1" type="submit" value="Save"/>
+                                <button class="IASButton SaveButton" id="savepayments" TABINDEX="1" type="submit" value="Save"/>Save</button>
                             </div>
                         </fieldset>
                     </fieldset>
