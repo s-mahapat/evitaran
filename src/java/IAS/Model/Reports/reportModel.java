@@ -1257,6 +1257,7 @@ public class reportModel extends JDSModel {
 
     public String subscriptionFigures() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
 
+        String year = request.getParameter("year");
         // Add the results element
         String xml = null;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

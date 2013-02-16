@@ -11,7 +11,7 @@
         <title>Subscription Figures</title>
         <script type="text/javascript">
             $(document).ready(function() {
-                //jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
                 $("#printReportBtn").button("disable");
             });
         </script>
@@ -70,7 +70,8 @@
 
                     isPageLoaded = true;
                     jQuery("#subscriptionFigTable").setGridParam({postData:
-                            {action                  : "subscriptionFigures"
+                            {action         : "subscriptionFigures",
+                            year            : $("#year").val()
                         }});
                     jQuery("#subscriptionFigTable").setGridParam({ datatype: "xml" });
                     jQuery("#subscriptionFigTable").trigger("clearGridData");
@@ -95,8 +96,23 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
                             <legend>Search Criteria</legend>
+                            <div class="IASFormLeftDiv">
 
-                            <%-- Search Criteria left div --%>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Year</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <select class="IASComboBoxSmallMandatory" TABINDEX="1" name="year" id="year">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="IASFormRightDiv">
+
+                            </div>
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
