@@ -9,8 +9,9 @@ function validateSearchJournal()
         alert("Please select journal group");
         return false;
     }
-    else
+    else {
         return true;
+    }
 }
 
 function printReport(){

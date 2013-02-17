@@ -62,6 +62,7 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
+                    editurl:"<%=request.getContextPath() + "/reports?action=printJournalGroup"%>",
                     gridComplete: function() {
                         var ids = jQuery("#journalTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
@@ -81,8 +82,10 @@
 
             // called when the search button is clicked
             function searchJournal(){
-                if(validateSearchJournal() == true)
-                    {
+                if($("#journalGroupName").val() == 0) {
+                    alert("Please select journal group");
+                }
+                else {
                         isPageLoaded = true;
 
                         jQuery("#journalTable").setGridParam({postData:
@@ -93,6 +96,7 @@
                         jQuery("#journalTable").trigger("reloadGrid");
                     }
                 }
+
         </script>
     </head>
     <body>
@@ -127,7 +131,8 @@
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanInputBox">
-                                        <button class="IASButton SearchButton" TABINDEX="3" onclick="searchJournal()" value="Search">Search</button>
+                                        <button class="IASButton SearchButton" type="button" TABINDEX="3" onclick="searchJournal()" value="Search">Search</button>
+                                        <%--<button class="IASButton" type="button" TABINDEX="3" onclick="searchJournal()" value="Search">Search</button>--%>
                                     </span>
                                 </div>
                             </div>
