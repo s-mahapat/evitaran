@@ -2090,6 +2090,7 @@ CREATE TABLE `subscription_legacy` (
   `legacy_amount` float NOT NULL DEFAULT '0',
   `legacy_balance` float unsigned NOT NULL DEFAULT '0',
   `legacy_proforma_invoice_no` char(10) DEFAULT NULL,
+  `legacy_proforma_invoice_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `subscription_legacy_indx1` (`subscription_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -10169,4 +10170,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-17 12:41:51
+-- Dump completed on 2013-02-17 16:27:39
