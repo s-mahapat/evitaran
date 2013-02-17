@@ -159,7 +159,7 @@
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" TABINDEX="3" onclick="getList()" value="Search"/>Search</button>
+                                <button class="IASButton SearchButton" type="button" TABINDEX="3" onclick="getList()" value="Search"/>Search</button>
                                 <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
                             </div>
                         </fieldset>

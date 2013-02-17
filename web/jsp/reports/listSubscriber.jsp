@@ -264,7 +264,7 @@
                             </div>
 
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" TABINDEX="6" onclick="searchSubscriber()"/>Search</button>
+                                <button class="IASButton SearchButton" type="button" TABINDEX="6" type="button" onclick="searchSubscriber()"/>Search</button>
                                 <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
                             </div>
 
