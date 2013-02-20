@@ -1026,6 +1026,8 @@ public class reportModel extends JDSModel {
         stGet.setString(paramIndex, request.getParameter("journalName"));
         stGet.setString(++paramIndex, request.getParameter("issue"));
         stGet.setString(++paramIndex, request.getParameter("year"));
+        stGet.setString(++paramIndex, request.getParameter("volume"));
+        stGet.setString(++paramIndex, request.getParameter("month"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
       }
@@ -1305,28 +1307,28 @@ public class reportModel extends JDSModel {
                 String sqlSubFigures = null;
                 sqlSubFigures = Queries.getQuery("subscription_Figures");
                 Calendar cal = Calendar.getInstance();
-                int currYear = cal.get(Calendar.YEAR);                    
+                int currYear = cal.get(Calendar.YEAR);
                 String date = "";
                 if (Integer.parseInt(year) == currYear) {
-                    
+
                     sqlSubFigures += " and curdate()";
-                    
-                
+
+
                 }
                 else{
-                    
+
                     date = year + "-12-31";
-                    date = "date_format(" + '"' + date + '"' + ",'%y/%m/%d')"; 
+                    date = "date_format(" + '"' + date + '"' + ",'%y/%m/%d')";
                     sqlSubFigures += " and " + date;
                 }
                 sqlSubFigures += " BETWEEN date_format( concat(subscriptiondetails.startYear, '-', subscriptiondetails.startMonth, '-', '1'), '%Y/%m/%d')";
                 sqlSubFigures += " AND LAST_DAY(concat(subscriptiondetails.endYear, '-', subscriptiondetails.endMonth, '-', '1'))";
                 sqlSubFigures += " GROUP BY journals.journalCode AND subscriber_type.subtypecode";
-                
+
                 PreparedStatement stGetFigures = this.conn.prepareStatement(sqlSubFigures);
                 stGetFigures.setString(paramIndex, journalCode);
                 stGetFigures.setString(++paramIndex, subtypecode);
-                
+
                 ResultSet rs3 = db.executeQueryPreparedStatement(stGetFigures);
                 int subscriberCount = 0;
                 int copies = 0;

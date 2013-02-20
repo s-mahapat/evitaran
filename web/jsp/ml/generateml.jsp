@@ -183,7 +183,7 @@
                 requestURL = "/JDS/CMasterData?md=getissues&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#volume").val();
                 jdsAppend(requestURL,"issueNumber","issue");
             }
-            
+
              function loadvolumes(){
                 $("#volume").empty();
                 //text("");
@@ -255,19 +255,19 @@
                                             <label>Year:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBox" TABINDEX="3" name="year" id="year" onchange="loadvolumes()">                                                
+                                            <select class="IASComboBox" TABINDEX="2" name="year" id="year" onchange="loadvolumes()">
                                             </select>
                                         </span>
-                                    </div>                                
+                                    </div>
                                     <div class="IASFormFieldDiv">
                                         <span class="IASFormDivSpanLabel">
                                             <label>Month:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBox" TABINDEX="3" name="month" id="month">                                                
+                                            <select class="IASComboBox" TABINDEX="3" name="month" id="month">
                                             </select>
                                         </span>
-                                    </div>   
+                                    </div>
                                 </div>
                             </div>
                             <%-- Search Criteria right div --%>
@@ -288,7 +288,7 @@
                                             <label>Issue:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBox" TABINDEX="2" name="issue" id="issue">
+                                            <select class="IASComboBox" TABINDEX="5" name="issue" id="issue">
                                                 <option value="0">Select</option>
                                             </select>
                                         </span>
@@ -304,8 +304,8 @@
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <input class="IASButton" TABINDEX="5" type="button" value="Check" id="btnCheck" name="btnCheck" onclick="checkMl()"/>
-                                <input class="IASButton" TABINDEX="5" type="button" value="Generate Mailing List" id="btnAdd" name="btnAddRate" onclick="generate()"/>
+                                <input class="IASButton" TABINDEX="6" type="button" value="Check" id="btnCheck" name="btnCheck" onclick="checkMl()"/>
+                                <input class="IASButton" TABINDEX="7" type="button" value="Generate Mailing List" id="btnAdd" name="btnAddRate" onclick="generate()"/>
                             </div>
 
                         </fieldset>
