@@ -1493,9 +1493,9 @@ String xml = null;
 
         String sql = Queries.getQuery("list_reminders_subscriber");
 
-        if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
-            sql += " and reminders.reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
-        }
+        //if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
+          //  sql += " and reminders.reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+        //}
 
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
