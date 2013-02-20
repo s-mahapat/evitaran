@@ -96,6 +96,7 @@
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation Figures for journals</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=subscriptionFigures"%>">Subscription Figures</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listInwards"%>">Inwards</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=outstandingbill"%>">Outstanding Bill</a></li>
                     </ul>
                 </li>
             </ul>

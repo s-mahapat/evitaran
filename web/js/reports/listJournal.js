@@ -4,8 +4,7 @@
  */
 function validateSearchJournal()
 {
-    if (document.getElementById("journalGroupName").value == 0
-    ){
+    if (document.getElementById("journalGroupName").value == 0){
         alert("Please select journal group");
         return false;
     }

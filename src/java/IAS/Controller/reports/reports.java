@@ -302,6 +302,21 @@ public class reports extends JDSController {
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printXML";
             }
+     /*-----------------------outstaning Bill --------------------------*/       
+            else if(action.equalsIgnoreCase("listOutstandingBalance")){
+
+                String xml = _reportModel.outstaningBalnace();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("printOutstandingBalance")){
+
+                String xml = _reportModel.outstaningBalnace();
+                request.setAttribute("xml", xml);
+                String query = "Outstanding balance for Subscriptions";
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printXML";
+            }
     /*----------------------------------------------------------------*/
         }catch (Exception e) {
             logger.error(e.getMessage(), e);

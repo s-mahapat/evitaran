@@ -11,7 +11,7 @@
         <title>Subscription Figures</title>
         <script type="text/javascript">
             $(document).ready(function() {
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
+                <%--jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");--%>
                 $("#printReportBtn").button("disable");
             });
         </script>
@@ -104,7 +104,12 @@
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBoxSmallMandatory" TABINDEX="1" name="year" id="year">
-                                            <option value="0">Select</option>
+                                            <%--<option value="0">Select</option>--%>
+                                            <%
+                                                for (int j = 1990; j <= 2050; j++) {
+                                                    out.println("<option value =\"" + j + "\">" + j + "</option>");
+                                                }
+                                            %>
                                         </select>
                                     </span>
                                 </div>

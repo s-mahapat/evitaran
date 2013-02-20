@@ -245,7 +245,11 @@ public class main extends JDSController {
             url = "/pdfserver?action=printHelp";
 
         }
+        else if (action.equals("outstandingbill")) {
 
+            url = "/jsp/reports/outstandingBill.jsp";
+
+        }
         if(url == null){
             url = "/jsp/errors/404.jsp";
             logger.error("Redirect url was not found, forwarding to 404");
