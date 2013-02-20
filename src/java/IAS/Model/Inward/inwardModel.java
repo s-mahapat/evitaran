@@ -230,7 +230,7 @@ public class inwardModel extends JDSModel {
             int subscriptionID = this._inwardFormBean.getSubscriptionID();
             if (subscriptionID > 0) {
                 sql = Queries.getQuery("update_payment_info");
-                try (PreparedStatement pst = this.conn.prepareStatement(sql)) {
+                try (PreparedStatement pst = conn.prepareStatement(sql)) {
                     pst.setInt(1, subscriptionID);
                     pst.setString(2, this._inwardFormBean.getInwardNumber());
                     rc = pst.executeUpdate();

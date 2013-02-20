@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.25, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.25
+-- Server version	5.5.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -296,7 +296,7 @@ CREATE TABLE `invoice_types` (
 
 LOCK TABLES `invoice_types` WRITE;
 /*!40000 ALTER TABLE `invoice_types` DISABLE KEYS */;
-INSERT INTO `invoice_types` VALUES (2,'Outstanding Payment'),(1,'Request For Invoice'),(3,'Upcoming Year Invoice');
+INSERT INTO `invoice_types` VALUES (2,'Outstanding Payment'),(3,'Please Refer Invoice'),(1,'Request For Invoice');
 /*!40000 ALTER TABLE `invoice_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -568,7 +568,8 @@ CREATE TABLE `journal_group_contents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `journalGroupId` int(11) NOT NULL,
   `journalId` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `journal_group_contents_indx2` (`journalId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -965,6 +966,7 @@ CREATE TABLE `prl_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `prl_id` int(11) NOT NULL,
   `invoice_id` int(11) NOT NULL,
+  `period` int(11) NOT NULL DEFAULT '0',
   `by_email` tinyint(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `prl_details_indx_1` (`prl_id`),
@@ -2043,7 +2045,7 @@ CREATE TABLE `subscriber_type` (
 
 LOCK TABLES `subscriber_type` WRITE;
 /*!40000 ALTER TABLE `subscriber_type` DISABLE KEYS */;
-INSERT INTO `subscriber_type` VALUES (1,'FELJM','Fellows','Free','I','P',2,0.000),(2,'AS','Associate','Free','I','P',2,0.000),(3,'EBALL','Editorial Board Member','Free','I','P',1,0.000),(4,'EI','Indian Exchange','Free','I','I',0,0.000),(5,'EF','Foreign Exchange','Free','F','I',0,0.000),(6,'GRANT','Grant','Free','I','P',2,0.000),(7,'AUTH','AUTHOR','Free','I','P',1,0.000),(8,'II','Indian Universities and Institutions','Paid','I','I',0,0.000),(9,'IC','Indian Schools and Colleges','Paid','I','I',0,0.000),(10,'IN','Industry Corporates','Paid','I','I',0,0.000),(11,'IP','Indian Personal','Paid','I','P',0,0.000),(12,'FP','Foreign Personal','Paid','F','P',0,0.000),(13,'FI','Foreign Institutions','Paid','F','I',0,0.000),(14,'SF','Summer Fellows','Free','I','P',1,0.000),(15,'HONFEL','Honorary Fellow','Free','I','P',0,0.000),(16,'LSP','Life Subscriber Personal','Paid','I','P',0,0.000),(17,'LSI','Life Subscriber Institutions','Paid','I','I',0,0.000),(18,'MEMBER','Members','Free','I','P',0,0.000),(19,'WC','Working Committee','Free','I','P',0,0.000);
+INSERT INTO `subscriber_type` VALUES (1,'FELJM','Fellows','Free','I','P',2,0.000),(2,'AS','Associate','Free','I','P',2,0.000),(3,'EBALL','Editorial Board Member','Free','I','P',1,0.000),(4,'EI','Indian Exchange','Free','I','I',0,0.000),(5,'EF','Foreign Exchange','Free','F','I',0,0.000),(6,'GRANT','Grant','Free','I','P',2,0.000),(7,'AUTH','Author','Free','I','P',1,0.000),(8,'II','Indian Universities and Institutions','Paid','I','I',0,0.000),(9,'IC','Indian Schools and Colleges','Paid','I','I',0,0.000),(10,'IN','Industry Corporates','Paid','I','I',0,0.000),(11,'IP','Indian Personal','Paid','I','P',0,0.000),(12,'FP','Foreign Personal','Paid','F','P',0,0.000),(13,'FI','Foreign Institutions','Paid','F','I',0,0.000),(14,'SF','Summer Fellows','Free','I','P',1,0.000),(15,'HONFEL','Honorary Fellow','Free','I','P',0,0.000),(16,'LSP','Life Subscriber Personal','Paid','I','P',0,0.000),(17,'LSI','Life Subscriber Institutions','Paid','I','I',0,0.000),(18,'MEMBER','Members','Free','I','P',0,0.000),(19,'WC','Working Committee','Free','I','P',0,0.000);
 /*!40000 ALTER TABLE `subscriber_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2089,8 +2091,6 @@ CREATE TABLE `subscription_legacy` (
   `legacy` tinyint(4) NOT NULL DEFAULT '1',
   `legacy_amount` float NOT NULL DEFAULT '0',
   `legacy_balance` float unsigned NOT NULL DEFAULT '0',
-  `legacy_proforma_invoice_no` char(10) DEFAULT NULL,
-  `legacy_proforma_invoice_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `subscription_legacy_indx1` (`subscription_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -10170,4 +10170,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-17 16:27:39
+-- Dump completed on 2013-02-20 14:12:26

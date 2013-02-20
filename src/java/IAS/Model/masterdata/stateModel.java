@@ -1,18 +1,18 @@
 
 package IAS.Model.masterdata;
 
-import javax.servlet.http.HttpServletRequest;
 import IAS.Bean.masterdata.stateFormBean;
-import java.sql.*;
-import IAS.Model.*;
-import java.text.ParseException;
+import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
-import org.apache.commons.dbutils.BeanProcessor;
+import IAS.Class.util;
+import IAS.Model.*;
+import java.sql.*;
+import java.text.ParseException;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import IAS.Class.util;
+import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.log4j.Logger;
-import IAS.Class.JDSLogger;
 /**
  *
  * @author Deepali
@@ -20,11 +20,13 @@ import IAS.Class.JDSLogger;
 public class stateModel extends JDSModel{
 
     private stateFormBean _stateFormBean = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
+    private static final Logger logger = JDSLogger.getJDSLogger(stateModel.class.getName());
+    private Connection conn;
 
     public stateModel(HttpServletRequest request) throws SQLException{
 
         super(request);
+        conn = this.getConnection();
     }
 
     public synchronized void Save () throws SQLException, ParseException,

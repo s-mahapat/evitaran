@@ -17,6 +17,7 @@ import com.mysql.jdbc.Statement;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,11 +35,13 @@ import org.apache.commons.dbutils.BeanProcessor;
 public class missingissueModel extends JDSModel {
 
     private missingissueFormBean _missingissueFormBean = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.missingissue");
+    private static final Logger logger = JDSLogger.getJDSLogger(missingissueModel.class.getName());
+    private Connection conn;
 
     public missingissueModel(HttpServletRequest request) throws SQLException{
 
        super(request);
+       conn = this.getConnection();
 
     }
 
@@ -175,12 +178,12 @@ public class missingissueModel extends JDSModel {
         }
         return xml;
     }
-    
+
     private int[] __addMissingJournals(
             int missingissueId, int[] subscriptionId, String[] journalGroupName, String[] journalName,
             String[] issue, int[] year, int[] mcopies) throws SQLException {
 
-        
+
         String sql = Queries.getQuery("insert_missing_journals");
         PreparedStatement st = conn.prepareStatement(sql);
         int paramIndex = 0;
@@ -204,13 +207,13 @@ public class missingissueModel extends JDSModel {
     }
 
     private int getmlid(int subscriptionId,  String journalName, String issue, int year) throws SQLException {
-        
+
         int mlid = 0;
         String sqlmlid = Queries.getQuery("get_ml_id_for_mi");
         PreparedStatement stGet = conn.prepareStatement(sqlmlid);
         int paramIndexml = 1;
         stGet.setInt(paramIndexml, subscriptionId);
-        stGet.setString(++paramIndexml, journalName);        
+        stGet.setString(++paramIndexml, journalName);
         stGet.setInt(++paramIndexml, year);
         stGet.setString(++paramIndexml, issue);
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
@@ -219,7 +222,7 @@ public class missingissueModel extends JDSModel {
         }
         return mlid;
     }
-    
+
     public String reprint()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
@@ -309,7 +312,7 @@ public class missingissueModel extends JDSModel {
         xml += reprint();
         return xml;
     }
-   
+
     public String noCopies()  throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {

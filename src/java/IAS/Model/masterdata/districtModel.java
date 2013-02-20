@@ -22,10 +22,12 @@ public class districtModel extends JDSModel{
 
     private districtFormBean _districtFormBean = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
+    private Connection conn;
 
     public districtModel(HttpServletRequest request) throws SQLException{
 
         super(request);
+        conn = this.getConnection();
     }
 
     public synchronized void Save () throws SQLException, ParseException,
@@ -148,12 +150,12 @@ public class districtModel extends JDSModel{
             try(ResultSet rs = this.db.executeQueryPreparedStatement(stGet);){
                 xml = util.convertResultSetToXML(rs);
             }
-            
+
         }finally{
             _conn.close();
         }
-        
+
         return xml;
-    }    
+    }
 }
 

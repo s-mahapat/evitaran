@@ -12,6 +12,7 @@ import IAS.Class.util;
 import IAS.Model.JDSModel;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,9 +35,11 @@ import org.apache.log4j.Logger;
 public class BulkEmailModel extends JDSModel{
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.BulkEmailModel");
+    private Connection conn;
 
     public BulkEmailModel(HttpServletRequest request) throws SQLException{
         super(request);
+        this.conn = this.getConnection();
     }
 
     public String validateEmail() throws ParserConfigurationException, IOException, TransformerConfigurationException, TransformerException{

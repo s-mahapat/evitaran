@@ -25,10 +25,12 @@ public class cityModel extends JDSModel{
 
     private cityFormBean _cityFormBean = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
+    private Connection conn;
 
     public cityModel(HttpServletRequest request) throws SQLException{
 
         super(request);
+        conn = this.getConnection();
     }
 
     public synchronized void Save () throws SQLException, ParseException,
@@ -151,7 +153,7 @@ public class cityModel extends JDSModel{
         xml = util.convertResultSetToXML(rs);
         return xml;
     }
-    
+
     public String CitySearch(String term) throws SQLException{
         Connection _conn = Database.getConnection();
         String xml = null;
@@ -165,7 +167,7 @@ public class cityModel extends JDSModel{
             _conn.close();
             return xml;
         }
-        
-        
+
+
     }
 }

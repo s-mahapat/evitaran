@@ -23,10 +23,12 @@ public class annualSubscriptionRateModel extends JDSModel {
 
     private annualSubscriptionRateFormBean _annualSubscriptionRateFormBean = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
+    private Connection conn;
 
     public annualSubscriptionRateModel(HttpServletRequest request) throws SQLException{
 
        super(request);
+       conn = this.getConnection();
 
     }
 
@@ -56,9 +58,9 @@ public class annualSubscriptionRateModel extends JDSModel {
         request.setAttribute("printOrderFormBean", this._annualSubscriptionRateFormBean);
 
     }
-    
+
     public synchronized String addAndSearch()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        
+
         // First check if the entry exist
         String sql = Queries.getQuery("check_subRate");
         PreparedStatement stGet = conn.prepareStatement(sql);
@@ -83,7 +85,7 @@ public class annualSubscriptionRateModel extends JDSModel {
             int success = db.executeUpdatePreparedStatement(stAdd);
             //rs = this.db.executeQueryPreparedStatement(stAdd);
         }
-        
+
         // Now run the search query and display
         String xml = search();
         return xml;

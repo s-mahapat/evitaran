@@ -19,10 +19,12 @@ public class journalDetailsModel extends JDSModel{
 
     private journalDetailsFormBean _journalDetailsFormBean = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
+    private Connection conn;
 
     public journalDetailsModel(HttpServletRequest request) throws SQLException{
 
        super(request);
+       conn = this.getConnection();
 
     }
 

@@ -27,20 +27,27 @@ public class JDSModel extends HttpServlet {
     protected HttpServletRequest request = null;
     protected Database db = null;
     protected HttpSession session = null;
-    protected Connection conn = null;
+    private static Connection conn = null;
     private static final Logger logger = JDSLogger.getJDSLogger(JDSModel.class.getName());
 
     public JDSModel() throws SQLException {
-        if (this.conn == null || this.conn.isClosed() == true) {
-            this.conn = Database.getConnection();            
-        }
+        /*if (this.conn == null || this.conn.isClosed() == true) {
+            this.conn = Database.getConnection();
+        }*/
         this.db = new Database();
     }
-    
-    protected Connection getConnection() throws SQLException{
-        return Database.getConnection();
+
+    private static Connection _getConnection() throws SQLException{
+        if(conn == null || conn.isClosed()){
+            conn = Database.getConnection();
+        }
+        return conn;
     }
-    
+
+    protected Connection getConnection() throws SQLException{
+        return _getConnection();
+    }
+
     protected void CloseConnection(Connection conn) throws SQLException{
         if(conn != null && conn.isClosed() == false){
             try{
@@ -49,7 +56,7 @@ public class JDSModel extends HttpServlet {
             }catch(SQLException e){
                 logger.error(e);
             }
-            
+
         }
     }
 
@@ -98,9 +105,9 @@ public class JDSModel extends HttpServlet {
         try {
             if(this.conn != null && this.conn.isClosed() == false){
                 this.conn.close();
-                logger.info("Closing connection");                
+                logger.info("Closing connection");
             }
-            
+
         } catch (SQLException e) {
             logger.error("Failed to close Database connection");
         }

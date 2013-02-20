@@ -28,10 +28,10 @@ import org.apache.log4j.Logger;
 public class InvoiceModel extends JDSModel{
 
     private static final Logger logger = JDSLogger.getJDSLogger(InvoiceModel.class.getName());
-    Connection _conn = null;
+    private Connection _conn = null;
 
     public InvoiceModel() throws SQLException{
-        //super()
+        super();
         this._conn = this.getConnection();
     }
 
@@ -44,7 +44,7 @@ public class InvoiceModel extends JDSModel{
 
         InvoiceFormBean _InvoiceFormBean = null;
         String sql = Queries.getQuery("get_invoice_detail_for_prl");
-        try(PreparedStatement pst = _conn.prepareStatement(sql)){
+        try(PreparedStatement pst = this.getConnection().prepareStatement(sql)){
             pst.setString(1, invoice_no);
             try(ResultSet rs = pst.executeQuery()){
                 if(rs.first()){
@@ -68,7 +68,7 @@ public class InvoiceModel extends JDSModel{
 
         InvoiceFormBean _InvoiceFormBean = null;
         String sql = Queries.getQuery("get_invoice_detail_usng_invno");
-        try(PreparedStatement pst = _conn.prepareStatement(sql)){
+        try(PreparedStatement pst = this.getConnection().prepareStatement(sql)){
             pst.setString(1, invoice_no);
             try(ResultSet rs = pst.executeQuery()){
                 if(rs.first()){
@@ -91,7 +91,7 @@ public class InvoiceModel extends JDSModel{
 
         String sql = Queries.getQuery("update_prl_email_status");
         QueryRunner run = new QueryRunner();
-        return run.update(conn, sql, invoice_no);
+        return run.update(this.getConnection(), sql, invoice_no);
     }
 
     public String getPRLEmailBody() throws IOException{
@@ -113,7 +113,7 @@ public class InvoiceModel extends JDSModel{
         try{
             //Connection _conn = this.getConnection();
             String sql = Queries.getQuery("invoice_payments");
-            try(PreparedStatement pst = _conn.prepareStatement(sql)){
+            try(PreparedStatement pst = this.getConnection().prepareStatement(sql)){
                 pst.setInt(1, invoice_id);
                 try(ResultSet rs = pst.executeQuery()){
                    return util.convertResultSetToXML(rs);
@@ -126,18 +126,5 @@ public class InvoiceModel extends JDSModel{
             logger.error(ex);
             return null;
         }
-    }
-
-    @Override
-    public void destroy() {
-        try {
-            if(this.conn != null && this.conn.isClosed() == false){
-                this._conn.close();
-            }
-
-        } catch (SQLException e) {
-            logger.error("Failed to close Database connection");
-        }
-
     }
 }

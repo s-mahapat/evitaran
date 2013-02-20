@@ -25,12 +25,13 @@ import javax.servlet.http.HttpServletResponse;
 public class bilModel extends JDSModel {
 
     private mlFormBean _mlFormBean = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.MailingList");
+    private static final Logger logger = JDSLogger.getJDSLogger(bilModel.class.getName());
+    private Connection conn;
 
     public bilModel(HttpServletRequest request) throws SQLException {
 
         super(request);
-
+        conn = this.getConnection();
     }
 
     public String searchGen() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
@@ -110,7 +111,7 @@ public class bilModel extends JDSModel {
 
     public synchronized String generate() throws SQLException, ParseException, ParserConfigurationException, TransformerException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
-        
+
         String xml = null;
         //int i = 0;
         Connection conn = this.getConnection();
@@ -222,6 +223,6 @@ public class bilModel extends JDSModel {
 
      return pdf;
      }
-     * 
+     *
      */
 }

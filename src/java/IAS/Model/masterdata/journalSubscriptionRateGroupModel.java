@@ -20,11 +20,13 @@ import IAS.Class.util;
 public class journalSubscriptionRateGroupModel extends JDSModel {
 
     private journalSubscriptionRateGroupFormBean _journalSubscriptionRateGroupFormBean = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
+    private static final Logger logger = JDSLogger.getJDSLogger(journalSubscriptionRateGroupModel.class.getName());
+    private Connection conn;
 
     public journalSubscriptionRateGroupModel(HttpServletRequest request) throws SQLException{
 
        super(request);
+       conn = this.getConnection();
 
     }
 

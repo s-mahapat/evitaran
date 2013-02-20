@@ -1,7 +1,6 @@
 
 package IAS.Model.reminders;
 
-import IAS.Model.reminders.*;
 import IAS.Bean.MailingList.mlFormBean;
 import IAS.Bean.reminder.subscriberInfo;
 import IAS.Bean.reminder.subscriptionInfo;
@@ -17,23 +16,16 @@ import IAS.Class.Queries;
 import IAS.Class.convertToPdf;
 import IAS.Class.util;
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import javax.xml.parsers.ParserConfigurationException;
 import java.text.ParseException;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Properties;
-import javax.servlet.ServletContext;
-import IAS.Class.ServletContextInfo;
-import java.io.FileInputStream;
 import IAS.Class.msgsend;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import javax.activation.DataSource;
-import javax.mail.Address;
 import javax.mail.util.ByteArrayDataSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,7 +35,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 /**
  *
@@ -52,11 +43,13 @@ import org.xml.sax.SAXException;
 public class reminderModel extends JDSModel {
 
     private mlFormBean _mlFormBean = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.MailingList");
+    private static final Logger logger = JDSLogger.getJDSLogger(reminderModel.class.getName());
+    private Connection conn;
 
     public reminderModel(HttpServletRequest request) throws SQLException{
 
        super(request);
+       conn = this.getConnection();
 
     }
 

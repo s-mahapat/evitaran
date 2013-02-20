@@ -37,10 +37,12 @@ import javax.xml.transform.TransformerConfigurationException;
 public class reportModel extends JDSModel {
 
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.reports");
+    private Connection conn;
 
     public reportModel(HttpServletRequest request) throws SQLException {
 
         super(request);
+        this.conn = this.getConnection();
 
     }
 

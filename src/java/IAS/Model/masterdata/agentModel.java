@@ -4,19 +4,18 @@
  */
 package IAS.Model.masterdata;
 
-import javax.servlet.http.HttpServletRequest;
 import IAS.Bean.masterdata.agentFormBean;
-import IAS.Class.Database;
-import java.sql.*;
-import IAS.Model.*;
-import java.text.ParseException;
+import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
-import org.apache.commons.dbutils.BeanProcessor;
 import IAS.Class.util;
+import IAS.Model.*;
+import java.sql.*;
+import java.text.ParseException;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.log4j.Logger;
-import IAS.Class.JDSLogger;
 /**
  *
  * @author Deepali
@@ -25,10 +24,12 @@ public class agentModel extends JDSModel{
 
     private agentFormBean _agentFormBean = null;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
+    private Connection conn;
 
     public agentModel(HttpServletRequest request) throws SQLException{
 
         super(request);
+        conn = this.getConnection();
 
     }
 

@@ -20,11 +20,13 @@ import javax.xml.transform.TransformerException;
 public class journalSubjectGroupModel extends JDSModel {
 
     private journalSubjectGroupFormBean _journalSubjectGroupFormBean = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
+    private static final Logger logger = JDSLogger.getJDSLogger(journalSubjectGroupModel.class.getName());
+    private Connection conn;
 
     public journalSubjectGroupModel(HttpServletRequest request) throws SQLException{
 
        super(request);
+       conn = this.getConnection();
 
     }
 

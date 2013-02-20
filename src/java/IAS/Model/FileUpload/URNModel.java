@@ -8,6 +8,7 @@ import IAS.Class.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -35,9 +36,11 @@ public class URNModel extends FileUploadBase {
     private PreparedStatement pst;
     private ArrayList<InwardInfo> _failures = new ArrayList<>();
     private static Logger logger = JDSLogger.getJDSLogger(URNModel.class.getName());
+    private Connection conn;
 
     public URNModel(HttpServletRequest request) throws SQLException {
         super(request);
+        this.conn = this.getConnection();
         sql = Queries.getQuery("update_urn_info");
         pst = this.conn.prepareStatement(sql);
     }
@@ -111,7 +114,7 @@ public class URNModel extends FileUploadBase {
         String _inward = this.getTextValue(_inward_list_el, "INWARDNO");
         return _inward;
     }
-    
+
     private float getAmount(Element el) {
         NodeList amountList = el.getElementsByTagNameNS("*", "ALLLEDGERENTRIES.LIST");
         float amount = 0;
@@ -121,7 +124,7 @@ public class URNModel extends FileUploadBase {
             if(_amount > 0){
                 amount += _amount;
             }
-        }             
+        }
         return amount;
     }
 
@@ -164,7 +167,7 @@ public class URNModel extends FileUploadBase {
     private int getIntValue(Element ele, String tagName) {
         return Integer.parseInt(getTextValue(ele, tagName));
     }
-    
+
     /**
      * Calls getTextValue and returns a float value
      */
@@ -177,8 +180,8 @@ public class URNModel extends FileUploadBase {
 
         String xml = null;
         AjaxResponse ajaxResponse = new AjaxResponse();
-        
-        try {                    
+
+        try {
             if (!_failures.isEmpty()) {
                 Iterator iter = _failures.iterator();
 
@@ -218,7 +221,7 @@ public class URNModel extends FileUploadBase {
                 xml = writer.toString();
                 return xml;
 
-            } else {                
+            } else {
                 xml = ajaxResponse.getSuccessXML(true, "Updated all inwards successfully");
             }
         } catch (ParserConfigurationException | TransformerException e) {

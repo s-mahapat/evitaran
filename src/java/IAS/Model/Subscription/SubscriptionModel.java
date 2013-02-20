@@ -49,10 +49,13 @@ public class SubscriptionModel extends JDSModel {
     private InvoiceFormBean _invoiceFormBean;
     private SubscriptionFormBean _subscriptionBean;
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.SubscriptionModel");
+    private int nextYearSubscriptionPeriod = 0;
+    private Connection connection = null;
 
     public SubscriptionModel(HttpServletRequest request) throws SQLException {
         // call the base class constructor.
         super(request);
+        this.connection = super.getConnection();
         _subscriptionBean = new SubscriptionFormBean();
         //this.journalName = request.getParameter("journalName");
         //this.copies = 0;
@@ -69,6 +72,14 @@ public class SubscriptionModel extends JDSModel {
     }
 
     public SubscriptionModel() throws SQLException {
+    }
+
+    @Override
+    public Connection getConnection() throws SQLException{
+        if(this.connection.isClosed()){
+            this.connection = super.getConnection();
+        }
+        return this.connection;
     }
 
     public String addSubscription() throws IllegalAccessException, ParseException,
@@ -168,7 +179,7 @@ public class SubscriptionModel extends JDSModel {
             } finally {
                 conn.setAutoCommit(true);
                 //st.close();
-                conn.close();
+                //conn.close();
             }
 
         }
@@ -182,7 +193,7 @@ public class SubscriptionModel extends JDSModel {
 
         String sql = Queries.getQuery("insert_subscription_detail");
         int[] res;
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
+        try (PreparedStatement st = this.getConnection().prepareStatement(sql)) {
             int paramIndex;
             for (int i = 0; i < journalGroupID.length; i++) {
                 paramIndex = 0;
@@ -227,7 +238,7 @@ public class SubscriptionModel extends JDSModel {
         } catch (ParseException ex) {
             logger.error(ex);
         } finally {
-            conn.close();
+            //conn.close();
             return subscriptionID;
         }
 
@@ -352,7 +363,7 @@ public class SubscriptionModel extends JDSModel {
         }
         if (inactive) {
             _conn.setAutoCommit(true);
-            _conn.close();
+            //_conn.close();
             return (rc);
         }
 
@@ -377,7 +388,7 @@ public class SubscriptionModel extends JDSModel {
             throw (e);
         } finally {
             _conn.setAutoCommit(true);
-            _conn.close();
+            //_conn.close();
             return rc;
         }
 
@@ -395,7 +406,7 @@ public class SubscriptionModel extends JDSModel {
             st.setInt(++paramIndex, subscriptionId);
             rc = st.executeUpdate();
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return rc;
     }
@@ -418,7 +429,7 @@ public class SubscriptionModel extends JDSModel {
                 }
             }
         } finally {
-            _conn.close();
+           // _conn.close();
         }
         return xml;
 
@@ -429,7 +440,7 @@ public class SubscriptionModel extends JDSModel {
 
         String sql = Queries.getQuery("get_subscription_info_by_id");
         ResultSet rs;
-        PreparedStatement st = conn.prepareStatement(sql);
+        PreparedStatement st = this.getConnection().prepareStatement(sql);
         st.setInt(1, _id);
         rs = st.executeQuery();
         return rs;
@@ -457,7 +468,7 @@ public class SubscriptionModel extends JDSModel {
                 xml = util.convertResultSetToXML(rs);
             }
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return xml;
     }
@@ -495,7 +506,7 @@ public class SubscriptionModel extends JDSModel {
                 }
             }
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return xml;
     }
@@ -568,7 +579,7 @@ public class SubscriptionModel extends JDSModel {
         Connection _conn = this.getConnection();
         String xml = null;
         String sql = Queries.getQuery("get_journal_group_price");
-        try (PreparedStatement ps = conn.prepareStatement(sql);) {
+        try (PreparedStatement ps = _conn.prepareStatement(sql);) {
             ps.setInt(1, journalGroupID);
             ps.setInt(2, subscriberTypeID);
             ps.setInt(3, startYear);
@@ -577,7 +588,7 @@ public class SubscriptionModel extends JDSModel {
                 xml = util.convertResultSetToXML(rs);
             }
         } finally {
-            _conn.close();
+            //_conn.close();
             return xml;
         }
     }
@@ -589,7 +600,7 @@ public class SubscriptionModel extends JDSModel {
         int priceGroupID = 0;
         Connection _conn = this.getConnection();
         String sql = Queries.getQuery("get_journal_group_price");
-        try (PreparedStatement ps = conn.prepareStatement(sql);) {
+        try (PreparedStatement ps = _conn.prepareStatement(sql);) {
             ps.setInt(1, journalGroupID);
             ps.setInt(2, subscriberTypeID);
             ps.setInt(3, startYear);
@@ -600,7 +611,7 @@ public class SubscriptionModel extends JDSModel {
                 }
             }
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return priceGroupID;
     }
@@ -611,13 +622,13 @@ public class SubscriptionModel extends JDSModel {
         String xml = null;
 
         String sql = Queries.getQuery("get_journal_groupid_contents");
-        try (PreparedStatement ps = conn.prepareStatement(sql);) {
+        try (PreparedStatement ps = _conn.prepareStatement(sql);) {
             ps.setInt(1, journalGroupID);
             try (ResultSet rs = ps.executeQuery();) {
                 xml = util.convertResultSetToXML(rs);
             }
         } finally {
-            _conn.close();
+            //_conn.close();
             return xml;
         }
     }
@@ -653,7 +664,7 @@ public class SubscriptionModel extends JDSModel {
                 }
             }
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return nextInvoice;
     }
@@ -718,7 +729,7 @@ public class SubscriptionModel extends JDSModel {
             }
 
         } finally {
-            _conn.close();
+            //_conn.close();
         }
 
         return invoiceID;
@@ -738,7 +749,7 @@ public class SubscriptionModel extends JDSModel {
                 xml = util.convertResultSetToXML(rs);
             }
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return xml;
 
@@ -765,7 +776,7 @@ public class SubscriptionModel extends JDSModel {
             logger.error(ex);
             return null;
         } finally {
-            _conn.close();
+            //_conn.close();
         }
 
         if (bExists == 0) {
@@ -800,7 +811,7 @@ public class SubscriptionModel extends JDSModel {
                 xml = util.convertResultSetToXML(rs);
             }
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return xml;
     }
@@ -834,13 +845,13 @@ public class SubscriptionModel extends JDSModel {
             logger.error(ex);
             _conn.rollback();
             _conn.setAutoCommit(true);
-            _conn.close();
+            //_conn.close();
         }
         // get the subscribers and thier subscription for which the
         // prl should be sent
         sql = Queries.getQuery("get_pl_refer_list");
 
-        String sql_insert_prl_details = "insert into prl_details(prl_id, invoice_id) values (?, ?)";
+        String sql_insert_prl_details = "insert into prl_details(prl_id, invoice_id, period) values (?, ?, ?)";
         String invoiceNumber = null;
         boolean isNullRs = false;
         try (PreparedStatement pst = _conn.prepareStatement(sql_insert_prl_details)) {
@@ -859,6 +870,7 @@ public class SubscriptionModel extends JDSModel {
                         int subscription_id = rs.getInt(2);
                         int invoice_id = 0;
                         float rate = getNextYearSubscriptionRate(subscription_id);
+                        int _nextYearSubscriptionPeriod = this.getNextYearSubscriptionPeriod();
 
                         // insert the invoice and get the invoice id
                         // the query name from the jds_sql properties files in WEB-INF/properties folder
@@ -879,6 +891,7 @@ public class SubscriptionModel extends JDSModel {
                         }
                         pst.setInt(1, prl_id);
                         pst.setInt(2, invoice_id);
+                        pst.setInt(3, _nextYearSubscriptionPeriod);
                         pst.addBatch();  // add all to the batch
                     }
                     pst.executeBatch();
@@ -896,9 +909,13 @@ public class SubscriptionModel extends JDSModel {
                 _conn.commit();
             }
             _conn.setAutoCommit(true);
-            _conn.close();
+           // _conn.close();
         }
         return true;
+    }
+
+    private int getNextYearSubscriptionPeriod(){
+        return this.nextYearSubscriptionPeriod;
     }
 
     private float getNextYearSubscriptionRate(int subscription_id) throws SQLException {
@@ -906,6 +923,7 @@ public class SubscriptionModel extends JDSModel {
         // get subscription info for subscription id
         String sql = Queries.getQuery("get_subscription_details_prl");
         float _rate = 0;
+        this.nextYearSubscriptionPeriod = 0;
 
         Connection _conn = this.getConnection();
 
@@ -914,51 +932,47 @@ public class SubscriptionModel extends JDSModel {
             pst.setInt(2, Calendar.getInstance().get(Calendar.YEAR));
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
-                    String journalName = rs.getString("journalGroupName");
+                    //String journalName = rs.getString("journalGroupName");
                     int period = rs.getInt("period");
                     int subtype = rs.getInt("subtype");
                     int journalGrpID = rs.getInt("journalGroupID");
-                    int startYear = rs.getInt("startYear");
+                    //int startYear = rs.getInt("startYear");
                     int endYear = rs.getInt("endYear");
-                    int startMonth = rs.getInt("startMonth");
-                    int _years;
+                    //int startMonth = rs.getInt("startMonth");
+                    //int _years;
 
                     // increase the start year by 1, since we are calculating PRL/invoice for
                     // next year
                     int newstartYear = endYear + 1;
 
-                    _rate += getRate(journalGrpID, subtype, newstartYear, period);
+                    // if the period == 0 it may be a legacy subscription, then we can only
+                    // find the minimum subscription period for this
+                    if(period > 0){
+                        _rate += getRate(journalGrpID, subtype, newstartYear, period);
+                    }
 
-                    // in case of a legacy subscription we do not have the price group id
-                    // we need to determine that here
-                    if (_rate == 0) {
-                        if (endYear == 0 || endYear > 2012) {
-                            logger.error(String.format("End year for subscription %s is %d", subscription_id, endYear));
-                        }
-
-                        // fix the period of subscription to 1 year if we do not have an entry for this subscription period
-                        //_years = 1;
-
-                        // save to the global variable
-                        //years = String.valueOf(_years);
-
-                        // if the subscription starts from any month other than Jan, we need to calculate the
-                        // subscription period differently
-                        if (startMonth > 1) {
-                            _years = endYear - startYear;
-                        } else {
-                            _years = endYear - startYear + 1;
-                        }
-
-                        _rate = getRate(journalGrpID, subtype, newstartYear, _years);
-                        if (_rate == 0) {
-                            logger.error(String.format("Rate is Zero for JGrp=%s, subtype=%d, startYear=%d, period=%d", journalName, subtype, newstartYear, _years));
-                        }
+                    /* if the user has a subscription period which is not defined in the database we will get rate
+                     * as 0. We need to find the minimum subscription period for that subscriber and get the
+                     * price for that period. This happens mostly in case of legacy subscription before JDS.
+                     */
+                    if(_rate == 0){
+                       period = this.getMinimumSubscriptionPeriod(journalGrpID, subtype, newstartYear);
+                       _rate += getRate(journalGrpID, subtype, newstartYear, period);
+                    }
+                    // only update the subscription period with the minimum period for all subscription details
+                    // of the subscription
+                    if(period > 0 && this.nextYearSubscriptionPeriod == 0){
+                        this.nextYearSubscriptionPeriod = period;
+                    }
+                    else if(period < this.nextYearSubscriptionPeriod){
+                        this.nextYearSubscriptionPeriod = period;
                     }
                 }
+            }catch(SQLException ex){
+                logger.error(ex);
             }
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return _rate;
     }
@@ -979,8 +993,27 @@ public class SubscriptionModel extends JDSModel {
                 }
             }
         } finally {
-            _conn.close();
+            //_conn.close();
             return (float) _rate;
+        }
+    }
+
+    private int getMinimumSubscriptionPeriod(int journalGrpID, int subtypeID, int startYear) throws SQLException{
+        Connection _conn = this.getConnection();
+        String sql = Queries.getQuery("get_journal_group_price_for_minimum_period");
+        int _period = 0;
+        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+            pst.setInt(1, journalGrpID);
+            pst.setInt(2, subtypeID);
+            pst.setInt(3, startYear);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.first()) {
+                    _period = rs.getInt("period");
+                }
+            }
+        } finally {
+            //_conn.close();
+            return _period;
         }
     }
 
@@ -994,7 +1027,7 @@ public class SubscriptionModel extends JDSModel {
                 xml = util.convertResultSetToXML(rs);
             }
         } finally {
-            _conn.close();
+            //_conn.close();
             return xml;
         }
 

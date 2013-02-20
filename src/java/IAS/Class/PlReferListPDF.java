@@ -210,7 +210,7 @@ public class PlReferListPDF extends JDSPDF {
         paragraphBody.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
 
         // get subscription info for subscription id
-        String sql = Queries.getQuery("get_subscription_details_prl");
+        String sql = Queries.getQuery("get_subscription_for_prl_invoice");
         //Connection _conn = Database.getConnection();
 
         PdfPTable table;
@@ -234,11 +234,14 @@ public class PlReferListPDF extends JDSPDF {
         table.addCell(cell2);
         table.addCell(cell3);
 
-        float total = 0;
+        //float total = 0;
 
         try (PreparedStatement pst = conn.prepareStatement(sql)) {
-            pst.setInt(1, _invoiceBean.getSubscriptionID());
-            pst.setInt(2, currentYear);
+            // get price for next year
+            pst.setInt(1, currentYear + 1);
+            pst.setInt(2, _invoiceBean.getSubscriptionID());
+
+
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     String journalName = rs.getString("journalGroupName");
@@ -266,6 +269,8 @@ public class PlReferListPDF extends JDSPDF {
                     table.addCell(c3);
                     //table.addCell(c4);
                 }
+            }catch(SQLException ex){
+                logger.error(ex);
             }
         }
 

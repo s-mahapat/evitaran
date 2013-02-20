@@ -18,7 +18,7 @@
               testOnReturn="false"
               validationQuery="SELECT 1"
               validationInterval="30000"
-              timeBetweenEvictionRunsMillis="5000"
+              timeBetweenEvictionRunsMillis="10000"
               maxActive="100"
               minIdle="0"
               maxIdle="5"

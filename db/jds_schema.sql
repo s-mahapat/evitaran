@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.25, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.25
+-- Server version	5.5.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -415,7 +415,8 @@ CREATE TABLE `journal_group_contents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `journalGroupId` int(11) NOT NULL,
   `journalId` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `journal_group_contents_indx2` (`journalId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -679,6 +680,7 @@ CREATE TABLE `prl_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `prl_id` int(11) NOT NULL,
   `invoice_id` int(11) NOT NULL,
+  `period` int(11) NOT NULL DEFAULT '0',
   `by_email` tinyint(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `prl_details_indx_1` (`prl_id`),
@@ -1738,8 +1740,6 @@ CREATE TABLE `subscription_legacy` (
   `legacy` tinyint(4) NOT NULL DEFAULT '1',
   `legacy_amount` float NOT NULL DEFAULT '0',
   `legacy_balance` float unsigned NOT NULL DEFAULT '0',
-  `legacy_proforma_invoice_no` char(10) DEFAULT NULL,
-  `legacy_proforma_invoice_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `subscription_legacy_indx1` (`subscription_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -3131,4 +3131,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-17 16:27:40
+-- Dump completed on 2013-02-20 14:12:27
