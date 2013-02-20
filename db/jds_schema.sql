@@ -1740,6 +1740,8 @@ CREATE TABLE `subscription_legacy` (
   `legacy` tinyint(4) NOT NULL DEFAULT '1',
   `legacy_amount` float NOT NULL DEFAULT '0',
   `legacy_balance` float unsigned NOT NULL DEFAULT '0',
+  `legacy_proforma_invoice_no` char(10) DEFAULT NULL,
+  `legacy_proforma_invoice_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `subscription_legacy_indx1` (`subscription_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -3131,4 +3133,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-20 14:12:27
+-- Dump completed on 2013-02-20 15:51:09
