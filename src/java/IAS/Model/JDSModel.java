@@ -45,24 +45,20 @@ public class JDSModel extends HttpServlet {
     }
 
     protected Connection getConnection() throws SQLException{
+        return Database.getConnection();
+    }
+
+    protected Connection getStaticConnection() throws SQLException{
         return _getConnection();
     }
 
     protected void CloseConnection(Connection conn) throws SQLException{
-        if(conn != null && conn.isClosed() == false){
-            try{
-                conn.close();
-                logger.debug("CloseConnection() called");
-            }catch(SQLException e){
-                logger.error(e);
-            }
 
-        }
     }
 
     public JDSModel(HttpServletRequest request) throws SQLException {
-        if (this.conn == null || this.conn.isClosed() == true) {
-            this.conn = Database.getConnection();
+        if (JDSModel.conn == null || JDSModel.conn.isClosed() == true) {
+            JDSModel.conn = Database.getConnection();
         }
         this.db = new Database();
         this.request = request;
@@ -100,17 +96,4 @@ public class JDSModel extends HttpServlet {
         return monthChar.toUpperCase();
     }
 
-    @Override
-    public void destroy() {
-        try {
-            if(this.conn != null && this.conn.isClosed() == false){
-                this.conn.close();
-                logger.info("Closing connection");
-            }
-
-        } catch (SQLException e) {
-            logger.error("Failed to close Database connection");
-        }
-
-    }
 }

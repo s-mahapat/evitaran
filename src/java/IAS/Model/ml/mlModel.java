@@ -41,7 +41,7 @@ public class mlModel extends JDSModel {
             stGet.setString(++paramIndex, request.getParameter("year"));
             stGet.setString(++paramIndex, request.getParameter("volume"));
             stGet.setString(++paramIndex, request.getParameter("issue"));
-            
+
             try (ResultSet rs = stGet.executeQuery();) {
                 if (rs.next()) {
                     return rs.getInt(1);
@@ -131,8 +131,7 @@ public class mlModel extends JDSModel {
             IOException, InvocationTargetException, SQLException, ParseException, ParserConfigurationException, TransformerException,
             ClassNotFoundException {
 
-        // get the connection from connection pool
-        Connection conn = this.getConnection();
+
 
         //  Declare Variables
         String xml;
@@ -144,6 +143,9 @@ public class mlModel extends JDSModel {
         String year = request.getParameter("year");
         String volumeNumber = request.getParameter("volume");
         String month = request.getParameter("month");
+
+        // get the connection from connection pool
+        Connection conn = this.getConnection();
 
         // Check if the record exists in mialing_list for that journal and issue.
         // If record deosnot exists insert record first to mailing list
@@ -161,8 +163,8 @@ public class mlModel extends JDSModel {
                 st.setString(++paramIndex, issue);
                 st.setString(++paramIndex, year);
                 st.setString(++paramIndex, month);
-                st.setString(++paramIndex, volumeNumber);                
-                
+                st.setString(++paramIndex, volumeNumber);
+
 
                 if (st.executeUpdate() == 1) {
                     try(ResultSet rsml = st.getGeneratedKeys();){
@@ -208,7 +210,7 @@ public class mlModel extends JDSModel {
                             stmldtl.executeUpdate();
                             //stmldtl.close();
                         }
-                        rsgetml.close();
+                        //rsgetml.close();
                         if (mlIndex == 0) {
                             throw new SQLException("No record found");
                         } else {

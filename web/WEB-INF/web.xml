@@ -445,6 +445,7 @@
             <description/>
             <role-name>user</role-name>
             <role-name>admin</role-name>
+            <role-name>monochrome</role-name>
         </auth-constraint>
     </security-constraint>
     <security-constraint>
@@ -474,6 +475,10 @@
     <security-role>
         <description/>
         <role-name>admin</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>monochrome</role-name>
     </security-role>
     <resource-ref>
         <description>Resource reference to a factory for java.sql.Connection
