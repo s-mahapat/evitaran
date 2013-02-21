@@ -15,13 +15,6 @@
         <title>Subscription Payment</title>
         <script type="text/javascript">
             $(document).ready(function(){
-                var warnMessage = "You have unsaved changes on this page!";
-                window.onbeforeunload = function () {
-                    if (warnMessage != null) return warnMessage;
-                }
-                $('#savepayments').click(function(e) {
-                    warnMessage = null;
-                });
                 var inward_amount = ${inwardFormBean.amount};
                 drawPaymentTable(inward_amount);
             });
@@ -30,7 +23,7 @@
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="POST" action="inward?action=followOnProcess" name="paymentForm">
+            <form method="POST" action="inward?action=followOnProcess" name="paymentForm" id="paymentForm">
                 <input type="hidden" id="subtypeid" value="${subscriberFormBean.subtypeID}">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
@@ -94,7 +87,7 @@
                         </fieldset>
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv">
-                                <button class="IASButton SaveButton" id="savepayments" TABINDEX="1" type="submit" value="Save"/>Save</button>
+                                <button class="IASButton SaveButton" id="savepayments" TABINDEX="1" type="button" value="Save" onclick="SavePayments()"/>Save</button>
                             </div>
                         </fieldset>
                     </fieldset>

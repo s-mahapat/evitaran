@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-var current_total = 0;
 function drawPaymentTable(inward_amount){
     $("#paymentTable").jqGrid({
         url:'subscriber?action=subscriberInvoice',
@@ -20,13 +19,9 @@ function drawPaymentTable(inward_amount){
         loadonce: true,
         rownumbers: true,
         cellEdit: true,
-        cellsubmit: 'remote',
+        cellsubmit: 'clientArray',
         emptyrecords: "No Records to view",
         loadtext: "Loading...",
-        //subGrid: true,
-        //subGridWidth: 20,
-        //subgridtype: 'xml',
-        //subGridUrl: 'subscription?oper=detail&subtypeid=' + $("#subtypeid").val(),
         cellurl: 'payment',
         colNames:['Invoice No','Invoice ID','Invoice Date','Invoice Amount','Amount Paid','Payment','Balance','Remarks','Subscription ID'],
         colModel :[
@@ -92,22 +87,10 @@ function drawPaymentTable(inward_amount){
                     if(rc[0] == true){
                         var rowid = $("#paymentTable").jqGrid('getGridParam', 'selrow');
                         var balance = parseFloat($("#paymentTable").jqGrid('getCell', rowid, 'balance'));
-                        var payment = parseFloat($("#paymentTable").jqGrid('getCell', rowid, 'amountPaid'));
-
-                        var new_balance = balance - value;
-                        var new_payment = payment + value;
-
-                        //set the balance since we are not refreshing the grid
-                        $("#paymentTable").jqGrid('setCell', rowid, 'balance', new_balance)
-
-                        //update the payment on the UI since we are not refreshing the UI
-                        $("#paymentTable").jqGrid('setCell', rowid, 'amountPaid', new_payment)
-
-                        // set the remarks as part/full payment
-                        if(value == balance){
-                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Full Payment');
-                        }else if(value < balance){
-                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Part Payment');
+                        if(balance == value){
+                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Full Payment')
+                        }else{
+                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Part Payment')
                         }
                     }
                     return rc;
@@ -167,28 +150,20 @@ function drawPaymentTable(inward_amount){
         loadError: function(xhr,status,error){
             alert("Failed getting data from server " + status);
         },
-        beforeSubmitCell: function(rowid, cellname, value, iRow, iCol){
-            var remarks = $("#paymentTable").jqGrid('getCell', rowid, 'remarks');
-            var subscriptionid = $("#paymentTable").jqGrid('getCell', rowid, 'subscriptionID');
-            var inwardid = $("#inwardID").val();
-            return {
-                subscriptionid: subscriptionid,
-                remarks: remarks,
-                inwardid: inwardid
-            };
-
+        beforeEditCell: function(){
+            $("#savepayments").button("disable");
         },
-        afterSubmitCell: function(serverresponse, rowid, cellname, value, iRow, iCol){
-            if($(serverresponse.responseText).find("success").text() == "false"){
-                return [false, "Failed to update payment"];
-            }else{
-                /*$("#paymentTable").setGridParam({
-                    datatype: "xml"
-                });
-                $("#paymentTable").trigger('reloadGrid');*/
-                return [true, ""];
+        afterSaveCell: function(rowid, cellname, value, iRow, iCol){
+            $("#savepayments").button("enable");
+            if(isNaN(value)){
+                $("#paymentTable").jqGrid('setCell', rowid, "payment", "0");
             }
-
+        },
+        beforeSaveCell: function(rowid, cellname, value, iRow, iCol){
+            if(isNaN(value)){
+                return 0;
+            }
+            return value;
         }
     });
 
@@ -226,8 +201,7 @@ function validateCell(value, colname, inward_amount){
     }
     else{
         // check that sum of all amounts entered by the user does not exceed the inward amount
-        //var payment_value = parseInt(c);
-        current_total = current_total + value;
+        var current_total = getCurrentTotal(value);
         if(current_total > inward_amount){
             restoreRow(rowid);
             success = false;
@@ -238,6 +212,73 @@ function validateCell(value, colname, inward_amount){
     return [success, msg];
 }
 
+function getCurrentTotal(paymentAmount){
+    var row_ids = $("#paymentTable").jqGrid('getDataIDs');
+    var currentrowid = $("#paymentTable").jqGrid('getGridParam', 'selrow');
+    var total_payment_amount = 0;
+    var payment_amount = 0;
+    for(var i=0;i<row_ids.length; i++){
+        var rowid = row_ids[i];
+        if(rowid == currentrowid){
+            continue;
+        }
+        var cellcontent = $("#paymentTable").jqGrid('getCell', rowid, "payment");
+        if(isNaN(parseFloat(cellcontent))){
+            payment_amount = 0;
+        }else{
+            payment_amount = parseFloat(cellcontent);
+        }
+        total_payment_amount += payment_amount;
+    }
+    total_payment_amount += paymentAmount;
+    return total_payment_amount;
+}
+
 function restoreRow(rowid){
     $("#paymentTable").jqGrid('restoreRow', rowid);
+    $("#savepayments").button("enable");
+}
+
+function SavePayments(){
+    var paymentRows = $("#paymentTable").jqGrid('getChangedCells', 'all');
+    var inwardid = $("#inwardID").val();
+    var paymentdata = [];
+    var changedRowCount = paymentRows.length;
+
+    for each (payment in paymentRows){
+        var rowid = payment.id;
+        var payment_made = payment.payment;
+        var remarks = payment.remarks;
+        paymentdata.push({
+            name: "id",
+            value: rowid
+        });
+        paymentdata.push({
+            name: "remarks",
+            value: remarks
+        });
+        paymentdata.push({
+            name: "payment",
+            value: payment_made
+        });
+
+    }
+    if(changedRowCount > 0){
+        $.ajax({
+            type: 'POST',
+            url: "payment?inwardid=" + inwardid,
+            data: $.param(paymentdata),
+            success: function(xmlResponse, textStatus, jqXHR){
+                if($(xmlResponse.responseText).find("success").text() == "false"){
+                    alert("Failed to save payment data");
+                    restoreRow(rowid);
+                }else{
+                    alert("All Payments saved successfully");
+                    $("#paymentForm").submit();
+                }
+            }
+        });
+    }
+
+
 }

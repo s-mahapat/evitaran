@@ -37,15 +37,15 @@ public class payment extends JDSController {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int invoice_id = Integer.parseInt(request.getParameter("id"));
+        String[] invoice_id = request.getParameterValues("id");
         //int subscription_id = Integer.parseInt(request.getParameter("subscriptionid"));
-        String remarks = request.getParameter("remarks");
-        float payment = Float.parseFloat(request.getParameter("payment"));
+        String[] remarks = request.getParameterValues("remarks");
+        String[] payment = request.getParameterValues("payment");
         int inward_id = Integer.parseInt(request.getParameter("inwardid"));
 
         try {
             PaymentModel paymentmodel = new PaymentModel();
-            int rc = paymentmodel.UpdatePayment(invoice_id, inward_id, payment, remarks);
+            int rc = paymentmodel.UpdatePayments(invoice_id, inward_id, payment, remarks);
             AjaxResponse ajaxresponse = new AjaxResponse();
             String xml;
             if (rc == 1) {

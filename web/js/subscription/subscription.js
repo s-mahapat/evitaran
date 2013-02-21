@@ -88,8 +88,8 @@ function listSubscription(){
                 width:20,
                 align:'center',
                 sortable: false,
-                xmlmap:'payment',
-                formatter: paymentInfoLink
+                xmlmap:'payment'
+                /*formatter: paymentInfoLink*/
             },
             {
                 name:'amountPaid',
@@ -313,7 +313,12 @@ function paymentInfoLink(cellvalue, options, rowObject){
 
 function showPaymentInfo(subscription_id){
 
-    $( "#paymentDetails" ).dialog({
+    var div_id = "#paymentDetails" + subscription_id;
+    if($(div_id).length == 0){
+        var new_div = "<div id=\"" + div_id + "\"><table id=\"paymentDetailsTable\" class=\"datatable\"></table></div>";
+        $("#subscriberDtlsTabs").append(new_div);
+    }
+    $( div_id ).dialog({
         modal: true,
         width: 800,
         height: 450,

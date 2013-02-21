@@ -3487,7 +3487,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES ('admin@ias.com','admin'),('jds@ias.com','user');
+INSERT INTO `user_role` VALUES ('admin@ias.com','admin'),('jds@ias.com','monochrome'),('jds@ias.com','user');
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -10172,4 +10172,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-20 15:51:07
+-- Dump completed on 2013-02-21 23:39:04

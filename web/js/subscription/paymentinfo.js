@@ -18,7 +18,7 @@ function drawPaymenDetailstInfo(subscription_id){
         forceFit: true,
         //shrinkToFit: true,
         sortable: false,
-        loadonce: true,
+        loadonce: false,
         rownumbers: true,
         emptyrecords: "No Records to view",
         loadtext: "Loading...",

@@ -28,7 +28,7 @@
                 if (userPrincipal != null) {
                     out.println("Welcome " + firstName + " " + lastName + "!!!");
                     out.println("&nbsp;&nbsp;&nbsp;");
-                    out.println("<a href=" + request.getContextPath() + "/main?action=logout" + "><font color=\"white\">Logout</font></a>");
+                    out.println("<a href=\"" + request.getContextPath() + "/main?action=logout\"" + "><font color=\"white\">Logout</font></a>");
                 } else {
                     response.sendRedirect(request.getContextPath() + "/jsp/login/login.jsp");
                 }
