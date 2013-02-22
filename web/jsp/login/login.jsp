@@ -13,7 +13,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <%@include file="../templates/style.jsp"%>
+        <%--@include file="../templates/style.jsp"--%>
+        <%@include file="../templates/jquery.jsp" %>
         <script type="text/javascript" src="js/login.js"></script>
         <title>Login</title>
         <script type="text/javascript">
@@ -21,6 +22,7 @@
                 $( "#loginDiv" ).tabs();
             });
         </script>
+        <link href="<%=request.getContextPath() + "/css/style.css"%>" type="text/css" rel="stylesheet"/>
         <style>
             #bodyContainer{
                 margin-top: 68px;
@@ -79,7 +81,7 @@
     </head>
     <body>
         <jsp:include page="../templates/header.jsp"></jsp:include>
-        <div id="ajaxBusy"><img src="/JDS/images/ajax-loader.gif"><p>Please Wait...</p></div>
+            <div id="ajaxBusy"><img src="/JDS/images/ajax-loader.gif"><p>Please Wait...</p></div>
         <%--<jsp:include page="../templates/loginsidebar.jsp"></jsp:include>--%>
         <div id="bodyContainer">
             <form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginFieldId','passwordField')">

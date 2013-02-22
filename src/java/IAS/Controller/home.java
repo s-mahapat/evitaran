@@ -63,6 +63,11 @@ public class home extends JDSController {
                     String sql = Queries.getQuery("logged_in_user");
                     String userName = request.getUserPrincipal().getName();
                     
+                    //For monochrome users
+                    String userRole = null;
+                    boolean isMonochrome = request.isUserInRole("monochrome");
+                    if(isMonochrome){userRole = "monochrome";}
+                    
                     // set the user information in the session
                     PreparedStatement pst = connection.prepareStatement(sql);
                     pst.setString(1, userName);
@@ -76,7 +81,11 @@ public class home extends JDSController {
                     userBean.setUserName(userName);
                     userBean.setFirstName(firstName);
                     userBean.setLastName(lastName);
+                    userBean.setUserRole(userRole);
                     session.setAttribute("userBean", userBean);
+                    
+                    
+                    
                     
                     url = "jsp/home.jsp";
                     

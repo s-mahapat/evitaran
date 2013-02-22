@@ -1,0 +1,723 @@
+/*
+    Document   : Common style across all JSPs are defined here
+*/
+root {
+    display: block;
+}
+
+body{
+    margin:0px;
+    padding:0px;
+    /*background-color: #F6F6F6;*/
+    font-family: Gill, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+}
+
+A:link {
+    text-decoration: none;
+    color: black;
+}
+A:visited {
+    text-decoration: none;
+    color: black;
+}
+
+A:active {
+    text-decoration: none;
+    color: black;
+}
+
+#header{
+
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    height: auto;
+    background-color: black;
+    z-index: 2;
+}
+
+#darksubheader{
+    background-color: black;
+    height: 40px;
+    margin-bottom: 1px;
+    width: 100%;
+    z-index: 2;
+}
+
+#smalldarksubheader{
+    background-color: white;
+    height: 26px;
+    margin-left: 0px;
+    margin-bottom: 1px;
+    width: 12%;
+    float: left;
+}
+
+#whitesubheader{
+    background-color: white;
+    height: 1px;
+    width: 100%;
+    float: right;
+}
+
+#verticalwhiteline{
+    background-color: red;
+    width: 1px;
+    z-index: 10;
+}
+
+#lightsubheader{
+    background-color: black;
+    margin-left :0%;
+    height: 26px;
+    width: 100%;
+    margin-bottom: 1px;
+    z-index: 2;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+#headertext{
+    float: right;
+    font-family:inherit;
+    font-size: x-large;
+    font-weight: bolder;
+    color: white;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+#iaslogo{
+    height: 38px;
+    width: 39px;
+    float: left;
+    position: fixed;
+    margin-left: 3%;
+    top:1px;
+    background-image: url("../images/logo_main.png");
+    z-index: 3;
+    background-repeat: no-repeat;
+}
+
+#iasletterheadlogo{
+    height: 38px;
+    width: 39px;
+    float: left;
+    top:1px;
+    background-image: url("../images/logo_main.png");
+    z-index: 3;
+    background-repeat: no-repeat;
+}
+
+#sidebar{
+    background-color: black;/*#cc9b00;*/
+    /*top:68px;*/
+    top: 68px;
+    width: 12%; /*110*/
+    float: left;
+    position: fixed;
+    overflow: auto;
+    height: 100%;
+    padding-top: 0px;
+    z-index: 2;
+}
+
+#bodyContainer{
+    margin-top: 68px;
+    width: 88%;
+    overflow: auto;
+    float: right;
+    height: available;
+}
+
+#watermark{
+    width: 50%;
+    margin: 5% 24%;
+}
+
+.dateDiv{
+    width: 100%;
+}
+
+.cpMonthNavigation{
+    font-family: "Cambria",serif;
+    font-size: 12px;
+}
+
+.cpYearNavigation{
+    font-family: "Cambria",serif;
+    font-size: 12px;
+}
+
+.MainDiv{
+    /*background-color: #F6F6F6;*/
+    padding: 2px 2px;
+    height: auto;
+}
+
+.subMainDiv{
+    padding: 5px;
+    height: auto;
+}
+
+fieldset {
+    padding: 3px;
+    text-shadow: none;
+    outline: none;
+    border: 1px solid black;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    margin: 2px;
+}
+
+.MainFieldset{
+    /*background-color: rgb(232,245,248);*/
+    padding: 3px;
+}
+
+.MainFieldset legend{
+    font-size: x-large;
+    font-weight: bold;
+    color: black;
+}
+
+
+.subMainFieldSet{
+    background: none repeat scroll 0 0 black;
+    padding: 5px 5px 5px 5px;
+    margin-bottom: 5px;
+}
+
+.subMainFieldSet legend{
+    font-weight: 600;
+    font-size: 11px;
+}
+
+
+.subMainFieldSet tr td textarea{
+    font-weight: normal;
+    font-family:inherit;
+    font-size: inherit;
+}
+
+.IASActionLabel{
+    vertical-align: top;
+}
+
+.IASTextBox{
+    width: 120px;
+}
+
+.IASDisabledTextBox{
+    width: 120px;
+    background-color: #EEE;
+}
+
+.IASDisabledTextBoxWide{
+    width: 250px;
+    background-color: #EEE;
+}
+
+.IASTextBoxWide{
+    width: 250px;
+}
+
+.IASEmailTextBox{
+    width: 200px;
+}
+
+.IASTextBoxForNumbers{
+    width: 30px;
+}
+
+.IASTextBoxMandatory{
+    width: 120px;
+    background-color: antiquewhite;
+}
+
+.IASTextBoxMandatoryWide{
+    width: 250px;
+    background-color: antiquewhite;
+}
+
+.IASTextBoxMandatoryMax{
+    width: 100%;
+    background-color: antiquewhite;
+}
+
+.IASTextArea{
+    font-family:inherit;
+    font-size: inherit;
+    height: 50px;
+    width: 250px;
+    max-width: 250px;
+    max-height: 50px;
+}
+
+.IASTextAreaMandatory{
+    font-family:inherit;
+    font-size: inherit;
+    background-color: antiquewhite;
+    height: 50px;
+    width: 250px;
+    max-width: 250px;
+    max-height: 50px;
+}
+
+.IASCheckBox{
+}
+
+.IASRadioButton{
+    height: 12px;
+}
+
+
+.IASDateTextBox{
+    width: 70px;
+    background-color: white;
+}
+
+.IASDateTextBoxMandatory{
+    width: 70px;
+    background-color: antiquewhite;
+}
+
+.IASButton{
+    font-size: 1em;
+    color: black;
+    text-transform: capitalize;
+    margin: 0px 10px;
+    z-index: 0;
+    height: 30px;
+    moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    /*padding: 5px;*/
+    background: -moz-linear-gradient(0% 100% 90deg, white, white) repeat scroll 0 0 transparent;
+    border-color: white;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.SaveButton{
+    color: black;
+}
+
+.SearchButton{
+    color: black;
+}
+
+.JDSFileInput{
+    font-family: Cambria;
+    font-size: 12px;
+    width: 95%;
+}
+
+.IASComboBox{
+    width: 120px;
+}
+
+.IASComboBoxWide{
+    width: 180px;
+}
+
+.IASComboBoxWideMandatory{
+    width: 220px;
+    background-color: antiquewhite;
+}
+
+.IASComboBoxMediumMandatory{
+    width: 160px;
+    background-color: antiquewhite;
+}
+
+.IASComboBoxSmallMandatory{
+    width: 100px;
+    background-color: antiquewhite;
+}
+
+.IASComboBoxMandatory{
+    /*font-family: "Cambria",serif;
+    font-size: inherit;*/
+    background-color: antiquewhite;
+}
+
+.IASFormLeftDiv{
+    float: left;
+    width: 49%;
+    padding: 5px;
+}
+
+.IASFormLeftDivSmaller{
+    float: left;
+    width: 35%;
+    padding: 5px;
+}
+
+.IASFormRightDiv{
+    width: 49%;
+    float: right;
+    padding: 5px;
+}
+
+.IASFormRightDivBigger{
+    width: 62%;
+    float: right;
+    padding: 5px;
+}
+
+.IASFormFieldDiv{
+    clear: both;
+    margin: 4px;
+    float: left;
+    width: 98%;
+}
+
+.IASFormCenterDiv{
+    clear: both;
+    margin: 4px;
+    float: left;
+    width: 98%;
+    text-align: center;
+}
+
+
+.IASFormDivSpanLabel{
+    margin-left: 0px;
+    float: left;
+    text-align: right;
+    width: 120px;
+}
+
+.IASFormDivSpanLabelLeftAligned{
+    margin-left: 5px;
+    float: left;
+    text-align: left;
+    max-width: 280px;
+}
+
+.IASFormDivSpanLabelMax{
+    font-size: x-small;
+    margin-left: 0px;
+    float: left;
+    text-align: left;
+    width: 100%;
+}
+
+.IASFormDivSpanLabelSpecial{
+    margin-left: 0px;
+    float: left;
+    text-align: left;
+    width: 20%;
+}
+
+.IASFormDivSpanLabelRadio{
+    margin-left: 15px;
+    float: left;
+    text-align: right;
+    width: 50px;
+}
+
+.IASFormDivSpanInputBox{
+    margin-left: 15px;
+    float: left;
+}
+
+.IASFormDivSpanLabelEmail{
+    margin-left: 0px;
+    float: left;
+    text-align: left;
+    width: 40px;
+}
+
+.IASFormDivSpanInputBoxEmail{
+    margin-left: 15px;
+    float: left;
+    width: 75%;
+}
+
+.IASFormDivSpanContentArea{
+    margin-left: 15px;
+    float: left;
+    width: 100%;
+}
+.IASFormDivSpanContentAreaNoLeftMargin{
+    margin-left: 0px;
+    float: left;
+    width: 100%;
+}
+
+.IASFormDivSpanInputBoxLessMargin{
+    margin-left: 5px;
+    margin-right: 5px;
+    float: left;
+}
+
+.IASFormDivSpanForHyphen{
+    margin-left: 10px;
+    text-align: center;
+    float: left;
+
+}
+
+
+.datatable{
+    border: 1px solid lightslategray;
+    width: 100%;
+    /*background-color: #FBDA81;*/
+}
+
+.datatable thead td{
+    text-align: center;
+    font-size: small;
+    font-weight: bold;
+    vertical-align: middle;
+    padding: 2px;
+}
+
+.datatable tbody td{
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: normal;
+    /*background-color: #ECE5B6;*/
+    vertical-align: middle;
+    padding: 1px;
+}
+
+.datatable tbody td a{
+    text-decoration: none;
+    padding: 5px;
+}
+
+.jdsLink{
+    color: blue;
+    text-decoration: none;
+}
+
+.calendarIcon{
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    border: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 5px;
+    background-image: url("../images/calendar.gif");
+    background-repeat: no-repeat;
+}
+
+.deleteIcon{
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    border: 0px;
+    padding-bottom: 0px;
+    background-image: url("../images/delete.gif");
+    background-repeat: no-repeat;
+}
+
+#welcomeUser{
+    float: right;
+    margin-right: 20px;
+    text-align: justify;
+    padding: 5px;
+
+}
+
+.singleActionBtnDiv{
+    text-align: center;
+}
+
+.actionBtnDiv{
+    text-align: center;
+    width: 90%;
+    margin-right: 10%;
+    margin-bottom: 10px;
+    float: left;
+}
+
+#IASLetterHeadHeader{
+
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: auto;
+    font-family: cambria,sans-serif,serif;
+    font-size: large;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+
+.pageBreak{
+    page-break-before: always;
+}
+
+.underlineText{
+    text-decoration: underline;
+}
+
+#error{
+    background-image: url("../images/error.png");
+    background-repeat: no-repeat;
+    width: 120px;
+    height: 144px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#accessdenied{
+    background-image: url("../images/403.png");
+    background-repeat: no-repeat;
+    width: 284px;
+    height: 232px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#accessdeniedtext{
+    text-align: center;
+    font-size: larger;
+}
+
+#pageNotFoundError{
+    background-image: url("../images/404.png");
+    background-repeat: no-repeat;
+    width: 314px;
+    height: 203px;
+    margin: 0 auto;
+}
+
+#letterhead{
+
+    font-style: normal;
+    font-weight: bolder;
+    margin: 10px auto;
+    width: 80%;
+    text-align: center;
+    font-size: 20px;
+    /*font-family: cambria,sans-serif,serif;*/
+}
+
+#subletterhead_1{
+
+    font-style: normal;
+    font-weight: normal;
+    margin: 0 auto;
+    width: 80%;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 5px;
+    /*font-family: cambria,sans-serif,serif;*/
+}
+
+#letterTel{
+    font-style: normal;
+    font-weight: normal;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+#letterDiv{
+
+    border-right-style: solid;
+    border-left-style: solid;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    margin: 10px 10px;
+    height: auto;
+    float: left;
+    display: block;
+    width: 98%;
+}
+
+#letterDate{
+    float: right;
+    width: 95%;
+    height: 20px;
+    margin-top: 10px;
+    margin-right: 40px;
+    text-align: right;
+}
+
+.salutation{
+    margin-left: 10px;
+    /*font-family: cambria,sans-serif,serif;*/
+    width: 100%;
+    float: left;
+    margin-top: 30px;
+}
+
+.subjectLine{
+    margin-left: 10px;
+    width: 100%;
+    float: left;
+    margin-top: 20px;
+}
+
+.letterBody{
+    margin-left: 5%;
+    width: 95%;
+    margin-top: 20px;
+    float: right;
+    line-height: 2em;
+}
+
+#ajaxBusy{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -24px;
+    margin-left: -24px;
+    z-index: 100;
+    display: none;
+}
+
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    /* add padding to account for vertical scrollbar */
+    padding-right: 20px;
+}
+
+
+div.uploader,
+.ui-autocomplete-input,
+.wijmo-wijtextbox.ui-widget,
+input.text,
+input.email,
+input.password,
+textarea.uniform,
+textarea,
+select,
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='file'] {
+    padding: 2px;
+    /*text-shadow: 0px 1px 0px #fff;*/
+    outline: none;
+    border: 1px solid #ababab;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    /*background-color: #f8f8f8;
+    background: white;*/
+    filter: expression("progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8',endColorstr='white')");
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8',endColorstr='white')";
+    /*background: -moz-linear-gradient(0% 100% 90deg, white, #f8f8f8);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(white));
+    background: -o-linear-gradient(0% 100% 90deg, white, #f8f8f8);
+    background: -ms-linear-gradient(0% 100% 90deg, white, #f8f8f8);*/
+}

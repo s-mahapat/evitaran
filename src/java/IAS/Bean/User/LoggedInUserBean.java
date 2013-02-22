@@ -6,6 +6,7 @@ public class LoggedInUserBean {
     private String firstName;
     private String lastName;
     private boolean isPasswordReset;
+    private String userRole;
     
     public String getFirstName(){
         return this.firstName;
@@ -37,5 +38,13 @@ public class LoggedInUserBean {
     
     public void setIsPasswordReset(boolean _isreset){
         this.isPasswordReset = _isreset;
+    }
+    
+        public String getUserRole(){
+        return this.userRole;
+    }
+    
+    public void setUserRole(String _userRole){
+        this.userRole = _userRole;
     }
 }

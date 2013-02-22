@@ -1,5 +1,25 @@
 <link href="<%=request.getContextPath() + "/menu/css/dcaccordion.css"%>" rel="stylesheet" type="text/css"  />
 <link href="<%=request.getContextPath() + "/menu/css/skins/grey.css"%>" rel="stylesheet" type="text/css" />
+
+<script>
+    <%
+        String uRole = null;
+        try {
+            if (session != null) {
+                IAS.Bean.User.LoggedInUserBean _userBean = (IAS.Bean.User.LoggedInUserBean) session.getAttribute("userBean");
+                uRole = _userBean.getUserRole();
+            }
+        } catch (NullPointerException e) {
+            uRole = null;
+        }
+    %>
+</script>
+<%if (uRole != null && uRole.equalsIgnoreCase("monochrome")) {
+        out.println("<link href=\"" + request.getContextPath() + "/menu/css/skins/monochrome_menu.css\"" + " type=\"text/css\" rel=\"stylesheet\"/>");
+    }
+%>
+
+
 <script src="<%=request.getContextPath() + "/menu/js/jquery.dcjqaccordion.2.7.min.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/menu/js/jquery.cookie.js"%>" type="text/javascript"></script>
 <script>

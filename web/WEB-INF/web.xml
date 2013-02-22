@@ -477,7 +477,7 @@
         <role-name>admin</role-name>
     </security-role>
     <security-role>
-        <description/>
+        <description>for black and white view</description>
         <role-name>monochrome</role-name>
     </security-role>
     <resource-ref>
