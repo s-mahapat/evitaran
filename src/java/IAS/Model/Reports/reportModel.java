@@ -1486,23 +1486,224 @@ String xml = null;
 
     }
 
-     public String outstaningBalnace()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+     public String outstaningBalnace()  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
 
-        String startYear = request.getParameter("subStart");
-        String endYear = request.getParameter("subEnd");
-        String totalBalance = request.getParameter("totalBalance");
+        int periodStart = Integer.parseInt(request.getParameter("periodStart"));
+        int subEnd = Integer.parseInt(request.getParameter("subEnd"));
+        String all = request.getParameter("totalBalance");
         String xml = null;
+        int totalBalance = 0;
+        
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+   // For Legacy Data   
+        
+        String sql = Queries.getQuery("get_legacy_balance");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        while (rs.next()){
+            String subscriberNumber = rs.getString("subscriberNumber");
+            int subscriptionId = rs.getInt("subscriptionId");
+            String journalCode = "";
+            int balance = rs.getInt("balance");
+            String proInvNo = rs.getString("proInvNo");
+            String proInvDate = rs.getString("proInvDate");
+            int startYear = 0;
+            int endYear = 0;
+            int newStart = 0;
+            int newEnd = 0;
+            String period = "";
+            int subexists = 0;
+            
+            String sqljournals = Queries.getQuery("get_sub_journals");
+            if (subEnd != 0){
+                sqljournals += " and subscriptiondetails.endYear  = " + subEnd;
+            }
+            PreparedStatement stGetJournals = conn.prepareStatement(sqljournals);  
+            stGetJournals.setInt(paramIndex, subscriptionId);
+            ResultSet rsJournals = this.db.executeQueryPreparedStatement(stGetJournals);
+            while (rsJournals.next()){
+                if (journalCode.equals("")){
+                    journalCode += rsJournals.getString(1);
+                }
+                else {
+                    journalCode += ", " + rsJournals.getString(1);
+                }
+                if (startYear == 0 && endYear == 0) {
+                    startYear = rsJournals.getInt("startYEar");
+                    endYear = rsJournals.getInt("endYear");
+                    newStart = startYear;
+                    newEnd = endYear;
+                }
+                else{
+                    newStart = rsJournals.getInt("startYEar");
+                    newEnd = rsJournals.getInt("endYear"); 
+                    if (newStart < startYear){
+                        startYear = newStart;
+                    }
+                    if (newEnd < endYear){
+                        endYear = newEnd;
+                    }
+                }
+                subexists = 1;    
+           }
+            period = startYear + "-" + endYear;
+            
+            
+            if (subexists == 1){
+                totalBalance = totalBalance + balance;
+                Element row = doc.createElement("row");
+                results.appendChild(row);
 
-        String sql = Queries.getQuery("list_reminders_subscriber");
+                Element _subscriberNumber = doc.createElement("subscriberNumber");
+                row.appendChild(_subscriberNumber);
+                _subscriberNumber.appendChild(doc.createTextNode(subscriberNumber));
 
+                Element _journalCode = doc.createElement("journalCode");
+                row.appendChild(_journalCode);
+                _journalCode.appendChild(doc.createTextNode(journalCode));
+
+                Element _period = doc.createElement("period");
+                row.appendChild(_period);
+                _period.appendChild(doc.createTextNode(period));
+
+                Element _balance = doc.createElement("balance");
+                row.appendChild(_balance);
+                _balance.appendChild(doc.createTextNode(Integer.toString(balance)));
+
+                Element _proInvNo = doc.createElement("proInvNo");
+                row.appendChild(_proInvNo);
+                _proInvNo.appendChild(doc.createTextNode(proInvNo));
+
+                Element _proInvDate = doc.createElement("proInvDate");
+                row.appendChild(_proInvDate);
+                _proInvDate.appendChild(doc.createTextNode(proInvDate));
+                
+                subexists = 0;
+            }
+        }
+        
+       // For current Data
+        String sqlcurr = Queries.getQuery("get_current_balance");
+        PreparedStatement stGetCurr = conn.prepareStatement(sqlcurr);
+        paramIndex = 1;
+        ResultSet rsCurr = this.db.executeQueryPreparedStatement(stGetCurr);
+        while (rsCurr.next()){
+            String subscriberNumber = rsCurr.getString("subscriberNumber");
+            int subscriptionId = rsCurr.getInt("subscriptionId");
+            String journalCode = "";
+            int balance = rsCurr.getInt("balance");
+            String proInvNo = rsCurr.getString("proInvNo");
+            String proInvDate = rsCurr.getString("proInvDate");
+            int startYear = 0;
+            int endYear = 0;
+            int newStart = 0;
+            int newEnd = 0;
+            String period = "";
+            int subexists = 0;
+            
+            
+
+            String sqljournalsCurr = Queries.getQuery("get_sub_journals");
+            //String sqljournals = Queries.getQuery("get_sub_journals");
+            if (subEnd != 0){
+                sqljournalsCurr += " and subscriptiondetails.endYear  = " + subEnd;
+            }            
+            PreparedStatement stGetJournals = conn.prepareStatement(sqljournalsCurr);  
+            stGetJournals.setInt(paramIndex, subscriptionId);
+            ResultSet rsJournals = this.db.executeQueryPreparedStatement(stGetJournals);
+            while (rsJournals.next()){
+                if (journalCode.equals("")){
+                    journalCode += rsJournals.getString(1);
+                }
+                else {
+                    journalCode += ", " + rsJournals.getString(1);
+                }
+                if (startYear == 0 && endYear == 0) {
+                    startYear = rsJournals.getInt("startYEar");
+                    endYear = rsJournals.getInt("endYear");
+                    newStart = startYear;
+                    newEnd = endYear;
+                }
+                else{
+                    newStart = rsJournals.getInt("startYEar");
+                    newEnd = rsJournals.getInt("endYear"); 
+                    if (newStart < startYear){
+                        startYear = newStart;
+                    }
+                    if (newEnd < endYear){
+                        endYear = newEnd;
+                    }
+                }
+                subexists = 1;    
+           }
+            period = startYear + "-" + endYear;
+            
+            if (subexists == 1){
+                totalBalance = totalBalance + balance;
+
+                Element row = doc.createElement("row");
+                results.appendChild(row);
+
+                Element _subscriberNumber = doc.createElement("subscriberNumber");
+                row.appendChild(_subscriberNumber);
+                _subscriberNumber.appendChild(doc.createTextNode(subscriberNumber));
+
+                Element _journalCode = doc.createElement("journalCode");
+                row.appendChild(_journalCode);
+                _journalCode.appendChild(doc.createTextNode(journalCode));
+
+                Element _period = doc.createElement("period");
+                row.appendChild(_period);
+                _period.appendChild(doc.createTextNode(period));
+
+                Element _balance = doc.createElement("balance");
+                row.appendChild(_balance);
+                _balance.appendChild(doc.createTextNode(Integer.toString(balance)));
+
+                Element _proInvNo = doc.createElement("proInvNo");
+                row.appendChild(_proInvNo);
+                _proInvNo.appendChild(doc.createTextNode(proInvNo));
+
+                Element _proInvDate = doc.createElement("proInvDate");
+                row.appendChild(_proInvDate);
+                _proInvDate.appendChild(doc.createTextNode(proInvDate));
+                
+                subexists = 0;
+            }
+        }
+        
+            Element row = doc.createElement("row");
+            results.appendChild(row);
+
+            Element _journalCode = doc.createElement("journalCode");
+            row.appendChild(_journalCode);
+            _journalCode.appendChild(doc.createTextNode("Total Balance -->"));
+
+            Element _balance = doc.createElement("balance");
+            row.appendChild(_balance);
+            _balance.appendChild(doc.createTextNode(Integer.toString(totalBalance)));
+            
+        DOMSource domSource = new DOMSource(doc);
+        try (StringWriter writer = new StringWriter()) {
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            xml = writer.toString();
+        }
+        //
+        
+        
         //if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
           //  sql += " and reminders.reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         //}
 
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("reminderType"));
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        
         return xml;
 
     }
