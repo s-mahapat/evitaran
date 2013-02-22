@@ -1489,6 +1489,7 @@ String xml = null;
      public String outstaningBalnace()  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
 
         int periodStart = Integer.parseInt(request.getParameter("periodStart"));
+        int periodEnd = Integer.parseInt(request.getParameter("periodEnd"));
         int subEnd = Integer.parseInt(request.getParameter("subEnd"));
         String all = request.getParameter("totalBalance");
         String xml = null;
@@ -1522,6 +1523,10 @@ String xml = null;
             String sqljournals = Queries.getQuery("get_sub_journals");
             if (subEnd != 0){
                 sqljournals += " and subscriptiondetails.endYear  = " + subEnd;
+            }
+            else if (periodStart != 0 && periodEnd != 0){
+                sqljournals += " and subscriptiondetails.startYear  >= " + periodStart;
+                sqljournals += " and subscriptiondetails.endYear  <= " + periodEnd;
             }
             PreparedStatement stGetJournals = conn.prepareStatement(sqljournals);  
             stGetJournals.setInt(paramIndex, subscriptionId);
@@ -1612,7 +1617,11 @@ String xml = null;
             //String sqljournals = Queries.getQuery("get_sub_journals");
             if (subEnd != 0){
                 sqljournalsCurr += " and subscriptiondetails.endYear  = " + subEnd;
-            }            
+            }  
+            else if (periodStart != 0 && periodEnd != 0){
+                sqljournalsCurr += " and subscriptiondetails.startYear  >= " + periodStart;
+                sqljournalsCurr += " and subscriptiondetails.endYear  <= " + periodEnd;
+            }
             PreparedStatement stGetJournals = conn.prepareStatement(sqljournalsCurr);  
             stGetJournals.setInt(paramIndex, subscriptionId);
             ResultSet rsJournals = this.db.executeQueryPreparedStatement(stGetJournals);
