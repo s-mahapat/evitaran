@@ -151,6 +151,28 @@ public class reports extends JDSController {
                 String query = "List of Subscribers";
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
+
+            }else if(action.equalsIgnoreCase("printSubscribersSticker")){
+
+                //ResultSet rs = _reportModel.printSubscribersList();
+                ResultSet rs = _reportModel.searchSubscriber();
+                request.setAttribute("ResultSet", rs);
+                String noHeader = "off";
+                request.setAttribute("noHeader", noHeader);
+                String periodicals = "off";
+                request.setAttribute("periodicals", periodicals);
+                url = "/pdfserver?action=generatemlPrintSticker";
+
+            }else if(action.equalsIgnoreCase("printSubscribersLabel")){
+
+                //ResultSet rs = _reportModel.printSubscribersList();
+                ResultSet rs = _reportModel.searchSubscriber();
+                request.setAttribute("ResultSet", rs);
+                String noHeader = "off";
+                request.setAttribute("noHeader", noHeader);
+                String periodicals = "off";
+                request.setAttribute("periodicals", periodicals);
+                url = "/pdfserver?action=generatemlPrintLabel";
             }
             // This actually generates a html page with table. This functionality is nolonger used
             else if(action.equalsIgnoreCase("listSubscribersPrint")){
@@ -302,7 +324,7 @@ public class reports extends JDSController {
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printXML";
             }
-     /*-----------------------outstaning Bill --------------------------*/       
+     /*-----------------------outstaning Bill --------------------------*/
             else if(action.equalsIgnoreCase("listOutstandingBalance")){
 
                 String xml = _reportModel.outstaningBalnace();

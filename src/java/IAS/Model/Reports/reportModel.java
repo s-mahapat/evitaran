@@ -512,6 +512,12 @@ public class reportModel extends JDSModel {
         return rs;
     }
 
+    public ResultSet printSubscribersList() {
+
+        ResultSet rs = null;
+        return rs;
+    }
+
     public ResultSet searchSubscriber() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
 
@@ -587,7 +593,7 @@ public class reportModel extends JDSModel {
             sql += " and subscriber_type.institutional = " + "'" + institutional + "'";
         }
 
-        if (selall == "1") {
+        if ("1".equals(selall)) {
             selall = "0";
             sql += " and subscriber.deactive <> " +  selall;
         }
@@ -1494,14 +1500,14 @@ String xml = null;
         String all = request.getParameter("totalBalance");
         String xml = null;
         int totalBalance = 0;
-        
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.newDocument();
         Element results = doc.createElement("results");
         doc.appendChild(results);
-   // For Legacy Data   
-        
+   // For Legacy Data
+
         String sql = Queries.getQuery("get_legacy_balance");
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
@@ -1519,7 +1525,7 @@ String xml = null;
             int newEnd = 0;
             String period = "";
             int subexists = 0;
-            
+
             String sqljournals = Queries.getQuery("get_sub_journals");
             if (subEnd != 0){
                 sqljournals += " and subscriptiondetails.endYear  = " + subEnd;
@@ -1528,7 +1534,7 @@ String xml = null;
                 sqljournals += " and subscriptiondetails.startYear  >= " + periodStart;
                 sqljournals += " and subscriptiondetails.endYear  <= " + periodEnd;
             }
-            PreparedStatement stGetJournals = conn.prepareStatement(sqljournals);  
+            PreparedStatement stGetJournals = conn.prepareStatement(sqljournals);
             stGetJournals.setInt(paramIndex, subscriptionId);
             ResultSet rsJournals = this.db.executeQueryPreparedStatement(stGetJournals);
             while (rsJournals.next()){
@@ -1546,7 +1552,7 @@ String xml = null;
                 }
                 else{
                     newStart = rsJournals.getInt("startYEar");
-                    newEnd = rsJournals.getInt("endYear"); 
+                    newEnd = rsJournals.getInt("endYear");
                     if (newStart < startYear){
                         startYear = newStart;
                     }
@@ -1554,11 +1560,11 @@ String xml = null;
                         endYear = newEnd;
                     }
                 }
-                subexists = 1;    
+                subexists = 1;
            }
             period = startYear + "-" + endYear;
-            
-            
+
+
             if (subexists == 1){
                 totalBalance = totalBalance + balance;
                 Element row = doc.createElement("row");
@@ -1587,11 +1593,11 @@ String xml = null;
                 Element _proInvDate = doc.createElement("proInvDate");
                 row.appendChild(_proInvDate);
                 _proInvDate.appendChild(doc.createTextNode(proInvDate));
-                
+
                 subexists = 0;
             }
         }
-        
+
        // For current Data
         String sqlcurr = Queries.getQuery("get_current_balance");
         PreparedStatement stGetCurr = conn.prepareStatement(sqlcurr);
@@ -1610,19 +1616,19 @@ String xml = null;
             int newEnd = 0;
             String period = "";
             int subexists = 0;
-            
-            
+
+
 
             String sqljournalsCurr = Queries.getQuery("get_sub_journals");
             //String sqljournals = Queries.getQuery("get_sub_journals");
             if (subEnd != 0){
                 sqljournalsCurr += " and subscriptiondetails.endYear  = " + subEnd;
-            }  
+            }
             else if (periodStart != 0 && periodEnd != 0){
                 sqljournalsCurr += " and subscriptiondetails.startYear  >= " + periodStart;
                 sqljournalsCurr += " and subscriptiondetails.endYear  <= " + periodEnd;
             }
-            PreparedStatement stGetJournals = conn.prepareStatement(sqljournalsCurr);  
+            PreparedStatement stGetJournals = conn.prepareStatement(sqljournalsCurr);
             stGetJournals.setInt(paramIndex, subscriptionId);
             ResultSet rsJournals = this.db.executeQueryPreparedStatement(stGetJournals);
             while (rsJournals.next()){
@@ -1640,7 +1646,7 @@ String xml = null;
                 }
                 else{
                     newStart = rsJournals.getInt("startYEar");
-                    newEnd = rsJournals.getInt("endYear"); 
+                    newEnd = rsJournals.getInt("endYear");
                     if (newStart < startYear){
                         startYear = newStart;
                     }
@@ -1648,10 +1654,10 @@ String xml = null;
                         endYear = newEnd;
                     }
                 }
-                subexists = 1;    
+                subexists = 1;
            }
             period = startYear + "-" + endYear;
-            
+
             if (subexists == 1){
                 totalBalance = totalBalance + balance;
 
@@ -1681,11 +1687,11 @@ String xml = null;
                 Element _proInvDate = doc.createElement("proInvDate");
                 row.appendChild(_proInvDate);
                 _proInvDate.appendChild(doc.createTextNode(proInvDate));
-                
+
                 subexists = 0;
             }
         }
-        
+
             Element row = doc.createElement("row");
             results.appendChild(row);
 
@@ -1696,7 +1702,7 @@ String xml = null;
             Element _balance = doc.createElement("balance");
             row.appendChild(_balance);
             _balance.appendChild(doc.createTextNode(Integer.toString(totalBalance)));
-            
+
         DOMSource domSource = new DOMSource(doc);
         try (StringWriter writer = new StringWriter()) {
             StreamResult result = new StreamResult(writer);
@@ -1706,13 +1712,13 @@ String xml = null;
             xml = writer.toString();
         }
         //
-        
-        
+
+
         //if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
           //  sql += " and reminders.reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         //}
 
-        
+
         return xml;
 
     }

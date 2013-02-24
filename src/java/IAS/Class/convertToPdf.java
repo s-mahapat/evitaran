@@ -1362,7 +1362,12 @@ public convertToPdf(){
             info.add(Chunk.NEWLINE);
             info.add(new Chunk(sLabelInfo.getinstitution(), font));
             info.add(Chunk.NEWLINE);
-            info.add(new Chunk(sLabelInfo.getaddress(), font));
+            //String address = sLabelInfo.getaddress();
+            //if(!(address == null)){
+                info.add(new Chunk(sLabelInfo.getaddress(), font));
+            /*}else{
+                System.out.println("Detected address which is empty or null");
+            }*/
             info.add(Chunk.NEWLINE);
             font = new Font(lfontType, lfontSize, Font.BOLD);
             String lastLine = sLabelInfo.getcity() +
@@ -1424,7 +1429,15 @@ public convertToPdf(){
             info.add(Chunk.NEWLINE);
             info.add(new Chunk(sLabelInfo.getinstitution(), font));
             info.add(Chunk.NEWLINE);
-            info.add(new Chunk(sLabelInfo.getaddress(), font));
+            String address = sLabelInfo.getaddress();
+            info.add(new Chunk(address, font));
+            /*
+            String address = sLabelInfo.getaddress();
+            if(!(address.isEmpty())){
+                info.add(new Chunk(address, font));
+            }else{
+                System.out.println("Detected address which is empty or null");
+            }*/
             info.add(Chunk.NEWLINE);
             font = new Font(sfontType, sfontSize, Font.BOLD);
             String lastLine = sLabelInfo.getcity() +

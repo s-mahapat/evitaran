@@ -28,6 +28,7 @@ public class subInfo {
         for (int i = 1; i <= numberOfColumns; i++)
         {
             String columnName = rsmd.getColumnName(i);
+            //System.out.println("Column: " + i + " " +columnName);
             if(columnName.equals("subscriptionId")) {
                 subscriptionId = Integer.toString(rs.getInt(i));
             }
@@ -58,25 +59,46 @@ public class subInfo {
                 endDate = endMonth + " " + endYear;
             } if(columnName.equals("subscriberName")) {
                 subscriberName = rs.getString(i);
+                if(subscriberName == null) {
+                    subscriberName = "";
+                }
             } if(columnName.equals("department")) {
                 department = rs.getString(i);
+                if(department == null) {
+                    department = "";
+                }
             } if(columnName.equalsIgnoreCase("institution")) {
                 institution = rs.getString(i);
-            } if(columnName.equalsIgnoreCase("address")) {
+                if(institution == null) {
+                    institution = "";
+                }
+            } if(columnName.equalsIgnoreCase("address") || columnName.equalsIgnoreCase("shippingAddress")) {
                 address = rs.getString(i);
+                if(address == null) {
+                    address = "";
+                }
             } if(columnName.equalsIgnoreCase("city")) {
                 city = rs.getString(i);
+                if(city == null) {
+                    city = "";
+                }
             } if(columnName.equalsIgnoreCase("pincode")){
                 pincode = rs.getString(i);
                 // If pincode is found to be zero, then do not print
-                if(pincode.equalsIgnoreCase("0")){
+                if(pincode.equalsIgnoreCase("0") || pincode == null){
                     pincode = "";
                 }
             } if(columnName.equalsIgnoreCase("state")) {
                 state = rs.getString(i);
+                if(state == null) {
+                    state = "";
+                }
             }
             if(columnName.equalsIgnoreCase("country")) {
                 country = rs.getString(i);
+                if(country == null) {
+                    country = "";
+                }
             }
             if(columnName.equalsIgnoreCase("subType")) {
                 subType = rs.getString(i);

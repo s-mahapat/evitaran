@@ -42,8 +42,8 @@
                             {name:'subscriberNumber', index:'subscriberNumber', width:40, align:'center', xmlmap:'subscriberNumber'},
                             {name:'subscriberName', index:'subscriberName', width:40, align:'center', xmlmap:'subscriberName'},
                             {name:'subtypecode', index:'subtypecode', width:40, align:'center', xmlmap:'subtypecode'},
-                            {name:'city', index:'city', width:30, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
-                            {name:'state', index:'state', width:30, align:'center', sortable:false, xmlmap:'state'},
+                            {name:'city', index:'city', width:30, align:'center', xmlmap:'city'},
+                            {name:'state', index:'state', width:30, align:'center', xmlmap:'state'},
                             {name:'country', index:'country', width:30, align:'center', xmlmap:'country'},
                           ],
                         xmlReader : {
@@ -67,6 +67,8 @@
                             var ids = jQuery("#subscriberTable").jqGrid('getDataIDs');
                             if(ids.length > 0){
                                 $("#printReportBtn").button("enable");
+                                $("#btnPrintLabel").button("enable");
+                                $("#btnPrintSticker").button("enable");
                             }
                         },
                         beforeRequest: function(){
@@ -119,13 +121,31 @@
 
             // draw the date picker.
             jQueryDatePicker("from","to");
+
+            function printLabel()
+            {
+                var x = "printSubscribersLabel";
+                $('#action').val(x);
+            }
+
+            function printSticker()
+            {
+                var x = "printSubscribersSticker";
+                $('#action').val(x);
+            }
+
+            function print()
+            {
+                var x = "printSubscribersReport";
+                $('#action').val(x);
+            }
         </script>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printSubscribersReport"%>" name="searchSubscriberForm">
+            <form method="get" action="<%=request.getContextPath() + "/reports"%>" name="searchSubscriberForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Subscriber</legend>
@@ -146,7 +166,7 @@
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
 
-                                        <select class="IASComboBoxMandatory" TABINDEX="4" name="subtype" id="subtype">
+                                        <select class="IASComboBox" TABINDEX="1" name="subtype" id="subtype">
                                             <option value ="0">Select</option>
                                             <option value ="Paid">Paid</option>
                                             <option value ="Free">Free</option>
@@ -159,7 +179,7 @@
                                         <label>Nationality</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxMandatory" TABINDEX="5" name="nationality" id="nationality">
+                                        <select class="IASComboBox" TABINDEX="2" name="nationality" id="nationality">
                                             <option value ="0">Select</option>
                                             <option value ="I">Indian</option>
                                             <option value ="F">Foreign</option>
@@ -172,7 +192,7 @@
                                         <label>Institutional</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxMandatory" TABINDEX="6" name="institutional" id="institutional">
+                                        <select class="IASComboBox" TABINDEX="3" name="institutional" id="institutional">
                                             <option value ="0">Select</option>
                                             <option value ="I">Institute</option>
                                             <option value ="P">Personal</option>
@@ -185,7 +205,7 @@
                                         <label>Subscriber Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="subscriberType" id="subscriberType">
+                                        <select class="IASComboBox" TABINDEX="4" name="subscriberType" id="subscriberType">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
@@ -196,7 +216,7 @@
                                         <label>Journal Name:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName">
+                                        <select class="IASComboBox" TABINDEX="5" name="journalName" id="journalName">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
@@ -212,7 +232,7 @@
                                         <label>Country:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="2" name="country" id="country">
+                                        <select class="IASComboBox" TABINDEX="6" name="country" id="country">
                                             <option value="0" selected >Select</option>
                                         </select>
                                     </span>
@@ -222,7 +242,7 @@
                                         <label>State:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="3" name="state" id="state">
+                                        <select class="IASComboBox" TABINDEX="7" name="state" id="state">
                                             <option value="0" selected >Select</option>
                                         </select>
                                         <%--<input class="IASTextBoxMandatory" TABINDEX="3" name="state" id="state" value="<jsp:getProperty name="inwardFormBean" property="state"/>"--%>
@@ -233,7 +253,7 @@
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="4" name="city" id="city">
+                                        <select class="IASComboBox" TABINDEX="8" name="city" id="city">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -244,13 +264,13 @@
                                     </span>
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
+                                        <input class="IASDateTextBox" TABINDEX="9" readonly size="10" type="text" id="from" name="from"/>
                                     </span>
                                     <span class="IASFormDivSpanForHyphen">
                                         <label> to </label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
+                                        <input class="IASDateTextBox" TABINDEX="10" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -258,14 +278,14 @@
                                         <label>Only Active</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
+                                        <input class="IASCheckBox" TABINDEX="11" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
                                 </div>
                             </div>
 
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" type="button" TABINDEX="6" type="button" onclick="searchSubscriber()"/>Search</button>
-                                <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton" type="button" TABINDEX="12" onclick="searchSubscriber()"/>Search</button>
+                                <input class="IASButton" TABINDEX="13" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>
@@ -280,12 +300,16 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- SPrint Button Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-
+                        <input type="hidden" name="action" id="action"/>
+                        <input type="hidden" name="noHeader" id="noHeader" value="on"/>
+                        <input type="hidden" name="periodicals" id="periodicals" value="off"/>
                      <fieldset class="subMainFieldSet">
                         <div class="IASFormFieldDiv">
                             <div class="singleActionBtnDiv">
                                 <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
-                                <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
+                                <input class="IASButton" TABINDEX="14" type="submit" value="Print" disabled id="printReportBtn"/>
+                                <input class="IASButton" TABINDEX="15" type="submit" value="Print Label" disabled id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
+                                <input class="IASButton" TABINDEX="16" type="submit" value="Print Sticker" disabled id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
                             </div>
                         </div>
                     </fieldset>
