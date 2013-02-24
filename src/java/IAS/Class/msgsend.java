@@ -5,13 +5,15 @@ package IAS.Class;
  * @author aloko Using sample code from msgSend.java. This example is part of
  * the javamail package For sending mail using authentication:
  * http://dunithd.wordpress.com/2009/10/22/send-email-using-javamail-api-and-your-gmail-account/
- * http://www.vipan.com/htdocs/javamail.html
- * If the datasource is not null, then the datasource will be used to get the data and
- * the data will be send as attachment with the name "fileName". No file is written to the disk
- * If datasource is null, then the file "fileName" will be attached with the mail if fileName is not null or empty.
+ * http://www.vipan.com/htdocs/javamail.html If the datasource is not null, then
+ * the datasource will be used to get the data and the data will be send as
+ * attachment with the name "fileName". No file is written to the disk If
+ * datasource is null, then the file "fileName" will be attached with the mail
+ * if fileName is not null or empty.
  *
- * jds.adm.all@gmail.com: This account is used to collect all the exception messages
- * jds.ias.mails@gmail.com: This account is used to collect all the mails which are sent by IAS. All mails to this account are sent as bcc
+ * jds.adm.all@gmail.com: This account is used to collect all the exception
+ * messages jds.ias.mails@gmail.com: This account is used to collect all the
+ * mails which are sent by IAS. All mails to this account are sent as bcc
  */
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,6 +33,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
 import org.apache.log4j.Logger;
 import org.codemonkey.simplejavamail.Email;
+import org.codemonkey.simplejavamail.MailException;
 import org.codemonkey.simplejavamail.Mailer;
 import org.codemonkey.simplejavamail.TransportStrategy;
 
@@ -38,17 +41,16 @@ public class msgsend {
 
     private static final Logger logger = JDSLogger.getJDSLogger(msgsend.class.getName());
     private String contentType = "text/plain";
+    private static Mailer mailer = null;
 
     public msgsend() {
-
     }
 
-    public msgsend(String _contentType){
+    public msgsend(String _contentType) {
         contentType = _contentType;
     }
 
-    public String getPropertiesFileLocation()
-    {
+    public static String getPropertiesFileLocation() {
         ServletContext context = ServletContextInfo.getServletContext();
         return context.getRealPath("/WEB-INF/classes/jds_email.properties");
     }
@@ -60,9 +62,22 @@ public class msgsend {
                 exceptionMsg, "", "", null);
     }
 
-    public boolean sendEmailToSubscriberWithAttachment( String SubscriberEmail, String Subject,
-                                                        String body, String FileName,
-                                                        byte[] attachment, String attachmentType) throws IOException {
+    private static Mailer getMailer() throws IOException {
+        if (mailer == null) {
+            Properties properties = new Properties();
+            String emailPropertiesFile = getPropertiesFileLocation();
+            properties.load(new FileInputStream(emailPropertiesFile));
+            String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
+            String SMTP_AUTH_USER = properties.getProperty("SMTP_AUTH_USER");
+            String SMTP_AUTH_PWD = properties.getProperty("SMTP_AUTH_PWD");
+            mailer = new Mailer(SMTP_HOST_NAME, 25, SMTP_AUTH_USER, SMTP_AUTH_PWD, TransportStrategy.SMTP_TLS);
+        }
+        return mailer;
+    }
+
+    public boolean sendEmailToSubscriberWithAttachment(String SubscriberEmail, String Subject,
+            String body, String FileName,
+            byte[] attachment, String attachmentType) throws IOException {
         String emailPropertiesFile = getPropertiesFileLocation();
         Properties properties = new Properties();
         properties.load(new FileInputStream(emailPropertiesFile));
@@ -74,26 +89,49 @@ public class msgsend {
         email.setText(body);
 
         // check if there is any attachment to be sent, else just ignore
-        if(FileName != null && attachment != null && attachmentType != null){
+        if (FileName != null && attachment != null && attachmentType != null) {
             email.addAttachment(FileName, attachment, attachmentType);
         }
 
-        String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
-        String SMTP_AUTH_USER = properties.getProperty("SMTP_AUTH_USER");
-        String SMTP_AUTH_PWD = properties.getProperty("SMTP_AUTH_PWD");
-
-        try{
-            Mailer _mailer = new Mailer(SMTP_HOST_NAME, 25, SMTP_AUTH_USER, SMTP_AUTH_PWD, TransportStrategy.SMTP_TLS);
-            //_mailer.validate(email);
+        try {
+            //Mailer _mailer = new Mailer(SMTP_HOST_NAME, 25, SMTP_AUTH_USER, SMTP_AUTH_PWD, TransportStrategy.SMTP_TLS);
+            Mailer _mailer = getMailer();
             _mailer.sendMail(email);
             return true;
-        }catch(Exception e){
+        } catch (IOException | MailException e) {
             logger.error(e);
             return false;
         }
 
     }
 
+    public boolean sendEmailToSubscriberWithoutAttachment(String SubscriberEmail, String Subject,
+            String body) throws IOException {
+        String emailPropertiesFile = getPropertiesFileLocation();
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(emailPropertiesFile));
+        final Email email = new Email();
+        email.setFromAddress(properties.getProperty("FROM_TEXT"), properties.getProperty("FROM_EMAIL_ID"));
+        email.setSubject(Subject);
+        email.addRecipient(SubscriberEmail, SubscriberEmail, RecipientType.TO);
+        email.addRecipient("IAS", "jds.ias.mails@gmail.com", RecipientType.BCC);
+        email.setText(body);
+
+        //String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
+        //String SMTP_AUTH_USER = properties.getProperty("SMTP_AUTH_USER");
+        //String SMTP_AUTH_PWD = properties.getProperty("SMTP_AUTH_PWD");
+
+        try {
+            //Mailer _mailer = new Mailer(SMTP_HOST_NAME, 25, SMTP_AUTH_USER, SMTP_AUTH_PWD, TransportStrategy.SMTP_TLS);
+            Mailer _mailer = getMailer();
+            _mailer.sendMail(email);
+            return true;
+        } catch (IOException | MailException e) {
+            logger.error(e);
+            return false;
+        }
+
+    }
 
     // This can be used for gmail
     public boolean sendMailWithAuthenticationUseSSL(String to, String cc, String bcc, String subject,
@@ -166,12 +204,10 @@ public class msgsend {
                 MimeBodyPart mbp1 = new MimeBodyPart();
                 mbp1.setText(msg);
                 MimeBodyPart mbp2 = new MimeBodyPart();
-                if(dataSource != null)
-                {
+                if (dataSource != null) {
                     mbp2.setDataHandler(new DataHandler(dataSource));
                     mbp2.setFileName(file);
-                }
-                else {
+                } else {
                     mbp2.attachFile(file);
                 }
                 MimeMultipart mp = new MimeMultipart();
@@ -276,12 +312,10 @@ public class msgsend {
                 MimeBodyPart mbp1 = new MimeBodyPart();
                 mbp1.setText(msg);
                 MimeBodyPart mbp2 = new MimeBodyPart();
-                if(dataSource != null)
-                {
+                if (dataSource != null) {
                     mbp2.setDataHandler(new DataHandler(dataSource));
                     mbp2.setFileName(file);
-                }
-                else {
+                } else {
                     mbp2.attachFile(file);
                 }
                 MimeMultipart mp = new MimeMultipart();
@@ -314,7 +348,7 @@ public class msgsend {
 
     // Servers that do not require any authentication. This should be used for sending emails from IAS
     public boolean sendMailWithoutAuthentication(String to, String cc, String bcc, String subject,
-            String msg, String from, String file, DataSource dataSource)  {
+            String msg, String from, String file, DataSource dataSource) {
         try {
             String emailPropertiesFile = getPropertiesFileLocation();
             Properties properties = new Properties();
@@ -366,12 +400,10 @@ public class msgsend {
                 MimeBodyPart mbp1 = new MimeBodyPart();
                 mbp1.setText(msg);
                 MimeBodyPart mbp2 = new MimeBodyPart();
-                if(dataSource != null)
-                {
+                if (dataSource != null) {
                     mbp2.setDataHandler(new DataHandler(dataSource));
                     mbp2.setFileName(file);
-                }
-                else {
+                } else {
                     mbp2.attachFile(file);
                 }
                 MimeMultipart mp = new MimeMultipart();
@@ -403,7 +435,7 @@ public class msgsend {
 
     // For corporate email which require authentication but no SSL or TTLS required
     public boolean sendMailWithAuthenticationNoSSLNoTLS(String to, String cc, String bcc, String subject,
-            String msg, String from, String file, DataSource dataSource)  {
+            String msg, String from, String file, DataSource dataSource) {
         try {
             // Read properties file.
             String emailPropertiesFile = getPropertiesFileLocation();
@@ -462,12 +494,10 @@ public class msgsend {
                 MimeBodyPart mbp1 = new MimeBodyPart();
                 mbp1.setText(msg);
                 MimeBodyPart mbp2 = new MimeBodyPart();
-                if(dataSource != null)
-                {
+                if (dataSource != null) {
                     mbp2.setDataHandler(new DataHandler(dataSource));
                     mbp2.setFileName(file);
-                }
-                else {
+                } else {
                     mbp2.attachFile(file);
                 }
                 MimeMultipart mp = new MimeMultipart();
@@ -501,7 +531,7 @@ public class msgsend {
 
     // IAS mails do not require authentication
     public boolean sendMail(String to, String cc, String bcc, String subject,
-                String msg, String from, String file, DataSource dataSource){
+            String msg, String from, String file, DataSource dataSource) {
 
         try {
 
@@ -510,14 +540,14 @@ public class msgsend {
             properties.load(new FileInputStream(emailPropertiesFile));
             String AUTH = properties.getProperty("AUTH");
 
-            if(AUTH.equalsIgnoreCase("true")){
+            if (AUTH.equalsIgnoreCase("true")) {
                 boolean status = this.sendMailWithAuthenticationUseTLS(to, cc, bcc, subject, msg, from, file, dataSource);
                 return status;
-            }else {
+            } else {
                 boolean status = this.sendMailWithoutAuthentication(to, cc, bcc, subject, msg, from, file, dataSource);
                 return status;
             }
-        }catch(Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
     }

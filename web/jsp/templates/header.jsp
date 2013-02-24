@@ -20,10 +20,7 @@
 %>
 <div id="header">
     <div id="darksubheader">
-        <div id="headertext"><%
-            out.println("<img id=\"eVitaran\"" + " src=\"" + request.getContextPath() + "/images/eVitaran.png\"/>");
-            %>
-        </div>
+        <div id="eVittaran"></div>
     </div>
     <div id="lightsubheader">
         <div id="welcomeUser">

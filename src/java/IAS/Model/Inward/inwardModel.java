@@ -674,13 +674,23 @@ public class inwardModel extends JDSModel {
                 reason);
     }
 
-    public String getInwardAckEmailBody(String chqDDNumber, float amount, String chqDate, String bank) {
-        String template = props.getProperty("inward_ack_email_body");
-        return String.format(template,
+    public String getInwardAckEmailBody(String chqDDNumber, float amount, String chqDate, String bank, String inwardPurpose, String ctext) {
+        String template;
+        String body;
+        if(amount > 0){
+            template = props.getProperty("inward_ack_email_body");
+            body = String.format(template,inwardPurpose,
                 chqDDNumber,
                 chqDate,
                 bank,
-                String.valueOf(amount));
+                String.valueOf(amount),
+                ctext);
+        }else{
+            template = props.getProperty("inward_ack_email_body_no_amount");
+            body = String.format(template, inwardPurpose, ctext);
+        }
+        return body;
+
     }
 
     public String getRequestForInvoiceEmailBody() {

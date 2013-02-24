@@ -101,6 +101,17 @@ A:active {
     background-repeat: no-repeat;
 }
 
+#eVittaran{
+    height: 38px;
+    width: 165px;
+    float: right;
+    margin-right: 1%;
+    top:1px;
+    background-image: url("../images/eVitaran.png");
+    z-index: 3;
+    background-repeat: no-repeat;
+}
+
 #iasletterheadlogo{
     height: 38px;
     width: 39px;
@@ -253,6 +264,15 @@ fieldset {
     height: 50px;
     width: 250px;
     max-width: 250px;
+    max-height: 50px;
+}
+
+.IASTextAreaWide{
+    font-family:inherit;
+    font-size: inherit;
+    height: 50px;
+    width: 500px;
+    max-width: 850px;
     max-height: 50px;
 }
 

@@ -14,7 +14,7 @@
         <title>Acknowledge Inward</title>
         <script type="text/javascript">
             var subscriptionID = 0;
-            jQueryCalendar("subscriberletterDate");
+            jQueryCalendar("subscriberletterDate", true);
             //                $(document).ready(function(){
             //                    jQueryCalendar("subscriberletterDate");
             //                    $.ajax({
@@ -115,7 +115,7 @@
                             </div>-->
                             <div id="customTextDiv" style="margin-left: 5%;float:left;width: 90%;">
                                 <label>Custom Text: </label>
-                                <textarea style="margin-left: 10px; width: 80%;" class="IASTextArea" id="customText" maxlength="300" cols="80"></textarea>
+                                <textarea style="margin-left: 10px; width: 80%;" class="IASTextAreaWide" id="customText" maxlength="300" cols="100"></textarea>
                             </div>
                         </div>
                     </fieldset>

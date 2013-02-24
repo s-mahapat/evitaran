@@ -6,8 +6,6 @@ package IAS.Model.FileUpload;
 
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscriber.subscriberFormBean;
-import IAS.Bean.Subscription.SubscriptionDetailBean;
-import IAS.Bean.Subscription.SubscriptionFormBean;
 import IAS.Class.DataValidation;
 import IAS.Class.ExcelReader;
 import IAS.Class.util;
@@ -51,7 +49,7 @@ public class AgentXLUploadModel extends FileUploadBase {
     public AgentXLUploadModel(Boolean uploadInd, HttpServletRequest request) throws SQLException {
         //call the base class constructor
         super(request);
-        HttpSession session = request.getSession(false);
+        session = request.getSession(false);
         this.uploadInd = uploadInd;
         _subscriberModel = new subscriberModel(request);
         _subscriberFormBean = new subscriberFormBean();
@@ -272,7 +270,7 @@ public class AgentXLUploadModel extends FileUploadBase {
 
     public String processData(String[] Data, int rowNo) throws SQLException { // Process each cell of the Excel
         // if uploadInd(upload indicator) is false then only validate the cells
-        // if upload indicator is true then add cell from A till N to Subscriber Bean, O till AB to corresponding subscription string 
+        // if upload indicator is true then add cell from A till N to Subscriber Bean, O till AB to corresponding subscription string
         // And then use the subscriber bean and the corresponding subscription strings to create subscriber and subscription
         String dataError = "";
         String subscriberNo = "";

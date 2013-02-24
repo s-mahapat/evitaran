@@ -101,17 +101,28 @@ public class Email extends JDSController {
                     byte pdfData[] = baos.toByteArray();
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
                     msgsend _mailer = new msgsend();
-                    String emailBody = _inwardModel.getInwardAckEmailBody(_inwardFormBean.getChqddNumberAsText(),
+                    String emailBody = _inwardModel.getInwardAckEmailBody(
+                            _inwardFormBean.getChqddNumberAsText(),
                             _inwardFormBean.getAmount(),
                             _inwardFormBean.getPaymentDate(),
-                            _inwardFormBean.getBankName());
+                            _inwardFormBean.getBankName(),
+                            _inwardFormBean.getInwardPurpose(),
+                            customText);
 
-                    success = _mailer.sendEmailToSubscriberWithAttachment(_inwardFormBean.getEmail(),
-                            "Acknowledgement of receipt of payment",
-                            emailBody,
-                            fileName,
-                            pdfData,
-                            "application/pdf");
+                    if (_inwardFormBean.getAmount() > 0) {
+                        success = _mailer.sendEmailToSubscriberWithAttachment(_inwardFormBean.getEmail(),
+                                "Acknowledgement of receipt of payment",
+                                emailBody,
+                                fileName,
+                                pdfData,
+                                "application/pdf");
+                    } else {
+                        success = _mailer.sendEmailToSubscriberWithoutAttachment(_inwardFormBean.getEmail(),
+                                "Acknowledgement of receipt of payment",
+                                emailBody);
+                    }
+
+
 
                 } // for request for invoice
                 else if (action.equalsIgnoreCase("rfi")) {
@@ -128,7 +139,7 @@ public class Email extends JDSController {
                             fileName,
                             pdfData,
                             "application/pdf");
-                }else if(action.equalsIgnoreCase("opb")){
+                } else if (action.equalsIgnoreCase("opb")) {
                     String inwardNumber = documentID;
                     InvoiceFormBean _invoiceFormBean = _inwardModel.getInvoiceDetail(inwardNumber);
                     OutStandingPendingBillPDF _opbpdf = new OutStandingPendingBillPDF(request);
@@ -173,7 +184,7 @@ public class Email extends JDSController {
                         "application/pdf");
                 // if the email was sent successfully update the prl_details table with the status
                 // so that it is not sent the second time
-                if(success){
+                if (success) {
                     _invoiceModel.updatePRLEmailStatus(invoice_no);
                 }
 
