@@ -28,7 +28,7 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jQuery("#annualSubscriptionRateTable").jqGrid('navGrid',"#IASFormFieldDiv",{add:false,del:false});
+                //jQuery("#annualSubscriptionRateTable").jqGrid('navGrid',"#IASFormFieldDiv",{add:false,del:false});
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalGroupName"%>","journalGroupName","journalGroupName");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");

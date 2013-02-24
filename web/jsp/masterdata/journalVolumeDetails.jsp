@@ -26,7 +26,7 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jQuery("#journalVolumeDetailsTable").jqGrid('navGrid',"#IASFormFieldDiv",{edit:false,add:false,del:false});
+                //jQuery("#journalVolumeDetailsTable").jqGrid('navGrid',"#IASFormFieldDiv",{edit:false,add:false,del:false});
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journals"%>", "journalName", "journalName");
                 jQuery("#btnEdit,#btnSave,#btnCancel").attr("disabled",true);
