@@ -8,8 +8,9 @@ function makeAgentReadOnly(){
     //document.getElementById("btnEdit").disabled = true;
     document.getElementById("btnSave").disabled = true;
     //document.getElementById("regDate").disabled = true;
-    document.getElementById("regDate").setAttribute("readonly",true);
-    $("#regDate").datepicker("disable");
+    //document.getElementById("regDate").setAttribute("readonly",true);
+    //$("#regDate").datepicker("disable");
+    document.getElementById("regDate").disabled = true;
     document.getElementById("agentName").disabled = true;
     document.getElementById("discount").disabled = true;
     document.getElementById("emailId").disabled = true;

@@ -93,7 +93,7 @@
                                 {periodStart          : $("#periodStart").val(),
                                  periodEnd            : $("#periodEnd").val(),
                                  subEnd               : $("#subEnd").val(),
-                                 totalBalance         : $("#selall:checked").length                             
+                                 totalBalance         : $("#selall:checked").length
                             }});
                         jQuery("#balanceTable").setGridParam({ datatype: "xml" });
                         jQuery("#balanceTable").trigger("clearGridData");
@@ -133,7 +133,7 @@
                                             %>
                                         </select>
                                     </span>
-                                </div>                                
+                                </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Balance Till Date</label>
@@ -141,7 +141,7 @@
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
-                                </div>                                        
+                                </div>
                             </div>
 
                             <div class="IASFormRightDiv">
@@ -152,12 +152,12 @@
                                 </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>start:</label>
+                                        <label>Start:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBox" TABINDEX="1" name="periodStart" id="periodStart">
                                             <option value="0">Select</option>
-                                            <%                                                
+                                            <%
                                                 for (int j = 1990; j <= 2050; j++) {
                                                     out.println("<option value =\"" + j + "\">" + j + "</option>");
                                                 }
@@ -170,14 +170,14 @@
                                     <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBox" TABINDEX="1" name="periodEnd" id="periodEnd">
                                             <option value="0">Select</option>
-                                            <%                                                
+                                            <%
                                                 for (int j = 1990; j <= 2050; j++) {
                                                     out.println("<option value =\"" + j + "\">" + j + "</option>");
                                                 }
                                             %>
                                         </select>
-                                    </span>                                        
-                                </div>  
+                                    </span>
+                                </div>
                             </div>
                            <div class="actionBtnDiv">
                                <button class="IASButton SearchButton" TYPE="button" TABINDEX="3" onclick="getOutstandingBalance()" value="Get Balance">Search</button>

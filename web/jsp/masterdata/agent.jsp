@@ -46,7 +46,8 @@
                 </span>
                 <%------ From Date Input Box ------%>
                 <span class="IASFormDivSpanInputBox">
-                     <input type="text" class="IASDateTextBox" TABINDEX="3" readonly="readonly" name="regDate" id="regDate" value="${agentFormBean.regDate}"/>
+                    <%--<input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="regDate" id="regDate" value="${agentFormBean.regDate}"/>--%>
+                     <input class="IASTextBox" TABINDEX="3" type="text" name="regDate" id="regDate" value="${agentFormBean.regDate}"/>
                 </span>
            </div>
 
