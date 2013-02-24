@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.28, for Win64 (x86)
+-- MySQL dump 10.13  Distrib 5.5.30, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.28
+-- Server version	5.5.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -121,7 +121,7 @@ CREATE TABLE `cities` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `city_UNIQUE` (`city`)
-) ENGINE=InnoDB AUTO_INCREMENT=3125 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3111 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -538,7 +538,10 @@ CREATE TABLE `mailing_list_detail` (
   `bilid` int(11) DEFAULT '0',
   `miId` int(11) DEFAULT '0',
   `bildate` date DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `mailing_list_detail_indx1` (`journalId`),
+  KEY `mailing_list_detail_indx2` (`subtypecode`),
+  KEY `mailing_list_detail_indx3` (`volumeNumber`,`year`,`issue`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3133,4 +3136,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-21 23:39:06
+-- Dump completed on 2013-02-23 21:14:59
