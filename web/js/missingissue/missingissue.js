@@ -223,6 +223,7 @@ function alreadySent(){
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
             $("#btnSentMsg").button("disable");
+            $("#btnMailing").button("disable");
 
             if(act == 'print')
             {
@@ -266,6 +267,7 @@ function noCopies(){
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
             $("#btnSentMsg").button("disable");
+            $("#btnMailing").button("disable");
 
             if(act == 'print')
             {
@@ -300,6 +302,7 @@ function gMiList(){
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
             $("#btnSentMsg").button("disable");
+            $("#btnMailing").button("disable");
             document.forms["missingissueForm"].action.value = "generateMlForMi";
             document.missingissueForm.submit();
             return true;
@@ -330,6 +333,7 @@ function reprint(){
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
             $("#btnSentMsg").button("disable");
+            $("#btnMailing").button("disable");
             document.forms["missingissueForm"].action.value = "generateMlForMi";
             document.missingissueForm.submit();
             return true;
