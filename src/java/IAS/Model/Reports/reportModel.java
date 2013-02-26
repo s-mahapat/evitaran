@@ -1603,6 +1603,8 @@ String xml = null;
         PreparedStatement stGetCurr = conn.prepareStatement(sqlcurr);
         paramIndex = 1;
         ResultSet rsCurr = this.db.executeQueryPreparedStatement(stGetCurr);
+
+        // Get list of all subscribers who have a balance
         while (rsCurr.next()){
             String subscriberNumber = rsCurr.getString("subscriberNumber");
             int subscriptionId = rsCurr.getInt("subscriptionId");
@@ -1619,8 +1621,6 @@ String xml = null;
             String period = "";
             int subexists = 0;
 
-
-
             String sqljournalsCurr = Queries.getQuery("get_sub_journals");
             //String sqljournals = Queries.getQuery("get_sub_journals");
             if (subEnd != 0){
@@ -1633,6 +1633,8 @@ String xml = null;
             PreparedStatement stGetJournals = conn.prepareStatement(sqljournalsCurr);
             stGetJournals.setInt(paramIndex, subscriptionId);
             ResultSet rsJournals = this.db.executeQueryPreparedStatement(stGetJournals);
+
+            // Get the list of journals
             while (rsJournals.next()){
                 if (journalCode.equals("")){
                     journalCode += rsJournals.getString(1);
@@ -1657,7 +1659,8 @@ String xml = null;
                     }
                 }
                 subexists = 1;
-           }
+            }
+
             period = startYear + "-" + endYear;
 
             if (subexists == 1){
@@ -1694,16 +1697,16 @@ String xml = null;
             }
         }
 
-            Element row = doc.createElement("row");
-            results.appendChild(row);
+        Element row = doc.createElement("row");
+        results.appendChild(row);
 
-            Element _journalCode = doc.createElement("journalCode");
-            row.appendChild(_journalCode);
-            _journalCode.appendChild(doc.createTextNode("Total Balance -->"));
+        Element _journalCode = doc.createElement("journalCode");
+        row.appendChild(_journalCode);
+        _journalCode.appendChild(doc.createTextNode("Total Balance -->"));
 
-            Element _balance = doc.createElement("balance");
-            row.appendChild(_balance);
-            _balance.appendChild(doc.createTextNode(Integer.toString(totalBalance)));
+        Element _balance = doc.createElement("balance");
+        row.appendChild(_balance);
+        _balance.appendChild(doc.createTextNode(Integer.toString(totalBalance)));
 
         DOMSource domSource = new DOMSource(doc);
         try (StringWriter writer = new StringWriter()) {

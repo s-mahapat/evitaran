@@ -79,6 +79,7 @@ public class missingissueModel extends JDSModel {
         String journalGroupName[] = request.getParameterValues("journalGroupName");
         String journalName[] = request.getParameterValues("journalName");
         String year[] = request.getParameterValues("year");
+        String volume[] = request.getParameterValues("volume");
         String missingIssue[] = request.getParameterValues("issue");
         String mcopies[] = request.getParameterValues("mcopies");
         int missingissueId = 0;
@@ -105,6 +106,7 @@ public class missingissueModel extends JDSModel {
                             journalName,
                             missingIssue,
                             util.convertStringArraytoIntArray(year),
+                            util.convertStringArraytoIntArray(volume),
                             util.convertStringArraytoIntArray(mcopies));
 
                     xml = util.convertStringToXML(String.valueOf(missingissueId), "missingissueId");
@@ -181,7 +183,7 @@ public class missingissueModel extends JDSModel {
 
     private int[] __addMissingJournals(
             int missingissueId, int[] subscriptionId, String[] journalGroupName, String[] journalName,
-            String[] issue, int[] year, int[] mcopies) throws SQLException {
+            String[] issue, int[] year, int[] volume, int[] mcopies) throws SQLException {
 
 
         String sql = Queries.getQuery("insert_missing_journals");
@@ -200,6 +202,7 @@ public class missingissueModel extends JDSModel {
             st.setInt(++paramIndex, year[i]);
             st.setInt(++paramIndex, mcopies[i]);
             st.setInt(++paramIndex, mlid);
+            st.setInt(++paramIndex, volume[i]);
             st.addBatch();
         }
         int res[] = st.executeBatch();
@@ -280,7 +283,7 @@ public class missingissueModel extends JDSModel {
                 paramIndex = 0;
 
                 Object value = null;
-                for (int j = 1; j <= 26; j++) {
+                for (int j = 1; j <= 27; j++) {
                     value = rs.getObject(j);
                     String temp = "";
                     if(value == null)

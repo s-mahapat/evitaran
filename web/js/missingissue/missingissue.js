@@ -1,24 +1,29 @@
 function addJournal(){
 
-    if ($("#year").val() == 'value') {
-        alert("Select Year");
-    }
-
-    else if ($("#journalName").val() == 'value'){
-        alert("Select Journal");
-    }
-
-    else if ($("#issue").val() == 'value'){
-        alert("Select Issue");
+    if($("#subscriptionId").val() == 'value') {
+        alert("Select Subscription");
     }
 
     else if ($("#journalGroupName").val() == 'value'){
         alert("Select Journal Group Name");
     }
 
-    else if($("#subscriptionId").val() == 'value') {
-        alert("Select Subscription");
+    else if ($("#journalName").val() == 'value'){
+        alert("Select Journal");
     }
+
+    if ($("#year").val() == 'value') {
+        alert("Select Year");
+    }
+
+    else if ($("#volume").val() == 'value'){
+        alert("Select Volume No");
+    }
+
+    else if ($("#issue").val() == 'value'){
+        alert("Select Issue");
+    }
+
     else if($("#missingcopies").val() == 0) {
         alert("Add Missing Copies");
     }
@@ -52,6 +57,7 @@ function addJournal(){
                     "subscriptionId": $("#subscriptionId").val(),
                     "journalGroupName": $("#journalGroupName").val(),
                     "journalName": $("#journalName").val(),
+                    "volume": $("#volume").val(),
                     "issue": $("#issue").val(),
                     "year": $("#year").val(),
                     "scopies": copies,
@@ -143,6 +149,10 @@ function saveMissingInfo(){
         rowRequiredData.push({
             name: "year",
             value: rowObj.year
+        });
+        rowRequiredData.push({
+            name: "volume",
+            value: rowObj.volume
         });
         rowRequiredData.push({
             name: "mcopies",
@@ -328,8 +338,8 @@ function reprint(){
             alert("Failed to sent mail/ Print. " + textStatus + ": "+ errorThrown);
             return false;
         }
-       });      
-    }       
+       });
+    }
 
    function checkGenerate(){
     var act;
@@ -354,9 +364,9 @@ function reprint(){
             alert("System failure. " + textStatus + ": "+ errorThrown);
             return false;
         }
-       });            
+       });
  }
- 
+
  function getMiMl(){
     var act;
     $.ajax({
@@ -375,6 +385,7 @@ function reprint(){
             $("#btnReprint").button("disable");
             $("#btnNoCopy").button("disable");
             $("#btnSentMsg").button("disable");
+            $("#btnMailing").button("disable");
             document.forms["missingissueForm"].action.value = "generateMlForMi";
             document.missingissueForm.submit();
             return true;

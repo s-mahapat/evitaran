@@ -37,7 +37,7 @@
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
                     colNames:['Id', 'Subscription Detail id', 'Journal Group', 'Journal Code', 'Journal Name', 'Sub Copies',
-                                'Start Year', 'Start Month', 'End Month', 'End Year', 'Issue', 'Year', 'Missing Copies', 'Action'],
+                                'Start Year', 'Start Month', 'End Month', 'End Year', 'Volume No', 'Issue', 'Year','Missing Copies', 'Action'],
                     colModel :[
                         {name:'id', index:'id', width:80, align:'center', xmlmap:'id'},
                         {name:'subscriptiondetailsId', index:'subscriptoindetailsId', width:2, align:'center', xmlmap:'subscriptiondetailsId'},
@@ -49,6 +49,7 @@
                         {name:'startMonth', index:'startMonth', width:80, align:'center', xmlmap:'startMonth'},
                         {name:'endMonth', index:'endMonth', width:80, align:'center', xmlmap:'endMonth'},
                         {name:'endYear', index:'endYear', width:80, align:'center', xmlmap:'endYear'},
+                        {name:'volumeNo', index:'volumeNo', width:100, align:'center', xmlmap:'volumeNo'},
                         {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
                         {name:'missingCopies', index:'missingCopies', width:80, align:'center', xmlmap:'missingCopies'},
@@ -122,8 +123,8 @@
 
                 isPageLoaded = true;
             }
-            
-            
+
+
 
 
         </script>
@@ -298,7 +299,7 @@
                                     </div>
                                     <div id="reprintBtnDiv">
                                         <input class="IASButton" TABINDEX="3" type="button" visible="false" value="Re-print Mailing List" id="btnReprint" name="btnReprint" onclick="reprint()"/>
-                                    </div>   
+                                    </div>
                                    --%>
                                 </div>
 
