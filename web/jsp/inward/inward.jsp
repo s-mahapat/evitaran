@@ -3,7 +3,7 @@
 <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
 <script>
     $(document).ready(function(){
-        $("#from").focus();
+        $("#subscriberId").focus();
 
         // get the inward complete state from the bean
         var iscomplete = ${inwardFormBean.completed};
@@ -101,10 +101,23 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
+                <label>Subscriber No:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input autocomplete="off" class="IASTextBox" TABINDEX="1" type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}" onblur="removeInvalidSubscriber()"/>
+            </span>
+            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
+                <button type="button" id="btnSearchSubscriber" TABINDEX="2">Search Subscriber</button>
+                <button type="button" id="btnResetSubscriber" TABINDEX="3">Reset</button>
+            </span>
+        </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
                 <label>From:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxMandatoryWide required" autofocus maxlength="64" TABINDEX="1" type="text" name="from" id="from" value="<jsp:getProperty name="inwardFormBean" property="from"/>"/>
+                <input class="IASTextBoxMandatoryWide required" autofocus maxlength="64" TABINDEX="4" type="text" name="from" id="from" value="<jsp:getProperty name="inwardFormBean" property="from"/>"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -112,15 +125,14 @@
                 <label>Country:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="2" name="country" id="country">
+                <select class="IASComboBoxMandatory" TABINDEX="5" name="country" id="country">
                     <option value="0" selected >Select</option>
                     <%
                         if (inwardFormBean.getCountry() != null && !inwardFormBean.getCountry().isEmpty()) {
                             out.println("<option value=" + "\"" + inwardFormBean.getCountry() + "\"" + " selected >" + inwardFormBean.getCountry() + "</option>");
                         }
                     %>
-                </select>
-                <%--<input class="IASTextBoxMandatory" TABINDEX="2" name="country" id="country" value="<jsp:getProperty name="inwardFormBean" property="country"/>"--%>
+                </select>              
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -128,7 +140,7 @@
                 <label>State:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="3" name="state" id="state">
+                <select class="IASComboBox" TABINDEX="6" name="state" id="state">
                     <option value="" selected >Select</option>
                     <%
                         if (inwardFormBean.getState() != null && !inwardFormBean.getState().isEmpty()) {
@@ -136,7 +148,6 @@
                         }
                     %>
                 </select>
-                <%--<input class="IASTextBoxMandatory" TABINDEX="3" name="state" id="state" value="<jsp:getProperty name="inwardFormBean" property="state"/>"--%>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -144,7 +155,7 @@
                 <label>District:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="4" name="district" id="district"
+                <input class="IASTextBox" TABINDEX="7" name="district" id="district"
                        value="<% if (inwardFormBean.getDistrict() == "" || inwardFormBean.getDistrict() == null) {
                                out.println("");
                            } else {
@@ -159,7 +170,7 @@
                 <label>City:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxMandatory required" TABINDEX="5" name="city" id="city" value="<jsp:getProperty name="inwardFormBean" property="city"/>"/>
+                <input class="IASTextBoxMandatory required" TABINDEX="8" name="city" id="city" value="<jsp:getProperty name="inwardFormBean" property="city"/>"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -167,23 +178,13 @@
                 <label for="pincode">PIN Code:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox digits" maxlength="6" TABINDEX="6" type="text" name="pincode" id="pincode" value="${inwardFormBean.pincodeAsText}"/>
-            </span>
-        </div>
-
-        <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Email:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" maxlength="64" TABINDEX="7" type="email" name="email" id="email" value="${inwardFormBean.email}"/>
+                <input class="IASTextBox digits" maxlength="6" TABINDEX="9" type="text" name="pincode" id="pincode" value="${inwardFormBean.pincodeAsText}"/>
             </span>
         </div>
     </div>
 
     <%-- Inward Info right div --%>
     <div class="IASFormRightDiv">
-
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
@@ -192,19 +193,23 @@
             <span class="IASFormDivSpanInputBox">
                 <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<jsp:getProperty name="inwardFormBean" property="inwardNumber"/>"/>
             </span>
-            <span class="IASFormDivSpanLabelLeftAligned">
-                <label>Date:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="inwardCreationDate" id="inwardCreationDate" value="${inwardFormBean.inwardCreationDate}"/>
-            </span>
+        </div>
+        <div class="IASFormFieldDiv">
+            <div>            
+                <span class="IASFormDivSpanLabel">
+                    <label>Date:</label>
+                </span>
+                <span class="IASFormDivSpanInputBox">
+                    <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="inwardCreationDate" id="inwardCreationDate" value="${inwardFormBean.inwardCreationDate}"/>
+                </span>
+            </div>
         </div>
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Agent:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxWide" TABINDEX="8" name="agentName" id="agentName">
+                <select class="IASComboBoxWide" TABINDEX="10" name="agentName" id="agentName">
                     <option value="" selected >Select</option>
                     <%
                         if (inwardFormBean.getagentName() != null && !inwardFormBean.getagentName().isEmpty()) {
@@ -213,10 +218,6 @@
                     %>
                 </select>
             </span>
-            <%--<span class="IASFormDivSpanInputBox" style="font-size: 8px;">
-                <button id="btnUE" TABINDEX="13">Upload Excel</button>
-                <button id="btnResetUE" TABINDEX="14">Reset</button>
-            </span>--%>
         </div>
 
         <div class="IASFormFieldDiv">
@@ -224,7 +225,7 @@
                 <label>Purpose:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="9" name="inwardPurpose" id="inwardPurpose" onchange="selectPaymentType(this.value)">
+                <select class="IASComboBoxMandatory" TABINDEX="11" name="inwardPurpose" id="inwardPurpose" onchange="selectPaymentType(this.value)">
                     <option value="0">Select</option>
                     <%
                         if (inwardFormBean.getInwardPurpose() != null && !inwardFormBean.getInwardPurpose().isEmpty()) {
@@ -237,31 +238,13 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Subscriber No:</label>
+                <label>Department:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input autocomplete="off" class="IASTextBox" TABINDEX="10" type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}" onblur="removeInvalidSubscriber()" />
-            </span>
-            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
-                <button type="button" id="btnSearchSubscriber" TABINDEX="11">Search Subscriber</button>
-                <button type="button" id="btnResetSubscriber" TABINDEX="12">Reset</button>
+                <input class="IASTextBoxWide" maxlength="64" TABINDEX="12" type="text" name="department" id="department" value="${inwardFormBean.department}"/>
             </span>
         </div>
 
-        <%--<div class="IASFormFieldDiv">
-    <span class="IASFormDivSpanLabel">
-        <label>Subscription ID:</label>
-    </span>
-    <span class="IASFormDivSpanInputBox">
-        <input class="IASDisabledTextBox" TABINDEX="-1" disabled type="text" name="subscriptionID" id="subscriptionid" value="${inwardFormBean.subscriptionIDAsText}"/>
-    </span>
-    <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
-        <button type="button" id="btnSearchSubscription" TABINDEX="13">Search Subscription</button>
-        <button type="button" id="btnResetSubscription" TABINDEX="14">Reset</button>
-        <%--<input class="IASButton" TABINDEX="7" type="button" name="btnSearchSubscriber" id="btnSearchSubscriber" value="Search Subscriber" onclick="validateSearchSubscriber()"/>
-        <input class="IASButton" TABINDEX="-1" type="button" name="btnResetSubscriber" id="btnResetSubscriber" value="Reset" onclick="clearSubscriber()"/>
-        </span>
-    </div>--%>
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Institution:</label>
@@ -273,10 +256,10 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Department:</label>
+                <label>Email:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxWide" maxlength="64" TABINDEX="14" type="text" name="department" id="department" value="${inwardFormBean.department}"/>
+                <input class="IASEmailTextBox" maxlength="64" TABINDEX="14" type="email" name="email" id="email" value="${inwardFormBean.email}"/>
             </span>
         </div>
     </div>
@@ -291,25 +274,6 @@
 
     <%-- Inward Info left div --%>
     <div class="IASFormLeftDiv">
-
-
-        <%--<div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>Purpose:</label>
-            </span>
-            <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="10" name="inwardPurpose" id="inwardPurpose">
-                    <option value="0">Select</option>
-                    <%
-                        if (inwardFormBean.getInwardPurpose() != null && !inwardFormBean.getInwardPurpose().isEmpty()) {
-                            out.println("<option value=" + "\"" + inwardFormBean.getInwardPurpose() + "\"" + " selected >" + inwardFormBean.getInwardPurpose() + "</option>");
-                        }
-                    %>
-                </select>
-            </span>
-        </div>--%>
-
-
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Payment Mode:</label>

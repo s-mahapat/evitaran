@@ -277,8 +277,8 @@ function selectPaymentType(inwardType){
 
 function ValidateSubscriber(){
     // if the subscriber is already selected do not do anything
-    if(bvalidsubscriber)
-        return
+    //if(bvalidsubscriber)
+      //  return
 
     subscriber_number = $("#subscriberId").val();
     if(!subscriber_number){
@@ -324,6 +324,7 @@ function ValidateSubscriber(){
                     });
                     $("#subscriberId").autocomplete("search", $("#subscriberId").val());*/
                     $("#subscriberId").focus();
+                    removeInvalidSubscriber();
                     alert("No such subscriber exists. Please enter a valid subscriber id");
                 }
             },

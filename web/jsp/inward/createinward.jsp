@@ -72,7 +72,6 @@
                     </fieldset>
                 </div>
             </form>
-            <%--@include file="/jsp/fileupload/fileupload.jsp"--%>
         </div>
     </body>
 </html>
