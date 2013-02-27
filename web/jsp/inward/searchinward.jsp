@@ -46,13 +46,20 @@
                     scrollOffset: 20,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Inward No','Subscriber Id', 'From','Received Date','City','Cheque#','Amount','Purpose','Completed','View/Edit'],
+                    colNames:['Inward No','Subscriber Number', 'From','Received Date','City','Cheque#','Amount','Purpose','Completed','View/Edit'],
                     colModel :[
                         {name:'InwardNo', index:'inwardNumber', width:40, align:'center', xmlmap:'inwardNumber'},
-                        {name:'SubscriberId', index:'subscriberId', width:40, align:'center', xmlmap:'subscriberId'},
-                        {name:'From', index:'from', sortable: false, width:90, align:'center', xmlmap:'from'},
+                        {
+                            name:'SubscriberId',
+                            index:'subscriberId',
+                            width:50,
+                            align:'center',
+                            xmlmap:'subscriberId',
+                            formatter: subscriberlink
+                        },
+                        {name:'From', index:'from', sortable: false, width:100, align:'center', xmlmap:'from'},
                         {name:'ReceivedDate', index:'inwardCreationDate', width:40, align:'center', xmlmap:'inwardCreationDate'},
-                        {name:'City', index:'city', width:80, align:'center', xmlmap:'city'},
+                        {name:'City', index:'city', width:50, align:'center', xmlmap:'city'},
                         {name:'Cheque', index:'chqddNumber', width:40, align:'center', xmlmap:'chqddNumber'},
                         {name:'amount', index:'amount', width:25, align:'center', xmlmap:'amount'},
                         {name:'Purpose', index:'inwardPurpose', width:60, align:'center', xmlmap:'inwardPurpose'},
@@ -271,7 +278,7 @@
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                             <%--<legend>Search Result</legend>--%>
+                            <%--<legend>Search Result</legend>--%>
 
                             <table class="datatable" id="inwardTable"></table>
                             <div id="pager"></div>

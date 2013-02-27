@@ -16,11 +16,11 @@ import org.apache.log4j.Logger;
 public class templates extends HttpServlet {
 
     private static final Logger logger = JDSLogger.getJDSLogger(templates.class.getName());
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        
+
         int template_type = Integer.parseInt(request.getParameter("id"));
         //PrintWriter out = response.getWriter();
         response.setHeader("Pragma", "public");
@@ -31,7 +31,7 @@ public class templates extends HttpServlet {
             case 1:
                 response.setContentType("application/vnd.ms-excel");
                 response.setHeader("Content-Disposition", "inline; filename=AgentUpload.xls");
-                this.SendFileContents(ServletContextInfo.getContextRealPath()+ "\\templates\\AgentUpload.xls", response);
+                this.SendFileContents(ServletContextInfo.getContextRealPath()+ "/templates/AgentUpload.xls", response);
         }
     }
 

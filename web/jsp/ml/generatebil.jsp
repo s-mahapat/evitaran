@@ -52,7 +52,7 @@
                         {name:'state', index:'state', width:80, align:'center', xmlmap:'state'},
                         {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
                         {name:'pincode', index:'pincode', width:80, align:'center', xmlmap:'pincode'},
-                        {name:'copies', index:'copies', width:80, align:'copies', xmlmap:'copies'},
+                        {name:'copies', index:'copies', width:80, align:'center', xmlmap:'copies'},
                         {name:'volumeNumber', index:'volumeNumber', width:80, align:'center', xmlmap:'volumeNumber'},
                         {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
                         {name:'month', index:'month', width:80, align:'center', xmlmap:'month'},
@@ -144,10 +144,10 @@
                 var x = "printSticker";
                 $('#action').val(x);
             }
-                        
+
             // draw the date picker.
             jQueryDatePicker("from","to");
-            
+
         </script>
     </head>
     <body>
@@ -182,7 +182,7 @@
                                                         <input class="IASDateTextBox" TABINDEX="-1" readonly type="text" name="bilCreationDate" id="bilCreationDate" value="<jsp:getProperty name="bilFormBean" property="bilCreationDate"/>"/>
                                                     </span>
                                                 </div>
-                                            </div>                                        
+                                            </div>
                                     </div>
                                     <%-- Search Criteria right div --%>
                                     <div class="IASFormRightDiv">
@@ -224,7 +224,7 @@
                             <%-----------------------------------------------------------------------------------------------------%>
 
                             <input type="hidden" name="action" id="action"/>
-                            <fieldset class="subMainFieldSet">                              
+                            <fieldset class="subMainFieldSet">
                                 <div class="actionBtnDiv">
                                         <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
                                         <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>

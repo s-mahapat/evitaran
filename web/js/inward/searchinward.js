@@ -24,3 +24,11 @@ function validateSearch(){
 
     return true;
 }
+
+function subscriberlink(cellvalue, options, rowObject){
+    if(cellvalue.length > 0){
+        link = "<a style='color:blue;' title='Click here to view subscriber details' href='subscriber?action=display&subscriberNumber=" + cellvalue + "'>" + cellvalue + "</a>";
+        return link;
+    }
+    return cellvalue;
+}

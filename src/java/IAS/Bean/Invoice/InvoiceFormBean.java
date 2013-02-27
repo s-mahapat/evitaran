@@ -24,6 +24,7 @@ public class InvoiceFormBean {
     private String invoiceAddress = "";
     private String subscriberName;
     private String email;
+    private String inwardEmail;
     private String department;
     private String institute;
     private String city;
@@ -86,11 +87,19 @@ public class InvoiceFormBean {
     }
 
     public String getEmail() {
-        return this.email;
+        return this.email != null ? this.email : this.getInwardEmail();
     }
 
     public void setEmail(String _email) {
         this.email = _email;
+    }
+
+    public String getInwardEmail() {
+        return this.inwardEmail;
+    }
+
+    public void setInwardEmail(String _email) {
+        this.inwardEmail = _email;
     }
 
     /*

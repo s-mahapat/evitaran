@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.25, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.5.30, for Win64 (x86)
 --
 -- Host: localhost    Database: jds
 -- ------------------------------------------------------
--- Server version	5.5.25
+-- Server version	5.5.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -594,7 +594,10 @@ CREATE TABLE `mailing_list_detail` (
   `bilid` int(11) DEFAULT '0',
   `miId` int(11) DEFAULT '0',
   `bildate` date DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `mailing_list_detail_indx1` (`journalCode`),
+  KEY `mailing_list_detail_indx2` (`subtypecode`),
+  KEY `mailing_list_detail_indx3` (`volumeNumber`,`issue`,`year`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2757,38 +2760,42 @@ CREATE TABLE `subscriptiondetails` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_back_issues`
-
-   BEFORE INSERT
-
-   ON jds.subscriptiondetails
-
-   FOR EACH ROW
-
-BEGIN
-
-   
-
-   IF new.endyear < YEAR(CURRENT_TIMESTAMP)
-
-   THEN
-
-      SET new.active = FALSE;
-
-   END IF;
-
-
-
-   CALL addBackIssues(new.id,
-
-                      new.startMonth,
-
-                      new.startYear,
-
-                      new.journalGroupID,
-
-                      new.copies);
-
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`deactivate_subscription` BEFORE INSERT
+    ON jds.subscriptiondetails FOR EACH ROW
+BEGIN
+   IF new.endyear < YEAR(CURRENT_TIMESTAMP) THEN
+
+      SET new.active = FALSE;
+
+   END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_back_issues` AFTER INSERT
+    ON jds.subscriptiondetails FOR EACH ROW
+BEGIN
+   CALL addBackIssues(new.id,
+
+                      new.startMonth,
+
+                      new.startYear,
+
+                      new.journalGroupID,
+
+                      new.copies);
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -5320,4 +5327,4 @@ CREATE TABLE `year` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-27  0:03:45
+-- Dump completed on 2013-02-27  7:40:17
