@@ -256,13 +256,14 @@ DROP TABLE IF EXISTS `invoice`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `invoice` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `invoiceNumber` varchar(32) NOT NULL,
+  `invoiceNumber` varchar(11) NOT NULL,
   `subscriptionId` int(15) DEFAULT NULL,
   `invoiceCreationDate` date DEFAULT NULL,
   `invoice_type_id` int(11) NOT NULL DEFAULT '1',
   `amount` float unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `invoice_idx1` (`subscriptionId`,`invoice_type_id`)
+  KEY `invoice_idx1` (`subscriptionId`,`invoice_type_id`),
+  KEY `invoice_indx2` (`invoiceNumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3141,12 +3142,18 @@ UNLOCK TABLES;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`deactivate_subscription` BEFORE INSERT
     ON jds.subscriptiondetails FOR EACH ROW
-BEGIN
-   IF new.endyear < YEAR(CURRENT_TIMESTAMP) THEN
-
-      SET new.active = FALSE;
-
-   END IF;
+BEGIN
+
+   IF new.endyear < YEAR(CURRENT_TIMESTAMP) THEN
+
+
+
+      SET new.active = FALSE;
+
+
+
+   END IF;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3164,17 +3171,28 @@ DELIMITER ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_back_issues` AFTER INSERT
     ON jds.subscriptiondetails FOR EACH ROW
-BEGIN
-   CALL addBackIssues(new.id,
-
-                      new.startMonth,
-
-                      new.startYear,
-
-                      new.journalGroupID,
-
-                      new.copies);
-
+BEGIN
+
+   CALL addBackIssues(new.id,
+
+
+
+                      new.startMonth,
+
+
+
+                      new.startYear,
+
+
+
+                      new.journalGroupID,
+
+
+
+                      new.copies);
+
+
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -3910,13 +3928,13 @@ BEGIN
 
 
 
-      
 
 
 
 
 
-      
+
+
 
 
 
@@ -4026,13 +4044,13 @@ BEGIN
 
 
 
-         
 
 
 
 
 
-         
+
+
 
 
 
@@ -4206,13 +4224,13 @@ BEGIN
 
 
 
-      
 
 
 
 
 
-      
+
+
 
 
 
@@ -4282,7 +4300,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -5998,7 +6016,7 @@ BEGIN
 
 
 
-       
+
 
 
 
@@ -6231,7 +6249,7 @@ BEGIN
 
 
 
-            
+
 
 
 
@@ -6327,7 +6345,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -6359,7 +6377,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -6391,7 +6409,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -6423,7 +6441,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -6455,7 +6473,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -6487,7 +6505,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -6519,7 +6537,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -6551,7 +6569,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -6583,7 +6601,6 @@ BEGIN
 
 
 
-      
 
 
 
@@ -6599,7 +6616,8 @@ BEGIN
 
 
 
-      DECLARE balance_copies             int default 0;    
+
+      DECLARE balance_copies             int default 0;
 
 
 
@@ -6615,7 +6633,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -6659,7 +6677,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -6707,11 +6725,11 @@ BEGIN
 
 
 
- 
 
 
 
- 
+
+
 
 
 
@@ -6743,7 +6761,7 @@ BEGIN
 
 
 
- 
+
 
 
 
@@ -6775,7 +6793,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -6807,7 +6825,7 @@ BEGIN
 
 
 
-   
+
 
 
 
@@ -6839,7 +6857,7 @@ BEGIN
 
 
 
-   
+
 
 
 
@@ -6995,11 +7013,6 @@ BEGIN
 
 
 
-          
-
-
-
-          
 
 
 
@@ -7015,7 +7028,12 @@ BEGIN
 
 
 
-          END IF;       
+
+
+
+
+
+          END IF;
 
 
 
@@ -7091,7 +7109,7 @@ BEGIN
 
 
 
-          
+
 
 
 
@@ -7159,7 +7177,7 @@ BEGIN
 
 
 
-          and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
+          and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID'
 
 
 
@@ -7203,11 +7221,11 @@ BEGIN
 
 
 
-          
 
 
 
-          
+
+
 
 
 
@@ -7351,7 +7369,7 @@ BEGIN
 
 
 
-          and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
+          and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID'
 
 
 
@@ -7395,11 +7413,11 @@ BEGIN
 
 
 
-          
 
 
 
-          
+
+
 
 
 
@@ -7511,7 +7529,7 @@ BEGIN
 
 
 
-          and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
+          and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID'
 
 
 
@@ -7555,11 +7573,11 @@ BEGIN
 
 
 
-          
 
 
 
-          
+
+
 
 
 
@@ -7703,7 +7721,7 @@ BEGIN
 
 
 
-          and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID' 
+          and mailing_list_detail.`year` = cir_year and subscriber_type.subtype = 'PAID'
 
 
 
@@ -7747,11 +7765,11 @@ BEGIN
 
 
 
-          
 
 
 
-          
+
+
 
 
 
@@ -7907,11 +7925,11 @@ BEGIN
 
 
 
-          
 
 
 
-          
+
+
 
 
 
@@ -8067,11 +8085,6 @@ BEGIN
 
 
 
-          
-
-
-
-          
 
 
 
@@ -8087,7 +8100,12 @@ BEGIN
 
 
 
-          mailing_list_detail.journalId, mailing_list_detail.`year`;        
+
+
+
+
+
+          mailing_list_detail.journalId, mailing_list_detail.`year`;
 
 
 
@@ -8103,7 +8121,7 @@ BEGIN
 
 
 
-          
+
 
 
 
@@ -8135,7 +8153,7 @@ BEGIN
 
 
 
-          
+
 
 
 
@@ -8199,7 +8217,7 @@ BEGIN
 
 
 
-            insert into circulation_figure ( journalCode ,journalName, instIndia, instAbroad, indiIndia, 
+            insert into circulation_figure ( journalCode ,journalName, instIndia, instAbroad, indiIndia,
 
 
 
@@ -8215,7 +8233,7 @@ BEGIN
 
 
 
-            indiAbroad, comp, auth, totalCopies, printOrder, balanceCopies) 
+            indiAbroad, comp, auth, totalCopies, printOrder, balanceCopies)
 
 
 
@@ -8439,7 +8457,7 @@ BEGIN
 
 
 
-          
+
 
 
 
@@ -8471,7 +8489,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -8503,7 +8521,6 @@ BEGIN
 
 
 
-    
 
 
 
@@ -8519,7 +8536,8 @@ BEGIN
 
 
 
-    
+
+
 
 
 
@@ -9160,7 +9178,7 @@ DECLARE
 
 
 
-        select subscription_rates.rate into price_rate 
+        select subscription_rates.rate into price_rate
 
 
 
@@ -9176,7 +9194,7 @@ DECLARE
 
 
 
-          from 
+          from
 
 
 
@@ -9192,7 +9210,7 @@ DECLARE
 
 
 
-          subscription_rates, subscriber_type 
+          subscription_rates, subscriber_type
 
 
 
@@ -9208,7 +9226,7 @@ DECLARE
 
 
 
-          where  
+          where
 
 
 
@@ -9224,7 +9242,7 @@ DECLARE
 
 
 
-          subscription_rates.`year` = cir_year AND subscription_rates.period = 1 
+          subscription_rates.`year` = cir_year AND subscription_rates.period = 1
 
 
 
@@ -9240,7 +9258,7 @@ DECLARE
 
 
 
-          AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id 
+          AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id
 
 
 
@@ -9304,7 +9322,7 @@ DECLARE
 
 
 
-          insert into temp_sub_rate 
+          insert into temp_sub_rate
 
 
 
@@ -9320,7 +9338,7 @@ DECLARE
 
 
 
-          (journalGroupId, journalGroupName, subTypeDesc, `year`, year1) 
+          (journalGroupId, journalGroupName, subTypeDesc, `year`, year1)
 
 
 
@@ -9336,7 +9354,7 @@ DECLARE
 
 
 
-          VALUES 
+          VALUES
 
 
 
@@ -9448,7 +9466,7 @@ DECLARE
 
 
 
-        select subscription_rates.rate into price_rate 
+        select subscription_rates.rate into price_rate
 
 
 
@@ -9464,7 +9482,7 @@ DECLARE
 
 
 
-          from 
+          from
 
 
 
@@ -9480,7 +9498,7 @@ DECLARE
 
 
 
-          subscription_rates, subscriber_type 
+          subscription_rates, subscriber_type
 
 
 
@@ -9496,7 +9514,7 @@ DECLARE
 
 
 
-          where  
+          where
 
 
 
@@ -9512,7 +9530,7 @@ DECLARE
 
 
 
-          subscription_rates.`year` = cir_year AND subscription_rates.period = 2 
+          subscription_rates.`year` = cir_year AND subscription_rates.period = 2
 
 
 
@@ -9528,7 +9546,7 @@ DECLARE
 
 
 
-          AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id 
+          AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id
 
 
 
@@ -9608,7 +9626,7 @@ DECLARE
 
 
 
-            year2 = price_rate 
+            year2 = price_rate
 
 
 
@@ -9624,7 +9642,7 @@ DECLARE
 
 
 
-            where 
+            where
 
 
 
@@ -9640,7 +9658,7 @@ DECLARE
 
 
 
-              journalGroupId = journal_gp_id AND journalGroupName = journal_gp_name 
+              journalGroupId = journal_gp_id AND journalGroupName = journal_gp_name
 
 
 
@@ -9752,7 +9770,7 @@ DECLARE
 
 
 
-        select subscription_rates.rate into price_rate 
+        select subscription_rates.rate into price_rate
 
 
 
@@ -9768,7 +9786,7 @@ DECLARE
 
 
 
-          from 
+          from
 
 
 
@@ -9784,7 +9802,7 @@ DECLARE
 
 
 
-          subscription_rates, subscriber_type 
+          subscription_rates, subscriber_type
 
 
 
@@ -9800,7 +9818,7 @@ DECLARE
 
 
 
-          where  
+          where
 
 
 
@@ -9816,7 +9834,7 @@ DECLARE
 
 
 
-          subscription_rates.`year` = cir_year AND subscription_rates.period = 3 
+          subscription_rates.`year` = cir_year AND subscription_rates.period = 3
 
 
 
@@ -9832,7 +9850,7 @@ DECLARE
 
 
 
-          AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id 
+          AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id
 
 
 
@@ -9848,7 +9866,7 @@ DECLARE
 
 
 
-          and subscriber_type.subtypedesc = sub_type_desc;   
+          and subscriber_type.subtypedesc = sub_type_desc;
 
 
 
@@ -9912,7 +9930,7 @@ DECLARE
 
 
 
-            year3 = price_rate 
+            year3 = price_rate
 
 
 
@@ -9928,7 +9946,7 @@ DECLARE
 
 
 
-            where 
+            where
 
 
 
@@ -9944,7 +9962,7 @@ DECLARE
 
 
 
-              journalGroupId = journal_gp_id AND journalGroupName = journal_gp_name 
+              journalGroupId = journal_gp_id AND journalGroupName = journal_gp_name
 
 
 
@@ -10056,7 +10074,7 @@ DECLARE
 
 
 
-        select subscription_rates.rate into price_rate 
+        select subscription_rates.rate into price_rate
 
 
 
@@ -10072,7 +10090,7 @@ DECLARE
 
 
 
-          from 
+          from
 
 
 
@@ -10088,7 +10106,7 @@ DECLARE
 
 
 
-          subscription_rates, subscriber_type 
+          subscription_rates, subscriber_type
 
 
 
@@ -10104,7 +10122,7 @@ DECLARE
 
 
 
-          where  
+          where
 
 
 
@@ -10120,7 +10138,7 @@ DECLARE
 
 
 
-          subscription_rates.`year` = cir_year AND subscription_rates.period = 5 
+          subscription_rates.`year` = cir_year AND subscription_rates.period = 5
 
 
 
@@ -10136,7 +10154,7 @@ DECLARE
 
 
 
-          AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id 
+          AND subscription_rates.journalGroupId = journal_gp_id AND subscription_rates.subtypeId = subscriber_type.id
 
 
 
@@ -10152,7 +10170,7 @@ DECLARE
 
 
 
-          and subscriber_type.subtypedesc = sub_type_desc; 
+          and subscriber_type.subtypedesc = sub_type_desc;
 
 
 
@@ -10200,7 +10218,7 @@ DECLARE
 
 
 
-            year4 = price_rate 
+            year4 = price_rate
 
 
 
@@ -10216,7 +10234,7 @@ DECLARE
 
 
 
-            where 
+            where
 
 
 
@@ -10232,7 +10250,7 @@ DECLARE
 
 
 
-              journalGroupId = journal_gp_id AND journalGroupName = journal_gp_name 
+              journalGroupId = journal_gp_id AND journalGroupName = journal_gp_name
 
 
 
@@ -10360,7 +10378,7 @@ DECLARE
 
 
 
-      CLOSE cur1;  
+      CLOSE cur1;
 
 
 
@@ -11081,7 +11099,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -11193,7 +11211,7 @@ BEGIN
 
 
 
-         
+
 
 
 
@@ -11289,7 +11307,7 @@ BEGIN
 
 
 
-         
+
 
 
 
@@ -12889,7 +12907,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -13722,7 +13740,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -15610,7 +15628,7 @@ BEGIN
 
 
 
-      
+
 
 
 
@@ -16587,7 +16605,7 @@ BEGIN
 
 
 
- 
+
 
 
 
@@ -16667,7 +16685,7 @@ BEGIN
 
 
 
-          END IF;        
+          END IF;
 
 
 
@@ -18468,7 +18486,6 @@ begin
 
 
 
-  
 
 
 
@@ -18492,7 +18509,6 @@ begin
 
 
 
-  
 
 
 
@@ -18524,7 +18540,6 @@ begin
 
 
 
-  
 
 
 
@@ -18556,10 +18571,10 @@ begin
 
 
 
-  select generated into is_mailing_list_generated_for_month 
 
 
 
+  select generated into is_mailing_list_generated_for_month
 
 
 
@@ -18588,7 +18603,10 @@ begin
 
 
 
-  from mailing_list_summary 
+
+
+
+  from mailing_list_summary
 
 
 
@@ -18628,7 +18646,6 @@ begin
 
 
 
-  
 
 
 
@@ -18652,7 +18669,8 @@ begin
 
 
 
-  
+
+
 
 
 
@@ -18756,31 +18774,6 @@ begin
 
 
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
 
 
 
@@ -18812,7 +18805,32 @@ begin
 
 
 
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
