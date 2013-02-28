@@ -125,9 +125,14 @@ public class inward extends JDSController {
                 }
 
 
+                // if there is agent name do not worry about the inward type
+                // just take him to agent upload excel screen
+                if (agentName != null && !agentName.isEmpty()) {
+                    url = "/jsp/inward/agentexcelupload.jsp";
+                } //agent changes - PINKI
                 // Get into this if block for only new subscription and request for invoice
                 // if its add free subscribers or add summer fellows move on
-                if (isFreeSubscriber == 0
+                else if (isFreeSubscriber == 0
                         && isSummerFellow == 0
                         && (purposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
                         || purposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE)) {
@@ -138,10 +143,7 @@ public class inward extends JDSController {
                             && !subscriberNumber.isEmpty()
                             && agentName == null) {
                         url = "/subscriber?action=add";
-                    } else if (agentName != null && !agentName.isEmpty()) {
-                        url = "/jsp/inward/agentexcelupload.jsp";
-                    } //agent changes - PINKI
-                    else {
+                    } else {
 
                         //IAS.Model.Subscriber.subscriberModel _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
                         // create a subscriber form bean and fill the values from the selected inward
@@ -223,19 +225,19 @@ public class inward extends JDSController {
 
                 try {
                     inwardPurposeID = Integer.parseInt(request.getParameter("purpose"));
-                }catch(NumberFormatException ex){
+                } catch (NumberFormatException ex) {
                     inwardPurposeID = 0;
                 }
 
                 try {
                     subid = Integer.parseInt(request.getParameter("subid"));
-                }catch(NumberFormatException ex){
+                } catch (NumberFormatException ex) {
                     subid = 0;
                 }
 
                 try {
                     balance = Float.parseFloat(request.getParameter("balance"));
-                }catch(Exception ex){
+                } catch (Exception ex) {
                     balance = 0;
                 }
 
@@ -265,7 +267,7 @@ public class inward extends JDSController {
                     url = "/jsp/invoice/proforma.jsp";
                 } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_PAYMENT) {
                     _inwardFormBean = _inwardModel.GetInward();
-                    if(_inwardModel.CompleteInward(_inwardFormBean.getInwardID()) == 1){
+                    if (_inwardModel.CompleteInward(_inwardFormBean.getInwardID()) == 1) {
                         url = "/jsp/inward/pendinginwards.jsp";
                     }
 

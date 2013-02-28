@@ -215,15 +215,13 @@ function selectInwardFormatter(cellvalue, options, rowObject){
 
 function isInwardSelected(){
     var _JDSConstants = new JDSConstants();
+    var agentName = jQuery("#inwardTable").jqGrid('getCell',selectedInward,'Agent');
     if(parseInt(selectedInward) == 0){
         alert("Please select an Inward");
         return false;
-    }/*else if(selectedSubscriberId == null
-        && selectedInwardPurpose != _JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION){
-        if(confirm("Do you want to continue without selecting subscriber ?") == false){
-            return false;
-        }
-    }*/
+    }else if(agentName && agentName.length > 0){
+        //no op
+    }
     else if((selectedSubscriberId == "undefined" || selectedSubscriberId == null || selectedSubscriberId == 0 || selectedSubscriberId.length == 0)
         && (selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION ||
             selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_ADDRESS_CHANGE ||
