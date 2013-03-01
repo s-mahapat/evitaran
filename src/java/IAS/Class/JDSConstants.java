@@ -9,13 +9,13 @@ public class JDSConstants {
     //inward ids
     public static int INWARD_PURPOSE_NEW_SUBSCRIPTION = 1;
     public static int INWARD_PURPOSE_RENEW_SUBSCRIPTION = 2;
-    public static int INWARD_PURPOSE_ADDRESS_CHANGE = 3;
+    public static int INWARD_PURPOSE_ADDRESS_CHANGE = 10;
     public static int INWARD_PURPOSE_REQUEST_FOR_INVOICE = 4;
     public static int INWARD_PURPOSE_MISSING_ISSUE = 5;
     public static int INWARD_PURPOSE_REPRINT = 6;
     public static int INWARD_PURPOSE_ADVERTISEMENT = 7;
     public static int INWARD_PURPOSE_MANUSCRIPT = 8;
-    public static int INWARD_PURPOSE_PAYMENT = 10;
+    public static int INWARD_PURPOSE_PAYMENT = 3;
     public static int INWARD_COMPLETE = 1;
 
     public static int INVOICE_REQUEST_FOR_INVOICE = 1;

@@ -324,7 +324,7 @@ CREATE TABLE `inward` (
   `subscriberId` int(15) unsigned DEFAULT NULL,
   `inwardPurpose` int(11) NOT NULL,
   `paymentMode` int(11) DEFAULT NULL,
-  `chqddNumber` int(11) DEFAULT NULL,
+  `chqddNumber` varchar(6) DEFAULT NULL,
   `paymentDate` date DEFAULT NULL,
   `amount` float DEFAULT '0',
   `currency` int(11) DEFAULT NULL,
@@ -532,7 +532,7 @@ CREATE TABLE `inward_purpose` (
 
 LOCK TABLES `inward_purpose` WRITE;
 /*!40000 ALTER TABLE `inward_purpose` DISABLE KEYS */;
-INSERT INTO `inward_purpose` VALUES (3,'Address Change'),(7,'Advertisement'),(8,'Manuscript'),(5,'Missing Issue'),(1,'New Subscription'),(9,'Others'),(10,'Payment'),(2,'Renew Subscription'),(6,'Reprint'),(4,'Request For Invoice');
+INSERT INTO `inward_purpose` VALUES (10,'Address Change'),(7,'Advertisement'),(8,'Manuscript'),(5,'Missing Issue'),(1,'New Subscription'),(9,'Others'),(3,'Payment'),(2,'Renew Subscription'),(6,'Reprint'),(4,'Request For Invoice');
 /*!40000 ALTER TABLE `inward_purpose` ENABLE KEYS */;
 UNLOCK TABLES;
 

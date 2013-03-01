@@ -88,9 +88,9 @@ function drawPaymentTable(inward_amount){
                         var rowid = $("#paymentTable").jqGrid('getGridParam', 'selrow');
                         var balance = parseFloat($("#paymentTable").jqGrid('getCell', rowid, 'balance'));
                         if(balance == value){
-                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Full Payment')
+                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Full Payment');
                         }else{
-                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Part Payment')
+                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Part Payment');
                         }
                     }
                     return rc;
@@ -245,7 +245,7 @@ function SavePayments(){
     var paymentdata = [];
     var changedRowCount = paymentRows.length;
 
-    for each (payment in paymentRows){
+    for (payment in paymentRows){
         var rowid = payment.id;
         var payment_made = payment.payment;
         var remarks = payment.remarks;

@@ -138,7 +138,7 @@ function validateNewInward(){
         return false;
     }*/
     else if(InwardPurpose == 'payment' &&  ((parseFloat($("#amount").val()) <= 0) || isEmptyValue($("#paymentMode").val()))){
-        alert("Payment Inward cannot be saved without amount and payment mode.\nPlease enter the amount and payment mode to save the Inward.");
+        alert("Payment Inward cannot be saved without amount.\nPlease enter the amount and save the Inward.");
         return false;
     }
 

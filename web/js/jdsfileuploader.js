@@ -3,12 +3,12 @@ function jdsfileuploader(_div){
     this.div = _div;
     this.url = "";
     this.filters = [{
-        title : "XML files", 
+        title : "XML files",
         extensions : "xml"
     },
 
     {
-        title : "Excel files", 
+        title : "Excel files",
         extensions : "xls,xlsx"
     }
     ];
@@ -18,7 +18,7 @@ function jdsfileuploader(_div){
         _success = this.success;
         _error = this.error;
         $("#" + this.div).plupload({
-            
+
             // General settings
             runtimes : 'html5,flash,silverlight,browserplus,gears',
             url : this.url,
@@ -28,8 +28,8 @@ function jdsfileuploader(_div){
 
             // Resize images on clientside if we can
             resize : {
-                width : 220, 
-                height : 180, 
+                width : 220,
+                height : 180,
                 quality : 90
             },
 
@@ -41,7 +41,7 @@ function jdsfileuploader(_div){
 
             // Silverlight settings
             silverlight_xap_url : 'js/plupload/plupload.silverlight.xap',
-                                            
+
             // Post init events, bound after the internal events
             init : {
                 FileUploaded: function(up, file, info){
@@ -51,14 +51,14 @@ function jdsfileuploader(_div){
                     // Called when a error has occured
                     //console.log('[error] ', args);
                     _error(up, args);
-                },                
+                },
                 FilesAdded: function(up, files){
                     // do this to allow only one file
                     if(up.files.length == 1){
                         $("#uploader_browse").addClass("ui-button-disabled");
                         $("#uploader_browse").addClass("ui-state-disabled");
                     }
-                    
+
                 },
                 FilesRemoved: function(up){
                     // do this to allow only one file
@@ -74,7 +74,7 @@ function jdsfileuploader(_div){
         $('form').submit(function(e) {
             var uploader = $('#uploader').plupload('getUploader');
             if (uploader.files.length > 1){
-                
+
             }
 
             // Files in queue upload them first
@@ -85,14 +85,14 @@ function jdsfileuploader(_div){
                         $('form')[0].submit();
                     }
                 });
-                
+
                 uploader.start();
             } else
                 alert('You must at least upload one file.');
 
             return false;
-        });         
+        });
     };
-    
-    
+
+
 }
