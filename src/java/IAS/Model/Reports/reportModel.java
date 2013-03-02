@@ -1518,6 +1518,9 @@ String xml = null;
             String journalCode = "";
             int balance = rs.getInt("balance");
             String proInvNo = rs.getString("proInvNo");
+            if (proInvNo.equals(null) || proInvNo.equals("")){
+                proInvNo = "-";
+            }            
             String proInvDate = rs.getString("proInvDate");
             int startYear = 0;
             int endYear = 0;
@@ -1613,6 +1616,9 @@ String xml = null;
             int payment = rsCurr.getInt("payment");
             int balance = amount - payment;
             String proInvNo = rsCurr.getString("proInvNo");
+            if (proInvNo.equals(null) || proInvNo.equals("")){
+                proInvNo = "-";
+            }
             String proInvDate = rsCurr.getString("proInvDate");
             int startYear = 0;
             int endYear = 0;
@@ -1630,6 +1636,7 @@ String xml = null;
                 sqljournalsCurr += " and subscriptiondetails.startYear  >= " + periodStart;
                 sqljournalsCurr += " and subscriptiondetails.endYear  <= " + periodEnd;
             }
+            
             PreparedStatement stGetJournals = conn.prepareStatement(sqljournalsCurr);
             stGetJournals.setInt(paramIndex, subscriptionId);
             ResultSet rsJournals = this.db.executeQueryPreparedStatement(stGetJournals);
