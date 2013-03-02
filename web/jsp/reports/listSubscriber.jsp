@@ -307,7 +307,7 @@
                         <div class="IASFormFieldDiv">
                             <div class="singleActionBtnDiv">
                                 <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
-                                <input class="IASButton" TABINDEX="14" type="submit" value="Print" disabled id="printReportBtn"/>
+                                <input class="IASButton" TABINDEX="14" type="submit" value="Print" disabled id="printReportBtn" onclick="print()"/>
                                 <input class="IASButton" TABINDEX="15" type="submit" value="Print Label" disabled id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
                                 <input class="IASButton" TABINDEX="16" type="submit" value="Print Sticker" disabled id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
                             </div>
