@@ -22,6 +22,14 @@
                 loadData();
                 jQueryCalendar("paymentDate");
                 makeInwardReadOnly();
+
+                // disable the form submit on pressing enter
+                $("#subscriberId").bind("keypress", function(e) {
+                    if (e.keyCode == 13) {
+                        ValidateSubscriber();
+                        return false;
+                    }
+                });
             });
         </script>
 

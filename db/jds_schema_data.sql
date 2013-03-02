@@ -626,7 +626,8 @@ CREATE TABLE `journal_group_contents` (
   `journalGroupId` int(11) NOT NULL,
   `journalId` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `journal_group_contents_indx2` (`journalId`)
+  KEY `journal_group_contents_indx2` (`journalId`),
+  KEY `journal_group_contents_indx3` (`journalGroupId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

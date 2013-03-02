@@ -301,11 +301,13 @@ function ValidateSubscriber(){
                     var department = $(data).find( "department" ).text();
                     var institution = $(data).find( "institution" ).text();
                     var email = $(data).find( "email" ).text();
+                    var district = $(data).find("district").text();
                     $("#from").val(from);
                     $("#subscriberId").val(subscriber_number);
                     $("#city").val(city);
                     $("#state").val(state);
                     $("#country").val(country);
+                    $("#district").val(district);
                     if(pincode != 0)
                         $("#pincode").val(pincode);
                     $("#department").val(department);

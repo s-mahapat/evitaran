@@ -519,7 +519,6 @@ public class reportModel extends JDSModel {
     }
 
     public ResultSet searchSubscriber() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        String xml = null;
 
         String subType = request.getParameter("subtype");
         String nationality = request.getParameter("nationality");
@@ -533,7 +532,7 @@ public class reportModel extends JDSModel {
         String toDate = request.getParameter("to");
         String selall = request.getParameter("selall");
 
-        String sql = null;
+        String sql;
 
 
         if ("0".equals(city)) {

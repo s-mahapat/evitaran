@@ -75,8 +75,8 @@ public class SubscriptionModel extends JDSModel {
     }
 
     @Override
-    public Connection getConnection() throws SQLException{
-        if(this.connection.isClosed()){
+    public Connection getConnection() throws SQLException {
+        if (this.connection.isClosed()) {
             this.connection = super.getConnection();
         }
         return this.connection;
@@ -86,7 +86,7 @@ public class SubscriptionModel extends JDSModel {
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
 
-        Connection conn = this.getConnection();
+        Connection conn = this.getStaticConnection();
 
         String xml = null;
         String journalGroupID[] = request.getParameterValues("journalGroupID");
@@ -111,31 +111,12 @@ public class SubscriptionModel extends JDSModel {
             _subscriptionBean.setSubscriptionTotal(subscriptionTotal);
             request.setAttribute("subscriptionFormBean", _subscriptionBean);
             request.setAttribute("subscriptionDetailBean", _subscriptionDetailBean);
-            //PreparedStatement st = null;
 
             // start transaction here.
             conn.setAutoCommit(false);
             try {
-                // the query name from the jds_sql properties files in WEB-INF/properties folder
-                //String sql = Queries.getQuery("insert_subscription");
-                //st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                //int paramIndex = 0;
-                //float balance = subscriptionTotal - this._inwardFormBean.getAmount();
-
-
-                //st.setString(++paramIndex, this.subscriberNumber);
-                //st.setString(++paramIndex, this.inwardNumber);
-                //st.setFloat(++paramIndex, balance);
-                //st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
-                //st.setFloat(++paramIndex, subscriptionTotal);
-                //st.setString(++paramIndex, remarks);
                 subscriptionID = this.addNewSubscription(this.subscriberNumber, this.inwardNumber, util.getDateString());
                 if (subscriptionID > 0) {
-                    /*try (ResultSet rs = st.getGeneratedKeys()) {
-                     rs.first();
-                     subscriptionID = rs.getInt(1);
-                     }*/
-
                     //set the subscription id and total in the bean
                     _subscriptionBean.setSubscriptionID(subscriptionID);
 
@@ -178,8 +159,6 @@ public class SubscriptionModel extends JDSModel {
                 conn.rollback();
             } finally {
                 conn.setAutoCommit(true);
-                //st.close();
-                //conn.close();
             }
 
         }
@@ -191,9 +170,10 @@ public class SubscriptionModel extends JDSModel {
             int[] startYear, int[] startMonth, int[] endYear, int[] copies,
             float[] total, int[] journalPriceGroupID) throws SQLException {
 
+        Connection conn = this.getStaticConnection();
         String sql = Queries.getQuery("insert_subscription_detail");
         int[] res;
-        try (PreparedStatement st = this.getConnection().prepareStatement(sql)) {
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
             int paramIndex;
             for (int i = 0; i < journalGroupID.length; i++) {
                 paramIndex = 0;
@@ -216,7 +196,7 @@ public class SubscriptionModel extends JDSModel {
 
     public int addNewSubscription(String subscriberNumber, String inwardNumber, String subscriptionDate) throws SQLException {
 
-        Connection conn = this.getConnection();
+        Connection conn = this.getStaticConnection();
         int subscriptionID = 0;
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
@@ -429,7 +409,7 @@ public class SubscriptionModel extends JDSModel {
                 }
             }
         } finally {
-           // _conn.close();
+            // _conn.close();
         }
         return xml;
 
@@ -636,32 +616,37 @@ public class SubscriptionModel extends JDSModel {
     private synchronized String getNextInvoiceNumber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
-        String nextInvoice;
+        String nextInvoice = null;
         // Invoice Type to be tagged in the invoice number similar to subscriber and inward
         String invoiceType = "I";
         //get the last invoice number from invoice table
         String lastInvoiceSql = Queries.getQuery("get_last_invoice");
+        String lastInvoice;
 
         // get connection from pool
         Connection _conn = this.getConnection();
         try (PreparedStatement pst = _conn.prepareStatement(lastInvoiceSql);) {
             try (ResultSet rs = pst.executeQuery()) {
                 Calendar calendar = Calendar.getInstance();
-                String lastInvoice;
                 //if true there exists a previous invoice for the year, so just increment the invoice number.
                 if (rs.first()) {
                     lastInvoice = rs.getString(1);
-                    // get the last invoice number after the split
-                    int invoice = Integer.parseInt(lastInvoice.substring(6));
-                    //increment
-                    ++invoice;
-                    //apend the year, month character and new invoice number.
-                    nextInvoice = lastInvoice.substring(0, 2) + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + invoiceType + "-" + String.format("%05d", invoice);
-                } else {
-                    // there is no previous record for the year, so start the numbering afresh
-                    String year = String.valueOf(calendar.get(Calendar.YEAR)).substring(2);
-                    nextInvoice = year + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + invoiceType + "-" + String.format("%05d", 1);
+                    // if this condition succeeds then it menas we found an invoice with the new naming pattern
+                    if (lastInvoice.length() == 11 && lastInvoice.contains("-")) {
+                        // get the last invoice number after the split
+                        int invoice = Integer.parseInt(lastInvoice.substring(6));
+                        //increment
+                        ++invoice;
+                        //apend the year, month character and new invoice number.
+                        nextInvoice = lastInvoice.substring(0, 2) + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + invoiceType + "-" + String.format("%05d", invoice);
+                        return nextInvoice;
+                    }
+
                 }
+                // there is no previous record for the year, so start the numbering afresh
+                String year = String.valueOf(calendar.get(Calendar.YEAR)).substring(2);
+                nextInvoice = year + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + invoiceType + "-" + String.format("%05d", 1);
+
             }
         } finally {
             //_conn.close();
@@ -691,7 +676,7 @@ public class SubscriptionModel extends JDSModel {
     private int updateInvoice(int invoice_type_id) throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
-        Connection _conn = this.getConnection();
+        Connection _conn = this.getStaticConnection();
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         String sql;
@@ -859,7 +844,7 @@ public class SubscriptionModel extends JDSModel {
                 try (ResultSet rs = st.executeQuery()) {
                     if (!rs.isBeforeFirst()) {
                         isNullRs = true;   // set this if there is atleast 1 record is the resultset, this ensures
-                                           // we do not save PRL for an empty list
+                        // we do not save PRL for an empty list
                     } else {
                         rs.beforeFirst();   // move it back to the starting of the resultset
                     }
@@ -903,18 +888,18 @@ public class SubscriptionModel extends JDSModel {
             logger.error(ex);
             _conn.rollback();
         } finally {
-            if(isNullRs){
+            if (isNullRs) {
                 _conn.rollback();
-            }else{
+            } else {
                 _conn.commit();
             }
             _conn.setAutoCommit(true);
-           // _conn.close();
+            // _conn.close();
         }
         return true;
     }
 
-    private int getNextYearSubscriptionPeriod(){
+    private int getNextYearSubscriptionPeriod() {
         return this.nextYearSubscriptionPeriod;
     }
 
@@ -947,7 +932,7 @@ public class SubscriptionModel extends JDSModel {
 
                     // if the period == 0 it may be a legacy subscription, then we can only
                     // find the minimum subscription period for this
-                    if(period > 0){
+                    if (period > 0) {
                         _rate += getRate(journalGrpID, subtype, newstartYear, period);
                     }
 
@@ -955,20 +940,19 @@ public class SubscriptionModel extends JDSModel {
                      * as 0. We need to find the minimum subscription period for that subscriber and get the
                      * price for that period. This happens mostly in case of legacy subscription before JDS.
                      */
-                    if(_rate == 0){
-                       period = this.getMinimumSubscriptionPeriod(journalGrpID, subtype, newstartYear);
-                       _rate += getRate(journalGrpID, subtype, newstartYear, period);
+                    if (_rate == 0) {
+                        period = this.getMinimumSubscriptionPeriod(journalGrpID, subtype, newstartYear);
+                        _rate += getRate(journalGrpID, subtype, newstartYear, period);
                     }
                     // only update the subscription period with the minimum period for all subscription details
                     // of the subscription
-                    if(period > 0 && this.nextYearSubscriptionPeriod == 0){
+                    if (period > 0 && this.nextYearSubscriptionPeriod == 0) {
                         this.nextYearSubscriptionPeriod = period;
-                    }
-                    else if(period < this.nextYearSubscriptionPeriod){
+                    } else if (period < this.nextYearSubscriptionPeriod) {
                         this.nextYearSubscriptionPeriod = period;
                     }
                 }
-            }catch(SQLException ex){
+            } catch (SQLException ex) {
                 logger.error(ex);
             }
         } finally {
@@ -998,7 +982,7 @@ public class SubscriptionModel extends JDSModel {
         }
     }
 
-    private int getMinimumSubscriptionPeriod(int journalGrpID, int subtypeID, int startYear) throws SQLException{
+    private int getMinimumSubscriptionPeriod(int journalGrpID, int subtypeID, int startYear) throws SQLException {
         Connection _conn = this.getConnection();
         String sql = Queries.getQuery("get_journal_group_price_for_minimum_period");
         int _period = 0;

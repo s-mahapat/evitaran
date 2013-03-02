@@ -5,13 +5,10 @@
 package IAS.Controller;
 
 import IAS.Class.Ajax.AjaxResponse;
-import IAS.Class.Ajax.AjaxSuccess;
 import IAS.Model.Payment.PaymentModel;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;

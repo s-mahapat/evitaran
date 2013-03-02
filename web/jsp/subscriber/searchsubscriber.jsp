@@ -89,7 +89,9 @@
                             subscriberNumber    : $("#subscriberNumber").val(),
                             subscriberName      : $("#subscriberName").val(),
                             email               : $("#email").val(),
-                            pincode             : $("#pincode").val()
+                            pincode             : $("#pincode").val(),
+                            institute           : $("#institute").val(),
+                            department          : $("#department").val()
                         });
 
                     },
@@ -110,6 +112,8 @@
                     $("#subscriberName").val(json.subscriberName);
                     $("#email").val(json.email);
                     $("#pincode").val(json.pincode);
+                    $("#institute").val(json.institute);
+                    $("#department").val(json.department);
                     isPageLoaded = true;
                     jQuery("#subscriberTable").setGridParam({
                         'rowNum': json.rowNum,
@@ -133,7 +137,9 @@
                             subscriberNumber    : $("#subscriberNumber").val(),
                             subscriberName      : $("#subscriberName").val(),
                             email               : $("#email").val(),
-                            pincode             : $("#pincode").val()
+                            pincode             : $("#pincode").val(),
+                            institution         : $("#institute").val(),
+                            department          : $("#department").val()
                         }});
                     jQuery("#subscriberTable").trigger("clearGridData");
                     jQuery("#subscriberTable").trigger("reloadGrid");
@@ -154,7 +160,9 @@
                     "city": $("#city").val(),
                     "subscriberName": $("#subscriberName").val(),
                     "email": $("#email").val(),
-                    "pincode": $("#pincode").val()
+                    "pincode": $("#pincode").val(),
+                    "institute": $("#institute").val(),
+                    "department": $("#department").val()
 
                 };
                 //set the cookie
@@ -201,12 +209,23 @@
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Email:</label>
+                                        <label>Department:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxWide" TABINDEX="3" type="text" name="email" id="email" value=""/>
+                                        <input class="IASTextBoxWide" TABINDEX="3" type="text" name="department" id="department" value=""/>
                                     </span>
                                 </div>
+
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Institute:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASTextBoxWide" TABINDEX="4" type="text" name="institute" id="institute" value=""/>
+                                    </span>
+                                </div>
+
+
                             </div>
 
 
@@ -215,10 +234,19 @@
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
+                                        <label>Email:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASTextBoxWide" TABINDEX="5" type="text" name="email" id="email" value=""/>
+                                    </span>
+                                </div>
+
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="4" name="city" id="city" value=""/>
+                                        <input class="IASTextBox" TABINDEX="6" name="city" id="city" value=""/>
                                     </span>
                                 </div>
 
@@ -227,15 +255,14 @@
                                         <label>Pin Code:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" maxlength="6" TABINDEX="3" type="text" name="pincode" id="pincode" value=""/>
+                                        <input class="IASTextBox" maxlength="6" TABINDEX="7" type="text" name="pincode" id="pincode" value=""/>
                                     </span>
                                 </div>
-
                             </div>
 
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" TABINDEX="6" type="button" value="Search" onclick="searchSubscriber()">Search</button>
-                                <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton" TABINDEX=8" type="button" value="Search" onclick="searchSubscriber()">Search</button>
+                                <input class="IASButton" TABINDEX="9" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>

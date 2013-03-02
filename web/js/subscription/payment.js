@@ -87,10 +87,12 @@ function drawPaymentTable(inward_amount){
                     if(rc[0] == true){
                         var rowid = $("#paymentTable").jqGrid('getGridParam', 'selrow');
                         var balance = parseFloat($("#paymentTable").jqGrid('getCell', rowid, 'balance'));
-                        if(balance == value){
-                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Full Payment');
-                        }else{
-                            $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Part Payment');
+                        if(balance > 0){
+                            if(balance == value){
+                                $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Full Payment');
+                            }else{
+                                $("#paymentTable").jqGrid('setCell', rowid, 'remarks', 'Part Payment');
+                            }
                         }
                     }
                     return rc;
@@ -150,9 +152,6 @@ function drawPaymentTable(inward_amount){
         loadError: function(xhr,status,error){
             alert("Failed getting data from server " + status);
         },
-        beforeEditCell: function(){
-            $("#savepayments").button("disable");
-        },
         afterSaveCell: function(rowid, cellname, value, iRow, iCol){
             $("#savepayments").button("enable");
             if(isNaN(value)){
@@ -188,10 +187,12 @@ function validateCell(value, colname, inward_amount){
         value = parseInt(value);
     }
 
-
+    if(parseFloat(value) == 0){
+        restoreRow(rowid);
+    }
     // the value entered should not be greater than inward amount, i.e that amount that
     // the subscriber pays
-    if(value > inward_amount){
+    else if(value > inward_amount){
         success = false;
         msg = 'The amount entered is greater than inward amount';
     }else if(value > balance){
@@ -245,10 +246,16 @@ function SavePayments(){
     var paymentdata = [];
     var changedRowCount = paymentRows.length;
 
-    for (payment in paymentRows){
+    for (index in paymentRows){
+        var payment = paymentRows[index];
         var rowid = payment.id;
         var payment_made = payment.payment;
         var remarks = payment.remarks;
+
+        // if its a zero payment do not send to server
+        if(parseFloat(payment_made) == 0){
+            continue;
+        }
         paymentdata.push({
             name: "id",
             value: rowid

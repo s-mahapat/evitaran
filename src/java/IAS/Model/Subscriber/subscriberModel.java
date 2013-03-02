@@ -130,7 +130,7 @@ public class subscriberModel extends JDSModel {
 
     public String fetchNextSubscriberNumberById(int subscriberId) throws SQLException, ParseException, ClassNotFoundException {
         String nextSubscriberNum = "";
-        Connection _conn = this.getConnection();
+        Connection _conn = this.getStaticConnection();
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_next_subscriber_number");
         try (PreparedStatement st = _conn.prepareStatement(sql)) {
@@ -152,7 +152,7 @@ public class subscriberModel extends JDSModel {
 
     public String fetchFirstSubscriberNumber() throws SQLException, ParseException, ClassNotFoundException {
         String firstSubscriberNum = "";
-        Connection _conn = this.getConnection();
+        Connection _conn = this.getStaticConnection();
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_first_subscriber_number");
         try (PreparedStatement st = _conn.prepareStatement(sql)) {
