@@ -601,7 +601,9 @@ public class reportModel extends JDSModel {
         if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
             sql += " and subscription.subscriptionDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
-
+        
+        sql += " order by pincode";
+        
         PreparedStatement stGet = conn.prepareStatement(sql);
 
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
@@ -658,9 +660,10 @@ public class reportModel extends JDSModel {
                 paramIndex = 1;
                 stGetStatement.setInt(paramIndex, journalId);
                 stGetStatement.setString(++paramIndex, request.getParameter("issue"));
-                stGetStatement.setString(++paramIndex, request.getParameter("year"));
+                stGetStatement.setString(++paramIndex, request.getParameter("year"));                
                 value = rsSubType.getObject(1);
                 stGetStatement.setString(++paramIndex, value.toString());
+                stGetStatement.setString(++paramIndex, request.getParameter("volume"));
                 ResultSet rsStatement = this.db.executeQueryPreparedStatement(stGetStatement);
 
                 String subtypecode = value.toString();
@@ -781,7 +784,7 @@ public class reportModel extends JDSModel {
             String journalCode = rs.getString(2);
 
             String sqlIssues = null;
-            sqlIssues = Queries.getQuery("cf_issue");
+            sqlIssues = Queries.getQuery("cf_issue_volumeno");
             PreparedStatement stGetIssues = conn.prepareStatement(sqlIssues);
             paramIndex = 1;
             stGetIssues.setString(paramIndex, request.getParameter("year"));
@@ -791,6 +794,7 @@ public class reportModel extends JDSModel {
             while (rsIssues.next())
             {
                 int issue = rsIssues.getInt(1);
+                int volume = rsIssues.getInt(2);
 
                 // Add the row element. Add information for a journal
                 Element row = doc.createElement("row");
@@ -801,6 +805,11 @@ public class reportModel extends JDSModel {
                 row.appendChild(_journalCode);
                 _journalCode.appendChild(doc.createTextNode(journalCode));
 
+                // Add journal Code as first column
+                Element _volume = doc.createElement("volume");
+                row.appendChild(_volume);
+                _volume.appendChild(doc.createTextNode(Integer.toString(volume)));
+                
                 // Add journal Code as first column
                 Element _issue = doc.createElement("issue");
                 row.appendChild(_issue);
@@ -813,6 +822,7 @@ public class reportModel extends JDSModel {
                 stGetInstI.setString(paramIndex, request.getParameter("year"));
                 stGetInstI.setInt(++paramIndex, journalId);
                 stGetInstI.setInt(++paramIndex, issue);
+                stGetInstI.setInt(++paramIndex, volume);
                 ResultSet rsInstI = this.db.executeQueryPreparedStatement(stGetInstI);
                 if (rsInstI.next())
                 {
@@ -832,6 +842,7 @@ public class reportModel extends JDSModel {
                 stGetInstF.setString(paramIndex, request.getParameter("year"));
                 stGetInstF.setInt(++paramIndex, journalId);
                 stGetInstF.setInt(++paramIndex, issue);
+                stGetInstF.setInt(++paramIndex, volume);
                 ResultSet rsInstF = this.db.executeQueryPreparedStatement(stGetInstF);
                 if (rsInstF.next())
                 {
@@ -851,6 +862,7 @@ public class reportModel extends JDSModel {
                 stGetIndI.setString(paramIndex, request.getParameter("year"));
                 stGetIndI.setInt(++paramIndex, journalId);
                 stGetIndI.setInt(++paramIndex, issue);
+                stGetIndI.setInt(++paramIndex, volume);
                 ResultSet rsIndI = this.db.executeQueryPreparedStatement(stGetIndI);
                 if (rsIndI.next())
                 {
@@ -870,6 +882,7 @@ public class reportModel extends JDSModel {
                 stGetIndF.setString(paramIndex, request.getParameter("year"));
                 stGetIndF.setInt(++paramIndex, journalId);
                 stGetIndF.setInt(++paramIndex, issue);
+                stGetIndF.setInt(++paramIndex, volume);
                 ResultSet rsIndF = this.db.executeQueryPreparedStatement(stGetIndF);
                 if (rsIndF.next())
                 {
@@ -889,6 +902,7 @@ public class reportModel extends JDSModel {
                 stGetFree.setString(paramIndex, request.getParameter("year"));
                 stGetFree.setInt(++paramIndex, journalId);
                 stGetFree.setInt(++paramIndex, issue);
+                stGetFree.setInt(++paramIndex, volume);
                 ResultSet rsFree = this.db.executeQueryPreparedStatement(stGetFree);
                 if (rsFree.next())
                 {
@@ -908,6 +922,7 @@ public class reportModel extends JDSModel {
                 stGetAuth.setString(paramIndex, request.getParameter("year"));
                 stGetAuth.setInt(++paramIndex, journalId);
                 stGetAuth.setInt(++paramIndex, issue);
+                stGetAuth.setInt(++paramIndex, volume);
                 ResultSet rsAuth = this.db.executeQueryPreparedStatement(stGetAuth);
                 if (rsAuth.next())
                 {
@@ -1616,7 +1631,7 @@ String xml = null;
             int payment = rsCurr.getInt("payment");
             int balance = amount - payment;
             String proInvNo = rsCurr.getString("proInvNo");
-            if (proInvNo.equals(null) || proInvNo.equals("")){
+            if (proInvNo == null || proInvNo.isEmpty()){
                 proInvNo = "-";
             }
             String proInvDate = rsCurr.getString("proInvDate");

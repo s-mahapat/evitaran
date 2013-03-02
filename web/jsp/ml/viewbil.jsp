@@ -26,7 +26,7 @@
 
             $(document).ready(function(){
                 jQuery("#btnPrint").attr("disabled",true);
-                reloadSubscriberNumber('s');
+                //reloadSubscriberNumber('s');
              });
 
             $(function(){
@@ -202,9 +202,7 @@
                                                     <label>Subscriber Number</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="3" name="subscriberNumber" id="subscriberNumber">
-                                                        <option value="0">Select</option>
-                                                    </select>
+                                                    <input class="IASTextBox" TABINDEX="-1" type="text" name="subscriberNumber" id="subscriberNumber"/>
                                                 </span>
                                             </div>
                                             <div class="IASFormFieldDiv">

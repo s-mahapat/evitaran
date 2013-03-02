@@ -34,9 +34,10 @@
                         rownumbers: true,
                         emptyrecords: "No records to view",
                         loadtext: "Loading...",
-                        colNames:['Journal Code','Issue', 'Inst. India','Inst. Abroad','Indi. India','Indi. Abroad','Comp','Auth','Total Copies','Print Order','Balance Copies'],
+                        colNames:['Journal Code','Volume','Issue', 'Inst. India','Inst. Abroad','Indi. India','Indi. Abroad','Comp','Auth','Total Copies','Print Order','Balance Copies'],
                         colModel :[
                           {name:'journalCode', index:'journalCode', width:30, align:'center', xmlmap:'journalCode'},
+                          {name:'volume', index:'volume', width:30, align:'center', xmlmap:'volume'},
                           {name:'issue', index:'issue', width:30, align:'center', xmlmap:'issue'},
                           {name:'instIndia', index:'instIndia', width:25, align:'center', xmlmap:'instIndia'},
                           {name:'instAbroad', index:'instAbroad', width:25, align:'center', xmlmap:'instAbroad'},

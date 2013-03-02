@@ -165,7 +165,7 @@
                                                     <label>Journal Name:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName" onchange="loadIssues()">
+                                                    <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>

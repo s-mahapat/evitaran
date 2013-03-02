@@ -95,12 +95,17 @@
                 {
                         alert("Select Journal Name");
                 }
+                else if ($("#volume").val() == 0)
+                {
+                        alert("Select Volume Number");
+                }
                 else{
                     isPageLoaded = true;
                     jQuery("#statementTable").setGridParam({postData:
                             {journalName    : $("#journalName").val(),
                             year            : $("#year").val(),
-                            issue           : $("#issue").val()
+                            issue           : $("#issue").val(),
+                            volume           : $("#volume").val()
                         }});
                     jQuery("#statementTable").setGridParam({ datatype: "xml" });
                     jQuery("#statementTable").trigger("clearGridData");
@@ -113,12 +118,24 @@
                 $("#issue").empty();
                 //text("");
 
-                var newOption = new Option("Select", "0");
+                var newOption = new Option("Select", "value");
                 $(newOption).html("Select");
                 $("#issue").append(newOption);
 
-                requestURL = "/JDS/CMasterData?md=getissues&mdvalue=" +  $("#journalName").val();
+                requestURL = "/JDS/CMasterData?md=getissues&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#volume").val();
                 jdsAppend(requestURL,"issueNumber","issue");
+            }
+
+             function loadvolumes(){
+                $("#volume").empty();
+                //text("");
+
+                var newOption = new Option("Select", "value");
+                $(newOption).html("Select");
+                $("#volume").append(newOption);
+
+                requestURL = "/JDS/CMasterData?md=getvolumes&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#year").val();
+                jdsAppend(requestURL,"volumeNumber","volume");
             }
 
 
@@ -146,42 +163,50 @@
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Journal Name</label>
+                                        <label>Journal Name:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName" onchange="loadIssues()">
-                                            <option value="0" selected>Select</option>
-                                        </select>
-                                    </span>
-                                </div>
-
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Issue:</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                    <select class="IASComboBox" TABINDEX="2" name="issue" id="issue">
+                                        <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName" onchange="loadvolumes()">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
                                 </div>
-
-                            </div>
-
-                            <%-- Search Criteria Right div --%>
-                            <div class="IASFormRightDiv">
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Year</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxSmallMandatory" TABINDEX="2" name="year" id="year">
+                                        <select class="IASComboBox" TABINDEX="2" name="year" id="year" onchange="loadvolumes()">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
                                 </div>
+                            
+                            </div>
 
+                            <%-- Search Criteria Right div --%>
+                            <div class="IASFormRightDiv">
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Volume Number:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <select class="IASComboBox" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Issue:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <select class="IASComboBox" TABINDEX="5" name="issue" id="issue">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </span>
+                                </div>
                             </div>
                             <div class="actionBtnDiv">
                                 <button class="IASButton SearchButton" type="button" TABINDEX="6" onclick="getStatements()"/>Search</button>
