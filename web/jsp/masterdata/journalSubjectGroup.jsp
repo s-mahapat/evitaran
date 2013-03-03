@@ -27,7 +27,7 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jQuery("#journalGroupTable").jqGrid('navGrid',"#IASFormFieldDiv",{edit:false,add:false,del:false});
+                //jQuery("#journalGroupTable").jqGrid('navGrid',"#IASFormFieldDiv",{edit:false,add:false,del:false});
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalGroupName"%>","journalGroupName","journalGroupName");
                 jQuery("#newJournalGroupName").attr("disabled",true);
                 jQuery("#btnSave,#btnCancel,#btnEdit").attr("disabled",true);

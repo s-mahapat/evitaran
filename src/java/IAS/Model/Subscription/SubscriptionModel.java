@@ -86,7 +86,7 @@ public class SubscriptionModel extends JDSModel {
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
 
-        Connection conn = this.getStaticConnection();
+        Connection conn = (Connection)request.getSession(false).getAttribute("connection");
 
         String xml = null;
         String journalGroupID[] = request.getParameterValues("journalGroupID");
@@ -170,7 +170,7 @@ public class SubscriptionModel extends JDSModel {
             int[] startYear, int[] startMonth, int[] endYear, int[] copies,
             float[] total, int[] journalPriceGroupID) throws SQLException {
 
-        Connection conn = this.getStaticConnection();
+        Connection conn = (Connection)request.getSession(false).getAttribute("connection");
         String sql = Queries.getQuery("insert_subscription_detail");
         int[] res;
         try (PreparedStatement st = conn.prepareStatement(sql)) {
@@ -196,7 +196,7 @@ public class SubscriptionModel extends JDSModel {
 
     public int addNewSubscription(String subscriberNumber, String inwardNumber, String subscriptionDate) throws SQLException {
 
-        Connection conn = this.getStaticConnection();
+        Connection conn = (Connection)request.getSession(false).getAttribute("connection");
         int subscriptionID = 0;
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
@@ -394,7 +394,7 @@ public class SubscriptionModel extends JDSModel {
     public String getSubscription() throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
         String xml;
-        Connection _conn = this.getConnection();
+        Connection _conn = (Connection)request.getSession(false).getAttribute("connection");
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_subscription_for_subscriber");
@@ -676,7 +676,7 @@ public class SubscriptionModel extends JDSModel {
     private int updateInvoice(int invoice_type_id) throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
-        Connection _conn = this.getStaticConnection();
+        Connection _conn = (Connection)request.getSession(false).getAttribute("connection");
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         String sql;

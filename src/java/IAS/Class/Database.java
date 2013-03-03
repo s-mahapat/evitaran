@@ -20,8 +20,8 @@ public class Database implements HttpSessionBindingListener {
 
     ServletContext context;
     private static DataSource datasource;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Class.Database");
-  
+    private static final Logger logger = JDSLogger.getJDSLogger(Database.class.getName());
+
     @Override
     public void valueUnbound(HttpSessionBindingEvent ev) {
         logger.debug("session close event");
@@ -30,8 +30,8 @@ public class Database implements HttpSessionBindingListener {
     @Override
     public void valueBound(HttpSessionBindingEvent event) {
         logger.debug("Create New session event triggered");
-    }    
-    
+    }
+
     private static DataSource getDataSource() throws SQLException {
         if (datasource == null) {
             try {
@@ -58,7 +58,7 @@ public class Database implements HttpSessionBindingListener {
         }catch(SQLException e){
             throw(new SQLException(e.getMessage()));
         }
-        
+
         rs = st.executeQuery();
 
         if (st == null) {
@@ -123,5 +123,5 @@ public class Database implements HttpSessionBindingListener {
         }
 
     }
-    
+
 }

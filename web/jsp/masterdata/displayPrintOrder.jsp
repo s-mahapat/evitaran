@@ -17,7 +17,9 @@
         <script type="text/javascript" src="js/jquery/grid.inlinedit.js"></script>
         <script type="text/javascript" src="js/jquery/grid.celledit.js"></script>
         <script>
-            addOnloadEvent(makePrintOrderReadOnly);
+            $(document).ready(function(){
+                makePrintOrderReadOnly();
+            });
         </script>
 
         <script type="text/javascript">
@@ -26,11 +28,12 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jQuery("#printOrderTable").jqGrid('navGrid',"#IASFormFieldDiv",{edit:false,add:false,del:false});
+                //jQuery("#printOrderTable").jqGrid('navGrid',"#IASFormFieldDiv",{edit:false,add:false,del:false});
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journals"%>", "journalName", "journalName");
-                jQuery("#btnEdit,#btnSave,#btnCancel").attr("disabled",true);
-             });
+                $("#btnEdit,#btnSave,#btnCancel").button("disable");
+
+            });
 
             $(function(){
 
@@ -92,8 +95,8 @@
                 for (var i = 0; i < ids.length; i++) {
                     jQuery("#printOrderTable").jqGrid('editRow',ids[i]);
                 }
-                this.disabled = 'true';
-                jQuery("#btnSave,#btnCancel").attr("disabled",false);
+                //this.disabled = 'true';
+                jQuery("#btnSave,#btnCancel").button("enable");
             }
 
             function savePrintOrder(){
@@ -101,10 +104,10 @@
 
                 for (var i = 0; i < ids.length; i++) {
                     jQuery("#printOrderTable").setGridParam({editurl: "<%=request.getContextPath()%>/printOrder?action=save" +
-                                                                        "&year=" + $("#year").val() +
-                                                                "&journalName=" + $("#journalName").val() +
-                                                                "&issueNo=" + $("#printOrderTable").getCell(ids[i], 'issues')
-                                                                });
+                            "&year=" + $("#year").val() +
+                            "&journalName=" + $("#journalName").val() +
+                            "&issueNo=" + $("#printOrderTable").getCell(ids[i], 'issues')
+                    });
 
                     //var aPO = $("#printOrderTable").getCell(ids[i], 'issues') * $("#printOrderTable").getCell(ids[i], 'printOrder');
 
@@ -112,8 +115,8 @@
                     //setGridParam requires a reload for value to reflect in the cell. Hence using setCell instead
                     //jQuery("#printOrderTable").setGridParam({annualPrintOrder: aPO});
                 }
-                jQuery("#btnSave,#btnCancel").attr("disabled",true);
-                jQuery("#btnEdit").attr("disabled",false);
+                jQuery("#btnSave,#btnCancel").button("disable");
+                jQuery("#btnEdit").button("enable");
 
                 // The annual print order gets calculated on the server. To get that value we initiate a reloadgrid.
                 jQuery("#printOrderTable").setGridParam({postData:
@@ -132,8 +135,8 @@
                 for (var i = 0; i < ids.length; i++) {
                     jQuery("#printOrderTable").jqGrid('restoreRow',ids[i]);
                 }
-                jQuery("#btnSave,#btnCancel").attr("disabled",true);
-                jQuery("#btnEdit").attr("disabled",false);
+                jQuery("#btnSave, #btnCancel").button("disable");
+                jQuery("#btnEdit").button("enable");
             }
 
             // called when the search button is clicked
@@ -144,7 +147,7 @@
                 }
                 else
                 {
-                if(validatePrintOrder() == true)
+                    if(validatePrintOrder() == true)
                     {
                         isPageLoaded = true;
                         jQuery("#printOrderTable").setGridParam({postData:
@@ -157,7 +160,7 @@
                         jQuery("#printOrderTable").trigger("reloadGrid");
 
                     }
-                    jQuery("#btnEdit").attr("disabled",false);
+                    $("#btnEdit").button("enable");
                 }
             }
 
@@ -170,14 +173,14 @@
                 }else {
                     isPageLoaded = true;
                     jQuery("#printOrderTable").setGridParam({postData:
-                                    {year       : $("#year").val(),
-                                    journalName : $("#journalName").val(),
-                                    action       : "searchPrintOrder"
-                                }});
+                            {year       : $("#year").val(),
+                            journalName : $("#journalName").val(),
+                            action       : "searchPrintOrder"
+                        }});
                     jQuery("#printOrderTable").setGridParam({ datatype: "xml" });
                     jQuery("#printOrderTable").trigger("clearGridData");
                     jQuery("#printOrderTable").trigger("reloadGrid");
-                    jQuery("#btnEdit").attr("disabled",false);
+                    jQuery("#btnEdit").button("enable");
                 }
             }
 
@@ -204,7 +207,7 @@
                     }
                 }
                 }
-                */
+             */
 
         </script>
     </head>
@@ -217,69 +220,65 @@
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Display Print Order</legend>
-                            <fieldset class="subMainFieldSet">
-                                <legend>Search Criterion</legend>
-                                    <%-- Search Criteria left div --%>
-                                    <div class="IASFormLeftDiv">
-                                        <div class="IASFormFieldDiv">
-                                            <span class="IASFormDivSpanInputBox">
-                                                <span class="IASFormDivSpanLabel">
-                                                    <label>Year:</label>
-                                                </span>
-                                                <select class="IASComboBox" TABINDEX="1" name="year" id="year">
-                                                    <option value="0">Select</option>
-                                                </select>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="IASFormRightDiv">
-                                        <div class="IASFormFieldDiv">
-                                            <span class="IASFormDivSpanInputBox">
-                                                <span class="IASFormDivSpanLabel">
-                                                    <label>Journal:</label>
-                                                </span>
-                                                <select class="IASComboBox" TABINDEX="2" name="journalName" id="journalName">
-                                                    <option value="0">Select</option>
-                                                </select>
-                                            </span>
-                                        </div>
-                                    </div>
-                            </fieldset>
-                            <fieldset class="subMainFieldSet">
-                                <legend>Actions: Search/ Add</legend>
+                        <fieldset class="subMainFieldSet">
+                            <legend>Search Criterion</legend>
+                            <%-- Search Criteria left div --%>
+                            <div class="IASFormLeftDiv">
                                 <div class="IASFormFieldDiv">
-                                   <div id="searchBtnDiv">
-                                        <input class="IASButton" TABINDEX="2" type="button" value="Search Print Orders" id="btnSearch" name="btnSearch" onclick="getPrintOrderDetails()"/>
-                                   </div>
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Year:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <select class="IASComboBox" TABINDEX="1" name="year" id="year">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </span>
                                 </div>
-                            </fieldset>
-                            <%-----------------------------------------------------------------------------------------------------%>
-                            <%-- Search Result Field Set --%>
-                            <%-----------------------------------------------------------------------------------------------------%>
-                            <fieldset class="subMainFieldSet">
-                                <legend>Print Order Details</legend>
-
-                                <table class="datatable" id="printOrderTable"></table>
-                                <div id="pager"></div>
-                            </fieldset>
-
-                            <%-----------------------------------------------------------------------------------------------------%>
-                            <%-- Journal Actions Field Set --%>
-                            <%-----------------------------------------------------------------------------------------------------%>
-
-                            <fieldset class="subMainFieldSet">
+                            </div>
+                            <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
-                                    <div id="editBtnDiv">
-                                        <input class="IASButton" TABINDEX="3" type="button" value="Edit" onclick="editPrintOrder()" id="btnEdit" name="btnEditAction"/>
-                                    </div>
-                                    <div id="saveBtnDiv">
-                                        <input class="IASButton" TABINDEX="4" type="button" value="Save" onclick="savePrintOrder()" id="btnSave" name="btnSaveAction"/>
-                                    </div>
-                                    <div id="cancelBtnDiv">
-                                        <input class="IASButton" TABINDEX="5" type="button" value="Cancel" onclick="cancelPrintOrder()" id="btnCancel" name="btnCancelAction"/>
-                                    </div>
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Journal:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <select class="IASComboBoxWide" TABINDEX="2" name="journalName" id="journalName">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </span>
                                 </div>
-                            </fieldset>
+                            </div>
+                            <div class="actionBtnDiv">
+                                <button class="IASButton SearchButton" TABINDEX="2" type="button" id="btnSearch" name="btnSearch" onclick="getPrintOrderDetails()"/>Search Print Orders</button>
+                            </div>
+                        </fieldset>
+
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        <%-- Search Result Field Set --%>
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        <fieldset class="subMainFieldSet">
+                            <legend>Print Order Details</legend>
+
+                            <table class="datatable" id="printOrderTable"></table>
+                            <div id="pager"></div>
+                        </fieldset>
+
+                        <%-----------------------------------------------------------------------------------------------------%>
+                        <%-- Journal Actions Field Set --%>
+                        <%-----------------------------------------------------------------------------------------------------%>
+
+                        <fieldset class="subMainFieldSet">
+                            <div class="IASFormFieldDiv">
+                                <div id="editBtnDiv">
+                                    <input class="IASButton" TABINDEX="3" type="button" value="Edit" onclick="editPrintOrder()" id="btnEdit" name="btnEditAction"/>
+                                </div>
+                                <div id="saveBtnDiv">
+                                    <button class="IASButton SaveButton" TABINDEX="4" type="button" value="Save" onclick="savePrintOrder()" id="btnSave" name="btnSaveAction"/>Save</button>
+                                </div>
+                                <div id="cancelBtnDiv">
+                                    <input class="IASButton" TABINDEX="5" type="button" value="Cancel" onclick="cancelPrintOrder()" id="btnCancel" name="btnCancelAction"/>
+                                </div>
+                            </div>
+                        </fieldset>
                     </fieldset>
                 </div>
             </form>
