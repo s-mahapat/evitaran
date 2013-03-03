@@ -9,6 +9,7 @@ import IAS.Class.PasswordGenerator;
 import IAS.Class.Queries;
 import IAS.Class.msgsend;
 import IAS.Model.JDSModel;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,10 +32,10 @@ public class ResetPwdModel extends JDSModel {
     }
 
     public boolean updatePassword(String email, String newPassword) throws SQLException {
-        
+
         boolean isReset = false;
         Connection _conn = this.getConnection();
-        
+
         String sql = Queries.getQuery("update_password");
         try (PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setString(1, newPassword);
@@ -52,7 +53,7 @@ public class ResetPwdModel extends JDSModel {
         }
     }
 
-    public boolean emailNewPassword(String email) throws SQLException {
+    public boolean emailNewPassword(String email) throws SQLException, FileNotFoundException, IOException {
 
         boolean isReset = false;
         Connection _conn = this.getConnection();
@@ -62,7 +63,7 @@ public class ResetPwdModel extends JDSModel {
 
         String _body = "As Per your request, the password has been reset by JDS Administrator. Your new password is: " + newPassword;
         _body += "\n" + "You will be prompted to change your password on next login";
-        
+
         msgsend _msgsend = new msgsend();
 
         try {

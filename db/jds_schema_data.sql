@@ -16,6 +16,55 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `banks`
+--
+
+DROP TABLE IF EXISTS `banks`;
+CREATE TABLE `banks` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `bank_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`,`bank_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+
+LOCK TABLES `banks` WRITE;
+insert into `banks`(`id`,`bank_name`) values (1,'Allahabad Bank');
+insert into `banks`(`id`,`bank_name`) values (2,'Andhra Bank');
+insert into `banks`(`id`,`bank_name`) values (3,'Bank of Baroda');
+insert into `banks`(`id`,`bank_name`) values (4,'Bank of India');
+insert into `banks`(`id`,`bank_name`) values (5,'Bank of Maharashtra');
+insert into `banks`(`id`,`bank_name`) values (6,'Canara Bank');
+insert into `banks`(`id`,`bank_name`) values (7,'Central Bank of India');
+insert into `banks`(`id`,`bank_name`) values (8,'Corporation Bank');
+insert into `banks`(`id`,`bank_name`) values (9,'Dena Bank');
+insert into `banks`(`id`,`bank_name`) values (10,'IDBI Bank');
+insert into `banks`(`id`,`bank_name`) values (11,'Indian Bank');
+insert into `banks`(`id`,`bank_name`) values (12,'Indian Overseas Bank');
+insert into `banks`(`id`,`bank_name`) values (13,'Oriental Bank of Commerce');
+insert into `banks`(`id`,`bank_name`) values (14,'Punjab National Bank');
+insert into `banks`(`id`,`bank_name`) values (15,'Syndicate Bank');
+insert into `banks`(`id`,`bank_name`) values (16,'Union Bank of India');
+insert into `banks`(`id`,`bank_name`) values (17,'UCO Bank');
+insert into `banks`(`id`,`bank_name`) values (18,'United Bank of India');
+insert into `banks`(`id`,`bank_name`) values (19,'Vijaya Bank');
+insert into `banks`(`id`,`bank_name`) values (20,'State Bank of India');
+insert into `banks`(`id`,`bank_name`) values (21,'State Bank of Bikaner & Jaipur');
+insert into `banks`(`id`,`bank_name`) values (22,'State Bank of Hyderabad');
+insert into `banks`(`id`,`bank_name`) values (23,'State Bank of Mysore');
+insert into `banks`(`id`,`bank_name`) values (24,'State Bank of Patiala');
+insert into `banks`(`id`,`bank_name`) values (25,'State Bank of Travancore');
+insert into `banks`(`id`,`bank_name`) values (26,'State Bank of Indore');
+insert into `banks`(`id`,`bank_name`) values (27,'State Bank of Saurashtra');
+insert into `banks`(`id`,`bank_name`) values (28,'Axis Bank');
+insert into `banks`(`id`,`bank_name`) values (29,'HDFC Bank');
+insert into `banks`(`id`,`bank_name`) values (30,'ICICI Bank');
+insert into `banks`(`id`,`bank_name`) values (31,'Kotak Mahindra Bank');
+insert into `banks`(`id`,`bank_name`) values (32,'Karnataka Bank');
+insert into `banks`(`id`,`bank_name`) values (33,'Yes Bank');
+insert into `banks`(`id`,`bank_name`) values (34,'IndusInd Bank');
+insert into `banks`(`id`,`bank_name`) values (35,'ING Vysya Bank');
+insert into `banks`(`id`,`bank_name`) values (36,'The Nainital Bank Ltd');
+UNLOCK TABLES;
+--
 -- Table structure for table `agents`
 --
 

@@ -224,6 +224,10 @@
         <servlet-name>journalDetails</servlet-name>
         <servlet-class>IAS.Controller.masterdata.journalDetails</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StartController</servlet-name>
+        <servlet-class>IAS.Controller.StartController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -401,6 +405,10 @@
     <servlet-mapping>
         <servlet-name>journalDetails</servlet-name>
         <url-pattern>/journalDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StartController</servlet-name>
+        <url-pattern>/main2/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
