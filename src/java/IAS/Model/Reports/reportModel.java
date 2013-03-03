@@ -531,6 +531,7 @@ public class reportModel extends JDSModel {
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
         String selall = request.getParameter("selall");
+        String agentName = request.getParameter("agentName");
 
         String sql;
 
@@ -559,7 +560,9 @@ public class reportModel extends JDSModel {
         if ("0".equals(journalName)) {
             journalName = null;
         }
-
+        if ("0".equals(agentName)) {
+            agentName = null;
+        }
 
         sql = Queries.getQuery("list_susbsriber");
         if (subType != null && subType.compareToIgnoreCase("NULL") != 0 && subType.length() > 0) {
@@ -583,7 +586,10 @@ public class reportModel extends JDSModel {
         if (journalName != null && journalName.compareToIgnoreCase("NULL") != 0 && journalName.length() > 0) {
             sql += " and journals.journalName = " + "'" + journalName + "'";
         }
-
+        if (agentName != null && agentName.compareToIgnoreCase("NULL") != 0 && agentName.length() > 0) {
+            sql += " and agents.agentName = " + "'" + agentName + "'";
+        }
+        
         if (nationality != null && nationality.compareToIgnoreCase("NULL") != 0 && nationality.length() > 0) {
             sql += " and subscriber_type.nationality = " + "'" + nationality + "'";
         }
@@ -1087,6 +1093,7 @@ public class reportModel extends JDSModel {
         stGet.setString(paramIndex, request.getParameter("journalName"));
         stGet.setString(++paramIndex, request.getParameter("issue"));
         stGet.setString(++paramIndex, request.getParameter("year"));
+        stGet.setString(++paramIndex, request.getParameter("volume"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
 
@@ -1520,12 +1527,15 @@ String xml = null;
         Document doc = builder.newDocument();
         Element results = doc.createElement("results");
         doc.appendChild(results);
-   // For Legacy Data
+   
+        // For Legacy Data
 
         String sql = Queries.getQuery("get_legacy_balance");
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        
+        int count = 0;
         while (rs.next()){
             String subscriberNumber = rs.getString("subscriberNumber");
             int subscriptionId = rs.getInt("subscriptionId");
@@ -1578,11 +1588,17 @@ String xml = null;
                     }
                 }
                 subexists = 1;
-           }
+            }
             period = startYear + "-" + endYear;
 
 
             if (subexists == 1){
+                
+                if(subscriberNumber == null || journalCode == null || period == null || 
+                   Integer.toString(balance) == null || proInvNo == null || proInvDate == null) {
+                    logger.fatal("Count: " + count++ + " " + "Subscriber No: " + " " + subscriberNumber);
+                }
+                
                 totalBalance = totalBalance + balance;
                 Element row = doc.createElement("row");
                 results.appendChild(row);
@@ -1615,7 +1631,7 @@ String xml = null;
             }
         }
 
-       // For current Data
+        // For current Data
         String sqlcurr = Queries.getQuery("get_current_balance");
         PreparedStatement stGetCurr = conn.prepareStatement(sqlcurr);
         paramIndex = 1;
@@ -1685,6 +1701,12 @@ String xml = null;
             period = startYear + "-" + endYear;
 
             if (subexists == 1){
+                              
+                if(subscriberNumber == null || journalCode == null || period == null || 
+                   Integer.toString(balance) == null || proInvNo == null || proInvDate == null) {
+                    logger.fatal("Count: " + count++ + " " + "Subscriber No: " + " " + subscriberNumber);
+                } 
+                
                 totalBalance = totalBalance + balance;
 
                 Element row = doc.createElement("row");
@@ -1721,31 +1743,32 @@ String xml = null;
         Element row = doc.createElement("row");
         results.appendChild(row);
 
-                Element _subscriberNumber = doc.createElement("subscriberNumber");
-                row.appendChild(_subscriberNumber);
-                _subscriberNumber.appendChild(doc.createTextNode("-"));
+        Element _subscriberNumber = doc.createElement("subscriberNumber");
+        row.appendChild(_subscriberNumber);
+        _subscriberNumber.appendChild(doc.createTextNode("-"));
 
-                Element _journalCode = doc.createElement("journalCode");
-                row.appendChild(_journalCode);
-                _journalCode.appendChild(doc.createTextNode("Total Balance -->"));
+        Element _journalCode = doc.createElement("journalCode");
+        row.appendChild(_journalCode);
+        _journalCode.appendChild(doc.createTextNode("Total Balance -->"));
 
-                Element _period = doc.createElement("period");
-                row.appendChild(_period);
-                _period.appendChild(doc.createTextNode("-"));
+        Element _period = doc.createElement("period");
+        row.appendChild(_period);
+        _period.appendChild(doc.createTextNode("-"));
 
-                Element _balance = doc.createElement("balance");
-                row.appendChild(_balance);
-                _balance.appendChild(doc.createTextNode(Integer.toString(totalBalance)));
+        Element _balance = doc.createElement("balance");
+        row.appendChild(_balance);
+        _balance.appendChild(doc.createTextNode(Integer.toString(totalBalance)));
 
-                Element _proInvNo = doc.createElement("proInvNo");
-                row.appendChild(_proInvNo);
-                _proInvNo.appendChild(doc.createTextNode("-"));
+        Element _proInvNo = doc.createElement("proInvNo");
+        row.appendChild(_proInvNo);
+        _proInvNo.appendChild(doc.createTextNode("-"));
 
-                Element _proInvDate = doc.createElement("proInvDate");
-                row.appendChild(_proInvDate);
-                _proInvDate.appendChild(doc.createTextNode("-"));        
+        Element _proInvDate = doc.createElement("proInvDate");
+        row.appendChild(_proInvDate);
+        _proInvDate.appendChild(doc.createTextNode("-"));        
 
         DOMSource domSource = new DOMSource(doc);
+        //checkForNullTextNodes();
         try (StringWriter writer = new StringWriter()) {
             StreamResult result = new StreamResult(writer);
             TransformerFactory tf = TransformerFactory.newInstance();
@@ -1753,6 +1776,8 @@ String xml = null;
             transformer.transform(domSource, result);
             xml = writer.toString();
         }
+        
+        logger.fatal("reached end");
         //
 
 
@@ -1765,3 +1790,9 @@ String xml = null;
 
     }
 }
+
+/*
+void checkForNullTextNodes() {
+//Document doc
+}
+*/ 

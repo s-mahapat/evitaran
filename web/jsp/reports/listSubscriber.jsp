@@ -17,6 +17,7 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=city"%>","city","city");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalName"%>","journalName","journalName");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=agent"%>","agentName","agentName");
             });
         </script>
         <script type="text/javascript">
@@ -97,6 +98,7 @@
                             institutional       : $("#institutional").val(),
                             subscriberType      : $("#subscriberType").val(),
                             journalName         : $("#journalName").val(),
+                            agentName           : $("#agentName").val(),
                             country             : $("#country").val(),
                             state               : $("#state").val(),
                             city                : $("#city").val(),
@@ -221,6 +223,16 @@
                                         </select>
                                     </span>
                                 </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Agent:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <select class="IASComboBoxWide" TABINDEX="10" name="agentName" id="agentName">
+                                            <option value="0" selected >Select</option>
+                                        </select>
+                                    </span>
+                                </div>                                
                             </div>
 
 

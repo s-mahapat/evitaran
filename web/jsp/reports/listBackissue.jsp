@@ -42,18 +42,14 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
-                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'department', 'institution', 'address', 'city', 'district',
+                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city', 
                                 'state', 'country', 'pincode', 'copies', 'issue', 'month', '`year`', 'startYear', 'startMonth', 'endYear', 'endMonth'],
                     colModel :[
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'subtypecode', index:'subtypecode', width:20, align:'center', xmlmap:'subtypecode'},
                         {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
                         {name:'subscriberName', index:'subscriberName', width:100, align:'center', xmlmap:'subscriberName'},
-                        {name:'department', index:'department', width:80, align:'center', xmlmap:'department'},
-                        {name:'institution', index:'institution', width:80, align:'center', xmlmap:'institution'},
-                        {name:'address', index:'address', width:150, align:'center', xmlmap:'address'},
                         {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
-                        {name:'district', index:'district', width:80, align:'center', xmlmap:'district'},
                         {name:'state', index:'state', width:80, align:'center', xmlmap:'state'},
                         {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
                         {name:'pincode', index:'pincode', width:80, align:'center', xmlmap:'pincode'},
@@ -110,7 +106,9 @@
                 else if ($("#issue").val() == 'value'){
                     alert("Select Issue");
                 }
-
+                else if ($("#volume").val() == 'value'){
+                    alert("Select Volume Number");
+                }
                 else {
                         isPageLoaded = true;
                         jQuery("#bilTable").setGridParam({postData:
@@ -119,6 +117,7 @@
                                 to                      : $("#to").val(),
                                 from                    : $("#from").val(),
                                 issue                   : $("#issue").val(),
+                                volume                  : $("#volume").val(),
                                 action                  : "listBil"
                             }});
 
@@ -138,8 +137,20 @@
                 $(newOption).html("Select");
                 $("#issue").append(newOption);
 
-                requestURL = "/JDS/CMasterData?md=getissues&mdvalue=" +  $("#journalName").val();
+                requestURL = "/JDS/CMasterData?md=getissues&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#volume").val();
                 jdsAppend(requestURL,"issueNumber","issue");
+            }
+
+             function loadvolumes(){
+                $("#volume").empty();
+                //text("");
+
+                var newOption = new Option("Select", "value");
+                $(newOption).html("Select");
+                $("#volume").append(newOption);
+
+                requestURL = "/JDS/CMasterData?md=getvolumes&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#year").val();
+                jdsAppend(requestURL,"volumeNumber","volume");
             }
 
             // draw the date picker.
@@ -165,35 +176,46 @@
                                                     <label>Journal Name:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName">
+                                                    <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName" onchange="loadvolumes()">
+                                                        <option value="0">Select</option>
+                                                    </select>
+                                                </span>
+                                            </div>
+
+                                            <div class="IASFormFieldDiv">
+                                                <span class="IASFormDivSpanLabel">
+                                                    <label>Year</label>
+                                                </span>
+                                                <span class="IASFormDivSpanInputBox">
+                                                    <select class="IASComboBox" TABINDEX="2" name="year" id="year" onchange="loadvolumes()">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
                                             </div>
                                             <div class="IASFormFieldDiv">
                                                 <span class="IASFormDivSpanLabel">
-                                                    <label>Issue:</label>
+                                                    <label>Volume Number:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox" TABINDEX="2" name="issue" id="issue">
+                                                    <select class="IASComboBox" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
-                                            </div>
-                                            <div class="IASFormFieldDiv">
-                                                <span class="IASFormDivSpanLabel">
-                                                    <label>Year:</label>
-                                                </span>
-                                                <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox" TABINDEX="3" name="year" id="year">
-                                                        <option value="0">Select</option>
-                                                    </select>
-                                                </span>
-                                            </div>
+                                            </div>                                            
                                         </div>
                                     </div>
                                     <%-- Search Criteria right div --%>
                                     <div class="IASFormRightDiv">
+                                        <div class="IASFormFieldDiv">
+                                            <span class="IASFormDivSpanLabel">
+                                                <label>Issue:</label>
+                                            </span>
+                                            <span class="IASFormDivSpanInputBox">
+                                                <select class="IASComboBox" TABINDEX="5" name="issue" id="issue">
+                                                    <option value="0">Select</option>
+                                                </select>
+                                            </span>
+                                        </div>                                        
                                         <div class="IASFormFieldDiv">
                                             <span class="IASFormDivSpanLabel">
                                                 <label>Subscriber Type</label>
