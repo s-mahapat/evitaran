@@ -708,6 +708,7 @@ CREATE TABLE `print_order` (
   `journalId` int(11) NOT NULL,
   `issueNo` int(11) NOT NULL,
   `printOrder` int(11) DEFAULT NULL,
+  `volume_number` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
