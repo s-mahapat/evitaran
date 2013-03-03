@@ -1721,13 +1721,29 @@ String xml = null;
         Element row = doc.createElement("row");
         results.appendChild(row);
 
-        Element _journalCode = doc.createElement("journalCode");
-        row.appendChild(_journalCode);
-        _journalCode.appendChild(doc.createTextNode("Total Balance -->"));
+                Element _subscriberNumber = doc.createElement("subscriberNumber");
+                row.appendChild(_subscriberNumber);
+                _subscriberNumber.appendChild(doc.createTextNode("-"));
 
-        Element _balance = doc.createElement("balance");
-        row.appendChild(_balance);
-        _balance.appendChild(doc.createTextNode(Integer.toString(totalBalance)));
+                Element _journalCode = doc.createElement("journalCode");
+                row.appendChild(_journalCode);
+                _journalCode.appendChild(doc.createTextNode("Total Balance -->"));
+
+                Element _period = doc.createElement("period");
+                row.appendChild(_period);
+                _period.appendChild(doc.createTextNode("-"));
+
+                Element _balance = doc.createElement("balance");
+                row.appendChild(_balance);
+                _balance.appendChild(doc.createTextNode(Integer.toString(totalBalance)));
+
+                Element _proInvNo = doc.createElement("proInvNo");
+                row.appendChild(_proInvNo);
+                _proInvNo.appendChild(doc.createTextNode("-"));
+
+                Element _proInvDate = doc.createElement("proInvDate");
+                row.appendChild(_proInvDate);
+                _proInvDate.appendChild(doc.createTextNode("-"));        
 
         DOMSource domSource = new DOMSource(doc);
         try (StringWriter writer = new StringWriter()) {

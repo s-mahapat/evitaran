@@ -45,7 +45,7 @@
                     emptyrecords: "No Mailing List Found",
                     loadtext: "Loading...",
                     colNames:['Journal Code', 'Sub. Type', 'Subscriber Number', 'Subscriber Name', 'City',
-                                'State', 'Country', 'PIN code', 'Copies', 'Volume','Issue', 'Month', 'Year', 'Page Size'],
+                                'State', 'Country', 'PIN code', 'Copies', 'Volume','Issue', 'Year', 'Date', 'Page Size'],
                     colModel :[
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
@@ -58,8 +58,8 @@
                         {name:'copies', index:'copies', width:80, align:'copies', xmlmap:'copies'},
                         {name:'volumeNumber', index:'volumeNumber', width:80, align:'center', xmlmap:'volumeNumber'},
                         {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
-                        {name:'month', index:'month', width:80, align:'center', xmlmap:'month'},
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
+                        {name:'bildate', index:'bildate', width:80, align:'center', xmlmap:'bildate'},
                         {name:'page_size', index:'page_size', width:80, align:'center', xmlmap:'page_size'},
                     ],
                     xmlReader : {
