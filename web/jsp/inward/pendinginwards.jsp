@@ -29,7 +29,7 @@
                     width: '100%',
                     autowidth: true,
                     shrinkToFit: true,
-                    height: 240,
+                    height: 360,
                     forceFit: true,
                     sortable: true,
                     loadonce: false,
@@ -40,16 +40,7 @@
                     loadtext: "Loading...",
                     colNames:['Inward No','Subscriber Id','Agent', 'From','Received Date','City','Cheque#','Amount','Purpose','PurposeID','Action'],
                     colModel :[
-                        /*{
-                            name:'Select',
-                            index:'select',
-                            width:30,
-                            align:'center',
-                            xmlmap:'inwardNumber',
-                            sortable: false
-                            //formatter: selectInwardFormatter
-                        },*/
-                        {name:'InwardNo', sortable: false, index:'inward_id', width:40, align:'center', xmlmap:'inwardNumber'},
+                        {name:'InwardNo', sortable: false, index:'inward_id', width:40, align:'center', xmlmap:'inwardNumber', formatter: inwardlink},
                         {name:'SubscriberId'
                             , index:'subscriber_id'
                             , width:45
@@ -100,8 +91,8 @@
                         id: "inwardNumber"
                     },
                     pager: '#pager',
-                    rowNum: 10,
-                    rowList:[10,30,50,100],
+                    rowNum: 20,
+                    rowList:[20,50,100],
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
@@ -159,28 +150,13 @@
 
             }
 
-            /*function subscriberlink(cellvalue, options, rowObject){
-                rowid = options.rowId;
-                var subscriberId = rowObject.childNodes[1].textContent;
-                var subscriberName = rowObject.childNodes[2].textContent;
-                var city = rowObject.childNodes[4].textContent;
-                var inwardid = rowObject.childNodes[0].textContent
-                if(isEmptyValue(subscriberId)){
-                    var link = "<a href=\"#\" onclick=" + "\"" + "selectSubscriber('" + city + "','" + subscriberName + "','" + inwardid + "')" + "\"" + ">Select Subscriber</a>";
+            function inwardlink(cellvalue, options, rowObject){
+                if(cellvalue){
+                    var link = '<a href="inward?action=view&inwardNumber=' + cellvalue + '">' + cellvalue + '</a>';
                     return link;
                 }
-                return "";
+                return cellvalue;
             }
-
-            function selectInwardFormatter(cellvalue, options, rowObject){
-                rowid = options.rowId;
-                //console.log(rowObject);
-                var purpose = rowObject.childNodes[7].textContent;
-                var inwardId = rowObject.childNodes[0].textContent;
-                var subscriberId = rowObject.childNodes[1].textContent;
-                action = "<input type='radio' name='selectedInwardRadio'" + " value=" + "\"" + rowid + "\"" + " onclick=" + "\"" + "setInwardSubscriber('" + inwardId + "','" + subscriberId + "','" + purpose + "')" + "\"" + "/>";
-                return action;
-            }*/
 
         </script>
 
@@ -213,40 +189,19 @@
                                         <label>Purpose:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="1" name="inwardPurpose" id="inwardPurpose" title="Select Inward purpose to filter">
+                                        <select class="IASComboBoxWide" TABINDEX="1" name="inwardPurpose" id="inwardPurpose" title="Select Inward purpose to filter" onchange="searchInwards()">
                                             <option value ="NULL">All</option>
                                         </select>
                                     </span>
                                 </div>
                             </div>
 
-
-                            <%-- Search Criteria right div --%>
-                            <%--<div class="IASFormRightDiv">
-
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Date Range:</label>
-                                    </span>
-                                    <div class="dateDiv"></div>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" type="text" id="from" name="from"/>
-                                    </span>
-                                    <span class="IASFormDivSpanForHyphen">
-                                        <label> to </label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" readonly size="10" type="text" id="to" name="to"/>
-                                    </span>
-                                </div>
-                            </div>--%>
-
-                            <div class="IASFormFieldDiv">
+                            <!--<div class="IASFormFieldDiv">
                                 <div class="actionBtnDiv">
                                     <button class="IASButton SearchButton" type="button" onclick="searchInwards()" TABINDEX="4">Filter</button>
                                     <input class="IASButton" type="reset" value="Reset"  TABINDEX="5"/>
                                 </div>
-                            </div>
+                            </div>-->
                         </fieldset>
 
 

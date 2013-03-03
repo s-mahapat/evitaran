@@ -1,6 +1,7 @@
 package IAS.Controller;
 
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +27,17 @@ public class JDSController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    }
+
+    public void redirect(HttpServletResponse response, String view) throws IOException{
+        view = "jsp/" + view + ".jsp";
+        response.sendRedirect(view);
+    }
+
+    public void forward(HttpServletRequest request, HttpServletResponse response, String view) throws IOException, ServletException{
+        view = "jsp/" + view + ".jsp";
+        RequestDispatcher rd = request.getRequestDispatcher(view);
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

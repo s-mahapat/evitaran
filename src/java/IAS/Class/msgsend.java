@@ -16,6 +16,7 @@ package IAS.Class;
  * mails which are sent by IAS. All mails to this account are sent as bcc
  */
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
@@ -42,12 +43,36 @@ public class msgsend {
     private static final Logger logger = JDSLogger.getJDSLogger(msgsend.class.getName());
     private String contentType = "text/plain";
     private static Mailer mailer = null;
+    private static String SMTP_HOST_NAME;
+    private static String SMTP_AUTH_USER;
+    private static String SMTP_AUTH_PWD;
+    private static boolean AUTH;
+    private static String BCC_EMAIL;
+    private static String EXCEPTION_EMAIL;
+    private static String FROM_TEXT;
+    private static String FROM_EMAIL_ID;
 
-    public msgsend() {
+    public msgsend() throws FileNotFoundException, IOException {
+        getEmailProperties();
     }
 
-    public msgsend(String _contentType) {
+    public msgsend(String _contentType) throws FileNotFoundException, IOException {
         contentType = _contentType;
+        getEmailProperties();
+    }
+
+    private void getEmailProperties() throws FileNotFoundException, IOException {
+        Properties properties = new Properties();
+        String emailPropertiesFile = getPropertiesFileLocation();
+        properties.load(new FileInputStream(emailPropertiesFile));
+        AUTH = Boolean.parseBoolean(properties.getProperty("AUTH"));
+        SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
+        SMTP_AUTH_USER = properties.getProperty("SMTP_AUTH_USER");
+        SMTP_AUTH_PWD = properties.getProperty("SMTP_AUTH_PWD");
+        BCC_EMAIL = properties.getProperty("BCC_EMAIL");
+        EXCEPTION_EMAIL = properties.getProperty("EXCEPTION_EMAIL");
+        FROM_TEXT = properties.getProperty("FROM_TEXT");
+        FROM_EMAIL_ID = properties.getProperty("FROM_EMAIL_ID");
     }
 
     public static String getPropertiesFileLocation() {
@@ -56,21 +81,14 @@ public class msgsend {
     }
 
     public void sendExceptionMail(String exceptionMsg) throws IOException {
-        //String from           = properties.getProperty("FROM");
-        this.sendMailWithAuthenticationUseSSL(
-                "jds.adm.all@gmail.com", "", "", "Exception generated in JDS code",
-                exceptionMsg, "", "", null);
+        this.sendMail(EXCEPTION_EMAIL, null, null, "Exception generated in JDS code", exceptionMsg, "JDS Exception Handler", null, null);
     }
 
     private static Mailer getMailer() throws IOException {
-        if (mailer == null) {
-            Properties properties = new Properties();
-            String emailPropertiesFile = getPropertiesFileLocation();
-            properties.load(new FileInputStream(emailPropertiesFile));
-            String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
-            String SMTP_AUTH_USER = properties.getProperty("SMTP_AUTH_USER");
-            String SMTP_AUTH_PWD = properties.getProperty("SMTP_AUTH_PWD");
+        if (AUTH) {
             mailer = new Mailer(SMTP_HOST_NAME, 25, SMTP_AUTH_USER, SMTP_AUTH_PWD, TransportStrategy.SMTP_TLS);
+        }else{
+            mailer = new Mailer(SMTP_HOST_NAME, 25, null, null);
         }
         return mailer;
     }
@@ -78,14 +96,11 @@ public class msgsend {
     public boolean sendEmailToSubscriberWithAttachment(String SubscriberEmail, String Subject,
             String body, String FileName,
             byte[] attachment, String attachmentType) throws IOException {
-        String emailPropertiesFile = getPropertiesFileLocation();
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(emailPropertiesFile));
         final Email email = new Email();
-        email.setFromAddress(properties.getProperty("FROM_TEXT"), properties.getProperty("FROM_EMAIL_ID"));
+        email.setFromAddress(FROM_TEXT, FROM_EMAIL_ID);
         email.setSubject(Subject);
         email.addRecipient(SubscriberEmail, SubscriberEmail, RecipientType.TO);
-        email.addRecipient("IAS", "jds.ias.mails@gmail.com", RecipientType.BCC);
+        email.addRecipient("IAS", BCC_EMAIL, RecipientType.BCC);
         email.setText(body);
 
         // check if there is any attachment to be sent, else just ignore
@@ -94,7 +109,6 @@ public class msgsend {
         }
 
         try {
-            //Mailer _mailer = new Mailer(SMTP_HOST_NAME, 25, SMTP_AUTH_USER, SMTP_AUTH_PWD, TransportStrategy.SMTP_TLS);
             Mailer _mailer = getMailer();
             _mailer.sendMail(email);
             return true;
@@ -107,22 +121,14 @@ public class msgsend {
 
     public boolean sendEmailToSubscriberWithoutAttachment(String SubscriberEmail, String Subject,
             String body) throws IOException {
-        String emailPropertiesFile = getPropertiesFileLocation();
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(emailPropertiesFile));
         final Email email = new Email();
-        email.setFromAddress(properties.getProperty("FROM_TEXT"), properties.getProperty("FROM_EMAIL_ID"));
+        email.setFromAddress(FROM_TEXT, FROM_EMAIL_ID);
         email.setSubject(Subject);
         email.addRecipient(SubscriberEmail, SubscriberEmail, RecipientType.TO);
-        email.addRecipient("IAS", "jds.ias.mails@gmail.com", RecipientType.BCC);
+        email.addRecipient("IAS", BCC_EMAIL, RecipientType.BCC);
         email.setText(body);
 
-        //String SMTP_HOST_NAME = properties.getProperty("SMTP_HOST_NAME");
-        //String SMTP_AUTH_USER = properties.getProperty("SMTP_AUTH_USER");
-        //String SMTP_AUTH_PWD = properties.getProperty("SMTP_AUTH_PWD");
-
         try {
-            //Mailer _mailer = new Mailer(SMTP_HOST_NAME, 25, SMTP_AUTH_USER, SMTP_AUTH_PWD, TransportStrategy.SMTP_TLS);
             Mailer _mailer = getMailer();
             _mailer.sendMail(email);
             return true;
