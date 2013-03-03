@@ -170,7 +170,7 @@ public class pdfserver extends JDSController {
                 String periodicals = request.getParameter("periodicals");
 
                 convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, true);
-                c2Pdf.prepareBILLabelContent(rs);
+                c2Pdf.prepareBILStickerContent(rs);
                 c2Pdf.addStickerContent(rs, os);
 
                 response.setContentType("application/pdf");

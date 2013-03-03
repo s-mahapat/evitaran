@@ -53,6 +53,7 @@ public class convertToPdf extends JDSPDF {
     // Specifics for label
     float lfixedLeading       = 0.0f;
     float lmultipliedLeading  = 1.2f;
+    float lmultipliedLeadingPlus = 1.5f;
     int ltextAlignment    = 0;
     Font.FontFamily lfontType = Font.getFamily("HELVETICA");
     int lfontSize        = 10;
@@ -871,6 +872,7 @@ public convertToPdf(){
         leading         = Float.valueOf(properties.getProperty("leading").trim()).floatValue();
         lfixedLeading         = Float.valueOf(properties.getProperty("lfixedLeading").trim()).floatValue();
         lmultipliedLeading    = Float.valueOf(properties.getProperty("lmultipliedLeading").trim()).floatValue();
+        lmultipliedLeadingPlus  = Float.valueOf(properties.getProperty("lmultipliedLeadingPlus").trim()).floatValue();
         textAlignment   = Integer.parseInt(properties.getProperty("textAlignment"));
         fontType        = Font.getFamily(properties.getProperty("fontFamily"));
         fontSize        = Integer.parseInt(properties.getProperty("fontSize"));
@@ -908,6 +910,13 @@ public convertToPdf(){
         fontStyle       = Font.getStyleValue(properties.getProperty("fontStyle"));
 
         return properties;
+    }
+
+    public void prepareBILStickerContent(ResultSet rs) throws SQLException {
+        lfixedLeading = 10.0f;
+        lmultipliedLeadingPlus = 0.0f;
+        prepareBILLabelContent(rs);
+
     }
 
     public void prepareBILLabelContent(ResultSet rs) throws SQLException {
@@ -1093,9 +1102,30 @@ public convertToPdf(){
                             String volume_number = pairs5.getKey().toString();
                             volumeInfo vInfo = (volumeInfo)pairs5.getValue();
 
-                            label = label + journalCode + "/";
+                            label = label + journalCode;
+                            label = label + "/" + volume_number;
 
-                            label = label + volume_number + " " + vInfo.getStartIssue() + "-" + vInfo.getEndIssue() + " " + "(" + vInfo.getNo_of_copies() + ")" + " ";
+                            // Add information about issues
+                            int startIssue = vInfo.getStartIssue();
+                            int endIssue = vInfo.getEndIssue();
+                            String issue;
+                            // If start and end issue are same, then only mention startissue no
+                            if(startIssue == endIssue) {
+                                issue = "/" +  startIssue;
+                            } else {
+                                issue = "/" + startIssue + "-" + endIssue;
+                            }
+                            label = label + issue;
+
+                            //Add information about vo of copies
+                            int no_of_copies = vInfo.getNo_of_copies();
+                            String noOfCopies;
+                            if(no_of_copies == 1) {
+                                noOfCopies = "";
+                            } else {
+                                noOfCopies = "(" + no_of_copies + ")" + " ";
+                            }
+                            label = label + noOfCopies;
                         }
                     }
                     Paragraph p = prepareBILLabelPDFContent(sLabelInfo, label);
@@ -1109,38 +1139,37 @@ public convertToPdf(){
         Paragraph info = null;
 
         info = new Paragraph();
-        info.setLeading(leading);
+        info.setLeading(lfixedLeading, lmultipliedLeadingPlus);
         info.setAlignment(textAlignment);
 
         Font font;
-        font = new Font(sfontType, sfontSizeHeader, sfontStyle, BaseColor.BLACK);
+        font = new Font(sfontType, sfontSizeHeader-1, sfontStyle, BaseColor.BLACK);
         info.add(new Chunk(bilLabel, font));
         info.add(Chunk.NEWLINE);
 
-        font = new Font(sfontType, sfontSizeHeader, sfontStyle, BaseColor.BLACK);
-        String firstLine = sLabelInfo.getsubscriberNumber() + " " + sLabelInfo.getjournalCode();
+        font = new Font(sfontType, sfontSize, sfontStyle, BaseColor.BLACK);
+        String firstLine = sLabelInfo.getsubscriberName() + " " + sLabelInfo.getsubscriberNumber();
+        // + " " + sLabelInfo.getjournalCode();
 
-        if(!noHeader){
+        //if(!noHeader){
 
-            /*
-            if(sLabelInfo.getcopies() > 1){
-                firstLine = firstLine + " " + sLabelInfo.getcopies();
-            }
-            */
+            //if(sLabelInfo.getcopies() > 1){
+            //    firstLine = firstLine + " " + sLabelInfo.getcopies();
+            //}
 
-            firstLine = firstLine + " " + sLabelInfo.getsubtypecode();
+            //firstLine = firstLine + " " + sLabelInfo.getsubtypecode();
 
-            if(sLabelInfo.equals("Paid")) {
-                firstLine = firstLine + " " + sLabelInfo.getstartDate()+
-                    " " + "to" +
-                    " " + sLabelInfo.getendDate();
-            }
+            //if(sLabelInfo.equals("Paid")) {
+            //    firstLine = firstLine + " " + sLabelInfo.getstartDate()+
+            //        " " + "to" +
+            //        " " + sLabelInfo.getendDate();
+            //}
             info.add(new Chunk(firstLine, font));
             info.add(Chunk.NEWLINE);
-        }
-        font = new Font(sfontType, sfontSize, sfontStyle, BaseColor.BLACK);
-        info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
-        info.add(Chunk.NEWLINE);
+        //}
+
+        //info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
+        //info.add(Chunk.NEWLINE);
         info.add(new Chunk(sLabelInfo.getdepartment(), font));
         info.add(Chunk.NEWLINE);
         info.add(new Chunk(sLabelInfo.getinstitution(), font));
@@ -1332,7 +1361,7 @@ public convertToPdf(){
             subInfo sLabelInfo = new subInfo(rs);
 
             info = new Paragraph();
-            info.setLeading(lfixedLeading, lmultipliedLeading);
+            info.setLeading(lfixedLeading, lmultipliedLeadingPlus);
             info.setAlignment(ltextAlignment);
 
             Font font;

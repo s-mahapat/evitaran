@@ -125,6 +125,7 @@
                                 to                      : $("#to").val(),
                                 from                      : $("#from").val(),
                                 bilCreationDate          : $("#bilCreationDate").val(),
+                                periodicals             : $("#periodicals").length,
                                 action                  : "search"
                             }});
                         jQuery("#bilTable").setGridParam({ datatype: "xml" });
@@ -258,9 +259,11 @@
                             <input type="hidden" name="action" id="action"/>
                             <fieldset class="subMainFieldSet">
                                 <div class="actionBtnDiv">
-                                        <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
-                                        <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
-                                        <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
+                                    <label>Periodicals</label>
+                                    <input class="IASCheckBox" TABINDEX="6" type="checkbox" name="periodicals" id="periodicals"/>
+                                    <input class="IASButton" TABINDEX="7" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
+                                    <input class="IASButton" TABINDEX="8" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
+                                    <input class="IASButton" TABINDEX="9" type="reset" value="Reset"/>
                                 </div>
                             </fieldset>
                     </fieldset>
