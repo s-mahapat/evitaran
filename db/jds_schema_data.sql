@@ -1138,7 +1138,7 @@ CREATE TABLE `subscriber` (
   `department` varchar(64) DEFAULT NULL,
   `institution` varchar(64) DEFAULT NULL,
   `shippingAddress` varchar(128) NOT NULL,
-  `invoiceAddress` varchar(128) NOT NULL,
+  `invoiceAddress` varchar(512) NOT NULL,
   `city` int(11) NOT NULL DEFAULT '0',
   `district` int(11) DEFAULT NULL,
   `state` int(11) NOT NULL DEFAULT '0',

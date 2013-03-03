@@ -83,7 +83,7 @@ public class subscriberFormBean extends JDSBean {
     }
 
     public String getInvoiceAddress() {
-        if(this.sameInvoiceAddress == true){
+        if(this.sameInvoiceAddress == true && invoiceAddress == ""){
             return this.shippingAddress;
         }
         return this.invoiceAddress;

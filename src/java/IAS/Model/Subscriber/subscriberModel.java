@@ -64,6 +64,10 @@ public class subscriberModel extends JDSModel {
         FillBean(this.request, subscriberFormBean);
         this._subscriberFormBean = subscriberFormBean;
 
+        if (_subscriberFormBean.isSameInvoiceAddress()) {
+            String strInvoiceAddress = getInvoiceAddress(_subscriberFormBean);
+            _subscriberFormBean.setInvoiceAddress(strInvoiceAddress);
+        }
         /*
          * check that the subscriber number is not present on the screen, if
          * present means its and edit subscriber else create new subscriber.
@@ -351,7 +355,7 @@ public class subscriberModel extends JDSModel {
             logger.error(e.getMessage(), e);
             throw e;
         } finally {
-          // _conn.close();
+            // _conn.close();
         }
         return _subscriberFormBean2;
     }
@@ -468,26 +472,26 @@ public class subscriberModel extends JDSModel {
         int pageNumber;
         int pageSize;
         boolean matchExact;
-        try{
+        try {
             pageNumber = Integer.parseInt(request.getParameter("page"));
-        }catch(NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             pageNumber = 1;
         }
-        try{
+        try {
             pageSize = Integer.parseInt(request.getParameter("rows"));
-        }catch(NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             pageSize = 10;
         }
-        try{
+        try {
             matchExact = Boolean.parseBoolean(request.getParameter("exact"));
-        }catch(NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             matchExact = false;
         }
 
-        if(matchExact){
+        if (matchExact) {
             exactMatchCondition = "=";
-            searchRegex= "";
-        }else{
+            searchRegex = "";
+        } else {
             exactMatchCondition = "LIKE";
             searchRegex = "%";
         }
@@ -497,9 +501,9 @@ public class subscriberModel extends JDSModel {
         //double totalPages = 0;
 
         if (subscriberNumber != null && subscriberNumber.length() > 0) {
-            if(matchExact){
+            if (matchExact) {
                 sql += condition + " subscriberNumber " + exactMatchCondition + "'" + subscriberNumber + "'";
-            }else{
+            } else {
                 sql += condition + " subscriberNumber " + exactMatchCondition + " " + "'%" + subscriberNumber + "%'";
             }
             condition = " and";
@@ -736,8 +740,34 @@ public class subscriberModel extends JDSModel {
         } catch (Exception ex) {
             logger.error(ex);
         } finally {
-           // _conn.close();
+            // _conn.close();
         }
         return xml;
+    }
+
+    public String getInvoiceAddress(subscriberFormBean subscriberFormBean) {
+        String strCRLF = "\n";
+        String strInvoiceAddress = subscriberFormBean.getInvoiceAddress();
+
+        strInvoiceAddress += subscriberFormBean.getDepartment().length() > 0 ? strCRLF.concat(subscriberFormBean.getDepartment()) : " ";
+        strInvoiceAddress += subscriberFormBean.getInstitution().length() > 0 ? strCRLF.concat(subscriberFormBean.getInstitution()) : " ";
+        strInvoiceAddress += subscriberFormBean.getCity().length() > 0 ? strCRLF.concat(subscriberFormBean.getCity()) : " ";
+        strInvoiceAddress += subscriberFormBean.getDistrict().length() > 0 ? strCRLF.concat(subscriberFormBean.getDistrict()) : " ";
+        strInvoiceAddress += subscriberFormBean.getState().length() > 0 ? strCRLF.concat(subscriberFormBean.getState()) : " ";
+
+        if (!subscriberFormBean.getCountry().isEmpty()) {
+            if (subscriberFormBean.getCountry().equalsIgnoreCase("INDIA")) { // Do not add INDIA in the address
+                if (!subscriberFormBean.getPincodeAsText().isEmpty()) {
+                    strInvoiceAddress = strInvoiceAddress.concat(strCRLF)
+                            .concat(subscriberFormBean.getPincodeAsText());
+                }
+            } else {
+                strInvoiceAddress = strInvoiceAddress.concat(strCRLF)
+                        .concat(subscriberFormBean.getCountry())
+                        .concat(strCRLF)
+                        .concat(subscriberFormBean.getPincodeAsText());
+            }
+        }
+        return strInvoiceAddress;
     }
 }

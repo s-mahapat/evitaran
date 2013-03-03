@@ -238,6 +238,12 @@ public class InvoiceFormBean {
         this.invoiceAddress = _InvoiceAddress;
     }
 
+    public String getInvoiceAddressForJSP() {
+        String invoiceAdd = this.invoiceAddress;
+        invoiceAdd = invoiceAdd.replaceAll("\n", "<br>");
+        return invoiceAdd;
+    }
+
     public String getDepartment() {
         return this.department;
     }

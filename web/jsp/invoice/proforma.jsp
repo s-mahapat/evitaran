@@ -141,7 +141,7 @@
                                 <div class="invoiceLeftDiv">
                                     <span class="invoiceSubscriberAddressSpan">
                                         ${invoiceFormBean.subscriberName}</br>
-                                        ${invoiceFormBean.invoiceAddress}
+                                        ${invoiceFormBean.invoiceAddressForJSP}
                                     </span>
                                 </div>
                                 <div class="invoiceRightDiv">
