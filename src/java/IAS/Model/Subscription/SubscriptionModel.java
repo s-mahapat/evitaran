@@ -86,7 +86,7 @@ public class SubscriptionModel extends JDSModel {
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
 
-        Connection conn = (Connection)request.getSession(false).getAttribute("connection");
+
 
         String xml = null;
         String journalGroupID[] = request.getParameterValues("journalGroupID");
@@ -113,6 +113,7 @@ public class SubscriptionModel extends JDSModel {
             request.setAttribute("subscriptionDetailBean", _subscriptionDetailBean);
 
             // start transaction here.
+            Connection conn = (Connection)request.getSession(false).getAttribute("connection");
             conn.setAutoCommit(false);
             try {
                 subscriptionID = this.addNewSubscription(this.subscriberNumber, this.inwardNumber, util.getDateString());
