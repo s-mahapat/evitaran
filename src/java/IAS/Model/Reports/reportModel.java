@@ -947,6 +947,7 @@ public class reportModel extends JDSModel {
                 stGetPrintOrder.setString(paramIndex, request.getParameter("year"));
                 stGetPrintOrder.setInt(++paramIndex, journalId);
                 stGetPrintOrder.setInt(++paramIndex, issue);
+                stGetPrintOrder.setInt(++paramIndex, volume);
                 ResultSet rsPrintOrder = this.db.executeQueryPreparedStatement(stGetPrintOrder);
                 if (rsPrintOrder.next())
                 {
@@ -1527,15 +1528,17 @@ String xml = null;
         Document doc = builder.newDocument();
         Element results = doc.createElement("results");
         doc.appendChild(results);
+        int paramIndex = 1;
+        int count = 0;
    
         // For Legacy Data
-
+        /*
         String sql = Queries.getQuery("get_legacy_balance");
         PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
+        
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         
-        int count = 0;
+        
         while (rs.next()){
             String subscriberNumber = rs.getString("subscriberNumber");
             int subscriptionId = rs.getInt("subscriptionId");
@@ -1630,7 +1633,7 @@ String xml = null;
                 subexists = 0;
             }
         }
-
+        */
         // For current Data
         String sqlcurr = Queries.getQuery("get_current_balance");
         PreparedStatement stGetCurr = conn.prepareStatement(sqlcurr);
