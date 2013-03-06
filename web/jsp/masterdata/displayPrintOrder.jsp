@@ -14,6 +14,7 @@
         <script type="text/javascript" src="js/masterdata/displayPrintOrder.js"></script>
         <script type="text/javascript" src="js/masterdata/validatePrintOrder.js"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.jqGrid.min.js"></script>
         <script type="text/javascript" src="js/jquery/grid.inlinedit.js"></script>
         <script type="text/javascript" src="js/jquery/grid.celledit.js"></script>
         <script>
@@ -52,7 +53,7 @@
                     loadtext: "Loading...",
                     colNames:['Issue No','Print Order'],
                     colModel :[
-                        {name:'issues', index:'issues', width:80, align:'center', xmlmap:'issues'},
+                        {name:'issueNo', index:'issueNo', width:80, align:'center', xmlmap:'issueNo'},
                         {name:'printOrder', index:'printOrder', width:80, align:'center',xmlmap:'printOrder', editable: true, edittype: 'text', editoptions: {rows:"1"}, editrules: {integer:true, minValue:0 }}
                     ],
                     xmlReader : {
@@ -106,7 +107,8 @@
                     jQuery("#printOrderTable").setGridParam({editurl: "<%=request.getContextPath()%>/printOrder?action=save" +
                             "&year=" + $("#year").val() +
                             "&journalName=" + $("#journalName").val() +
-                            "&issueNo=" + $("#printOrderTable").getCell(ids[i], 'issues')
+                            "&volume=" + $("#volume").val() +
+                            "&issueNo=" + $("#printOrderTable").getCell(ids[i], 'issueNo')
                     });
 
                     //var aPO = $("#printOrderTable").getCell(ids[i], 'issues') * $("#printOrderTable").getCell(ids[i], 'printOrder');
@@ -170,18 +172,33 @@
                     alert("Select year");
                 } else if($("#journalName").val() == 0) {
                     alert("Select journal");
+                } else if ($("#volume").val() == 0){
+                    alert("Select Volume Number");
                 }else {
                     isPageLoaded = true;
                     jQuery("#printOrderTable").setGridParam({postData:
                             {year       : $("#year").val(),
                             journalName : $("#journalName").val(),
-                            action       : "searchPrintOrder"
+                            volume      : $("#volume").val(),
+                            action      : "searchPrintOrder"
                         }});
                     jQuery("#printOrderTable").setGridParam({ datatype: "xml" });
                     jQuery("#printOrderTable").trigger("clearGridData");
                     jQuery("#printOrderTable").trigger("reloadGrid");
                     jQuery("#btnEdit").button("enable");
                 }
+            }
+
+             function loadvolumes(){
+                $("#volume").empty();
+                //text("");
+
+                var newOption = new Option("Select", "value");
+                $(newOption).html("Select");
+                $("#volume").append(newOption);
+
+                requestURL = "/JDS/CMasterData?md=getvolumes&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#year").val();
+                jdsAppend(requestURL,"volumeNumber","volume");
             }
 
             /*
@@ -226,10 +243,20 @@
                             <div class="IASFormLeftDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
+                                        <label>Journal:</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <select class="IASComboBoxWide" TABINDEX="2" name="journalName" id="journalName">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
                                         <label>Year:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="year" id="year">
+                                        <select class="IASComboBox" TABINDEX="1" name="year" id="year" onchange="loadvolumes()">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -238,10 +265,10 @@
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Journal:</label>
+                                        <label>Volume Number:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="2" name="journalName" id="journalName">
+                                        <select class="IASComboBox" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>

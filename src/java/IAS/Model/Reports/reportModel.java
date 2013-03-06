@@ -589,7 +589,7 @@ public class reportModel extends JDSModel {
         if (agentName != null && agentName.compareToIgnoreCase("NULL") != 0 && agentName.length() > 0) {
             sql += " and agents.agentName = " + "'" + agentName + "'";
         }
-        
+
         if (nationality != null && nationality.compareToIgnoreCase("NULL") != 0 && nationality.length() > 0) {
             sql += " and subscriber_type.nationality = " + "'" + nationality + "'";
         }
@@ -606,9 +606,9 @@ public class reportModel extends JDSModel {
         if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
             sql += " and subscription.subscriptionDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
-        
+
         sql += " order by pincode";
-        
+
         PreparedStatement stGet = conn.prepareStatement(sql);
 
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
@@ -665,7 +665,7 @@ public class reportModel extends JDSModel {
                 paramIndex = 1;
                 stGetStatement.setInt(paramIndex, journalId);
                 stGetStatement.setString(++paramIndex, request.getParameter("issue"));
-                stGetStatement.setString(++paramIndex, request.getParameter("year"));                
+                stGetStatement.setString(++paramIndex, request.getParameter("year"));
                 value = rsSubType.getObject(1);
                 stGetStatement.setString(++paramIndex, value.toString());
                 stGetStatement.setString(++paramIndex, request.getParameter("volume"));
@@ -814,7 +814,7 @@ public class reportModel extends JDSModel {
                 Element _volume = doc.createElement("volume");
                 row.appendChild(_volume);
                 _volume.appendChild(doc.createTextNode(Integer.toString(volume)));
-                
+
                 // Add journal Code as first column
                 Element _issue = doc.createElement("issue");
                 row.appendChild(_issue);
@@ -1172,6 +1172,7 @@ public class reportModel extends JDSModel {
         ResultSetMetaData rsmd = rsLJ.getMetaData();
         String colName = rsmd.getColumnName(1);
 
+        // Loop over every journal
         while(rsLJ.next())
         {
             xml = xml + "<row>";
@@ -1179,44 +1180,95 @@ public class reportModel extends JDSModel {
 
             xml = xml + "<" + colName + ">" + journalCode + "</" + colName + ">";
 
-            sql = Queries.getQuery("get_no_of_issues");
-            st = conn.prepareStatement(sql);
-            st.setString(1, journalCode);
-            st.setInt(2, year);
-            ResultSet rsNI = db.executeQueryPreparedStatement(st);
-            int noOfIssues = 0;
-            if(rsNI.next()) {
-                noOfIssues = rsNI.getInt(1);
-            }
+            int issueNo=1;
+            // Loop over volume nos
+            String sql1 = Queries.getQuery("get_volume_number");
+            PreparedStatement st1 = conn.prepareStatement(sql1);
+            st1.setString(1, journalCode);
+            st1.setInt(2, year);
+            ResultSet rsNI1 = db.executeQueryPreparedStatement(st1);
 
-            for(int i=1; i<=maxNoOfIssues; i++){
+            while(rsNI1.next()) {
 
-                if(i>noOfIssues)
-                {
-                    xml = xml + "<col" + i + ">" + "NA" + "</col" + i + ">";
-                }else {
-                    xml = xml + "<col" + i + ">";
+                int volume_number = rsNI1.getInt(1);
+
+                int noOfIssuesPerVolume = getNoOfIssuesPerVolume(journalCode, volume_number);
+                // Loop over no of issues in that volume
+                for(int j=1; j<=noOfIssuesPerVolume; j++) {
 
                     sql = Queries.getQuery("get_print_order");
                     st = conn.prepareStatement(sql);
                     int paramIndex = 1;
                     st.setInt(paramIndex++, year);
                     st.setString(paramIndex++, journalCode);
-                    st.setInt(paramIndex++, i);
+                    st.setInt(paramIndex++, j);
+                    st.setInt(paramIndex++, volume_number);
                     ResultSet rsPO = db.executeQueryPreparedStatement(st);
                     String print_order = "";
                     if(rsPO.next()) {
                         print_order = Integer.toString(rsPO.getInt(1));
                     }
+                    xml = xml + "<col" + issueNo + ">";
                     xml = xml + print_order;
-                    xml = xml + "</col" + i + ">";
+                    xml = xml + "</col" + issueNo + ">";
+
+                    issueNo++;
                 }
             }
+
+            // Get Max no of issues for this journal journals
+            int maxNoOfIssuesForJournal = getMaxNoOfIssuesFromAllJournals(year);
+            int residualIssues = maxNoOfIssuesForJournal - (issueNo-1);
+
+            for(int i=0; i<residualIssues; i++) {
+                xml = xml + "<col" + issueNo + ">" + "NA" + "</col" + issueNo + ">";
+                issueNo++;
+            }
+
             xml = xml + "</row>";
         }
         xml = xml + "</results>";
 
         return(xml);
+    }
+
+    public int getNoOfIssuesPerVolume(String journalCode, int volume_number ) throws SQLException {
+
+        String sql = Queries.getQuery("getissuesPO");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setString(1, journalCode);
+        st.setInt(2, volume_number);
+        ResultSet rsNI = db.executeQueryPreparedStatement(st);
+        int maxNoOfIssues = 0;
+        if(rsNI.next()) {
+            maxNoOfIssues = rsNI.getInt(1);
+        }
+        return maxNoOfIssues;
+    }
+
+    public int getMaxNoOfIssuesFromAllJournals(int year) throws SQLException {
+        String sql = Queries.getQuery("get_max_no_of_issues");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setInt(1, year);
+        ResultSet rsNI = db.executeQueryPreparedStatement(st);
+        int maxNoOfIssues = 0;
+        if(rsNI.next()) {
+            maxNoOfIssues = rsNI.getInt(1);
+        }
+        return maxNoOfIssues;
+    }
+
+    public int getMaxNoOfIssuesForJournal(String journalCode, int year) throws SQLException{
+        String sql = Queries.getQuery("get_no_of_issues");
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setString(1, journalCode);
+        st.setInt(2, year);
+        ResultSet rsNI = db.executeQueryPreparedStatement(st);
+        int maxNoOfIssues = 0;
+        if(rsNI.next()) {
+            maxNoOfIssues = rsNI.getInt(1);
+        }
+        return maxNoOfIssues;
     }
 
     public void contructTableForPrintOrderReport() throws SQLException, ParserConfigurationException, SAXException, IOException, IllegalAccessException, InvocationTargetException {
@@ -1537,7 +1589,7 @@ String xml = null;
         PreparedStatement stGet = conn.prepareStatement(sql);
         
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        
+
         
         while (rs.next()){
             String subscriberNumber = rs.getString("subscriberNumber");
@@ -1547,7 +1599,7 @@ String xml = null;
             String proInvNo = rs.getString("proInvNo");
             if (proInvNo.equals(null) || proInvNo.equals("")){
                 proInvNo = "-";
-            }            
+            }
             String proInvDate = rs.getString("proInvDate");
             int startYear = 0;
             int endYear = 0;
@@ -1596,12 +1648,12 @@ String xml = null;
 
 
             if (subexists == 1){
-                
-                if(subscriberNumber == null || journalCode == null || period == null || 
+
+                if(subscriberNumber == null || journalCode == null || period == null ||
                    Integer.toString(balance) == null || proInvNo == null || proInvDate == null) {
                     logger.fatal("Count: " + count++ + " " + "Subscriber No: " + " " + subscriberNumber);
                 }
-                
+
                 totalBalance = totalBalance + balance;
                 Element row = doc.createElement("row");
                 results.appendChild(row);
@@ -1669,7 +1721,7 @@ String xml = null;
                 sqljournalsCurr += " and subscriptiondetails.startYear  >= " + periodStart;
                 sqljournalsCurr += " and subscriptiondetails.endYear  <= " + periodEnd;
             }
-            
+
             PreparedStatement stGetJournals = conn.prepareStatement(sqljournalsCurr);
             stGetJournals.setInt(paramIndex, subscriptionId);
             ResultSet rsJournals = this.db.executeQueryPreparedStatement(stGetJournals);
@@ -1704,12 +1756,12 @@ String xml = null;
             period = startYear + "-" + endYear;
 
             if (subexists == 1){
-                              
-                if(subscriberNumber == null || journalCode == null || period == null || 
+
+                if(subscriberNumber == null || journalCode == null || period == null ||
                    Integer.toString(balance) == null || proInvNo == null || proInvDate == null) {
                     logger.fatal("Count: " + count++ + " " + "Subscriber No: " + " " + subscriberNumber);
-                } 
-                
+                }
+
                 totalBalance = totalBalance + balance;
 
                 Element row = doc.createElement("row");
@@ -1768,7 +1820,7 @@ String xml = null;
 
         Element _proInvDate = doc.createElement("proInvDate");
         row.appendChild(_proInvDate);
-        _proInvDate.appendChild(doc.createTextNode("-"));        
+        _proInvDate.appendChild(doc.createTextNode("-"));
 
         DOMSource domSource = new DOMSource(doc);
         //checkForNullTextNodes();
@@ -1779,7 +1831,7 @@ String xml = null;
             transformer.transform(domSource, result);
             xml = writer.toString();
         }
-        
+
         logger.fatal("reached end");
         //
 
@@ -1798,4 +1850,4 @@ String xml = null;
 void checkForNullTextNodes() {
 //Document doc
 }
-*/ 
+*/

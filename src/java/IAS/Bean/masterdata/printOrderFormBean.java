@@ -9,6 +9,7 @@ public class printOrderFormBean {
     private int year;
     private int issueNo;
     private int printOrder;
+    private int volume;
 
 /* Methods - Getter and Setter */
 public int getId() {
@@ -26,6 +27,14 @@ public String getJournalName() {
 
 public void setJournalName(String _journalName) {
         this.journalName = _journalName;
+    }
+
+public int getVolume() {
+        return (this.volume);
+    }
+
+public void setVolume(int _volume) {
+        this.volume = _volume;
     }
 
 public int getYear() {
