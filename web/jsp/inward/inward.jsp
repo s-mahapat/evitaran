@@ -132,7 +132,7 @@
                             out.println("<option value=" + "\"" + inwardFormBean.getCountry() + "\"" + " selected >" + inwardFormBean.getCountry() + "</option>");
                         }
                     %>
-                </select>              
+                </select>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -195,7 +195,7 @@
             </span>
         </div>
         <div class="IASFormFieldDiv">
-            <div>            
+            <div>
                 <span class="IASFormDivSpanLabel">
                     <label>Date:</label>
                 </span>
@@ -304,7 +304,7 @@
                 <label>Cheque/DD No:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" maxlength="6" TABINDEX="17" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
+                <input class="IASTextBox" autocomplete="off" maxlength="6" TABINDEX="17" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
             </span>
         </div>
 

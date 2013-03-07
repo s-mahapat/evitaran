@@ -28,7 +28,7 @@ public class home extends JDSController {
     //private ServletContext context = null;
     private static final String jdbcDriver = "com.mysql.jdbc.Driver";
     private Connection connection;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.home");
+    private static final Logger logger = JDSLogger.getJDSLogger(home.class.getName());
     private ServletContext context;
 
     @Override

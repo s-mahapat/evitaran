@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
  */
 public class errorHandler extends JDSController {
 
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.errorHandler");
+    private static final Logger logger = JDSLogger.getJDSLogger(errorHandler.class.getName());
 
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

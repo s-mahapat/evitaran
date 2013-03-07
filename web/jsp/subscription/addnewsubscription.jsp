@@ -22,19 +22,20 @@
         <script type="text/javascript" src="js/jquery/jquery.multiselect.min.js"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/jquery/jquery.multiselect.css"%>"/>
         <script type="text/javascript">
+            var duplicates = false;
             $(document).ready(function(){
                 //listSubscription("View");
                 $("#purpose").val(<%=request.getParameter("purpose")%>);
-            })
+            });
         </script>
 
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form name="subscriptionForm" action="inward?action=followOnProcess" method="POST">
+            <form id="subscriptionForm" name="subscriptionForm" action="inward?action=followOnProcess" method="POST">
                 <input type="hidden" name="purpose" id="purpose" value="<%=request.getParameter("purpose")%>"/>
-                <input type="hidden" name="subid" id="subid" value=""/>
+                <input type="hidden" name="subid" id="subid" value="${subscriberFormBean.subscriberID}"/>
 
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
@@ -130,6 +131,9 @@
                     </fieldset>
                 </div>
             </form>
+        </div>
+        <div id="duplicatedialog">
+            <p>One or more Journals that you have added is already been subscribed, please verify for duplicate subscription highlighted in red</p>
         </div>
     </body>
 </html>

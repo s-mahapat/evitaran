@@ -10,7 +10,7 @@
 <project name="JDS" default="default" basedir=".">
     <description>Builds, tests, and runs the project JDS.</description>
     <import file="nbproject/build-impl.xml"/>
-	<target name="-pre-dist">
+	<!--<target name="-pre-dist">
         <echo level="info" message="Compressing JavaScript and CSS files...." />
         <path id="yuicompressor.classpath">
             <fileset dir="${build.web.dir}/WEB-INF/lib">
@@ -32,7 +32,7 @@
             </fileset>
         </yuicompress>
         <echo level="info" message="Compression Complete" />
-	</target>
+	</target>-->
     <!--
 
     There exist several targets which are by default empty and which can be

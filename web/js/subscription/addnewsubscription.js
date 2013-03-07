@@ -124,13 +124,19 @@ function deleteRow(rowid){
 }
 
 function saveSubscription(){
+
+    // if the subscription is duplicate do not submit the form
+    if(isSubscriptionDuplicate()){
+        return false;
+    }
+
     var arrRowData = $("#newSubscription").getRowData();
     var rowRequiredData = [];
     var subscriptionTotal = $("#subscriptionTotalValue").text();
     var ids = $("#newSubscription").getDataIDs();
     if(ids.length == 0){
         alert("No subscription data to save. Please select the journal group and click Add");
-        return;
+        return false;
     }
     for(intIndex in arrRowData){
         var rowObj = arrRowData[intIndex];
@@ -206,10 +212,108 @@ function saveSubscription(){
 
                 }
             });
+            return true;
         },
         error: function(jqXHR,textStatus,errorThrown){
             alert("Failed to save subscription. " + textStatus + ": "+ errorThrown);
         },
         dataType: 'xml'
     });
+    return true;
+}
+
+function isSubscriptionDuplicate(){
+    var arrRowData = $("#newSubscription").getRowData();
+    var rowRequiredData = [];
+    var ids = $("#newSubscription").getDataIDs();
+    var isDuplicate = false;
+    for(intIndex in arrRowData){
+        var rowObj = arrRowData[intIndex];
+
+        rowRequiredData.push({
+            name: "journalGroupID",
+            value: journalNameToGroupIDMap[ids[intIndex]]
+        });
+        rowRequiredData.push({
+            name: "journalPriceGroupID",
+            value: rowObj.journalPriceGroupID
+        });
+        rowRequiredData.push({
+            name: "startYear",
+            value: rowObj.startYear
+        });
+        rowRequiredData.push({
+            name: "startMonth",
+            value: rowObj.startMonth
+        });
+        rowRequiredData.push({
+            name: "endYear",
+            value: rowObj.endYear
+        });
+        rowRequiredData.push({
+            name: "copies",
+            value: rowObj.Copies
+        });
+    }
+
+    // add the subscriber id also to the data to be sent to server
+    rowRequiredData.push({
+        name: "subscriberid",
+        value: $("#subid").val()
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: "main2/subscription/dupcheck/" + $("#subid").val(),
+        data: $.param(rowRequiredData),
+        async: false, // has to be sync else the form gets submitted before the response comes back from server
+        error: function(jqXHR,textStatus,errorThrown){
+            alert("Failed check for duplicate subscription " + textStatus + ": "+ errorThrown);
+        },
+        dataType: 'xml',
+        success: function(xmlResponse, textStatus, jqXHR){
+            var dup_journal_grp_ids = $(xmlResponse).find("row");
+            if(dup_journal_grp_ids.length > 0){
+                isDuplicate = true;
+                markDuplicates(dup_journal_grp_ids);
+                $("#duplicatedialog").dialog({
+                    modal: true,
+                    resizable: false,
+                    buttons: {
+                        Ok: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                });
+            }
+
+        }
+    });
+
+    return isDuplicate;
+}
+
+function markDuplicates(dup_journal_grp_ids){
+    var columnNames = $("#newSubscription").jqGrid('getGridParam','colModel');
+    for(var i=0; i<dup_journal_grp_ids.length; i++){
+        var journal_grp_id = parseInt(dup_journal_grp_ids[i].textContent);
+        for (var key in journalNameToGroupIDMap) {
+            if (journalNameToGroupIDMap.hasOwnProperty(key)) {
+                //alert(key + " -> " + journalNameToGroupIDMap[key]);
+                if(journalNameToGroupIDMap[key] == journal_grp_id){
+                    /*jQuery("#newSubscription").setCell (key, "journalName",'',{
+                        'background':'#F5C3C3'
+                    });*/
+                    for(var index in columnNames){
+                        var columnname = columnNames[index].name;
+                        jQuery("#newSubscription").setCell (key, columnname,'',{
+                            'background':'#F5C3C3'
+                        });
+                    }
+
+                }
+            }
+        }
+    }
+
 }

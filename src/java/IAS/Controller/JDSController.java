@@ -35,7 +35,6 @@ public class JDSController extends HttpServlet {
     }
 
     public void forward(HttpServletRequest request, HttpServletResponse response, String view) throws IOException, ServletException{
-        view = "jsp/" + view + ".jsp";
         RequestDispatcher rd = request.getRequestDispatcher(view);
         rd.forward(request, response);
     }

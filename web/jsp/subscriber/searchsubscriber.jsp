@@ -139,7 +139,8 @@
                             email               : $("#email").val(),
                             pincode             : $("#pincode").val(),
                             institution         : $("#institute").val(),
-                            department          : $("#department").val()
+                            department          : $("#department").val(),
+                            exact               : 'true'
                         }});
                     jQuery("#subscriberTable").trigger("clearGridData");
                     jQuery("#subscriberTable").trigger("reloadGrid");

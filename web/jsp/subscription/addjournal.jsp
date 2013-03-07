@@ -43,7 +43,7 @@
             //data: "subscriberNumber=" + $("#subscriberNumber").val(),
             datatype: 'local',
             mtype: 'GET',
-            height: 160,
+            height: 180,
             autowidth: true,
             forceFit: true,
             sortable: true,

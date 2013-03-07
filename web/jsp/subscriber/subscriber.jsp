@@ -32,7 +32,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <textarea onkeydown="return imposeMaxLength(event, this, 128);" onchange="copyShippingAddress()" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="2" name="shippingAddress" id="shippingAddress">${subscriberFormBean.shippingAddress}</textarea>
+                <textarea onkeydown="return imposeMaxLength(event, this, 128);" onchange="copyShippingAddress()" rows="4" cols="35" class="IASTextArea" TABINDEX="2" name="shippingAddress" id="shippingAddress">${subscriberFormBean.shippingAddress}</textarea>
             </span>
         </div>
 
@@ -50,7 +50,7 @@
                 <label>&nbsp;</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <textarea onkeydown="return imposeMaxLength(event, this, 128);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="4" name="invoiceAddress" id="invoiceAddress">${subscriberFormBean.invoiceAddress}</textarea>
+                <textarea onkeydown="return imposeMaxLength(event, this, 128);" rows="4" cols="35" class="IASTextArea" TABINDEX="4" name="invoiceAddress" id="invoiceAddress">${subscriberFormBean.invoiceAddress}</textarea>
             </span>
         </div>
 

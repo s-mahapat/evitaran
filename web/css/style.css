@@ -10,7 +10,7 @@ body{
     padding:0px;
     /*background-color: #F6F6F6;*/
     font-family: arial,sans-serif;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 A:link {
@@ -310,7 +310,7 @@ fieldset {
     text-transform: capitalize;
     margin: 0px 10px;
     z-index: 0;
-    height: 25px;
+    /*height: 25px;*/
     moz-border-radius: 15px;
     -webkit-border-radius: 15px;
     /*padding: 5px;*/
