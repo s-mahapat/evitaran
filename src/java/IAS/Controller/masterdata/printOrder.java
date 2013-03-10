@@ -1,75 +1,80 @@
-
 package IAS.Controller.masterdata;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
+//~--- non-JDK imports --------------------------------------------------------
+
+import IAS.Class.JDSLogger;
+
+import IAS.Controller.JDSController;
+
 import IAS.Model.masterdata.printOrderModel;
 
 import org.apache.log4j.Logger;
-import IAS.Class.JDSLogger;
-import IAS.Controller.JDSController;
+
+//~--- JDK imports ------------------------------------------------------------
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  *
  * @author Shailendra Mahapatra
  */
 public class printOrder extends JDSController {
-
-    private printOrderModel _printOrderModel = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
+    private static final Logger logger           = JDSLogger.getJDSLogger("IAS.Controller.masterData");
+    private printOrderModel     _printOrderModel = null;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        String url = null;
+        String url    = null;
 
-        try{
-
+        try {
             _printOrderModel = new IAS.Model.masterdata.printOrderModel(request);
 
             /*
-            if(action.equalsIgnoreCase("add")){
-
-                String xml = _printOrderModel.addPrintOrder();
-                request.setAttribute("xml", xml);
-                url = "/xmlserver";
-
-            }else*/
-            if(action.equalsIgnoreCase("save")){
-
+             * if(action.equalsIgnoreCase("add")){
+             *
+             *   String xml = _printOrderModel.addPrintOrder();
+             *   request.setAttribute("xml", xml);
+             *   url = "/xmlserver";
+             *
+             * }else
+             */
+            if (action.equalsIgnoreCase("save")) {
                 _printOrderModel.Save();
                 url = "/jsp/masterdata/displayPrintOrder.jsp";
-
-            }else if(action.equalsIgnoreCase("searchPrintOrder")){
-
+            } else if (action.equalsIgnoreCase("searchPrintOrder")) {
                 String xml = _printOrderModel.searchPrintOrder();
+
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw new javax.servlet.ServletException(e);
 
+            throw new javax.servlet.ServletException(e);
         } finally {
-            if(url == null){
+            if (url == null) {
                 url = "/jsp/errors/404.jsp";
                 logger.error("Redirect url was not found, forwarding to 404");
-            }
-            else
-            {
+            } else {
                 logger.debug("Called->" + url);
             }
+
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
-            if (rd != null && url != null) {
+
+            if ((rd != null) && (url != null)) {
                 rd.forward(request, response);
             }
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
@@ -103,5 +108,8 @@ public class printOrder extends JDSController {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }    // </editor-fold>
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

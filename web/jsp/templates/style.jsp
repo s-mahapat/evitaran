@@ -5,7 +5,11 @@
     $(document).ready(function(){
         $("input:submit, input:button, input:reset, button", "#bodyContainer,.subMainDiv" ).button();
         $(".SaveButton").button({ icons: { primary: "ui-icon-disk"} });
-        $(".SearchButton").button({ icons: { primary: "ui-icon-search"} })
+        $(".SearchButton").button({ icons: { primary: "ui-icon-search"} });
+        $(".CancelButton").button({ icons: { primary: "ui-icon-circle-close"} });
+        $(".PrintButton").button({ icons: { primary: "ui-icon-print"} });
+        $(".EmailButton").button({ icons: { primary: "ui-icon-mail-closed"} });
+        $(".IASButton").button();
         $("input:reset").on("click", function(){
             resetGrid(".datatable");
         });

@@ -1,32 +1,43 @@
+
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
  */
 package IAS.Controller.missingissue;
 
+//~--- non-JDK imports --------------------------------------------------------
+
+import IAS.Bean.missingissue.missingissueFormBean;
+
 import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
+
 import IAS.Controller.JDSController;
+
 import IAS.Model.Inward.inwardModel;
+import IAS.Model.missingissue.missingissueModel;
+
+import org.apache.log4j.Logger;
+
+//~--- JDK imports ------------------------------------------------------------
+
 import java.io.IOException;
+
+import java.sql.ResultSet;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
-import IAS.Bean.missingissue.missingissueFormBean;
-import IAS.Model.missingissue.missingissueModel;
-import java.sql.ResultSet;
+
 /**
  *
  * @author Shailendra Mahapatra
  */
 public class missingissue extends JDSController {
-
-
-    private missingissueModel _missingissueModel = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.missingissue");
+    private static final Logger logger             = JDSLogger.getJDSLogger("IAS.Controller.missingissue");
+    private missingissueModel   _missingissueModel = null;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,130 +49,132 @@ public class missingissue extends JDSController {
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String action = request.getParameter("action");
-        String url = null;
+        String url    = null;
 
         try {
             _missingissueModel = new IAS.Model.missingissue.missingissueModel(request);
+
             if (action.equalsIgnoreCase("addInfo")) {
                 int miId = 0;
+
                 miId = _missingissueModel.checkMissingExists();
-                if (miId == 0){
+
+                if (miId == 0) {
                     url = "/jsp/missingissue/missingissueAddInfo.jsp";
-                }
-                else{
-                    //request.setAttribute("miId", miId);
+                } else {
+
+                    // request.setAttribute("miId", miId);
                     _missingissueModel.setAttri(miId);
                     url = "/jsp/missingissue/missingissuelist.jsp";
                 }
+            } else if (action.equalsIgnoreCase("save")) {
 
-            }
-            else if (action.equalsIgnoreCase("save")) {
-
-                //save the subscription details sent from the UI
+                // save the subscription details sent from the UI
                 String xml = _missingissueModel.save();
+
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-
-            }else if (action.equalsIgnoreCase("checkGenerate")) {
-
+            } else if (action.equalsIgnoreCase("checkGenerate")) {
                 String xml = _missingissueModel.checkGenerate();
+
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }
-            else if (action.equalsIgnoreCase("missinglist")) {
-
+            } else if (action.equalsIgnoreCase("missinglist")) {
                 _missingissueModel.passId();
                 url = "/jsp/missingissue/missingissuelist.jsp";
-            }
-            else if (action.equalsIgnoreCase("getList")) {
-
+            } else if (action.equalsIgnoreCase("getList")) {
                 String xml = _missingissueModel.getList();
+
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }
-            else if (action.equalsIgnoreCase("getCopies")) {
-
+            } else if (action.equalsIgnoreCase("getCopies")) {
                 String xml = _missingissueModel.getCopies();
-                request.setAttribute("xml", xml);
-                url = "/xmlserver";
-            }
-            else if (action.equalsIgnoreCase("alreadySent")) {
 
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            } else if (action.equalsIgnoreCase("alreadySent")) {
                 String xml = _missingissueModel.alreadySent();
+
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }
-            else if (action.equalsIgnoreCase("noCopies")) {
+            } else if (action.equalsIgnoreCase("noCopies")) {
                 String xml = _missingissueModel.noCopies();
+
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }
-            else if (action.equalsIgnoreCase("gMiList")) {
+            } else if (action.equalsIgnoreCase("gMiList")) {
                 String xml = _missingissueModel.generateMl();
+
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }
-            else if (action.equalsIgnoreCase("reprint")) {
+            } else if (action.equalsIgnoreCase("reprint")) {
                 String xml = _missingissueModel.reprint();
+
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }
-            else if (action.equalsIgnoreCase("getLabel")) {
+            } else if (action.equalsIgnoreCase("getLabel")) {
                 String xml = _missingissueModel.getLabel();
+
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            }
-            else if (action.equalsIgnoreCase("generateMlForMi")) {
+            } else if (action.equalsIgnoreCase("generateMlForMi")) {
+
                 /*
-                String xml = _missingissueModel.generateMLforMI(response);
-                //request.setAttribute("xml", xml);
-                url = "/pdfserver";
+                 * String xml = _missingissueModel.generateMLforMI(response);
+                 * //request.setAttribute("xml", xml);
+                 * url = "/pdfserver";
                  *
                  */
                 ResultSet rs = _missingissueModel.generateMLforMI();
+
                 request.setAttribute("ResultSet", rs);
 
                 String type = request.getParameter("printOption");
-                if(type.equals("LABEL"))
-                    url = "/pdfserver?action=generatemlPrintLabel";
-                if(type.equals("STICKER"))
-                    url = "/pdfserver?action=generatemlPrintSticker";
 
-            }else if (action.equalsIgnoreCase("printNoCopies")) {
+                if (type.equals("LABEL")) {
+                    url = "/pdfserver?action=generatemlPrintLabel";
+                }
+
+                if (type.equals("STICKER")) {
+                    url = "/pdfserver?action=generatemlPrintSticker";
+                }
+            } else if (action.equalsIgnoreCase("printNoCopies")) {
+
                 /*
-                String xml = _missingissueModel.printNoCopies(response);
-                //request.setAttribute("xml", xml);
-                url = "/pdfserver";
+                 * String xml = _missingissueModel.printNoCopies(response);
+                 * //request.setAttribute("xml", xml);
+                 * url = "/pdfserver";
                  *
                  */
                 url = "/pdfserver?action=miPrintNoCopies";
-            }
-            else if (action.equalsIgnoreCase("printAlreadySent")) {
-               /*
-                String xml = _missingissueModel.printAlreadySent(response);
-                //request.setAttribute("xml", xml);
-                url = "/pdfserver";
+            } else if (action.equalsIgnoreCase("printAlreadySent")) {
+
+                /*
+                 * String xml = _missingissueModel.printAlreadySent(response);
+                 * //request.setAttribute("xml", xml);
+                 * url = "/pdfserver";
                  *
                  */
                 url = "/pdfserver?action=miPrintAlreadySent";
             }
-        }
-         catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw new javax.servlet.ServletException(e);
 
+            throw new javax.servlet.ServletException(e);
         } finally {
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
-            if (rd != null && url != null) {
+
+            if ((rd != null) && (url != null)) {
                 rd.forward(request, response);
-                //response.sendRedirect(request.getContextPath() + url);
+
+                // response.sendRedirect(request.getContextPath() + url);
             }
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
@@ -195,5 +208,8 @@ public class missingissue extends JDSController {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }    // </editor-fold>
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

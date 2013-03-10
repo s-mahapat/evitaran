@@ -7,6 +7,7 @@ package IAS.Model.Inward;
 import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Bean.Subscriber.subscriberFormBean;
+import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
@@ -40,6 +41,9 @@ public class inwardModel extends JDSModel {
     //private HttpServletRequest request;
     Properties props = null;
     private static Logger logger = JDSLogger.getJDSLogger(inwardModel.class.getName());
+
+    public inwardModel() throws SQLException{
+    }
 
     public inwardModel(HttpServletRequest request) throws SQLException, IOException {
         //call the base class constructor
@@ -293,8 +297,7 @@ public class inwardModel extends JDSModel {
         try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
             while (rs.next()) {
                 BeanProcessor bProc = new BeanProcessor();
-                Class type = Class.forName("IAS.Bean.Inward.inwardFormBean");
-                inwardFormBean = (IAS.Bean.Inward.inwardFormBean) bProc.toBean(rs, type);
+                inwardFormBean = bProc.toBean(rs, IAS.Bean.Inward.inwardFormBean.class);
 
             }
             rs.close();
@@ -754,6 +757,27 @@ public class inwardModel extends JDSModel {
         } catch (SQLException ex) {
             logger.error(ex);
         } finally {
+            return rc;
+        }
+    }
+
+    /**
+     *inward_number: inward
+     *to: new inward type code from database
+     */
+    public int modifyInwardPurpose(String inward_number, int to) throws SQLException{
+        String sql = Queries.getQuery("change_inward_type");
+        Connection conn = this.getConnection();
+        int rc = 0;
+
+        try(PreparedStatement pst = conn.prepareStatement(sql)){
+            pst.setInt(1, to);
+            pst.setString(2, inward_number);
+            rc = pst.executeUpdate();
+        }catch(Exception ex){
+            // no op
+        }finally{
+            conn.close();
             return rc;
         }
     }

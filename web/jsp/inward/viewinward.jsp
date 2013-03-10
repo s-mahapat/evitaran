@@ -14,6 +14,9 @@
             $(document).ready(function(){
                 makeReadOnly();
                 makeInwardReadOnly();
+                // bvalidsubscriber has to be set to true, else the
+                // subscriber number gets cleared, thinking its an invalid subscriber
+                bvalidsubscriber = true;
             });
         </script>
     </head>

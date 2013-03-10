@@ -1,11 +1,18 @@
+
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
  */
 package IAS.Controller;
 
+//~--- non-JDK imports --------------------------------------------------------
+
 import IAS.Class.ServletContextInfo;
+
+//~--- JDK imports ------------------------------------------------------------
+
 import java.io.IOException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,20 +24,20 @@ import javax.servlet.http.HttpServletResponse;
  * @author smahapat
  */
 public class StartController extends HttpServlet {
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String vars = request.getRequestURI();
+
         vars = vars.replaceFirst(request.getContextPath() + "/main2/", "");
+
         ServletContext context = ServletContextInfo.getServletContext();
+        MainController main    = new MainController();
 
-        MainController main = new MainController();
         main.RESTProcess(request, response, context, vars);
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -69,5 +76,8 @@ public class StartController extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }    // </editor-fold>
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

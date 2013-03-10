@@ -22,37 +22,27 @@ function enableSubscriptionID(value){
 
 function validateSearchSubscriber(){
 
-    var isValidSearch = false;
-    if(!isEmptyValue($("#pincode").val()) || !isEmptyValue($("#from").val())){
-        isValidSearch = true;
-    }
+    var selectedSubscriberFromDialog = searchSubscriber(
+        $("#from").val()
+        ,$("#country").val()
+        ,$("#state").val()
+        ,$("#city").val()
+        ,$("#pincode").val()
+        ,$("#institution").val()
+        ,$("#department").val()
+        ,$("#email").val()
+        );
 
-    if(!isValidSearch){
-        alert("Please fill in From or Pincode to search for subscriber");
-        return;
-    }else{
-        var selectedSubscriberFromDialog = searchSubscriber(
-            document.getElementById("from").value
-            ,document.getElementById("country").value
-            ,document.getElementById("state").value
-            ,document.getElementById("city").value
-            ,document.getElementById("pincode").value
-            ,document.getElementById("institution").value
-            ,document.getElementById("department").value
-            ,document.getElementById("email").value
-            );
+    if(!isEmptyValue(selectedSubscriberFromDialog.SubscriberNumber) && selectedSubscriberFromDialog.SubscriberNumber != 0){
+        $("#subscriberId").val(selectedSubscriberFromDialog.SubscriberNumber);
+        $("#institution").val(selectedSubscriberFromDialog.Instituttion);
+        $("#department").val(selectedSubscriberFromDialog.Department);
+        $("#email").val(selectedSubscriberFromDialog.Email);
+        $("#pincode").val(selectedSubscriberFromDialog.PinCode);
+        $("#from").val(selectedSubscriberFromDialog.SubscriberName);
+        $("#city").val(selectedSubscriberFromDialog.City);
+        $("#country").val(selectedSubscriberFromDialog.Country);
 
-        if(!isEmptyValue(selectedSubscriberFromDialog.SubscriberNumber) && selectedSubscriberFromDialog.SubscriberNumber != 0){
-            $("#subscriberId").val(selectedSubscriberFromDialog.SubscriberNumber);
-            $("#institution").val(selectedSubscriberFromDialog.Instituttion);
-            $("#department").val(selectedSubscriberFromDialog.Department);
-            $("#email").val(selectedSubscriberFromDialog.Email);
-            $("#pincode").val(selectedSubscriberFromDialog.PinCode);
-            $("#from").val(selectedSubscriberFromDialog.SubscriberName);
-            $("#city").val(selectedSubscriberFromDialog.City);
-            $("#country").val(selectedSubscriberFromDialog.Country);
-
-        }
     }
 }
 
@@ -68,8 +58,6 @@ function validateSearchSubscription(){
 
 function searchSubscriber(subscriberName,country, state, city, pincode, institution, department, email){
     var subscriber = new Object();
-    windowParams = "dialogHeight:650px; dialogWidth:1200px; center:yes; resizeable:no; status:no; menubar:no;\n\
-                    scrollbars:yes; toolbar: no;";
     subscriber.country = country;
     subscriber.city = city;
     subscriber.name = subscriberName;
@@ -79,8 +67,7 @@ function searchSubscriber(subscriberName,country, state, city, pincode, institut
     subscriber.department = department;
     subscriber.email = email;
     var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp"
-        , subscriber
-        , windowParams);
+        , subscriber);
     return selectedSubscriberFromDialog;
 }
 
@@ -118,7 +105,7 @@ function validateNewInward(){
     //isInwardValid = checkMandatoryFields();
 
     // check the inward purpose field
-    var InwardPurpose = document.getElementById("inwardPurpose").value.toLowerCase();
+    var InwardPurpose = $("#inwardPurpose").val().toLowerCase();
     //alert(parseFloat($("#amount").val()) <= 0);
 
     if(checkMandatoryFields() == false){
@@ -220,7 +207,7 @@ function isInwardSelected(){
         alert("Please select an Inward");
         return false;
     }else if(agentName && agentName.length > 0){
-        //no op
+    //no op
     }
     else if((selectedSubscriberId == "undefined" || selectedSubscriberId == null || selectedSubscriberId == 0 || selectedSubscriberId.length == 0)
         && (selectedInwardPurpose == _JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION ||
@@ -276,7 +263,7 @@ function selectPaymentType(inwardType){
 function ValidateSubscriber(){
     // if the subscriber is already selected do not do anything
     //if(bvalidsubscriber)
-      //  return
+    //  return
 
     subscriber_number = $("#subscriberId").val();
     if(!subscriber_number){

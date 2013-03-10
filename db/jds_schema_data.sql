@@ -388,6 +388,7 @@ CREATE TABLE `inward` (
   `returnDate` date DEFAULT NULL,
   `completed` tinyint(4) NOT NULL DEFAULT '0',
   `language` int(11) NOT NULL DEFAULT '1',
+  `valid` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `inward_no_UNIQUE` (`inwardNumber`),
   KEY `city` (`city`),

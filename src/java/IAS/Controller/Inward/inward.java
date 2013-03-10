@@ -110,14 +110,20 @@ public class inward extends JDSController {
                 HttpSession session = request.getSession(false);
                 _inwardFormBean = _inwardModel.GetInward();
                 session.setAttribute("inwardUnderProcess", _inwardFormBean);
-                String agentName = _inwardFormBean.getagentName(); // agent changes PINKI
+                String agentName = _inwardFormBean.getagentName(); // agent changes
                 // we should use the purpose id rather than the purpose name, it can change in the database
                 // but id should not change
                 int purposeID = Integer.parseInt(request.getParameter("purpose"));
+                int isFreeSubscriber = 0;
+                int isSummerFellow = 0;
 
                 // check if the flow is from add free subscriber/summer fellow.
-                int isFreeSubscriber = Integer.parseInt(request.getParameter("afs"));
-                int isSummerFellow = Integer.parseInt(request.getParameter("asf"));
+                try {
+                    isFreeSubscriber = Integer.parseInt(request.getParameter("afs"));
+                    isSummerFellow = Integer.parseInt(request.getParameter("asf"));
+                } catch (NumberFormatException ex) {
+                    logger.debug(ex + ". Can be ignored");
+                }
 
                 // update the subscriber number in the inward
                 if (_inwardModel.updateSubscriberInInward(subscriberNumber, _inwardFormBean.getInwardNumber()) == 1) {

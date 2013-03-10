@@ -1,4 +1,4 @@
-function JDSConstants(){
+function JDSConstants() {
     this.monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     // inward types
@@ -14,6 +14,10 @@ function JDSConstants(){
     this.INVOICE_OUTSTANDING_PAYMENT_INVOICE = 2;
     this.INVOICE_UPCOMING_YEAR_INVOICE = 3;
 
+    this.CANCEL = 0;
+
+    //duplicate subscription action codes
+    this.SAVE_DUPLICATE_SUBSCRIPTION = 1
+    this.CONVERT_SUBSCRIPTION_TO_PAYMENT = 2
+
 }
-
-

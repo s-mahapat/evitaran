@@ -1,6 +1,9 @@
 package IAS.Controller;
 
+//~--- JDK imports ------------------------------------------------------------
+
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,38 +11,45 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "JDSController", urlPatterns = {"/JDSController"})
+@WebServlet(
+    name        = "JDSController",
+    urlPatterns = { "/JDSController" }
+)
 public class JDSController extends HttpServlet {
 
-    /*public JDSController(HttpServletRequest request) throws ServletException{
-        this.session = request.getSession(false); //do not create the session if it does not exist
-        if (this.session == null) {
-            throw (new ServletException("Session does not exist.Database connection not found in the session"));
-        }
-
-        this.db = (Database) session.getAttribute("db_connection");
-        this.conn = db.getConnection();
-
-    }*/
+    /*
+     * public JDSController(HttpServletRequest request) throws ServletException{
+     *   this.session = request.getSession(false); //do not create the session if it does not exist
+     *   if (this.session == null) {
+     *       throw (new ServletException("Session does not exist.Database connection not found in the session"));
+     *   }
+     *
+     *   this.db = (Database) session.getAttribute("db_connection");
+     *   this.conn = db.getConnection();
+     *
+     * }
+     */
     public boolean isAjax(HttpServletRequest request) {
         return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
+            throws ServletException, IOException {}
 
-    public void redirect(HttpServletResponse response, String view) throws IOException{
-        view = "jsp/" + view + ".jsp";
+    public void redirect(HttpServletResponse response, String view) throws IOException {
+        //view = "jsp/" + view + ".jsp";
         response.sendRedirect(view);
     }
 
-    public void forward(HttpServletRequest request, HttpServletResponse response, String view) throws IOException, ServletException{
+    public void forward(HttpServletRequest request, HttpServletResponse response, String view)
+            throws IOException, ServletException {
         RequestDispatcher rd = request.getRequestDispatcher(view);
+
         rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -78,5 +88,8 @@ public class JDSController extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }    // </editor-fold>
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

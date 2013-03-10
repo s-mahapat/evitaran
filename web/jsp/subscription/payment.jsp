@@ -14,6 +14,7 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/payment.js"%>"></script>
         <title>Subscription Payment</title>
         <script type="text/javascript">
+            var contextPath = "<%=request.getContextPath()%>";
             $(document).ready(function(){
                 var inward_amount = ${inwardFormBean.amount};
                 drawPaymentTable(inward_amount);
@@ -23,7 +24,7 @@
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="POST" action="inward?action=followOnProcess" name="paymentForm" id="paymentForm">
+            <form method="POST" action="<%=request.getContextPath()%>/inward?action=followOnProcess" name="paymentForm" id="paymentForm">
                 <input type="hidden" id="subtypeid" value="${subscriberFormBean.subtypeID}">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">

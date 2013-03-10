@@ -306,7 +306,7 @@ fieldset {
 
 .IASButton{
     font-size: 1em;
-    color: black;
+    color: blue;
     text-transform: capitalize;
     margin: 0px 10px;
     z-index: 0;
@@ -322,6 +322,10 @@ fieldset {
 
 .SaveButton{
     color: blue;
+}
+
+.CancelButton{
+    color: red;
 }
 
 .SearchButton{
@@ -552,7 +556,8 @@ fieldset {
     text-align: center;
     width: 90%;
     margin-right: 10%;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
     float: left;
 }
 

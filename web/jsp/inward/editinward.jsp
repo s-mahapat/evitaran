@@ -20,7 +20,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 loadData();
-                jQueryCalendar("paymentDate");
+                jQueryCalendar("paymentDate", true);
                 makeInwardReadOnly();
 
                 // disable the form submit on pressing enter
@@ -30,6 +30,10 @@
                         return false;
                     }
                 });
+
+                // bvalidsubscriber has to be set to true, else the
+                // subscriber number gets cleared, thinking its an invalid subscriber
+                bvalidsubscriber = true;
             });
         </script>
 

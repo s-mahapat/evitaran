@@ -132,8 +132,5 @@
                 </div>
             </form>
         </div>
-        <div id="duplicatedialog">
-            <p>One or more Journals that you have added is already been subscribed, please verify for duplicate subscription highlighted in red</p>
-        </div>
     </body>
 </html>
