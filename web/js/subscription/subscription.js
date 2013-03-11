@@ -35,10 +35,12 @@ function listSubscription(){
             subGridWidth: 20,
             subgridtype: 'xml',
             subGridUrl: 'subscription?oper=detail&subtypeid='+$("#subtypeid").val(),
-            subGridOptions: {reloadOnExpand: false},
+            subGridOptions: {
+                reloadOnExpand: false
+            },
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Subscription Date','Agent','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Legacy Balance','Currency','Action', 'Legacy'],
+            colNames:['Subscription Id','Inward No','Subscription Date','Agent','Discount','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Legacy Balance','Currency','Action', 'Legacy'],
             colModel :[
             {
                 name:'subscriptionID',
@@ -75,6 +77,23 @@ function listSubscription(){
                 xmlmap:'agentName'
             },
             {
+                name:'discount',
+                index:'discount',
+                width:15,
+                align:'center',
+                sortable: false,
+                xmlmap:'discount',
+                formatter: function(cellvalue, options, rowObject){
+                    if(parseFloat(cellvalue) > 0){
+                        return cellvalue + "%";
+                    }
+                    return cellvalue;
+                },
+                unformat: function(cellvalue, options){
+                    return cellvalue.replace("%","");
+                }
+            },
+            {
                 name:'inwardAmount',
                 index:'inwardAmount',
                 width:25,
@@ -89,7 +108,7 @@ function listSubscription(){
                 align:'center',
                 sortable: false,
                 xmlmap:'payment'
-                /*formatter: paymentInfoLink*/
+            /*formatter: paymentInfoLink*/
             },
             {
                 name:'amountPaid',
@@ -102,7 +121,7 @@ function listSubscription(){
             {
                 name:'subscriptionValue',
                 index:'subscriptionValue',
-                width:30,
+                width:25,
                 align:'center',
                 sortable: false,
                 xmlmap:'subscriptionTotal'
@@ -179,6 +198,8 @@ function listSubscription(){
                     var subscription_via_agent = jQuery("#subscriptionList").getCell(ids[i], 'Agent');
                     var islegacy = parseInt(jQuery("#subscriptionList").getCell(ids[i], 'legacy'));
                     var legacy_balance = parseInt(jQuery("#subscriptionList").getCell(ids[i], 'legacy_balance'));
+                    var subscription_value = parseFloat(jQuery("#subscriptionList").getCell(ids[i], 'subscriptionValue'));
+                    var discount = parseFloat(jQuery("#subscriptionList").getCell(ids[i], 'discount'));
 
                     // if the agent value is not null then show the subscription value, balance and amount as 0
                     if(subscription_via_agent != ""){
@@ -186,8 +207,10 @@ function listSubscription(){
                             "amountPaid": 0
                         });
 
+                        var discounted_price = subscription_value - (discount/100 * subscription_value);
+                        var title = discount + "% discount on " + subscription_value;
                         jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
-                            "subscriptionValue": 0
+                            "subscriptionValue": '<a href="#" title="' + title + '">' + discounted_price + '</a>'
                         });
 
                         jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
@@ -200,7 +223,9 @@ function listSubscription(){
                         jQuery("#subscriptionList").jqGrid('setRowData', ids[i], {
                             "balance": legacy_balance
                         });
-                        jQuery("#subscriptionList").jqGrid('setCell', ids[i], 'balance', "", "", {title: 'The balance displayed here comes from the old DBASE system'});
+                        jQuery("#subscriptionList").jqGrid('setCell', ids[i], 'balance', "", "", {
+                            title: 'The balance displayed here comes from the old DBASE system'
+                        });
                     }
 
                     //action = "<a style=\"color:blue\" href=\"#\" onclick=\"getSubscriptionDetails(" + ids[i] + ")\">" + "Details" + "</a>";
