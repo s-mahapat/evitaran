@@ -259,7 +259,7 @@
                 <label>Email:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASEmailTextBox" maxlength="64" TABINDEX="14" type="email" name="email" id="email" value="${inwardFormBean.email}"/>
+                <input class="IASTextBoxWide" maxlength="64" TABINDEX="14" type="email" name="email" id="email" value="${inwardFormBean.email}"/>
             </span>
         </div>
     </div>

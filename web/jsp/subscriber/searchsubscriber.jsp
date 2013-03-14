@@ -131,6 +131,7 @@
             // called when the search button is clicked
             function searchSubscriber(){
                 if(validateSearchSubscriber()){
+
                     isPageLoaded = true;
                     jQuery("#subscriberTable").setGridParam({mtype: 'POST',postData:
                             {city               : $("#city").val(),
@@ -144,6 +145,7 @@
                         }});
                     jQuery("#subscriberTable").trigger("clearGridData");
                     jQuery("#subscriberTable").trigger("reloadGrid");
+                    //$('#searchSubscriberForm')[0].reset();
                 }
 
             }
@@ -175,7 +177,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="" name="searchSubscriberForm">
+            <form method="post" action="" name="searchSubscriberForm" id="searchSubscriberForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Subscriber</legend>
@@ -192,7 +194,7 @@
 
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Subscriber Number:</label>
+                                        <label>Subscriber No:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASTextBox" TABINDEX="1" type="text" name="subscriberNumber" id="subscriberNumber" value=""/>

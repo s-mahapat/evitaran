@@ -29,7 +29,7 @@
                     width: '100%',
                     autowidth: true,
                     shrinkToFit: true,
-                    height: 360,
+                    height: 340,
                     forceFit: true,
                     sortable: true,
                     loadonce: false,

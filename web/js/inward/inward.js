@@ -172,12 +172,17 @@ function subscriberlink(cellvalue, options, rowObject){
     var city = tagvalues[2];
     var inwardid = tagvalues[3];
     var agentName = tagvalues[4];
+    var link;
     if(isEmptyValue(subscriberID) && (isEmptyValue(agentName))){
-        var link = "<a href=\"#\" onclick=" + "\"" + "selectSubscriber('" + city + "','" + subscriberName + "','" + inwardid + "')" + "\"" + ">Select Subscriber</a>";
-        //var link = "<a href=\"#\" onclick=" + "\"" + "selectSubscriber('" + rowid + "')" + "\"" + ">Select Subscriber</a>";
-        return link;
+        link = "<a href=\"#\" onclick=" + "\"" + "selectSubscriber('" + city + "','" + subscriberName + "','" + inwardid + "')" + "\"" + ">Select Subscriber</a>";
     }
-    return "";
+    if(link == undefined){
+        link = '<a style="left-margin:2px;" href="#" onclick="deleteInward(\'' + inwardid + '\')">Delete</a>';
+    }else{
+        link += '<a style="left-margin:2px;" href="#" onclick="deleteInward(\'' + inwardid + '\')">Delete</a>';
+    }
+
+    return link;
 }
 
 function selectInwardFormatter(cellvalue, options, rowObject){
@@ -345,4 +350,24 @@ function _MakePaymentFieldsMandatory(bmandatory){
         $("#paymentDate").removeClass("IASDateTextBoxMandatory");
         $("#amount").removeClass("IASTextBoxMandatory required");
     }
+}
+
+function deleteInward(inwardid){
+    var sure_to_delete = confirm("Do you want to delete the inward " + inwardid + "?");
+    if(sure_to_delete == false){
+        return;
+    }
+    $.ajax({
+        url: "main2/inward/deleteinward/" + inwardid,
+        success: function(data){
+            var is_deleted = $(data).find("success").text();
+            if(is_deleted.toLowerCase() == "true"){
+                jQuery("#inwardTable").trigger("clearGridData");
+                jQuery("#inwardTable").trigger("reloadGrid");
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert("Failed to delete inward. " + textStatus + ": " + errorThrown);
+        }
+    });
 }

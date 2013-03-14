@@ -42,7 +42,7 @@ public class inwardModel extends JDSModel {
     Properties props = null;
     private static Logger logger = JDSLogger.getJDSLogger(inwardModel.class.getName());
 
-    public inwardModel() throws SQLException{
+    public inwardModel() throws SQLException {
     }
 
     public inwardModel(HttpServletRequest request) throws SQLException, IOException {
@@ -680,15 +680,15 @@ public class inwardModel extends JDSModel {
     public String getInwardAckEmailBody(String chqDDNumber, float amount, String chqDate, String bank, String inwardPurpose, String ctext) {
         String template;
         String body;
-        if(amount > 0){
+        if (amount > 0) {
             template = props.getProperty("inward_ack_email_body");
-            body = String.format(template,inwardPurpose,
-                chqDDNumber,
-                chqDate,
-                bank,
-                String.valueOf(amount),
-                ctext);
-        }else{
+            body = String.format(template, inwardPurpose,
+                    chqDDNumber,
+                    chqDate,
+                    bank,
+                    String.valueOf(amount),
+                    ctext);
+        } else {
             template = props.getProperty("inward_ack_email_body_no_amount");
             body = String.format(template, inwardPurpose, ctext);
         }
@@ -762,21 +762,36 @@ public class inwardModel extends JDSModel {
     }
 
     /**
-     *inward_number: inward
-     *to: new inward type code from database
+     * inward_number: inward to: new inward type code from database
      */
-    public int modifyInwardPurpose(String inward_number, int to) throws SQLException{
+    public int modifyInwardPurpose(String inward_number, int to) throws SQLException {
         String sql = Queries.getQuery("change_inward_type");
         Connection conn = this.getConnection();
         int rc = 0;
 
-        try(PreparedStatement pst = conn.prepareStatement(sql)){
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, to);
             pst.setString(2, inward_number);
             rc = pst.executeUpdate();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             // no op
-        }finally{
+        } finally {
+            conn.close();
+            return rc;
+        }
+    }
+
+    public int invalidateInward(String inward_number) throws SQLException {
+        int rc = 0;
+        String sql = Queries.getQuery("invalidate_inward");
+        Connection conn = this.getConnection();
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setBoolean(1, false);
+            pst.setString(2, inward_number);
+            rc = pst.executeUpdate();
+        } catch (Exception ex) {
+            // no op
+        } finally {
             conn.close();
             return rc;
         }
