@@ -1199,6 +1199,8 @@ CREATE TABLE `subscriber` (
   `agent` int(11) DEFAULT NULL,
   `deactive` tinyint(1) NOT NULL DEFAULT '0',
   `deactivationDate` date DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `fax` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `subscriber_id_UNIQUE` (`subscriberNumber`) USING BTREE,
   KEY `subscriberName` (`subscriberName`),

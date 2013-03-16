@@ -47,7 +47,7 @@
                     loadtext: "Loading...",
                     colNames:['Select','Subscriber Number','Subscriber Name', 'Department','Institute','City','Pin Code','Country', 'Email'],
                     colModel :[
-                        {name:'Select', index:'select', width:15, align:'center',xmlmap:'subscriberNumber'
+                        {name:'Select', hidden: true, index:'select', width:15, align:'center',xmlmap:'subscriberNumber'
                             /*formatter:function (cellvalue, options, rowObject) {
                                 return '<input onclick="selectedSubscriberId=this.value" type="radio" id="selectedSubscriberRadio" name="selectedSubscriberRadio" value="' + cellvalue + '"/>';
                             }*/

@@ -8,7 +8,6 @@ import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
 import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
-import IAS.Model.Subscription.SubscriptionModel;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;

@@ -46,7 +46,7 @@
                     scrollOffset: 20,
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Inward No','Subscriber Number', 'From','Received Date','City','Cheque#','Amount','Purpose','Completed','View/Edit'],
+                    colNames:['Inward No','Subscriber No.', 'From','Received Date','City','Cheque#','Amount','Purpose','Completed','Valid','View/Edit'],
                     colModel :[
                         {name:'InwardNo', index:'inwardNumber', width:40, align:'center', xmlmap:'inwardNumber'},
                         {
@@ -60,10 +60,11 @@
                         {name:'From', index:'from', sortable: false, width:100, align:'center', xmlmap:'from'},
                         {name:'ReceivedDate', index:'inwardCreationDate', width:40, align:'center', xmlmap:'inwardCreationDate'},
                         {name:'City', index:'city', width:50, align:'center', xmlmap:'city'},
-                        {name:'Cheque', index:'chqddNumber', width:40, align:'center', xmlmap:'chqddNumber'},
+                        {name:'Cheque', index:'chqddNumber', width:30, align:'center', xmlmap:'chqddNumber'},
                         {name:'amount', index:'amount', width:25, align:'center', xmlmap:'amount'},
                         {name:'Purpose', index:'inwardPurpose', width:60, align:'center', xmlmap:'inwardPurpose'},
                         {name:'completed', index:'completed', width:35, align:'center', xmlmap:'completed', formatter:'checkbox'},
+                        {name:'valid', index:'valid', width:35, align:'center', xmlmap:'valid', formatter:'checkbox'},
                         {name:'Action', index:'action', sortable: false, width:40, align:'center',formatter:'showlink'}
                     ],
                     xmlReader : {
