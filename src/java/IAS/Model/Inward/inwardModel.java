@@ -217,7 +217,7 @@ public class inwardModel extends JDSModel {
     private int _updateInward() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
-        int rc;
+        int rc = 0;
 
         // get the connection from base class
         Connection conn = this.getConnection();
@@ -231,48 +231,33 @@ public class inwardModel extends JDSModel {
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             this._setUpdateInwardStatementParams(st);
             rc = st.executeUpdate();
-            int subscriptionID = this._inwardFormBean.getSubscriptionID();
-            if (subscriptionID > 0) {
-                sql = Queries.getQuery("update_payment_info");
-                try (PreparedStatement pst = conn.prepareStatement(sql)) {
-                    pst.setInt(1, subscriptionID);
-                    pst.setString(2, this._inwardFormBean.getInwardNumber());
-                    rc = pst.executeUpdate();
-                }
-            }
+
+            /*int subscriptionID = this._inwardFormBean.getSubscriptionID();
+             if (subscriptionID > 0) {
+             sql = Queries.getQuery("update_payment_info");
+             try (PreparedStatement pst = conn.prepareStatement(sql)) {
+             pst.setInt(1, subscriptionID);
+             pst.setString(2, this._inwardFormBean.getInwardNumber());
+             rc = pst.executeUpdate();
+             }
+             }*/
             //update inward-agent details
-            sql = Queries.getQuery("get_in_agent_dtls");//Get the previous agent selected
+            sql = Queries.getQuery("update_in_agent_dtls");
             PreparedStatement pst = conn.prepareStatement(sql);
-            int inwardID = this._inwardFormBean.getInwardID();
-            pst.setInt(1, inwardID);
-            ResultSet rs = db.executeQueryPreparedStatement(pst);
-            if (rs.first()) {
-                String agentName = rs.getString(1);
-                String updateAgentName = this._inwardFormBean.getagentName();
-                if (!updateAgentName.isEmpty() && !(agentName.equalsIgnoreCase(updateAgentName))) { //If it is not equal to previous then trigger the update
-                    sql = Queries.getQuery("update_in_agent_dtls");
-                    pst = conn.prepareStatement(sql);
-                    rs = st.getGeneratedKeys();
-                    rs.first();
-                    //int inwardID = rs.getInt(1);
-                    pst.setInt(1, inwardID);
-                    pst.setString(2, updateAgentName);
-                    rc = pst.executeUpdate();
-                }
-            }
+            pst.setString(1, _inwardFormBean.getInwardNumber());
+            pst.setString(2, _inwardFormBean.getagentName());
+            pst.executeUpdate();
+
             // commit at the end, which means all is well
             conn.commit();
             conn.setAutoCommit(true);
-            rs.close();
-            pst.close();
-            st.close();
-
+        } finally {
+            // close the connection
+            conn.close();
+            return rc;
         }
 
-        // close the connection
-        this.CloseConnection(conn);
 
-        return rc;
     }
 
     public inwardFormBean GetInward() throws SQLException, ParseException,
