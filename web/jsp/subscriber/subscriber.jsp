@@ -7,7 +7,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Subscriber Number:</label>
+                <label>Subscriber No:</label>
             </span>
 
             <span class="IASFormDivSpanInputBox">
