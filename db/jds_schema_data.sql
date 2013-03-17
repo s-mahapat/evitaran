@@ -568,11 +568,13 @@ DROP TABLE IF EXISTS `inward_agent_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `inward_agent_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `inwardId` int(11) NOT NULL,
   `agentId` int(11) NOT NULL,
-  PRIMARY KEY (`inwardId`),
+  PRIMARY KEY (`id`),
   KEY `inward_agent_details_indx1` (`agentId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
