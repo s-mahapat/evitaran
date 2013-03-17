@@ -146,6 +146,7 @@ public class inward extends JDSController {
                     if (subscriberNumber != null
                             && !subscriberNumber.equalsIgnoreCase("null")
                             && !subscriberNumber.isEmpty()
+                            && !subscriberNumber.equals("0")
                             && agentName == null) {
                         url = "/subscriber?action=add";
                     } else {
