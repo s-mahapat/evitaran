@@ -1786,7 +1786,7 @@ public class reportModel extends JDSModel {
 
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("reminderType"));
+        stGet.setString(paramIndex, request.getParameter("remType"));
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
 

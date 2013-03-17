@@ -116,14 +116,6 @@ public class reminderModel extends JDSModel {
         String xml = null;
         ResultSet rs = null;
         Connection conn = this.getConnection();
-        int subscription_total = 0;
-        int payment_total = 0;
-        int balance = 0;
-        String sqlSubTotal = Queries.getQuery("get_subscription_total");
-        PreparedStatement stSubRate = conn.prepareStatement(sqlSubTotal);
-
-        String sqlPayTotal = Queries.getQuery("get_payment_total");
-        PreparedStatement stPayRate = conn.prepareStatement(sqlPayTotal);
 
         String sqlInsRem = Queries.getQuery("insert_rem");
         PreparedStatement stInsRem = conn.prepareStatement(sqlInsRem);
@@ -142,29 +134,22 @@ public class reminderModel extends JDSModel {
         }
         PreparedStatement stGet = conn.prepareStatement(sql);
         rs = stGet.executeQuery();
-        Object value = null;
+        int subscriptionId = 0;
         int paramIndex = 1;
         while (rs.next()){
-            value = rs.getObject(1);
-            stSubRate.setString(1, value.toString());
-            ResultSet rsSubRate = stSubRate.executeQuery();
-            if (rsSubRate.next()){
-                subscription_total = rsSubRate.getInt(1);
-                stPayRate.setString(1, value.toString());
-                ResultSet rsPayRate = stPayRate.executeQuery();
-                if (rsSubRate.next()){
-                    payment_total = rsSubRate.getInt(1);
-                }
-                balance = subscription_total - payment_total;
-                if (balance > 0){
-                    paramIndex = 1;
-                    stInsRem.setString(paramIndex, value.toString());
-                    stInsRem.setInt(++paramIndex, balance);
-                    stInsRem.setInt(++paramIndex, remType);
-                    stInsRem.executeUpdate();
-                }
+            subscriptionId = rs.getInt("subscriptionId");   
+            int amount = rs.getInt("amount");
+            int payment = rs.getInt("payment");
+            int balance = 0;
+            balance = amount - payment;
+            if (balance > 0){
+                paramIndex = 1;
+                stInsRem.setInt(paramIndex, subscriptionId);
+                stInsRem.setInt(++paramIndex, balance);
+                stInsRem.setInt(++paramIndex, remType);
+                stInsRem.executeUpdate();
             }
-        }
+        }        
         ResultSet rsReminders = getGenReminders();
         xml = util.convertResultSetToXML(rsReminders);
         return xml;
@@ -473,10 +458,10 @@ public class reminderModel extends JDSModel {
                 msg = properties.getProperty("reminderType1");
             }else if(reminderType == 2) {
                 Properties properties = c2Pdf.getRemindersProperties();
-                msg = properties.getProperty("reminderType1");
+                msg = properties.getProperty("reminderType2");
             }else if(reminderType == 3) {
                 Properties properties = c2Pdf.getRemindersProperties();
-                msg = properties.getProperty("reminderType1");
+                msg = properties.getProperty("reminderType3");
             } else {
                 message = "Incorrect reminder type received, aborting..";
                 success = false;

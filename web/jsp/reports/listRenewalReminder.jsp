@@ -106,7 +106,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printlistInvoice"%>" name="searchSubTypeForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports?action=printListReminder"%>" name="reminderReport">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List Sent Reminders</legend>
@@ -125,9 +125,9 @@
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                      <select class="IASComboBoxWide" TABINDEX="6" name="remType" id="remType">
-                                        <option value ="G">Gentle Reminder</option>
-                                        <option value ="S">Strong Reminder</option>
-                                        <option value ="S">Harsh Reminder</option>
+                                        <option value ="1">Gentle Reminder</option>
+                                        <option value ="2">Strong Reminder</option>
+                                        <option value ="3">Harsh Reminder</option>
                                      </select>
                                     </span>
                                 </div>
