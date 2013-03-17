@@ -69,6 +69,7 @@ public class convertToPdf extends JDSPDF {
 
     boolean noHeader = false;
     boolean periodicals = false;
+    boolean separateOutLatestIssue= false;
 
     String reminderType1Text = "";
     String reminderType2Text = "";
@@ -88,13 +89,16 @@ public convertToPdf(String _noHeader, String _periodicals){
         }
     }
 
-public convertToPdf(String _noHeader, String _periodicals, boolean _backIssue){
+public convertToPdf(String _noHeader, String _periodicals, String _separateLabel, boolean _backIssue){
         super();
         if(_noHeader!= null && _noHeader.equals("on")){
             noHeader    = true;
         }
         if(_periodicals!= null && _periodicals.equals("on")){
             periodicals = true;
+        }
+        if(_separateLabel!= null && _separateLabel.equals("on")){
+            separateOutLatestIssue = true;
         }
         backIssue = _backIssue;
     }
@@ -1067,6 +1071,8 @@ public convertToPdf(){
             String subscriberNumber = pairs1.getKey().toString();
             SubscriberInfo sInfo = (SubscriberInfo)pairs1.getValue();
 
+            subInfo sLabelInfo = sInfo.getSubscriberLabelInfo();
+
             Iterator subscriberInfoIter = sInfo.getSubscriberInfo().entrySet().iterator();
 
             // Loop over subscriberInfo
@@ -1077,7 +1083,9 @@ public convertToPdf(){
 
                 Iterator SubscriptionInfoIter = subscriptionInfo.getjournalType().entrySet().iterator();
 
-                // Loop over subscriptionInfo
+                ArrayList<String> labels = new ArrayList<String>();
+
+                // Loop over subscriptionInfo, i.e loop over each subscription of a subscriber
                 while(SubscriptionInfoIter.hasNext()) {
                     Map.Entry pairs3 = (Map.Entry)SubscriptionInfoIter.next();
                     String journalType = pairs3.getKey().toString();
@@ -1085,54 +1093,89 @@ public convertToPdf(){
 
                     Iterator journalTypeIter = jType.getjournalInfo().entrySet().iterator();
 
-                    subInfo sLabelInfo = sInfo.getSubscriberLabelInfo();
-
                     String label="";
-                    // Loop over journalType
+                    // Loop over journalType i.e loop over journals of certain page type
                     while(journalTypeIter.hasNext()) {
                         Map.Entry pairs4 = (Map.Entry)journalTypeIter.next();
                         String journalCode = pairs4.getKey().toString();
                         journalInfo jInfo = (journalInfo)pairs4.getValue();
 
+                        Iterator journalInfoIter1 = jInfo.getvolumeInfo().entrySet().iterator();
+                        // get the no of elements
+                        int highestVolumeNo=0;
+                        while(journalInfoIter1.hasNext()) {
+                            Map.Entry pairs5Temp = (Map.Entry)journalInfoIter1.next();
+                            String volume_number = pairs5Temp.getKey().toString();
+                            if(Integer.parseInt(volume_number) > highestVolumeNo) {
+                                highestVolumeNo = Integer.parseInt(volume_number);
+                            }
+                        }
                         Iterator journalInfoIter = jInfo.getvolumeInfo().entrySet().iterator();
 
-                        // Loop over journalInfo
+                        // Loop over journalInfo, i.e loop over volume_number
                         while(journalInfoIter.hasNext()) {
                             Map.Entry pairs5 = (Map.Entry)journalInfoIter.next();
                             String volume_number = pairs5.getKey().toString();
                             volumeInfo vInfo = (volumeInfo)pairs5.getValue();
-
-                            label = label + journalCode;
-                            label = label + "/" + volume_number;
-
-                            // Add information about issues
                             int startIssue = vInfo.getStartIssue();
                             int endIssue = vInfo.getEndIssue();
-                            String issue;
-                            // If start and end issue are same, then only mention startissue no
-                            if(startIssue == endIssue) {
-                                issue = "/" +  startIssue;
-                            } else {
-                                issue = "/" + startIssue + "-" + endIssue;
-                            }
-                            label = label + issue;
-
-                            //Add information about vo of copies
                             int no_of_copies = vInfo.getNo_of_copies();
-                            String noOfCopies;
-                            if(no_of_copies == 1) {
-                                noOfCopies = "";
-                            } else {
-                                noOfCopies = "(" + no_of_copies + ")" + " ";
+
+                            // If this is the last volume and for the select journal check if there are more than 1 issue
+                            if(Integer.parseInt(volume_number) == highestVolumeNo &&
+                            (separateOutLatestIssue && journalCode.equals("P") && startIssue < endIssue ||
+                             separateOutLatestIssue && journalCode.equals("RES") && startIssue < endIssue ||
+                             separateOutLatestIssue && journalCode.equals("CURR") && startIssue < endIssue)) {
+
+                                String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
+                                labels.add(labelSeparate);
+
+                                endIssue = endIssue - 1;
                             }
-                            label = label + noOfCopies;
+
+                            label = label + createLabel(journalCode, volume_number, startIssue, endIssue, no_of_copies);
                         }
                     }
+                    //Paragraph p = prepareBILLabelPDFContent(sLabelInfo, label);
+                    //BILlabels.add(p);
+                    labels.add(label);
+                }
+
+                for(int i=0; i < labels.size(); i++){
+                    String label = labels.get(i);
                     Paragraph p = prepareBILLabelPDFContent(sLabelInfo, label);
                     BILlabels.add(p);
                 }
             }
         }
+    }
+
+    public String createLabel(String journalCode, String volume_number, int startIssue, int endIssue, int no_of_copies){
+
+        String label="";
+        label = label + journalCode;
+        label = label + "/" + volume_number;
+
+        // Add information about issues
+        String issue;
+        // If start and end issue are same, then only mention startissue no
+        if(startIssue == endIssue) {
+            issue = "/" +  startIssue;
+        } else {
+            issue = "/" + startIssue + "-" + endIssue;
+        }
+        label = label + issue;
+
+        //Add information about no of copies
+        String noOfCopies;
+        if(no_of_copies == 1) {
+            noOfCopies = "";
+        } else {
+            noOfCopies = "(" + no_of_copies + ")";
+        }
+        label = label + noOfCopies + " ";
+
+        return(label);
     }
 
     public Paragraph prepareBILLabelPDFContent(subInfo sLabelInfo, String bilLabel) {

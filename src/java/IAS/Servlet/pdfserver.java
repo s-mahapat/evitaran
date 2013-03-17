@@ -168,8 +168,9 @@ public class pdfserver extends JDSController {
 
                 String noHeader = request.getParameter("noHeader");
                 String periodicals = request.getParameter("periodicals");
+                String separateLabel = request.getParameter("separateLabel");
 
-                convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, true);
+                convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, separateLabel, true);
                 c2Pdf.prepareBILStickerContent(rs);
                 c2Pdf.addStickerContent(rs, os);
 
@@ -184,8 +185,9 @@ public class pdfserver extends JDSController {
 
                 String noHeader = request.getParameter("noHeader");
                 String periodicals = request.getParameter("periodicals");
+                String separateLabel = request.getParameter("separateLabel");
 
-                convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, true);
+                convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, separateLabel, true);
                 c2Pdf.prepareBILLabelContent(rs);
                 c2Pdf.addLabelContent(rs, os);
 

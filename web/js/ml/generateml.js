@@ -98,7 +98,7 @@ function _generateLabel(){
 }
 
 function checkMl(){
-    
+
     //jQuery("#mlTable").trigger("clearGridData");
     $("#mlTable").jqGrid("clearGridData", true).trigger("reloadGrid");
 
@@ -127,6 +127,8 @@ function checkMl(){
 
     else {
         var mlid;
+        $("#btnAdd").button("disable");
+        
         $.ajax({
             type: 'POST',
             dataType: 'xml',
@@ -160,9 +162,9 @@ function checkMl(){
  }
 
   function checkViewMl(){
-      
+
     //jQuery("#mlTable").trigger("clearGridData");
-    $("#mlTable").jqGrid("clearGridData", true).trigger("reloadGrid");    
+    $("#mlTable").jqGrid("clearGridData", true).trigger("reloadGrid");
 
     if ($("#year").val() == 0) {
         alert("Select Year");

@@ -108,6 +108,7 @@
                             from                      : $("#from").val(),
                             bilCreationDate          : $("#bilCreationDate").val(),
                             periodicals             : $("#periodicals").length,
+                            separateLabel           : $("#separateLabel").length,
                             action                  : "generate"
                         }});
                     jQuery("#bilTable").setGridParam({ datatype: "xml" });
@@ -230,6 +231,8 @@
                                 <input class="IASButton" TABINDEX="7" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
                                 <input class="IASButton" TABINDEX="8" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
                                 <input class="IASButton" TABINDEX="9" type="reset" value="Reset"/>
+                                <input class="IASCheckBox" TABINDEX="10" type="checkbox" name="separateLabel" id="separateLabel"/>
+                                <label>Generate separate label for latest issue of P, JAA, CURR</label>
                             </div>
                         </fieldset>
                     </fieldset>
