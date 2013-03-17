@@ -43,8 +43,8 @@
                     colNames:['Subscription Id','Subscriber Type','Subscriber Number','Subscriber Name',
                         'Balance','reminder Type','Reminder date','Email'],
                     colModel :[
-                        {name:'subId', index:'subId', width:10, align:'center', xmlmap:'subId'},
-                        {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
+                        {name:'subId', index:'subId', width:50, align:'center', xmlmap:'subId'},
+                        {name:'subtypecode', index:'subtypecode', width:50, align:'center', xmlmap:'subtypecode'},
                         {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
                         {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
                         {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},

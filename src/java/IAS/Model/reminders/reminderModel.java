@@ -252,8 +252,8 @@ public class reminderModel extends JDSModel {
 
             }
 
-            // insert the record to sent reminders
-            //int ins = insertReminderDetails(Integer.toString(reminders_id), medium);
+            //insert the record to sent reminders
+            int ins = insertReminderDetails(Integer.toString(reminders_id), medium);
 
             subscriberInfo.add(sInfo);
 

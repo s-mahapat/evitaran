@@ -1129,13 +1129,14 @@ DROP TABLE IF EXISTS `reminder_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reminder_details` (
-  `id` int(11) NOT NULL DEFAULT '0',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `reminderId` int(11) NOT NULL,
-  `medium` int(11) NOT NULL,
+  `medium` char(1) NOT NULL,
   `language` int(11) NOT NULL,
-  `sent_date` int(11) NOT NULL,
+  `sent_date` date NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
