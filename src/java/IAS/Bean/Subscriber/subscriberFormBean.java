@@ -22,6 +22,8 @@ public class subscriberFormBean extends JDSBean {
     private String department = "";
     private String institution = "";
     private String email = "";
+    private String phone;
+    private String fax;
     private String agent = "";
     private boolean deactive = false;
     private String deactivationDate;
@@ -204,6 +206,22 @@ public class subscriberFormBean extends JDSBean {
 
     public void setEmail(String _email) {
         this.email = _email;
+    }
+
+    public String getPhone() {
+        return this.phone;
+    }
+
+    public void setPhone(String _phone) {
+        this.phone = _phone;
+    }
+
+    public String getFax() {
+        return this.fax;
+    }
+
+    public void setFax(String _fax) {
+        this.fax = _fax;
     }
 
     public void setAgentName(String _agent){

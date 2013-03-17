@@ -1,17 +1,17 @@
 <%@page language="java" import="java.util.*" %>
 <jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
-<fieldset class="subMainFieldSet">
+    <fieldset class="subMainFieldSet">
 
-    <div class="IASFormLeftDiv">
+        <div class="IASFormLeftDiv">
 
-       <div class="IASFormFieldDiv">
-            <span class="IASFormDivSpanLabel">
-                <label>City:</label>
-            </span>
+            <div class="IASFormFieldDiv">
+                <span class="IASFormDivSpanLabel">
+                    <label>City:</label>
+                </span>
 
-            <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="3" name="city" id="city">
-                    <option value="0" selected >Select</option>
+                <span class="IASFormDivSpanInputBox">
+                    <select class="IASComboBoxMandatory" TABINDEX="3" name="city" id="city">
+                        <option value="0" selected >Select</option>
                     <%
                         if (subscriberFormBean.getCity() != null && !subscriberFormBean.getCity().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getCity() + "\"" + " selected >" + subscriberFormBean.getCity() + "</option>");
@@ -110,7 +110,7 @@
                         onchange="subtypeCodeAppend()">
                     <option value="0">Select</option>
                     <%
-                        if (subscriberFormBean.getSubtypedesc()!= null && !subscriberFormBean.getSubtypedesc().isEmpty()) {
+                        if (subscriberFormBean.getSubtypedesc() != null && !subscriberFormBean.getSubtypedesc().isEmpty()) {
                             out.println("<option value=" + "\"" + subscriberFormBean.getSubtypedesc() + "\"" + " selected >" + subscriberFormBean.getSubtypedesc() + "</option>");
                         }
                     %>
@@ -164,8 +164,28 @@
             </span>
         </div>
 
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Phone:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBoxWide" TABINDEX="13" type="text" name="phone" id="phone" value="${subscriberFormBean.phone}"/>
+            </span>
+        </div>
 
         <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Fax:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBoxWide" TABINDEX="14" type="text" name="fax" id="fax" value="${subscriberFormBean.fax}"/>
+            </span>
+        </div>
+
+
+        <!--<div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
                 <label>Agent:</label>
             </span>
@@ -173,14 +193,14 @@
             <span class="IASFormDivSpanInputBox">
                 <select class="IASComboBoxWide" TABINDEX="13" name="agent" id="agent">
                     <option value="">Select</option>
-                    <%
-                        if (subscriberFormBean.getAgentName() != null && !subscriberFormBean.getAgentName().isEmpty()) {
-                            out.println("<option value=" + "\"" + subscriberFormBean.getAgentName() + "\"" + " selected >" + subscriberFormBean.getAgentName() + "</option>");
-                        }
-                    %>
-                </select>
-            </span>
-        </div>
+        <%
+            if (subscriberFormBean.getAgentName() != null && !subscriberFormBean.getAgentName().isEmpty()) {
+                out.println("<option value=" + "\"" + subscriberFormBean.getAgentName() + "\"" + " selected >" + subscriberFormBean.getAgentName() + "</option>");
+            }
+        %>
+    </select>
+</span>
+</div>-->
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">

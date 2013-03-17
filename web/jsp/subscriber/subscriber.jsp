@@ -224,23 +224,25 @@
             </span>
         </div>
 
-
-        <%--<div class="IASFormFieldDiv">
+        <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Agent:</label>
+                <label>Phone:</label>
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxWide" TABINDEX="13" name="agent" id="agent">
-                    <option value="">Select</option>
-                    <%
-                        if (subscriberFormBean.getAgentName() != null && !subscriberFormBean.getAgentName().isEmpty()) {
-                            out.println("<option value=" + "\"" + subscriberFormBean.getAgentName() + "\"" + " selected >" + subscriberFormBean.getAgentName() + "</option>");
-                        }
-                    %>
-                </select>
+                <input class="IASTextBox" TABINDEX="15" maxlength="50" type="text" name="phone" id="phone" value="${subscriberFormBean.phone}"/>
             </span>
-        </div>--%>
+        </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Fax:</label>
+            </span>
+
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASTextBox" TABINDEX="16" maxlength="50" type="text" name="fax" id="fax" value="${subscriberFormBean.fax}"/>
+            </span>
+        </div>
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
@@ -248,7 +250,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input type="checkbox" class="IASCheckBox" disabled TABINDEX="15" name="deactive" id="deactive" onclick="deActivateSubscriber()"
+                <input type="checkbox" class="IASCheckBox" disabled TABINDEX="17" name="deactive" id="deactive" onclick="deActivateSubscriber()"
                        <%
                            String isEnabled = "enabled";
                            if (subscriberFormBean.isDeactive() == true) {
@@ -266,7 +268,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASDateTextBox" readonly type="text" name="deactivationDate" id="deactivationDate" value="${subscriberFormBean.deactivationDate}"/>
+                <input class="IASDateTextBox"  TABINDEX="-1" readonly type="text" name="deactivationDate" id="deactivationDate" value="${subscriberFormBean.deactivationDate}"/>
             </span>
         </div>
 
@@ -278,11 +280,8 @@
 
 <fieldset class="subMainFieldSet">
     <div class="actionBtnDiv">
-        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="16" type="submit" value="Edit" id="btnEditSubscriber" name="btnSubmitAction"/>
-        <button onclick="setActionValue('save')" class="IASButton SaveButton" TABINDEX="17" type="submit" value="Save" id="btnSaveSubscriber" name="btnSubmitAction"/>Save</button>
-        <input onclick="setActionValue('display')" class="IASButton" TABINDEX="18" type="submit" value="View Subscriber" id="btnDisplaySubscriber" name="btnSubmitAction"/>
-        <%--<input onclick="setActionValue('viewsubscription')" class="IASButton" TABINDEX="18" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
-        <input onclick="setActionValue('editsubscription')" class="IASButton" TABINDEX="19" type="submit" value="Subscription" id="btnEditSubscription" name="btnSubmitAction"/>--%>
-        <%--<input onclick="setActionValue('add')" class="IASButton" TABINDEX="20" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction" <%out.println(isEnabled);%>/>--%>
+        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="18" type="submit" value="Edit" id="btnEditSubscriber" name="btnSubmitAction"/>
+        <button onclick="setActionValue('save')" class="IASButton SaveButton" TABINDEX="19" type="submit" value="Save" id="btnSaveSubscriber" name="btnSubmitAction"/>Save</button>
+        <button onclick="location.href='subscriber?action=display&subscriberNumber=${subscriberFormBean.subscriberNumber}'" class="IASButton CancelButton" TABINDEX="19" type="button" id="btnCancel"/>Cancel</button>
     </div>
 </fieldset>
