@@ -1,0 +1,35 @@
+/*
+    Document   : Style for Subscriber Type related JSPs are defined here
+*/
+root {
+    display:block;
+}
+
+#updateBtnDiv{
+    float: left;
+    width: 10%;
+    margin-left: 25%;
+}
+
+#saveBtnDiv{
+    float: left;
+    width: 8%;
+}
+
+#searchBtnDiv{
+    margin-left: 40%;
+    float: left;
+    width: 10%;
+}
+
+#filterBtnDiv{
+    margin-left: 35%;
+    float: left;
+    width: 10%;
+}
+
+#resetBtnDiv{
+    /*margin-right: 35%;*/
+    float: left;
+    width: 10%;
+}

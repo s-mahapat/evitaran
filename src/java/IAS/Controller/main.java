@@ -116,12 +116,8 @@ public class main extends JDSController {
             url = "/jsp/reports/listInwards.jsp";
         } else if (action.equalsIgnoreCase("listprintOrder")) {
             url = "/reports?action=contructTableForPrintOrderReport";
-
-            /*
-             * printOrderFormBeanReport _printOrderFormBeanReport = new IAS.Bean.Reports.printOrderFormBeanReport();
-             * request.setAttribute("printOrderFormBeanReport", _printOrderFormBeanReport);
-             * url = "/jsp/reports/listPrintOrder.jsp";
-             */
+        } else if (action.equalsIgnoreCase("listGml")) {
+            url = "/jsp/reports/generatedMl.jsp";
         } else if (action.equalsIgnoreCase("sendReminders")) {
             url = "/jsp/reminders/sendReminders.jsp";
         } else if (action.equalsIgnoreCase("displayReminders")) {

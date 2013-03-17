@@ -315,20 +315,15 @@ import javax.servlet.http.HttpServletResponse;
 
             /* ---------------------------------------------------------------- */
             else if (action.equalsIgnoreCase("listInvoice")) {
-                ResultSet rs  = _reportModel.listInvoice();
-                String    xml = util.convertResultSetToXML(rs);
-
+                String    xml  = _reportModel.listInvoice();                
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             } else if (action.equalsIgnoreCase("printlistInvoice")) {
-                ResultSet rs = _reportModel.listInvoice();
-
-                request.setAttribute("ResultSet", rs);
-
+                String    xml  = _reportModel.listInvoice(); 
+                request.setAttribute("xml", xml);
                 String query = "List invoice";
-
                 request.setAttribute("query", query);
-                url = "/pdfserver?action=printResultset";
+                url = "/pdfserver?action=printXML";
             }
 
             /* ---------------------------------------------------------------- */
@@ -387,6 +382,25 @@ import javax.servlet.http.HttpServletResponse;
             }
 
             /* ---------------------------------------------------------------- */
+            /* -----------------------List of Generated mailing list -------------------------- */
+            else if (action.equalsIgnoreCase("gml")) {
+                ResultSet rs  = _reportModel.gml();
+                String    xml = util.convertResultSetToXML(rs);
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+                
+            } else if (action.equalsIgnoreCase("printgml")) {
+                ResultSet rs = _reportModel.gml();
+
+                request.setAttribute("ResultSet", rs);
+
+                String query = "List of Generated mailing list";
+
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printResultset";
+            }
+
+            /* ---------------------------------------------------------------- */            
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
 

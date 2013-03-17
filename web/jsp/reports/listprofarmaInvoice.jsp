@@ -37,17 +37,14 @@
                     rownumbers: true,
                     emptyrecords: "No Subscriber Type",
                     loadtext: "Loading...",
-                    colNames:['invoiceNumber','invoiceCreationDate','subscriberNumber','subscriberName', 'subtypecode','journalCode','copies','startYear','endYear'],
-                    colModel :[
-                        {name:'invoiceNumber', index:'invoiceNumber', width:50, align:'center', xmlmap:'invoiceNumber'},
-                        {name:'invoiceCreationDate', index:'invoiceCreationDate', width:80, align:'center', xmlmap:'invoiceCreationDate'},
+                    colNames:['invoiceNumber','invoiceCreationDate','subscriberNumber','journalCode','Period','Amount'],
+                    colModel :[                        
+                        {name:'proInvNo', index:'proInvNo', width:80, align:'center', xmlmap:'proInvNo'},
+                        {name:'proInvDate', index:'proInvDate', width:80, align:'center', xmlmap:'proInvDate'},
                         {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
-                        {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
-                        {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
-                        {name:'copies', index:'copies', width:80, align:'center', xmlmap:'copies'},
-                        {name:'startYear', index:'startYear', width:80, align:'center', xmlmap:'startYear'},
-                        {name:'endYear', index:'endYear', width:80, align:'center', xmlmap:'endYear'}
+                        {name:'period', index:'period', width:80, align:'center', xmlmap:'period'},
+                        {name:'amount', index:'amount', width:80, align:'center', xmlmap:'amount'}
                     ],
                     xmlReader : {
                         root: "results",
@@ -86,7 +83,7 @@
                 isPageLoaded = true;
 
                 jQuery("#subTypeTable").setGridParam({postData:
-                        {invoiceType             : $("#invoiceType").val(),
+                        {invoiceType        : $("#invoiceType").val(),
                         from                : $("#from").val(),
                         to                  : $("#to").val(),
                         action              : "listInvoice"
