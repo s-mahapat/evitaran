@@ -93,7 +93,13 @@
                         }
                         for (var i = 0; i < ids.length; i++) {
                             var inwardId = ids[i];
-                            action = "<a style='color:blue;' href='inward?action=view&inwardNumber=" + inwardId + "'>View</a><a style='color:blue;' href='inward?action=edit&inwardNumber=" + inwardId + "'>Edit</a>";
+                            var iscompleted = YesNo2Boolean(jQuery("#inwardTable").jqGrid('getCell', inwardId, 'completed'));
+                            var valid = YesNo2Boolean(jQuery("#inwardTable").jqGrid('getCell', inwardId, 'valid'));
+                            var can_edit = !iscompleted && valid;
+                            action = "<a style='color:blue;' href='inward?action=view&inwardNumber=" + inwardId + "'>View</a>";
+                            if(can_edit){
+                                action += "<a style='color:blue;' href='inward?action=edit&inwardNumber=" + inwardId + "'>Edit</a>";
+                            }
                             jQuery("#inwardTable").jqGrid('setRowData', ids[i], { Action: action });
                         }
                         sessionStorage['searchinwards'] = JSON.stringify({

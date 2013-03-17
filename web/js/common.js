@@ -492,3 +492,10 @@ function isNumber(FieldId) {
         alert("Enter number");
     }
 }
+
+function YesNo2Boolean(value){
+    if(value.toLowerCase() == 'yes'){
+        return true;
+    }
+    return false;
+}
