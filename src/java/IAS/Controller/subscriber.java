@@ -1,12 +1,11 @@
 
 /*
-* To change this template, choose Tools | Templates
-* and open the template in the editor.
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
 package IAS.Controller;
 
 //~--- non-JDK imports --------------------------------------------------------
-
 import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 
@@ -40,21 +39,21 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 public class subscriber extends JDSController {
-    private static final Logger logger           = JDSLogger.getJDSLogger("IAS.Controller.subscriber");
-    private subscriberModel     _subscriberModel = null;
-    private inwardFormBean      _inwardFormBean;
+
+    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.subscriber");
+    private subscriberModel _subscriberModel = null;
+    private inwardFormBean _inwardFormBean;
 
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String      action = request.getParameter("action");
-        String      url    = null;
-        int         inwardPurposeID;
+        String action = request.getParameter("action");
+        String url = null;
+        int inwardPurposeID;
         HttpSession session = request.getSession(false);
 
         try {
             _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
-
             if (action.equalsIgnoreCase("createsubscriber")) {
                 url = "/jsp/subscriber/createsubscriber.jsp";
             } else if (action.equalsIgnoreCase("save")) {
@@ -64,12 +63,31 @@ public class subscriber extends JDSController {
                 if (_subscriberModel.Save() > 0) {
                     if (session.getAttribute("inwardUnderProcess") != null) {
                         this._inwardFormBean = (inwardFormBean) session.getAttribute("inwardUnderProcess");
-                        inwardPurposeID      = _inwardFormBean.getInwardPurposeID();
+                        inwardPurposeID = _inwardFormBean.getInwardPurposeID();
+                        String agentName = _inwardFormBean.getAgentName();
 
                         // if the inward purpose is new subscription then redirect the user to add subscription after
                         // saving subscriber info, else redirect to view subscriber
                         if ((inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION)
                                 || (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE)) {
+                            url = "/jsp/subscription/addnewsubscription.jsp?purpose=" + inwardPurposeID;
+                        }
+                        /**
+                         ************************************************************
+                         *
+                         * PROCESS AGENT INWARD // Renew subscription // In case
+                         * of process agent inward request, renew subscription
+                         * and new subscription is not a different entity. //
+                         * Hence for an agent even though purpose id id renew,
+                         * but there might be cases where he would like to
+                         * create subscriber. // Hence based on the flag agent
+                         * ID in inward it redirects to create subscription
+                         * after creating subscriber even though the purpose is
+                         * renewal.
+                         *
+                         ************************************************************
+                         */
+                        if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION && (agentName != null || !agentName.isEmpty())) {
                             url = "/jsp/subscription/addnewsubscription.jsp?purpose=" + inwardPurposeID;
                         }
                     }
@@ -89,19 +107,19 @@ public class subscriber extends JDSController {
                 url = "/xmlserver";
             } else if (action.equalsIgnoreCase("subscriberNames")) {
                 String searchTerm = request.getParameter("term");
-                String xml        = _subscriberModel.getDistinctSubscriberNames(searchTerm);
+                String xml = _subscriberModel.getDistinctSubscriberNames(searchTerm);
 
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             } else if (action.equalsIgnoreCase("depts")) {
                 String searchTerm = request.getParameter("term");
-                String xml        = _subscriberModel.getDepartmentNames(searchTerm);
+                String xml = _subscriberModel.getDepartmentNames(searchTerm);
 
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             } else if (action.equalsIgnoreCase("inst")) {
                 String searchTerm = request.getParameter("term");
-                String xml        = _subscriberModel.getInstitutionNames(searchTerm);
+                String xml = _subscriberModel.getInstitutionNames(searchTerm);
 
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
@@ -145,20 +163,20 @@ public class subscriber extends JDSController {
             } else if (action.equalsIgnoreCase("mil")) {
                 url = "/jsp/missingissue/missingissuelist.jsp";
             } else if (action.equalsIgnoreCase("getSubscriberType")) {
-                int    subType = _subscriberModel.getSubscriberType(request.getParameter("subscriberNumber"));
-                String xml     = util.convertStringToXML(String.valueOf(subType), "subtype");
+                int subType = _subscriberModel.getSubscriberType(request.getParameter("subscriberNumber"));
+                String xml = util.convertStringToXML(String.valueOf(subType), "subtype");
 
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             } else if (action.equalsIgnoreCase("reminders")) {
                 String subscriberNumber = request.getParameter("subscriberNumber");
-                String xml              = _subscriberModel.getReminders(subscriberNumber);
+                String xml = _subscriberModel.getReminders(subscriberNumber);
 
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             } else if (action.equalsIgnoreCase("mi")) {
-                int    subscriberID = Integer.parseInt(request.getParameter("sid"));
-                String xml          = _subscriberModel.getMissingIssues(subscriberID);
+                int subscriberID = Integer.parseInt(request.getParameter("sid"));
+                String xml = _subscriberModel.getMissingIssues(subscriberID);
 
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
@@ -170,14 +188,14 @@ public class subscriber extends JDSController {
                 }
             } else if (action.equalsIgnoreCase("chqreturn")) {
                 String _subscriberNumber = request.getParameter("subscriberNumber");
-                String xml               = _subscriberModel.getChequeReturn(_subscriberNumber);
+                String xml = _subscriberModel.getChequeReturn(_subscriberNumber);
 
                 if (xml != null) {
                     request.setAttribute("xml", xml);
                     url = "/xmlserver";
                 } else {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                                       "Failed to cheque return details for subscriber");
+                            "Failed to cheque return details for subscriber");
                 }
             }
 
@@ -186,9 +204,7 @@ public class subscriber extends JDSController {
             if ((rd != null) && (url != null)) {
                 rd.forward(request, response);
             }
-        } catch (SQLException | ParseException | InvocationTargetException | IllegalAccessException
-                 | ClassNotFoundException | ParserConfigurationException | TransformerException | SAXException
-                 | IOException e) {
+        } catch (SQLException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | ParserConfigurationException | TransformerException | SAXException | IOException e) {
             logger.error(e.getMessage(), e);
 
             throw new javax.servlet.ServletException(e);
@@ -196,7 +212,6 @@ public class subscriber extends JDSController {
     }
 
 //  <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP
      * <code>GET</code> method.

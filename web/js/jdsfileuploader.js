@@ -72,25 +72,31 @@ function jdsfileuploader(_div){
 
         // Client side form validation
         $('form').submit(function(e) {
-            var uploader = $('#uploader').plupload('getUploader');
-            if (uploader.files.length > 1){
+            // This value should be sent from the respective JSP if they want to submit the form
+            // For reference check the value of indicatorUploadValidate set in processAgentInward.jsp
+            if($("#indicatorUploadValidate").val == "true"){ 
+                var uploader = $('#uploader').plupload('getUploader');
+                if (uploader.files.length > 1){
 
-            }
+                }
 
-            // Files in queue upload them first
-            if (uploader.files.length > 0) {
-                // When all files are uploaded submit form
-                uploader.bind('StateChanged', function() {
-                    if (uploader.files.length === (uploader.total.uploaded + uploader.total.failed)) {
-                        $('form')[0].submit();
-                    }
-                });
+                // Files in queue upload them first
+                if (uploader.files.length > 0) {
+                    // When all files are uploaded submit form
+                    uploader.bind('StateChanged', function() {
+                        if (uploader.files.length === (uploader.total.uploaded + uploader.total.failed)) {
+                            $('form')[0].submit();
+                        }
+                    });
 
-                uploader.start();
-            } else
-                alert('You must at least upload one file.');
+                    uploader.start();
+                } else
+                    alert('You must at least upload one file.');
 
-            return false;
+                return false;
+            }else {
+                return true;
+            }    
         });
     };
 

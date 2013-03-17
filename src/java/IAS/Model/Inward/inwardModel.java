@@ -111,7 +111,7 @@ public class inwardModel extends JDSModel {
                 }
             }
             //update inward-agent details
-            String agentName = inwardFormBean.getagentName();
+            String agentName = inwardFormBean.getAgentName();
             if (!agentName.isEmpty() && rc == 1) {
                 sql = Queries.getQuery("insert_in_agent_dtls");
                 PreparedStatement pst = conn.prepareStatement(sql);

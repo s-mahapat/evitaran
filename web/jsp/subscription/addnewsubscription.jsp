@@ -6,8 +6,7 @@
     String inwardNumber = _inwardFormBean.getInwardNumber();
     float amount = _inwardFormBean.getAmount();
     String inwardPurpose = request.getParameter("purpose");
-
-%>
+    %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -36,7 +35,7 @@
             <form id="subscriptionForm" name="subscriptionForm" action="inward?action=followOnProcess" method="POST">
                 <input type="hidden" name="purpose" id="purpose" value="<%=request.getParameter("purpose")%>"/>
                 <input type="hidden" name="subid" id="subid" value="${subscriberFormBean.subscriberID}"/>
-
+                <input type="hidden" name="createAgntSubscription" id="createAgntSubscription" value="<%=request.getParameter("createAgntSubscription")%>"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Add New Subscription</legend>

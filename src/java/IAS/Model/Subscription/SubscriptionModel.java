@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package IAS.Model.Subscription;
 
 import IAS.Bean.Invoice.InvoiceFormBean;
@@ -141,9 +137,9 @@ public class SubscriptionModel extends JDSModel {
                     }
 
                     //Update inward with completed flag once the transaction is completed
-                    if (this.CompleteInward(this.inwardID) == 1) {
-                        session.setAttribute("inwardUnderProcess", null);
-                    }
+                    // if (this.CompleteInward(this.inwardID) == 1) {
+                    //   session.setAttribute("inwardUnderProcess", null);
+                    //}
                     xml = util.convertStringToXML(String.valueOf(subscriptionID), "subscriptionID");
 
                     conn.commit(); // complete the transaction here.
@@ -157,6 +153,13 @@ public class SubscriptionModel extends JDSModel {
 
         }
         return xml;
+    }
+
+    public void complete_inward() throws SQLException {
+        //Update inward with completed flag once the transaction is completed
+        if (this.CompleteInward(this.inwardID) == 1) {
+            session.setAttribute("inwardUnderProcess", null);
+        }
     }
 
     private int[] __addSubscriptionDetail(Connection conn,

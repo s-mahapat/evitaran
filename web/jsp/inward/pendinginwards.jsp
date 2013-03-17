@@ -12,8 +12,6 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
         <title>Pending Inwards</title>
         <script type="text/javascript">
-            //var calPopup = new CalendarPopup("dateDiv");
-            //calPopup.showNavigationDropdowns();
 
             var isPageLoaded = true;
             $(document).ready(function(){
@@ -47,7 +45,6 @@
                             , align:'center'
                             , sortable: false
                             , xmlmap:'subscriberId'
-                            //,formatter: subscriberlink
                         },
                         {name:'Agent'
                             , index:'agent'
@@ -55,7 +52,6 @@
                             , align:'center'
                             , sortable: false
                             , xmlmap:'agentName'
-                            //,formatter: subscriberlink
                         },
                         {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
                         {
@@ -64,7 +60,6 @@
                             width:60,
                             align:'center',
                             xmlmap:'inwardCreationDate'
-                            //formatter:'date',
 
                         },
                         {name:'City', index:'city', sortable: false, width:80, align:'center', xmlmap:'city'},
@@ -134,14 +129,11 @@
 
             // called when the search button is clicked
             function searchInwards(){
-                //validateSearch() == true
                 if(true){
                     isPageLoaded = true;
                     jQuery("#inwardTable").setGridParam({ datatype: "xml" });
                     jQuery("#inwardTable").setGridParam({postData:
                             {inwardPurpose  : $("#inwardPurpose").val()
-                            //fromDate        : $("#from").val(),
-                            //toDate          : $("#to").val()
                         }});
                     jQuery("#inwardTable").trigger("clearGridData");
                     jQuery("#inwardTable").trigger("reloadGrid");
@@ -157,7 +149,22 @@
                 }
                 return cellvalue;
             }
-
+            
+            $(function(){
+                $("#btnManualCreation")
+                .click(function(){
+                    $("agentXLUpload").val("false");
+                });
+            });
+            
+            $(function(){
+                $("#btnAgentXLUpload")
+                .click(function(){
+                    $("agentXLUpload").val("true");
+                });
+            });
+            
+            
         </script>
 
     </head>
@@ -171,6 +178,7 @@
                 <input type="hidden" id="purpose" name ="purpose" value=""/>
                 <input type="hidden" id="asf" name ="asf" value="<%=request.getParameter("asf") != null ? request.getParameter("asf") : 0%>"/>
                 <input type="hidden" id="afs" name ="afs" value="<%=request.getParameter("afs") != null ? request.getParameter("afs") : 0%>"/>
+                <input type="hidden" id="agentXLUpload" name ="agentXLUpload" value=""/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Pending Inwards</legend>
@@ -195,13 +203,6 @@
                                     </span>
                                 </div>
                             </div>
-
-                            <!--<div class="IASFormFieldDiv">
-                                <div class="actionBtnDiv">
-                                    <button class="IASButton SearchButton" type="button" onclick="searchInwards()" TABINDEX="4">Filter</button>
-                                    <input class="IASButton" type="reset" value="Reset"  TABINDEX="5"/>
-                                </div>
-                            </div>-->
                         </fieldset>
 
 
@@ -225,6 +226,19 @@
                     </fieldset>
                 </div>
             </form>
+        </div>
+        <%--Process Agent Inward dialog box--%>
+        <div id="dialog-modal" title="Process Agent Inward"><p>Add Subscription by clicking on one of the option:</p>
+            <fieldset class="subMainFieldSet">
+                <div class="IASFormFieldDiv">
+                    <label>Agent Subscriptions:</label>
+                    <input class="IASButton" TABINDEX="9" type="button" value="Manual creation" id="btnManualCreation" name="btnManualCreation"/>
+                    <br><br><br>
+                    <label>Agent Excel Upload:</label>
+                    <input class="IASButton" TABINDEX="10" type="button" value="Mass creation" id="btnAgentXLUpload" name="btnAgentXLUpload"/>
+                </div>
+            </fieldset> 
+
         </div>
     </body>
 </html>

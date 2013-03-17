@@ -343,11 +343,11 @@ public class inwardFormBean extends JDSBean {
         this.agentID = _agentID;
     }
 
-    public String getagentName() {
+    public String getAgentName() {
         return this.agentName;
     }
 
-    public void setagentName(String _agentName) {
+    public void setAgentName(String _agentName) {
         this.agentName = _agentName;
     }
 

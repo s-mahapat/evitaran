@@ -86,7 +86,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Subscriber Type:</label>
+                <label id="lblsubtype">Subscriber Type:</label>
             </span>
 
             <span class="IASFormDivSpanInputBox">
@@ -103,7 +103,7 @@
         </div>
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Description:</label>
+                <label id="lbldescription">Description:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <select class="IASComboBoxMandatory" TABINDEX="9" name="subtypedesc" id="subtypedesc"
@@ -124,7 +124,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Creation Date:</label>
+                <label id="lblsubscriberCreationDate">Creation Date:</label>
             </span>
 
             <span class="IASFormDivSpanInputBox">
@@ -166,7 +166,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Phone:</label>
+                <label id="lblphone">Phone:</label>
             </span>
 
             <span class="IASFormDivSpanInputBox">
@@ -176,7 +176,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Fax:</label>
+                <label id="lblfax">Fax:</label>
             </span>
 
             <span class="IASFormDivSpanInputBox">
@@ -204,7 +204,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Deactivate</label>
+                <label id="lbldeactivate">Deactivate</label>
             </span>
 
             <span class="IASFormDivSpanInputBox">
@@ -222,27 +222,16 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Deactivation Date:</label>
+                <label id="lbldeactivationDate">Deactivation Date:</label>
             </span>
 
             <span class="IASFormDivSpanInputBox">
                 <input class="IASDateTextBox" readonly type="text" name="deactivationDate" id="deactivationDate" value="${subscriberFormBean.deactivationDate}"/>
             </span>
         </div>
-
+    </div>
+    <div class="actionBtnDiv" id="divsubscriberdtlsbtn">
+        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="15" type="submit" value="Edit" id="btnEditSubscriber" name="btnSubmitAction"/>        
     </div>
 
-</fieldset>
-
-<%--Actions--%>
-
-<fieldset class="subMainFieldSet">
-    <div class="actionBtnDiv">
-        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="15" type="submit" value="Edit" id="btnEditSubscriber" name="btnSubmitAction"/>
-        <input onclick="setActionValue('save')" class="IASButton" TABINDEX="16" type="submit" value="Save" id="btnSaveSubscriber" name="btnSubmitAction"/>
-        <input onclick="setActionValue('display')" class="IASButton" TABINDEX="17" type="submit" value="View Subscriber" id="btnDisplaySubscriber" name="btnSubmitAction"/>
-        <%--<input onclick="setActionValue('viewsubscription')" class="IASButton" TABINDEX="18" type="submit" value="View Subscription" id="btnViewSubscription" name="btnSubmitAction"/>
-        <input onclick="setActionValue('editsubscription')" class="IASButton" TABINDEX="19" type="submit" value="Subscription" id="btnEditSubscription" name="btnSubmitAction"/>--%>
-        <%--<input onclick="setActionValue('add')" class="IASButton" TABINDEX="20" type="submit" value="Add Subscription" id="btnAddSubscription" name="btnSubmitAction" <%out.println(isEnabled);%>/>--%>
-    </div>
 </fieldset>

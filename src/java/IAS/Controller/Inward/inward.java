@@ -103,39 +103,83 @@ public class inward extends JDSController {
                 url = "/xmlserver";
 
             } else if (action.equalsIgnoreCase("processinward")) {
-
-                //String inwardNumber = request.getParameter("inwardNumber");
+                /* 
+                 ************************************************************
+                 *
+                 * PROCESS AGENT INWARD - // Variables completeInward, createAgntSubscription
+                 * are required for processing agent inwards
+                 *
+                 ************************************************************
+                 */
+                String completeInward = request.getParameter("completeInward");
+                String createAgntSubscription = request.getParameter("createAgntSubscription");
                 String subscriberNumber = request.getParameter("subscriberNumber");
                 HttpSession session = request.getSession(false);
                 _inwardFormBean = _inwardModel.GetInward();
                 session.setAttribute("inwardUnderProcess", _inwardFormBean);
-                String agentName = _inwardFormBean.getagentName(); // agent changes
+                String agentName = _inwardFormBean.getAgentName(); // agent changes
                 // we should use the purpose id rather than the purpose name, it can change in the database
                 // but id should not change
-                int purposeID = Integer.parseInt(request.getParameter("purpose"));
+                int purposeID;
+                try {
+                    purposeID = Integer.parseInt(request.getParameter("purpose"));
+                } catch (NumberFormatException numex) {
+                    purposeID = _inwardFormBean.getInwardPurposeID();
+                }
                 int isFreeSubscriber = 0;
                 int isSummerFellow = 0;
 
-                // check if the flow is from add free subscriber/summer fellow.
+                // check if the flow is from add free subscriber/summer fellow.                
                 try {
                     isFreeSubscriber = Integer.parseInt(request.getParameter("afs"));
                     isSummerFellow = Integer.parseInt(request.getParameter("asf"));
-                } catch (NumberFormatException ex) {
-                    logger.debug(ex + ". Can be ignored");
+                } catch (NumberFormatException numex) {
+                    isFreeSubscriber = isSummerFellow = 0;
                 }
-
+                /* 
+                 ************************************************************
+                 *
+                 * PROCESS AGENT INWARD - // subscriber ID should not be added 
+                 *  in Inward if agent is there in inward
+                 *
+                 ************************************************************
+                 */
                 // update the subscriber number in the inward
-                if (_inwardModel.updateSubscriberInInward(subscriberNumber, _inwardFormBean.getInwardNumber()) == 1) {
-                    logger.debug(String.format("Updated subscriber %s in inward %s", subscriberNumber, _inwardFormBean.getInwardNumber()));
+                if (agentName == null || agentName.isEmpty()) {
+                    if (_inwardModel.updateSubscriberInInward(subscriberNumber, _inwardFormBean.getInwardNumber()) == 1) {
+                        logger.debug(String.format("Updated subscriber %s in inward %s", subscriberNumber, _inwardFormBean.getInwardNumber()));
+                    }
                 }
-
-
-                // if there is agent name do not worry about the inward type
-                // just take him to agent upload excel screen
-                if (agentName != null && !agentName.isEmpty()) {
-                    url = "/jsp/inward/agentexcelupload.jsp";
-                } //agent changes - PINKI
-                // Get into this if block for only new subscription and request for invoice
+                /**
+                 ************************************************************
+                 *
+                 * PROCESS AGENT INWARD - // if there is agent name do not worry
+                 * about the inward type // just take him to process agent
+                 * inward screen // Process inward will be called again on new
+                 * subscription from process agent screen // Hence
+                 * createAgntSubscription variable is an identifier not to
+                 * redirect to processAgentInward.jsp // if "Create subscription"
+                 * is requested
+                 *
+                 ************************************************************
+                 */
+                if ((agentName != null
+                        && !agentName.isEmpty())
+                        && createAgntSubscription == null) {
+                    request.setAttribute("inwardFormBean", _inwardFormBean);
+                    url = "/jsp/agent/processAgentInward.jsp";
+                } /**
+                 ************************************************************
+                 *
+                 * PROCESS AGENT INWARD - Complete the inward if requested from
+                 * the client(especially from process agent inward screen)
+                 *
+                 * ***********************************************************
+                 */
+                else if ("true".equals(completeInward)) {
+                    _inwardModel.CompleteInward(_inwardFormBean.getInwardID());
+                    url = "/jsp/inward/pendinginwards.jsp";
+                } // Get into this if block for only new subscription and request for invoice
                 // if its add free subscribers or add summer fellows move on
                 else if (isFreeSubscriber == 0
                         && isSummerFellow == 0
@@ -145,9 +189,8 @@ public class inward extends JDSController {
                     // create subscription if subscriber already exists
                     if (subscriberNumber != null
                             && !subscriberNumber.equalsIgnoreCase("null")
-                            && !subscriberNumber.isEmpty()
-                            && !subscriberNumber.equals("0")
-                            && agentName == null) {
+                            && !subscriberNumber.isEmpty()) {
+                        //&& agentName == null) { // This check is not required now after the agent flow is changed
                         url = "/subscriber?action=add";
                     } else {
 
@@ -167,9 +210,27 @@ public class inward extends JDSController {
                         url = "/subscriber?action=createsubscriber";
                     }
                 } else if (purposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION) {
-                    // Renew subscription
-                    //IAS.Model.subscriberModel _subscriberModel = new IAS.Model.subscriberModel(request);
-                    url = "/subscriber?action=add";
+                    /**
+                     ************************************************************
+                     *
+                     * PROCESS AGENT INWARD // Renew subscription // In case of
+                     * process agent inward request, renew subscription and new
+                     * subscription is not a different entity. // Hence for an
+                     * agent even though purpose id id renew, but there might be
+                     * cases where he would like to create subscriber. // Hence
+                     * based on the flag createAgntSubscription it redirects to
+                     * create subscriber even though the purpose is renewal.
+                     *
+                     ************************************************************
+                     */
+                    if (subscriberNumber == null
+                            || subscriberNumber.equalsIgnoreCase("")
+                            || subscriberNumber.isEmpty()
+                            && "true".equalsIgnoreCase(createAgntSubscription)) {
+                        url = "/subscriber?action=createsubscriber";
+                    } else {
+                        url = "/subscriber?action=add";
+                    }
                 } else if (purposeID == JDSConstants.INWARD_PURPOSE_ADDRESS_CHANGE) {
                     //Address change
                     url = "/subscriber?action=edit";
@@ -228,11 +289,14 @@ public class inward extends JDSController {
                 int inwardPurposeID;
                 int subid;
                 float balance;
+                _inwardFormBean = _inwardModel.GetInward();
+                String agentName = _inwardFormBean.getAgentName(); // agent changes
 
                 try {
                     inwardPurposeID = Integer.parseInt(request.getParameter("purpose"));
                 } catch (NumberFormatException ex) {
-                    inwardPurposeID = 0;
+                    //inwardPurposeID = 0;
+                    inwardPurposeID = _inwardFormBean.getInwardPurposeID();
                 }
 
                 try {
@@ -247,26 +311,47 @@ public class inward extends JDSController {
                     balance = 0;
                 }
 
-
                 // for acknowledgement amount > 0
                 if ((inwardPurposeID == JDSConstants.INWARD_PURPOSE_NEW_SUBSCRIPTION
                         || inwardPurposeID == JDSConstants.INWARD_PURPOSE_RENEW_SUBSCRIPTION)) {
 
-
                     subscriberFormBean _subFormBean = _inwardModel.getSubscriberDetail();
                     request.setAttribute("subscriberFormBean", _subFormBean);
-                    // if the balance is greater than 0 redirect to pending bill amount page
-                    if (balance > 0) {
-                        //SubscriptionModel _subscriptionModel = new SubscriptionModel(request);
-                        //_subscriptionModel.
+                    /**
+                     ************************************************************
+                     *
+                     * PROCESS AGENT INWARD // After subscriptions are added for
+                     * agent, the page should be redirected to process agent
+                     * inward
+                     *
+                     ************************************************************
+                     */
+                    if (agentName != null && !agentName.isEmpty()) {
+                        _inwardFormBean = _inwardModel.GetInward();
+                        request.setAttribute("inwardFormBean", _inwardFormBean);
+                        url = "/jsp/agent/processAgentInward.jsp";
+                        /**
+                         ************************************************************
+                         *
+                         * BALANCE // if the balance is greater than 0 redirect
+                         * to pending bill amount page
+                         *
+                         ************************************************************
+                         */
+                    } else if (balance > 0) {
                         InvoiceFormBean _invoiceFormBean = _inwardModel.getInvoiceDetail(); //new IAS.Bean.Invoice.InvoiceFormBean();
                         request.setAttribute("invoiceFormBean", _invoiceFormBean);
                         url = "/jsp/subscription/pendingamount.jsp";
+                        /**
+                         ************************************************************
+                         *
+                         * SUBSCRIBER DETAILS // Redirect to subscriber details
+                         *
+                         ************************************************************
+                         */
                     } else {
                         url = "/jsp/subscriber/viewdetailsubscriber.jsp?detail=2";
                     }
-
-
                 } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
                     InvoiceFormBean _invoiceFormBean = _inwardModel.getInvoiceDetail(); //new IAS.Bean.Invoice.InvoiceFormBean();
                     request.setAttribute("invoiceFormBean", _invoiceFormBean);
@@ -276,7 +361,6 @@ public class inward extends JDSController {
                     if (_inwardModel.CompleteInward(_inwardFormBean.getInwardID()) == 1) {
                         url = "/jsp/inward/pendinginwards.jsp";
                     }
-
                 } else {
                     url = "/home";
                 }
@@ -293,8 +377,8 @@ public class inward extends JDSController {
             throw new javax.servlet.ServletException(e);
         }
     }
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.

@@ -36,7 +36,7 @@ public class errorHandler extends JDSController {
         String            exceptionMessage = "<html><head><title>" + "Exception" + "</title></head><body><p>"
                                              + throwable.getClass().getCanonicalName();
 
-        exceptionMessage += "<br>" + throwable.getMessage();
+        exceptionMessage += "<br>" + throwable.getMessage() + "<br>" + throwable.getCause();
         exceptionMessage += "<br>---------------------------------<br>";
 
         for (int i = 0, n = elements.length; i < n; i++) {

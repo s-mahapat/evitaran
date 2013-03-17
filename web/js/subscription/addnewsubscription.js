@@ -189,7 +189,14 @@ function saveSubscription() {
     });
     $.ajax({
         type: 'POST',
-        url: "subscription?oper=add" + "&subscriberNumber=" + $("#subscriberNumber").val() + "&remarks=" + $("#remarks").val() + "&inwardNumber=" + $("#inwardNumber").val(),
+        url: "subscription?oper=add" + 
+            "&subscriberNumber=" + 
+            $("#subscriberNumber").val() + 
+            "&remarks=" + 
+            $("#remarks").val() + 
+            "&inwardNumber=" + 
+            $("#inwardNumber").val() + 
+            "&createAgntSubscription=" + $("#createAgntSubscription").val(),
         data: $.param(rowRequiredData),
         success: function(xmlResponse, textStatus, jqXHR) {
 

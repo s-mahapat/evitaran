@@ -80,7 +80,7 @@ public class MainController extends JDSController {
                                     m.invoke(obj);
                                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                                          | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                                    logger.error(e);
+                                    logger.error(e.getCause());
                                     this.forward(req, resp, "/errorHandler");
                                 }
                             } catch (NoSuchMethodException | SecurityException e) {

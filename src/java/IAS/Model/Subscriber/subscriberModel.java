@@ -76,9 +76,17 @@ public class subscriberModel extends JDSModel {
             return this._updateSubscriber();
         } else {
             int _subscriberId = this.SaveNewSubscriber(_subscriberFormBean);
-
+            String agentName = _inwardFormBean.getAgentName();
+            /* 
+             ************************************************************
+             *
+             * PROCESS AGENT INWARD - // subscriber ID should not be added 
+             *  in Inward if agent is there in inward
+             *
+             ************************************************************
+             */
             //If the mode was create new user update the inward with the new subscriber that was created
-            if (mode.equalsIgnoreCase("Create")) {
+            if (mode.equalsIgnoreCase("Create") && (agentName == null || agentName.isEmpty())) {
                 if (this.inwardNumber != null) {
                     String _sql = Queries.getQuery("update_subscriber_in_inward");
                     try (PreparedStatement pst = _conn.prepareStatement(_sql)) {
@@ -134,7 +142,7 @@ public class subscriberModel extends JDSModel {
 
     public String fetchNextSubscriberNumberById(int subscriberId) throws SQLException, ParseException, ClassNotFoundException {
         String nextSubscriberNum = "";
-        Connection _conn = (Connection)request.getSession(false).getAttribute("connection");
+        Connection _conn = (Connection) request.getSession(false).getAttribute("connection");
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_next_subscriber_number");
         try (PreparedStatement st = _conn.prepareStatement(sql)) {
@@ -156,7 +164,7 @@ public class subscriberModel extends JDSModel {
 
     public String fetchFirstSubscriberNumber() throws SQLException, ParseException, ClassNotFoundException {
         String firstSubscriberNum = "";
-        Connection _conn = (Connection)request.getSession(false).getAttribute("connection");
+        Connection _conn = (Connection) request.getSession(false).getAttribute("connection");
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_first_subscriber_number");
         try (PreparedStatement st = _conn.prepareStatement(sql)) {

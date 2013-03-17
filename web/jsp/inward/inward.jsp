@@ -28,8 +28,6 @@
             })
         });
 
-        //$( "#btnSaveInward" ).button({ icons: { primary: "ui-icon-circle-zoomin"} });
-
         $(function() {
             $( "#btnResetSubscriber" )
             .button({ icons: { primary: "ui-icon-trash"} })
@@ -50,13 +48,6 @@
 
         $("#inwardPurpose").change(function(){
             var inward_purpose = $("#inwardPurpose").val();
-            // enable the search subscription button only for inward of type 'payment'
-            /*if(inward_purpose.toLowerCase() == "payment"){
-                enableSubscriptionID(true);
-            }
-            else{
-                enableSubscriptionID(false);
-            }*/
             // if the inward type is new subscription disable the search subscriber button
             if(inward_purpose.toLowerCase() == 0){
                 $( "#btnSearchSubscriber" ).button("disable");
@@ -82,17 +73,6 @@
                 $("#btnResetUE").button("disable");
             }
         });
-        /*$("#subscriberId").bind( "autocompleteselect", function(event, ui) {
-            alert("change");
-            if(!ui.item){
-                bvalidsubscriber = false;
-                $(this).val('');
-                $(this).focus();
-            }else{
-                bvalidsubscriber = true;
-            }
-        });*/
-
     });
 </script>
 <%-----------------------------------------------------------------------------------------------------%>

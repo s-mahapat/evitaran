@@ -14,10 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 
-/**
- *
- * @author smahapat
- */
+
 public class InwardController extends JDSController {
 
     private HttpServletRequest req;
