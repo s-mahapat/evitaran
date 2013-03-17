@@ -18,7 +18,7 @@
             var isPageLoaded = false;
 
             $(document).ready(function(){
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=subscriberType"%>","subscriberType","subscriberType");
+                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=invoicetype"%>","invoiceType","invoiceType");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
             });
 
@@ -86,8 +86,7 @@
                 isPageLoaded = true;
 
                 jQuery("#subTypeTable").setGridParam({postData:
-                        {subtype             : $("#subscriberType").val(),
-                        journalName         : $("#journalName").val(),
+                        {invoiceType             : $("#invoiceType").val(),
                         from                : $("#from").val(),
                         to                  : $("#to").val(),
                         action              : "listInvoice"
@@ -122,24 +121,14 @@
                             <div class="IASFormLeftDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Subscriber Type</label>
+                                        <label>Invoice Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="subscriberType" id="subscriberType">
+                                        <select class="IASCombobox" TABINDEX="1" name="invoicerType" id="invoiceType">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
-                                </div>
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Journal Name:</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="journalName" id="journalName" onchange="loadIssues()">
-                                            <option value="0">Select</option>
-                                        </select>
-                                    </span>
-                                </div>
+                                </div>                                
                             </div>
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">

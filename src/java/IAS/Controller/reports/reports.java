@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Deepali
  */
-public class reports extends JDSController {
+    public class reports extends JDSController {
     private static final Logger logger       = JDSLogger.getJDSLogger("IAS.Controller.reports");
     private reportModel         _reportModel = null;
 

@@ -1583,109 +1583,7 @@ String xml = null;
         int paramIndex = 1;
         int count = 0;
    
-        // For Legacy Data
-        /*
-        String sql = Queries.getQuery("get_legacy_balance");
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
 
-        
-        while (rs.next()){
-            String subscriberNumber = rs.getString("subscriberNumber");
-            int subscriptionId = rs.getInt("subscriptionId");
-            String journalCode = "";
-            int balance = rs.getInt("balance");
-            String proInvNo = rs.getString("proInvNo");
-            if (proInvNo.equals(null) || proInvNo.equals("")){
-                proInvNo = "-";
-            }
-            String proInvDate = rs.getString("proInvDate");
-            int startYear = 0;
-            int endYear = 0;
-            int newStart = 0;
-            int newEnd = 0;
-            String period = "";
-            int subexists = 0;
-
-            String sqljournals = Queries.getQuery("get_sub_journals");
-            if (subEnd != 0){
-                sqljournals += " and subscriptiondetails.endYear  = " + subEnd;
-            }
-            else if (periodStart != 0 && periodEnd != 0){
-                sqljournals += " and subscriptiondetails.startYear  >= " + periodStart;
-                sqljournals += " and subscriptiondetails.endYear  <= " + periodEnd;
-            }
-            PreparedStatement stGetJournals = conn.prepareStatement(sqljournals);
-            stGetJournals.setInt(paramIndex, subscriptionId);
-            ResultSet rsJournals = this.db.executeQueryPreparedStatement(stGetJournals);
-            while (rsJournals.next()){
-                if (journalCode.equals("")){
-                    journalCode += rsJournals.getString(1);
-                }
-                else {
-                    journalCode += ", " + rsJournals.getString(1);
-                }
-                if (startYear == 0 && endYear == 0) {
-                    startYear = rsJournals.getInt("startYEar");
-                    endYear = rsJournals.getInt("endYear");
-                    newStart = startYear;
-                    newEnd = endYear;
-                }
-                else{
-                    newStart = rsJournals.getInt("startYEar");
-                    newEnd = rsJournals.getInt("endYear");
-                    if (newStart < startYear){
-                        startYear = newStart;
-                    }
-                    if (newEnd < endYear){
-                        endYear = newEnd;
-                    }
-                }
-                subexists = 1;
-            }
-            period = startYear + "-" + endYear;
-
-
-            if (subexists == 1){
-
-                if(subscriberNumber == null || journalCode == null || period == null ||
-                   Integer.toString(balance) == null || proInvNo == null || proInvDate == null) {
-                    logger.fatal("Count: " + count++ + " " + "Subscriber No: " + " " + subscriberNumber);
-                }
-
-                totalBalance = totalBalance + balance;
-                Element row = doc.createElement("row");
-                results.appendChild(row);
-
-                Element _subscriberNumber = doc.createElement("subscriberNumber");
-                row.appendChild(_subscriberNumber);
-                _subscriberNumber.appendChild(doc.createTextNode(subscriberNumber));
-
-                Element _journalCode = doc.createElement("journalCode");
-                row.appendChild(_journalCode);
-                _journalCode.appendChild(doc.createTextNode(journalCode));
-
-                Element _period = doc.createElement("period");
-                row.appendChild(_period);
-                _period.appendChild(doc.createTextNode(period));
-
-                Element _balance = doc.createElement("balance");
-                row.appendChild(_balance);
-                _balance.appendChild(doc.createTextNode(Integer.toString(balance)));
-
-                Element _proInvNo = doc.createElement("proInvNo");
-                row.appendChild(_proInvNo);
-                _proInvNo.appendChild(doc.createTextNode(proInvNo));
-
-                Element _proInvDate = doc.createElement("proInvDate");
-                row.appendChild(_proInvDate);
-                _proInvDate.appendChild(doc.createTextNode(proInvDate));
-
-                subexists = 0;
-            }
-        }
-        */
         // For current Data
         String sqlcurr = Queries.getQuery("get_current_balance");
         PreparedStatement stGetCurr = conn.prepareStatement(sqlcurr);
@@ -1755,7 +1653,7 @@ String xml = null;
 
             period = startYear + "-" + endYear;
 
-            if (subexists == 1){
+            if (subexists == 1 && balance > 0){
 
                 if(subscriberNumber == null || journalCode == null || period == null ||
                    Integer.toString(balance) == null || proInvNo == null || proInvDate == null) {
@@ -1794,7 +1692,107 @@ String xml = null;
                 subexists = 0;
             }
         }
+        
+        // For Agent Balance
+        
+        String sql = Queries.getQuery("get_agent_balance");
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
 
+        
+        while (rs.next()){
+            String agentName = rs.getString("agentName");
+            int agentId = rs.getInt("agentId");
+            int amount = rs.getInt("amount");
+            int payment = rs.getInt("payment");;
+            int balance = 0;
+            
+            String proInvNo = rs.getString("proInvNo");
+            if (proInvNo.equals(null) || proInvNo.equals("")){
+                proInvNo = "-";
+            }
+            String proInvDate = rs.getString("proInvDate");
+            
+            int startYear = 0;
+            int endYear = 0;
+            int newStart = 0;
+            int newEnd = 0;            
+            String period = "";
+            String subscriberNumber = "";
+            
+            balance = amount - payment;
+            int subexists = 0;
+            String sqlSub = Queries.getQuery("get_agent_subscribers");
+            
+            PreparedStatement stGetSub = conn.prepareStatement(sqlSub);
+            stGetSub.setInt(paramIndex, agentId);
+            ResultSet rsSub = this.db.executeQueryPreparedStatement(stGetSub);
+            while (rsSub.next()){
+                
+                if (subscriberNumber.equals("")){
+                    subscriberNumber += rsSub.getString("subscriberNumber");
+                }
+                else {
+                    subscriberNumber += ", " + rsSub.getString("subscriberNumber");
+                }
+                if (startYear == 0 && endYear == 0) {
+                    startYear = rsSub.getInt("startYEar");
+                    endYear = rsSub.getInt("endYear");
+                    newStart = startYear;
+                    newEnd = endYear;
+                }
+                else{
+                    newStart = rsSub.getInt("startYEar");
+                    newEnd = rsSub.getInt("endYear");
+                    if (newStart < startYear){
+                        startYear = newStart;
+                    }
+                    if (newEnd < endYear){
+                        endYear = newEnd;
+                    }
+                } 
+                subexists = 1;
+            }
+            
+            if (subexists == 1 && balance > 0){
+
+                totalBalance = totalBalance + balance;
+
+                Element row = doc.createElement("row");
+                results.appendChild(row);
+
+                Element _subscriberNumber = doc.createElement("subscriberNumber");
+                row.appendChild(_subscriberNumber);
+                _subscriberNumber.appendChild(doc.createTextNode(subscriberNumber));
+
+                Element _journalCode = doc.createElement("journalCode");
+                row.appendChild(_journalCode);
+                _journalCode.appendChild(doc.createTextNode(agentName));
+
+                Element _period = doc.createElement("period");
+                row.appendChild(_period);
+                _period.appendChild(doc.createTextNode(period));
+
+                Element _balance = doc.createElement("balance");
+                row.appendChild(_balance);
+                _balance.appendChild(doc.createTextNode(Integer.toString(balance)));
+
+                Element _proInvNo = doc.createElement("proInvNo");
+                row.appendChild(_proInvNo);
+                _proInvNo.appendChild(doc.createTextNode(proInvNo));
+
+                Element _proInvDate = doc.createElement("proInvDate");
+                row.appendChild(_proInvDate);
+                _proInvDate.appendChild(doc.createTextNode(proInvDate));
+
+                subexists = 0;
+            }           
+
+        }
+        
+        // For total Row
+        
         Element row = doc.createElement("row");
         results.appendChild(row);
 
@@ -1831,15 +1829,6 @@ String xml = null;
             transformer.transform(domSource, result);
             xml = writer.toString();
         }
-
-        logger.fatal("reached end");
-        //
-
-
-        //if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
-          //  sql += " and reminders.reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
-        //}
-
 
         return xml;
 
