@@ -241,12 +241,26 @@ public class inwardModel extends JDSModel {
              }
              }*/
             //update inward-agent details
-            sql = Queries.getQuery("update_in_agent_dtls");
+            sql = Queries.getQuery("get_in_agent_dtls");
             PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, _inwardFormBean.getInwardNumber());
-            pst.setString(2, _inwardFormBean.getagentName());
-            pst.executeUpdate();
-
+            pst.setInt(1, _inwardFormBean.getInwardID());
+            ResultSet rs = pst.executeQuery();
+            if (rs.first()) {
+                int count = rs.getInt("count");
+                if (count > 0) {
+                    sql = Queries.getQuery("update_in_agent_dtls");
+                    PreparedStatement pst2 = conn.prepareStatement(sql);
+                    pst2.setString(1, _inwardFormBean.getagentName());
+                    pst2.setInt(2, _inwardFormBean.getInwardID());
+                    pst2.executeUpdate();
+                } else {
+                    sql = Queries.getQuery("insert_in_agent_dtls");
+                    PreparedStatement pst3 = conn.prepareStatement(sql);
+                    pst3.setInt(1, _inwardFormBean.getInwardID());
+                    pst3.setString(2, _inwardFormBean.getagentName());
+                    rc = pst3.executeUpdate();
+                }
+            }
             // commit at the end, which means all is well
             conn.commit();
             conn.setAutoCommit(true);

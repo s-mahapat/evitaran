@@ -572,8 +572,8 @@ CREATE TABLE `inward_agent_details` (
   `inwardId` int(11) NOT NULL,
   `agentId` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `inward_agent_details_indx1` (`agentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  UNIQUE KEY `inward_agent_details_indx1` (`agentId`,`inwardId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*!40101 SET character_set_client = @saved_cs_client */;
 

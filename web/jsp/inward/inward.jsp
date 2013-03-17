@@ -100,6 +100,7 @@
 <%-----------------------------------------------------------------------------------------------------%>
 <fieldset class="subMainFieldSet">
     <%--<legend>Inward Info</legend>--%>
+    <input type="hidden" name="inwardID" value="${inwardFormBean.inwardID}"/>
 
     <%-- Inward Info left div --%>
     <div class="IASFormLeftDiv">
