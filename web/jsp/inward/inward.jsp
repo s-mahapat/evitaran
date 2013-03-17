@@ -11,7 +11,12 @@
         // disable the send return button if the inward is not complete yet
         // perform other actions that are required when inward is not complete inside this
         if(iscomplete == false){
-            $("#btnSendReturn").button("disable");
+            //$("#btnSendReturn").button("disable");
+        }else{
+            // do not let the user modify the inward or send
+            // chq return once the inward in complete
+            $("#btnEditInward").hide();
+            $("#btnSendReturn").hide();
         }
 
         $(function() {
@@ -126,7 +131,7 @@
             </span>
             <span class="IASFormDivSpanInputBox">
                 <select class="IASComboBoxMandatory" TABINDEX="5" name="country" id="country">
-                    <option value="0" selected >Select</option>
+                    <option value="" selected >Select</option>
                     <%
                         if (inwardFormBean.getCountry() != null && !inwardFormBean.getCountry().isEmpty()) {
                             out.println("<option value=" + "\"" + inwardFormBean.getCountry() + "\"" + " selected >" + inwardFormBean.getCountry() + "</option>");
