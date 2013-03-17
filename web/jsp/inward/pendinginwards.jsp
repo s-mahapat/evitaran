@@ -149,22 +149,22 @@
                 }
                 return cellvalue;
             }
-            
-            $(function(){
+
+            /*$(function(){
                 $("#btnManualCreation")
                 .click(function(){
                     $("agentXLUpload").val("false");
                 });
             });
-            
+
             $(function(){
                 $("#btnAgentXLUpload")
                 .click(function(){
                     $("agentXLUpload").val("true");
                 });
-            });
-            
-            
+            });*/
+
+
         </script>
 
     </head>
@@ -227,7 +227,7 @@
                 </div>
             </form>
         </div>
-        <%--Process Agent Inward dialog box--%>
+        <%--Process Agent Inward dialog box
         <div id="dialog-modal" title="Process Agent Inward"><p>Add Subscription by clicking on one of the option:</p>
             <fieldset class="subMainFieldSet">
                 <div class="IASFormFieldDiv">
@@ -237,8 +237,8 @@
                     <label>Agent Excel Upload:</label>
                     <input class="IASButton" TABINDEX="10" type="button" value="Mass creation" id="btnAgentXLUpload" name="btnAgentXLUpload"/>
                 </div>
-            </fieldset> 
+            </fieldset>
 
-        </div>
+        </div>--%>
     </body>
 </html>

@@ -17,11 +17,11 @@
                 $("#divAgentXLUpload").hide();
                 $("#divsubscriberdtlsbtn").hide();
                 $("#fieldsetsubscriberdtlsbtn").hide();
-                
+
                 //Handle fields of subscriber details
                 hideSubsciberFields();
                 makeReadOnlySubscriberFields();
-                  
+
                 // On enter functionality after entering the subscriber number
                 $("#subscriberId").bind("keypress", function(e) {
                     if (e.keyCode == 13) {
@@ -29,7 +29,7 @@
                         return false;
                     }
                 });
-                
+
                 //This is required to be loaded to get the data on enter
                 $("#subscriberName").focus();
                 jdsAppend("/JDS/CMasterData?md=city","city","city");
@@ -38,9 +38,9 @@
                 jdsAppend("/JDS/CMasterData?md=district","district","district");
                 jdsAppend("/JDS/CMasterData?md=agent","agentName","agent");
                 jdsAppend("/JDS/CMasterData?md=sub_type","subtype","subtype");
-                
+
             });
-            
+
             $(function(){
                 $("#btnManualCreation")
                 .click(function(){
@@ -78,7 +78,7 @@
                     $("#processInwardForm").submit();
                 })
             });
-            
+
             $(function(){
                 $("#btnCreateSubscription")
                 .click(function() {
@@ -87,7 +87,7 @@
                     $("#processInwardForm").submit();
                 })
             });
-            
+
             $(function(){
                 $("#btnCompleteInward")
                 .click(function() {
@@ -95,7 +95,7 @@
                     $("#processInwardForm").submit();
                 })
             });
-            
+
             function drawResultsTable(){
                 //console.log(xml);
                 $("#resultTable").jqGrid({
@@ -105,7 +105,7 @@
                     width: '100%',
                     height: 240,
                     autowidth: true,
-                    viewrecords: true, 
+                    viewrecords: true,
                     forceFit: true,
                     sortable: true,
                     loadonce: true,
@@ -129,11 +129,11 @@
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-                    
+
                     loadError: function(xhr,status,error){
                         alert("Failed getting data from server" + status);
                     }
-                });               
+                });
             }
         </script>
     </head>
@@ -156,12 +156,12 @@
                         <div class="IASFormFieldDiv">
                             <div class="IASFormLeftDiv">
                                 <div class="singleActionBtnDiv">
-                                    <U><text style="font-size: ">Add Subscription by selecting one of the option:</text></U>
-                                    <label style="font-size: small; margin-left: 10px;" class="IASLabelOnly" for="btnManualCreation">Manual Creation:</label>                                
+                                    <U><text style="font-size: ">Select one option:</text></U>
+                                    <label style="font-size: small; margin-left: 10px;" class="IASLabelOnly" for="btnManualCreation">Manual Creation:</label>
                                     <input class="IASRadioButton" CHECKED TABINDEX="1" type="radio" value="ManualCreation" id="btnManualCreation" name="btnAgentProc"/>
-                                    <label style="font-size: small; margin-left: 10px;" class="IASLabelOnly" for="btnAgentXLUpload">Excel Upload:</label> 
+                                    <label style="font-size: small; margin-left: 10px;" class="IASLabelOnly" for="btnAgentXLUpload">Excel Upload:</label>
                                     <input class="IASRadioButton" TABINDEX="2" type="radio" value="MassCreation" id="btnAgentXLUpload" name="btnAgentProc"/>
-                                </div> 
+                                </div>
                             </div>
                             <div class="IASFormRightDiv">
                                 <label style="font-weight: bold">Inward Number:</label>
@@ -199,7 +199,7 @@
                         </div>
                         <div class="IASFormFieldDiv" id="divsubscriberdtls">
                             <%@include file="../subscriber/subscriberdtls.jsp" %>
-                            <div class="singleActionBtnDiv"> 
+                            <div class="singleActionBtnDiv">
                                 <button class ="IASButton" type="button" id="btnCreateSubscription" TABINDEX="2">Create Subscription</button>
                                 <button class ="IASButton" type="button" id="btnCompleteInward" TABINDEX="3">Complete Inward</button>
                             </div>

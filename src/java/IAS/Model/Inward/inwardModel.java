@@ -250,14 +250,14 @@ public class inwardModel extends JDSModel {
                 if (count > 0) {
                     sql = Queries.getQuery("update_in_agent_dtls");
                     PreparedStatement pst2 = conn.prepareStatement(sql);
-                    pst2.setString(1, _inwardFormBean.getagentName());
+                    pst2.setString(1, _inwardFormBean.getAgentName());
                     pst2.setInt(2, _inwardFormBean.getInwardID());
                     pst2.executeUpdate();
                 } else {
                     sql = Queries.getQuery("insert_in_agent_dtls");
                     PreparedStatement pst3 = conn.prepareStatement(sql);
                     pst3.setInt(1, _inwardFormBean.getInwardID());
-                    pst3.setString(2, _inwardFormBean.getagentName());
+                    pst3.setString(2, _inwardFormBean.getAgentName());
                     rc = pst3.executeUpdate();
                 }
             }

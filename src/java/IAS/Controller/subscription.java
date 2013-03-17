@@ -42,19 +42,19 @@ public class subscription extends JDSController {
                 // save the subscription details sent from the UI
                 String xml = _subscriptionModel.addSubscription();
 
-                /* 
+                /*
                  ************************************************************
                  *
                  // PROCESS AGENT INWARD - // Variables createAgntSubscription
-                 * are required for processing agent inwards. Do not complete 
-                 * inward from subscription if it is an agent subscription. 
+                 * are required for processing agent inwards. Do not complete
+                 * inward from subscription if it is an agent subscription.
                  * Inward completion should be explicitly requested from client.
                  *
                  ************************************************************
                  */
                 String createAgntSubscription = request.getParameter("createAgntSubscription");
                 //Update inward with completed flag once the transaction is completed
-                if (createAgntSubscription.equals("null")) {
+                if (createAgntSubscription == null || createAgntSubscription.equals("null")) {
                     _subscriptionModel.complete_inward();
                 }
 

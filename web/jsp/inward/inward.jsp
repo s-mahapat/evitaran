@@ -198,8 +198,8 @@
                 <select class="IASComboBoxWide" TABINDEX="10" name="agentName" id="agentName">
                     <option value="" selected >Select</option>
                     <%
-                        if (inwardFormBean.getagentName() != null && !inwardFormBean.getagentName().isEmpty()) {
-                            out.println("<option value=" + "\"" + inwardFormBean.getagentName() + "\"" + " selected >" + inwardFormBean.getagentName() + "</option>");
+                        if (inwardFormBean.getAgentName() != null && !inwardFormBean.getAgentName().isEmpty()) {
+                            out.println("<option value=" + "\"" + inwardFormBean.getAgentName() + "\"" + " selected >" + inwardFormBean.getAgentName() + "</option>");
                         }
                     %>
                 </select>
