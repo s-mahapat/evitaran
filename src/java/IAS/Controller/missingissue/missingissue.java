@@ -7,29 +7,16 @@ package IAS.Controller.missingissue;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import IAS.Bean.missingissue.missingissueFormBean;
-
-import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
-
 import IAS.Controller.JDSController;
-
-import IAS.Model.Inward.inwardModel;
 import IAS.Model.missingissue.missingissueModel;
-
-import org.apache.log4j.Logger;
-
-//~--- JDK imports ------------------------------------------------------------
-
 import java.io.IOException;
-
 import java.sql.ResultSet;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *
