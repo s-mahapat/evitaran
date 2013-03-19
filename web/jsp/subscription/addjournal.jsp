@@ -135,6 +135,10 @@
         <div id="pager"></div>
     </div>
     <div id="subscriptionTotal">
+        <span style="margin-right: 10px;">
+            <label>Discount(%):</label>
+            <span id="discount"></span>
+        </span>
         <span>Subscription Total(INR):</span>
         <span id="subscriptionTotalValue">0</span>
     </div>

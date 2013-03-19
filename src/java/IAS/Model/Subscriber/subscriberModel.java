@@ -77,10 +77,10 @@ public class subscriberModel extends JDSModel {
         } else {
             int _subscriberId = this.SaveNewSubscriber(_subscriberFormBean);
             String agentName = _inwardFormBean.getAgentName();
-            /* 
+            /*
              ************************************************************
              *
-             * PROCESS AGENT INWARD - // subscriber ID should not be added 
+             * PROCESS AGENT INWARD - // subscriber ID should not be added
              *  in Inward if agent is there in inward
              *
              ************************************************************
@@ -585,6 +585,7 @@ public class subscriberModel extends JDSModel {
             subscriberType = rs.getInt(1);
             rs.close();
         } finally {
+            conn.close();
             // return the connection back to the pool
             //this.CloseConnection(conn);
         }

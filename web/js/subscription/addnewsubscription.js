@@ -1,6 +1,7 @@
 var journalNameToGroupIDMap = {};
 var subscriberType = 0;
-var subscriptionSaved = false
+var subscriptionSaved = false;
+var agent_discount = null;
 
 function addJournal() {
 
@@ -74,10 +75,29 @@ function addJournal() {
 }
 
 function updateTotal(val) {
-    currentTotal = $("#subscriptionTotalValue").text()
-    newTotal = parseInt(currentTotal) + parseInt(val);
-    var balance = newTotal - $("#amount").val();
+    var balance = 0;
+    var currentTotal = $("#subscriptionTotalValue").text()
+    var newTotal;
+    var agentid = parseInt($("#agentid").val());
+
+    // set the discount to 0% update later
+    $("#discount").text(0);
+
+    // if the subscription is from agent, we need to calculate discount
+    if(agentid && agentid > 0){
+        if(agent_discount == null){
+            agent_discount = getAgentDiscount($("#agentid").val());
+        }
+        $("#discount").text(agent_discount);
+        var discountedval = parseInt(val) - (agent_discount/100 * parseInt(val));
+        newTotal = parseInt(currentTotal) + parseInt(discountedval);
+    }
+    else{
+        newTotal = parseInt(currentTotal) + parseInt(val);
+        balance = newTotal - $("#amount").text();
+    }
     $("#subscriptionTotalValue").text(newTotal);
+    $("#balancelabel").text(balance);
     $("#balance").val(balance);
 }
 
@@ -114,7 +134,7 @@ function deleteRow(rowid) {
         // clears the entire grid
         $("#newSubscription").clearGridData();
         // reset the total to zero
-        updateTotal(-$("#subscriptionTotalValue").text());
+        $("#subscriptionTotalValue").text(0);
     } else {
         rowTotal = $("#newSubscription").getCell(rowid, "Total");
         //subbtract row value from total
@@ -189,14 +209,12 @@ function saveSubscription() {
     });
     $.ajax({
         type: 'POST',
-        url: "subscription?oper=add" + 
-            "&subscriberNumber=" + 
-            $("#subscriberNumber").val() + 
-            "&remarks=" + 
-            $("#remarks").val() + 
-            "&inwardNumber=" + 
-            $("#inwardNumber").val() + 
-            "&createAgntSubscription=" + $("#createAgntSubscription").val(),
+        url: "subscription?oper=add" +
+        "&subscriberNumber=" +
+        $("#subscriberNumber").val() +
+        "&inwardNumber=" +
+        $("#inwardNumber").val() +
+        "&createAgntSubscription=" + $("#createAgntSubscription").val(),
         data: $.param(rowRequiredData),
         success: function(xmlResponse, textStatus, jqXHR) {
 
@@ -205,17 +223,17 @@ function saveSubscription() {
                 return false;
             }
             $(xmlResponse).find("results").each(function() {
-                var error = $(this).find("error").text();
+                var error = $(this).find("success").text();
                 var subscriptionID = $(this).find("subscriptionID").text();
-                if (error) {
-                    alert(error);
+                if (error == "false") {
+                    alert($(this).find("message").text());
                 } else if (subscriptionID) {
                     //alert("Subscription with ID: " + subscriptionID + " created successfully");
                     $("#subscriptionNumber").val(subscriptionID);
                     $("#btnSaveSubscription").button("disable");
                     $("#btnAddLine").button("disable");
                     $("#btnDeleteAll").button("disable");
-                    $("#remarks").attr("disabled", true);
+                    //$("#remarks").attr("disabled", true);
                     $("#subid").val(subscriptionID);
                     subscriptionSaved = true;
                     document.subscriptionForm.submit();

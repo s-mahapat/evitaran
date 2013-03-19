@@ -195,14 +195,15 @@
                 <label>Agent:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxWide" TABINDEX="10" name="agentName" id="agentName">
+                <input autocomplete="off" class="IASTextBoxWide" TABINDEX="10" type="text" name="agentName" id="agentName" value="${inwardFormBean.agentName}"/>
+                <%--<select class="IASComboBoxWide" TABINDEX="10" name="agentName" id="agentName">
                     <option value="" selected >Select</option>
                     <%
                         if (inwardFormBean.getAgentName() != null && !inwardFormBean.getAgentName().isEmpty()) {
                             out.println("<option value=" + "\"" + inwardFormBean.getAgentName() + "\"" + " selected >" + inwardFormBean.getAgentName() + "</option>");
                         }
                     %>
-                </select>
+                </select>--%>
             </span>
         </div>
 

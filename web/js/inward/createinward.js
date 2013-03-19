@@ -20,10 +20,6 @@ function makeReadOnly() {
 function loadData() {
     jdsAppend("CMasterData?md=country", "country", "country", "India");
     jdsAppend("CMasterData?md=state", "state", "state");
-    //jdsAppend("CMasterData?md=district","district","district");
-    //jdsAutoComplete("cities", "city", "city");
-    //jdsAppend("CMasterData?md=city","city","city");
-    jdsAppend("CMasterData?md=agent", "agentName", "agentName");
     jdsAppend("CMasterData?md=purpose", "purpose", "inwardPurpose", "Renew Subscription");
     jdsAppend("CMasterData?md=payment_mode", "payment_mode", "paymentMode", "Demand Draft");
     jdsAppend("CMasterData?md=currency", "currency", "currency", "INR");
@@ -32,6 +28,7 @@ function loadData() {
     jdsAutoComplete("subscriber?action=depts", "department", "department");
     jdsAutoComplete("subscriber?action=inst", "institution", "institution");
     jdsAutoComplete("main2/bank/search", "bank_name", "bankName");
+    jdsAutoComplete("main2/agent/search", "agentName", "agentName");
     loadCities();
     loadDistricts();
 }

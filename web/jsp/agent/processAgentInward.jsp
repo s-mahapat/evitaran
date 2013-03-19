@@ -201,7 +201,7 @@
                             <%@include file="../subscriber/subscriberdtls.jsp" %>
                             <div class="singleActionBtnDiv">
                                 <button class ="IASButton" type="button" id="btnCreateSubscription" TABINDEX="2">Create Subscription</button>
-                                <button class ="IASButton" type="button" id="btnCompleteInward" TABINDEX="3">Complete Inward</button>
+                                <button class ="IASButton" type="button" id="btnCompleteInward" TABINDEX="3">Save</button>
                             </div>
                         </div>
                     </div>

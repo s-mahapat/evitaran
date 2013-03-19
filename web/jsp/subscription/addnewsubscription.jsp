@@ -5,8 +5,10 @@
     inwardFormBean _inwardFormBean = (inwardFormBean) request.getSession().getAttribute("inwardUnderProcess");
     String inwardNumber = _inwardFormBean.getInwardNumber();
     float amount = _inwardFormBean.getAmount();
-    String inwardPurpose = request.getParameter("purpose");
-    %>
+    String agent = _inwardFormBean.getAgentName() != null ? _inwardFormBean.getAgentName() : "";
+    int agent_id = _inwardFormBean.getAgentID();
+    //String inwardPurpose = request.getParameter("purpose");
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -23,7 +25,6 @@
         <script type="text/javascript">
             var duplicates = false;
             $(document).ready(function(){
-                //listSubscription("View");
                 $("#purpose").val(<%=request.getParameter("purpose")%>);
             });
         </script>
@@ -35,6 +36,10 @@
             <form id="subscriptionForm" name="subscriptionForm" action="inward?action=followOnProcess" method="POST">
                 <input type="hidden" name="purpose" id="purpose" value="<%=request.getParameter("purpose")%>"/>
                 <input type="hidden" name="subid" id="subid" value="${subscriberFormBean.subscriberID}"/>
+                <input type="hidden" name="inwardNumber" id="inwardNumber" value="<%=inwardNumber%>"/>
+                <input type="hidden" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
+                <input type="hidden" name="agentid" id="agentid" value="<%=agent_id%>"/>
+                <input type="hidden" name="balance" id="balance" value="0"/>
                 <input type="hidden" name="createAgntSubscription" id="createAgntSubscription" value="<%=request.getParameter("createAgntSubscription")%>"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
@@ -45,15 +50,11 @@
                             <div class="IASFormLeftDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Subscriber No:</label>
+                                        <label for="subscriberNumber">Subscriber No:</label>
                                     </span>
 
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
-                                    </span>
-
-                                    <span class="IASFormDivSpanLabelLeftAligned">
-                                        <label>Subscriber Type: ${subscriberFormBean.subtypecode}</label>
+                                    <span class="IASFormSpanLabelData">
+                                        <label name="subscriberNumber" id="subscriberNumberLabel">${subscriberFormBean.subscriberNumber}</label>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -61,8 +62,8 @@
                                         <label>Subscriber Name:</label>
                                     </span>
 
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBoxWide" TABINDEX="-1" readonly type="text" name="subscriberName" id="subscriberName" value="${subscriberFormBean.subscriberName}"/>
+                                    <span class="IASFormSpanLabelData">
+                                        <label name="subscriberName" id="subscriberName">${subscriberFormBean.subscriberName} (${subscriberFormBean.subtypecode})</label>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -70,8 +71,8 @@
                                         <label>Inward Number:</label>
                                     </span>
 
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<%=inwardNumber%>"/>
+                                    <span class="IASFormSpanLabelData">
+                                        <label id="inwardNumberlabel"><%=inwardNumber%></label>
                                     </span>
                                 </div>
 
@@ -80,20 +81,20 @@
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Subscription No:</label>
+                                        <label>Inward Amount:</label>
                                     </span>
 
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="4" readonly type="text" name="subscriptionNumber" id="subscriptionNumber" value=""/>
+                                    <span class="IASFormSpanLabelData">
+                                        <label name="amount" id="amount"><%=amount%></label>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Inward Amount:</label>
+                                        <label>Agent:</label>
                                     </span>
 
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value="<%=amount%>"/>
+                                    <span class="IASFormSpanLabelData">
+                                        <label name="agent" id="agent"><%=agent%></label>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -101,20 +102,10 @@
                                         <label>Balance:</label>
                                     </span>
 
-                                    <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="balance" id="balance" value=""/>
+                                    <span class="IASFormSpanLabelData">
+                                        <label name="balancelabel" id="balancelabel"></label>
                                     </span>
                                 </div>
-
-                                <%--<div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Remarks</label>
-                                    </span>
-
-                                    <span class="IASFormDivSpanInputBox">
-                                        <textarea class="IASTextArea" TABINDEX="5" cols="20" rows="10" name="remarks" id="remarks"></textarea>
-                                    </span>
-                                </div>--%>
                             </div>
 
                         </fieldset>

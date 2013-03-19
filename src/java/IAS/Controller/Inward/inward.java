@@ -103,7 +103,7 @@ public class inward extends JDSController {
                 url = "/xmlserver";
 
             } else if (action.equalsIgnoreCase("processinward")) {
-                /* 
+                /*
                  ************************************************************
                  *
                  * PROCESS AGENT INWARD - // Variables completeInward, createAgntSubscription
@@ -129,17 +129,17 @@ public class inward extends JDSController {
                 int isFreeSubscriber = 0;
                 int isSummerFellow = 0;
 
-                // check if the flow is from add free subscriber/summer fellow.                
+                // check if the flow is from add free subscriber/summer fellow.
                 try {
                     isFreeSubscriber = Integer.parseInt(request.getParameter("afs"));
                     isSummerFellow = Integer.parseInt(request.getParameter("asf"));
                 } catch (NumberFormatException numex) {
                     isFreeSubscriber = isSummerFellow = 0;
                 }
-                /* 
+                /*
                  ************************************************************
                  *
-                 * PROCESS AGENT INWARD - // subscriber ID should not be added 
+                 * PROCESS AGENT INWARD - // subscriber ID should not be added
                  *  in Inward if agent is there in inward
                  *
                  ************************************************************
@@ -353,14 +353,18 @@ public class inward extends JDSController {
                         url = "/jsp/subscriber/viewdetailsubscriber.jsp?detail=2";
                     }
                 } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
+
                     InvoiceFormBean _invoiceFormBean = _inwardModel.getInvoiceDetail(); //new IAS.Bean.Invoice.InvoiceFormBean();
                     request.setAttribute("invoiceFormBean", _invoiceFormBean);
                     url = "/jsp/invoice/proforma.jsp";
+
                 } else if (inwardPurposeID == JDSConstants.INWARD_PURPOSE_PAYMENT) {
+
                     _inwardFormBean = _inwardModel.GetInward();
                     if (_inwardModel.CompleteInward(_inwardFormBean.getInwardID()) == 1) {
                         url = "/jsp/inward/pendinginwards.jsp";
                     }
+                    
                 } else {
                     url = "/home";
                 }

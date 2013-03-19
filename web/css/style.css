@@ -448,6 +448,11 @@ fieldset {
     float: left;
 }
 
+.IASFormSpanLabelData{
+    margin-left: 15px;
+    float: left;
+}
+
 .IASFormDivSpanLabelEmail{
     margin-left: 0px;
     float: left;

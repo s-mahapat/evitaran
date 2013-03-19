@@ -5,7 +5,6 @@
 package IAS.Controller;
 
 import IAS.Class.JDSLogger;
-import IAS.Class.SubscriberInfo;
 import IAS.Class.SubscriptionInfo;
 import IAS.Model.AgentProc.agentProcModel;
 import com.thoughtworks.xstream.XStream;
@@ -35,7 +34,7 @@ public class AgentController extends JDSController {
     }
 
     public void actionAgentsubscription() throws IOException, SQLException {
-        String xml = null;
+        String xml;
         String inward_number = this.params[0];
         agentProcModel agentmodel = new agentProcModel();
         ArrayList listSubscriptionInfo = agentmodel.getSubscriptionInfo(inward_number);
@@ -44,8 +43,30 @@ public class AgentController extends JDSController {
         xstream.alias("row", SubscriptionInfo.class);
         //xstream.alias("subscriberinfo", SubscriberInfo.class);
         //xstream.addImplicitCollection(SubscriptionInfo.class, "results");
-        
+
         xml = xstream.toXML(listSubscriptionInfo);
+        this.resp.getWriter().write(xml);
+
+    }
+
+    public void actionDiscount() throws SQLException, IOException{
+        int agent_id = Integer.parseInt(this.params[0]);
+        agentProcModel agentmodel = new agentProcModel();
+        float discount = agentmodel.getDiscount(agent_id);
+        XStream xstream = new XStream();
+        xstream.alias("discount", float.class);
+        String xml = xstream.toXML(discount);
+        this.resp.getWriter().write(xml);
+    }
+
+    public void actionSearch() throws SQLException, IOException{
+        String search_term = this.req.getParameter("term");
+        agentProcModel agentmodel = new agentProcModel();
+        List agents = agentmodel.searchAgent(search_term);
+        XStream xstream = new XStream();
+        xstream.alias("results", List.class);
+        xstream.alias("agentName", String.class);
+        String xml = xstream.toXML(agents);
         this.resp.getWriter().write(xml);
 
     }
