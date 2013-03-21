@@ -133,8 +133,8 @@
                     function(){
                         $("#inwardNumber").val(json.inwardNumber);
                         $("#chequeNumber").val(json.chequeNumber);
-                        $("#from").val(json.from);
-                        $("#to").val(json.to);
+                        $("#from").val(json.fromDate);
+                        $("#to").val(json.toDate);
                         $("#inwardFrom").val(json.inwardFrom);
                         jQuery("#inwardTable").setGridParam({
                             'rowNum': json.rowNum,

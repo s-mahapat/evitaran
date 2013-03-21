@@ -188,6 +188,7 @@
                                 <div id="invoices" style="font-size: 12px;width: 98%;padding: 3px;">
                                     <table id="invoiceTable" class="datatable"></table>
                                     <div id="pager_invoice"></div>
+                                    <div id="invoice_dialog" style="display: none;"></div>
                                 </div>
 
                                 <div id="reminders" style="font-size: 12px;width: 98%;padding: 3px;">
@@ -202,9 +203,6 @@
                                 <div id="chq_return" style="font-size: 12px;width: 98%;padding: 3px;">
                                     <table id="chqreturnTable" class="datatable"></table>
                                     <div id="pager_chqreturn"></div>
-                                </div>
-                                <div id="paymentDetails" title="Payment Details">
-                                    <table id="paymentDetailsTable" class="datatable"></table>
                                 </div>
                             </div>
 

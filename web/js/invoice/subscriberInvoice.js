@@ -140,15 +140,9 @@ function drawInvoiceTable(){
                 var invoice_type_id = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'invoice_type_id');
                 var action = null;
 
-                /*var invoice_type_id = $("#invoiceTable").getCell(invoiceId, "invoice_type_id");
-                    var balance = $("#invoiceTable").getCell(invoiceId, "balance");
-                    if(invoice_type_id == 2){
-                        $("#invoiceTable").setRowData(invoiceId, {InvoiceAmount: balance});
-                    }*/
-
                 // disable the view link for Please refer list invoices
                 if(invoice_type_id != 3){
-                    action = "<a target='_blank' style='color:blue;' href='subscriber?action=printInvoice&invoiceNo=" + invoice_no + "'>View</a>";
+                    action = '<a style="color:blue;" href="subscriber?action=printInvoice&invoiceNo=' + invoice_no + '">View</a>';
                 }
                 jQuery("#invoiceTable").jqGrid('setRowData', ids[i], {
                     Action: action
