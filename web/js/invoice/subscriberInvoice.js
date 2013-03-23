@@ -180,12 +180,21 @@ function showInvoice(inward_no, invoice_type_id) {
 
             'Close': function() {
                 $(this).dialog('close');
+            },
+            'Email': function(){
+                jdsEmail('email/inward/' + inward_no + '/opb');
             }
-            // not working in FF
-            /*'Print': function() {
+        // not working in FF
+        /*'Print': function() {
                 $(this).dialog('close');
                 $("#iframe_invoice").get(0).contentWindow.print();
             }*/
+
+        },
+        open: function(){
+            if($("#email").val().length == 0){
+                $(":button:contains('Email')").prop("disabled", true).addClass("ui-state-disabled");
+            }
 
         }
 
