@@ -4,6 +4,7 @@ import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
 import IAS.Class.*;
 import IAS.Controller.JDSController;
+import IAS.Model.AgentProc.agentProcModel;
 import IAS.Model.Invoice.InvoiceModel;
 import IAS.Model.Inward.inwardModel;
 import IAS.Model.Subscriber.subscriberModel;
@@ -24,22 +25,22 @@ import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 
 public class Email extends JDSController {
-
+    
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.Email");
-
+    
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         String requestURI = request.getRequestURI();
         requestURI = requestURI.replaceFirst("(?i)/?\\w+/Email/", "");
         String[] requestParams = requestURI.split("/");
-
+        
         String document = requestParams[0];
         String documentID = requestParams[1];
         String action = requestParams[2];
         boolean success = false;
-
+        
         try {
             // for all inwards
             if (document.equalsIgnoreCase("inward")) {
@@ -68,14 +69,14 @@ public class Email extends JDSController {
                             _inwardFormBean.getAmount(),
                             _inwardFormBean.getPaymentDate(),
                             returnReason);
-
+                    
                     success = _mailer.sendEmailToSubscriberWithAttachment(_inwardFormBean.getEmail(),
                             "Cheque/DD No: " + _inwardFormBean.getChqddNumber() + " Return",
                             emailBody,
                             fileName,
                             pdfData,
                             "application/pdf");
-
+                    
                 } // for inward acknowledgement
                 else if (action.equalsIgnoreCase("ack")) {
                     String _inwardNumber = request.getParameter("inwardNumber");
@@ -108,7 +109,7 @@ public class Email extends JDSController {
                             _inwardFormBean.getBankName(),
                             _inwardFormBean.getInwardPurpose(),
                             customText);
-
+                    
                     if (_inwardFormBean.getAmount() > 0) {
                         success = _mailer.sendEmailToSubscriberWithAttachment(_inwardFormBean.getEmail(),
                                 "Acknowledgement of receipt of payment",
@@ -121,9 +122,9 @@ public class Email extends JDSController {
                                 "Acknowledgement of receipt of payment",
                                 emailBody);
                     }
-
-
-
+                    
+                    
+                    
                 } // for request for invoice
                 else if (action.equalsIgnoreCase("rfi")) {
                     String _inwardNumber = documentID;
@@ -154,13 +155,29 @@ public class Email extends JDSController {
                             fileName,
                             pdfData,
                             "application/pdf");
-                }
-
-
+                }else if (action.equalsIgnoreCase("agentInvoice")) {
+                    String _inwardNumber = documentID;
+                    AgentInvoicePDF _aiPDF = new AgentInvoicePDF(request);
+                    agentProcModel _agentProcModel = new agentProcModel(request);
+                    InvoiceFormBean _invoiceFormBean = _agentProcModel.getAgentInvoiceDetail(_inwardNumber, request);
+                    ByteArrayOutputStream baos = _aiPDF.getPDF(_inwardNumber);
+                    byte pdfData[] = baos.toByteArray();
+                    String fileName = _inwardNumber + ".pdf";
+                    msgsend _mailer = new msgsend();
+                    String emailBody = _inwardModel.getAgentInvoiceEmailBody();
+                    success = _mailer.sendEmailToSubscriberWithAttachment(_invoiceFormBean.getEmail(),
+                            "Agent Invoice",
+                            emailBody,
+                            fileName,
+                            pdfData,
+                            "application/pdf");
+            }
+                
+                
             } else if (document.equalsIgnoreCase("prl")) {
                 PlReferListPDF _PlReferListPDF = new PlReferListPDF();
                 InvoiceModel _invoiceModel = new InvoiceModel(request);
-
+                
                 String invoice_no = documentID;
                 ByteArrayOutputStream baos = _PlReferListPDF.getPlReferListPage(invoice_no);
                 byte pdfData[] = baos.toByteArray();
@@ -187,8 +204,8 @@ public class Email extends JDSController {
                 if (success) {
                     _invoiceModel.updatePRLEmailStatus(invoice_no);
                 }
-
-            }
+                
+            }             
         } catch (SQLException | IOException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | DocumentException | NumberFormatException | ParserConfigurationException | TransformerException e) {
             logger.error(e.getMessage(), e);
             throw new javax.servlet.ServletException(e);
@@ -205,7 +222,7 @@ public class Email extends JDSController {
             } catch (ParserConfigurationException | TransformerException | IOException | ServletException ex) {
                 throw new ServletException(ex.getMessage());
             }
-
+            
         }
     }
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

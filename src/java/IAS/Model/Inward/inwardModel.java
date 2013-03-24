@@ -14,6 +14,7 @@ import IAS.Model.JDSModel;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -696,6 +697,10 @@ public class inwardModel extends JDSModel {
 
     public String getRequestForInvoiceEmailBody() {
         return props.getProperty("inward_request_for_invoice");
+    }
+    
+    public String getAgentInvoiceEmailBody() {
+        return props.getProperty("agent_invoice");
     }
 
     public subscriberFormBean getSubscriberDetail() throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {

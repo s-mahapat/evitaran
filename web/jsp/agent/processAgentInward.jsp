@@ -166,7 +166,7 @@
                             <div class="IASFormRightDiv">
                                 <label style="font-weight: bold">Inward Number:</label>
                                 <label><a href="inward?action=view&inwardNumber=${inwardFormBean.inwardNumber}">${inwardFormBean.inwardNumber}</a></label>
-                                <label style="font-weight: bold; margin-left: 10px;">Agent Name:</label>
+                                <label style="font-weight: bold; margin-left: 20px;">Agent Name:</label>
                                 <label>${inwardFormBean.agentName}</label>
                             </div>
                         </div>
@@ -175,8 +175,8 @@
 
 
                 <fieldset class="subMainFieldSet" id="divSearchSubscriber">
+                    <legend>Add subscriber and subscription</legend>
                     <div>
-                        <legend>Add subscriber and subscription</legend>
                         <div class="IASFormLeftDiv">
                             <span class="IASFormDivSpanLabel">
                                 <label>Subscriber No:</label>

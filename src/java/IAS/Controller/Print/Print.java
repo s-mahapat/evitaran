@@ -5,6 +5,7 @@
 package IAS.Controller.Print;
 
 import IAS.Bean.Inward.inwardFormBean;
+import IAS.Class.AgentInvoicePDF;
 import IAS.Class.ChequeReturnPDF;
 import IAS.Class.Database;
 import IAS.Class.InwardAckPDF;
@@ -102,10 +103,16 @@ public class Print extends JDSController {
 
                     String fileName = inwardNumber + ".pdf";
                     this.sendResponse(baos, fileName, response);
-                }else if(action.equalsIgnoreCase("opb")){
+                } else if (action.equalsIgnoreCase("opb")) {
                     String inwardNumber = documentID;
                     OutStandingPendingBillPDF _opbpdf = new OutStandingPendingBillPDF(request);
                     ByteArrayOutputStream baos = _opbpdf.getPDF(inwardNumber);
+                    String fileName = inwardNumber + ".pdf";
+                    this.sendResponse(baos, fileName, response);
+                } else if (action.equalsIgnoreCase("agentInvoice")) {
+                    String inwardNumber = documentID;
+                    AgentInvoicePDF _agentInvoicePDF = new AgentInvoicePDF(request);
+                    ByteArrayOutputStream baos = _agentInvoicePDF.getPDF(inwardNumber);
                     String fileName = inwardNumber + ".pdf";
                     this.sendResponse(baos, fileName, response);
                 }

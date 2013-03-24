@@ -102,11 +102,11 @@ DROP TABLE IF EXISTS `agent_invoice`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `agent_invoice` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `invoiceNumber` varchar(11) NOT NULL,
+  `invoiceNumber` varchar(12) NOT NULL,
   `agentInwardId` int(11) NOT NULL,
   `invoiceCreationDate` date NOT NULL,
   `invoice_type_id` int(11) NOT NULL DEFAULT '1',
-  `amount` float unsigned NOT NULL DEFAULT '0',
+  `amount` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `invoice_idx1` (`invoice_type_id`),
   KEY `invoice_indx2` (`invoiceNumber`)

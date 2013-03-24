@@ -6,6 +6,7 @@ import IAS.Bean.Subscriber.subscriberFormBean;
 import IAS.Bean.missingissue.missingissueFormBean;
 import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
+import IAS.Controller.AgentController;
 import IAS.Controller.JDSController;
 import IAS.Model.Inward.inwardModel;
 import java.io.IOException;
@@ -158,8 +159,8 @@ public class inward extends JDSController {
                  * inward screen // Process inward will be called again on new
                  * subscription from process agent screen // Hence
                  * createAgntSubscription variable is an identifier not to
-                 * redirect to processAgentInward.jsp // if "Create subscription"
-                 * is requested
+                 * redirect to processAgentInward.jsp // if "Create
+                 * subscription" is requested
                  *
                  ************************************************************
                  */
@@ -177,8 +178,18 @@ public class inward extends JDSController {
                  * ***********************************************************
                  */
                 else if ("true".equals(completeInward)) {
+                    
+                    //InvoiceFormBean _invoiceFormBean = _inwardModel.followOnProcessForAgentInward(_inwardFormBean.getInwardNumber());
+                    //if (_invoiceFormBean.getBalance() > 0) {
+                        AgentController agentController = new AgentController();
+                        url = agentController.followOnProcess(_inwardFormBean, request);
+                       // request.setAttribute("invoiceFormBean", _invoiceFormBean);
+                      //  url = "/jsp/invoice/agentinvoice.jsp";
+                    //} else {
+                      //  url = "/jsp/inward/pendinginwards.jsp";
+                    //}
                     _inwardModel.CompleteInward(_inwardFormBean.getInwardID());
-                    url = "/jsp/inward/pendinginwards.jsp";
+
                 } // Get into this if block for only new subscription and request for invoice
                 // if its add free subscribers or add summer fellows move on
                 else if (isFreeSubscriber == 0
