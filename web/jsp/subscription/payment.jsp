@@ -11,7 +11,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
-        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/payment.js"%>"></script>
         <title>Subscription Payment</title>
         <script type="text/javascript">
             var contextPath = "<%=request.getContextPath()%>";
@@ -20,6 +19,7 @@
                 drawPaymentTable(inward_amount);
             });
         </script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/payment.js"%>"></script>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>

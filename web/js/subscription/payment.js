@@ -276,15 +276,19 @@ function SavePayments() {
     if (changedRowCount > 0) {
         $.ajax({
             type: 'POST',
-            url: "payment?inwardid=" + inwardid,
+            datatype: 'xml',
+            url: contextPath + "/payment?inwardid=" + inwardid,
             data: $.param(paymentdata),
             success: function(xmlResponse, textStatus, jqXHR) {
-                if ($(xmlResponse.responseText).find("success").text() == "false") {
+                var is_success = xmlResponse.childNodes[0].childNodes[1].textContent;
+                if (is_success == "false") {
                     alert("Failed to save payment data");
                     restoreRow(rowid);
-                } else {
+                } else if(is_success == "true") {
                     alert("All Payments saved successfully");
                     $("#paymentForm").submit();
+                }else{
+                    alert("Error saving payment");
                 }
             }
         });
