@@ -152,7 +152,7 @@ public class main extends JDSController {
         } else if (action.equals("templates")) {
             url = "/jsp/templates/downloadTemplates.jsp";
         } else if (action.equals("help")) {
-            url = "/pdfserver?action=printHelp";
+            url = "/jsp/help/help.jsp";
         } else if (action.equals("outstandingbill")) {
             url = "/jsp/reports/outstandingBill.jsp";
         }
