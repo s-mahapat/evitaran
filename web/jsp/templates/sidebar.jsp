@@ -86,7 +86,7 @@
 
         <li class="menu"><a href="#">Reports</a>
             <ul>
-                <li class="menu"><a href="#">Master Data</a>
+                <li class="submenu"><a href="#">Master Data</a>
                     <ul>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listJournals"%>">List of Journals</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listSubType"%>">List of Subscriber types</a></li>
@@ -95,7 +95,7 @@
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listprintOrder"%>">Print Order</a></li>
                     </ul>
                 </li>
-                <li class="menu"><a href="#">Subscriber/ Subscription</a>
+                <li class="submenu"><a href="#">Subscriber/ Subscription</a>
                     <ul>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listSubscriber"%>">List of Subscribers</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listprofarmaInvoice"%>">List of Invoice</a></li>
@@ -104,7 +104,7 @@
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listmailinglist"%>">List of mailing list sent</a></li>
                     </ul>
                 </li>
-                <li class="menu"><a href="#">Others</a>
+                <li class="submenu"><a href="#">Others</a>
                     <ul>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=statement"%>">Statement of Label</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation Figures for journals</a></li>
@@ -119,49 +119,49 @@
 
         <li class="menu"><a href="#">Master Data</a>
             <ul>
-                <li class="menu"><a href="#">Country</a>
+                <li class="submenu"><a href="#">Country</a>
                     <ul>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addCountry"%>">Add Country</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchCountry"%>">Search Country</a></li>
                     </ul>
                 </li>
-                <li class="menu"><a href="#">State</a>
+                <li class="submenu"><a href="#">State</a>
                     <ul>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addState"%>">Add State</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchstate"%>">Search State</a></li>
                     </ul>
                 </li>
-                <li class="menu"><a href="#">District</a>
+                <li class="submenu"><a href="#">District</a>
                     <ul>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addDistrict"%>">Add District</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchDistrict"%>">Search District</a></li>
                     </ul>
                 </li>
-                <li class="menu"><a href="#">City</a>
+                <li class="submenu"><a href="#">City</a>
                     <ul>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addCity"%>">Add City</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchCity"%>">Search City</a></li>
                     </ul>
                 </li>
-                <li class="menu"><a href="#">Subscriber</a>
+                <li class="submenu"><a href="#">Subscriber</a>
                     <ul>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addSubType"%>">Add New Subscriber Type</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchSubType"%>">Search Subscriber Type</a></li>
                     </ul>
                 </li>
-                <li class="menu"><a href="#">Journals</a>
+                <li class="submenu"><a href="#">Journals</a>
                     <ul>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addJournal"%>">Add Journal</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchJournal"%>">Search Journal</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=jsGroup"%>">Journal Group</a></li>
-                        <li class="menu"><a href="#">Annual Information</a>
-                            <ul>
-                                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=journalDetails"%>">Journal Details</a></li>
-                                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=journalVolumeDetails"%>">Volume Information</a></li>
-                                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=subRate"%>">Annual Subscription Rate</a></li>
-                                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=printOrder"%>">Print Order</a></li>
-                            </ul>
-                        </li>
+                    </ul>
+                </li>
+                <li class="submenu"><a href="#">Annual Information</a>
+                    <ul>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=journalDetails"%>">Journal Details</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=journalVolumeDetails"%>">Volume Information</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=subRate"%>">Annual Subscription Rate</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=printOrder"%>">Print Order</a></li>
                     </ul>
                 </li>
                 <li class="menu"><a href="#">Agents</a>
