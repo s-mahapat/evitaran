@@ -8,15 +8,21 @@
         <title>Create Subscriber</title>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/subscriber.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/createsubscriber.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/city.js"></script>
         <script>
             $(document).ready(function() {
                 $("#subscriberName").focus();
-                jdsAppend("/JDS/CMasterData?md=city","city","city");
-                jdsAppend("/JDS/CMasterData?md=country","country","country");
-                jdsAppend("/JDS/CMasterData?md=state","state","state");
-                jdsAppend("/JDS/CMasterData?md=district","district","district");
-                jdsAppend("/JDS/CMasterData?md=agent","agentName","agent");
-                jdsAppend("/JDS/CMasterData?md=sub_type","subtype","subtype");
+                loadCities();
+                //jdsAppend("CMasterData?md=city","city","city");
+                jdsAppend("CMasterData?md=country","country","country");
+                jdsAppend("CMasterData?md=state","state","state");
+                jdsAppend("CMasterData?md=district","district","district");
+                jdsAppend("CMasterData?md=agent","agentName","agent");
+                jdsAppend("CMasterData?md=sub_type","subtype","subtype", "", function(){
+                    $("#subtype").val("Paid");
+                    $("#subtype").change();
+                });
+
                 makeCreateSubscriberReadOnly();
 
             });

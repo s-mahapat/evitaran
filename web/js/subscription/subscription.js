@@ -40,12 +40,12 @@ function listSubscription(){
             },
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Subscription Date','Agent','Discount','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Legacy Balance','Currency','Action', 'Legacy'],
+            colNames:['Subscription Id','Inward No','Date','Agent','Discount','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Legacy Balance','Currency', 'Active', 'Action', 'Legacy'],
             colModel :[
             {
                 name:'subscriptionID',
                 index:'id',
-                width:20,
+                width:25,
                 align:'center',
                 xmlmap:'id',
                 sortable: false,
@@ -104,7 +104,7 @@ function listSubscription(){
             {
                 name:'payment',
                 index:'payment',
-                width:20,
+                width:15,
                 align:'center',
                 sortable: false,
                 xmlmap:'payment'
@@ -149,7 +149,16 @@ function listSubscription(){
                 width:15,
                 align:'center',
                 sortable: false,
-                xmlmap:'currency'
+                xmlmap:'currency',
+                hidden: true
+            },
+            {
+                name:'active',
+                index:'active',
+                width:20,
+                align:'center',
+                sortable: false,
+                formatter:'checkbox'
             },
             {
                 name:'details',

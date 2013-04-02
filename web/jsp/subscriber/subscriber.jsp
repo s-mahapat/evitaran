@@ -60,14 +60,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBoxMandatory" TABINDEX="5" name="city" id="city">
-                    <option value="0" selected >Select</option>
-                    <%
-                        if (subscriberFormBean.getCity() != null && !subscriberFormBean.getCity().isEmpty()) {
-                            out.println("<option value=" + "\"" + subscriberFormBean.getCity() + "\"" + " selected >" + subscriberFormBean.getCity() + "</option>");
-                        }
-                    %>
-                </select>
+                <input class="IASTextBoxMandatory" TABINDEX="5" name="city" id="city" value="${subscriberFormBean.city}"/>
             </span>
         </div>
 

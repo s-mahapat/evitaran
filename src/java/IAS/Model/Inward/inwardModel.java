@@ -642,25 +642,20 @@ public class inwardModel extends JDSModel {
     }
 
     public InvoiceFormBean getInvoiceDetail(String InwardNumber) throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
-
-        // get the connection from connection pool
-        Connection _conn = this.getConnection();
-        String sql;
-        InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
-        sql = Queries.getQuery("get_invoice_detail");
-        PreparedStatement st = _conn.prepareStatement(sql);
-        st.setString(1, InwardNumber);
-
-        try (ResultSet rs = st.executeQuery()) {
-            while (rs.next()) {
-                BeanProcessor bProc = new BeanProcessor();
-                invoiceFormBean = bProc.toBean(rs, IAS.Bean.Invoice.InvoiceFormBean.class);
+        InvoiceFormBean invoiceFormBean;
+        try (Connection _conn = this.getConnection()) {
+            String sql;
+            invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
+            sql = Queries.getQuery("get_invoice_detail");
+            PreparedStatement st = _conn.prepareStatement(sql);
+            st.setString(1, InwardNumber);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    invoiceFormBean = bProc.toBean(rs, IAS.Bean.Invoice.InvoiceFormBean.class);
+                }
             }
-            rs.close();
         }
-
-        // return the connection back to the pool
-        _conn.close();
 
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         return invoiceFormBean;
@@ -698,7 +693,7 @@ public class inwardModel extends JDSModel {
     public String getRequestForInvoiceEmailBody() {
         return props.getProperty("inward_request_for_invoice");
     }
-    
+
     public String getAgentInvoiceEmailBody() {
         return props.getProperty("agent_invoice");
     }

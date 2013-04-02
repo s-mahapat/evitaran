@@ -24,8 +24,9 @@
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form name="subscriptionForm">
+            <form name="subscriptionForm" action="inward?action=followOnProcess" method="post">
                 <input type="hidden" name="subtypeid" id="subtypeid" value="${subscriberFormBean.subtypeID}"/>
+                <input type="hidden" name="subid" id="subid" value="${subscriberFormBean.subscriberID}"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Edit Subscription</legend>
@@ -35,7 +36,7 @@
                             <div class="IASFormLeftDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Subscriber Number:</label>
+                                        <label>Subscriber No:</label>
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
@@ -92,7 +93,7 @@
                                 </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Subscription Total(INR):</label>
+                                        <label>Subscription Total:</label>
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
@@ -101,7 +102,7 @@
                                 </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Balance(INR):</label>
+                                        <label>Balance:</label>
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
@@ -114,11 +115,12 @@
                         </fieldset>
 
                         <%@include file="editjournal.jsp"%>
-                         <%--<fieldset class="subMainFieldSet">
+                        <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv">
-                                <input onclick="saveSubscription()" class="IASButton" TABINDEX="101" type="button" value="Save" id="btnSaveSubscription" name="btnSubmitAction"/>
+                                <%--<button onclick="" class="IASButton SaveButton" TABINDEX="7" type="submit" id="btnSaveSubscription" name="btnSubmitAction"/>Save</button>--%>
+                                <button onclick="location.href='subscriber?action=display&subscriberNumber=${subscriberFormBean.subscriberNumber}&detail=2'" class="IASButton CancelButton" TABINDEX="8" type="button" id="btnCancelSubscription" name="btnCancelSubscription"/>Cancel</button>
                             </div>
-                        </fieldset>--%>
+                        </fieldset>
                     </fieldset>
                 </div>
             </form>

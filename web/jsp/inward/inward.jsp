@@ -2,6 +2,9 @@
 <jsp:useBean class="IAS.Bean.Inward.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
 <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
 <script>
+    $(document).ajaxStop(function(){
+        MakePaymentFieldsMandatory();
+    });
     $(document).ready(function(){
         $("#subscriberId").focus();
 

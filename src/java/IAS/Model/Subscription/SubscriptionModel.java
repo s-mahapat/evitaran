@@ -746,7 +746,7 @@ public class SubscriptionModel extends JDSModel {
 
     private int updateInvoice(int invoice_type_id) throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
-
+        
         Connection _conn = (Connection) request.getSession(false).getAttribute("connection");
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
         request.setAttribute("invoiceFormBean", invoiceFormBean);

@@ -44,11 +44,6 @@
     %>
     <ul class="accordion" id="accordion-1">
         <li class="menu"><a tabindex="-1" href="<%=contextPath + "/main?action=home"%>">Home</a>
-            <!--<ul>
-                <li class="menuitem">
-                    <a tabindex="-1" href="<%=request.getContextPath()%>/main?action=logout">Logout</a>
-                </li>
-            </ul>-->
         </li>
         <li class="menu"><a href="#">Inward</a>
             <ul>
@@ -60,15 +55,14 @@
         </li>
         <li class="menu"><a href="#">Subscriber <br> Subscription</a>
             <ul>
-                <!--<li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gcreatesubscriber"%>">Create Subscriber</a></li>-->
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchsubscriber"%>">Search Subscriber</a></li>
-                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=afs"%>">Add Free Subscriber</a></li>
+                <%--<li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=afs"%>">Add Free Subscriber</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=asf"%>">Add Summer Fellows</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=newsubscription"%>">New Subscription</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=renewsubscription"%>">Renew Subscription</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=addresschange"%>">Address Change</a></li>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gpi"%>">Request for Invoice</a></li>
-                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=missingissue"%>">Missing Issue</a></li>
+                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=missingissue"%>">Missing Issue</a></li>--%>
                 <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=prl"%>">Pl. Refer List</a></li>
             </ul>
 

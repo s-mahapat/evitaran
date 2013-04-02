@@ -331,10 +331,12 @@ function _MakePaymentFieldsMandatory(bmandatory) {
         $("#chqddNumber").addClass("IASTextBoxMandatory required");
         $("#paymentDate").addClass("IASDateTextBoxMandatory");
         $("#amount").addClass("IASTextBoxMandatory required");
+        $("#currency").addClass("IASComboBoxMandatory");
     } else {
         $("#chqddNumber").removeClass("IASTextBoxMandatory required");
         $("#paymentDate").removeClass("IASDateTextBoxMandatory");
         $("#amount").removeClass("IASTextBoxMandatory required");
+        $("#currency").removeClass("IASComboBoxMandatory");
     }
 }
 

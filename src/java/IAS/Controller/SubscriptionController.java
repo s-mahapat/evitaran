@@ -39,6 +39,9 @@ public class SubscriptionController extends JDSController {
         this.params  = params;
     }
 
+    /*
+     * Handles all duplicate check for subscription
+     */
     public void actionDupcheck() {
         int   subscriber_id = Integer.parseInt(params[0]);
         int[] start_years   = util.convertStringArraytoIntArray(req.getParameterValues("startYear"));
@@ -65,11 +68,16 @@ public class SubscriptionController extends JDSController {
             try {
                 this.forward(req, resp, "/errorHandler");
             } catch (IOException | ServletException e) {
-                logger.error(ex);
+                logger.error(e);
             }
         }
     }
+
+    /*
+     * Determines if an invoice has to be generated for a subscription
+     */
+    public void actionInvoice(){
+        int   subscription_id = Integer.parseInt(params[0]);
+    }
 }
 
-
-//~ Formatted by Jindent --- http://www.jindent.com
