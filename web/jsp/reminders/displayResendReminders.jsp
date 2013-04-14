@@ -13,6 +13,7 @@
         <link rel="stylesheet" type="text/css" href="css/reminder/displayReminder.css" />
 
         <title>Display and Resend Reminders</title>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/reminders/reminders.js"%>"></script>
 
         <script type="text/javascript">
             var selectedId = 0;
