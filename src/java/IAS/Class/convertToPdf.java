@@ -510,20 +510,40 @@ public convertToPdf(){
         Paragraph paragraph = new Paragraph();
         paragraph.setAlignment(textAlignment);
         paragraph.setFont(new Font(fontType, fontSize));
-        paragraph.add(sinfo.getSubscriberName());
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(sinfo.getDepartment());
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(sinfo.getInstitution());
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(sinfo.getInvoiceAddress());
-        paragraph.add(Chunk.NEWLINE);
+        if(!sinfo.getSubscriberName().isEmpty()) {
+            paragraph.add(sinfo.getSubscriberName());
+            paragraph.add(Chunk.NEWLINE);            
+        }
+        if(!sinfo.getDepartment().isEmpty()) {
+            paragraph.add(sinfo.getDepartment());
+            paragraph.add(Chunk.NEWLINE);
+        }
+        if(!sinfo.getInstitution().isEmpty()) {
+            paragraph.add(sinfo.getInstitution());
+            paragraph.add(Chunk.NEWLINE);
+        }
+        if(!sinfo.getInvoiceAddress().isEmpty()) {
+            paragraph.add(sinfo.getInvoiceAddress());
+            paragraph.add(Chunk.NEWLINE);
+        }
 
+        /*
         String lastLine = sinfo.getCity() +
                 " " + sinfo.getPincode() +
                 " " + sinfo.getState();
-                //" " + sinfo.getCountry();
-
+                " " + sinfo.getCountry();
+        */ 
+        String lastLine = "";
+        if(!sinfo.getCity().isEmpty()) {
+            lastLine = lastLine + sinfo.getCity() + " ";
+        }
+        if(!sinfo.getPincode().isEmpty()) {
+            lastLine = lastLine + sinfo.getPincode() + " ";
+        }
+        if(!sinfo.getCountry().isEmpty()) {
+            lastLine = lastLine + sinfo.getCountry();
+        }
+               
         paragraph.add(lastLine);
         return paragraph;
     }
@@ -534,19 +554,39 @@ public convertToPdf(){
         Paragraph paragraph = new Paragraph();
         paragraph.setAlignment(textAlignment);
         paragraph.setFont(new Font(fontType, fontSize));
-        paragraph.add(sinfo.getSubscriberName());
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(sinfo.getDepartment());
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(sinfo.getInstitution());
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(sinfo.getShippingAddress());
-        paragraph.add(Chunk.NEWLINE);
+        if(!sinfo.getSubscriberName().isEmpty()) {
+            paragraph.add(sinfo.getSubscriberName());
+            paragraph.add(Chunk.NEWLINE);
+        }
+        if(!sinfo.getDepartment().isEmpty()) {
+            paragraph.add(sinfo.getDepartment());
+            paragraph.add(Chunk.NEWLINE);
+        }
+        if(!sinfo.getInstitution().isEmpty()) {
+            paragraph.add(sinfo.getInstitution());
+            paragraph.add(Chunk.NEWLINE);
+        }
+        if(!sinfo.getShippingAddress().isEmpty()) {
+            paragraph.add(sinfo.getShippingAddress());
+            paragraph.add(Chunk.NEWLINE);
+        }
 
+        /*
         String lastLine = sinfo.getCity() +
                 " " + sinfo.getPincode() +
                 " " + sinfo.getState();
                 //" " + sinfo.getCountry();
+                */
+        String lastLine = "";
+        if(!sinfo.getCity().isEmpty()) {
+            lastLine = lastLine + sinfo.getCity() + " ";
+        }
+        if(!sinfo.getPincode().isEmpty()) {
+            lastLine = lastLine + sinfo.getPincode() + " ";
+        }
+        if(!sinfo.getCountry().isEmpty()) {
+            lastLine = lastLine + sinfo.getCountry();
+        }
 
         paragraph.add(lastLine);
         return paragraph;
@@ -594,7 +634,7 @@ public convertToPdf(){
 
         Paragraph paragraph = new Paragraph();
         paragraph.setAlignment(textAlignment);
-        paragraph.setFont(new Font(fontType, fontSize));
+        paragraph.setFont(new Font(fontType, fontSize-2));
 
         List<subscriptionInfo> s = sinfo.getSubscriptionInfo();
         Iterator itr = s.listIterator();
@@ -704,7 +744,7 @@ public convertToPdf(){
 
     }
 
-        public Paragraph addRefernce(String letterNumber, String letterDate)
+    public Paragraph addRefernce(String letterNumber, String letterDate)
     {
         Paragraph paragraph = new Paragraph();
 
@@ -714,6 +754,9 @@ public convertToPdf(){
 
         String op="";
 
+        if(letterDate == null) {
+            letterDate = "";
+        }
         op = op + template1 + letterNumber + template2 + letterDate;
         
         paragraph.setAlignment(Element.ALIGN_LEFT);

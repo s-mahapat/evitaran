@@ -219,10 +219,19 @@ public class reminderModel extends JDSModel {
             sInfo.setReminders_id(reminders_id);
             
             String letterNumber  = rsGet.getString(19);
-            sInfo.setReminderDate(letterNumber);
+            sInfo.setLetterNumber(letterNumber);
 
             String letterDate    = rsGet.getString(20);
-            sInfo.setDepartment(letterDate);
+            sInfo.setLetterDate(letterDate);
+            
+            String invoiceAddress    = rsGet.getString(21);
+            sInfo.setInvoiceAddress(invoiceAddress);
+            
+            int invoiceNo    = rsGet.getInt(22);
+            sInfo.setInvoiceNo(invoiceNo);
+            
+            String invoiceDate    = rsGet.getString(23);
+            sInfo.setInvoiceDate(invoiceDate);
 
             //get the subscription details
             String sqlgetjnls = Queries.getQuery("get_subscribed_journals");
