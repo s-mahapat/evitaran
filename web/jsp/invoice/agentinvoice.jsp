@@ -29,7 +29,7 @@
                 $(".datatable").html(html);
                 _total = ${invoiceFormBean.amount};
                 $("#total").html("INDIAN RS: " + toWords(_total).toUpperCase());
-                        
+
                 //disable email button if no email id present
                 //var email = "<%--${inwardFormBean.email}--%>";
                 //if(isEmptyValue(email)){
@@ -95,7 +95,7 @@
                                             }
                                         %>
                                         <%
-                                            String institute = invoiceFormBean.getInstitute();
+                                            String institute = invoiceFormBean.getInstitution();
                                             if (institute != null && institute.length() != 0) {
                                                 out.println(institute + "</br>");
                                             }
@@ -116,7 +116,7 @@
                                         %>
                                     </span>
                                 </div>
-                                       
+
                             </div>
                             <div id="subscriptionDetail">
                                 <table class="datatable" id="invoiceTable" style="width: 100%">

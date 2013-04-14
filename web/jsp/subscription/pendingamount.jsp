@@ -155,7 +155,7 @@
                                             }
                                         %>
                                         <%
-                                            String _institute = invoiceFormBean.getInstitute();
+                                            String _institute = invoiceFormBean.getInstitution();
                                             if (_institute != null && _institute.length() != 0) {
                                                 out.println(_institute + "</br>");
                                             }
