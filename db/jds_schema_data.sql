@@ -4251,7 +4251,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`after_subscription_details_update` AFTER UPDATE ON subscriptiondetails FOR EACH ROW
+CREATE TRIGGER `jds`.`after_subscription_details_update` AFTER UPDATE ON subscriptiondetails FOR EACH ROW
 
 BEGIN
 
