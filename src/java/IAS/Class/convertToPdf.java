@@ -1424,33 +1424,66 @@ public convertToPdf(){
                         " " + "to" +
                         " " + sLabelInfo.getendDate();
                 }
-                info.add(new Chunk(firstLine, font));
-                info.add(Chunk.NEWLINE);
+                if(!firstLine.isEmpty()) {
+                    info.add(new Chunk(firstLine, font));
+                    info.add(Chunk.NEWLINE);
+                }
             }
             font = new Font(lfontType, lfontSize, lfontStyle, BaseColor.BLACK);
-            info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
-            info.add(Chunk.NEWLINE);
-            info.add(new Chunk(sLabelInfo.getdepartment(), font));
-            info.add(Chunk.NEWLINE);
-            info.add(new Chunk(sLabelInfo.getinstitution(), font));
-            info.add(Chunk.NEWLINE);
-            //String address = sLabelInfo.getaddress();
-            //if(!(address == null)){
+            if(!sLabelInfo.getsubscriberName().isEmpty()) {
+                info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
+                info.add(Chunk.NEWLINE);
+            }
+            if(!sLabelInfo.getdepartment().isEmpty()) {
+                info.add(new Chunk(sLabelInfo.getdepartment(), font));
+                info.add(Chunk.NEWLINE);
+            }
+            if(!sLabelInfo.getinstitution().isEmpty()) {
+                info.add(new Chunk(sLabelInfo.getinstitution(), font));
+                info.add(Chunk.NEWLINE);
+            }
+            if(!sLabelInfo.getaddress().isEmpty()) {
                 info.add(new Chunk(sLabelInfo.getaddress(), font));
-            /*}else{
-                System.out.println("Detected address which is empty or null");
-            }*/
-            info.add(Chunk.NEWLINE);
+                info.add(Chunk.NEWLINE);
+            }
             font = new Font(lfontType, lfontSize, Font.BOLD);
-            String lastLine = sLabelInfo.getcity() +
+            /*String lastLine = sLabelInfo.getcity() +
                     " " + sLabelInfo.getpincode() +
                     " " + sLabelInfo.getstate() +
                     " ";
-            if(!sLabelInfo.getcountry().equals("India")){
-                lastLine = lastLine + sLabelInfo.getcountry();
+            */
+            String lastLine = "";
+            if(!sLabelInfo.getcity().isEmpty()) {
+                lastLine = lastLine + sLabelInfo.getcity();
             }
-
-            info.add(new Chunk(lastLine, font));
+            if(sLabelInfo.getcity().isEmpty()) {
+                lastLine = lastLine + sLabelInfo.getpincode();
+            } else {
+                lastLine = lastLine + " " + sLabelInfo.getpincode();
+            }
+            if(sLabelInfo.getpincode().isEmpty()){
+                lastLine = lastLine + sLabelInfo.getstate();
+            } else {
+                lastLine = lastLine + " " + sLabelInfo.getstate();
+            }
+            
+            String country = "";
+            if(!sLabelInfo.getcountry().equals("India")){
+                country = sLabelInfo.getcountry();
+            }            
+            
+            if(sLabelInfo.getstate().isEmpty()){
+                lastLine = lastLine + country;
+            } else {
+                lastLine = lastLine + " " + country;
+            }
+                
+            if(!lastLine.isEmpty()) {
+                lastLine = lastLine.trim();
+                // Remove the leading spaces
+                //lastLine.replaceAll("^\\s+", "");
+                info.add(new Chunk(lastLine, font));
+            }
         }
         return info;
     }
@@ -1491,18 +1524,28 @@ public convertToPdf(){
                         " " + "to" +
                         " " + sLabelInfo.getendDate();
                 }
-                info.add(new Chunk(firstLine, font));
-                info.add(Chunk.NEWLINE);
+                if(!firstLine.isEmpty()) {
+                    info.add(new Chunk(firstLine, font));
+                    info.add(Chunk.NEWLINE);
+                }
             }
             font = new Font(sfontType, sfontSize, sfontStyle, BaseColor.BLACK);
-            info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
-            info.add(Chunk.NEWLINE);
-            info.add(new Chunk(sLabelInfo.getdepartment(), font));
-            info.add(Chunk.NEWLINE);
-            info.add(new Chunk(sLabelInfo.getinstitution(), font));
-            info.add(Chunk.NEWLINE);
-            String address = sLabelInfo.getaddress();
-            info.add(new Chunk(address, font));
+            if(!sLabelInfo.getsubscriberName().isEmpty()) {
+                info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
+                info.add(Chunk.NEWLINE);
+            }
+            if(!sLabelInfo.getdepartment().isEmpty()) {
+                info.add(new Chunk(sLabelInfo.getdepartment(), font));
+                info.add(Chunk.NEWLINE);                
+            }
+            if(!sLabelInfo.getinstitution().isEmpty()) {
+                info.add(new Chunk(sLabelInfo.getinstitution(), font));
+                info.add(Chunk.NEWLINE);                
+            }
+            if(!sLabelInfo.getaddress().isEmpty()) {
+                info.add(new Chunk(sLabelInfo.getaddress(), font));
+                info.add(Chunk.NEWLINE);                
+            }
             /*
             String address = sLabelInfo.getaddress();
             if(!(address.isEmpty())){
@@ -1510,17 +1553,46 @@ public convertToPdf(){
             }else{
                 System.out.println("Detected address which is empty or null");
             }*/
-            info.add(Chunk.NEWLINE);
+
             font = new Font(sfontType, sfontSize, Font.BOLD);
+            /*
             String lastLine = sLabelInfo.getcity() +
                     " " + sLabelInfo.getpincode() +
                     " " + sLabelInfo.getstate() +
                     " ";
-            if(!sLabelInfo.getcountry().equals("India")){
-                lastLine = lastLine + sLabelInfo.getcountry();
+            */ 
+            String lastLine = "";
+            if(!sLabelInfo.getcity().isEmpty()) {
+                lastLine = lastLine + sLabelInfo.getcity();
             }
-
-            info.add(new Chunk(lastLine, font));
+            if(sLabelInfo.getcity().isEmpty()) {
+                lastLine = lastLine + sLabelInfo.getpincode();
+            } else {
+                lastLine = lastLine + " " + sLabelInfo.getpincode();
+            }
+            if(sLabelInfo.getpincode().isEmpty()){
+                lastLine = lastLine + sLabelInfo.getstate();
+            } else {
+                lastLine = lastLine + " " + sLabelInfo.getstate();
+            }
+            
+            String country = "";
+            if(!sLabelInfo.getcountry().equals("India")){
+                country = sLabelInfo.getcountry();
+            }            
+            
+            if(sLabelInfo.getstate().isEmpty()){
+                lastLine = lastLine + country;
+            } else {
+                lastLine = lastLine + " " + country;
+            }
+                
+            if(!lastLine.isEmpty()) {
+                lastLine = lastLine.trim();
+                // Remove the leading spaces
+                //lastLine.replaceAll("^\\s+", "");
+                info.add(new Chunk(lastLine, font));
+            }
         }
         return info;
     }
