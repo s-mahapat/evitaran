@@ -35,6 +35,8 @@ public class subscriberInfo extends JDSBean {
     int reminders_id;
     int invoiceNo;
     String invoiceDate  = "";
+    String letterNumber = "";
+    String letterDate = "";
 
     List<subscriptionInfo> subscriptionInfo = new ArrayList<subscriptionInfo>();
 
@@ -242,5 +244,21 @@ public class subscriberInfo extends JDSBean {
 
     public void setSubscriber_id(int _SubscriberID) {
         this.subscriber_id = _SubscriberID;
+    }
+
+    public String getLetterNumber() {
+        return this.letterNumber;
+    }
+
+    public void setLetterNumber(String _letterNumber) {
+        this.letterNumber = _letterNumber;
+    }
+    
+    public String getLetterDate() {
+        return this.letterDate;
+    }
+
+    public void setLetterDate(String _letterDate) {
+        this.letterDate = _letterDate;
     }
 }

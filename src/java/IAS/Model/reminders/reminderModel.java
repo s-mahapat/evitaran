@@ -217,6 +217,12 @@ public class reminderModel extends JDSModel {
 
             int reminders_id     = rsGet.getInt(18);
             sInfo.setReminders_id(reminders_id);
+            
+            String letterNumber  = rsGet.getString(19);
+            sInfo.setReminderDate(letterNumber);
+
+            String letterDate    = rsGet.getString(20);
+            sInfo.setDepartment(letterDate);
 
             //get the subscription details
             String sqlgetjnls = Queries.getQuery("get_subscribed_journals");
@@ -294,6 +300,9 @@ public class reminderModel extends JDSModel {
             String pincode       = rsGet.getString(16);
             String email         = rsGet.getString(17);
             int reminders_id     = rsGet.getInt(18);
+            String letterNumber  = rsGet.getString(19);
+            String letterDate    = rsGet.getString(20);
+          
 
             // Add the row element
             Element subscriber = doc.createElement("subscriber");
@@ -354,6 +363,14 @@ public class reminderModel extends JDSModel {
             Element _email = doc.createElement("email");
             subscriber.appendChild(_email);
             _email.appendChild(doc.createTextNode(email));
+            
+            Element _letterNumber = doc.createElement("letterNumber");
+            subscriber.appendChild(_letterNumber);
+            _letterNumber.appendChild(doc.createTextNode(letterNumber));
+            
+            Element _letterDate = doc.createElement("letterDate");
+            subscriber.appendChild(_letterDate);
+            _letterDate.appendChild(doc.createTextNode(letterDate));
 
             //get the subscription details
             String sqlgetjnls = Queries.getQuery("get_subscribed_journals");

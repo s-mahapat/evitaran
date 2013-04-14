@@ -425,9 +425,11 @@ public convertToPdf(){
             if(reminderType == 1){
                 document.add(addSubjectReminderType1(sinfo.getInvoiceNo(), sinfo.getInvoicedate(), sinfo.getBalance()));
             }else if(reminderType == 2){
-                document.add(addSubjectReminderType2());
+                document.add(addSubjectReminderType1(sinfo.getInvoiceNo(), sinfo.getInvoicedate(), sinfo.getBalance()));
+                //document.add(addSubjectReminderType2());
             }else if(reminderType == 3){
-                document.add(addSubjectReminderType2());
+                document.add(addSubjectReminderType1(sinfo.getInvoiceNo(), sinfo.getInvoicedate(), sinfo.getBalance()));
+                //document.add(addSubjectReminderType2());
             }
             //cb.endText();
 
@@ -455,6 +457,9 @@ public convertToPdf(){
             cb.beginText();
             cb.moveText(curX, curY);
             */
+            document.add(Chunk.NEWLINE);
+            document.add(addRefernce(sinfo.getLetterNumber(), sinfo.getLetterDate()));
+            
             document.add(Chunk.NEWLINE);
             if(reminderType == 1){
                 //addBodyReminderType1(cb, (float)rect.getWidth() - 2*curX);
@@ -651,7 +656,7 @@ public convertToPdf(){
 
     public Paragraph addSubjectReminderType2()
     {
-        String template = "Sub:- NON PAYMENT OF SUBSCRIPTION";
+        String template = "Sub:- NON PAYMENT OF SUBSCRIPTION/ BALANCE PAYMENT";
         Paragraph paragraph = new Paragraph();
         //cb.newlineShowText(template);
         paragraph.add(template);
@@ -669,6 +674,7 @@ public convertToPdf(){
         String template2 = " dated ";
         String template3 = " for Rs. ";
         String template4 = " towards subscription of";
+        
 
         String op="";
 
@@ -698,6 +704,27 @@ public convertToPdf(){
 
     }
 
+        public Paragraph addRefernce(String letterNumber, String letterDate)
+    {
+        Paragraph paragraph = new Paragraph();
+
+        String template1 = "Ref:- Your Order No. ";
+        String template2 = " dated ";
+       
+
+        String op="";
+
+        op = op + template1 + letterNumber + template2 + letterDate;
+        
+        paragraph.setAlignment(Element.ALIGN_LEFT);
+        paragraph.setFont(new Font(fontType, fontSize));
+
+        paragraph.add(op);
+
+        return paragraph;
+
+    }
+        
     public String getCurrentDate()
     {
         Format dtformat = new SimpleDateFormat("dd MMM yyyy");
