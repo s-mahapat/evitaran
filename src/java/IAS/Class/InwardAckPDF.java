@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class InwardAckPDF extends JDSPDF {
 
@@ -24,6 +23,7 @@ public class InwardAckPDF extends JDSPDF {
             String inwardPurpose,
             int inwardPurposeID,
             String chqDDNumber,
+            String chqDate,
             float amount,
             String LetterNumber,
             String LetterDate,
@@ -45,6 +45,7 @@ public class InwardAckPDF extends JDSPDF {
                 LetterNumber,
                 LetterDate,
                 chqDDNumber,
+                chqDate,
                 String.valueOf(amount),
                 customText));
         document.add(this.getLetterFooter());
@@ -61,6 +62,7 @@ public class InwardAckPDF extends JDSPDF {
             String letterNumber,
             String LetterDate,
             String chequeDDNo,
+            String chqDate,
             String amount,
             String customText) throws SQLException, IOException {
 
@@ -90,16 +92,16 @@ public class InwardAckPDF extends JDSPDF {
 
         // do not add the letter number header if it is not present/given
         // by the user/ui
-        if (letterNumber != null && letterNumber.length() > 0) {
+        /*if (letterNumber != null && letterNumber.length() > 0) {
             paragraph1.add(Chunk.NEWLINE);
             paragraph1.add(new Chunk("Your Letter No: " + letterNumber + " Dated: " + LetterDate, JDSPDF.JDS_FONT_BODY));
-        }
+        }*/
 
         String bodyText;
         float _amount = Float.parseFloat(amount);
 
         InwardAck _ack = new InwardAck();
-        bodyText = _ack.getText(chequeDDNo, _amount, paymentMode, inwardPurposeID, inwardPurpose);
+        bodyText = _ack.getText(chequeDDNo, chqDate, _amount, paymentMode, inwardPurposeID, inwardPurpose, letterNumber, LetterDate);
         if (!customText.isEmpty()) {
             bodyText = bodyText + " " + customText;
         }

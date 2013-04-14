@@ -667,14 +667,14 @@ fieldset {
     width: 98%;
 }
 
-#letterDate{
+/*#letterDate{
     float: right;
     width: 95%;
     height: 20px;
     margin-top: 10px;
     margin-right: 40px;
     text-align: right;
-}
+}*/
 
 .salutation{
     margin-left: 10px;

@@ -22,11 +22,11 @@ public class InwardAck {
         _prop = new PropertyReader(_stream);
     }
 
-    public String getText(String _cheque, float amount, String paymentmode, int purposeid, String purpose){
+    public String getText(String _cheque, String _cheque_date, float amount, String paymentmode, int purposeid, String purpose, String letter_no, String letter_date){
         String _text = null;
         if(amount > 0 && purposeid != JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE){
             _text = _prop.getProperty("inward_ack_with_amount");
-            _text  = String.format(_text, paymentmode, _cheque, amount, purpose);
+            _text  = String.format(_text, letter_no, letter_date, _cheque, _cheque_date, amount, purpose);
         }else if(amount == 0 && purposeid != JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE){
             _text = _prop.getProperty("inward_ack_no_amount");
             _text  = String.format(_text, purpose);

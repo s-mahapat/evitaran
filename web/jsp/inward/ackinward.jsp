@@ -81,11 +81,11 @@
                             <div class="subjectLine">
                                 Your letter no:
                                 <span>
-                                    <input class="IASTextBoxWide" name="lno" id="letterNumber" type="text" value="">
+                                    <input class="IASTextBox" name="lno" id="letterNumber" type="text" value="${inwardFormBean.letterNumber}">
                                 </span>
                                 <span>Dated:</span>
                                 <span id="letterDateSpan">
-                                    <input type="text" class="IASDateTextBox" TABINDEX="2" size="10" id="subscriberletterDate"/>
+                                    <input type="text" class="IASDateTextBox" TABINDEX="2" size="10" id="subscriberletterDate" value="${inwardFormBean.letterDate}"/>
                                 </span>
                             </div>
                             <div class="salutation">
@@ -95,11 +95,15 @@
                                 <%
                                     inwardFormBean _inwardFormBean = (inwardFormBean)request.getAttribute("inwardFormBean");
                                     InwardAck _ack = new InwardAck();
-                                    String _text = _ack.getText(_inwardFormBean.getChqddNumberAsText(),
+                                    String _text = _ack.getText(
+                                            _inwardFormBean.getChqddNumberAsText(),
+                                            _inwardFormBean.getPaymentDate(),
                                             _inwardFormBean.getAmount(),
                                             _inwardFormBean.getPaymentMode(),
                                             _inwardFormBean.getInwardPurposeID(),
-                                            _inwardFormBean.getInwardPurpose());
+                                            _inwardFormBean.getInwardPurpose(),
+                                            _inwardFormBean.getLetterNumber(),
+                                            _inwardFormBean.getLetterDate());
                                     out.println(_text);
                                 %>
                             </div>

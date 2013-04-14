@@ -14,7 +14,6 @@ import IAS.Model.JDSModel;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -375,6 +374,8 @@ public class inwardModel extends JDSModel {
         st.setString(++paramIndex, _inwardFormBean.getAckDate());
         st.setString(++paramIndex, _inwardFormBean.getRemarks());
         st.setString(++paramIndex, _inwardFormBean.getLanguage());
+        st.setString(++paramIndex, _inwardFormBean.getLetterNumber());
+        st.setDate(++paramIndex, util.dateStringToSqlDate(_inwardFormBean.getLetterDate()));
 
         /*
          * if the inward is of any non process type like Advertisement, Payment,
@@ -410,6 +411,8 @@ public class inwardModel extends JDSModel {
         st.setString(++paramIndex, _inwardFormBean.getAckDate());
         st.setString(++paramIndex, _inwardFormBean.getRemarks());
         st.setString(++paramIndex, _inwardFormBean.getLanguage());
+        st.setString(++paramIndex, _inwardFormBean.getLetterNumber());
+        st.setDate(++paramIndex, util.dateStringToSqlDate(_inwardFormBean.getLetterDate()));
         st.setString(++paramIndex, _inwardFormBean.getInwardNumber());
     }
 

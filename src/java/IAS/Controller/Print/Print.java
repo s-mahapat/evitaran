@@ -87,6 +87,7 @@ public class Print extends JDSController {
                             _inwardFormBean.getInwardPurpose(),
                             _inwardFormBean.getInwardPurposeID(),
                             _inwardFormBean.getChqddNumberAsText(),
+                            _inwardFormBean.getPaymentDate(),
                             _inwardFormBean.getAmount(),
                             letterNumber,
                             letterDate,

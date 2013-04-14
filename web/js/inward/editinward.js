@@ -26,6 +26,7 @@ function loadData() {
     jdsAutoComplete("subscriber?action=subscriberNames", "subscriberName", "from");
     jdsAutoComplete("subscriber?action=depts", "department", "department");
     jdsAutoComplete("subscriber?action=inst", "institution", "institution");
+    jdsAutoComplete("main2/bank/search", "bank_name", "bankName");
     jdsAutoComplete("main2/agent/search", "agentName", "agentName");
     loadCities();
     loadDistricts();

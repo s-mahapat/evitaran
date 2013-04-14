@@ -342,21 +342,21 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Language:</label>
+                <label>Letter No:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <select class="IASComboBox" TABINDEX="21" name="language" id="language">
-                    <option value="">Select</option>
-                    <%
-                        if (inwardFormBean.getLanguage() != null && inwardFormBean.getLanguage().length() > 0) {
-                            out.println("<option value=" + "\"" + inwardFormBean.getLanguage() + "\"" + " selected >" + inwardFormBean.getLanguage() + "</option>");
-                        }
-                    %>
-                </select>
+                <input class="IASTextBox" TABINDEX="21" maxlength="20" type="text" name="letterNumber" id="letterNumber" value="${inwardFormBean.letterNumber}"/>
             </span>
         </div>
 
-
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Letter Date:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <input class="IASDateTextBox" readonly TABINDEX="22" type="text" name="letterDate" id="letterDate" value="${inwardFormBean.letterDate}"/>
+            </span>
+        </div>
     </div>
 
     <%-- Inward Info right div --%>
@@ -367,7 +367,7 @@
                 <label>Receipt Number:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASDisabledTextBox" maxlength="11" disabled TABINDEX="22" type="text" name="receiptNumber" id="receiptNumber" value="${inwardFormBean.receiptNumberAsText}"/>
+                <input class="IASDisabledTextBox" maxlength="11" disabled TABINDEX="23" type="text" name="receiptNumber" id="receiptNumber" value="${inwardFormBean.receiptNumberAsText}"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -375,7 +375,7 @@
                 <label>Cheque Return:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASCheckBox" TABINDEX="23" type="checkbox" name="chequeDDReturn" id="chequeDDReturn" value="1" disabled
+                <input class="IASCheckBox" TABINDEX="24" type="checkbox" name="chequeDDReturn" id="chequeDDReturn" value="1" disabled
                        <%
                            if (inwardFormBean.isChequeDDReturn()) {
                                out.println("checked");
@@ -389,10 +389,10 @@
                 <label>Reason For Return:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASDisabledTextBox" TABINDEX="24" type="text" name="chequeDDReturnReason" id="chequeDDReturnReason" value="${inwardFormBean.chequeDDReturnReason}" readonly>
+                <input class="IASDisabledTextBox" TABINDEX="25" type="text" name="chequeDDReturnReason" id="chequeDDReturnReason" value="${inwardFormBean.chequeDDReturnReason}" readonly>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASDisabledTextBox" TABINDEX="25" type="text" name="chequeDDReturnReasonOther" id="chequeDDReturnReasonOther" value="${inwardFormBean.chequeDDReturnReasonOther}" readonly/>
+                <input class="IASDisabledTextBox" TABINDEX="26" type="text" name="chequeDDReturnReasonOther" id="chequeDDReturnReasonOther" value="${inwardFormBean.chequeDDReturnReasonOther}" readonly/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -400,7 +400,7 @@
                 <label>Return Date:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASDateTextBox" TABINDEX="26" disabled type="text" name="returnDate" id="returnDate" value="${inwardFormBean.returnDate}"/>
+                <input class="IASDateTextBox" TABINDEX="27" disabled type="text" name="returnDate" id="returnDate" value="${inwardFormBean.returnDate}"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -408,7 +408,7 @@
                 <label>Ack Date:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASDateTextBox" TABINDEX="27" disabled type="text" name="ackDate" id="ackDate" value="${inwardFormBean.ackDate}"/>
+                <input class="IASDateTextBox" TABINDEX="28" disabled type="text" name="ackDate" id="ackDate" value="${inwardFormBean.ackDate}"/>
             </span>
         </div>
 
@@ -417,7 +417,23 @@
                 <label>Remarks:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <textarea class="IASTextArea" maxlength="200" cols="40" rows="5" TABINDEX="28" name="remarks" id="remarks" style="text-align: left;">${inwardFormBean.remarks}</textarea>
+                <textarea class="IASTextArea" maxlength="200" cols="40" rows="5" TABINDEX="29" name="remarks" id="remarks" style="text-align: left;">${inwardFormBean.remarks}</textarea>
+            </span>
+        </div>
+
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Language:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox">
+                <select class="IASComboBox" TABINDEX="30" name="language" id="language">
+                    <option value="">Select</option>
+                    <%
+                        if (inwardFormBean.getLanguage() != null && inwardFormBean.getLanguage().length() > 0) {
+                            out.println("<option value=" + "\"" + inwardFormBean.getLanguage() + "\"" + " selected >" + inwardFormBean.getLanguage() + "</option>");
+                        }
+                    %>
+                </select>
             </span>
         </div>
     </div>

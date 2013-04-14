@@ -46,6 +46,8 @@ public class inwardFormBean extends JDSBean {
     private String remarks;
     private boolean completed = false;
     private String language = "";
+    private String letterNumber;
+    private String letterDate;
 
     public int getInwardID() {
         return this.inwardID;
@@ -361,5 +363,21 @@ public class inwardFormBean extends JDSBean {
             _reason = this.chequeDDReturnReasonOther;
         }
         return _reason;
+    }
+
+    public String getLetterNumber() {
+        return this.letterNumber;
+    }
+
+    public void setLetterNumber(String _letter_number) {
+        this.letterNumber = _letter_number;
+    }
+
+    public String getLetterDate() {
+        return this.letterDate;
+    }
+
+    public void setLetterDate(String _letter_date) {
+        this.letterDate = _letter_date;
     }
 }

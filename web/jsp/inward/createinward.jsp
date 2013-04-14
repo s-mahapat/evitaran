@@ -43,6 +43,7 @@
                     }
                 });
                 jQueryCalendar("paymentDate", true);
+                jQueryCalendar("letterDate", true);
             });
             var myArr = new Array;
         </script>
