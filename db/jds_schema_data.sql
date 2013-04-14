@@ -418,7 +418,7 @@ CREATE TABLE `inward` (
   `completed` tinyint(4) NOT NULL DEFAULT '0',
   `language` int(11) NOT NULL DEFAULT '1',
   `valid` tinyint(4) NOT NULL DEFAULT '1',
-  `letterNumber` varchar(20) DEFAULT NULL,
+  `letterNumber` varchar(40) DEFAULT NULL,
   `letterDate` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `inward_no_UNIQUE` (`inwardNumber`),

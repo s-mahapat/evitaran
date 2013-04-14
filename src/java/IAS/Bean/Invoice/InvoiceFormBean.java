@@ -252,11 +252,11 @@ public class InvoiceFormBean {
         this.department = _dept;
     }
 
-    public String getInstitute() {
+    public String getInstitution() {
         return this.institute;
     }
 
-    public void setInstitute(String _inst) {
+    public void setInstitution(String _inst) {
         this.institute = _inst;
     }
 

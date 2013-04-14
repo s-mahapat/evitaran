@@ -143,7 +143,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         paragraphShippingAddress.add(Chunk.NEWLINE);
         paragraphShippingAddress.add(new Phrase(_invoiceBean.getSubscriberName(), JDSPDF.JDS_FONT_BODY));
         String _department = _invoiceBean.getDepartment();
-        String _institute = _invoiceBean.getInstitute();
+        String _institute = _invoiceBean.getInstitution();
         if (_department != null && _department.length() > 0) {
             paragraphShippingAddress.add(Chunk.NEWLINE);
             paragraphShippingAddress.add(new Phrase(_department, JDSPDF.JDS_FONT_BODY));

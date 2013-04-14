@@ -21,6 +21,7 @@
             $(document).ready(function() {
                 loadData();
                 jQueryCalendar("paymentDate", true);
+                jQueryCalendar("letterDate", true);
                 makeInwardReadOnly();
 
                 // disable the form submit on pressing enter
