@@ -27,7 +27,7 @@ import javax.xml.transform.TransformerException;
  *
  * @author Newton
  */
-public class RequestForInvoicePDF extends JDSPDF {
+public class RequestForInvoicePDF extends JDSPDF{
 
     private HttpServletRequest request = null;
 
@@ -46,15 +46,11 @@ public class RequestForInvoicePDF extends JDSPDF {
             ClassNotFoundException {
 
         com.itextpdf.text.Document document = this.getPDFDocument();
-
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
-
         document.open();
         document.add(this.getLetterHead());
-        //document.add(this.getSalutation());
         document.add(this.getRFILetterBody(InwardNumber));
-        document.add(this.getLetterFooter());
         this.addPaymentFooter(document, pdfWriter);
         document.close();
         return outputStream;
@@ -83,8 +79,8 @@ public class RequestForInvoicePDF extends JDSPDF {
         Paragraph paragraphShippingAddress = new Paragraph();
         Paragraph paragraphInvoiceAddress = new Paragraph();
 
-        paragraphOuter.setSpacingBefore(JDSPDF.LESS_OUTER_PARAGRAPH_SPACE);
-        paragraphOuter.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
+        //paragraphOuter.setSpacingBefore(JDSPDF.LESS_OUTER_PARAGRAPH_SPACE);
+        //paragraphOuter.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         paragraphOuter.setAlignment(Element.ALIGN_LEFT);
 
         Paragraph invoiceHeader = new Paragraph(new Chunk("INVOICE",JDSPDF.JDS_FONT_BODY));
@@ -97,6 +93,7 @@ public class RequestForInvoicePDF extends JDSPDF {
 
         PdfPCell subscriberNumberCell = new PdfPCell(subscriberNumber);
         PdfPCell invoiceNumberCell = new PdfPCell(invoiceNumber);
+        invoiceNumberCell.setPaddingRight(15);
         //PdfPCell invoiceHeaderCell = new PdfPCell(invoiceHeader);
 
         subscriberNumberCell.setBorder(Rectangle.NO_BORDER);
@@ -109,6 +106,7 @@ public class RequestForInvoicePDF extends JDSPDF {
         //invoiceHeaderCell.setVerticalAlignment(Element.ALIGN_TOP);
 
         invoiceNumberCell.setBorder(Rectangle.NO_BORDER);
+        //invoiceNumberCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_LESS * 3);
         invoiceNumberCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         invoiceNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
 
@@ -144,28 +142,44 @@ public class RequestForInvoicePDF extends JDSPDF {
         paragraphShippingAddress.add(new Phrase(_invoiceBean.getSubscriberName(), JDSPDF.JDS_FONT_BODY));
         String _department = _invoiceBean.getDepartment();
         String _institute = _invoiceBean.getInstitution();
+        String _shipping_address = _invoiceBean.getShippingAddress();
+        String _city = _invoiceBean.getCity();
+        String _country = _invoiceBean.getCountry();
+        int _pincode = _invoiceBean.getPincode();
+
         if (_department != null && _department.length() > 0) {
             paragraphShippingAddress.add(Chunk.NEWLINE);
             paragraphShippingAddress.add(new Phrase(_department, JDSPDF.JDS_FONT_BODY));
         }
+
         if (_institute != null && _institute.length() > 0) {
             paragraphShippingAddress.add(Chunk.NEWLINE);
             paragraphShippingAddress.add(new Phrase(_institute, JDSPDF.JDS_FONT_BODY));
         }
-        paragraphShippingAddress.add(Chunk.NEWLINE);
-        paragraphShippingAddress.add(new Phrase(_invoiceBean.getShippingAddress(), JDSPDF.JDS_FONT_BODY));
-        paragraphShippingAddress.add(Chunk.NEWLINE);
-        paragraphShippingAddress.add(new Phrase(_invoiceBean.getCity(), JDSPDF.JDS_FONT_BODY));
-        paragraphShippingAddress.add(Chunk.NEWLINE);
-        paragraphShippingAddress.add(new Phrase(_invoiceBean.getCountry(), JDSPDF.JDS_FONT_BODY));
-        if (_invoiceBean.getPincode() > 0) {
+
+        if(_shipping_address.length() > 0){
             paragraphShippingAddress.add(Chunk.NEWLINE);
-            paragraphShippingAddress.add(new Phrase(String.valueOf(_invoiceBean.getPincode()), JDSPDF.JDS_FONT_BODY));
+            paragraphShippingAddress.add(new Phrase(_shipping_address, JDSPDF.JDS_FONT_BODY));
+        }
+
+        if(_city.length() > 0){
+            paragraphShippingAddress.add(Chunk.NEWLINE);
+            paragraphShippingAddress.add(new Phrase(_city, JDSPDF.JDS_FONT_BODY));
+        }
+
+        if(_country.length() > 0 && !_country.equalsIgnoreCase("india")){
+            paragraphShippingAddress.add(Chunk.NEWLINE);
+            paragraphShippingAddress.add(new Phrase(_country, JDSPDF.JDS_FONT_BODY));
+        }
+
+        if (_pincode > 0) {
+            paragraphShippingAddress.add(Chunk.NEWLINE);
+            paragraphShippingAddress.add(new Phrase(String.valueOf(_pincode), JDSPDF.JDS_FONT_BODY));
         }
 
         PdfPCell shippingAddressCell = new PdfPCell(paragraphShippingAddress);
         shippingAddressCell.setBorder(Rectangle.NO_BORDER);
-        shippingAddressCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_MORE * 4);
+        shippingAddressCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_MORE * 3);
         shippingAddressCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         shippingAddressCell.setVerticalAlignment(Element.ALIGN_TOP);
 

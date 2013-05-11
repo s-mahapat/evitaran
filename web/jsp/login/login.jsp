@@ -36,7 +36,7 @@
                 margin: 10% auto 0 auto;
                 width: 40%;
                 text-align: center;
-                height: 250px;
+                height: 300px;
             }
 
             #loginErrorMsg{
@@ -53,7 +53,7 @@
             .authField{
 
                 width: 100%;
-                margin: 10px auto;
+                margin: 20px auto;
                 float: left;
             }
 
@@ -93,11 +93,11 @@
                     <div id="login">
                         <div class="authField">
                             <span class="authLabel">User Name</span>
-                            <span class="authInput"><input type="text" style="width:160px" class="IASTextBoxMandatory" name="j_username" value="" id="loginFieldId" onblur="validateEmail(this.id)"/></span>
+                            <span class="authInput"><input type="text" style="width:250px" class="IASTextBoxMandatory" name="j_username" value="" id="loginFieldId" onblur="validateEmail(this.id)"/></span>
                         </div>
                         <div class="authField">
                             <span class="authLabel">Password</span>
-                            <span class="authInput"><input type="password" maxlength="16" style="width:160px" class="IASTextBox" value="" name="j_password" id="passwordField"/></span>
+                            <span class="authInput"><input type="password" maxlength="16" style="width:250px" class="IASTextBox" value="" name="j_password" id="passwordField"/></span>
                         </div>
                         <div class="authAction">
                             <input type="submit" value="Login"/>

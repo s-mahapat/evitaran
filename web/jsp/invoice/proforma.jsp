@@ -147,27 +147,28 @@
                                 <div class="invoiceRightDiv">
                                     <span class="invoiceSubscriberAddressSpan">
                                         ${invoiceFormBean.subscriberName}</br>
-                                        <%
+                                         <%
                                             String _department = invoiceFormBean.getDepartment();
                                             if (_department != null && _department.length() != 0) {
                                                 out.println(_department + "</br>");
                                             }
-                                        %>
-                                        <%
                                             String _institute = invoiceFormBean.getInstitution();
                                             if (_institute != null && _institute.length() != 0) {
                                                 out.println(_institute + "</br>");
                                             }
-                                        %>
-                                        ${invoiceFormBean.shippingAddress}</br>
-                                        ${invoiceFormBean.city}</br>
-                                        <%
+                                            String _ship_address = invoiceFormBean.getShippingAddress();
+                                            if (_ship_address.length() > 0) {
+                                                out.println(_ship_address.length());
+                                                out.println(_ship_address + "</br>");
+                                            }
+                                            String _city = invoiceFormBean.getCity();
+                                            if (_city.length() > 0) {
+                                                out.println(_city + "</br>");
+                                            }
                                             String _country = invoiceFormBean.getCountry();
                                             if (_country != null && _country.length() != 0 && !_country.equals("0")) {
                                                 out.println(_country + "</br>");
                                             }
-                                        %>
-                                        <%
                                             String _pincode = String.valueOf(invoiceFormBean.getPincode());
                                             if (_pincode != null && _pincode.length() != 0 && !_pincode.equals("0")) {
                                                 out.println(_pincode + "</br>");

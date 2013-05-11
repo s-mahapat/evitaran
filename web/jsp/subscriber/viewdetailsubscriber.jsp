@@ -189,7 +189,7 @@
                                     <table id="invoiceTable" class="datatable"></table>
                                     <div id="pager_invoice"></div>
                                     <div id="invoice_dialog" style="display: none;">
-                                        <iframe style="width:99%; height:500px;" frameborder="1" src="" id="iframe_invoice"></iframe>
+                                        <iframe style="width:99%; height:90%;" frameborder="1" src="" id="iframe_invoice"></iframe>
                                     </div>
                                 </div>
 

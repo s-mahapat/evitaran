@@ -223,7 +223,7 @@ public class InvoiceFormBean {
      */
     /* Subscriber Address */
     public String getShippingAddress() {
-        return this.shippingAddress;
+        return this.shippingAddress.trim();
     }
 
     public void setShippingAddress(String _ShippingAddress) {

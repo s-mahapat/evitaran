@@ -50,7 +50,7 @@ public class JDSConstants {
     // Footer dimensions (in mm) and other details
     public static float width = 140.0f;
     public static float height = 40.0f;
-    public static float heightFromBottomOfPage = 10.0f;
+    public static float heightFromBottomOfPage = 15.0f;
 
 
 }

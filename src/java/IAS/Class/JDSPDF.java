@@ -40,6 +40,7 @@ public class JDSPDF implements IJDSPDF {
 
     public Document getPDFDocument() {
         com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4);
+        document.setMargins(20, 20, 10, 10);
         document.addAuthor("Indian Academy Of Sciences");
         document.addCreator("Indian Academy Of Sciences");
         document.addSubject("Indian Academy Of Sciences");
@@ -59,6 +60,11 @@ public class JDSPDF implements IJDSPDF {
     }
 
     public void addPaymentFooter(Document document, PdfWriter pdfWriter) throws DocumentException{
+
+        float availableSpace = pdfWriter.getVerticalPosition(true) - document.bottomMargin();
+        if(availableSpace < JDSConstants.heightFromBottomOfPage + JDSConstants.height){
+            document.newPage();
+        }
 
         ColumnText ct = new ColumnText(pdfWriter.getDirectContent());
         float pageWidth = pdfWriter.getPageSize().getWidth();

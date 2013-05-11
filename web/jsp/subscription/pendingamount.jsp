@@ -8,94 +8,94 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
-        <link rel="stylesheet" type="text/css" href="css/invoice/invoice.css"/>
-        <link rel="stylesheet" media="print" type="text/css" href="css/print.css"/>
-        <title>Invoice</title>
-        <script type="text/javascript" src="js/toword.js"></script>
-        <script type="text/javascript">
-            var _total = 0;
-            var JournalNamesHash = new Object();
-            var JournalYearsHash = new Object();
-            var JournalPriceHash = new Object();
-            var JournalCopiesHash = new Object();
-            $(document).ready(function(){
+            <link rel="stylesheet" type="text/css" href="css/invoice/invoice.css"/>
+            <link rel="stylesheet" media="print" type="text/css" href="css/print.css"/>
+            <title>Invoice</title>
+            <script type="text/javascript" src="js/toword.js"></script>
+            <script type="text/javascript">
+                var _total = 0;
+                var JournalNamesHash = new Object();
+                var JournalYearsHash = new Object();
+                var JournalPriceHash = new Object();
+                var JournalCopiesHash = new Object();
+                $(document).ready(function(){
 
-                $.ajax({
-                    type: 'GET',
-                    dataType: 'xml',
-                    url: "subscription?oper=getSubscriptionDetailsForInward&inwardNumber=" + "${invoiceFormBean.inwardNumber}",
-                    success: function(xmlResponse, textStatus, jqXHR){
-                        var html = "<tbody>";
-                        $(xmlResponse).find("results").find("row").each(function(){
+                    $.ajax({
+                        type: 'GET',
+                        dataType: 'xml',
+                        url: "subscription?oper=getSubscriptionDetailsForInward&inwardNumber=" + "${invoiceFormBean.inwardNumber}",
+                        success: function(xmlResponse, textStatus, jqXHR){
+                            var html = "<tbody>";
+                            $(xmlResponse).find("results").find("row").each(function(){
 
-                            // get the journal id and set it in the UI
-                            subscriptionID = $(this).find("subscriptionid").text();
-                            $("#subscriptionID").text(subscriptionID);
+                                // get the journal id and set it in the UI
+                                subscriptionID = $(this).find("subscriptionid").text();
+                                $("#subscriptionID").text(subscriptionID);
 
-                            //get the journal name
-                            journalName = $(this).find("journalName").text();
-                            journalGrpID = $(this).find("journalGroupID").text();
+                                //get the journal name
+                                journalName = $(this).find("journalName").text();
+                                journalGrpID = $(this).find("journalGroupID").text();
 
-                            //maintain copies group wise
-                            JournalCopiesHash[journalGrpID] = $(this).find("copies").text();
+                                //maintain copies group wise
+                                JournalCopiesHash[journalGrpID] = $(this).find("copies").text();
 
-                            // for each journal group id create an array, this way we
-                            // group them on the UI
-                            if(JournalNamesHash[journalGrpID] == undefined){
-                                JournalNamesHash[journalGrpID] = new Array();
-                            }
-                            JournalNamesHash[journalGrpID].push(journalName);
-                            period = $(this).find("period").text();
-                            // similarly we also maintain an array of subscription periods for
-                            // each group
-                            JournalYearsHash[journalGrpID] = period;
-                            grptotal = parseInt($(this).find("total").text());
-                            // also maintain totals group wise
-                            JournalPriceHash[journalGrpID] = grptotal;
-
-                        });
-                        html += "<tr>";
-                        var _rowspan = 1;
-                        for(var id in JournalNamesHash){
-                            _total += JournalPriceHash[id];
-                            _rowspan = JournalNamesHash[id].length;
-                            var _journals = JournalNamesHash[id];
-                            var bprinted = false;
-                            for(var indx in _journals){
-                                html += "<td class=\"journalname\">" + _journals[indx] + "</td>";
-                                if(!bprinted){
-                                    html += "<td rowspan=\"" + _rowspan + "\">" + JournalCopiesHash[id] + "</td>";
-                                    html += "<td rowspan=\"" + _rowspan + "\">" + JournalYearsHash[id] + "</td>";
-                                    html += "<td rowspan=\"" + _rowspan + "\">" + JournalPriceHash[id] + "</td>";
-                                    bprinted = true;
+                                // for each journal group id create an array, this way we
+                                // group them on the UI
+                                if(JournalNamesHash[journalGrpID] == undefined){
+                                    JournalNamesHash[journalGrpID] = new Array();
                                 }
-                                html += "</tr>";
+                                JournalNamesHash[journalGrpID].push(journalName);
+                                period = $(this).find("period").text();
+                                // similarly we also maintain an array of subscription periods for
+                                // each group
+                                JournalYearsHash[journalGrpID] = period;
+                                grptotal = parseInt($(this).find("total").text());
+                                // also maintain totals group wise
+                                JournalPriceHash[journalGrpID] = grptotal;
+
+                            });
+                            html += "<tr>";
+                            var _rowspan = 1;
+                            for(var id in JournalNamesHash){
+                                _total += JournalPriceHash[id];
+                                _rowspan = JournalNamesHash[id].length;
+                                var _journals = JournalNamesHash[id];
+                                var bprinted = false;
+                                for(var indx in _journals){
+                                    html += "<td class=\"journalname\">" + _journals[indx] + "</td>";
+                                    if(!bprinted){
+                                        html += "<td rowspan=\"" + _rowspan + "\">" + JournalCopiesHash[id] + "</td>";
+                                        html += "<td rowspan=\"" + _rowspan + "\">" + JournalYearsHash[id] + "</td>";
+                                        html += "<td rowspan=\"" + _rowspan + "\">" + JournalPriceHash[id] + "</td>";
+                                        bprinted = true;
+                                    }
+                                    html += "</tr>";
+                                }
+
+
                             }
-
-
+                            html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Total</td><td>" + _total + "</td></tr>"
+                            html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Amount Paid</td><td>" + ${invoiceFormBean.inwardAmount} + "</td></tr>"
+                            html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Balance</td><td>" + ${invoiceFormBean.amount} + "</td></tr>"
+                            html += "</tbody>";
+                            var _orightml = $(".datatable").html();
+                            html = _orightml + html;
+                            $(".datatable").html(html);
+                            $("#total").html("INDIAN RS: " + toWords(${invoiceFormBean.balance}).toUpperCase());
+                        },
+                        error: function(jqXHR,textStatus,errorThrown){
+                            alert("Failed to get subscription information for Inward. Error:" + textStatus + " : "+ errorThrown);
                         }
-                        html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Total</td><td>" + _total + "</td></tr>"
-                        html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Amount Paid</td><td>" + ${invoiceFormBean.inwardAmount} + "</td></tr>"
-                        html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Balance</td><td>" + ${invoiceFormBean.amount} + "</td></tr>"
-                        html += "</tbody>";
-                        var _orightml = $(".datatable").html();
-                        html = _orightml + html;
-                        $(".datatable").html(html);
-                        $("#total").html("INDIAN RS: " + toWords(${invoiceFormBean.balance}).toUpperCase());
-                    },
-                    error: function(jqXHR,textStatus,errorThrown){
-                        alert("Failed to get subscription information for Inward. Error:" + textStatus + " : "+ errorThrown);
+
+                    });
+
+                    //disable email button if no email id present
+                    var email = "${invoiceFormBean.subscriptionID}";
+                    if(isEmptyValue(email)){
+                        $("#btnEmail").button("disable");
                     }
 
                 });
-
-                //disable email button if no email id present
-                var email = "${invoiceFormBean.subscriptionID}";
-                if(isEmptyValue(email)){
-                    $("#btnEmail").button("disable");
-                }
-
-            });
 
         </script>
 
@@ -153,22 +153,23 @@
                                             if (_department != null && _department.length() != 0) {
                                                 out.println(_department + "</br>");
                                             }
-                                        %>
-                                        <%
                                             String _institute = invoiceFormBean.getInstitution();
                                             if (_institute != null && _institute.length() != 0) {
                                                 out.println(_institute + "</br>");
                                             }
-                                        %>
-                                        ${invoiceFormBean.shippingAddress}</br>
-                                        ${invoiceFormBean.city}</br>
-                                        <%
+                                            String _ship_address = invoiceFormBean.getShippingAddress();
+                                            if (_ship_address.length() > 0) {
+                                                out.println(_ship_address.length());
+                                                out.println(_ship_address + "</br>");
+                                            }
+                                            String _city = invoiceFormBean.getCity();
+                                            if (_city.length() > 0) {
+                                                out.println(_city + "</br>");
+                                            }
                                             String _country = invoiceFormBean.getCountry();
                                             if (_country != null && _country.length() != 0 && !_country.equals("0")) {
                                                 out.println(_country + "</br>");
                                             }
-                                        %>
-                                        <%
                                             String _pincode = String.valueOf(invoiceFormBean.getPincode());
                                             if (_pincode != null && _pincode.length() != 0 && !_pincode.equals("0")) {
                                                 out.println(_pincode + "</br>");
