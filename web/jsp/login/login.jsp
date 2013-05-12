@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+
     if (request.getRemoteUser() != null) {
         String redirecturl = request.getContextPath() + "/home";
         if (request.getParameter("from") != null) {

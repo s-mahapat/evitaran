@@ -64,7 +64,7 @@ public class PlReferListPDF extends JDSPDF {
         com.itextpdf.text.Document document = this.getPDFDocument();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
         document.open();
 
         String search_string = null;
@@ -99,6 +99,7 @@ public class PlReferListPDF extends JDSPDF {
             throw ex;
         }
         document.close();
+        pdfWriter.close();
         return outputStream;
 
     }
@@ -114,7 +115,7 @@ public class PlReferListPDF extends JDSPDF {
         com.itextpdf.text.Document document = this.getPDFDocument();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
         document.open();
         document.add(this.getLetterHead());
         Paragraph _page = this.getPlReferListLetterBody(invoice_no, ctext);

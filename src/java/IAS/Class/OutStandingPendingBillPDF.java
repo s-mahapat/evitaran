@@ -48,7 +48,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         com.itextpdf.text.Document document = this.getPDFDocument();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
 
         document.open();
         document.add(this.getLetterHead());
@@ -57,6 +57,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         document.add(this.getLetterFooter());
         this.addPaymentFooter(document, pdfWriter);
         document.close();
+        pdfWriter.close();
         return outputStream;
 
     }

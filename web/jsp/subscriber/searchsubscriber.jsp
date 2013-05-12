@@ -103,6 +103,9 @@
                     },
                     onPaging: function(btn){
                         //updateCookie();
+                    },
+                    onSelectRow: function(rowid, status, e){
+                        window.location.href = "subscriber?action=display&subscriberNumber=" + rowid;
                     }
                 });
                 if(sessionStorage.searchsubscriber){
@@ -122,7 +125,6 @@
                     });
                     searchSubscriber();
                 }
-
 
             });
 

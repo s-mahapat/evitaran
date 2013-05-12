@@ -119,7 +119,7 @@ public convertToPdf(){
         //Document document = this.getPDFDocument();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
 
         document.open();
 
@@ -210,6 +210,7 @@ public convertToPdf(){
         document.add(table);
 
         document.close();
+        pdfWriter.close();
         outputStream.writeTo(os);
 
     }
@@ -220,7 +221,7 @@ public convertToPdf(){
         //Document document = this.getPDFDocument();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
 
         document.open();
 
@@ -294,6 +295,7 @@ public convertToPdf(){
         document.add(table);
 
         document.close();
+        pdfWriter.close();
         outputStream.writeTo(os);
     }
 
@@ -302,7 +304,7 @@ public convertToPdf(){
         Document document = this.getPDFDocument();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
 
         //pdfWriter.setPageEvent(new onEndPage());
 
@@ -338,6 +340,7 @@ public convertToPdf(){
         document.add(paragraph);
 
         document.close();
+        pdfWriter.close();
         outputStream.writeTo(os);
     }
 
@@ -353,7 +356,7 @@ public convertToPdf(){
 
         // step 2
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfWriter writer = PdfWriter.getInstance(document, baos);
+        PdfWriter writer = this.getPDFWriter(document, baos);
         //writer.setInitialLeading(8.0f);
 
         // step 3
@@ -459,7 +462,7 @@ public convertToPdf(){
             */
             document.add(Chunk.NEWLINE);
             document.add(addRefernce(sinfo.getLetterNumber(), sinfo.getLetterDate()));
-            
+
             document.add(Chunk.NEWLINE);
             if(reminderType == 1){
                 //addBodyReminderType1(cb, (float)rect.getWidth() - 2*curX);
@@ -480,6 +483,7 @@ public convertToPdf(){
 
         // 11. Close the document
         document.close();
+        writer.close();
 
         return baos;
     }
@@ -512,7 +516,7 @@ public convertToPdf(){
         paragraph.setFont(new Font(fontType, fontSize));
         if(!sinfo.getSubscriberName().isEmpty()) {
             paragraph.add(sinfo.getSubscriberName());
-            paragraph.add(Chunk.NEWLINE);            
+            paragraph.add(Chunk.NEWLINE);
         }
         if(!sinfo.getDepartment().isEmpty()) {
             paragraph.add(sinfo.getDepartment());
@@ -532,7 +536,7 @@ public convertToPdf(){
                 " " + sinfo.getPincode() +
                 " " + sinfo.getState();
                 " " + sinfo.getCountry();
-        */ 
+        */
         String lastLine = "";
         if(!sinfo.getCity().isEmpty()) {
             lastLine = lastLine + sinfo.getCity() + " ";
@@ -543,7 +547,7 @@ public convertToPdf(){
         if(!sinfo.getCountry().isEmpty()) {
             lastLine = lastLine + sinfo.getCountry();
         }
-               
+
         paragraph.add(lastLine);
         return paragraph;
     }
@@ -714,7 +718,7 @@ public convertToPdf(){
         String template2 = " dated ";
         String template3 = " for Rs. ";
         String template4 = " towards subscription of";
-        
+
 
         String op="";
 
@@ -750,7 +754,7 @@ public convertToPdf(){
 
         String template1 = "Ref:- Your Order No. ";
         String template2 = " dated ";
-       
+
 
         String op="";
 
@@ -758,7 +762,7 @@ public convertToPdf(){
             letterDate = "";
         }
         op = op + template1 + letterNumber + template2 + letterDate;
-        
+
         paragraph.setAlignment(Element.ALIGN_LEFT);
         paragraph.setFont(new Font(fontType, fontSize));
 
@@ -767,7 +771,7 @@ public convertToPdf(){
         return paragraph;
 
     }
-        
+
     public String getCurrentDate()
     {
         Format dtformat = new SimpleDateFormat("dd MMM yyyy");
@@ -794,7 +798,7 @@ public convertToPdf(){
 
         // step 2
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfWriter writer = PdfWriter.getInstance(document, baos);
+        PdfWriter writer = this.getPDFWriter(document, baos);
 
         // step 3
         document.open();
@@ -868,6 +872,7 @@ public convertToPdf(){
                     document.newPage();
                 }
                 document.close();
+                writer.close();
 
                 baos.writeTo(os);
                 return;
@@ -1314,7 +1319,7 @@ public convertToPdf(){
 
         // step 2
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfWriter writer = PdfWriter.getInstance(document, baos);
+        PdfWriter writer = this.getPDFWriter(document, baos);
         //writer.setInitialLeading(8.0f);
 
         // step 3
@@ -1365,7 +1370,7 @@ public convertToPdf(){
                     {
                         // step 5
                         document.close();
-
+                        writer.close();
                         baos.writeTo(os);
                         return;
                     }
@@ -1536,18 +1541,18 @@ public convertToPdf(){
             } else {
                 lastLine = lastLine + " " + sLabelInfo.getstate();
             }
-            
+
             String country = "";
             if(!sLabelInfo.getcountry().equals("India")){
                 country = sLabelInfo.getcountry();
-            }            
-            
+            }
+
             if(sLabelInfo.getstate().isEmpty()){
                 lastLine = lastLine + country;
             } else {
                 lastLine = lastLine + " " + country;
             }
-                
+
             if(!lastLine.isEmpty()) {
                 lastLine = lastLine.trim();
                 // Remove the leading spaces
@@ -1606,15 +1611,15 @@ public convertToPdf(){
             }
             if(!sLabelInfo.getdepartment().isEmpty()) {
                 info.add(new Chunk(sLabelInfo.getdepartment(), font));
-                info.add(Chunk.NEWLINE);                
+                info.add(Chunk.NEWLINE);
             }
             if(!sLabelInfo.getinstitution().isEmpty()) {
                 info.add(new Chunk(sLabelInfo.getinstitution(), font));
-                info.add(Chunk.NEWLINE);                
+                info.add(Chunk.NEWLINE);
             }
             if(!sLabelInfo.getaddress().isEmpty()) {
                 info.add(new Chunk(sLabelInfo.getaddress(), font));
-                info.add(Chunk.NEWLINE);                
+                info.add(Chunk.NEWLINE);
             }
             /*
             String address = sLabelInfo.getaddress();
@@ -1630,7 +1635,7 @@ public convertToPdf(){
                     " " + sLabelInfo.getpincode() +
                     " " + sLabelInfo.getstate() +
                     " ";
-            */ 
+            */
             String lastLine = "";
             if(!sLabelInfo.getcity().isEmpty()) {
                 lastLine = lastLine + sLabelInfo.getcity();
@@ -1645,18 +1650,18 @@ public convertToPdf(){
             } else {
                 lastLine = lastLine + " " + sLabelInfo.getstate();
             }
-            
+
             String country = "";
             if(!sLabelInfo.getcountry().equals("India")){
                 country = sLabelInfo.getcountry();
-            }            
-            
+            }
+
             if(sLabelInfo.getstate().isEmpty()){
                 lastLine = lastLine + country;
             } else {
                 lastLine = lastLine + " " + country;
             }
-                
+
             if(!lastLine.isEmpty()) {
                 lastLine = lastLine.trim();
                 // Remove the leading spaces
@@ -1679,7 +1684,7 @@ public convertToPdf(){
 
         // step 2
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfWriter writer = PdfWriter.getInstance(document, baos);
+        PdfWriter writer = this.getPDFWriter(document, baos);
 
         // step 3
         document.open();
@@ -1757,7 +1762,7 @@ public convertToPdf(){
 
         // step 2
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfWriter writer = PdfWriter.getInstance(document, baos);
+        PdfWriter writer = this.getPDFWriter(document, baos);
         //writer.setInitialLeading(8.0f);
 
         // step 3
@@ -2011,7 +2016,7 @@ public convertToPdf(){
         Document document = this.getPDFDocument();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
         //pdfWriter.setPageEvent(new onEndPage());
 
         document.open();

@@ -32,7 +32,7 @@ public class InwardAckPDF extends JDSPDF {
         com.itextpdf.text.Document document = this.getPDFDocument();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
 
         document.open();
         document.add(this.getLetterHead());
@@ -50,6 +50,7 @@ public class InwardAckPDF extends JDSPDF {
                 customText));
         document.add(this.getLetterFooter());
         document.close();
+        pdfWriter.close();
         return outputStream;
 
     }

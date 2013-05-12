@@ -27,6 +27,11 @@ public class JDSPDF implements IJDSPDF {
     public static Font JDS_FONT_NORMAL_SMALL = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
     public static Font JDS_FONT_BODY = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
     public static Font JDS_FONT_NORMAL_SMALL_BOLD = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.BLACK);
+    public static Font JDS_FONT_AUTOGEN_FOOTER = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.GRAY);
+    public static final int JDS_PDF_LEFT_MARGIN = 10;
+    public static final int JDS_PDF_RIGHT_MARGIN = 10;
+    public static final int JDS_PDF_TOP_MARGIN = 10;
+    public static final int JDS_PDF_BOTTOM_MARGIN = 10;
 
     public JDSPDF() {
         ServletContext context = ServletContextInfo.getServletContext();
@@ -40,13 +45,20 @@ public class JDSPDF implements IJDSPDF {
 
     public Document getPDFDocument() {
         com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4);
-        document.setMargins(20, 20, 10, 10);
+        document.setMargins(JDS_PDF_LEFT_MARGIN, JDS_PDF_RIGHT_MARGIN, JDS_PDF_TOP_MARGIN, JDS_PDF_BOTTOM_MARGIN);
         document.addAuthor("Indian Academy Of Sciences");
         document.addCreator("Indian Academy Of Sciences");
         document.addSubject("Indian Academy Of Sciences");
         document.addCreationDate();
         document.addTitle("Indian Academy Of Sciences");
         return document;
+    }
+
+    protected PdfWriter getPDFWriter(Document document, ByteArrayOutputStream outputStream) throws DocumentException{
+        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PDFEventHandler footer = new PDFEventHandler();
+        pdfWriter.setPageEvent(footer);
+        return pdfWriter;
     }
 
     public Document getPDFDocumentLandscape() {
@@ -68,7 +80,7 @@ public class JDSPDF implements IJDSPDF {
 
         ColumnText ct = new ColumnText(pdfWriter.getDirectContent());
         float pageWidth = pdfWriter.getPageSize().getWidth();
-        float pageHeight = pdfWriter.getPageSize().getHeight();
+        //float pageHeight = pdfWriter.getPageSize().getHeight();
 
         float llx = (pageWidth - Utilities.millimetersToPoints(JDSConstants.width))/2;
         float lly = Utilities.millimetersToPoints(JDSConstants.heightFromBottomOfPage);
@@ -83,7 +95,7 @@ public class JDSPDF implements IJDSPDF {
 
         // 1. Add the first line
         ct.setSimpleColumn(llx, lly, urx, ury);
-        int status = ColumnText.START_COLUMN;
+        //int status = ColumnText.START_COLUMN;
 
         /*
         Paragraph info = new Paragraph();

@@ -30,7 +30,7 @@ public class ChequeReturnPDF extends JDSPDF{
         com.itextpdf.text.Document document = this.getPDFDocument();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
 
         document.open();
         document.add(this.getLetterHead());
@@ -40,6 +40,7 @@ public class ChequeReturnPDF extends JDSPDF{
                                                     Amount, Reason));
         document.add(this.getLetterFooter());
         document.close();
+        pdfWriter.close();
         return outputStream;
 
     }

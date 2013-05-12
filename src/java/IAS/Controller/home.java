@@ -8,27 +8,17 @@ package IAS.Controller;
 //~--- non-JDK imports --------------------------------------------------------
 
 import IAS.Bean.User.LoggedInUserBean;
-
-import IAS.Class.Database;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
-
-import org.apache.log4j.Logger;
-
-//import com.mysql.jdbc.PreparedStatement;
-
-//~--- JDK imports ------------------------------------------------------------
-
 import java.io.IOException;
-
 import java.sql.*;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *

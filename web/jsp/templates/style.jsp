@@ -27,6 +27,10 @@
     $(document).ajaxStop(function(){
         $('#ajaxBusy').hide();
     });
+    $.ajaxSetup({
+        cache: false,
+        dataType: "xml"
+    });
     <%
         String userRole = null;
         try {
@@ -41,7 +45,7 @@
 
 </script>
 <link href="<%=request.getContextPath() + "/css/style.css"%>" type="text/css" rel="stylesheet"/>
-<%if (userRole !=null && userRole.equalsIgnoreCase("monochrome")) {
+<%if (userRole != null && userRole.equalsIgnoreCase("monochrome")) {
         out.println("<link href=\"" + request.getContextPath() + "/css/monochrome.css\"" + " type=\"text/css\" rel=\"stylesheet\"/>");
     }
 %>

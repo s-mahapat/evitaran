@@ -45,7 +45,7 @@ public class AgentInvoicePDF extends JDSPDF {
         com.itextpdf.text.Document document = this.getPDFDocument();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
 
         document.open();
         document.add(this.getLetterHead());
@@ -53,6 +53,7 @@ public class AgentInvoicePDF extends JDSPDF {
         document.add(this.getLetterFooter());
         this.addPaymentFooter(document, pdfWriter);
         document.close();
+        pdfWriter.close();
         return outputStream;
     }
 
@@ -110,13 +111,13 @@ public class AgentInvoicePDF extends JDSPDF {
         inwardNumberCell.setBorder(Rectangle.NO_BORDER);
         inwardNumberCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         inwardNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
-        
+
         InvoiceInfoTable.addCell(invoiceNumberCell);
         InvoiceInfoTable.addCell(inwardNumberCell);
         paragraphInvoiceInfo.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE);
 
         //*********************************
-        // create invoice address table 
+        // create invoice address table
         //*********************************
         addressParagraph.add(addressTable);
         addressParagraph.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
@@ -152,11 +153,11 @@ public class AgentInvoicePDF extends JDSPDF {
         //*********************************
         PdfPTable table = new PdfPTable(3);
         table.setWidthPercentage(100);
-        
+
         PdfPCell cell1 = new PdfPCell(new Paragraph("Subscription Value", JDSPDF.JDS_FONT_BODY));
         cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        
+
         PdfPCell cell2 = new PdfPCell(new Paragraph("Amount Paid", JDSPDF.JDS_FONT_BODY));
         cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -173,17 +174,17 @@ public class AgentInvoicePDF extends JDSPDF {
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
-        
+
         PdfPCell c2 = new PdfPCell(new Phrase(String.valueOf(_inwardFormBean.getAmount()), JDSPDF.JDS_FONT_NORMAL_SMALL));
         c2.setHorizontalAlignment(Element.ALIGN_CENTER);
         c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c2);
-                
+
         PdfPCell c3 = new PdfPCell(new Phrase(String.valueOf(_invoiceBean.getBalance()), JDSPDF.JDS_FONT_NORMAL_SMALL));
         c3.setHorizontalAlignment(Element.ALIGN_CENTER);
         c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c3);
-            
+
         //*********************************
         //Convert balance in words
         //*********************************
@@ -192,7 +193,7 @@ public class AgentInvoicePDF extends JDSPDF {
         paragraphBody.add(Chunk.NEWLINE);
         paragraphBody.add(
                 new Phrase(_EnglishNumberToWords.convertDouble(_invoiceBean.getBalance()).toUpperCase(), JDSPDF.JDS_FONT_BODY));//Convert total value in words
-        
+
         //*********************************
         // Return the whole paragraph
         //*********************************

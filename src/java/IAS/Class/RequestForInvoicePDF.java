@@ -47,12 +47,15 @@ public class RequestForInvoicePDF extends JDSPDF{
 
         com.itextpdf.text.Document document = this.getPDFDocument();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
+        //PDFEventHandler footer = new PDFEventHandler();
+        //pdfWriter.setPageEvent(footer);
         document.open();
         document.add(this.getLetterHead());
         document.add(this.getRFILetterBody(InwardNumber));
         this.addPaymentFooter(document, pdfWriter);
         document.close();
+        pdfWriter.close();
         return outputStream;
 
     }
