@@ -518,6 +518,7 @@ public convertToPdf(){
             paragraph.add(sinfo.getSubscriberName());
             paragraph.add(Chunk.NEWLINE);
         }
+        /*
         if(!sinfo.getDepartment().isEmpty()) {
             paragraph.add(sinfo.getDepartment());
             paragraph.add(Chunk.NEWLINE);
@@ -526,6 +527,7 @@ public convertToPdf(){
             paragraph.add(sinfo.getInstitution());
             paragraph.add(Chunk.NEWLINE);
         }
+        */
         if(!sinfo.getInvoiceAddress().isEmpty()) {
             paragraph.add(sinfo.getInvoiceAddress());
             paragraph.add(Chunk.NEWLINE);
@@ -537,6 +539,7 @@ public convertToPdf(){
                 " " + sinfo.getState();
                 " " + sinfo.getCountry();
         */
+        /*
         String lastLine = "";
         if(!sinfo.getCity().isEmpty()) {
             lastLine = lastLine + sinfo.getCity() + " ";
@@ -549,6 +552,7 @@ public convertToPdf(){
         }
 
         paragraph.add(lastLine);
+        */
         return paragraph;
     }
 
@@ -581,18 +585,24 @@ public convertToPdf(){
                 " " + sinfo.getState();
                 //" " + sinfo.getCountry();
                 */
-        String lastLine = "";
+        //String lastLine = "";
         if(!sinfo.getCity().isEmpty()) {
-            lastLine = lastLine + sinfo.getCity() + " ";
+            paragraph.add(sinfo.getCity());
+            paragraph.add(Chunk.NEWLINE);
+            //lastLine = lastLine + sinfo.getCity() + " ";
         }
         if(!sinfo.getPincode().isEmpty()) {
-            lastLine = lastLine + sinfo.getPincode() + " ";
-        }
-        if(!sinfo.getCountry().isEmpty()) {
-            lastLine = lastLine + sinfo.getCountry();
+            paragraph.add(sinfo.getPincode());
+            paragraph.add(Chunk.NEWLINE);
+            //lastLine = lastLine + sinfo.getPincode() + " ";
         }
 
-        paragraph.add(lastLine);
+        if(!sinfo.getCountry().isEmpty() && !sinfo.getCountry().equals("India")) {
+            paragraph.add(sinfo.getCountry());
+            //lastLine = lastLine + sinfo.getCountry();
+        }
+
+        //paragraph.add(lastLine);
         return paragraph;
     }
 
@@ -709,7 +719,7 @@ public convertToPdf(){
 
     }
 
-    public Paragraph addSubjectReminderType1(int invoiceNo, String invoiceDate, float invoiceAmount)
+    public Paragraph addSubjectReminderType1(String invoiceNo, String invoiceDate, float invoiceAmount)
     {
         Paragraph paragraph = new Paragraph();
 
@@ -722,7 +732,7 @@ public convertToPdf(){
 
         String op="";
 
-        if(invoiceNo == 0){
+        if(invoiceNo.isEmpty() || invoiceNo == null){
             //cb.newlineShowText(template5);
             op = op + template5;
         }else {
@@ -759,7 +769,11 @@ public convertToPdf(){
         String op="";
 
         if(letterDate == null) {
-            letterDate = "";
+            letterDate = ".....";
+        }
+
+        if(letterNumber == null) {
+            letterNumber = ".....";
         }
         op = op + template1 + letterNumber + template2 + letterDate;
 

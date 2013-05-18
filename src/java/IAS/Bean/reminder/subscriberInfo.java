@@ -33,7 +33,8 @@ public class subscriberInfo extends JDSBean {
     String pincode       = "";
     String email         = "";
     int reminders_id;
-    int invoiceNo;
+    //int invoiceNo;
+    String invoiceNo    = "";
     String invoiceDate  = "";
     String letterNumber = "";
     String letterDate = "";
@@ -54,11 +55,20 @@ public class subscriberInfo extends JDSBean {
         this.subscriptionInfo = _subscriptionInfo;
     }
 
+    /*
     public int getInvoiceNo() {
         return this.invoiceNo;
     }
 
     public void setInvoiceNo(int _invoiceNo) {
+        this.invoiceNo = _invoiceNo;
+    }
+    */
+    public String getInvoiceNo() {
+        return this.invoiceNo;
+    }
+
+    public void setInvoiceNo(String _invoiceNo) {
         this.invoiceNo = _invoiceNo;
     }
 
@@ -253,7 +263,7 @@ public class subscriberInfo extends JDSBean {
     public void setLetterNumber(String _letterNumber) {
         this.letterNumber = _letterNumber;
     }
-    
+
     public String getLetterDate() {
         return this.letterDate;
     }

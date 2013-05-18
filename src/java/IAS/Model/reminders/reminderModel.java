@@ -137,7 +137,7 @@ public class reminderModel extends JDSModel {
         int subscriptionId = 0;
         int paramIndex = 1;
         while (rs.next()){
-            subscriptionId = rs.getInt("subscriptionId");   
+            subscriptionId = rs.getInt("subscriptionId");
             int amount = rs.getInt("amount");
             int payment = rs.getInt("payment");
             int balance = 0;
@@ -149,7 +149,7 @@ public class reminderModel extends JDSModel {
                 stInsRem.setInt(++paramIndex, remType);
                 stInsRem.executeUpdate();
             }
-        }        
+        }
         ResultSet rsReminders = getGenReminders();
         xml = util.convertResultSetToXML(rsReminders);
         return xml;
@@ -217,19 +217,20 @@ public class reminderModel extends JDSModel {
 
             int reminders_id     = rsGet.getInt(18);
             sInfo.setReminders_id(reminders_id);
-            
+
             String letterNumber  = rsGet.getString(19);
             sInfo.setLetterNumber(letterNumber);
 
             String letterDate    = rsGet.getString(20);
             sInfo.setLetterDate(letterDate);
-            
+
             String invoiceAddress    = rsGet.getString(21);
             sInfo.setInvoiceAddress(invoiceAddress);
-            
-            int invoiceNo    = rsGet.getInt(22);
+
+            //int invoiceNo    = rsGet.getInt(22);
+            String invoiceNo    = rsGet.getString(22);
             sInfo.setInvoiceNo(invoiceNo);
-            
+
             String invoiceDate    = rsGet.getString(23);
             sInfo.setInvoiceDate(invoiceDate);
 
@@ -311,7 +312,7 @@ public class reminderModel extends JDSModel {
             int reminders_id     = rsGet.getInt(18);
             String letterNumber  = rsGet.getString(19);
             String letterDate    = rsGet.getString(20);
-          
+
 
             // Add the row element
             Element subscriber = doc.createElement("subscriber");
@@ -372,11 +373,11 @@ public class reminderModel extends JDSModel {
             Element _email = doc.createElement("email");
             subscriber.appendChild(_email);
             _email.appendChild(doc.createTextNode(email));
-            
+
             Element _letterNumber = doc.createElement("letterNumber");
             subscriber.appendChild(_letterNumber);
             _letterNumber.appendChild(doc.createTextNode(letterNumber));
-            
+
             Element _letterDate = doc.createElement("letterDate");
             subscriber.appendChild(_letterDate);
             _letterDate.appendChild(doc.createTextNode(letterDate));
