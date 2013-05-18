@@ -601,7 +601,7 @@ public class reportModel extends JDSModel {
 
         if ("1".equals(selall)) {
             selall = "0";
-            sql += " and subscriber.deactive <> " +  selall;
+            sql += " and subscriber.deactive <> True";
         }
 
         if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
@@ -1517,9 +1517,9 @@ public class reportModel extends JDSModel {
         String from = request.getParameter("from");
         String to = request.getParameter("to");
         String invoiceType = request.getParameter("invoiceType");
-        
-               
-        
+
+
+
         String all = request.getParameter("totalBalance");
         String xml = null;
         int totalBalance = 0;
@@ -1531,13 +1531,13 @@ public class reportModel extends JDSModel {
         doc.appendChild(results);
         int paramIndex = 1;
         int count = 0;
-   
+
 
         // For current Data
         String sqlcurr = Queries.getQuery("get_current_invoice");
         if (from != null && from.length() > 0 && to != null && to.length() > 0) {
             sqlcurr += " and invoice.invoiceCreationDate between " + "STR_TO_DATE(" + '"' + from + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + to + '"' + ",'%d/%m/%Y')";
-        }        
+        }
         sqlcurr += " group by invoice.id";
         PreparedStatement stGetCurr = conn.prepareStatement(sqlcurr);
         paramIndex = 1;
@@ -1561,10 +1561,10 @@ public class reportModel extends JDSModel {
             int newEnd = 0;
             String period = "";
             int subexists = 0;
-            
-                        
+
+
             String sqljournalsCurr = Queries.getQuery("get_sub_journals_inv");
-           
+
             PreparedStatement stGetJournals = conn.prepareStatement(sqljournalsCurr);
             stGetJournals.setInt(paramIndex, subscriptionId);
             ResultSet rsJournals = this.db.executeQueryPreparedStatement(stGetJournals);
@@ -1631,46 +1631,46 @@ public class reportModel extends JDSModel {
 
                 subexists = 0;
             }
-        } 
-        
+        }
+
         // For Agent Balance
-        
+
         String sql = Queries.getQuery("get_agent_inoive");
-        
+
         if (from != null && from.length() > 0 && to != null && to.length() > 0) {
             sql += " and agent_invoice.invoiceCreationDate between " + "STR_TO_DATE(" + '"' + from + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + to + '"' + ",'%d/%m/%Y')";
-        }        
-        
-        sql += " group by agent_invoice.id";        
+        }
+
+        sql += " group by agent_invoice.id";
         PreparedStatement stGet = conn.prepareStatement(sql);
         stGet.setString(paramIndex, invoiceType);
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        
+
         while (rs.next()){
             String agentName = rs.getString("agentName");
             int agentId = rs.getInt("agentId");
             int amount = rs.getInt("amount");
-            
+
             String proInvNo = rs.getString("proInvNo");
             if (proInvNo.equals(null) || proInvNo.equals("")){
                 proInvNo = "-";
             }
             String proInvDate = rs.getString("proInvDate");
-            
+
             int startYear = 0;
             int endYear = 0;
             int newStart = 0;
-            int newEnd = 0;            
+            int newEnd = 0;
             String period = "";
             String subscriberNumber = "";
             int subexists = 0;
             String sqlSub = Queries.getQuery("get_agent_subscribers_inv");
-            
+
             PreparedStatement stGetSub = conn.prepareStatement(sqlSub);
             stGetSub.setInt(paramIndex, agentId);
             ResultSet rsSub = this.db.executeQueryPreparedStatement(stGetSub);
             while (rsSub.next()){
-                
+
                 if (subscriberNumber.equals("")){
                     subscriberNumber += rsSub.getString("subscriberNumber");
                 }
@@ -1692,10 +1692,10 @@ public class reportModel extends JDSModel {
                     if (newEnd < endYear){
                         endYear = newEnd;
                     }
-                } 
+                }
                 subexists = 1;
             }
-            
+
             if (subexists == 1){
 
                 totalBalance = totalBalance + amount;
@@ -1728,12 +1728,12 @@ public class reportModel extends JDSModel {
                 _proInvDate.appendChild(doc.createTextNode(proInvDate));
 
                 subexists = 0;
-            }           
+            }
 
         }
-        
+
         // For total Row
-        
+
         Element row = doc.createElement("row");
         results.appendChild(row);
 
@@ -1808,7 +1808,7 @@ public class reportModel extends JDSModel {
         doc.appendChild(results);
         int paramIndex = 1;
         int count = 0;
-   
+
 
         // For current Data
         String sqlcurr = Queries.getQuery("get_current_balance");
@@ -1918,49 +1918,49 @@ public class reportModel extends JDSModel {
                 subexists = 0;
             }
         }
-        
+
         // For Agent Balance
-        
+
         String sql = Queries.getQuery("get_agent_balance");
         PreparedStatement stGet = conn.prepareStatement(sql);
-        
+
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
 
-        
+
         while (rs.next()){
             String agentName = rs.getString("agentName");
             int agentId = rs.getInt("agentId");
             int amount = rs.getInt("amount");
             int payment = rs.getInt("payment");;
             int balance = 0;
-            
+
             String proInvNo = rs.getString("proInvNo");
             if (proInvNo.equals(null) || proInvNo.equals("")){
                 proInvNo = "-";
             }
             String proInvDate = rs.getString("proInvDate");
-            
+
             int startYear = 0;
             int endYear = 0;
             int newStart = 0;
-            int newEnd = 0;            
+            int newEnd = 0;
             String period = "";
             String subscriberNumber = "";
-            
+
             balance = amount - payment;
             int subexists = 0;
             String sqlSub = Queries.getQuery("get_agent_subscribers");
             if (periodStart != 0 && periodEnd != 0){
                 sqlSub += " and subscriptiondetails.startYear  >= " + periodStart;
                 sqlSub += " and subscriptiondetails.endYear  <= " + periodEnd;
-            }            
+            }
             sqlSub += " group by subscription.id order by subscriber.subscriberNumber";
-            
+
             PreparedStatement stGetSub = conn.prepareStatement(sqlSub);
             stGetSub.setInt(paramIndex, agentId);
             ResultSet rsSub = this.db.executeQueryPreparedStatement(stGetSub);
             while (rsSub.next()){
-                
+
                 if (subscriberNumber.equals("")){
                     subscriberNumber += rsSub.getString("subscriberNumber");
                 }
@@ -1982,10 +1982,10 @@ public class reportModel extends JDSModel {
                     if (newEnd < endYear){
                         endYear = newEnd;
                     }
-                } 
+                }
                 subexists = 1;
             }
-            
+
             if (subexists == 1 && balance > 0){
 
                 totalBalance = totalBalance + balance;
@@ -2018,12 +2018,12 @@ public class reportModel extends JDSModel {
                 _proInvDate.appendChild(doc.createTextNode(proInvDate));
 
                 subexists = 0;
-            }           
+            }
 
         }
-        
+
         // For total Row
-        
+
         Element row = doc.createElement("row");
         results.appendChild(row);
 
@@ -2064,7 +2064,7 @@ public class reportModel extends JDSModel {
         return xml;
 
     }
-     
+
     public ResultSet gml() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
         String sql;
@@ -2075,7 +2075,7 @@ public class reportModel extends JDSModel {
         stGet.setInt(1, year);
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
-    }     
+    }
 }
 
 /*
