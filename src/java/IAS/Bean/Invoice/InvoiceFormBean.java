@@ -37,6 +37,8 @@ public class InvoiceFormBean {
     private float amount;
     private float inwardamount;
     private int invoiceTypeID;
+    private String letterNumber;
+    private String letterDate;
 
     public int getInvoiceTypeID() {
         return this.invoiceTypeID;
@@ -282,5 +284,21 @@ public class InvoiceFormBean {
 
     public void setPincode(int _pincode) {
         this.pincode = _pincode;
+    }
+
+    public String getLetterNumber() {
+        return this.letterNumber;
+    }
+
+    public void setLetterNumber(String _letterNumber) {
+        this.letterNumber = _letterNumber;
+    }
+
+    public String getLetterDate() {
+        return this.letterDate != null ? this.letterDate : "";
+    }
+
+    public void setLetterDate(String _letterDate) {
+        this.letterDate = _letterDate;
     }
 }

@@ -18,6 +18,8 @@
                 var JournalYearsHash = new Object();
                 var JournalPriceHash = new Object();
                 var JournalCopiesHash = new Object();
+                //var letterNumber = ${invoiceFormBean.letterNumber};
+                //var letterDate = ${invoiceFormBean.letterDate};
                 $(document).ready(function(){
 
                     $.ajax({
@@ -81,6 +83,7 @@
                             var _orightml = $(".datatable").html();
                             html = _orightml + html;
                             $(".datatable").html(html);
+                            $("#refNumber").html("Ref: Your Order No. ${invoiceFormBean.letterNumber} Dated  ${invoiceFormBean.letterDate} ");
                             $("#total").html("INDIAN RS: " + toWords(${invoiceFormBean.balance}).toUpperCase());
                         },
                         error: function(jqXHR,textStatus,errorThrown){
@@ -159,7 +162,7 @@
                                             }
                                             String _ship_address = invoiceFormBean.getShippingAddress();
                                             if (_ship_address.length() > 0) {
-                                                out.println(_ship_address.length());
+                                                //out.println(_ship_address.length());
                                                 out.println(_ship_address + "</br>");
                                             }
                                             String _city = invoiceFormBean.getCity();
@@ -188,6 +191,7 @@
                                     </tr>
                                 </table>
                             </div>
+                            <div class="invoiceLeftDiv" id="refNumber" style="width: 90%;"></div>
                             <div class="invoiceLeftDiv" id="total"></div>
                             <div class="invoiceRightDiv">
                                 <p><%=JDSConstants.IAS_LETTERFOOT_CLOSING%></p>

@@ -205,7 +205,8 @@ function listSubscription(){
                 for (var i = 0; i < ids.length; i++) {
 
                     var subscription_via_agent = jQuery("#subscriptionList").getCell(ids[i], 'Agent');
-                    var islegacy = parseInt(jQuery("#subscriptionList").getCell(ids[i], 'legacy'));
+                    // disable legacy checks for now
+                    var islegacy = 0; //parseInt(jQuery("#subscriptionList").getCell(ids[i], 'legacy'));
                     var legacy_balance = parseInt(jQuery("#subscriptionList").getCell(ids[i], 'legacy_balance'));
                     var subscription_value = parseFloat(jQuery("#subscriptionList").getCell(ids[i], 'subscriptionValue'));
                     var discount = parseFloat(jQuery("#subscriptionList").getCell(ids[i], 'discount'));
@@ -239,6 +240,7 @@ function listSubscription(){
 
                     //action = "<a style=\"color:blue\" href=\"#\" onclick=\"getSubscriptionDetails(" + ids[i] + ")\">" + "Details" + "</a>";
                     var action = "";
+
                     if(islegacy != 1){
                         action = "<a style=\"color:blue\" href=\"subscription?action=edit" +
                         "&subscriberNumber=" + $("#subscriberNumber").val() +

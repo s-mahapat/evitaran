@@ -37,7 +37,7 @@
                 margin: 10% auto 0 auto;
                 width: 40%;
                 text-align: center;
-                height: 300px;
+                height: 280px;
             }
 
             #loginErrorMsg{
@@ -56,19 +56,21 @@
                 width: 100%;
                 margin: 20px auto;
                 float: left;
+                display: inline-table;
             }
 
             .authLabel{
                 width: 25%;
                 float: left;
-                margin-left: 10%;
+                margin-left: 0%;
+                margin-right: 0px;
                 text-align: right;
             }
 
             .authInput{
                 float: left;
-                width: 50%;
-                margin-right: 10%;
+                width: 40%;
+                margin-left: 20px;
             }
 
             .authAction{

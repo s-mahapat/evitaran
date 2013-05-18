@@ -141,9 +141,10 @@ function drawInvoiceTable() {
                 //var invoice_no = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'InvoiceNo');
                 var invoice_type_id = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'invoice_type_id');
                 var inward_no = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'inwardNumber');
+                //var amountPaid = parseFloat(jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'AmountPaid'));
                 var action = null;
 
-                // disable the view link for Please refer list invoices
+                // disable the view link for Please refer list invoices and if there are no payments made
                 if (invoice_type_id != jdsconstants.INVOICE_UPCOMING_YEAR_INVOICE) {
                     action = '<a style="color:blue;" href="#" onclick="showInvoice(\'' + inward_no + '\',' + invoice_type_id + ')">Print</a>';
                 }
@@ -174,8 +175,8 @@ function showInvoice(inward_no, invoice_type_id) {
         title: 'Invoice',
         modal: true,
         stack: true,
-        height: ($(window).height() * 0.98),
-        width: ($(window).width() * 0.75),
+        height: ($(window).height() * 0.95),
+        width: ($(window).width() * 0.85),
         buttons: {
 
             'Close': function() {

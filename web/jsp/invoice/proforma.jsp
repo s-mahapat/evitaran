@@ -80,6 +80,7 @@
                         var _orightml = $(".datatable").html();
                         html = _orightml + html;
                         $(".datatable").html(html);
+                        $("#refNumber").html("Ref: Your Order No. ${invoiceFormBean.letterNumber} Dated  ${invoiceFormBean.letterDate} ");
                         $("#total").html("INDIAN RS: " + toWords(_total).toUpperCase());
                     },
                     error: function(jqXHR,textStatus,errorThrown){
@@ -187,6 +188,7 @@
                                     </tr>
                                 </table>
                             </div>
+                            <div class="invoiceLeftDiv" id="refNumber" style="width: 90%;"></div>
                             <div class="invoiceLeftDiv" id="total"></div>
                             <div class="invoiceRightDiv">
                                 <p><%=JDSConstants.IAS_LETTERFOOT_CLOSING%></p>

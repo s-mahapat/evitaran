@@ -356,15 +356,20 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         //paragraphBody.add(new Phrase(bodyText));
         //paragraphBody.add(Chunk.NEWLINE);
         paragraphBody.add(table);
-        EnglishNumberToWords _EnglishNumberToWords = new EnglishNumberToWords();
 
+        // add the reference/letter number
+        paragraphBody.add(Chunk.NEWLINE);
+        String letterNoText = "Ref: Your Order No: %s Dated %s";
+        letterNoText = String.format(letterNoText, _invoiceBean.getLetterNumber(), _invoiceBean.getLetterDate());
+        paragraphBody.add(new Phrase(letterNoText, JDSPDF.JDS_FONT_BODY));
         paragraphBody.add(Chunk.NEWLINE);
 
+        EnglishNumberToWords _EnglishNumberToWords = new EnglishNumberToWords();
+        paragraphBody.add(Chunk.NEWLINE);
         paragraphBody.add(
                 new Phrase(_EnglishNumberToWords.convertDouble(balance).toUpperCase(), JDSPDF.JDS_FONT_BODY));//Convert total value in words
         paragraphOuter.add(invoiceHeader);
         paragraphOuter.add(InvoiceInfoTable);
-
         paragraphOuter.add(addressParagraph);
          paragraphOuter.add(paragraphBody);
 
