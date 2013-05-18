@@ -111,8 +111,6 @@
 
                     jQuery("#journalVolumeDetailsTable").jqGrid('saveRow',ids[i]);
                 }
-                jQuery("#btnSave,#btnCancel").attr("disabled",true);
-                jQuery("#btnEdit").attr("disabled",false);
 
                 jQuery("#journalVolumeDetailsTable").setGridParam({postData:
                         {year       : $("#year").val(),
@@ -123,6 +121,9 @@
                 jQuery("#journalVolumeDetailsTable").setGridParam({ datatype: "xml" });
                 jQuery("#journalVolumeDetailsTable").trigger("clearGridData");
                 jQuery("#journalVolumeDetailsTable").trigger("reloadGrid");
+
+                jQuery("#btnSave,#btnCancel").attr("disabled",true);
+                jQuery("#btnEdit").attr("disabled",false);
             }
 
             function cancelJournalDetails(){

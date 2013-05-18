@@ -3,7 +3,9 @@ package IAS.Model.masterdata;
 import IAS.Bean.masterdata.journalDetailsFormBean;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
+import IAS.Class.util;
 import IAS.Model.JDSModel;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import javax.servlet.http.HttpServletRequest;
@@ -84,7 +86,7 @@ public class journalDetailsModel extends JDSModel{
         request.setAttribute("journalDetailsFormBean", this._journalDetailsFormBean);
     }
 
-    public void save() throws IllegalAccessException, InvocationTargetException, SQLException{
+    public String save() throws IllegalAccessException, InvocationTargetException, SQLException, ParserConfigurationException, ParserConfigurationException, TransformerException, IOException{
         journalDetailsFormBean journalDetailsFormBean = new IAS.Bean.masterdata.journalDetailsFormBean();
         request.setAttribute("journalDetailsFormBean", journalDetailsFormBean);
 
@@ -130,6 +132,8 @@ public class journalDetailsModel extends JDSModel{
         }
 
         request.setAttribute("journalDetailsFormBean", this._journalDetailsFormBean);
+        String xml = util.convertStringToXML("success", "action");
+        return xml;
     }
 
     public String searchJournalVolumeDetails() throws SQLException, IllegalAccessException, InvocationTargetException, ParserConfigurationException, TransformerException{

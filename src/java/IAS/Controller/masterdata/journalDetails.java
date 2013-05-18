@@ -46,9 +46,13 @@ public class journalDetails extends JDSController {
                     "</select>";
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
+
             } else if(action.equalsIgnoreCase("save")) {
-                _journalDetailsModel.save();
-                url = "/jsp/masterdata/journalDetails.jsp";
+                String xml = _journalDetailsModel.save();
+                request.setAttribute("xml", xml);
+                //url = "/jsp/masterdata/journalDetails.jsp";
+                url = "xmlserver";
+
             } else if(action.equalsIgnoreCase("goToJournalVolumeDetails")) {
                 url = "/jsp/masterdata/journalVolumeDetails.jsp";
             } else if(action.equalsIgnoreCase("goToJournalDetails")) {
@@ -63,7 +67,8 @@ public class journalDetails extends JDSController {
                 url = "/xmlserver";
             } else if(action.equalsIgnoreCase("saveJournalVolumeDetails")) {
                 _journalDetailsModel.saveJournalVolumeDetails();
-                url = "/jsp/masterdata/journalVolumeDetails.jsp";
+                //url = "/jsp/masterdata/journalVolumeDetails.jsp";
+                url = "/xmlserver";
             }
 
         }catch (Exception e) {

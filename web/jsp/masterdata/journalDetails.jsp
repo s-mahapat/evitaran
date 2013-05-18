@@ -11,9 +11,8 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/masterdata/journalDetails.css"/>
         <title>Journal Details</title>
-        <script type="text/javascript" src="js/masterdata/displayPrintOrder.js"></script>
-        <script type="text/javascript" src="js/masterdata/validatePrintOrder.js"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.jqGrid.min.js"></script>
         <script type="text/javascript" src="js/jquery/grid.inlinedit.js"></script>
         <script type="text/javascript" src="js/jquery/grid.celledit.js"></script>
         <script>
@@ -95,8 +94,9 @@
                 for (var i = 0; i < ids.length; i++) {
                     jQuery("#journalDetailsTable").jqGrid('editRow',ids[i]);
                 }
-                this.disabled = 'true';
-                jQuery("#btnSave,#btnCancel").attr("disabled",false);
+                //this.disabled = 'true';
+                //jQuery("#btnSave,#btnCancel").attr("disabled",false);
+                jQuery("#btnSave,#btnCancel").button("enable");
             }
 
             function saveJournalDetails(){
@@ -110,8 +110,6 @@
 
                     jQuery("#journalDetailsTable").jqGrid('saveRow',ids[i]);
                 }
-                jQuery("#btnSave,#btnCancel").attr("disabled",true);
-                jQuery("#btnEdit").attr("disabled",false);
 
                 jQuery("#journalDetailsTable").setGridParam({postData:
                         {year       : $("#year").val(),
@@ -121,6 +119,12 @@
                 jQuery("#journalDetailsTable").setGridParam({ datatype: "xml" });
                 jQuery("#journalDetailsTable").trigger("clearGridData");
                 jQuery("#journalDetailsTable").trigger("reloadGrid");
+
+                //jQuery("#btnSave,#btnCancel").attr("disabled",true);
+                //jQuery("#btnEdit").attr("disabled",false);
+                jQuery("#btnSave,#btnCancel").button("disable");
+                jQuery("#btnEdit").button("enable");
+
             }
 
             function cancelJournalDetails(){

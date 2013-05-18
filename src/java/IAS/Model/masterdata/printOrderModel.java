@@ -4,7 +4,9 @@ package IAS.Model.masterdata;
 import IAS.Bean.masterdata.printOrderFormBean;
 import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
+import IAS.Class.util;
 import IAS.Model.*;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.text.ParseException;
@@ -29,8 +31,8 @@ public class printOrderModel extends JDSModel{
 
     }
 
-    public synchronized void Save () throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
+    public String Save () throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException, ParserConfigurationException, TransformerException, IOException{
 
         printOrderFormBean printOrderFormBean = new IAS.Bean.masterdata.printOrderFormBean();
         request.setAttribute("printOrderFormBean", printOrderFormBean);
@@ -78,7 +80,9 @@ public class printOrderModel extends JDSModel{
                 db.executeUpdatePreparedStatement(pst);
             }
         }
+        String xml = util.convertStringToXML("success", "action");
         request.setAttribute("printOrderFormBean", this._printOrderFormBean);
+        return xml;
     }
 
     public String searchPrintOrder() throws SQLException, ParseException, ParserConfigurationException, TransformerException, IllegalAccessException, InvocationTargetException

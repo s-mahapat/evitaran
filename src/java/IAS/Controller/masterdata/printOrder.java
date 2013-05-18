@@ -45,8 +45,10 @@ public class printOrder extends JDSController {
              * }else
              */
             if (action.equalsIgnoreCase("save")) {
-                _printOrderModel.Save();
-                url = "/jsp/masterdata/displayPrintOrder.jsp";
+                String xml = _printOrderModel.Save();
+                //url = "/jsp/masterdata/displayPrintOrder.jsp";
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             } else if (action.equalsIgnoreCase("searchPrintOrder")) {
                 String xml = _printOrderModel.searchPrintOrder();
 

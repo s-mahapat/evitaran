@@ -37,7 +37,8 @@ public class journalSubjectGroup extends JDSController {
             }if(action.equalsIgnoreCase("save")){
 
                 _journalSubjectGroupModel.save();
-                url = "/jsp/masterdata/journalSubjectGroup.jsp";
+                //url = "/jsp/masterdata/journalSubjectGroup.jsp";
+                url = "/xmlserver";
 
 
             }else if(action.equalsIgnoreCase("search")){

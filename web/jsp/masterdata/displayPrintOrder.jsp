@@ -111,11 +111,7 @@
                             "&issueNo=" + $("#printOrderTable").getCell(ids[i], 'issueNo')
                     });
 
-                    //var aPO = $("#printOrderTable").getCell(ids[i], 'issues') * $("#printOrderTable").getCell(ids[i], 'printOrder');
-
                     jQuery("#printOrderTable").jqGrid('saveRow',ids[i]);
-                    //setGridParam requires a reload for value to reflect in the cell. Hence using setCell instead
-                    //jQuery("#printOrderTable").setGridParam({annualPrintOrder: aPO});
                 }
 
                 // The annual print order gets calculated on the server. To get that value we initiate a reloadgrid.
@@ -130,8 +126,6 @@
 
                 jQuery("#btnSave,#btnCancel").button("disable");
                 jQuery("#btnEdit").button("enable");
-                //$('[type="submit"]').button('disable');
-                 //$('#mybutton').attr('disabled', true);
             }
 
             function cancelPrintOrder(){
@@ -309,7 +303,7 @@
                                     <input class="IASButton" TABINDEX="3" type="button" value="Edit" onclick="editPrintOrder()" id="btnEdit" name="btnEditAction"/>
                                 </div>
                                 <div id="saveBtnDiv">
-                                    <button class="IASButton SaveButton" TABINDEX="4" type="button" value="Save" onclick="savePrintOrder()" id="btnSave" name="btnSaveAction"/>Save</button>
+                                    <input class="IASButton" TABINDEX="4" type="button" value="Save" onclick="savePrintOrder()" id="btnSave" name="btnSaveAction"/>
                                 </div>
                                 <div id="cancelBtnDiv">
                                     <input class="IASButton" TABINDEX="5" type="button" value="Cancel" onclick="cancelPrintOrder()" id="btnCancel" name="btnCancelAction"/>
