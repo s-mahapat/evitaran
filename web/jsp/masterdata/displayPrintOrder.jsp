@@ -117,8 +117,6 @@
                     //setGridParam requires a reload for value to reflect in the cell. Hence using setCell instead
                     //jQuery("#printOrderTable").setGridParam({annualPrintOrder: aPO});
                 }
-                jQuery("#btnSave,#btnCancel").button("disable");
-                jQuery("#btnEdit").button("enable");
 
                 // The annual print order gets calculated on the server. To get that value we initiate a reloadgrid.
                 jQuery("#printOrderTable").setGridParam({postData:
@@ -129,6 +127,11 @@
                 jQuery("#printOrderTable").setGridParam({ datatype: "xml" });
                 jQuery("#printOrderTable").trigger("clearGridData");
                 jQuery("#printOrderTable").trigger("reloadGrid");
+
+                jQuery("#btnSave,#btnCancel").button("disable");
+                jQuery("#btnEdit").button("enable");
+                //$('[type="submit"]').button('disable');
+                 //$('#mybutton').attr('disabled', true);
             }
 
             function cancelPrintOrder(){
@@ -201,6 +204,13 @@
                 jdsAppend(requestURL,"volumeNumber","volume");
             }
 
+            function clearGrid() {
+                jQuery("#printOrderTable").trigger("clearGridData");
+                jQuery("#printOrderTable").trigger("reloadGrid");
+                $("#year").val(0);
+                $("#volume").val(0);
+            }
+
             /*
             function addNewPrintOrder(){
                 if($("#year").val() == 0)
@@ -246,7 +256,7 @@
                                         <label>Journal:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="2" name="journalName" id="journalName">
+                                        <select class="IASComboBoxWide" TABINDEX="2" name="journalName" id="journalName" onchange="clearGrid()">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -268,7 +278,7 @@
                                         <label>Volume Number:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
+                                        <select class="IASComboBox" TABINDEX="4" name="volume" id="volume">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
