@@ -758,13 +758,31 @@ public class subscriberModel extends JDSModel {
 
     public String getInvoiceAddress(subscriberFormBean subscriberFormBean) {
         String strCRLF = "\n";
-        String strInvoiceAddress = subscriberFormBean.getInvoiceAddress();
+        String strInvoiceAddress = "";
 
-        strInvoiceAddress += subscriberFormBean.getDepartment().length() > 0 ? strCRLF.concat(subscriberFormBean.getDepartment()) : " ";
-        strInvoiceAddress += subscriberFormBean.getInstitution().length() > 0 ? strCRLF.concat(subscriberFormBean.getInstitution()) : " ";
-        strInvoiceAddress += subscriberFormBean.getCity().length() > 0 ? strCRLF.concat(subscriberFormBean.getCity()) : " ";
-        strInvoiceAddress += subscriberFormBean.getDistrict().length() > 0 ? strCRLF.concat(subscriberFormBean.getDistrict()) : " ";
-        strInvoiceAddress += subscriberFormBean.getState().length() > 0 ? strCRLF.concat(subscriberFormBean.getState()) : " ";
+        if(subscriberFormBean.getDepartment().length() > 0){
+            strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getDepartment()) : subscriberFormBean.getDepartment();
+        }
+
+        if(subscriberFormBean.getInstitution().length() > 0){
+           strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getInstitution()) : subscriberFormBean.getInstitution();
+        }
+
+        if(subscriberFormBean.getInvoiceAddress().length() > 0){
+           strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getInvoiceAddress()) : subscriberFormBean.getInvoiceAddress();
+        }
+
+        if(subscriberFormBean.getCity().length() > 0){
+           strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getCity()) : subscriberFormBean.getCity();
+        }
+
+        if(subscriberFormBean.getDistrict().length() > 0){
+           strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getDistrict()) : subscriberFormBean.getDistrict();
+        }
+
+        if(subscriberFormBean.getState().length() > 0){
+           strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getState()) : subscriberFormBean.getState();
+        }
 
         if (!subscriberFormBean.getCountry().isEmpty()) {
             if (subscriberFormBean.getCountry().equalsIgnoreCase("INDIA")) { // Do not add INDIA in the address

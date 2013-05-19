@@ -17,14 +17,13 @@ function makeInwardReadOnly() {
     //hide the calendar icon using jquery .ui-datepicker-trigger
     $("#paymentDate").datepicker("disable");
     $("#letterDate").datepicker("disable");
-    //$(".ui-datepicker-trigger").hide();
-//    if (document.getElementById("chequeDDReturn").checked) {
-//        $("#btnSendReturn").button("enable");
-//    } else {
-//        $("#btnSendReturn").button("disable");
-//    }
 
-    // dummy function to generate random inward numbers
-    //document.getElementById("inwardNumber").value = "11K-" + Math.floor(Math.random()*99999);
+    // disable the email and print buttons if the subscriber id does not exist.
+    // this can happen if the inward is created but the subscriber is not, we then do not
+    // to whom to send the email/print.
+    // also we need the subscriber if to maintain history
+    if(isEmptyValue($("#subscriberId").val())){
+        $("#btnSendReturn").button("disable");
+    }
 
 }

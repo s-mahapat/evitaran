@@ -42,6 +42,21 @@ public class ExcelReader {
         columnCount = s.getColumns();
     }
 
+    private int getActualRows(Sheet s){
+        int actualRowCount = 0;
+        int _rowCount = s.getRows();
+        for(int row=0; row<_rowCount; row++){
+            Cell rowData[] = s.getRow(row);
+            for(int col=0; col<rowData.length; col++){
+                String contents = rowData[col].getContents();
+                if(contents.length() > 0){
+                    actualRowCount++;
+                }
+            }
+        }
+        return actualRowCount;
+    }
+
     public String[] getNextRow() throws IOException, BiffException {
 
         String[] Data = new String[columnCount];
@@ -63,7 +78,16 @@ public class ExcelReader {
             }
 
         }
-
+        boolean EmptyRow = true;
+        for(int col=0; col<rowData.length; col++){
+            if(rowData[col].getType() != CellType.EMPTY ){
+                EmptyRow = false;
+                break;
+            }
+        }
+        if(EmptyRow){
+            return null;
+        }
         this.currentRow++;
         return Data;
     }

@@ -41,6 +41,11 @@
                     $("#btnPrintPreview").button("disable");
                 }
 
+                if(isEmptyValue($("#paymentDate").val()) || isEmptyValue($("#chqddNumber").val())){
+                    $("#btnEmail").button("disable");
+                    $("#btnPrintPreview").button("disable");
+                }
+
 
 
 

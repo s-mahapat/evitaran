@@ -28,6 +28,7 @@ public class InvoiceFormBean {
     private String department;
     private String institute;
     private String city;
+    private String state;
     private String country;
     private int pincode;
     private String subsciberNumber;
@@ -268,6 +269,14 @@ public class InvoiceFormBean {
 
     public void setCity(String _city) {
         this.city = _city;
+    }
+
+    public String getState() {
+        return this.state;
+    }
+
+    public void setState(String _state) {
+        this.state = _state;
     }
 
     public String getCountry() {

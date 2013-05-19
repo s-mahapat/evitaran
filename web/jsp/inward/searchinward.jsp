@@ -120,6 +120,9 @@
                     },
                     loadError: function(xhr,status,error){
                         alert("Failed getting data from server " + status);
+                    },
+                    onSelectRow: function(rowid, status, e){
+                        window.location.href = "inward?action=view&inwardNumber=" + rowid;
                     }
 
                 });

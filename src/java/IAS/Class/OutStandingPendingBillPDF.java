@@ -148,6 +148,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         String _shipping_address = _invoiceBean.getShippingAddress();
         String _city = _invoiceBean.getCity();
         String _country = _invoiceBean.getCountry();
+        String _state = _invoiceBean.getState();
         int _pincode = _invoiceBean.getPincode();
 
         if (_department != null && _department.length() > 0) {
@@ -165,6 +166,10 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         if(_city.length() > 0){
             paragraphShippingAddress.add(Chunk.NEWLINE);
             paragraphShippingAddress.add(new Phrase(_city, JDSPDF.JDS_FONT_BODY));
+        }
+        if(_state.length() > 0){
+            paragraphShippingAddress.add(Chunk.NEWLINE);
+            paragraphShippingAddress.add(new Phrase(_state, JDSPDF.JDS_FONT_BODY));
         }
         if(_country.length() > 0 && !_country.equalsIgnoreCase("india")){
             paragraphShippingAddress.add(Chunk.NEWLINE);

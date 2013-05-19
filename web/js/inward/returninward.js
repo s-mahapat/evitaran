@@ -17,7 +17,7 @@ function setOtherReturnReason(){
 }
 
 function validate(){
-    var rc = checkMandatoryFields(); 
+    var rc = checkMandatoryFields();
     if(rc){
         if($("#chequeDDReturnReason").val() == "NULL"){
             rc = false;
@@ -25,8 +25,8 @@ function validate(){
         }else{
             rc = true
         }
-        
-    }    
+
+    }
     return rc;
 }
 
@@ -39,7 +39,7 @@ function showChequeDDReturnPrintPreview(url){
     _window.onload = function(){
         _window.document.title="Inward Return Print Preview";
     }
-  
+
     //$("#chequeReturn").attr("action",url);
     //$("#chequeReturn").submit();
     return false;

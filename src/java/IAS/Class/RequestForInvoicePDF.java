@@ -149,6 +149,7 @@ public class RequestForInvoicePDF extends JDSPDF{
         String _city = _invoiceBean.getCity();
         String _country = _invoiceBean.getCountry();
         int _pincode = _invoiceBean.getPincode();
+        String _state = _invoiceBean.getState();
 
         if (_department != null && _department.length() > 0) {
             paragraphShippingAddress.add(Chunk.NEWLINE);
@@ -169,7 +170,10 @@ public class RequestForInvoicePDF extends JDSPDF{
             paragraphShippingAddress.add(Chunk.NEWLINE);
             paragraphShippingAddress.add(new Phrase(_city, JDSPDF.JDS_FONT_BODY));
         }
-
+         if(_state.length() > 0){
+            paragraphShippingAddress.add(Chunk.NEWLINE);
+            paragraphShippingAddress.add(new Phrase(_state, JDSPDF.JDS_FONT_BODY));
+        }
         if(_country.length() > 0 && !_country.equalsIgnoreCase("india")){
             paragraphShippingAddress.add(Chunk.NEWLINE);
             paragraphShippingAddress.add(new Phrase(_country, JDSPDF.JDS_FONT_BODY));
