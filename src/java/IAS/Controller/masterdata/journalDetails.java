@@ -51,7 +51,7 @@ public class journalDetails extends JDSController {
                 String xml = _journalDetailsModel.save();
                 request.setAttribute("xml", xml);
                 //url = "/jsp/masterdata/journalDetails.jsp";
-                url = "xmlserver";
+                url = "/xmlserver";
 
             } else if(action.equalsIgnoreCase("goToJournalVolumeDetails")) {
                 url = "/jsp/masterdata/journalVolumeDetails.jsp";

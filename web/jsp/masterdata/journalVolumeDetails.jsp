@@ -89,7 +89,7 @@
 
             });
 
-            function editJournalDetails(){
+            function editJournalVolumeDetails(){
                 var ids = jQuery("#journalVolumeDetailsTable").jqGrid('getDataIDs');
 
                 for (var i = 0; i < ids.length; i++) {
@@ -99,7 +99,7 @@
                 jQuery("#btnSave,#btnCancel").attr("disabled",false);
             }
 
-            function saveJournalDetails(){
+            function saveJournalVolumeDetails(){
                 var ids = jQuery("#journalVolumeDetailsTable").jqGrid('getDataIDs');
 
                 for (var i = 0; i < ids.length; i++) {
@@ -126,7 +126,7 @@
                 jQuery("#btnEdit").attr("disabled",false);
             }
 
-            function cancelJournalDetails(){
+            function cancelJournalVolumeDetails(){
                 var ids = jQuery("#journalVolumeDetailsTable").jqGrid('getDataIDs');
 
                 for (var i = 0; i < ids.length; i++) {
@@ -219,13 +219,13 @@
                             <fieldset class="subMainFieldSet">
                                 <div class="IASFormFieldDiv">
                                     <div id="editBtnDiv">
-                                        <input class="IASButton" TABINDEX="5" type="button" value="Edit" onclick="editJournalDetails()" id="btnEdit" name="btnEditAction"/>
+                                        <input class="IASButton" TABINDEX="5" type="button" value="Edit" onclick="editJournalVolumeDetails()" id="btnEdit" name="btnEditAction"/>
                                     </div>
                                     <div id="saveBtnDiv">
-                                        <input class="IASButton" TABINDEX="6" type="button" value="Save" onclick="saveJournalDetails()" id="btnSave" name="btnSaveAction"/>
+                                        <input class="IASButton" TABINDEX="6" type="button" value="Save" onclick="saveJournalVolumeDetails()" id="btnSave" name="btnSaveAction"/>
                                     </div>
                                     <div id="cancelBtnDiv">
-                                        <input class="IASButton" TABINDEX="7" type="button" value="Cancel" onclick="cancelJournalDetails()" id="btnCancel" name="btnCancelAction"/>
+                                        <input class="IASButton" TABINDEX="7" type="button" value="Cancel" onclick="cancelJournalVolumeDetails()" id="btnCancel" name="btnCancelAction"/>
                                     </div>
                                 </div>
                             </fieldset>
