@@ -586,10 +586,12 @@ public convertToPdf(){
                 //" " + sinfo.getCountry();
                 */
         //String lastLine = "";
-        if(!sinfo.getCity().isEmpty()) {
-            paragraph.add(sinfo.getCity());
-            paragraph.add(Chunk.NEWLINE);
-            //lastLine = lastLine + sinfo.getCity() + " ";
+        if(sinfo.getCity() != null) {
+            if(!sinfo.getCity().isEmpty()) {
+                paragraph.add(sinfo.getCity());
+                paragraph.add(Chunk.NEWLINE);
+                //lastLine = lastLine + sinfo.getCity() + " ";
+            }
         }
         if(!sinfo.getPincode().isEmpty()) {
             paragraph.add(sinfo.getPincode());
