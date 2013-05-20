@@ -67,14 +67,21 @@
             </ul>
 
         </li>
-        <li class="menu"><a href="#">Mailing List</a>
+        <li class="menu"><a href="#">Mailing/ Back Issue List</a>
             <ul>
-                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gml"%>">Generate/Print Mailing List</a></li>
-                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=vml"%>">View/Print Mailing List</a></li>
-                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gbil"%>">Generate/Print Back Issue List</a></li>
-                <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=vbil"%>">View/Print Back Issue List</a></li>
-            </ul>
-
+                <li class="submenu"><a href="#">Mailing List</a>
+                    <ul>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gml"%>">Generate/Print Mailing List</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=vml"%>">View/Print Mailing List</a></li>
+                    </ul>
+                </li>
+                <li class="submenu"><a href="#">Back Issue List</a>
+                    <ul>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gbil"%>">Generate/Print Back Issue List</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=vbil"%>">View/Print Back Issue List</a></li>
+                    </ul>
+                </li>
+             </ul>
         </li>
         <li class="menu">
             <a href="#">Reminders</a>
@@ -164,7 +171,7 @@
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=printOrder"%>">Print Order</a></li>
                     </ul>
                 </li>
-                <li class="menu"><a href="#">Agents</a>
+                <li class="submenu"><a href="#">Agents</a>
                     <ul>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/addMasterData?action=addAgent"%>">Add Agent</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=searchAgent"%>">Search Agent</a></li>

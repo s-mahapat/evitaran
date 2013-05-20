@@ -150,10 +150,10 @@ public class pdfserver extends JDSController {
             } else if(action.equalsIgnoreCase("printHelp")){
 
                 response.setContentType("application/pdf");
-                response.setHeader("Content-Disposition", "inline; filename=help.pdf");
+                response.setHeader("Content-Disposition", "inline; filename=eVitaran - User Manual.pdf");
 
                 ServletContext context = ServletContextInfo.getServletContext();
-                InputStream is = context.getResourceAsStream("/WEB-INF/classes/help.pdf");
+                InputStream is = context.getResourceAsStream("/WEB-INF/classes/eVitaran - User Manual.pdf");
                 int read=0;
                 byte[] bytes = new byte[1024];
 

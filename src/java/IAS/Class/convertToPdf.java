@@ -581,7 +581,7 @@ public convertToPdf(){
 
         /*
         String lastLine = sinfo.getCity() +
-                " " + sinfo.getPincode() +
+               " " + sinfo.getPincode() +
                 " " + sinfo.getState();
                 //" " + sinfo.getCountry();
                 */
@@ -1278,8 +1278,10 @@ public convertToPdf(){
 
         Font font;
         font = new Font(sfontType, sfontSizeHeader-1, sfontStyle, BaseColor.BLACK);
-        info.add(new Chunk(bilLabel, font));
-        info.add(Chunk.NEWLINE);
+        if(!bilLabel.isEmpty()) {
+            info.add(new Chunk(bilLabel, font));
+            info.add(Chunk.NEWLINE);
+        }
 
         font = new Font(sfontType, sfontSize, sfontStyle, BaseColor.BLACK);
         String firstLine = sLabelInfo.getsubscriberName() + " " + sLabelInfo.getsubscriberNumber();
@@ -1298,19 +1300,28 @@ public convertToPdf(){
             //        " " + "to" +
             //        " " + sLabelInfo.getendDate();
             //}
-            info.add(new Chunk(firstLine, font));
-            info.add(Chunk.NEWLINE);
+            if(!firstLine.isEmpty()) {
+                info.add(new Chunk(firstLine, font));
+                info.add(Chunk.NEWLINE);
+            }
         //}
 
         //info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
         //info.add(Chunk.NEWLINE);
-        info.add(new Chunk(sLabelInfo.getdepartment(), font));
-        info.add(Chunk.NEWLINE);
-        info.add(new Chunk(sLabelInfo.getinstitution(), font));
-        info.add(Chunk.NEWLINE);
-        info.add(new Chunk(sLabelInfo.getaddress(), font));
-        info.add(Chunk.NEWLINE);
+        if(!sLabelInfo.getdepartment().isEmpty()) {    
+            info.add(new Chunk(sLabelInfo.getdepartment(), font));
+            info.add(Chunk.NEWLINE);
+        }
+        if(!sLabelInfo.getinstitution().isEmpty()) {
+            info.add(new Chunk(sLabelInfo.getinstitution(), font));
+            info.add(Chunk.NEWLINE);
+        }
+        if(!sLabelInfo.getaddress().isEmpty()) {
+            info.add(new Chunk(sLabelInfo.getaddress(), font));
+            info.add(Chunk.NEWLINE);
+        }
         font = new Font(sfontType, sfontSize, Font.BOLD);
+        /*
         String lastLine = sLabelInfo.getcity() +
                 " " + sLabelInfo.getpincode() +
                 " " + sLabelInfo.getstate() +
@@ -1318,8 +1329,40 @@ public convertToPdf(){
         if(!sLabelInfo.getcountry().equals("India")){
             lastLine = lastLine + sLabelInfo.getcountry();
         }
+        */ 
+        
+        String lastLine = "";
+        if(!sLabelInfo.getcity().isEmpty()) {
+            lastLine = lastLine + sLabelInfo.getcity();
+        }
+        if(sLabelInfo.getcity().isEmpty()) {
+            lastLine = lastLine + sLabelInfo.getpincode();
+        } else {
+            lastLine = lastLine + " " + sLabelInfo.getpincode();
+        }
+        if(sLabelInfo.getpincode().isEmpty()){
+            lastLine = lastLine + sLabelInfo.getstate();
+        } else {
+            lastLine = lastLine + " " + sLabelInfo.getstate();
+        }
 
-        info.add(new Chunk(lastLine, font));
+        String country = "";
+        if(!sLabelInfo.getcountry().equals("India")){
+            country = sLabelInfo.getcountry();
+        }
+
+        if(sLabelInfo.getstate().isEmpty()){
+            lastLine = lastLine + country;
+        } else {
+            lastLine = lastLine + " " + country;
+        }
+
+        if(!lastLine.isEmpty()) {
+            lastLine = lastLine.trim();
+            // Remove the leading spaces
+            //lastLine.replaceAll("^\\s+", "");
+            info.add(new Chunk(lastLine, font));
+        }        
 
         return info;
 
