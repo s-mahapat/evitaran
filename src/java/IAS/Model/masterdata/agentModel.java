@@ -169,7 +169,7 @@ public class agentModel extends JDSModel{
 
     public String searchAgent() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
-        String sql = Queries.getQuery("search_agent");
+        String sql = Queries.getQuery("search_agent_screen");
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
 
