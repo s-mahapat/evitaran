@@ -19,7 +19,7 @@
               validationQuery="SELECT 1"
               validationInterval="30000"
               timeBetweenEvictionRunsMillis="10000"
-              maxActive="100"
+              maxActive="1000"
               minIdle="0"
               maxIdle="5"
               maxWait="30000"
