@@ -1318,15 +1318,19 @@ public convertToPdf(){
             info.add(Chunk.NEWLINE);
         }
 
-        if(sLabelInfo.getaddress().contains("\n")) {
+        if(("\n").equals(sLabelInfo.getaddress())){
             sLabelInfo.setaddress(sLabelInfo.getaddress().replace("\n", "")) ;
         }
 
-        if(sLabelInfo.getaddress().contains("null ")) {
-            sLabelInfo.setaddress(sLabelInfo.getaddress().replace("null ", ""));
-        } 
+        if(("null  ").equals(sLabelInfo.getaddress())) {
+            sLabelInfo.setaddress(sLabelInfo.getaddress().replace("null  ", ""));
+        }
 
-        if(!sLabelInfo.getaddress().isEmpty() && !sLabelInfo.getaddress().equals("\n")) {
+        if((" ").equals(sLabelInfo.getaddress())) {
+            sLabelInfo.setaddress(sLabelInfo.getaddress().replace(" ", ""));
+        }
+
+        if(!sLabelInfo.getaddress().isEmpty()) {
             info.add(new Chunk(sLabelInfo.getaddress(), font));
             info.add(Chunk.NEWLINE);
         }
@@ -1587,15 +1591,19 @@ public convertToPdf(){
                 info.add(Chunk.NEWLINE);
             }
 
-            if(sLabelInfo.getaddress().contains("\n")) {
-                sLabelInfo.setaddress(sLabelInfo.getaddress().replace("\n", ""));
+            if(("\n").equals(sLabelInfo.getaddress())){
+                sLabelInfo.setaddress(sLabelInfo.getaddress().replace("\n", "")) ;
             }
 
-            if(sLabelInfo.getaddress().contains("null ")) {
-                sLabelInfo.setaddress(sLabelInfo.getaddress().replace("null ", ""));
+            if(("null  ").equals(sLabelInfo.getaddress())) {
+                sLabelInfo.setaddress(sLabelInfo.getaddress().replace("null  ", ""));
             }
 
-            if(!sLabelInfo.getaddress().isEmpty() && !sLabelInfo.getaddress().equals("\n")) {
+            if((" ").equals(sLabelInfo.getaddress())) {
+                sLabelInfo.setaddress(sLabelInfo.getaddress().replace(" ", ""));
+            }
+
+            if(!sLabelInfo.getaddress().isEmpty()) {
                 info.add(new Chunk(sLabelInfo.getaddress(), font));
                 info.add(Chunk.NEWLINE);
             }
@@ -1697,15 +1705,19 @@ public convertToPdf(){
                 info.add(Chunk.NEWLINE);
             }
 
-            if(sLabelInfo.getaddress().contains("\n")) {
+            if(("\n").equals(sLabelInfo.getaddress())){
                 sLabelInfo.setaddress(sLabelInfo.getaddress().replace("\n", "")) ;
             }
 
-            if(sLabelInfo.getaddress().contains("null ")) {
-                sLabelInfo.setaddress(sLabelInfo.getaddress().replace("null ", ""));
+            if(("null  ").equals(sLabelInfo.getaddress())) {
+                sLabelInfo.setaddress(sLabelInfo.getaddress().replace("null  ", ""));
             }
 
-            if(!sLabelInfo.getaddress().isEmpty() && !sLabelInfo.getaddress().equals("\n")) {
+            if((" ").equals(sLabelInfo.getaddress())) {
+                sLabelInfo.setaddress(sLabelInfo.getaddress().replace(" ", ""));
+            }
+
+            if(!sLabelInfo.getaddress().isEmpty()) {
                 info.add(new Chunk(sLabelInfo.getaddress(), font));
                 info.add(Chunk.NEWLINE);
             }
