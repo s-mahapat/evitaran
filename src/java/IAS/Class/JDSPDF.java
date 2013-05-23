@@ -61,6 +61,13 @@ public class JDSPDF implements IJDSPDF {
         return pdfWriter;
     }
 
+    protected PdfWriter getPDFWriterForMailingList(Document document, ByteArrayOutputStream outputStream) throws DocumentException{
+        PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
+        //PDFEventHandler footer = new PDFEventHandler();
+        //pdfWriter.setPageEvent(footer);
+        return pdfWriter;
+    }
+
     public Document getPDFDocumentLandscape() {
         com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
         document.addAuthor("Indian Academy Of Sciences");
