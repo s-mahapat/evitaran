@@ -51,6 +51,7 @@ public class JDSConstants {
     public static float width = 140.0f;
     public static float height = 40.0f;
     public static float heightFromBottomOfPage = 15.0f;
+    public static float heightFromBottom = 136.0f;
 
 
 }

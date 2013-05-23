@@ -81,7 +81,7 @@ public class JDSPDF implements IJDSPDF {
     public void addPaymentFooter(Document document, PdfWriter pdfWriter) throws DocumentException{
 
         float availableSpace = pdfWriter.getVerticalPosition(true) - document.bottomMargin();
-        if(availableSpace < JDSConstants.heightFromBottomOfPage + JDSConstants.height){
+        if(availableSpace < JDSConstants.heightFromBottom){
             document.newPage();
         }
 
