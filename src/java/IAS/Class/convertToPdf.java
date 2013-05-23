@@ -1278,13 +1278,14 @@ public convertToPdf(){
 
         Font font;
         font = new Font(sfontType, sfontSizeHeader-1, sfontStyle, BaseColor.BLACK);
-        if(!bilLabel.isEmpty()) {
-            info.add(new Chunk(bilLabel, font));
+        if(!bilLabel.isEmpty() && !sLabelInfo.getsubscriberNumber().isEmpty()) {
+            String header = sLabelInfo.getsubscriberNumber() + " " + bilLabel;
+            info.add(new Chunk(header, font));
             info.add(Chunk.NEWLINE);
         }
 
         font = new Font(sfontType, sfontSize, sfontStyle, BaseColor.BLACK);
-        String firstLine = sLabelInfo.getsubscriberName() + " " + sLabelInfo.getsubscriberNumber();
+        String firstLine = sLabelInfo.getsubscriberName();
         // + " " + sLabelInfo.getjournalCode();
 
         //if(!noHeader){
@@ -1308,7 +1309,7 @@ public convertToPdf(){
 
         //info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
         //info.add(Chunk.NEWLINE);
-        if(!sLabelInfo.getdepartment().isEmpty()) {    
+        if(!sLabelInfo.getdepartment().isEmpty()) {
             info.add(new Chunk(sLabelInfo.getdepartment(), font));
             info.add(Chunk.NEWLINE);
         }
@@ -1316,7 +1317,7 @@ public convertToPdf(){
             info.add(new Chunk(sLabelInfo.getinstitution(), font));
             info.add(Chunk.NEWLINE);
         }
-        if(!sLabelInfo.getaddress().isEmpty()) {
+        if(!sLabelInfo.getaddress().isEmpty() && !sLabelInfo.getaddress().equals("\n")) {
             info.add(new Chunk(sLabelInfo.getaddress(), font));
             info.add(Chunk.NEWLINE);
         }
@@ -1329,8 +1330,8 @@ public convertToPdf(){
         if(!sLabelInfo.getcountry().equals("India")){
             lastLine = lastLine + sLabelInfo.getcountry();
         }
-        */ 
-        
+        */
+
         String lastLine = "";
         if(!sLabelInfo.getcity().isEmpty()) {
             lastLine = lastLine + sLabelInfo.getcity();
@@ -1362,7 +1363,7 @@ public convertToPdf(){
             // Remove the leading spaces
             //lastLine.replaceAll("^\\s+", "");
             info.add(new Chunk(lastLine, font));
-        }        
+        }
 
         return info;
 
@@ -1576,7 +1577,7 @@ public convertToPdf(){
                 info.add(new Chunk(sLabelInfo.getinstitution(), font));
                 info.add(Chunk.NEWLINE);
             }
-            if(!sLabelInfo.getaddress().isEmpty()) {
+            if(!sLabelInfo.getaddress().isEmpty() && !sLabelInfo.getaddress().equals("\n")) {
                 info.add(new Chunk(sLabelInfo.getaddress(), font));
                 info.add(Chunk.NEWLINE);
             }
@@ -1664,6 +1665,11 @@ public convertToPdf(){
                 }
             }
             font = new Font(sfontType, sfontSize, sfontStyle, BaseColor.BLACK);
+
+            if(sLabelInfo.getsubscriberNumber().equals("13E-S-01528")){
+                System.out.println("Address: " + sLabelInfo.getaddress());
+            }
+
             if(!sLabelInfo.getsubscriberName().isEmpty()) {
                 info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
                 info.add(Chunk.NEWLINE);
@@ -1676,7 +1682,7 @@ public convertToPdf(){
                 info.add(new Chunk(sLabelInfo.getinstitution(), font));
                 info.add(Chunk.NEWLINE);
             }
-            if(!sLabelInfo.getaddress().isEmpty()) {
+            if(!sLabelInfo.getaddress().isEmpty() && !sLabelInfo.getaddress().equals("\n")) {
                 info.add(new Chunk(sLabelInfo.getaddress(), font));
                 info.add(Chunk.NEWLINE);
             }
