@@ -26,8 +26,14 @@ public class InwardAck {
         String _text = null;
         if (letter_no.length() > 0) {
             if (amount > 0 && purposeid != JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
-                _text = _prop.getProperty("inward_ack_with_letter_with_amount");
-                _text = String.format(_text, letter_no, letter_date, paymentmode, _cheque, _cheque_date, amount, paymentmode);
+                if(paymentmode.contains("Bank Transfer") || paymentmode.contains("Money Order")){
+                    _text = _prop.getProperty("inward_ack_with_letter_with_amount_bank_transfer");
+                    _text = String.format(_text, letter_no, letter_date, paymentmode, _cheque, _cheque_date, amount);
+                }else{
+                    _text = _prop.getProperty("inward_ack_with_letter_with_amount");
+                    _text = String.format(_text, letter_no, letter_date, paymentmode, _cheque, _cheque_date, amount, paymentmode);
+                }
+
             } else if (amount == 0 && purposeid != JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
                 _text = _prop.getProperty("inward_ack_with_letter_no_amount");
                 _text = String.format(_text, letter_no, letter_date, purpose);
@@ -40,8 +46,13 @@ public class InwardAck {
             }
         }else{
             if (amount > 0 && purposeid != JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
-                _text = _prop.getProperty("inward_ack_without_letter_with_amount");
-                _text = String.format(_text, paymentmode, _cheque, _cheque_date, amount, paymentmode);
+                if(paymentmode.contains("Bank Transfer") || paymentmode.contains("Money Order")){
+                    _text = _prop.getProperty("inward_ack_without_letter_with_amount_bank_transfer");
+                    _text = String.format(_text, paymentmode, _cheque, _cheque_date, amount);
+                }else{
+                    _text = _prop.getProperty("inward_ack_without_letter_with_amount");
+                    _text = String.format(_text, paymentmode, _cheque, _cheque_date, amount, paymentmode);
+                }
             } else if (amount == 0 && purposeid != JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
                 _text = _prop.getProperty("inward_ack_without_letter_no_amount");
                 _text = String.format(_text, purpose);
