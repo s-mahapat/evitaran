@@ -77,8 +77,10 @@
 
                             }
                             html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Total</td><td>" + _total + "</td></tr>"
-                            html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Amount Paid</td><td>" + ${invoiceFormBean.inwardAmount} + "</td></tr>"
-                            html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Balance</td><td>" + ${invoiceFormBean.amount} + "</td></tr>"
+                            if(${invoiceFormBean.inwardAmount} > 0){
+                                html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Amount Paid</td><td>" + ${invoiceFormBean.inwardAmount} + "</td></tr>"
+                                html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Balance</td><td>" + ${invoiceFormBean.amount} + "</td></tr>"
+                            }
                             html += "</tbody>";
                             var _orightml = $(".datatable").html();
                             html = _orightml + html;

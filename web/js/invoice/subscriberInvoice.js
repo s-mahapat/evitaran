@@ -138,7 +138,7 @@ function drawInvoiceTable() {
             var ids = jQuery("#invoiceTable").jqGrid('getDataIDs');
             jdsconstants = new JDSConstants();
             for (var i = 0; i < ids.length; i++) {
-                //var invoice_no = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'InvoiceNo');
+                var invoice_id = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'invoiceid');
                 var invoice_type_id = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'invoice_type_id');
                 var inward_no = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'inwardNumber');
                 var inwardNumber = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'inwardNumber');
@@ -146,7 +146,8 @@ function drawInvoiceTable() {
 
                 // disable the view link for Please refer list invoices and if there are no payments made
                 if (invoice_type_id != jdsconstants.INVOICE_UPCOMING_YEAR_INVOICE && inwardNumber) {
-                    action = '<a style="color:blue;" href="#" onclick="showInvoice(\'' + inward_no + '\',' + invoice_type_id + ')">Print</a>';
+                    action = '<a style="color:blue;" href="#" onclick="showInvoice(\'' + inward_no + '\',' + invoice_type_id + ')">Invoice</a>';
+                    action += '<a style="color:blue;" href="#" onclick="showBill(' + invoice_id  + ')">Bill</a>';
                 }
                 jQuery("#invoiceTable").jqGrid('setRowData', ids[i], {
                     Action: action
@@ -184,6 +185,46 @@ function showInvoice(inward_no, invoice_type_id) {
             },
             'Email': function(){
                 jdsEmail('email/inward/' + inward_no + '/opb');
+            }
+        // not working in FF
+        /*'Print': function() {
+                $(this).dialog('close');
+                $("#iframe_invoice").get(0).contentWindow.print();
+            }*/
+
+        },
+        open: function(){
+            if($("#email").val().length == 0){
+                $(":button:contains('Email')").prop("disabled", true).addClass("ui-state-disabled");
+            }
+
+        }
+
+    });
+
+}
+
+function showBill(invoice_id) {
+    jdsconstants = new JDSConstants();
+    var src = 'main2/invoice/bill/' + invoice_id;
+
+    $("#iframe_invoice").attr("src", src);
+    $('#invoice_dialog').dialog({
+        autoOpen: true,
+        draggable: true,
+        resizable: true,
+        title: 'Bill',
+        modal: true,
+        stack: true,
+        height: ($(window).height() * 0.95),
+        width: ($(window).width() * 0.85),
+        buttons: {
+
+            'Close': function() {
+                $(this).dialog('close');
+            },
+            'Email': function(){
+                jdsEmail('main2/invoice/emailbill/' + invoice_id);
             }
         // not working in FF
         /*'Print': function() {

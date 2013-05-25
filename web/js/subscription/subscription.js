@@ -40,7 +40,7 @@ function listSubscription(){
             },
             emptyrecords: "No subscription(s) to view",
             loadtext: "Loading...",
-            colNames:['Subscription Id','Inward No','Date','Agent','Discount','Inward Amount','Payments','Total Paid','Subscription Value', 'Balance', 'Legacy Balance','Currency', 'Active', 'Action', 'Legacy'],
+            colNames:['Subscription Id','Inward No','Date','Agent','Discount','Subscription Value', 'Legacy Balance','Currency', 'Active', 'Action', 'Legacy'],
             colModel :[
             {
                 name:'subscriptionID',
@@ -93,6 +93,7 @@ function listSubscription(){
                     return cellvalue.replace("%","");
                 }
             },
+            /*
             {
                 name:'inwardAmount',
                 index:'inwardAmount',
@@ -108,7 +109,7 @@ function listSubscription(){
                 align:'center',
                 sortable: false,
                 xmlmap:'payment'
-            /*formatter: paymentInfoLink*/
+            /*formatter: paymentInfoLink
             },
             {
                 name:'amountPaid',
@@ -117,7 +118,7 @@ function listSubscription(){
                 align:'center',
                 sortable: false,
                 xmlmap:'amountPaid'
-            },
+            },*/
             {
                 name:'subscriptionValue',
                 index:'subscriptionValue',
@@ -125,7 +126,7 @@ function listSubscription(){
                 align:'center',
                 sortable: false,
                 xmlmap:'subscriptionTotal'
-            },
+            },/*
             {
                 name:'balance',
                 index:'balance',
@@ -133,7 +134,7 @@ function listSubscription(){
                 align:'center',
                 sortable: false,
                 xmlmap:'balance'
-            },
+            },*/
             {
                 name:'legacy_balance',
                 index:'legacy_balance',

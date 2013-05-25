@@ -1307,7 +1307,7 @@ DROP TABLE IF EXISTS `subscriber`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subscriber` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `subscriberNumber` varchar(12) NOT NULL,
+  `subscriberNumber` int(12) unsigned NOT NULL,
   `subscriberCreationDate` date NOT NULL DEFAULT '0000-00-00',
   `subscriberName` varchar(64) NOT NULL,
   `department` varchar(64) DEFAULT NULL,
@@ -2143,8 +2143,7 @@ CREATE TABLE `subscriptiondetails` (
   UNIQUE KEY `unique_subscription` (`subscriptionID`,`journalGroupID`),
   KEY `startYear` (`startYear`),
   KEY `endYear` (`endYear`),
-  KEY `journalPriceGroupID` (`journalPriceGroupID`),
-  CONSTRAINT `subscription_fk` FOREIGN KEY (`subscriptionID`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `journalPriceGroupID` (`journalPriceGroupID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

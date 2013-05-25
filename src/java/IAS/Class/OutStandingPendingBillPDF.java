@@ -68,7 +68,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
             TransformerException,
             ClassNotFoundException,
             IOException,
-            DocumentException{
+            DocumentException {
 
         //Connection conn = Database.getConnection();
 
@@ -88,7 +88,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         paragraphOuter.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         paragraphOuter.setAlignment(Element.ALIGN_LEFT);
 
-        Paragraph invoiceHeader = new Paragraph(new Chunk("INVOICE",JDSPDF.JDS_FONT_BODY));
+        Paragraph invoiceHeader = new Paragraph(new Chunk("INVOICE", JDSPDF.JDS_FONT_BODY));
         invoiceHeader.setAlignment(Element.ALIGN_CENTER);
 
         InvoiceInfoTable.setWidthPercentage(100);
@@ -132,7 +132,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         invoiceAddressHeader.setUnderline(1, 0);
         paragraphInvoiceAddress.add(invoiceAddressHeader);
         paragraphInvoiceAddress.add(Chunk.NEWLINE);
-        paragraphInvoiceAddress.add(new Phrase(_invoiceBean.getSubscriberName(),JDSPDF.JDS_FONT_BODY));
+        paragraphInvoiceAddress.add(new Phrase(_invoiceBean.getSubscriberName(), JDSPDF.JDS_FONT_BODY));
         paragraphInvoiceAddress.add(Chunk.NEWLINE);
         paragraphInvoiceAddress.add(new Phrase(_invoiceBean.getInvoiceAddress(), JDSPDF.JDS_FONT_BODY));
 
@@ -159,19 +159,19 @@ public class OutStandingPendingBillPDF extends JDSPDF {
             paragraphShippingAddress.add(Chunk.NEWLINE);
             paragraphShippingAddress.add(new Phrase(_institute, JDSPDF.JDS_FONT_BODY));
         }
-        if(_shipping_address.length() > 0){
+        if (_shipping_address.length() > 0) {
             paragraphShippingAddress.add(Chunk.NEWLINE);
             paragraphShippingAddress.add(new Phrase(_shipping_address, JDSPDF.JDS_FONT_BODY));
         }
-        if(_city.length() > 0){
+        if (_city.length() > 0) {
             paragraphShippingAddress.add(Chunk.NEWLINE);
             paragraphShippingAddress.add(new Phrase(_city, JDSPDF.JDS_FONT_BODY));
         }
-        if(_state.length() > 0){
+        if (_state.length() > 0) {
             paragraphShippingAddress.add(Chunk.NEWLINE);
             paragraphShippingAddress.add(new Phrase(_state, JDSPDF.JDS_FONT_BODY));
         }
-        if(_country.length() > 0 && !_country.equalsIgnoreCase("india")){
+        if (_country.length() > 0 && !_country.equalsIgnoreCase("india")) {
             paragraphShippingAddress.add(Chunk.NEWLINE);
             paragraphShippingAddress.add(new Phrase(_country, JDSPDF.JDS_FONT_BODY));
         }
@@ -199,7 +199,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
 
         PdfPTable table = new PdfPTable(5);
         table.setWidthPercentage(100);
-        table.setWidths(new int[]{4,1,1,1,1});
+        table.setWidths(new int[]{4, 1, 1, 1, 1});
 
         PdfPCell cell1 = new PdfPCell(new Paragraph("Journal Name", JDSPDF.JDS_FONT_BODY));
         cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -290,7 +290,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
                     c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
                     c2.setRowspan(_rowspan);
 
-                    int _grptotal = (int)JournalGrpPriceHash.get(_journalgrpid);
+                    int _grptotal = (int) JournalGrpPriceHash.get(_journalgrpid);
                     PdfPCell c3 = new PdfPCell(new Paragraph(String.valueOf(_grptotal), JDSPDF.JDS_FONT_NORMAL_SMALL));
                     c3.setHorizontalAlignment(Element.ALIGN_CENTER);
                     c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -324,39 +324,40 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         totalValue.setHorizontalAlignment(Element.ALIGN_CENTER);
         totalValue.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        PdfPCell amountPaidCell = new PdfPCell(new Phrase("Amount Paid", JDSPDF.JDS_FONT_NORMAL_SMALL));
-        amountPaidCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        amountPaidCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-
-        PdfPCell amountPaidValueCell = new PdfPCell(new Phrase(String.valueOf(_invoiceBean.getInwardAmount()), JDSPDF.JDS_FONT_NORMAL_SMALL));
-        amountPaidValueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        amountPaidValueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-
-        PdfPCell balanceCell = new PdfPCell(new Phrase("Balance", JDSPDF.JDS_FONT_NORMAL_SMALL));
-        balanceCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        balanceCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-
-        float balance = _invoiceBean.getBalance();
-        PdfPCell balanceValueCell = new PdfPCell(new Phrase(String.valueOf(balance), JDSPDF.JDS_FONT_NORMAL_SMALL));
-        balanceValueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        balanceValueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-
-        // the total row
+         // the total row
         table.addCell(blankCell);
         table.addCell(totalCell);
         table.addCell(totalValue);
 
-        // the amount paid row
-        table.addCell(blankCell);
-        table.addCell(amountPaidCell);
-        table.addCell(amountPaidValueCell);
+        float amountPaid = _invoiceBean.getInwardAmount();
+        if (amountPaid > 0) {
 
-        // the balance row
-        table.addCell(blankCell);
-        table.addCell(balanceCell);
-        table.addCell(balanceValueCell);
+            PdfPCell amountPaidCell = new PdfPCell(new Phrase("Amount Paid", JDSPDF.JDS_FONT_NORMAL_SMALL));
+            amountPaidCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            amountPaidCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
+            PdfPCell amountPaidValueCell = new PdfPCell(new Phrase(String.valueOf(_invoiceBean.getInwardAmount()), JDSPDF.JDS_FONT_NORMAL_SMALL));
+            amountPaidValueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            amountPaidValueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
+            PdfPCell balanceCell = new PdfPCell(new Phrase("Balance", JDSPDF.JDS_FONT_NORMAL_SMALL));
+            balanceCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            balanceCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+            float balance = _invoiceBean.getBalance();
+            PdfPCell balanceValueCell = new PdfPCell(new Phrase(String.valueOf(balance), JDSPDF.JDS_FONT_NORMAL_SMALL));
+            balanceValueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            balanceValueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+             // the amount paid row
+            table.addCell(blankCell);
+            table.addCell(amountPaidCell);
+            table.addCell(amountPaidValueCell);
+            // the balance row
+            table.addCell(blankCell);
+            table.addCell(balanceCell);
+            table.addCell(balanceValueCell);
+        }
 
         //paragraphBody.add(new Phrase(bodyText));
         //paragraphBody.add(Chunk.NEWLINE);
@@ -365,18 +366,23 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         // add the reference/letter number
         paragraphBody.add(Chunk.NEWLINE);
         String letterNoText = "Ref: Your Order No: %s Dated %s";
-        letterNoText = String.format(letterNoText, _invoiceBean.getLetterNumber(), _invoiceBean.getLetterDate());
+        if (_invoiceBean.getLetterNumber().length() > 0) {
+            letterNoText = String.format(letterNoText, _invoiceBean.getLetterNumber(), _invoiceBean.getLetterDate());
+        } else {
+            letterNoText = String.format(letterNoText, ".....", ".....");
+        }
+
         paragraphBody.add(new Phrase(letterNoText, JDSPDF.JDS_FONT_BODY));
         paragraphBody.add(Chunk.NEWLINE);
 
         EnglishNumberToWords _EnglishNumberToWords = new EnglishNumberToWords();
         paragraphBody.add(Chunk.NEWLINE);
         paragraphBody.add(
-                new Phrase(_EnglishNumberToWords.convertDouble(balance).toUpperCase(), JDSPDF.JDS_FONT_BODY));//Convert total value in words
+                new Phrase(_EnglishNumberToWords.convertDouble(_invoiceBean.getBalance()).toUpperCase(), JDSPDF.JDS_FONT_BODY));//Convert total value in words
         paragraphOuter.add(invoiceHeader);
         paragraphOuter.add(InvoiceInfoTable);
         paragraphOuter.add(addressParagraph);
-         paragraphOuter.add(paragraphBody);
+        paragraphOuter.add(paragraphBody);
 
         // return connection to pool
         //conn.close();

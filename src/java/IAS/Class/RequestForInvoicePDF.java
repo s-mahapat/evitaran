@@ -339,7 +339,11 @@ public class RequestForInvoicePDF extends JDSPDF{
         // add the reference/letter number
         paragraphBody.add(Chunk.NEWLINE);
         String letterNoText = "Ref: Your Order No: %s Dated %s";
-        letterNoText = String.format(letterNoText, _invoiceBean.getLetterNumber(), _invoiceBean.getLetterDate());
+        if(_invoiceBean.getLetterNumber().length() > 0){
+            letterNoText = String.format(letterNoText, _invoiceBean.getLetterNumber(), _invoiceBean.getLetterDate());
+        }else{
+            letterNoText = String.format(letterNoText, ".....", ".....");
+        }
         paragraphBody.add(new Phrase(letterNoText, JDSPDF.JDS_FONT_BODY));
         paragraphBody.add(Chunk.NEWLINE);
 

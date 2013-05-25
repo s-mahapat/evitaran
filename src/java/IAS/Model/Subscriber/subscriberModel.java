@@ -16,7 +16,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -217,14 +216,14 @@ public class subscriberModel extends JDSModel {
     private synchronized String getNextSubscriberNumber() throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
-        String nextSubscriber;
+        String nextSubscriber = null;
         // Identify the subscriber type i.e.Free or Paid
-        String subtype = "S";
+        //String subtype = "S";
         //get the last subscriber number from subscriber table
         String lastSubscriberSql = Queries.getQuery("get_last_subscriber");
 
         //java.sql.ResultSetMetaData metaData = rs.getMetaData();
-        Calendar calendar = Calendar.getInstance();
+        //Calendar calendar = Calendar.getInstance();
         String lastSubscriber;
 
         // get the connection from connection pool
@@ -237,15 +236,13 @@ public class subscriberModel extends JDSModel {
                 lastSubscriber = rs.getString(1);
 
                 // get the last subscriber number after the split
-                int subscriber = Integer.parseInt(lastSubscriber.substring(6));
+                int subscriber = Integer.parseInt(lastSubscriber);
                 //increment
                 ++subscriber;
                 //apend the year, month character and new subscriber number.
-                nextSubscriber = lastSubscriber.substring(0, 2) + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + subtype + "-" + String.format("%05d", subscriber);
+                nextSubscriber = String.valueOf(subscriber);
             } else {
-                // there is no previous record for the year, so start the numbering afresh
-                String year = String.valueOf(calendar.get(Calendar.YEAR)).substring(2);
-                nextSubscriber = year + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + subtype + "-" + String.format("%05d", 1);
+                nextSubscriber = "1";
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -798,5 +795,9 @@ public class subscriberModel extends JDSModel {
             }
         }
         return strInvoiceAddress;
+    }
+
+    class SubscriberNumberNotFoundException extends Exception{
+
     }
 }

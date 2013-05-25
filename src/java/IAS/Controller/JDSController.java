@@ -1,20 +1,23 @@
 package IAS.Controller;
 
 //~--- JDK imports ------------------------------------------------------------
-
+import IAS.Class.msgsend;
+import IAS.Class.util;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
+import java.io.OutputStream;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 @WebServlet(
-    name        = "JDSController",
-    urlPatterns = { "/JDSController" }
-)
+    name = "JDSController",
+urlPatterns = {"/JDSController"})
 public class JDSController extends HttpServlet {
 
     /*
@@ -34,7 +37,8 @@ public class JDSController extends HttpServlet {
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {}
+            throws ServletException, IOException {
+    }
 
     public void redirect(HttpServletResponse response, String view) throws IOException {
         //view = "jsp/" + view + ".jsp";
@@ -48,8 +52,45 @@ public class JDSController extends HttpServlet {
         rd.forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    public void sendPDFResponse(ByteArrayOutputStream baos, String fileName, HttpServletResponse response) throws IOException {
 
+        byte pdfData[] = baos.toByteArray();
+        response.reset();
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition", "inline; filename=" + fileName);
+        try (OutputStream output = response.getOutputStream()) {
+            output.write(pdfData);
+        }
+    }
+
+    public void sendEmailWithAttachment(String toEmail, String subject, String emailBody, String attachmentName, byte[] pdfData, HttpServletRequest request, HttpServletResponse response) throws ServletException{
+        boolean success = false;
+        try {
+            msgsend _mailer = new msgsend();
+            success = _mailer.sendEmailToSubscriberWithAttachment(toEmail,
+                    subject,
+                    emailBody,
+                    attachmentName,
+                    pdfData,
+                    "application/pdf");
+        } catch (IOException ex) {
+        }
+        finally{
+            String xml;
+            try {
+                // convert true/false to 1/0
+                String successValue = (success == true) ? "1" : "0";
+                xml = util.convertStringToXML(successValue, "success");
+                request.setAttribute("xml", xml);
+                String url = "/xmlserver";
+                this.forward(request, response, url);
+            } catch (ParserConfigurationException | TransformerException | IOException | ServletException ex) {
+                throw new ServletException(ex.getMessage());
+            }
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.

@@ -18,7 +18,6 @@ import IAS.Model.Inward.inwardModel;
 import com.itextpdf.text.DocumentException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -67,7 +66,7 @@ public class Print extends JDSController {
                             _inwardFormBean.getAmount(),
                             returnReason);
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
-                    this.sendResponse(baos, fileName, response);
+                    this.sendPDFResponse(baos, fileName, response);
                 } // for inward acknowledgement
                 else if (action.equalsIgnoreCase("ack")) {
 
@@ -94,7 +93,7 @@ public class Print extends JDSController {
                             customText);
 
                     String fileName = _inwardFormBean.getInwardNumber() + ".pdf";
-                    this.sendResponse(baos, fileName, response);
+                    this.sendPDFResponse(baos, fileName, response);
 
                 } // for request for invoice
                 else if (action.equalsIgnoreCase("rfi")) {
@@ -103,19 +102,19 @@ public class Print extends JDSController {
                     ByteArrayOutputStream baos = _rfiPdf.getPDF(inwardNumber);
 
                     String fileName = inwardNumber + ".pdf";
-                    this.sendResponse(baos, fileName, response);
+                    this.sendPDFResponse(baos, fileName, response);
                 } else if (action.equalsIgnoreCase("opb")) {
                     String inwardNumber = documentID;
                     OutStandingPendingBillPDF _opbpdf = new OutStandingPendingBillPDF(request);
                     ByteArrayOutputStream baos = _opbpdf.getPDF(inwardNumber);
                     String fileName = inwardNumber + ".pdf";
-                    this.sendResponse(baos, fileName, response);
+                    this.sendPDFResponse(baos, fileName, response);
                 } else if (action.equalsIgnoreCase("agentInvoice")) {
                     String inwardNumber = documentID;
                     AgentInvoicePDF _agentInvoicePDF = new AgentInvoicePDF(request);
                     ByteArrayOutputStream baos = _agentInvoicePDF.getPDF(inwardNumber);
                     String fileName = inwardNumber + ".pdf";
-                    this.sendResponse(baos, fileName, response);
+                    this.sendPDFResponse(baos, fileName, response);
                 }
 
             } // for all subscription
@@ -125,7 +124,7 @@ public class Print extends JDSController {
                 PlReferListPDF _PlReferListPDF = new PlReferListPDF();
                 ByteArrayOutputStream baos = _PlReferListPDF.getPDF(Integer.parseInt(action));
                 String fileName = String.valueOf(Calendar.getInstance().get(Calendar.YEAR) + 1) + "_Invoice.pdf";
-                this.sendResponse(baos, fileName, response);
+                this.sendPDFResponse(baos, fileName, response);
             }
         } catch (SQLException | IOException | ParseException | InvocationTargetException | IllegalAccessException | ClassNotFoundException | DocumentException | NumberFormatException | ParserConfigurationException | TransformerException e) {
             logger.error(e.getMessage(), e);
@@ -133,7 +132,7 @@ public class Print extends JDSController {
         }
     }
 
-    private void sendResponse(ByteArrayOutputStream baos, String fileName, HttpServletResponse response) throws IOException {
+    /*private void sendResponse(ByteArrayOutputStream baos, String fileName, HttpServletResponse response) throws IOException {
 
         byte pdfData[] = baos.toByteArray();
         response.reset();
@@ -142,7 +141,7 @@ public class Print extends JDSController {
         try (OutputStream output = response.getOutputStream()) {
             output.write(pdfData);
         }
-    }
+    }*/
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
