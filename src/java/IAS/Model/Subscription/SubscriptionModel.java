@@ -695,7 +695,7 @@ public class SubscriptionModel extends JDSModel {
         String lastInvoice;
 
         // get connection from pool
-        Connection _conn = this.getConnection();
+        Connection _conn = this.getStaticConnection();
         try (PreparedStatement pst = _conn.prepareStatement(lastInvoiceSql);) {
             try (ResultSet rs = pst.executeQuery()) {
                 Calendar calendar = Calendar.getInstance();
@@ -720,7 +720,7 @@ public class SubscriptionModel extends JDSModel {
 
             }
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return nextInvoice;
     }
@@ -981,7 +981,7 @@ public class SubscriptionModel extends JDSModel {
         float _rate = 0;
         this.nextYearSubscriptionPeriod = 0;
 
-        Connection _conn = this.getConnection();
+        Connection _conn = this.getStaticConnection();
 
         try (PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setInt(1, subscription_id);
@@ -1027,14 +1027,14 @@ public class SubscriptionModel extends JDSModel {
                 logger.error(ex);
             }
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return _rate;
     }
 
     private float getRate(int journalGrpID, int subtypeID, int startYear, int period) throws SQLException {
 
-        Connection _conn = this.getConnection();
+        Connection _conn = this.getStaticConnection();
         String sql = Queries.getQuery("get_journal_grp_price");
         int _rate = 0;
         try (PreparedStatement pst = _conn.prepareStatement(sql)) {
@@ -1054,7 +1054,7 @@ public class SubscriptionModel extends JDSModel {
     }
 
     private int getMinimumSubscriptionPeriod(int journalGrpID, int subtypeID, int startYear) throws SQLException {
-        Connection _conn = this.getConnection();
+        Connection _conn = this.getStaticConnection();
         String sql = Queries.getQuery("get_journal_group_price_for_minimum_period");
         int _period = 0;
         try (PreparedStatement pst = _conn.prepareStatement(sql)) {

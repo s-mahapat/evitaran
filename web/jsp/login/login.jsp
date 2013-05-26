@@ -65,12 +65,19 @@
                 margin-left: 0%;
                 margin-right: 0px;
                 text-align: right;
+                padding: 6px;
             }
 
             .authInput{
                 float: left;
                 width: 40%;
                 margin-left: 20px;
+            }
+
+            .login{
+                font-size: large;
+                padding: 6px;
+                height: 25px;
             }
 
             .authAction{
@@ -96,11 +103,11 @@
                     <div id="login">
                         <div class="authField">
                             <span class="authLabel">User Name</span>
-                            <span class="authInput"><input type="text" style="width:250px" class="IASTextBoxMandatory" name="j_username" value="" id="loginFieldId" onblur="validateEmail(this.id)"/></span>
+                            <span class="authInput"><input type="text" style="width:250px" class="IASTextBoxMandatory login" name="j_username" value="" id="loginFieldId" onblur="validateEmail(this.id)"/></span>
                         </div>
                         <div class="authField">
                             <span class="authLabel">Password</span>
-                            <span class="authInput"><input type="password" maxlength="16" style="width:250px" class="IASTextBox" value="" name="j_password" id="passwordField"/></span>
+                            <span class="authInput"><input type="password" maxlength="16" style="width:250px" class="IASTextBoxMandatory login" value="" name="j_password" id="passwordField"/></span>
                         </div>
                         <div class="authAction">
                             <input type="submit" value="Login"/>
