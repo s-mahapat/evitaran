@@ -264,8 +264,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="actionBtnDiv">
+                                        <input class="IASButton" TABINDEX="3" type="button" value="Display Rates" id="btnSearch" name="btnSearch" onclick="search()"/>
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Define Rates" id="btnAddRate" name="btnAddRate" onclick="addRate()"/>
+                                    </div>
 
                             </fieldset>
+                                    <%--
                             <fieldset class="subMainFieldSet">
                                 <legend>Actions - Search / Add</legend>
                                     <div class="IASFormFieldDiv">
@@ -277,6 +282,7 @@
                                         </div>
                                      </div>
                             </fieldset>
+                                    --%>
                             <fieldset class="subMainFieldSet">
                                 <legend>Add New Rates</legend>
                                     <div class="IASFormLeftDiv">
@@ -300,10 +306,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="IASFormFieldDiv">
-                                        <div id="addBtnDiv">
-                                             <input class="IASButton" TABINDEX="3" type="button" value="Add Rates" id="btnAdd" name="btnAdd" onclick="add()"/>
-                                        </div>
+                                    <div class="actionBtnDiv">
+                                         <input class="IASButton" TABINDEX="3" type="button" value="Add Rates" id="btnAdd" name="btnAdd" onclick="add()"/>
                                     </div>
 
                             </fieldset>

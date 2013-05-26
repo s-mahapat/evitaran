@@ -222,6 +222,27 @@ public void setcity(String city) {
     }
 
 public String getaddress() {
+
+        if(("\n").equals(this.address)){
+            this.address = this.address.replace("\n", "");
+        }
+
+        if(("null  ").equals(this.address)) {
+            this.address = this.address.replace("null  ", "");
+        }
+
+        if(("null ").equals(this.address)) {
+            this.address = this.address.replace("null ", "");
+        }
+
+        if((" ").equals(this.address)) {
+            this.address = this.address.replace(" ", "");
+        }
+
+        if(this.address.contains("\n")) {
+            this.address = this.address.replace("\n", "");
+        }
+
         return (this.address);
     }
 

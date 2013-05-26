@@ -1318,18 +1318,6 @@ public convertToPdf(){
             info.add(Chunk.NEWLINE);
         }
 
-        if(("\n").equals(sLabelInfo.getaddress())){
-            sLabelInfo.setaddress(sLabelInfo.getaddress().replace("\n", "")) ;
-        }
-
-        if(("null  ").equals(sLabelInfo.getaddress())) {
-            sLabelInfo.setaddress(sLabelInfo.getaddress().replace("null  ", ""));
-        }
-
-        if((" ").equals(sLabelInfo.getaddress())) {
-            sLabelInfo.setaddress(sLabelInfo.getaddress().replace(" ", ""));
-        }
-
         if(!sLabelInfo.getaddress().isEmpty()) {
             info.add(new Chunk(sLabelInfo.getaddress(), font));
             info.add(Chunk.NEWLINE);
@@ -1591,18 +1579,6 @@ public convertToPdf(){
                 info.add(Chunk.NEWLINE);
             }
 
-            if(("\n").equals(sLabelInfo.getaddress())){
-                sLabelInfo.setaddress(sLabelInfo.getaddress().replace("\n", "")) ;
-            }
-
-            if(("null  ").equals(sLabelInfo.getaddress())) {
-                sLabelInfo.setaddress(sLabelInfo.getaddress().replace("null  ", ""));
-            }
-
-            if((" ").equals(sLabelInfo.getaddress())) {
-                sLabelInfo.setaddress(sLabelInfo.getaddress().replace(" ", ""));
-            }
-
             if(!sLabelInfo.getaddress().isEmpty()) {
                 info.add(new Chunk(sLabelInfo.getaddress(), font));
                 info.add(Chunk.NEWLINE);
@@ -1692,6 +1668,10 @@ public convertToPdf(){
             }
             font = new Font(sfontType, sfontSize, sfontStyle, BaseColor.BLACK);
 
+            if(sLabelInfo.getsubscriberNumber().equals("40947")){
+                System.out.println("Address: " + sLabelInfo.getaddress());
+            }
+
             if(!sLabelInfo.getsubscriberName().isEmpty()) {
                 info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
                 info.add(Chunk.NEWLINE);
@@ -1705,29 +1685,10 @@ public convertToPdf(){
                 info.add(Chunk.NEWLINE);
             }
 
-            if(("\n").equals(sLabelInfo.getaddress())){
-                sLabelInfo.setaddress(sLabelInfo.getaddress().replace("\n", "")) ;
-            }
-
-            if(("null  ").equals(sLabelInfo.getaddress())) {
-                sLabelInfo.setaddress(sLabelInfo.getaddress().replace("null  ", ""));
-            }
-
-            if((" ").equals(sLabelInfo.getaddress())) {
-                sLabelInfo.setaddress(sLabelInfo.getaddress().replace(" ", ""));
-            }
-
             if(!sLabelInfo.getaddress().isEmpty()) {
                 info.add(new Chunk(sLabelInfo.getaddress(), font));
                 info.add(Chunk.NEWLINE);
             }
-            /*
-            String address = sLabelInfo.getaddress();
-            if(!(address.isEmpty())){
-                info.add(new Chunk(address, font));
-            }else{
-                System.out.println("Detected address which is empty or null");
-            }*/
 
             font = new Font(sfontType, sfontSize, Font.BOLD);
             /*
