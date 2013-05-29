@@ -82,6 +82,7 @@ public class Print extends JDSController {
                     InwardAckPDF _inwardAckPdf = new InwardAckPDF(conn);
                     ByteArrayOutputStream baos = _inwardAckPdf.getPDF(subid,
                             _inwardNumber,
+                            _inwardFormBean.getPaymentModeID(),
                             _inwardFormBean.getPaymentMode(),
                             _inwardFormBean.getInwardPurpose(),
                             _inwardFormBean.getInwardPurposeID(),

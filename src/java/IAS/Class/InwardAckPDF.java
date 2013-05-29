@@ -19,6 +19,7 @@ public class InwardAckPDF extends JDSPDF {
 
     public ByteArrayOutputStream getPDF(int subscriptionID,
             String inwardNumber,
+            int paymentModeID,
             String paymentMode,
             String inwardPurpose,
             int inwardPurposeID,
@@ -39,6 +40,7 @@ public class InwardAckPDF extends JDSPDF {
         document.add(this.getSalutation());
         document.add(this.getInwardAckLetterBody(String.valueOf(subscriptionID),
                 inwardNumber,
+                paymentModeID,
                 paymentMode,
                 inwardPurpose,
                 inwardPurposeID,
@@ -57,6 +59,7 @@ public class InwardAckPDF extends JDSPDF {
 
     private Paragraph getInwardAckLetterBody(String subscriptionID,
             String inwardNumber,
+            int paymentModeID,
             String paymentMode,
             String inwardPurpose,
             int inwardPurposeID,
@@ -102,7 +105,7 @@ public class InwardAckPDF extends JDSPDF {
         float _amount = Float.parseFloat(amount);
 
         InwardAck _ack = new InwardAck();
-        bodyText = _ack.getText(chequeDDNo, chqDate, _amount, paymentMode, inwardPurposeID, inwardPurpose, letterNumber, LetterDate);
+        bodyText = _ack.getText(chequeDDNo, chqDate, _amount, paymentModeID, inwardPurposeID, letterNumber, LetterDate);
         if (!customText.isEmpty()) {
             bodyText = bodyText + " " + customText;
         }

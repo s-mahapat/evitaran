@@ -18,6 +18,13 @@ public class JDSConstants {
     public static int INWARD_PURPOSE_PAYMENT = 3;
     public static int INWARD_COMPLETE = 1;
 
+    public static int PAYMENT_MODE_CHEQUE = 1;
+    public static int PAYMENT_MODE_DEMAND_DRAFT = 2;
+    public static int PAYMENT_MODE_MONEY_ORDER = 3;
+    public static int PAYMENT_MODE_CASH = 4;
+    public static int PAYMENT_MODE_BANK_TRANSFER = 5;
+
+
     public static int INVOICE_REQUEST_FOR_INVOICE = 1;
     public static int INVOICE_OUTSTANDING_PAYMENT_INVOICE = 2;
     public static int INVOICE_UPCOMING_YEAR_INVOICE = 3;
@@ -52,6 +59,68 @@ public class JDSConstants {
     public static float height = 40.0f;
     public static float heightFromBottomOfPage = 15.0f;
     public static float heightFromBottom = 136.0f;
+
+    public String getInwardPurpose(int purposeID){
+
+        String purpose = null;
+
+        switch(purposeID){
+            case 1:
+                purpose = "New Subscription";
+                break;
+            case 2:
+                purpose = "Renew Subscription";
+                break;
+            case 3:
+                purpose = "Payment";
+                break;
+             case 4:
+                purpose = "Request for Invoice";
+                break;
+             case 5:
+                purpose = "Missing Issue";
+                break;
+             case 6:
+                purpose = "Reprint";
+                break;
+            case 7:
+                purpose = "Advertisement";
+                break;
+             case 8:
+                purpose = "Manuscript";
+                break;
+             case 9:
+                purpose = "Others";
+                break;
+             case 10:
+                purpose = "Address Change";
+                break;
+        }
+        return purpose;
+    }
+
+    public String getPaymentText(int paymentModeID){
+
+        String paymentMode = null;
+        switch(paymentModeID){
+            case 1:
+                paymentMode = "Cheque";
+                break;
+            case 2:
+                paymentMode = "Demand Draft";
+                break;
+            case 3:
+                paymentMode = "Money Order";
+                break;
+             case 4:
+                paymentMode = "Cash";
+                break;
+             case 5:
+                paymentMode = "Bank Transfer";
+                break;
+        }
+        return paymentMode;
+    }
 
 
 }

@@ -9,55 +9,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <link rel="stylesheet" type="text/css" href="css/inward/ackinward.css"/>
-        <link rel="stylesheet" media="print" type="text/css" href="css/inward/ackinwardprint.css"/>
-        <link rel="stylesheet" media="print" type="text/css" href="css/print.css"/>
         <title>Acknowledge Inward</title>
         <script type="text/javascript">
             var subscriptionID = 0;
             jQueryCalendar("subscriberletterDate", true);
-            //                $(document).ready(function(){
-            //                    jQueryCalendar("subscriberletterDate");
-            //                    $.ajax({
-            //                        type: 'GET',
-            //                        dataType: 'xml',
-            //                        url: "subscription?oper=getSubscriptionDetailsForInward&inwardNumber=" + "${inwardFormBean.inwardNumber}",
-            //                        success: function(xmlResponse, textStatus, jqXHR){
-            //                            var html = "<tbody>";
-            //                            $(xmlResponse).find("results").find("row").each(function(){
-            //
-            //                                html += "<tr>";
-            //                                // get the journal id and set it in the UI
-            //                                subscriptionID = $(this).find("subscriptionid").text();
-            //                                $("#subscriptionID").text(subscriptionID);
-            //
-            //                                //get the journal name
-            //                                journalName = $(this).find("journalName").text();
-            //
-            //                                //get the start year, end year and copies
-            //                                startYear = $(this).find("startYear").text();
-            //                                endYear = $(this).find("endYear").text();
-            //                                copies = $(this).find("copies").text();
-            //
-            //                                html += "<td>" + journalName + "</td>"
-            //                                html += "<td>" + startYear + "</td>"
-            //                                html += "<td>" + endYear + "</td>"
-            //                                html += "<td>" + copies + "</td>"
-            //                                html += "</tr>";
-            //
-            //                            });
-            //                            html += "</tbody>";
-            //                            var _orightml = $(".datatable").html();
-            //                            html = _orightml + html;
-            //                            $(".datatable").html(html);
-            //                        },
-            //                        error: function(jqXHR,textStatus,errorThrown){
-            //                            alert("Failed to get subscription information for Inward. Error:" + textStatus + " : "+ errorThrown);
-            //                        }
-            //
-            //                    });
-            //
-            //                });
-
         </script>
     </head>
     <body>
@@ -99,27 +54,15 @@
                                             _inwardFormBean.getChqddNumberAsText(),
                                             _inwardFormBean.getPaymentDate(),
                                             _inwardFormBean.getAmount(),
-                                            _inwardFormBean.getPaymentMode(),
+                                            _inwardFormBean.getPaymentModeID(),
                                             _inwardFormBean.getInwardPurposeID(),
-                                            _inwardFormBean.getInwardPurpose(),
                                             _inwardFormBean.getLetterNumber(),
                                             _inwardFormBean.getLetterDate());
                                     out.println(_text);
                                 %>
                             </div>
-                            <!--<div id="subscriptionDetail">
-                                <table class="datatable" style="width: 100%">
-                                    <tr>
-                                        <th>Journal Name</th>
-                                        <th>Start Year</th>
-                                        <th>End Year</th>
-                                        <th>Copies</th>
-                                    </tr>
-                                </table>
-                            </div>-->
                             <div id="customTextDiv" style="margin-left: 5%;float:left;width: 90%;">
-                                <label>Custom Text: </label>
-                                <textarea style="margin-left: 10px; width: 80%;" class="IASTextAreaWide" id="customText" maxlength="300" cols="100"></textarea>
+                                <textarea style="margin: 10px; width: 85%;" class="IASTextAreaWide" id="customText" maxlength="300" cols="100"></textarea>
                             </div>
                         </div>
                     </fieldset>

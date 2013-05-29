@@ -48,6 +48,7 @@ public class inwardFormBean extends JDSBean {
     private String language = "";
     private String letterNumber;
     private String letterDate;
+    private int paymentModeID;
 
     public int getInwardID() {
         return this.inwardID;
@@ -196,6 +197,14 @@ public class inwardFormBean extends JDSBean {
 
     public void setPaymentMode(String _PaymentMode) {
         this.paymentMode = _PaymentMode;
+    }
+
+    public int getPaymentModeID() {
+        return this.paymentModeID;
+    }
+
+    public void setPaymentModeID(int _in) {
+        this.paymentModeID = _in;
     }
 
     public String getBankName() {
