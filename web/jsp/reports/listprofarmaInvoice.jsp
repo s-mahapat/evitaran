@@ -38,7 +38,7 @@
                     emptyrecords: "No Subscriber Type",
                     loadtext: "Loading...",
                     colNames:['invoiceNumber','invoiceCreationDate','subscriberNumber','journalCode','Period','Amount'],
-                    colModel :[                        
+                    colModel :[
                         {name:'proInvNo', index:'proInvNo', width:80, align:'center', xmlmap:'proInvNo'},
                         {name:'proInvDate', index:'proInvDate', width:80, align:'center', xmlmap:'proInvDate'},
                         {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
@@ -125,7 +125,7 @@
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
-                                </div>                                
+                                </div>
                             </div>
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
@@ -135,11 +135,7 @@
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
-                                    </span>
-                                    <span class="IASFormDivSpanForHyphen">
                                         <label> to </label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>

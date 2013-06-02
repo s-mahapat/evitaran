@@ -42,7 +42,7 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
-                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city', 
+                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city',
                                 'state', 'country', 'pincode', 'copies', 'issue', 'month', '`year`', 'startYear', 'startMonth', 'endYear', 'endMonth'],
                     colModel :[
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
@@ -201,7 +201,7 @@
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
-                                            </div>                                            
+                                            </div>
                                         </div>
                                     </div>
                                     <%-- Search Criteria right div --%>
@@ -215,7 +215,7 @@
                                                     <option value="0">Select</option>
                                                 </select>
                                             </span>
-                                        </div>                                        
+                                        </div>
                                         <div class="IASFormFieldDiv">
                                             <span class="IASFormDivSpanLabel">
                                                 <label>Subscriber Type</label>
@@ -233,11 +233,7 @@
                                             <div class="dateDiv"></div>
                                             <span class="IASFormDivSpanInputBox">
                                                 <input class="IASDateTextBox" readonly size="10" type="text" id="from" name="from"/>
-                                            </span>
-                                            <span class="IASFormDivSpanForHyphen">
                                                 <label> to </label>
-                                            </span>
-                                            <span class="IASFormDivSpanInputBox">
                                                 <input class="IASDateTextBox" readonly size="10" type="text" id="to" name="to"/>
                                             </span>
                                         </div>

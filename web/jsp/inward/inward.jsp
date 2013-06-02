@@ -94,11 +94,12 @@
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input autocomplete="off" class="IASTextBox" TABINDEX="1" type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}" onblur="removeInvalidSubscriber()"/>
+                <span class="" style="font-size: 0.75em; float: next; vertical-align: top;">
+                    <button type="button" id="btnSearchSubscriber" TABINDEX="2">Search</button>
+                    <button type="button" id="btnResetSubscriber" TABINDEX="3">Reset</button>
+                </span>
             </span>
-            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
-                <button type="button" id="btnSearchSubscriber" TABINDEX="2">Search Subscriber</button>
-                <button type="button" id="btnResetSubscriber" TABINDEX="3">Reset</button>
-            </span>
+
         </div>
 
         <div class="IASFormFieldDiv">
@@ -180,7 +181,7 @@
                 <label>Inward Number:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<jsp:getProperty name="inwardFormBean" property="inwardNumber"/>"/>
+                <input class="IASDisabledTextBox smalltextbox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value="<jsp:getProperty name="inwardFormBean" property="inwardNumber"/>"/>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -345,7 +346,7 @@
                 <label>Letter No:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="21" maxlength="20" type="text" name="letterNumber" id="letterNumber" value="${inwardFormBean.letterNumber}"/>
+                <input class="IASTextBox" TABINDEX="21" maxlength="40" type="text" name="letterNumber" id="letterNumber" value="${inwardFormBean.letterNumber}"/>
             </span>
         </div>
 
@@ -388,10 +389,18 @@
             <span class="IASFormDivSpanLabel">
                 <label>Reason For Return:</label>
             </span>
-            <span class="IASFormDivSpanInputBox">
+            <span class="IASFormDivSpanInputBox IASFormDivSpanSmallInputBox" style="">
                 <input class="IASDisabledTextBox" TABINDEX="25" type="text" name="chequeDDReturnReason" id="chequeDDReturnReason" value="${inwardFormBean.chequeDDReturnReason}" readonly>
             </span>
-            <span class="IASFormDivSpanInputBox">
+            <span class="">
+
+            </span>
+        </div>
+        <div class="IASFormFieldDiv">
+            <span class="IASFormDivSpanLabel">
+                <label>Reason Other:</label>
+            </span>
+            <span class="IASFormDivSpanInputBox IASFormDivSpanSmallInputBox" style="">
                 <input class="IASDisabledTextBox" TABINDEX="26" type="text" name="chequeDDReturnReasonOther" id="chequeDDReturnReasonOther" value="${inwardFormBean.chequeDDReturnReasonOther}" readonly/>
             </span>
         </div>

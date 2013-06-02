@@ -232,7 +232,7 @@
                                             <option value="0" selected >Select</option>
                                         </select>
                                     </span>
-                                </div>                                
+                                </div>
                             </div>
 
 
@@ -277,11 +277,7 @@
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" TABINDEX="9" readonly size="10" type="text" id="from" name="from"/>
-                                    </span>
-                                    <span class="IASFormDivSpanForHyphen">
                                         <label> to </label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" TABINDEX="10" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>

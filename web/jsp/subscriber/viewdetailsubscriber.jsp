@@ -114,14 +114,14 @@
                         <legend>View Subscriber</legend>
                         <fieldset class="subMainFieldSet">
 
-                            <div class="IASFormLeftDivSmaller">
+                            <div class="IASFormLeftDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Subscriber No:</label>
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
+                                        <input class="IASDisabledTextBox smalltextbox" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
                                         <input type="hidden" name="subscriberid" id="subscriberid" value="${subscriberFormBean.subscriberID}"/>
                                         <input type="hidden" name="subtypeid" id="subtypeid" value="${subscriberFormBean.subtypeID}"/>
                                     </span>
@@ -139,14 +139,13 @@
                                 </div>
                             </div>
 
-                            <div class="IASFormRightDivBigger">
+                            <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Shipping Address:</label>
                                     </span>
-
                                     <span class="IASFormDivSpanInputBox">
-                                        <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" style="width: 210px;" class="IASTextAreaMandatory" TABINDEX="3" name="shippingAddress" id="shippingAddress">${subscriberFormBean.shippingAddress}</textarea>
+                                        <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="3" name="shippingAddress" id="shippingAddress">${subscriberFormBean.shippingAddress}</textarea>
                                     </span>
 
                                     <span class="IASFormDivSpanLabel">
@@ -154,7 +153,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" style="width: 200px;" class="IASTextAreaMandatory" TABINDEX="2" name="invoiceAddress" id="invoiceAddress">${subscriberFormBean.invoiceAddress}</textarea>
+                                        <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="2" name="invoiceAddress" id="invoiceAddress">${subscriberFormBean.invoiceAddress}</textarea>
                                     </span>
                                 </div>
                             </div>

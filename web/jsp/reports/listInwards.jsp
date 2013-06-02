@@ -194,11 +194,7 @@
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
-                                    </span>
-                                    <span class="IASFormDivSpanForHyphen">
                                         <label> to </label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>

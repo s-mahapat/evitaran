@@ -149,7 +149,7 @@
                                     <span class="IASFormDivSpanLabel">
                                         <label>Reminder Type</label>
                                     </span>
-                                    <span class="IASFormDivSpanInputBoxLessMargin">
+                                    <span class="IASFormDivSpanInputBox">
                                         <select class="IASComboBoxWideMandatory" TABINDEX="1" name="reminderType" id="reminderType">
                                             <option value ="1">Type 1 Reminder - Gentle</option>
                                             <option value ="2">Type 2 Reminder - Strong</option>
@@ -166,11 +166,7 @@
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" TABINDEX="2" readonly size="10" type="text" id="from" name="from"/>
-                                    </span>
-                                    <span class="IASFormDivSpanForHyphen">
                                         <label> to </label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
                                         <input class="IASDateTextBox" TABINDEX="3" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>

@@ -24,30 +24,30 @@
         <script type="text/javascript" >
             // Script for editor
             tinyMCE.init({
-            mode : "exact",
-            elements : "content",
-            auto_focus : "content",
-            plugins : "tabfocus",
+                mode : "exact",
+                elements : "content",
+                auto_focus : "content",
+                plugins : "tabfocus",
 
-            //theme : "simple",
-            theme : "advanced",
+                //theme : "simple",
+                theme : "advanced",
 
-            // Theme options - button# indicated the row# only
+                // Theme options - button# indicated the row# only
 
-            theme_advanced_buttons1 : "newdocument,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect",
-            //theme_advanced_buttons2 : "cut,copy,paste,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,forecolor,backcolor",
-            theme_advanced_buttons2 : "cut,copy,paste,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,|,forecolor,backcolor",
-            theme_advanced_buttons3 : "",
-            theme_advanced_toolbar_location : "top",
-            theme_advanced_toolbar_align : "left",
-            theme_advanced_resizing : true,
+                theme_advanced_buttons1 : "newdocument,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect",
+                //theme_advanced_buttons2 : "cut,copy,paste,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,forecolor,backcolor",
+                theme_advanced_buttons2 : "cut,copy,paste,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,|,forecolor,backcolor",
+                theme_advanced_buttons3 : "",
+                theme_advanced_toolbar_location : "top",
+                theme_advanced_toolbar_align : "left",
+                theme_advanced_resizing : true,
 
-            //tab_focus : ':subject,:btnSendEmail',
-            //tabfocus_elements : ":prev,:next"
-            tabfocus_elements : ":subject,:btnSendEmail",
+                //tab_focus : ':subject,:btnSendEmail',
+                //tabfocus_elements : ":prev,:next"
+                tabfocus_elements : ":subject,:btnSendEmail",
 
-            height : "300"
-        });
+                height : "300"
+            });
         </script>
 
     </head>
@@ -61,7 +61,7 @@
                     <fieldset class="MainFieldset">
                         <legend>Send Bulk Email</legend>
                         <fieldset class="subMainFieldSet">
-                        <legend>Email Composer</legend>
+                            <legend>Email Composer</legend>
                             <div class="IASFormFieldDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabelEmail">
@@ -77,71 +77,41 @@
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
-                                    <div class="IASFormFieldDiv">
-                                        <span class="IASFormDivSpanLabelSpecial">
-                                            <label>Select Email ID's from database:</label>
-                                        </span>
-                                        <span class="IASFormDivSpanLabel">
-                                            <label>Personal</label>
-                                        </span>
-                                        <span class="IASFormDivSpanInputBox">
-                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="personal" id="personal" value ="1" onclick="getChecked()"/>
-                                        </span>
+                                    <span class="IASFormDivSpanLabelSpecial">
+                                        <label>Select Email ID's from database:</label>
+                                    </span>
+                                    <div style="display: table;">
 
-                                        <span class="IASFormDivSpanLabel">
-                                            <label>Indian Schools and Colleges</label>
-                                        </span>
-                                        <span class="IASFormDivSpanInputBox">
-                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="isc" id="isc" value ="1" onclick="getChecked()"/>
-                                        </span>
+                                        <label>Personal</label>
+                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="personal" id="personal" value ="1" onclick="getChecked()"/>
 
-                                        <span class="IASFormDivSpanLabel">
-                                            <label>Indian Institutions</label>
-                                        </span>
-                                        <span class="IASFormDivSpanInputBox">
-                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="ii" id="ii" value ="1" onclick="getChecked()"/>
-                                        </span>
+                                        <label class="inlinelabel">Indian Schools and Colleges</label>
+                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="isc" id="isc" value ="1" onclick="getChecked()"/>
 
-                                        <span class="IASFormDivSpanLabel">
-                                            <label>Indian Corporate</label>
-                                        </span>
-                                        <span class="IASFormDivSpanInputBox">
-                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="ic" id="ic" value ="1" onclick="getChecked()"/>
-                                        </span>
+                                        <label class="inlinelabel">Indian Institutions</label>
+                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="ii" id="ii" value ="1" onclick="getChecked()"/>
+
+                                        <label class="inlinelabel">Indian Corporate</label>
+                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="ic" id="ic" value ="1" onclick="getChecked()"/>
+
+                                        <label class="inlinelabel">Free Subscribers</label>
+                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="free" id="free" value ="1" onclick="getChecked()"/>
+
+                                        <label class="inlinelabel">Foreign Personal</label>
+                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="fp" id="fp" value ="1" onclick="getChecked()"/>
+
+                                        <label class="inlinelabel">Foreign Institutions</label>
+                                        <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="fi" id="fi" value ="1" onclick="getChecked()"/>
                                     </div>
-                                    <div class="IASFormFieldDiv">
-                                        <span class="IASFormDivSpanLabelSpecial">
-                                            <label>           :</label>
-                                        </span>
-                                        <span class="IASFormDivSpanLabel">
-                                            <label>Free Subscribers</label>
-                                        </span>
-                                        <span class="IASFormDivSpanInputBox">
-                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="free" id="free" value ="1" onclick="getChecked()"/>
-                                        </span>
-
-                                        <span class="IASFormDivSpanLabel">
-                                            <label>Foreign Personal</label>
-                                        </span>
-                                        <span class="IASFormDivSpanInputBox">
-                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="fp" id="fp" value ="1" onclick="getChecked()"/>
-                                        </span>
-                                        <span class="IASFormDivSpanLabel">
-                                            <label>Foreign Institutions</label>
-                                        </span>
-                                        <span class="IASFormDivSpanInputBox">
-                                            <input class="IASCheckBox" TABINDEX="2" type="checkbox" name="fi" id="fi" value ="1" onclick="getChecked()"/>
-                                        </span>                                        
-                                    </div>
-                                </div>                                
+                                </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabelEmail">
                                         <label>Subject:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBoxEmail">
-                                        <input class="IASTextBoxMandatoryMax" TABINDEX="3" type="text" name="subject" id="subject" />
+                                        <input class="IASTextBoxMandatoryWide" TABINDEX="3" type="text" name="subject" id="subject" />
                                     </span>
-                                 </div>
+                                </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabelEmail">
                                         <label>Content:</label>
@@ -151,7 +121,7 @@
                                         <input class="IASTextBoxMandatoryMax" TABINDEX="4" type="text" name="content" id="content" />
                                     </span>
                                 </div>
-                           </div>
+                            </div>
                         </fieldset>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormCenterDiv">

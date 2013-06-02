@@ -198,7 +198,7 @@ fieldset {
 .subMainFieldSet{
     background: none repeat scroll 0 0 #F6F6F6;
     border-radius: 4px;
-    padding: 5px 5px 5px 5px;
+    padding: 3px;
     margin-bottom: 5px;
 }
 
@@ -219,29 +219,32 @@ fieldset {
 }
 
 .IASTextBox{
-    width: 120px;
     height: 20px;
 }
 
 .IASDisabledTextBox{
-    width: 120px;
+    width: 60%;
     background-color: #EEE;
     height: 20px;
 }
 
+.smalltextbox{
+    width: 30%;
+}
+
 .IASDisabledTextBoxWide{
-    width: 250px;
+    width: 70%;
     background-color: #EEE;
     height: 20px;
 }
 
 .IASTextBoxWide{
-    width: 250px;
+    width: 60%;
     height: 20px;
 }
 
 .IASEmailTextBox{
-    width: 200px;
+    width: 70%;
     height: 20px;
 }
 
@@ -251,19 +254,18 @@ fieldset {
 }
 
 .IASTextBoxMandatory{
-    width: 120px;
     background-color: antiquewhite;
     height: 20px;
 }
 
 .IASTextBoxMandatoryWide{
-    width: 250px;
+    width: 70%;
     background-color: antiquewhite;
     height: 20px;
 }
 
 .IASTextBoxMandatoryMax{
-    width: 100%;
+    width: 80%;
     height: 20px;
     background-color: antiquewhite;
 }
@@ -272,7 +274,7 @@ fieldset {
     font-family:inherit;
     font-size: inherit;
     height: 50px;
-    width: 250px;
+    width: 80%;
     max-width: 250px;
     max-height: 50px;
 }
@@ -281,7 +283,7 @@ fieldset {
     font-family:inherit;
     font-size: inherit;
     height: 50px;
-    width: 500px;
+    width: 90%;
     max-width: 850px;
     max-height: 50px;
 }
@@ -291,7 +293,7 @@ fieldset {
     font-size: inherit;
     background-color: antiquewhite;
     height: 50px;
-    width: 250px;
+    width: 90%;
     max-width: 250px;
     max-height: 50px;
 }
@@ -305,13 +307,11 @@ fieldset {
 
 
 .IASDateTextBox{
-    width: 70px;
     height: 20px;
     background-color: #F6F6F6
 }
 
 .IASDateTextBoxMandatory{
-    width: 70px;
     background-color: antiquewhite;
 }
 
@@ -358,17 +358,17 @@ fieldset {
 }
 
 .IASComboBoxWideMandatory{
-    width: 220px;
+    width: 80%;
     background-color: antiquewhite;
 }
 
 .IASComboBoxMediumMandatory{
-    width: 160px;
+    width: 60%;
     background-color: antiquewhite;
 }
 
 .IASComboBoxSmallMandatory{
-    width: 100px;
+    width: 50%;
     background-color: antiquewhite;
 }
 
@@ -380,7 +380,7 @@ fieldset {
 
 .IASFormLeftDiv{
     float: left;
-    width: 45%;
+    width: 48%;
     padding: 5px;
 }
 
@@ -391,7 +391,7 @@ fieldset {
 }
 
 .IASFormRightDiv{
-    width: 50%;
+    width: 48%;
     float: right;
     padding: 5px;
 }
@@ -423,6 +423,10 @@ fieldset {
     float: left;
     text-align: right;
     width: 110px;
+}
+
+.inlinelabel{
+    margin-left: 10px;
 }
 
 .IASFormDivSpanLabelLeftAligned{
@@ -457,6 +461,11 @@ fieldset {
 .IASFormDivSpanInputBox{
     margin-left: 15px;
     float: left;
+    width: 70%;
+}
+
+.IASFormDivSpanSmallInputBox{
+    width: 50%;
 }
 
 .IASFormSpanLabelData{
