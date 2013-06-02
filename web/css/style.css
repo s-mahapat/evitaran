@@ -292,10 +292,10 @@ fieldset {
     font-family:inherit;
     font-size: inherit;
     background-color: antiquewhite;
-    height: 50px;
-    width: 90%;
-    max-width: 250px;
-    max-height: 50px;
+    height: 80px;
+    width: 85%;
+    max-width: 90%;
+    max-height: 80px;
 }
 
 .IASCheckBox{
@@ -368,7 +368,7 @@ fieldset {
 }
 
 .IASComboBoxSmallMandatory{
-    width: 50%;
+    width: 30%;
     background-color: antiquewhite;
 }
 
@@ -427,6 +427,7 @@ fieldset {
 
 .inlinelabel{
     margin-left: 10px;
+    vertical-align: middle;
 }
 
 .IASFormDivSpanLabelLeftAligned{

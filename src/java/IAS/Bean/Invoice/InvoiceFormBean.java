@@ -40,6 +40,10 @@ public class InvoiceFormBean {
     private int invoiceTypeID;
     private String letterNumber;
     private String letterDate;
+    private String inwardPaymentMode;
+    private String chqddNumber;
+    private String chqDate;
+    private int paymentModeID = 0;
 
     public int getInvoiceTypeID() {
         return this.invoiceTypeID;
@@ -309,5 +313,37 @@ public class InvoiceFormBean {
 
     public void setLetterDate(String _letterDate) {
         this.letterDate = _letterDate;
+    }
+
+    public String getInwardPaymentMode() {
+        return this.inwardPaymentMode;
+    }
+
+    public void setInwardPaymentMode(String _in) {
+        this.inwardPaymentMode = _in;
+    }
+
+    public String getChqddNumber() {
+        return this.chqddNumber;
+    }
+
+    public void setChqddNumber(String _in) {
+        this.chqddNumber = _in;
+    }
+
+    public String getChqDate() {
+        return this.chqDate;
+    }
+
+    public void setChqDate(String _in) {
+        this.chqDate = _in;
+    }
+
+    public int getPaymentModeID() {
+        return this.paymentModeID;
+    }
+
+    public void setPaymentModeID(int _in) {
+        this.paymentModeID = _in;
     }
 }

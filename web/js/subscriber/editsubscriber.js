@@ -42,5 +42,6 @@ function deActivateSubscriber(){
         $("#btnViewSubscription").attr("disabled",false);
         $("#btnAddSubscription").attr("disabled",false);
         $( "#deactivationDate" ).val("");
+        $("#deactivationReason").val("");
     }
 }

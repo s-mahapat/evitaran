@@ -319,7 +319,7 @@ function removeInvalidSubscriber() {
 
 function MakePaymentFieldsMandatory() {
     var payment_mode = $("#paymentMode").val();
-    if (!payment_mode || payment_mode.toLowerCase() == "cash") {
+    if (!payment_mode || payment_mode.toLowerCase() == "cash" || payment_mode.toLowerCase() == "money order") {
         _MakePaymentFieldsMandatory(false);
     } else {
         _MakePaymentFieldsMandatory(true);

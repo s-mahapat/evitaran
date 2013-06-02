@@ -140,21 +140,11 @@
                             </div>
 
                             <div class="IASFormRightDiv">
-                                <div class="IASFormFieldDiv">
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Shipping Address:</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
-                                        <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="3" name="shippingAddress" id="shippingAddress">${subscriberFormBean.shippingAddress}</textarea>
-                                    </span>
-
-                                    <span class="IASFormDivSpanLabel">
-                                        <label>Invoice Address:</label>
-                                    </span>
-
-                                    <span class="IASFormDivSpanInputBox">
-                                        <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="2" name="invoiceAddress" id="invoiceAddress">${subscriberFormBean.invoiceAddress}</textarea>
-                                    </span>
+                                <div class="IASFormFieldDiv" style="display: table">
+                                    <span style="display: table-cell; vertical-align: middle;"><label>Shipping Address:</label></span>
+                                    <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="3" name="shippingAddress" id="shippingAddress">${subscriberFormBean.shippingAddress}</textarea>
+                                    <span style="display: table-cell; vertical-align: middle"><label>Invoice Address:</label></span>
+                                    <textarea onkeypress="return imposeMaxLength(event, this, 64);" rows="4" cols="35" class="IASTextAreaMandatory" TABINDEX="2" name="invoiceAddress" id="invoiceAddress">${subscriberFormBean.invoiceAddress}</textarea>
                                 </div>
                             </div>
                         </fieldset>

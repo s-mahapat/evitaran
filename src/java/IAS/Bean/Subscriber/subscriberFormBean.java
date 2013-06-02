@@ -29,6 +29,7 @@ public class subscriberFormBean extends JDSBean {
     private String deactivationDate;
     private boolean sameInvoiceAddress = false;
     private int subtypeID;
+    private String deactivationReason;
 
 
     /* Subscriber ID */
@@ -254,6 +255,14 @@ public class subscriberFormBean extends JDSBean {
 
     public void setSameInvoiceAddress(boolean _sameInvoiceAddress){
         this.sameInvoiceAddress = _sameInvoiceAddress;
+    }
+
+    public String getDeactivationReason() {
+        return this.deactivationReason;
+    }
+
+    public void setDeactivationReason(String _in){
+        this.deactivationReason = _in;
     }
 
 }

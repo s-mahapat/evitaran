@@ -76,10 +76,16 @@
 
 
                             }
-                            html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Total</td><td>" + _total + "</td></tr>"
+                            html += "<tr><td colspan=\"3\">Total</td><td>" + _total + "</td></tr>"
                             if(${invoiceFormBean.inwardAmount} > 0){
-                                html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Amount Paid</td><td>" + ${invoiceFormBean.inwardAmount} + "</td></tr>"
-                                html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Balance</td><td>" + ${invoiceFormBean.amount} + "</td></tr>"
+                                jdsconstants = new JDSConstants();
+                                if(${invoiceFormBean.paymentModeID} == jdsconstants.PAYMENT_MODE_CASH){
+                                    html += "<tr><td colspan=\"3\">Less: Amount received by Cash on ${invoiceFormBean.chqDate} </td><td> ${invoiceFormBean.inwardAmount}</td></tr>";
+                                }else{
+                                    html += "<tr><td colspan=\"3\">Less: Amount received by ${invoiceFormBean.inwardPaymentMode} No: ${invoiceFormBean.chqddNumber} Dated: ${invoiceFormBean.chqDate}</td><td>" + ${invoiceFormBean.inwardAmount} + "</td></tr>";
+                                }
+
+                                html += "<tr><td colspan=\"3\">Balance Amount</td><td>" + ${invoiceFormBean.amount} + "</td></tr>"
                             }
                             html += "</tbody>";
                             var _orightml = $(".datatable").html();

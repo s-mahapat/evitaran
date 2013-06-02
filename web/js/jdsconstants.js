@@ -14,6 +14,12 @@ function JDSConstants() {
     this.INVOICE_OUTSTANDING_PAYMENT_INVOICE = 2;
     this.INVOICE_UPCOMING_YEAR_INVOICE = 3;
 
+    this.PAYMENT_MODE_CHEQUE = 1;
+    this.PAYMENT_MODE_DEMAND_DRAFT = 2;
+    this.PAYMENT_MODE_MONEY_ORDER = 3;
+    this.PAYMENT_MODE_CASH = 4;
+    this.PAYMENT_MODE_BANK_TRANSFER = 5;
+
     this.CANCEL = 0;
 
     //duplicate subscription action codes

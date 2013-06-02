@@ -1,5 +1,11 @@
 <%@page language="java" import="java.util.*" %>
 <jsp:useBean class="IAS.Bean.Subscriber.subscriberFormBean" id="subscriberFormBean" scope="request"></jsp:useBean>
+<script>
+    $(document).ready(function(){
+        var deactivationReason = "${subscriberFormBean.deactivationReason}";
+        $("#deactivationReason").val(deactivationReason);
+    });
+</script>
     <fieldset class="subMainFieldSet">
 
         <div class="IASFormLeftDiv">
@@ -160,7 +166,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxWide" TABINDEX="12" type="text" name="email" id="email" onblur="validateEmail(this.id)" value="${subscriberFormBean.email}"/>
+                <input class="IASTextBoxWide" TABINDEX="12" type="email" name="email" id="email" onblur="validateEmail(this.id)" value="${subscriberFormBean.email}"/>
             </span>
         </div>
 
@@ -217,6 +223,12 @@
                            }
                        %>
                        />
+                <select class="IASComboBoxWide" id="deactivationReason" name="deactivationReason">
+                    <option value="">Select</option>
+                    <option value="Non payment of dues">Non payment of dues</option>
+                    <option value="Deceased">Deceased</option>
+                    <option value="Others">Others</option>
+                </select>
             </span>
         </div>
 

@@ -218,7 +218,7 @@ public class RequestForInvoicePDF extends JDSPDF{
         cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        PdfPCell cell3 = new PdfPCell(new Paragraph("Rs.", JDSPDF.JDS_FONT_BODY));
+        PdfPCell cell3 = new PdfPCell(new Paragraph("Rate", JDSPDF.JDS_FONT_BODY));
         cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 

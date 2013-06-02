@@ -10,71 +10,51 @@
 
 <div class="IASFormRightDiv">
     <div class="IASFormFieldDiv">
-        <span class="IASFormDivSpanLabel">
-            <label>Start Year:</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBox">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="subscriptionStartYear" id="subscriptionStartYear" onchange="">
-                <%
-                    int year = Integer.parseInt(util.getDateString("yyyy"));
-                    for (int i = year; i <= year + 4; i++) {
-                        out.println("<option value=\"" + i + "\">" + i + "</option>");
-                    }
-                %>
-            </select>
-        </span>
-        <span class="IASFormDivSpanLabel">
-            <label>No of years:</label>
-        </span>
-
-        <span class="IASFormDivSpanInputBox">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="endYear" id="endYear">
-                <%
-                    for (int j = 1; j <= 10; j++) {
-                        out.println("<option value =\"" + j + "\">" + j + "</option>");
-                    }
-                %>
-            </select>
-        </span>
-
-        <%--!--<span class="IASFormDivSpanLabel">
-    <label>End Year:</label>
-</span>
-
-        <span class="IASFormDivSpanInputBox">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="endYear" id="endYear">
-        <%
-            for (int j = 0; j <= 4; j++) {
-                out.println("<option value =\"" + (j + year) + "\">" + (j + year) + "</option>");
-            }
-
+        <label class="inlinelabel">Start Year:</label>
+        <select class="IASComboBoxMandatory" TABINDEX="11" name="subscriptionStartYear" id="subscriptionStartYear" onchange="">
+            <%
+                int year = Integer.parseInt(util.getDateString("yyyy"));
+                for (int i = year; i <= year + 4; i++) {
+                    out.println("<option value=\"" + i + "\">" + i + "</option>");
+                }
+            %>
         </select>
-        </span>--%>
+        <label class="inlinelabel">No of years:</label>
+        <select class="IASComboBoxMandatory" TABINDEX="11" name="endYear" id="endYear">
+            <%
+                for (int j = 1; j <= 10; j++) {
+                    out.println("<option value =\"" + j + "\">" + j + "</option>");
+                }
+            %>
+        </select>
+        <label class="inlinelabel">Start Month:</label>
+        <select class="IASComboBoxMandatory" TABINDEX="11" name="startMonth" id="startMonth">
+            <option value="1" selected>Jan</option>
+            <option value="7">Jul</option>
+        </select>
+        <label class="inlinelabel">Copies:</label>
+        <select class="IASComboBoxMandatory" TABINDEX="11" name="copies" id="copies">
+            <%
+                for (int i = 1; i <= 10; i++) {
+                    out.println("<option value =\"" + i + "\">" + i + "</option>");
+                }
+            %>
+        </select>
     </div>
     <div class="IASFormFieldDiv">
         <span class="IASFormDivSpanLabel">
-            <label>Start Month:</label>
+
         </span>
 
         <span class="IASFormDivSpanInputBox">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="startMonth" id="startMonth">
-                <option value="1" selected>Jan</option>
-                <option value="7">Jul</option>
-            </select>
+
         </span>
         <span class="IASFormDivSpanLabel" style="margin-left: 5px;">
-            <label>Copies:</label>
+
         </span>
 
         <span class="IASFormDivSpanInputBox">
-            <select class="IASComboBoxMandatory" TABINDEX="11" name="copies" id="copies">
-                <%
-                    for (int i = 1; i <= 10; i++) {
-                        out.println("<option value =\"" + i + "\">" + i + "</option>");
-                    }
-                %>
-            </select>
+
         </span>
     </div>
 </div>

@@ -214,7 +214,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        PdfPCell cell3 = new PdfPCell(new Paragraph("Rs.", JDSPDF.JDS_FONT_BODY));
+        PdfPCell cell3 = new PdfPCell(new Paragraph("Rate", JDSPDF.JDS_FONT_BODY));
         cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
@@ -311,38 +311,46 @@ public class OutStandingPendingBillPDF extends JDSPDF {
             }
         }
 
-        PdfPCell blankCell = new PdfPCell(new Phrase("", JDSPDF.JDS_FONT_NORMAL_SMALL));
+        /*PdfPCell blankCell = new PdfPCell(new Phrase("", JDSPDF.JDS_FONT_NORMAL_SMALL));
         blankCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         blankCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        blankCell.setColspan(3);
+        blankCell.setColspan(3);*/
 
         PdfPCell totalCell = new PdfPCell(new Phrase("Total", JDSPDF.JDS_FONT_NORMAL_SMALL));
-        totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        totalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         totalCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        totalCell.setColspan(4);
 
-        PdfPCell totalValue = new PdfPCell(new Phrase(String.valueOf(total), JDSPDF.JDS_FONT_NORMAL_SMALL));
+        String _total = String.format("%.1f", (float)total);
+        PdfPCell totalValue = new PdfPCell(new Phrase(_total, JDSPDF.JDS_FONT_NORMAL_SMALL));
         totalValue.setHorizontalAlignment(Element.ALIGN_CENTER);
         totalValue.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
          // the total row
-        table.addCell(blankCell);
+        //table.addCell(blankCell);
         table.addCell(totalCell);
         table.addCell(totalValue);
 
         float amountPaid = _invoiceBean.getInwardAmount();
         if (amountPaid > 0) {
+            String lessamount = String.format("Less: Amount received by %s No: %s Dated: %s", _invoiceBean.getInwardPaymentMode(), _invoiceBean.getChqddNumber(), _invoiceBean.getChqDate());
+            if(_invoiceBean.getPaymentModeID() == JDSConstants.PAYMENT_MODE_CASH){
+                lessamount = String.format("Less: Amount received by %s on %s", _invoiceBean.getInwardPaymentMode(), _invoiceBean.getChqDate());
+            }
 
-            PdfPCell amountPaidCell = new PdfPCell(new Phrase("Amount Paid", JDSPDF.JDS_FONT_NORMAL_SMALL));
-            amountPaidCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            PdfPCell amountPaidCell = new PdfPCell(new Phrase(lessamount, JDSPDF.JDS_FONT_NORMAL_SMALL));
+            amountPaidCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             amountPaidCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            amountPaidCell.setColspan(4);
 
             PdfPCell amountPaidValueCell = new PdfPCell(new Phrase(String.valueOf(_invoiceBean.getInwardAmount()), JDSPDF.JDS_FONT_NORMAL_SMALL));
             amountPaidValueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
             amountPaidValueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-            PdfPCell balanceCell = new PdfPCell(new Phrase("Balance", JDSPDF.JDS_FONT_NORMAL_SMALL));
-            balanceCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            PdfPCell balanceCell = new PdfPCell(new Phrase("Balance amount due", JDSPDF.JDS_FONT_NORMAL_SMALL));
+            balanceCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             balanceCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            balanceCell.setColspan(4);
 
             float balance = _invoiceBean.getBalance();
             PdfPCell balanceValueCell = new PdfPCell(new Phrase(String.valueOf(balance), JDSPDF.JDS_FONT_NORMAL_SMALL));
@@ -350,11 +358,11 @@ public class OutStandingPendingBillPDF extends JDSPDF {
             balanceValueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
              // the amount paid row
-            table.addCell(blankCell);
+            //table.addCell(blankCell);
             table.addCell(amountPaidCell);
             table.addCell(amountPaidValueCell);
             // the balance row
-            table.addCell(blankCell);
+            //table.addCell(blankCell);
             table.addCell(balanceCell);
             table.addCell(balanceValueCell);
         }

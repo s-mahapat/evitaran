@@ -22,10 +22,11 @@ public class InwardAck {
         IInwardAcknowledgement inwardAckObj;
         if (purposeid == JDSConstants.INWARD_PURPOSE_REQUEST_FOR_INVOICE) {
             inwardAckObj = new RequestForInvoiceAcknowledgement();
-        } else if (paymentModeID == JDSConstants.PAYMENT_MODE_BANK_TRANSFER ||
-                paymentModeID == JDSConstants.PAYMENT_MODE_CASH ||
-                paymentModeID == JDSConstants.PAYMENT_MODE_MONEY_ORDER) {
+        } else if (paymentModeID == JDSConstants.PAYMENT_MODE_BANK_TRANSFER
+                || paymentModeID == JDSConstants.PAYMENT_MODE_MONEY_ORDER) {
             inwardAckObj = new ConfirmedPaymentAcknowledgment();
+        } else if (paymentModeID == JDSConstants.PAYMENT_MODE_CASH) {
+            inwardAckObj = new CashPaymentAcknowledgment();
         } else {
             inwardAckObj = new InwardAcknowledgement();
         }
