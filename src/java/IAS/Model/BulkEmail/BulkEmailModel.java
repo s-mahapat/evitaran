@@ -50,9 +50,9 @@ public class BulkEmailModel extends JDSModel{
         try {
             //new InternetAddress(to).validate();
             Address[] toUser = InternetAddress.parse(to, false);
-            for(Address s: toUser){
-                new InternetAddress(s.toString()).validate();
-            }
+                for(Address s: toUser){
+                    new InternetAddress(s.toString()).validate();
+                }
         } catch (AddressException ex) {
             message = ex.getMessage();
             success = false;
@@ -152,23 +152,29 @@ public class BulkEmailModel extends JDSModel{
             }
         }
 
+        String message = "Failed to send email to the following address:";
+        boolean success = true;
         if (first == 1){
             sql += ")";
             PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = this.db.executeQueryPreparedStatement(st);
             while(rs.next()){
                 // Append all the emailIDs separated by a space
-                emailIDs = emailIDs + " " + rs.getString(1);
+                String id = rs.getString(1);
+                try {
+                    new InternetAddress(id).validate();
+                    emailIDs = emailIDs + " " + rs.getString(1);
+                }catch (AddressException ex) {
+                    logger.debug(ex.getMessage());
+                    success = false;
+                    message = message + "\n" + id + ": " + ex.getMessage();
+                }
             }
-            // For now for testing over-write all the emailIDs
-            //emailIDs = "";
         }
 
         emailIDs = emailIDs + " " + request.getParameter("to");
 
-        boolean success = true;
         Address[] toUser = InternetAddress.parse(emailIDs, false);
-        String message = "Failed to send email to the following address:";
 
         ServletContext context          = ServletContextInfo.getServletContext();
         String emailPropertiesFile      = context.getRealPath("/WEB-INF/classes/jds_email.properties");
@@ -176,17 +182,17 @@ public class BulkEmailModel extends JDSModel{
         properties.load(new FileInputStream(emailPropertiesFile));
 
         msgsend sendMsg = new msgsend("text/html");
+        logger.debug("Starting to send emails");
         for(Address s: toUser){
             //boolean success = sendMsg.sendMail("", "", emailIDs + " jds.ias.mails@gmail.com", subject, msg, "", "", null);
-            logger.debug("Starting to send emails");
             String email = s.toString();
-            // If message sending passed
+
             if(!sendMsg.sendMail(email, "", "jds.ias.mails@gmail.com", subject, msg, "", "", null)){
                 success = false;
-                message = message + " " + email;
+                message = message + "\n" + email;
             }
-            logger.debug("Done sending emails");
         }
+        logger.debug("Done sending emails");
 
         String xml = "";
         String successValue = (success == true) ? "1" : "0";
