@@ -162,8 +162,11 @@ public class BulkEmailModel extends JDSModel{
                 // Append all the emailIDs separated by a space
                 String id = rs.getString(1);
                 try {
-                    new InternetAddress(id).validate();
-                    emailIDs = emailIDs + " " + rs.getString(1);
+                    Address[] toUser = InternetAddress.parse(id, false);
+                    for(Address s: toUser){
+                        new InternetAddress(s.toString()).validate();
+                        emailIDs = emailIDs + " " + s.toString();
+                    }
                 }catch (AddressException ex) {
                     logger.debug(ex.getMessage());
                     success = false;
