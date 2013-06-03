@@ -1,39 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/JDS" reloadable="true">
-    <Realm  className="org.apache.catalina.realm.JDBCRealm"
-            driverName="com.mysql.jdbc.Driver"
-            connectionName="jds"
-            connectionPassword="jds"
-            connectionURL="jdbc:mysql://localhost/jds"
-            userTable="users" userNameCol="username" userCredCol="password"
-            userRoleTable="user_role" roleNameCol="role"/>
-
-    <Resource name="jdbc/jds"
-              defaultAutoCommit="true"
-              auth="Container"
-              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-              type="javax.sql.DataSource"
-              testWhileIdle="true"
-              testOnBorrow="true"
-              testOnReturn="false"
-              validationQuery="SELECT 1"
-              validationInterval="30000"
-              timeBetweenEvictionRunsMillis="10000"
-              maxActive="1000"
-              minIdle="0"
-              maxIdle="5"
-              maxWait="30000"
-              initialSize="0"
-              removeAbandonedTimeout="60"
-              removeAbandoned="true"
-              logAbandoned="false"
-              minEvictableIdleTimeMillis="120000"
-              jmxEnabled="true"
-              jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"
-              username="jds"
-              password="jds"
-              driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost/jds"/>
+<Context antiJARLocking="true" path="/eVitaran" reloadable="true">
+  <Realm className="org.apache.catalina.realm.JDBCRealm" connectionName="jds" connectionPassword="jds" connectionURL="jdbc:mysql://localhost/jds" driverName="com.mysql.jdbc.Driver" roleNameCol="role" userCredCol="password" userNameCol="username" userRoleTable="user_role" userTable="users"/>
+  <Resource auth="Container" defaultAutoCommit="true" driverClassName="com.mysql.jdbc.Driver" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" initialSize="0" jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer" jmxEnabled="true" logAbandoned="false" maxActive="1000" maxIdle="5" maxWait="30000" minEvictableIdleTimeMillis="120000" minIdle="0" name="jdbc/jds" password="jds" removeAbandoned="true" removeAbandonedTimeout="60" testOnBorrow="true" testOnReturn="false" testWhileIdle="true" timeBetweenEvictionRunsMillis="10000" type="javax.sql.DataSource" url="jdbc:mysql://localhost/jds" username="jds" validationInterval="30000" validationQuery="SELECT 1"/>
 </Context>
-
 <!--connectionURL="jdbc:mysql://localhost/JDS?user=jds&amp;password=jds"-->
