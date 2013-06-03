@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/eVitaran" reloadable="true">
+<Context antiJARLocking="true" path="/evitaran" reloadable="true">
   <Realm className="org.apache.catalina.realm.JDBCRealm" connectionName="jds" connectionPassword="jds" connectionURL="jdbc:mysql://localhost/jds" driverName="com.mysql.jdbc.Driver" roleNameCol="role" userCredCol="password" userNameCol="username" userRoleTable="user_role" userTable="users"/>
   <Resource auth="Container" defaultAutoCommit="true" driverClassName="com.mysql.jdbc.Driver" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" initialSize="0" jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer" jmxEnabled="true" logAbandoned="false" maxActive="1000" maxIdle="5" maxWait="30000" minEvictableIdleTimeMillis="120000" minIdle="0" name="jdbc/jds" password="jds" removeAbandoned="true" removeAbandonedTimeout="60" testOnBorrow="true" testOnReturn="false" testWhileIdle="true" timeBetweenEvictionRunsMillis="10000" type="javax.sql.DataSource" url="jdbc:mysql://localhost/jds" username="jds" validationInterval="30000" validationQuery="SELECT 1"/>
 </Context>
