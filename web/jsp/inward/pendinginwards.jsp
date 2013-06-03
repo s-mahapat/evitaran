@@ -173,12 +173,12 @@
 
         <div id="bodyContainer">
             <form method="post" action="inward?action=processinward" name="processInwardForm" id="processInwardForm" onsubmit="return isInwardSelected()">
-                <input type="hidden" id="inwardNumber" name ="inwardNumber" value=""/>
-                <input type="hidden" id="subscriberNumber" name ="subscriberNumber" value=""/>
-                <input type="hidden" id="purpose" name ="purpose" value=""/>
-                <input type="hidden" id="asf" name ="asf" value="<%=request.getParameter("asf") != null ? request.getParameter("asf") : 0%>"/>
-                <input type="hidden" id="afs" name ="afs" value="<%=request.getParameter("afs") != null ? request.getParameter("afs") : 0%>"/>
-                <input type="hidden" id="agentXLUpload" name ="agentXLUpload" value=""/>
+                <input class="allusers" type="hidden" id="inwardNumber" name ="inwardNumber" value=""/>
+                <input class="allusers" type="hidden" id="subscriberNumber" name ="subscriberNumber" value=""/>
+                <input class="allusers" type="hidden" id="purpose" name ="purpose" value=""/>
+                <input class="allusers" type="hidden" id="asf" name ="asf" value="<%=request.getParameter("asf") != null ? request.getParameter("asf") : 0%>"/>
+                <input class="allusers" type="hidden" id="afs" name ="afs" value="<%=request.getParameter("afs") != null ? request.getParameter("afs") : 0%>"/>
+                <input class="allusers" type="hidden" id="agentXLUpload" name ="agentXLUpload" value=""/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Pending Inwards</legend>
@@ -197,7 +197,7 @@
                                         <label>Purpose:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="1" name="inwardPurpose" id="inwardPurpose" title="Select Inward purpose to filter" onchange="searchInwards()">
+                                        <select class="IASComboBoxWide allusers" TABINDEX="1" name="inwardPurpose" id="inwardPurpose" title="Select Inward purpose to filter" onchange="searchInwards()">
                                             <option value ="NULL">All</option>
                                         </select>
                                     </span>
@@ -219,7 +219,7 @@
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
-                                    <input class="IASButton" TABINDEX="8" type="submit" value="Next" id="btnNext" name="btnNext"/>
+                                    <input class="IASButton allusers" TABINDEX="8" type="submit" value="Next" id="btnNext" name="btnNext"/>
                                 </div>
                             </div>
                         </fieldset>

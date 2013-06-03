@@ -251,7 +251,7 @@
                                                 <label>Journal Group:</label>
                                             </span>
                                             <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox" TABINDEX="2" name="journalGroupName" id="journalGroupName">
+                                                <select class="IASComboBoxWide allusers" TABINDEX="2" name="journalGroupName" id="journalGroupName">
                                                     <option value="0">Select</option>
                                                 </select>
                                             </span>
@@ -260,7 +260,7 @@
 
                                     <div class="IASFormRightDiv">
                                         <div id="addBtnDiv">
-                                             <input class="IASButton" TABINDEX="4" type="button" value="Display Group Contents" id="btnSearch" name="btnSearch" onclick="search()"/>
+                                             <input class="IASButton allusers" TABINDEX="4" type="button" value="Display Group Contents" id="btnSearch" name="btnSearch" onclick="search()"/>
                                         </div>
                                     </div>
                               </fieldset>

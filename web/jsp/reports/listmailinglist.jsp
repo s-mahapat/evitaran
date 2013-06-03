@@ -208,7 +208,7 @@
                                                     <label>Journal Name:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName" onchange="loadvolumes()">
+                                                    <select class="IASComboBoxWide allusers" TABINDEX="1" name="journalName" id="journalName" onchange="loadvolumes()">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
@@ -218,7 +218,7 @@
                                                     <label>Year:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="2" name="year" id="year" onchange="loadvolumes()">
+                                                    <select class="IASComboBox allusers" TABINDEX="2" name="year" id="year" onchange="loadvolumes()">
                                                     </select>
                                                 </span>
                                             </div>
@@ -227,7 +227,7 @@
                                                     <label>Month:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="3" name="month" id="month">
+                                                    <select class="IASComboBox allusers" TABINDEX="3" name="month" id="month">
                                                     </select>
                                                 </span>
                                             </div>
@@ -255,7 +255,7 @@
                                                     <label>Volume Number:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
+                                                    <select class="IASComboBox allusers" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
@@ -265,7 +265,7 @@
                                                     <label>Issue:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="5" name="issue" id="issue">
+                                                    <select class="IASComboBox allusers" TABINDEX="5" name="issue" id="issue">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
@@ -273,7 +273,7 @@
                                         </div>
                                     </div>
                                     <div class="actionBtnDiv">
-                                        <button class="IASButton SearchButton" type="button" TABINDEX="6" id="btnSearch" name="btnSearch" onclick="search()"/>Search</button>
+                                        <button class="IASButton SearchButton allusers" type="button" TABINDEX="6" id="btnSearch" name="btnSearch" onclick="search()"/>Search</button>
                                     </div>
                             </fieldset>
 
@@ -303,8 +303,8 @@
                                 </div>
                                 --%>
                                 <div class="actionBtnDiv">
-                                    <input class="IASButton" TABINDEX="5" type="submit" value="Print" id="btnPrint" name="btnPrint"/>
-                                    <input class="IASButton" TABINDEX="6" type="reset" value="Reset" id="btnReset" name="btnReset"/>
+                                    <input class="IASButton allusers" TABINDEX="5" type="submit" value="Print" id="btnPrint" name="btnPrint"/>
+                                    <input class="IASButton allusers" TABINDEX="6" type="reset" value="Reset" id="btnReset" name="btnReset"/>
                                 </div>
                             </fieldset>
                     </fieldset>

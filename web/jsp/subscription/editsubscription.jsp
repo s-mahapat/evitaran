@@ -40,7 +40,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
+                                        <input class="IASDisabledTextBox smalltextbox" TABINDEX="1" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -58,7 +58,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="3" readonly type="text" name="subscriptionID" id="subscriptionID" value="<%=request.getParameter("id")%>"/>
+                                        <input class="IASDisabledTextBox smalltextbox" TABINDEX="3" readonly type="text" name="subscriptionID" id="subscriptionID" value="<%=request.getParameter("id")%>"/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -67,7 +67,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="4" readonly type="text" name="agentName" id="agentName" value=""/>
+                                        <input class="IASDisabledTextBox smalltextbox" TABINDEX="4" readonly type="text" name="agentName" id="agentName" value=""/>
                                     </span>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value=""/>
+                                        <input class="IASDisabledTextBox smalltextbox" TABINDEX="-1" readonly type="text" name="inwardNumber" id="inwardNumber" value=""/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -88,7 +88,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value=""/>
+                                        <input class="IASDisabledTextBox smalltextbox" TABINDEX="-1" readonly type="text" name="amount" id="amount" value=""/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -97,7 +97,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="subscriptionTotalValue" id="subscriptionTotalValue" value=""/>
+                                        <input class="IASDisabledTextBox smalltextbox" TABINDEX="-1" readonly type="text" name="subscriptionTotalValue" id="subscriptionTotalValue" value=""/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -106,7 +106,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox" TABINDEX="-1" readonly type="text" name="balance" id="balance" value=""/>
+                                        <input class="IASDisabledTextBox smalltextbox" TABINDEX="-1" readonly type="text" name="balance" id="balance" value=""/>
                                     </span>
                                 </div>
 

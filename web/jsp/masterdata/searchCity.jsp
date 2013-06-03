@@ -106,7 +106,7 @@
 
         <div id="bodyContainer">
             <form method="post" action="<%=request.getContextPath() + "/city"%>" name="searchCityForm">
-                <div class="MainDiv">
+                <div class="MainDiv reportsdiv">
                     <fieldset class="MainFieldset">
                         <legend>Search City</legend>
 

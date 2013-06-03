@@ -104,7 +104,7 @@
 
         <div id="bodyContainer">
             <form method="post" action="" name="searchSubTypeForm">
-                <div class="MainDiv">
+                <div class="MainDiv reportsdiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Sub Type</legend>
 

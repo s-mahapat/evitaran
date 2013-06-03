@@ -243,7 +243,7 @@
         </div>
     </div>
     <div class="actionBtnDiv" id="divsubscriberdtlsbtn">
-        <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="15" type="submit" value="Edit" id="btnEditSubscriber" name="btnSubmitAction"/>
+        <button onclick="setActionValue('edit')" class="IASButton" TABINDEX="15" type="submit" value="Edit" id="btnEditSubscriber" name="btnSubmitAction"/>Edit</button>
     </div>
 
 </fieldset>

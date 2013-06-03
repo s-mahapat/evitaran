@@ -106,7 +106,7 @@
             <form method="post" action="<%=request.getContextPath() + "/reports?action=printlistInvoice"%>" name="searchSubTypeForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>List Profarma Invoice</legend>
+                        <legend>List Invoice</legend>
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
@@ -121,7 +121,7 @@
                                         <label>Invoice Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASCombobox" TABINDEX="1" name="invoicerType" id="invoiceType">
+                                        <select class="IASCombobox allusers" TABINDEX="1" name="invoicerType" id="invoiceType">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
@@ -134,15 +134,15 @@
                                     </span>
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
+                                        <input class="IASDateTextBox allusers" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
                                         <label> to </label>
-                                        <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
+                                        <input class="IASDateTextBox allusers" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" type="button" TABINDEX="3" onclick="getList()" value="Search"/>Search</button>
-                                <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="3" onclick="getList()" value="Search"/>Search</button>
+                                <input class="IASButton allusers" TABINDEX="4" type="reset" value="Reset"/>
                             </div>
                         </fieldset>
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -157,7 +157,7 @@
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
-                                    <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
                                 </div>
                             </div>
                         </fieldset>

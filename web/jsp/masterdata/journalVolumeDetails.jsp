@@ -174,7 +174,7 @@
                                                 <span class="IASFormDivSpanLabel">
                                                     <label>Year:</label>
                                                 </span>
-                                                <select class="IASComboBox" TABINDEX="1" name="year" id="year">
+                                                <select class="IASComboBox allusers" TABINDEX="1" name="year" id="year">
                                                     <option value="0">Select</option>
                                                 </select>
                                             </span>
@@ -186,7 +186,7 @@
                                                 <span class="IASFormDivSpanLabel">
                                                     <label>Journal:</label>
                                                 </span>
-                                                <select class="IASComboBox" TABINDEX="2" name="journalName" id="journalName">
+                                                <select class="IASComboBox allusers" TABINDEX="2" name="journalName" id="journalName">
                                                     <option value="0">Select</option>
                                                 </select>
                                             </span>

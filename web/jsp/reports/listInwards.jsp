@@ -145,7 +145,7 @@
                                         <label>Purpose:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="inwardPurpose" id="inwardPurpose">
+                                        <select class="IASComboBoxWide allusers" TABINDEX="1" name="inwardPurpose" id="inwardPurpose">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -155,7 +155,7 @@
                                         <label>Country:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="2" name="country" id="country">
+                                        <select class="IASComboBox allusers" TABINDEX="2" name="country" id="country">
                                             <option value="0" selected >Select</option>
                                         </select>
                                     </span>
@@ -165,7 +165,7 @@
                                         <label>State:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="3" name="state" id="state">
+                                        <select class="IASComboBox allusers" TABINDEX="3" name="state" id="state">
                                             <option value="0" selected >Select</option>
                                         </select>
                                         <%--<input class="IASTextBoxMandatory" TABINDEX="3" name="state" id="state" value="<jsp:getProperty name="inwardFormBean" property="state"/>"--%>
@@ -176,7 +176,7 @@
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="4" name="city" id="city">
+                                        <select class="IASComboBox allusers" TABINDEX="4" name="city" id="city">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -193,9 +193,9 @@
                                     </span>
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
+                                        <input class="IASDateTextBox allusers" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
                                         <label> to </label>
-                                        <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
+                                        <input class="IASDateTextBox allusers" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
@@ -203,7 +203,7 @@
                                         <label>Mode Of Payment:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="7" name="paymentMode" id="paymentMode">
+                                        <select class="IASComboBox allusers" TABINDEX="7" name="paymentMode" id="paymentMode">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -213,7 +213,7 @@
                                         <label>Currency:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="8" name="currency" id="currency">
+                                        <select class="IASComboBox allusers" TABINDEX="8" name="currency" id="currency">
                                             <option value="">Select</option>
                                         </select>
                                     </span>
@@ -223,15 +223,15 @@
                                         <label>Language:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="9" name="language" id="language">
+                                        <select class="IASComboBox allusers" TABINDEX="9" name="language" id="language">
                                             <option value="">Select</option>
                                         </select>
                                     </span>
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" type="button" TABINDEX="10" onclick="searchInwards()"/>Search</button>
-                                <input class="IASButton" TABINDEX="11" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="10" onclick="searchInwards()"/>Search</button>
+                                <input class="IASButton allusers" TABINDEX="11" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>
@@ -257,7 +257,7 @@
                         <div class="IASFormFieldDiv">
                             <div class="singleActionBtnDiv">
                                 <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
-                                <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
+                                <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
                             </div>
                         </div>
                     </fieldset>

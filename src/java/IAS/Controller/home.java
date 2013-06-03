@@ -83,9 +83,12 @@ public class home extends JDSController {
                     // For monochrome users
                     String  userRole     = null;
                     boolean isMonochrome = request.isUserInRole("monochrome");
+                    boolean isReadonly = request.isUserInRole("readonly");
 
                     if (isMonochrome) {
                         userRole = "monochrome";
+                    }else if(isReadonly){
+                        userRole = "readonly";
                     }
 
                     // set the user information in the session

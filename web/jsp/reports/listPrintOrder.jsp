@@ -120,7 +120,7 @@
                                             <label>Year:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBox" TABINDEX="1" name="year" id="year" onchange="getPrintOrderDetailsList()">
+                                            <select class="IASComboBox allusers" TABINDEX="1" name="year" id="year" onchange="getPrintOrderDetailsList()">
                                                 <option value="0">Select</option>
                                             </select>
                                         </span>
@@ -145,7 +145,7 @@
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
-                                    <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
                                 </div>
                             </div>
                         </fieldset>

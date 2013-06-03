@@ -174,7 +174,7 @@
                                                 <span class="IASFormDivSpanLabel">
                                                     <label>Year:</label>
                                                 </span>
-                                                <select class="IASComboBox" TABINDEX="1" name="year" id="year">
+                                                <select class="IASComboBox allusers" TABINDEX="1" name="year" id="year">
                                                     <option value="0">Select</option>
                                                 </select>
                                             </span>
@@ -182,7 +182,7 @@
                                     </div>
                                     <div class="IASFormRightDiv">
                                         <div id="addBtnDiv">
-                                            <input class="IASButton" TABINDEX="2" type="button" value="Get Journal Details" id="btnSearch" name="btnSearch" onclick="getJournalDetails()"/>
+                                            <input class="IASButton allusers" TABINDEX="2" type="button" value="Get Journal Details" id="btnSearch" name="btnSearch" onclick="getJournalDetails()"/>
                                         </div>
                                     </div>
                             </fieldset>

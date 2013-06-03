@@ -132,7 +132,7 @@
                                         <label>Year</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="2" name="year" id="year" >
+                                        <select class="IASComboBox allusers" TABINDEX="2" name="year" id="year" >
                                             <option value="0">Select</option>
                                             <%
                                                 if (subscriptionRatesFormBeanReport.getYear() != 0) {
@@ -152,7 +152,7 @@
                                         <label>Subscriber Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="3" name="subscriberType" id="subscriberType">
+                                        <select class="IASComboBoxWide allusers" TABINDEX="3" name="subscriberType" id="subscriberType">
                                             <option value="0">Select</option>
                                             <%
                                                 if (subscriptionRatesFormBeanReport.getSubscriberType() != null && !(subscriptionRatesFormBeanReport.getSubscriberType()).isEmpty()) {
@@ -166,7 +166,7 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <button class="IASButton SearchButton" type="submit" TABINDEX="3" onclick="reLoadPage()" value="Search"/>Search</button>
+                                    <button class="IASButton SearchButton allusers" type="submit" TABINDEX="3" onclick="reLoadPage()" value="Search"/>Search</button>
                                 </div>
                             </div>
 
@@ -187,7 +187,7 @@
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
-                                    <input class="IASButton" TABINDEX="4" type="submit" value="Print" id="printReportBtn" name="printReportBtn" onclick="print()"/>
+                                    <input class="IASButton allusers" TABINDEX="4" type="submit" value="Print" id="printReportBtn" name="printReportBtn" onclick="print()"/>
                                 </div>
                             </div>
                         </fieldset>

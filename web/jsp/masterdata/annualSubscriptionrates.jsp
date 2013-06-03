@@ -231,7 +231,7 @@
                                             <label>Year:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBox" TABINDEX="1" name="year" id="year">
+                                            <select class="IASComboBox allusers" TABINDEX="1" name="year" id="year">
                                                 <option value="0">Select</option>
                                             </select>
                                         </span>
@@ -241,7 +241,7 @@
                                             <label>Journal Group:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBox" TABINDEX="2" name="journalGroupName" id="journalGroupName">
+                                            <select class="IASComboBoxWide allusers" TABINDEX="2" name="journalGroupName" id="journalGroupName">
                                                 <option value="0">Select</option>
                                             </select>
                                         </span>
@@ -257,7 +257,7 @@
                                             <label>Subscriber Type:</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBox" TABINDEX="1" name="subscriberType" id="subscriberType">
+                                            <select class="IASComboBox allusers" TABINDEX="1" name="subscriberType" id="subscriberType">
                                                 <option value="0" selected>Select</option>
                                             </select>
                                         </span>
@@ -265,7 +265,7 @@
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <input class="IASButton" TABINDEX="3" type="button" value="Display Rates" id="btnSearch" name="btnSearch" onclick="search()"/>
+                                <input class="IASButton allusers" TABINDEX="3" type="button" value="Display Rates" id="btnSearch" name="btnSearch" onclick="search()"/>
                                 <input class="IASButton" TABINDEX="4" type="button" value="Define Rates" id="btnAddRate" name="btnAddRate" onclick="addRate()"/>
                             </div>
 
@@ -328,7 +328,7 @@
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div id="cancelBtnDiv">
-                                    <input class="IASButton" TABINDEX="6" type="button" value="Cancel" onclick="cancel()" id="btnCancel" name="btnCancelAction"/>
+                                    <input class="IASButton allusers" TABINDEX="6" type="button" value="Cancel" onclick="cancel()" id="btnCancel" name="btnCancelAction"/>
                                 </div>
                             </div>
                         </fieldset>

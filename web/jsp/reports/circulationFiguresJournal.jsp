@@ -123,7 +123,7 @@
                                         <label>Year</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxMandatory" TABINDEX="1" name="year" id="year">
+                                        <select class="IASComboBoxMandatory allusers" TABINDEX="1" name="year" id="year">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -137,15 +137,15 @@
                                         <label>Month:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                    <select class="IASComboBoxMandatory" TABINDEX="4" name="month" id="month">
+                                    <select class="IASComboBoxMandatory allusers" TABINDEX="4" name="month" id="month">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" type="button" TABINDEX="2" onclick="getReport()"/>Search</button>
-                                <input class="IASButton" TABINDEX="3" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="2" onclick="getReport()"/>Search</button>
+                                <input class="IASButton allusers" TABINDEX="3" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>
@@ -170,7 +170,7 @@
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
-                                    <input class="IASButton" type="submit" TABINDEX="4" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="4" value="Print" disabled id="printReportBtn"/>
                                 </div>
                             </div>
                         </fieldset>

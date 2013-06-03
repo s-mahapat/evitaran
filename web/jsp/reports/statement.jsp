@@ -166,7 +166,7 @@
                                         <label>Journal Name:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName" onchange="loadvolumes()">
+                                        <select class="IASComboBoxWide allusers" TABINDEX="1" name="journalName" id="journalName" onchange="loadvolumes()">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -177,12 +177,12 @@
                                         <label>Year</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="2" name="year" id="year" onchange="loadvolumes()">
+                                        <select class="IASComboBox allusers" TABINDEX="2" name="year" id="year" onchange="loadvolumes()">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
                                 </div>
-                            
+
                             </div>
 
                             <%-- Search Criteria Right div --%>
@@ -192,7 +192,7 @@
                                         <label>Volume Number:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
+                                        <select class="IASComboBox allusers" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -202,15 +202,15 @@
                                         <label>Issue:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="5" name="issue" id="issue">
+                                        <select class="IASComboBox allusers" TABINDEX="5" name="issue" id="issue">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" type="button" TABINDEX="6" onclick="getStatements()"/>Search</button>
-                                <input class="IASButton" TABINDEX="7" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="6" onclick="getStatements()"/>Search</button>
+                                <input class="IASButton allusers" TABINDEX="7" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>
@@ -227,7 +227,7 @@
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
-                                    <input class="IASButton" type="submit" TABINDEX="8" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="8" value="Print" disabled id="printReportBtn"/>
                                 </div>
                             </div>
                         </fieldset>

@@ -128,7 +128,7 @@
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
 
-                                        <select class="IASComboBoxMandatory" TABINDEX="4" name="subtype" id="subtype">
+                                        <select class="IASComboBoxMandatory allusers" TABINDEX="4" name="subtype" id="subtype">
                                             <option value ="">Select</option>
                                             <option value ="Paid">Paid</option>
                                             <option value ="Free">Free</option>
@@ -141,7 +141,7 @@
                                         <label>Nationality</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxMandatory" TABINDEX="5" name="nationality" id="nationality">
+                                        <select class="IASComboBoxMandatory allusers" TABINDEX="5" name="nationality" id="nationality">
                                             <option value ="">Select</option>
                                             <option value ="I">Indian</option>
                                             <option value ="F">Foreign</option>
@@ -156,7 +156,7 @@
                                         <label>Institutional</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxMandatory" TABINDEX="6" name="institutional" id="institutional">
+                                        <select class="IASComboBoxMandatory allusers" TABINDEX="6" name="institutional" id="institutional">
                                             <option value ="">Select</option>
                                             <option value ="I">Institute</option>
                                             <option value ="P">Personal</option>
@@ -169,7 +169,7 @@
                                         <label>All Subscriber Types</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
+                                        <input class="IASCheckBox allusers" TABINDEX="9" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
                                 </div>
                             </div>
@@ -186,8 +186,8 @@
                             </div>
                             --%>
                             <div class="actionBtnDiv">
-                                <input class="IASButton" TABINDEX="3" type="button" value="Search" onclick="getList()"/>
-                                <input class="IASButton" TABINDEX="4" type="reset" value="Reset"/>
+                                <input class="IASButton allusers" TABINDEX="3" type="button" value="Search" onclick="getList()"/>
+                                <input class="IASButton allusers" TABINDEX="4" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>
@@ -205,7 +205,7 @@
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
-                                    <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
                                 </div>
                             </div>
                         </fieldset>

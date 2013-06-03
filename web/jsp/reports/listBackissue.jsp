@@ -176,7 +176,7 @@
                                                     <label>Journal Name:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBoxWide" TABINDEX="1" name="journalName" id="journalName" onchange="loadvolumes()">
+                                                    <select class="IASComboBoxWide allusers" TABINDEX="1" name="journalName" id="journalName" onchange="loadvolumes()">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
@@ -187,7 +187,7 @@
                                                     <label>Year</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="2" name="year" id="year" onchange="loadvolumes()">
+                                                    <select class="IASComboBox allusers" TABINDEX="2" name="year" id="year" onchange="loadvolumes()">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
@@ -197,7 +197,7 @@
                                                     <label>Volume Number:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
+                                                    <select class="IASComboBox allusers" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
@@ -211,7 +211,7 @@
                                                 <label>Issue:</label>
                                             </span>
                                             <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox" TABINDEX="5" name="issue" id="issue">
+                                                <select class="IASComboBox allusers" TABINDEX="5" name="issue" id="issue">
                                                     <option value="0">Select</option>
                                                 </select>
                                             </span>
@@ -221,7 +221,7 @@
                                                 <label>Subscriber Type</label>
                                             </span>
                                             <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox" TABINDEX="1" name="subscriberType" id="subscriberType">
+                                                <select class="IASComboBox allusers" TABINDEX="1" name="subscriberType" id="subscriberType">
                                                     <option value="0" selected>Select</option>
                                                 </select>
                                             </span>
@@ -232,14 +232,14 @@
                                             </span>
                                             <div class="dateDiv"></div>
                                             <span class="IASFormDivSpanInputBox">
-                                                <input class="IASDateTextBox" readonly size="10" type="text" id="from" name="from"/>
+                                                <input class="IASDateTextBox allusers" readonly size="10" type="text" id="from" name="from"/>
                                                 <label> to </label>
-                                                <input class="IASDateTextBox" readonly size="10" type="text" id="to" name="to"/>
+                                                <input class="IASDateTextBox allusers" readonly size="10" type="text" id="to" name="to"/>
                                             </span>
                                         </div>
                                     </div>
                                     <div class="actionBtnDiv">
-                                        <button class="IASButton SearchButton" type="button" TABINDEX="5" id="btnSearch" name="btnSearch" onclick="search()"/>Search</button>
+                                        <button class="IASButton SearchButton allusers" type="button" TABINDEX="5" id="btnSearch" name="btnSearch" onclick="search()"/>Search</button>
                                     </div>
                             </fieldset>
 
@@ -259,8 +259,8 @@
 
                             <fieldset class="subMainFieldSet">
                                 <div class="actionBtnDiv">
-                                    <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
-                                    <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
+                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" TABINDEX="8" type="reset" value="Reset"/>
                                 </div>
                             </fieldset>
                     </fieldset>

@@ -121,7 +121,7 @@
                             <div class="IASFormLeftDiv">
                                 <div class="IASFormFieldDiv">
                                     <label>For subscription ending in:</label>
-                                    <select class="IASComboBoxWide" TABINDEX="1" name="subEnd" id="subEnd">
+                                    <select class="IASComboBoxWide allusers" TABINDEX="1" name="subEnd" id="subEnd">
                                         <option value="0">Select</option>
                                         <%
                                             for (int j = 1990; j <= 2050; j++) {
@@ -135,7 +135,7 @@
                                         <label>Balance Till Date</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASCheckBox" TABINDEX="9" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
+                                        <input class="IASCheckBox allusers" TABINDEX="9" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
                                 </div>
                             </div>
@@ -143,7 +143,7 @@
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
                                     <label>Subscription Between Period:</label>
-                                    <select class="IASComboBox" TABINDEX="1" name="periodStart" id="periodStart">
+                                    <select class="IASComboBox allusers" TABINDEX="1" name="periodStart" id="periodStart">
                                         <option value="0">Select</option>
                                         <%
                                             for (int j = 1990; j <= 2050; j++) {
@@ -152,7 +152,7 @@
                                         %>
                                     </select>
                                     <label> and </label>
-                                    <select class="IASComboBox" TABINDEX="1" name="periodEnd" id="periodEnd">
+                                    <select class="IASComboBox allusers" TABINDEX="1" name="periodEnd" id="periodEnd">
                                         <option value="0">Select</option>
                                         <%
                                             for (int j = 1990; j <= 2050; j++) {
@@ -163,7 +163,7 @@
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" TYPE="button" TABINDEX="3" onclick="getOutstandingBalance()" value="Get Balance">Search</button>
+                                <button class="IASButton SearchButton allusers" TYPE="button" TABINDEX="3" onclick="getOutstandingBalance()" value="Get Balance">Search</button>
                             </div>
                         </fieldset>
 
@@ -185,7 +185,7 @@
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
-                                    <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
                                 </div>
                             </div>
                         </fieldset>

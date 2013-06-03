@@ -125,7 +125,7 @@
                                         <label>State:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="1" type="text" name="state" id="state" value=""/>
+                                        <input class="IASTextBox allusers" TABINDEX="1" type="text" name="state" id="state" value=""/>
                                     </span>
                                 </div>
 
@@ -133,11 +133,11 @@
 
                             <div class="IASFormFieldDiv">
                                 <div id="searchBtnDiv">
-                                    <input class="IASButton" TABINDEX="2" type="button" value="search" onclick="searchState()"/>
+                                    <input class="IASButton allusers" TABINDEX="2" type="button" value="search" onclick="searchState()"/>
                                 </div>
 
                                 <div id="resetBtnDiv">
-                                    <input class="IASButton" TABINDEX="3" type="reset" value="Reset"/>
+                                    <input class="IASButton allusers" TABINDEX="3" type="reset" value="Reset"/>
                                 </div>
                             </div>
 

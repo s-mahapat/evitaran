@@ -199,7 +199,7 @@
                                         <label>Subscriber No:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="1" type="text" name="subscriberNumber" id="subscriberNumber" value=""/>
+                                        <input class="IASTextBox allusers" TABINDEX="1" type="text" name="subscriberNumber" id="subscriberNumber" value=""/>
                                     </span>
                                 </div>
 
@@ -208,7 +208,7 @@
                                         <label>Subscriber Name:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxWide" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value=""/>
+                                        <input class="IASTextBoxWide allusers" TABINDEX="2" type="text" name="subscriberName" id="subscriberName" value=""/>
                                     </span>
                                 </div>
 
@@ -217,7 +217,7 @@
                                         <label>Department:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxWide" TABINDEX="3" type="text" name="department" id="department" value=""/>
+                                        <input class="IASTextBoxWide allusers" TABINDEX="3" type="text" name="department" id="department" value=""/>
                                     </span>
                                 </div>
 
@@ -226,7 +226,7 @@
                                         <label>Institute:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxWide" TABINDEX="4" type="text" name="institute" id="institute" value=""/>
+                                        <input class="IASTextBoxWide allusers" TABINDEX="4" type="text" name="institute" id="institute" value=""/>
                                     </span>
                                 </div>
 
@@ -242,7 +242,7 @@
                                         <label>Email:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxWide" TABINDEX="5" type="text" name="email" id="email" value=""/>
+                                        <input class="IASTextBoxWide allusers" TABINDEX="5" type="text" name="email" id="email" value=""/>
                                     </span>
                                 </div>
 
@@ -251,7 +251,7 @@
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="6" name="city" id="city" value=""/>
+                                        <input class="IASTextBox allusers" TABINDEX="6" name="city" id="city" value=""/>
                                     </span>
                                 </div>
 
@@ -260,14 +260,14 @@
                                         <label>Pin Code:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" maxlength="6" TABINDEX="7" type="text" name="pincode" id="pincode" value=""/>
+                                        <input class="IASTextBox allusers" maxlength="6" TABINDEX="7" type="text" name="pincode" id="pincode" value=""/>
                                     </span>
                                 </div>
                             </div>
 
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" TABINDEX=8" type="button" value="Search" onclick="searchSubscriber()">Search</button>
-                                <input class="IASButton" TABINDEX="9" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton allusers" TABINDEX=8" type="button" value="Search" onclick="searchSubscriber()">Search</button>
+                                <input class="IASButton allusers" TABINDEX="9" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>

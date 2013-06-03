@@ -105,7 +105,7 @@
 
         <div id="bodyContainer">
             <form method="post" action="" name="searchJournalForm">
-                <div class="MainDiv">
+                <div class="MainDiv reportsdiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Journal</legend>
 

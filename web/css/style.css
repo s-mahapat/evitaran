@@ -10,7 +10,7 @@ body{
     padding:0px;
     /*background-color: #F6F6F6;*/
     font-family: arial,sans-serif;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 A:link {
@@ -273,29 +273,29 @@ fieldset {
 .IASTextArea{
     font-family:inherit;
     font-size: inherit;
-    height: 50px;
+    height: 60px;
     width: 80%;
     max-width: 250px;
-    max-height: 50px;
+    max-height: 60px;
 }
 
 .IASTextAreaWide{
     font-family:inherit;
     font-size: inherit;
-    height: 50px;
+    height: 40px;
     width: 90%;
     max-width: 850px;
-    max-height: 50px;
+    max-height: 40px;
 }
 
 .IASTextAreaMandatory{
     font-family:inherit;
     font-size: inherit;
     background-color: antiquewhite;
-    height: 80px;
+    height: 50px;
     width: 85%;
     max-width: 90%;
-    max-height: 80px;
+    max-height: 50px;
 }
 
 .IASCheckBox{
@@ -376,6 +376,7 @@ fieldset {
     /*font-family: "Cambria",serif;
     font-size: inherit;*/
     background-color: antiquewhite;
+    height: 25px;
 }
 
 .IASFormLeftDiv{
@@ -768,4 +769,12 @@ input[type='file'] {
     background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(white));
     background: -o-linear-gradient(0% 100% 90deg, white, #f8f8f8);
     background: -ms-linear-gradient(0% 100% 90deg, white, #f8f8f8);*/
+}
+
+.allusers{
+
+}
+
+.reportsdiv{
+
 }

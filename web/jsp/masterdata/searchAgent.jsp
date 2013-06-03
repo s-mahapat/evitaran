@@ -94,8 +94,8 @@
                 jQuery("#agentTable").trigger("clearGridData");
                 jQuery("#agentTable").trigger("reloadGrid");
             }
-            
-            
+
+
 
             // draw the date picker.
             //jQueryDatePicker("from","to");
@@ -108,7 +108,7 @@
 
         <div id="bodyContainer">
             <form method="post" action="" name="searchAgentForm">
-                <div class="MainDiv">
+                <div class="MainDiv reportsdiv">
                     <fieldset class="MainFieldset">
                         <legend>Search Agent</legend>
 

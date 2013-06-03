@@ -244,13 +244,13 @@
                         <fieldset class="subMainFieldSet">
                             <legend>Search Criterion</legend>
                             <%-- Search Criteria left div --%>
-                            <div class="IASFormLeftDiv">
+                            <div class="IASFormLeftDiv reportsdiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
                                         <label>Journal:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="2" name="journalName" id="journalName" onchange="clearGrid()">
+                                        <select class="IASComboBoxWide allusers" TABINDEX="2" name="journalName" id="journalName" onchange="clearGrid()">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -260,7 +260,7 @@
                                         <label>Year:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="1" name="year" id="year" onchange="loadvolumes()">
+                                        <select class="IASComboBox allusers" TABINDEX="1" name="year" id="year" onchange="loadvolumes()">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
@@ -272,14 +272,14 @@
                                         <label>Volume Number:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBox" TABINDEX="4" name="volume" id="volume">
+                                        <select class="IASComboBox allusers" TABINDEX="4" name="volume" id="volume">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" TABINDEX="2" type="button" id="btnSearch" name="btnSearch" onclick="getPrintOrderDetails()"/>Search Print Orders</button>
+                                <button class="IASButton SearchButton allusers" TABINDEX="2" type="button" id="btnSearch" name="btnSearch" onclick="getPrintOrderDetails()"/>Search Print Orders</button>
                             </div>
                         </fieldset>
 

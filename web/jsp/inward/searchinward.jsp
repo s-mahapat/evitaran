@@ -210,7 +210,7 @@
                                         <label>From:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBoxWide" TABINDEX="1" type="text" name="inwardFrom" id="inwardFrom" value=""/>
+                                        <input class="IASTextBoxWide allusers" TABINDEX="1" type="text" name="inwardFrom" id="inwardFrom" value=""/>
                                     </span>
                                 </div>
 
@@ -219,7 +219,7 @@
                                         <label>Inward Number:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="2" type="text" name="inwardNumber" id="inwardNumber" value=""/>
+                                        <input class="IASTextBox allusers" TABINDEX="2" type="text" name="inwardNumber" id="inwardNumber" value=""/>
                                     </span>
                                 </div>
 
@@ -229,7 +229,7 @@
                                         <label>Cheque Number:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="3" type="text" name="chequeNumber" id="chequeNumber" value=""/>
+                                        <input class="IASTextBox allusers" TABINDEX="3" type="text" name="chequeNumber" id="chequeNumber" value=""/>
                                     </span>
                                 </div>
                             </div>
@@ -254,7 +254,7 @@
                                         <label>City:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASTextBox" TABINDEX="4" name="city" id="city" value=""/>
+                                        <input class="IASTextBox allusers" TABINDEX="4" name="city" id="city" value=""/>
                                     </span>
                                 </div>
 
@@ -265,15 +265,15 @@
                                     </span>
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
+                                        <input class="IASDateTextBox allusers" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
                                         <label> to </label>
-                                        <input class="IASDateTextBox" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
+                                        <input class="IASDateTextBox allusers" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" TABINDEX="7" type="button" value="Search" onclick="searchInwards()">Search</button>
-                                <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton allusers" TABINDEX="7" type="button" value="Search" onclick="searchInwards()">Search</button>
+                                <input class="IASButton allusers" TABINDEX="8" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>

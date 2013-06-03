@@ -121,7 +121,7 @@
                                         <label>Journal Group:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASComboBoxWide" TABINDEX="1" name="journalGroupName" id="journalGroupName">
+                                        <select class="IASComboBoxWide allusers" TABINDEX="1" name="journalGroupName" id="journalGroupName">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
@@ -131,7 +131,7 @@
                             <div class="IASFormRightDiv">
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanInputBox">
-                                        <button class="IASButton SearchButton" type="button" TABINDEX="3" onclick="searchJournal()" value="Search">Search</button>
+                                        <button class="IASButton SearchButton allusers" type="button" TABINDEX="3" onclick="searchJournal()" value="Search">Search</button>
                                         <%--<button class="IASButton" type="button" TABINDEX="3" onclick="searchJournal()" value="Search">Search</button>--%>
                                     </span>
                                 </div>
@@ -156,7 +156,7 @@
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
-                                    <input class="IASButton" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
                                 </div>
                             </div>
                         </fieldset>

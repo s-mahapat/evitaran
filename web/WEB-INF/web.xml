@@ -454,6 +454,7 @@
             <role-name>user</role-name>
             <role-name>admin</role-name>
             <role-name>monochrome</role-name>
+            <role-name>readonly</role-name>
         </auth-constraint>
     </security-constraint>
     <security-constraint>
@@ -487,6 +488,10 @@
     <security-role>
         <description>for black and white view</description>
         <role-name>monochrome</role-name>
+    </security-role>
+    <security-role>
+        <description>For readonly view</description>
+        <role-name>readonly</role-name>
     </security-role>
     <resource-ref>
         <description>Resource reference to a factory for java.sql.Connection
