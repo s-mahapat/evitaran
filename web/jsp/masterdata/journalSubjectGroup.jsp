@@ -225,7 +225,7 @@
                 $(newOption).html("Select");
                 $("#journalGroupName").append(newOption);
 
-                requestURL = "/JDS/CMasterData?md=journalGroupName";
+                requestURL = "CMasterData?md=journalGroupName";
                 jdsAppend(requestURL,"journalGroupName","journalGroupName");
 
             }

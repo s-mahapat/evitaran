@@ -163,7 +163,7 @@
         $(newOption).html("Select");
         $("#issue").append(newOption);
 
-        requestURL = "/JDS/CMasterData?md=get_issue_mi&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#year").val() + "&optionalParam=" +  $("#volume").val();
+        requestURL = "CMasterData?md=get_issue_mi&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#year").val() + "&optionalParam=" +  $("#volume").val();
         jdsAppend(requestURL,"issueNumber","issue");
     }
 
@@ -175,7 +175,7 @@
         $(newOption).html("Select");
         $("#volume").append(newOption);
 
-        requestURL = "/JDS/CMasterData?md=get_volume_mi&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#year").val();
+        requestURL = "CMasterData?md=get_volume_mi&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#year").val();
         jdsAppend(requestURL,"volume_number","volume");
     }
 

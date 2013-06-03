@@ -14,11 +14,11 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/editsubscriber.js"%>"></script>
         <script>
             $(document).ready(function() {
-                jdsAppend("/JDS/CMasterData?md=city","city","city");
-                jdsAppend("/JDS/CMasterData?md=country","country","country");
-                jdsAppend("/JDS/CMasterData?md=state","state","state");
-                jdsAppend("/JDS/CMasterData?md=district","district","district");
-                jdsAppend("/JDS/CMasterData?md=agent","agentName","agent");
+                jdsAppend("CMasterData?md=city","city","city");
+                jdsAppend("CMasterData?md=country","country","country");
+                jdsAppend("CMasterData?md=state","state","state");
+                jdsAppend("CMasterData?md=district","district","district");
+                jdsAppend("CMasterData?md=agent","agentName","agent");
                 makeEditSubscriberReadOnly();
                 subtypeDescriptionAppend();
                 subtypeCodeAppend();
@@ -28,7 +28,7 @@
             $(document).ready(function() {
                 //disable the add subscription button
                 $("#btnAddSubscription").attr("disabled","disabled");
-                jdsAppend("/JDS/CMasterData?md=sub_type","subtype","subtype");
+                jdsAppend("CMasterData?md=sub_type","subtype","subtype");
             });
         </script>
     </head>

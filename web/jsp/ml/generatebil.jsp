@@ -127,9 +127,9 @@
                 $(newOption).html("Select");
                 $("#subscriberNumber").append(newOption);
                 if (mode == 'g')
-                    requestURL = "/JDS/CMasterData?md=subscribernumber";
+                    requestURL = "CMasterData?md=subscribernumber";
                 else
-                    requestURL = "/JDS/CMasterData?md=subscribernumberbil";
+                    requestURL = "CMasterData?md=subscribernumberbil";
 
                 jdsAppend(requestURL,"subscriberNumber","subscriberNumber");
 

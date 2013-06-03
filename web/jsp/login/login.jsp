@@ -91,7 +91,7 @@
     </head>
     <body>
         <jsp:include page="../templates/header.jsp"></jsp:include>
-            <div id="ajaxBusy"><img src="/JDS/images/ajax-loader.gif"><p>Please Wait...</p></div>
+        <div id="ajaxBusy"><img src="/images/ajax-loader.gif"><p>Please Wait...</p></div>
         <%--<jsp:include page="../templates/loginsidebar.jsp"></jsp:include>--%>
         <div id="bodyContainer">
             <form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginFieldId','passwordField')">

@@ -1,6 +1,6 @@
 function subtypeCodeAppend(){
     var subTypeDesc = document.subscriberForm.subtypedesc.options[document.subscriberForm.subtypedesc.selectedIndex].text;
-    requestURL = "/JDS/CMasterData?md=subtype_code&mdvalue=" + subTypeDesc;
+    requestURL = "CMasterData?md=subtype_code&mdvalue=" + subTypeDesc;
     $.ajax({
         type: "GET",
         url: requestURL, // change to full path of file on server

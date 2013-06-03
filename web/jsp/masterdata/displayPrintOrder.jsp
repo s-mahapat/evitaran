@@ -194,7 +194,7 @@
                 $(newOption).html("Select");
                 $("#volume").append(newOption);
 
-                requestURL = "/JDS/CMasterData?md=getvolumes&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#year").val();
+                requestURL = "CMasterData?md=getvolumes&mdvalue=" +  $("#journalName").val() + "&optionalParam=" +  $("#year").val();
                 jdsAppend(requestURL,"volumeNumber","volume");
             }
 

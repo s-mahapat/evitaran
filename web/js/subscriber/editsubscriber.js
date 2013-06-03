@@ -7,7 +7,7 @@ function makeEditSubscriberReadOnly(){
 
 function subtypeDescriptionAppend(){
     var subType = document.subscriberForm.subtype.options[document.subscriberForm.subtype.selectedIndex].text;
-    requestURL = "/JDS/CMasterData?md=subtype_desc&mdvalue=" + subType;
+    requestURL = "CMasterData?md=subtype_desc&mdvalue=" + subType;
     jdsAppend(requestURL,"subtypedesc","subtypedesc");
 }
 
@@ -18,7 +18,7 @@ function subtypeAppend(){
     $(newOption).html("Select");
     $("#subtypedesc").append(newOption);
     var subType = document.subscriberForm.subtype.options[document.subscriberForm.subtype.selectedIndex].text;
-    requestURL = "/JDS/CMasterData?md=subtype_desc&mdvalue=" + subType;
+    requestURL = "CMasterData?md=subtype_desc&mdvalue=" + subType;
     jdsAppend(requestURL,"subtypedesc","subtypedesc");
 }
 

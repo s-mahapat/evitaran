@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link type="text/css" rel="stylesheet" href="/JDS/css/report/printreport.css" />
+        <link type="text/css" rel="stylesheet" href="css/report/printreport.css" />
         <title>Journal Report</title>
         <script type="text/javascript">
 
