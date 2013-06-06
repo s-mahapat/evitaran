@@ -49,6 +49,7 @@ public class inwardFormBean extends JDSBean {
     private String letterNumber;
     private String letterDate;
     private int paymentModeID;
+    private String inwardAddress;
 
     public int getInwardID() {
         return this.inwardID;
@@ -388,5 +389,17 @@ public class inwardFormBean extends JDSBean {
 
     public void setLetterDate(String _letter_date) {
         this.letterDate = _letter_date;
+    }
+
+    public String getInwardAddress(){
+        String address = this.getFrom();
+        address += this.department != null && this.department.length() > 0 ? "\n" + this.department : "";
+        address += this.institution != null && this.institution.length() > 0 ? "\n" + this.institution : "";
+        address += this.city != null && this.city.length() > 0 ? "\n" + this.city : "";
+        address += this.district != null && this.district.length() > 0 ? "\n" + this.district : "";
+        address += this.state != null && this.state.length() > 0 ? "\n" + this.state : "";
+        address += this.country != null && this.country.length() > 0 && this.country.equalsIgnoreCase("INDIA") == false  ? "\n" + this.country : "";
+        address += this.pincode > 0 ? "\n" + this.pincode : "";
+        return address;
     }
 }

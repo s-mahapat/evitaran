@@ -81,12 +81,30 @@ public class subscriberFormBean extends JDSBean {
         return this.shippingAddress;
     }
 
+    /* for the entire shipping address using different fields of the suubscriber info
+     * In some places this method may not be used directly, because this method came at a later point in time
+     * replace with method wherever possible
+     * @return the entire invoice address of the subscriber
+     */
+    public String getFullShippingAddress() {
+        String address = this.getSubscriberName();
+        address += this.department != null && this.department.length() > 0 ? "\n" + this.department : "";
+        address += this.institution != null && this.institution.length() > 0 ? "\n" + this.institution : "";
+        address += this.shippingAddress != null && this.shippingAddress.length() > 0 ? "\n" + this.shippingAddress : "";
+        address += this.city != null && this.city.length() > 0 ? "\n" + this.city : "";
+        address += this.district != null && this.district.length() > 0 ? "\n" + this.district : "";
+        address += this.state != null && this.state.length() > 0 ? "\n" + this.state : "";
+        address += this.country != null && this.country.length() > 0 && this.country.equalsIgnoreCase("INDIA") == false ? "\n" + this.country : "";
+        address += this.pincode > 0 ? "\n" + this.pincode : "";
+        return address;
+    }
+
     public void setShippingAddress(String _ShippingAddress) {
         this.shippingAddress = _ShippingAddress;
     }
 
     public String getInvoiceAddress() {
-        if(this.sameInvoiceAddress == true && invoiceAddress == ""){
+        if (this.sameInvoiceAddress == true && invoiceAddress.length() == 0) {
             return this.shippingAddress;
         }
         return this.invoiceAddress;
@@ -225,19 +243,19 @@ public class subscriberFormBean extends JDSBean {
         this.fax = _fax;
     }
 
-    public void setAgentName(String _agent){
+    public void setAgentName(String _agent) {
         this.agent = _agent;
     }
 
-    public String getAgentName(){
+    public String getAgentName() {
         return this.agent;
     }
 
-    public void setDeactive(boolean _deactive){
+    public void setDeactive(boolean _deactive) {
         this.deactive = _deactive;
     }
 
-    public boolean isDeactive(){
+    public boolean isDeactive() {
         return this.deactive;
     }
 
@@ -245,15 +263,15 @@ public class subscriberFormBean extends JDSBean {
         return this.deactivationDate;
     }
 
-    public void setDeactivationDate(String _deactivationDate){
+    public void setDeactivationDate(String _deactivationDate) {
         this.deactivationDate = _deactivationDate;
     }
 
-    public boolean isSameInvoiceAddress(){
+    public boolean isSameInvoiceAddress() {
         return this.sameInvoiceAddress;
     }
 
-    public void setSameInvoiceAddress(boolean _sameInvoiceAddress){
+    public void setSameInvoiceAddress(boolean _sameInvoiceAddress) {
         this.sameInvoiceAddress = _sameInvoiceAddress;
     }
 
@@ -261,8 +279,7 @@ public class subscriberFormBean extends JDSBean {
         return this.deactivationReason;
     }
 
-    public void setDeactivationReason(String _in){
+    public void setDeactivationReason(String _in) {
         this.deactivationReason = _in;
     }
-
 }

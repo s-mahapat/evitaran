@@ -265,7 +265,7 @@ public class JDSPDF implements IJDSPDF {
     public Paragraph getSalutation() {
         Paragraph paragraph = new Paragraph();
         paragraph.setSpacingBefore(40);
-        paragraph.setIndentationLeft(LEFT_INDENTATION_LESS);
+        //paragraph.setIndentationLeft(LEFT_INDENTATION_LESS);
         paragraph.setAlignment(Element.ALIGN_LEFT);
         paragraph.add(new Chunk(JDSConstants.IAS_LETTERHEAD_SALUTATION, JDSPDF.JDS_FONT_BODY));
         return paragraph;

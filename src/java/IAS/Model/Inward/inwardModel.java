@@ -314,33 +314,26 @@ public class inwardModel extends JDSModel {
 
         String sql;
         inwardFormBean inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
+        try (Connection conn = this.getConnection()) {
+            //FillBean(this.request, inwardFormBean);
 
-        // get the connection from base class
-        Connection conn = this.getConnection();
+            // the query name from the jds_sql properties files in WEB-INF/properties folder
+            sql = Queries.getQuery("get_inward_by_number");
 
-        //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        FillBean(this.request, inwardFormBean);
+            try (PreparedStatement st = conn.prepareStatement(sql)) {
 
-        // the query name from the jds_sql properties files in WEB-INF/properties folder
-        sql = Queries.getQuery("get_inward_by_number");
+                st.setString(1, inwardNumber);
 
-        PreparedStatement st = conn.prepareStatement(sql);
+                try (ResultSet rs = st.executeQuery()) {
+                    while (rs.next()) {
+                        BeanProcessor bProc = new BeanProcessor();
+                        Class type = Class.forName("IAS.Bean.Inward.inwardFormBean");
+                        inwardFormBean = (IAS.Bean.Inward.inwardFormBean) bProc.toBean(rs, type);
+                    }
 
-        st.setString(1, inwardNumber);
-
-        try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
-            while (rs.next()) {
-                BeanProcessor bProc = new BeanProcessor();
-                Class type = Class.forName("IAS.Bean.Inward.inwardFormBean");
-                inwardFormBean = (IAS.Bean.Inward.inwardFormBean) bProc.toBean(rs, type);
-
+                }
             }
-            rs.close();
-            st.close();
         }
-
-        // close the connection
-        this.CloseConnection(conn);
 
         //request.setAttribute("inwardFormBean", inwardFormBean);
         return inwardFormBean;

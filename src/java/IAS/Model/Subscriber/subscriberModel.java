@@ -34,6 +34,13 @@ public class subscriberModel extends JDSModel {
     private inwardFormBean _inwardFormBean;
     private static Logger logger = JDSLogger.getJDSLogger(subscriberModel.class.getName());
 
+    /**
+     *
+     */
+    public subscriberModel() throws SQLException{
+
+    }
+
     public subscriberModel(HttpServletRequest request) throws SQLException {
         //call the base class constructor
         super(request);
@@ -388,7 +395,7 @@ public class subscriberModel extends JDSModel {
         st.setString(++paramIndex, _subscriberFormBean.getFax());
         st.setString(++paramIndex, _subscriberFormBean.getAgentName());
         st.setBoolean(++paramIndex, _subscriberFormBean.isDeactive());
-        
+
         if (mode.equalsIgnoreCase("Update")) {
             st.setString(++paramIndex, _subscriberFormBean.getDeactivationReason());
             st.setString(++paramIndex, _subscriberFormBean.getSubscriberNumber());

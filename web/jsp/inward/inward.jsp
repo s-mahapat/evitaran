@@ -292,7 +292,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Cheque/DD No:</label>
+                <label>Instrument No:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASTextBox" autocomplete="off" maxlength="6" TABINDEX="17" type="text" name="chqddNumber" id="chqddNumber" value="${inwardFormBean.chqddNumberAsText}"/>
@@ -302,7 +302,7 @@
 
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
-                <label>Cheque Date:</label>
+                <label>Instrument Date:</label>
             </span>
             <div class="dateDiv" id="dateDiv"></div>
             <span class="IASFormDivSpanInputBox">
