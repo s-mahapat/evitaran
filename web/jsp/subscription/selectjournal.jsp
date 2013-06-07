@@ -25,6 +25,7 @@
                 for (int j = 1; j <= 10; j++) {
                     out.println("<option value =\"" + j + "\">" + j + "</option>");
                 }
+                out.println("<option value =\"" + 100 + "\">" + 100 + "</option>");
             %>
         </select>
         <label class="inlinelabel">Start Month:</label>

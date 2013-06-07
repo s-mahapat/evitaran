@@ -30,6 +30,7 @@
                 width: 100%;
                 overflow: auto;
                 float: left;
+                font-size: larger;
             }
 
 
@@ -75,7 +76,7 @@
             }
 
             .login{
-                font-size: large;
+                font-size: larger;
                 padding: 6px;
                 height: 25px;
             }
@@ -91,7 +92,6 @@
     </head>
     <body>
         <jsp:include page="../templates/header.jsp"></jsp:include>
-        <div id="ajaxBusy"><img src="/images/ajax-loader.gif"><p>Please Wait...</p></div>
         <%--<jsp:include page="../templates/loginsidebar.jsp"></jsp:include>--%>
         <div id="bodyContainer">
             <form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginFieldId','passwordField')">
@@ -120,10 +120,10 @@
                     <div id="resetpwd">
                         <div class="authField">
                             <span class="authLabel">Email ID:</span>
-                            <span class="authInput"><input type="text" class="IASTextBoxMandatoryWide" name="userEmail" id="userEmail"/></span>
+                            <span class="authInput"><input type="text" style="width:250px" class="IASTextBoxMandatoryWide" name="userEmail" id="userEmail"/></span>
                         </div>
                         <div class="authAction">
-                            <input class="IASButton" id="resetpwdbtn" type="button" value="Reset Password" onclick="ResetPassword()"/>
+                            <input id="resetpwdbtn" type="button" value="Reset Password" onclick="ResetPassword()"/>
                         </div>
                     </div>
 

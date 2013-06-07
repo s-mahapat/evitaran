@@ -7,8 +7,6 @@
     });
 </script>
 <fieldset class="subMainFieldSet">
-    <legend>Subscriber</legend>
-
     <div class="IASFormLeftDiv">
 
         <div class="IASFormFieldDiv">
