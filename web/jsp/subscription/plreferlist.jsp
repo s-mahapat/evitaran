@@ -9,7 +9,7 @@
         <script>
             $(document).ready(function(){
                 $("#btnprintemail").button("disable");
-                GeneratePRLGrid();
+                GeneratePRLGrid(Constants.jqgrid.HEIGHT);
             });
         </script>
     </head>

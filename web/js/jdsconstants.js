@@ -1,3 +1,9 @@
+var Constants = {
+    jqgrid: {
+        HEIGHT: 0.5 * window.innerHeight
+    }
+}
+
 function JDSConstants() {
     this.monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -25,5 +31,7 @@ function JDSConstants() {
     //duplicate subscription action codes
     this.SAVE_DUPLICATE_SUBSCRIPTION = 1
     this.CONVERT_SUBSCRIPTION_TO_PAYMENT = 2
+
+    GRID_SIZE = 0.6 * window.innerHeight;
 
 }

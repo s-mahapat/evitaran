@@ -27,7 +27,7 @@
                     width: '100%',
                     autowidth: true,
                     shrinkToFit: true,
-                    height: 340,
+                    height: Constants.jqgrid.HEIGHT,
                     forceFit: true,
                     sortable: true,
                     loadonce: false,

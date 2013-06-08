@@ -4,12 +4,12 @@
  */
 var isPageLoaded = false;
 var currentRow = 0;
-function GeneratePRLGrid(){
+function GeneratePRLGrid(gridheight){
     $("#prlTable").jqGrid({
         url:'subscription?action=genprlist',
         datatype: 'xml',
         mtype: 'GET',
-        height: 240,
+        height: gridheight,
         autowidth: true,
         forceFit: true,
         sortable: false,
