@@ -1,8 +1,24 @@
 -- MySQL dump 10.13  Distrib 5.5.30, for Win64 (x86)
 --
--- Host: localhost    Database: jds
+-- Host: localhost    Database: evitaran
 -- ------------------------------------------------------
 -- Server version	5.5.30
+DROP DATABASE IF EXISTS evitaran;
+CREATE DATABASE evitaran;
+
+DROP USER 'evitaran'@'localhost';
+CREATE USER 'evitaran'@'localhost' IDENTIFIED BY 'evitaran';
+
+GRANT SELECT,INSERT,UPDATE ON evitaran.* TO 'evitaran'@'localhost';
+USE evitaran;
+
+/*
+* for staging environment only. Do not enable this for production
+DROP DATABASE IF EXISTS jds;
+CREATE DATABASE jds;
+GRANT SELECT,INSERT,UPDATE ON jds.* TO 'evitaran'@'localhost';
+use jds;
+*/
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -395,8 +411,8 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`complete_non_process_inward` BEFORE INSERT
-    ON jds.inward FOR EACH ROW
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `complete_non_process_inward` BEFORE INSERT
+    ON inward FOR EACH ROW
 BEGIN
     if new.inwardPurpose in (6,7,8,9) then
       set new.completed = true;
@@ -1100,7 +1116,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` TRIGGER `jds`.`setDeactivationDate` BEFORE UPDATE ON jds.subscriber FOR EACH ROW
+CREATE DEFINER=`root`@`localhost` TRIGGER `setDeactivationDate` BEFORE UPDATE ON subscriber FOR EACH ROW
 BEGIN
     IF new.deactive = TRUE THEN
       SET new.deactivationDate = CURRENT_DATE;
@@ -1889,8 +1905,8 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`deactivate_subscription` BEFORE INSERT
-    ON jds.subscriptiondetails FOR EACH ROW
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `deactivate_subscription` BEFORE INSERT
+    ON subscriptiondetails FOR EACH ROW
 BEGIN
    IF new.endyear < YEAR(CURRENT_TIMESTAMP) THEN
       SET new.active = FALSE;
@@ -1910,8 +1926,8 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `jds`.`add_back_issues` AFTER INSERT
-    ON jds.subscriptiondetails FOR EACH ROW
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `add_back_issues` AFTER INSERT
+    ON subscriptiondetails FOR EACH ROW
 BEGIN
    CALL addBackIssues(new.id,
                       new.startMonth,
@@ -1933,7 +1949,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` TRIGGER edit_bil BEFORE UPDATE ON jds.subscriptiondetails FOR EACH ROW
+CREATE DEFINER=`root`@`localhost` TRIGGER edit_bil BEFORE UPDATE ON subscriptiondetails FOR EACH ROW
 BEGIN
   begin_level_1:
    BEGIN
@@ -2171,7 +2187,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE TRIGGER `jds`.`after_subscription_details_update` AFTER UPDATE ON subscriptiondetails FOR EACH ROW
+CREATE TRIGGER `after_subscription_details_update` AFTER UPDATE ON subscriptiondetails FOR EACH ROW
 BEGIN
   /*
   * set the active flag for subscription to false once all the details are
@@ -2292,7 +2308,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE jds.`activateSubscription`(IN subscriberID   INT,
+CREATE PROCEDURE `activateSubscription`(IN subscriberID   INT,
                                             IN makeActive     INT)
    BEGIN
   DECLARE done              int DEFAULT 0;
@@ -2327,7 +2343,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE jds.`addBackIssues`(IN _subscription_detail_id   int,
+CREATE PROCEDURE `addBackIssues`(IN _subscription_detail_id   int,
                                      IN _new_startMonth           int,
                                      IN _new_startYear            int,
                                      IN _new_journalGroupID       int,
@@ -2431,7 +2447,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE jds.`circulation_figures`(IN cir_year int)
+CREATE PROCEDURE `circulation_figures`(IN cir_year int)
    BEGIN
       DECLARE journal_id                 int;
       DECLARE journal_code               varchar(20);
@@ -2591,7 +2607,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE jds.`cir_subscription_rates`(IN cir_year        int,
+CREATE PROCEDURE `cir_subscription_rates`(IN cir_year        int,
                                               IN sub_type_desc   varchar(64))
    BEGIN
  DECLARE price_rate int DEFAULT 0;

@@ -3,17 +3,17 @@
     <context-param>
         <description>username to connect to database</description>
         <param-name>db_user</param-name>
-        <param-value>jds</param-value>
+        <param-value>evitaran</param-value>
     </context-param>
     <context-param>
         <description>password to connect to database</description>
         <param-name>db_password</param-name>
-        <param-value>jds</param-value>
+        <param-value>evitaran</param-value>
     </context-param>
     <context-param>
         <description>database name</description>
         <param-name>db_name</param-name>
-        <param-value>jds</param-value>
+        <param-value>evitaran</param-value>
     </context-param>
     <context-param>
         <description>database server name</description>

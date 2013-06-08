@@ -37,7 +37,7 @@ public class Database implements HttpSessionBindingListener {
             try {
                 Context initCtx = new InitialContext();
                 Context envCtx = (Context) initCtx.lookup("java:comp/env");
-                datasource = (DataSource) envCtx.lookup("jdbc/jds");
+                datasource = (DataSource) envCtx.lookup("jdbc/evitaran");
             } catch (Exception e) {
                 logger.fatal(e);
                 throw (new SQLException(e.getMessage()));
