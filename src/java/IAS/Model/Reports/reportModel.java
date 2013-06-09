@@ -664,15 +664,18 @@ public class reportModel extends JDSModel {
                 sqlStatement = Queries.getQuery("statement");
                 PreparedStatement stGetStatement = conn.prepareStatement(sqlStatement);
                 paramIndex = 1;
-                stGetStatement.setInt(paramIndex, journalId);
+
+                String subtypecode = (rsSubType.getObject(1)).toString();
+                String subtypedesc = (rsSubType.getObject(2)).toString();
+
+                stGetStatement.setString(paramIndex, subtypecode);
+                stGetStatement.setInt(++paramIndex, journalId);
                 stGetStatement.setString(++paramIndex, request.getParameter("issue"));
                 stGetStatement.setString(++paramIndex, request.getParameter("year"));
-                value = rsSubType.getObject(1);
-                stGetStatement.setString(++paramIndex, value.toString());
+                stGetStatement.setString(++paramIndex, subtypecode);
                 stGetStatement.setString(++paramIndex, request.getParameter("volume"));
                 ResultSet rsStatement = this.db.executeQueryPreparedStatement(stGetStatement);
 
-                String subtypecode = value.toString();
                 int subCount = 0;
                 int copies = 0;
 
@@ -696,9 +699,9 @@ public class reportModel extends JDSModel {
                 Element row = doc.createElement("row");
                 results.appendChild(row);
 
-                Element _subType = doc.createElement("subtypecode");
+                Element _subType = doc.createElement("subtypedesc");
                 row.appendChild(_subType);
-                _subType.appendChild(doc.createTextNode(subtypecode));
+                _subType.appendChild(doc.createTextNode(subtypedesc));
 
                 Element _subCount = doc.createElement("subCount");
                 row.appendChild(_subCount);
@@ -713,7 +716,7 @@ public class reportModel extends JDSModel {
             Element row = doc.createElement("row");
             results.appendChild(row);
 
-            Element _subType = doc.createElement("subtypecode");
+            Element _subType = doc.createElement("subtypedesc");
             row.appendChild(_subType);
             _subType.appendChild(doc.createTextNode("Total"));
 
@@ -788,6 +791,7 @@ public class reportModel extends JDSModel {
 
             int journalId = rs.getInt(1);
             String journalCode = rs.getString(2);
+            String journalName = rs.getString(3);
 
             String sqlIssues = null;
             sqlIssues = Queries.getQuery("cf_issue_volumeno");
@@ -807,9 +811,9 @@ public class reportModel extends JDSModel {
                 results.appendChild(row);
 
                 // Add journal Code as first column
-                Element _journalCode = doc.createElement("journalCode");
-                row.appendChild(_journalCode);
-                _journalCode.appendChild(doc.createTextNode(journalCode));
+                Element _journalName = doc.createElement("journalName");
+                row.appendChild(_journalName);
+                _journalName.appendChild(doc.createTextNode(journalName));
 
                 // Add journal Code as first column
                 Element _volume = doc.createElement("volume");
@@ -981,9 +985,9 @@ public class reportModel extends JDSModel {
             Element row = doc.createElement("row");
             results.appendChild(row);
 
-            Element _journalCode = doc.createElement("journalCode");
-            row.appendChild(_journalCode);
-            _journalCode.appendChild(doc.createTextNode("Total"));
+            Element _journalName = doc.createElement("journalName");
+            row.appendChild(_journalName);
+            _journalName.appendChild(doc.createTextNode("Total"));
 
             // Add journal Code as first column
             Element _issue = doc.createElement("issue");

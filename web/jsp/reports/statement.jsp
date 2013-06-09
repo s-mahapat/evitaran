@@ -41,7 +41,7 @@
                         loadtext: "Loading...",
                         colNames:['Subscriber Type','Subscriber Count','No. Of Copies'],
                         colModel :[
-                          {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
+                          {name:'subtypedesc', index:'subtypedesc', width:80, align:'center', xmlmap:'subtypedesc'},
                           {name:'subCount', index:'subscriberCount', width:80, align:'center', sortable: true, sorttype: 'int',xmlmap:'subCount'},
                           {name:'copies', index:'copies', width:80, align:'center', sortable:false, xmlmap:'copies'},
                         ],
