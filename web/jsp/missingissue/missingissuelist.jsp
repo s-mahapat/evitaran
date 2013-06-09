@@ -291,7 +291,8 @@
                                         </span>
                                     </div>
                                     <div id="getMailingBtnDiv">
-                                        <input class="IASButton" TABINDEX="3" type="button" value="Get Mailing List" id="btnMailing" name="btnMailing" onclick="getMiMl()"/>
+                                        <input class="IASButton" TABINDEX="3" type="button" value="Generate Mailing List Now" id="btnMailing" name="btnMailing" onclick="getMiMl()"/>
+                                        <input class="IASButton" TABINDEX="4" type="button" value="Add to List" id="btnMailingLater" name="btnMailingLater" onclick="getMiMlLater()"/>
                                     </div>
                                    <%--
                                     <div id="gMiBtnDiv">
