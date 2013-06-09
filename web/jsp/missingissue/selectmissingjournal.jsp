@@ -261,7 +261,7 @@
                 <label>Missing Copies:</label>
             </span>
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBox" TABINDEX="7" type="text" name="missingcopies" id="missingcopies" value=""/>
+                <input class="IASTextBox" TABINDEX="7" type="text" name="missingcopies" id="missingcopies" value="1"/>
             </span>
         </div>
     </div>
