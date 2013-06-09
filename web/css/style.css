@@ -431,6 +431,10 @@ fieldset {
     vertical-align: middle;
 }
 
+.inlineinput{
+    margin-left: 10px;
+}
+
 .IASFormDivSpanLabelLeftAligned{
     margin-left: 5px;
     float: left;

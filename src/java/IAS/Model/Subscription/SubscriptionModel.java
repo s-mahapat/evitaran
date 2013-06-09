@@ -811,18 +811,18 @@ public class SubscriptionModel extends JDSModel {
 
     }
 
-    public String getPleaseReferList(int medium, String ctext) throws SQLException,
+    public String getPleaseReferList(int medium, int year, String ctext) throws SQLException,
             ParserConfigurationException,
             TransformerException,
             ParseException,
             InvocationTargetException,
             IllegalAccessException {
 
-        Connection _conn = this.getConnection();
+        /*Connection _conn = this.getConnection();
         String sql = "select count(*) from prl where year=?";
         int bExists = -1;
         try (PreparedStatement st = _conn.prepareStatement(sql)) {
-            st.setInt(1, Calendar.getInstance().get(Calendar.YEAR));
+            st.setInt(1, year);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.first()) {
                     bExists = rs.getInt(1);
@@ -837,12 +837,14 @@ public class SubscriptionModel extends JDSModel {
 
         if (bExists == 0) {
             // this means that there is no existing PRL list for the year
-            this._generatePleaseReferList(ctext);
+            this._generatePleaseReferList(year, ctext);
         }
-        return _getPleaseReferList(medium);
+        return _getPleaseReferList(medium);*/
+        int prl_id = this._generatePleaseReferList(year, ctext);
+        return _getPleaseReferList(prl_id, year, medium);
     }
 
-    private String _getPleaseReferList(int medium) throws SQLException,
+    private String _getPleaseReferList(int prl_id, int year, int medium) throws SQLException,
             ParserConfigurationException,
             TransformerException {
 
@@ -862,7 +864,9 @@ public class SubscriptionModel extends JDSModel {
             email_search_string = "%"; // search for all
         }
         try (PreparedStatement pst = _conn.prepareStatement(sql)) {
-            pst.setString(1, email_search_string);
+            pst.setInt(1, prl_id);
+            pst.setInt(2, year);
+            pst.setString(3, email_search_string);
             try (ResultSet rs = pst.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
             }
@@ -872,7 +876,7 @@ public class SubscriptionModel extends JDSModel {
         return xml;
     }
 
-    private boolean _generatePleaseReferList(String ctext) throws SQLException,
+    private int _generatePleaseReferList(int year, String ctext) throws SQLException,
             ParserConfigurationException,
             TransformerException,
             ParseException,
@@ -889,7 +893,7 @@ public class SubscriptionModel extends JDSModel {
         // first insert the new row into prl table and get the prl id
         sql = "insert into prl(year,ctext) values (?,?)";
         try (PreparedStatement pst = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pst.setInt(1, Calendar.getInstance().get(Calendar.YEAR));
+            pst.setInt(1, year);
             pst.setString(2, ctext); // save the custom text in db
             pst.executeUpdate();
             try (ResultSet rs = pst.getGeneratedKeys()) {
@@ -912,6 +916,7 @@ public class SubscriptionModel extends JDSModel {
         boolean isNullRs = false;
         try (PreparedStatement pst = _conn.prepareStatement(sql_insert_prl_details)) {
             try (PreparedStatement st = _conn.prepareStatement(sql)) {
+                st.setInt(1, year); // set the year for which prl list should be retreived
                 try (ResultSet rs = st.executeQuery()) {
                     if (!rs.isBeforeFirst()) {
                         isNullRs = true;   // set this if there is atleast 1 record is the resultset, this ensures
@@ -967,7 +972,7 @@ public class SubscriptionModel extends JDSModel {
             _conn.setAutoCommit(true);
             // _conn.close();
         }
-        return true;
+        return prl_id;
     }
 
     private int getNextYearSubscriptionPeriod() {

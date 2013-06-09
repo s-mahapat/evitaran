@@ -66,12 +66,16 @@
                     },
                     pager: '#pager',
                     pginput: true,
-                    rowNum:10,
-                    rowList:[10,30,50,100],
+                    rowNum: 20,
+                    rowList:[20,50,100, -1],
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-
+                    loadComplete: function(xml){
+                        $("option[value=-1]").text('All');
+                        //sessionStorage.searchinwards = xml.toString();
+                        //console.log(sessionStorage.searchinwards.toString());
+                    },
                     gridComplete: function() {
                         var ids = jQuery("#subscriberTable").jqGrid('getDataIDs');
                         for (var i = 0; i < ids.length; i++) {

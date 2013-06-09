@@ -1,3 +1,4 @@
+<%@page import="IAS.Class.util"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,10 +23,8 @@
                     <fieldset class="subMainFieldSet">
                         <div class="IASFormLeftDiv">
                             <div class="IASFormFieldDiv">
-                                <span class="IASFormDivSpanLabel">
-                                    <label>Medium</label>
-                                </span>
-                                <span class="IASFormDivSpanInputBox">
+                                <label class="inlinelabel">Medium:</label>
+                                <span class="inlineinput">
                                     <select class="IASComboBoxMandatory" TABINDEX="1" name="prlmedium" id="prlmedium">
                                         <option value="0">Select</option>
                                         <option value="1">Email Only</option>
@@ -33,6 +32,22 @@
                                         <option value="3">Print All</option>
                                     </select>
                                 </span>
+                                <label class="inlinelabel">Subscription expiring in :</label>
+                                <span class="inlineinput">
+                                    <select class="IASComboBoxMandatory" TABINDEX="2" name="year" id="year">
+                                        <%
+                                            int year = Integer.parseInt(util.getDateString("yyyy"));
+                                            for (int i = year - 1; i <= year + 1; i++) {
+                                                String isSelected = "";
+                                                if(i == year){
+                                                    isSelected = "selected";
+                                                }
+                                                out.println("<option value=\"" + i + "\" " + isSelected + ">" + i + "</option>");
+                                            }
+                                        %>
+                                    </select>
+                                </span>
+
                             </div>
 
                         </div>

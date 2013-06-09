@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
  */
 public class PlReferListPDF extends JDSPDF {
 
-    private Connection conn = null;
+    private static Connection conn = null;
     private InvoiceModel _InvoiceModel = null;
     private SubscriptionModel _SubscriptionModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger(PlReferListPDF.class.getName());
@@ -38,7 +38,9 @@ public class PlReferListPDF extends JDSPDF {
 
     public PlReferListPDF() throws SQLException {
         super();
-        conn = Database.getConnection();
+        if(PlReferListPDF.conn == null){
+            conn = Database.getConnection();
+        }
         _InvoiceModel = new InvoiceModel();
         _SubscriptionModel = new SubscriptionModel();
         String sql = "select ctext from prl where year=?";
@@ -50,6 +52,7 @@ public class PlReferListPDF extends JDSPDF {
                 }
             }
         }
+        //conn.close();
     }
 
     public ByteArrayOutputStream getPDF(int medium) throws DocumentException,

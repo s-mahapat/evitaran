@@ -48,7 +48,7 @@ public class InvoiceModel extends JDSModel {
 
         InvoiceFormBean _InvoiceFormBean = null;
         String sql = Queries.getQuery("get_invoice_detail_for_prl");
-        try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
+        try (PreparedStatement pst = this.getStaticConnection().prepareStatement(sql)) {
             pst.setString(1, invoice_no);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.first()) {

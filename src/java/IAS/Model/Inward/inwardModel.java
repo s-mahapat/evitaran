@@ -520,23 +520,33 @@ public class inwardModel extends JDSModel {
         }
         sql += " group by inwardNumber, subscriberId, t1.from, inwardCreationDate, city, chqddNumber, inwardPurpose order by inwardID " + sortOrder;
 
-        //ResultSet rs = this.db.executeQueryPreparedStatementWithPages(sql, pageNumber, pageSize);//this.db.executeQuery(sql);
+        // if the user selects ALL from the UI then do not limit the number of rows that are displayed
+        if (pageSize > 0) {
+            String sql_count = "select count(*) from (" + sql + ") as tbl";
+            PreparedStatement pst;
+            pst = conn.prepareStatement(sql_count);
+            try (ResultSet rs_count = pst.executeQuery();) {
+                rs_count.first();
+                totalQueryCount = rs_count.getInt(1);
+            }
 
-        String sql_count = "select count(*) from (" + sql + ") as tbl";
-        PreparedStatement pst;
-        pst = conn.prepareStatement(sql_count);
-        try (ResultSet rs_count = pst.executeQuery();) {
-            rs_count.first();
-            totalQueryCount = rs_count.getInt(1);
-        }
+            int start = (pageNumber - 1) * pageSize;
+            sql += " LIMIT " + start + "," + pageSize;
 
-        int start = (pageNumber - 1) * pageSize;
-        sql += " LIMIT " + start + "," + pageSize;
-        try (PreparedStatement pstatement = conn.prepareStatement(sql);) {
-            try (ResultSet rs = pstatement.executeQuery();) {
-                xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+            try (PreparedStatement pstatement = conn.prepareStatement(sql);) {
+                try (ResultSet rs = pstatement.executeQuery();) {
+                    xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+                }
+            }
+        } else {
+            // this is executed when the user selects all from the UI
+            try (PreparedStatement pstatement = conn.prepareStatement(sql);) {
+                try (ResultSet rs = pstatement.executeQuery();) {
+                    xml = util.convertResultSetToXML(rs);
+                }
             }
         }
+
         // close the connection
         this.CloseConnection(conn);
 

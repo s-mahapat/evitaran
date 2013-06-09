@@ -37,8 +37,7 @@ public class subscriberModel extends JDSModel {
     /**
      *
      */
-    public subscriberModel() throws SQLException{
-
+    public subscriberModel() throws SQLException {
     }
 
     public subscriberModel(HttpServletRequest request) throws SQLException {
@@ -554,25 +553,34 @@ public class subscriberModel extends JDSModel {
         if (pincode != null && pincode.compareToIgnoreCase("NULL") != 0 && pincode.length() > 0) {
             sql += condition + " pincode =" + "'" + pincode + "'";
         }
-        String sql_count = "select count(*) from (" + sql + ") as tbl";
 
-        try (PreparedStatement pst = conn.prepareStatement(sql_count);) {
-            try (ResultSet rs_count = pst.executeQuery();) {
-                rs_count.first();
-                totalQueryCount = rs_count.getInt(1);
+        if (pageSize > 0) {
+            String sql_count = "select count(*) from (" + sql + ") as tbl";
+
+            try (PreparedStatement pst = conn.prepareStatement(sql_count);) {
+                try (ResultSet rs_count = pst.executeQuery();) {
+                    rs_count.first();
+                    totalQueryCount = rs_count.getInt(1);
+                }
             }
-        }
 
-        int start = (pageNumber - 1) * pageSize;
-        sql += " LIMIT " + start + "," + pageSize;
-        try (PreparedStatement pstatement = conn.prepareStatement(sql);) {
-            try (ResultSet rs = pstatement.executeQuery();) {
-                xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+            int start = (pageNumber - 1) * pageSize;
+            sql += " LIMIT " + start + "," + pageSize;
+            try (PreparedStatement pstatement = conn.prepareStatement(sql);) {
+                try (ResultSet rs = pstatement.executeQuery();) {
+                    xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+                }
+            }
+        } else {
+            try (PreparedStatement pstatement = conn.prepareStatement(sql);) {
+                try (ResultSet rs = pstatement.executeQuery();) {
+                    xml = util.convertResultSetToXML(rs);
+                }
             }
         }
 
         // close the connection
-        //this.CloseConnection(conn);
+        conn.close();
 
         return xml;
     }
@@ -766,28 +774,28 @@ public class subscriberModel extends JDSModel {
         String strCRLF = "\n";
         String strInvoiceAddress = "";
 
-        if(subscriberFormBean.getDepartment().length() > 0){
+        if (subscriberFormBean.getDepartment().length() > 0) {
             strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getDepartment()) : subscriberFormBean.getDepartment();
         }
 
-        if(subscriberFormBean.getInstitution().length() > 0){
-           strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getInstitution()) : subscriberFormBean.getInstitution();
+        if (subscriberFormBean.getInstitution().length() > 0) {
+            strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getInstitution()) : subscriberFormBean.getInstitution();
         }
 
-        if(subscriberFormBean.getInvoiceAddress().length() > 0){
-           strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getInvoiceAddress()) : subscriberFormBean.getInvoiceAddress();
+        if (subscriberFormBean.getInvoiceAddress().length() > 0) {
+            strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getInvoiceAddress()) : subscriberFormBean.getInvoiceAddress();
         }
 
-        if(subscriberFormBean.getCity().length() > 0){
-           strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getCity()) : subscriberFormBean.getCity();
+        if (subscriberFormBean.getCity().length() > 0) {
+            strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getCity()) : subscriberFormBean.getCity();
         }
 
-        if(subscriberFormBean.getDistrict().length() > 0){
-           strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getDistrict()) : subscriberFormBean.getDistrict();
+        if (subscriberFormBean.getDistrict().length() > 0) {
+            strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getDistrict()) : subscriberFormBean.getDistrict();
         }
 
-        if(subscriberFormBean.getState().length() > 0){
-           strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getState()) : subscriberFormBean.getState();
+        if (subscriberFormBean.getState().length() > 0) {
+            strInvoiceAddress = strInvoiceAddress.length() > 0 ? (strInvoiceAddress + strCRLF + subscriberFormBean.getState()) : subscriberFormBean.getState();
         }
 
         if (!subscriberFormBean.getCountry().isEmpty()) {
@@ -806,7 +814,6 @@ public class subscriberModel extends JDSModel {
         return strInvoiceAddress;
     }
 
-    class SubscriberNumberNotFoundException extends Exception{
-
+    class SubscriberNumberNotFoundException extends Exception {
     }
 }

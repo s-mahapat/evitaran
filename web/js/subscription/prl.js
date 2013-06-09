@@ -100,8 +100,8 @@ function GeneratePRLGrid(gridheight){
             id: "subid"
         },
         pager: '#pager',
-        rowNum:10,
-        rowList:[10,30,50],
+        //rowNum: 20,
+        //rowList:[20,50,100],
         viewrecords: true,
         gridview: true,
         caption: '&nbsp;',
@@ -131,6 +131,7 @@ function emailStatus(cellvalue, options, rowObject){
 }
 
 function GeneratePRL(){
+    jQuery("#prlTable").trigger("clearGridData", true);
     jQuery("#prlTable").setGridParam({
         datatype: "xml"
     });
@@ -142,6 +143,7 @@ function GeneratePRL(){
         postData:
         {
             medium: $("#prlmedium").val(),
+            year: $("#year").val(),
             ctext: $("#ctext").val()
         }
     });

@@ -183,8 +183,9 @@ public class subscription extends JDSController {
                 url = "/xmlserver";
             } else if (action.equalsIgnoreCase("genprlist")) {
                 int medium = Integer.parseInt(request.getParameter("medium"));
+                int year = Integer.parseInt(request.getParameter("year"));
                 String ctext = request.getParameter("ctext");
-                String xml = _subscriptionModel.getPleaseReferList(medium, ctext);
+                String xml = _subscriptionModel.getPleaseReferList(medium, year, ctext);
 
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
