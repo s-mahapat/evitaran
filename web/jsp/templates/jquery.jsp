@@ -24,3 +24,5 @@
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.jqGrid.min.js"%>" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/ui.jqgrid.css"%>"/>
 
+<%-- jquery hot keys --%>
+<script src="<%=request.getContextPath() + "/js/jquery/jquery.hotkeys.js"%>" type="text/javascript"></script>

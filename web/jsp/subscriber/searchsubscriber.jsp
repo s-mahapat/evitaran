@@ -47,7 +47,7 @@
                     colNames:['Subscriber ID','Subscriber Number','Subscriber Name', 'Department','City','Pin Code','Country', 'Action'],
                     colModel :[
                         {name:'Subscriber ID', index:'subscriberID', width:20, align:'center', xmlmap:'subscriberID'},
-                        {name:'Subscriber Number', index:'subscriberNumber', width:30, align:'center', xmlmap:'subscriberNumber'},
+                        {name:'Subscriber Number', index:'subscriberNumber', width:30, align:'center', xmlmap:'subscriberNumber', search:true, stype:'text'},
                         {name:'Subscriber Name', index:'subscriberName', width:60, align:'center', xmlmap:'subscriberName'},
                         {name:'Department', index:'department', width:50, align:'center', xmlmap:'department'},
                         {name:'City', index:'city', width:20, align:'center', sortable: true, sorttype: 'int',xmlmap:'city'},
@@ -112,7 +112,7 @@
                         window.location.href = "subscriber?action=display&subscriberNumber=" + rowid;
                     }
                 });
-                if(sessionStorage.searchsubscriber){
+                if(sessionStorage.searchsubscriber != "false"){
                     var json = JSON.parse(sessionStorage.searchsubscriber);
                     $("#city").val(json.city);
                     $("#subscriberNumber").val(json.subscriberNumber);
@@ -176,6 +176,11 @@
                 };
                 //set the cookie
                 $.cookie("search_subscriber", JSON.stringify(json));
+            }
+
+            function resetForm(){
+                sessionStorage.searchsubscriber = false;
+                $('#searchSubscriberForm')[0].reset();
             }
         </script>
     </head>
@@ -271,7 +276,7 @@
 
                             <div class="actionBtnDiv">
                                 <button class="IASButton SearchButton allusers" TABINDEX=8" type="button" value="Search" onclick="searchSubscriber()">Search</button>
-                                <input class="IASButton allusers" TABINDEX="9" type="reset" value="Reset"/>
+                                <button class="IASButton allusers" TABINDEX="9" type="button" value="Reset" onclick="resetForm()">Reset</button>
                             </div>
 
                         </fieldset>

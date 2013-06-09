@@ -554,6 +554,8 @@ public class subscriberModel extends JDSModel {
             sql += condition + " pincode =" + "'" + pincode + "'";
         }
 
+        sql += " ORDER BY t1.subscriberName";
+
         if (pageSize > 0) {
             String sql_count = "select count(*) from (" + sql + ") as tbl";
 
