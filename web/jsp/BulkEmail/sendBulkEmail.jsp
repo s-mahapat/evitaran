@@ -68,7 +68,8 @@
                                         <label>To:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBoxEmail">
-                                        <input class="IASTextBoxMandatoryMax" TABINDEX="1" type="text" name="to" id="to" onblur="validateIds()"/>
+                                        <%--<input class="IASTextBoxMandatoryMax" TABINDEX="1" type="textarea" name="to" id="to" onblur="validateIds()"/>--%>
+                                        <textarea style="margin: 10px; width: 85%;" class="IASTextAreaWide" TABINDEX="1" name="to" id="to" cols="100" onblur="validateIds()"></textarea>
                                     </span>
                                 </div>
                                 <div class="IASFormFieldDiv">
