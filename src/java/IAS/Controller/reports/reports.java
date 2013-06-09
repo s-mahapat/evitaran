@@ -156,13 +156,16 @@ import javax.servlet.http.HttpServletResponse;
 
             /* ---------------------------------------------------------------- */
             else if (action.equalsIgnoreCase("listSubscribers")) {
-                ResultSet rs  = _reportModel.searchSubscriber();
+                String orderBy = "subscriberName";
+                ResultSet rs  = _reportModel.searchSubscriber(orderBy);
                 String    xml = util.convertResultSetToXML(rs);
 
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             } else if (action.equalsIgnoreCase("printSubscribersReport")) {
-                ResultSet rs = _reportModel.searchSubscriber();
+                String orderBy = "subscriberName";
+
+                ResultSet rs = _reportModel.searchSubscriber(orderBy);
 
                 request.setAttribute("ResultSet", rs);
 
@@ -172,8 +175,9 @@ import javax.servlet.http.HttpServletResponse;
                 url = "/pdfserver?action=printResultset";
             } else if (action.equalsIgnoreCase("printSubscribersSticker")) {
 
+                String orderBy = "pincode";
                 // ResultSet rs = _reportModel.printSubscribersList();
-                ResultSet rs = _reportModel.searchSubscriber();
+                ResultSet rs = _reportModel.searchSubscriber(orderBy);
 
                 request.setAttribute("ResultSet", rs);
 
@@ -187,8 +191,9 @@ import javax.servlet.http.HttpServletResponse;
                 url = "/pdfserver?action=generatemlPrintSticker";
             } else if (action.equalsIgnoreCase("printSubscribersLabel")) {
 
+                String orderBy = "pincode";
                 // ResultSet rs = _reportModel.printSubscribersList();
-                ResultSet rs = _reportModel.searchSubscriber();
+                ResultSet rs = _reportModel.searchSubscriber(orderBy);
 
                 request.setAttribute("ResultSet", rs);
 
@@ -203,14 +208,15 @@ import javax.servlet.http.HttpServletResponse;
             }
 
             // This actually generates a html page with table. This functionality is nolonger used
+            /*
             else if (action.equalsIgnoreCase("listSubscribersPrint")) {
                 ResultSet rs = _reportModel.searchSubscriber();
 
                 request.setAttribute("ResultSet", rs);
                 url = "/jsp/reports/listSubscriberPrint.jsp";
 
-                /* ---------------------------------------------------------------- */
-            } else if (action.equalsIgnoreCase("listCirculationFigures")) {
+
+            }*/ else if (action.equalsIgnoreCase("listCirculationFigures")) {
                 ResultSet rs  = _reportModel.searchCirculationFigures();
                 String    xml = util.convertResultSetToXML(rs);
 
@@ -315,11 +321,11 @@ import javax.servlet.http.HttpServletResponse;
 
             /* ---------------------------------------------------------------- */
             else if (action.equalsIgnoreCase("listInvoice")) {
-                String    xml  = _reportModel.listInvoice();                
+                String    xml  = _reportModel.listInvoice();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             } else if (action.equalsIgnoreCase("printlistInvoice")) {
-                String    xml  = _reportModel.listInvoice(); 
+                String    xml  = _reportModel.listInvoice();
                 request.setAttribute("xml", xml);
                 String query = "List invoice";
                 request.setAttribute("query", query);
@@ -388,7 +394,7 @@ import javax.servlet.http.HttpServletResponse;
                 String    xml = util.convertResultSetToXML(rs);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-                
+
             } else if (action.equalsIgnoreCase("printgml")) {
                 ResultSet rs = _reportModel.gml();
 
@@ -400,7 +406,7 @@ import javax.servlet.http.HttpServletResponse;
                 url = "/pdfserver?action=printResultset";
             }
 
-            /* ---------------------------------------------------------------- */            
+            /* ---------------------------------------------------------------- */
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
 

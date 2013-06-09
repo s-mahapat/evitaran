@@ -519,7 +519,7 @@ public class reportModel extends JDSModel {
         return rs;
     }
 
-    public ResultSet searchSubscriber() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public ResultSet searchSubscriber(String orderBy) throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
         String subType = request.getParameter("subtype");
         String nationality = request.getParameter("nationality");
@@ -608,7 +608,7 @@ public class reportModel extends JDSModel {
             sql += " and subscription.subscriptionDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
 
-        sql += " order by pincode";
+        sql += " order by" + " " + orderBy;
 
         PreparedStatement stGet = conn.prepareStatement(sql);
 
