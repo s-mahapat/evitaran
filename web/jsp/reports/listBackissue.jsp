@@ -92,6 +92,18 @@
 
             });
 
+            jQuery("#bilTable").jqGrid('navGrid','#pager',
+                // Which buttons to show
+                {edit:false,add:false,del:false,search:true},
+                // Edit options
+                {},
+                // Add options
+                {},
+                // Delete options
+                {},
+                // Search options
+                {multipleGroup:true, multipleSearch:true}
+            );
 
             function search(){
                 //check if search criteria is initial, raise alert else enable search for Records
@@ -124,6 +136,19 @@
                         jQuery("#bilTable").setGridParam({ datatype: "xml" });
                         jQuery("#bilTable").trigger("clearGridData");
                         jQuery("#bilTable").trigger("reloadGrid");
+
+                        jQuery("#bilTable").jqGrid('navGrid','#pager',
+                            // Which buttons to show
+                            {edit:false,add:false,del:false,search:true},
+                            // Edit options
+                            {},
+                            // Add options
+                            {},
+                            // Delete options
+                            {},
+                            // Search options
+                            {multipleGroup:true, multipleSearch:true}
+                        );
 
                     }
                 }

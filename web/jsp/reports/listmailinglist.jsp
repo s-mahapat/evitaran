@@ -97,6 +97,18 @@
 
             });
 
+            jQuery("#mlTable").jqGrid('navGrid','#pager',
+                // Which buttons to show
+                {edit:false,add:false,del:false,search:true},
+                // Edit options
+                {},
+                // Add options
+                {},
+                // Delete options
+                {},
+                // Search options
+                {multipleGroup:true, multipleSearch:true}
+            );
 
             function search(){
                 //check if search criteria is initial, raise alert else enable search for Records
@@ -133,6 +145,19 @@
                         jQuery("#mlTable").trigger("clearGridData");
                         jQuery("#mlTable").trigger("reloadGrid");
                         jQuery("#btnPrint").button("enable");
+
+                        jQuery("#mlTable").jqGrid('navGrid','#pager',
+                            // Which buttons to show
+                            {edit:false,add:false,del:false,search:true},
+                            // Edit options
+                            {},
+                            // Add options
+                            {},
+                            // Delete options
+                            {},
+                            // Search options
+                            {multipleGroup:true, multipleSearch:true}
+                        );
                     }
                 }
 

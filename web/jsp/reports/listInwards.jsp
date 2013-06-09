@@ -94,6 +94,19 @@
 
             });
 
+            jQuery("#inwardTable").jqGrid('navGrid','#pager',
+                // Which buttons to show
+                {edit:false,add:false,del:false,search:true},
+                // Edit options
+                {},
+                // Add options
+                {},
+                // Delete options
+                {},
+                // Search options
+                {multipleGroup:true, multipleSearch:true}
+            );
+
             // called when the search button is clicked
             function searchInwards(){
                 jQuery("#inwardTable").setGridParam({ datatype: "xml" });
@@ -112,6 +125,19 @@
                         }});
                     jQuery("#inwardTable").trigger("clearGridData");
                     jQuery("#inwardTable").trigger("reloadGrid");
+
+                    jQuery("#inwardTable").jqGrid('navGrid','#pager',
+                        // Which buttons to show
+                        {edit:false,add:false,del:false,search:true},
+                        // Edit options
+                        {},
+                        // Add options
+                        {},
+                        // Delete options
+                        {},
+                        // Search options
+                        {multipleGroup:true, multipleSearch:true}
+                    );
 
                 }
 

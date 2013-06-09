@@ -81,20 +81,45 @@
 
             });
 
+            jQuery("#remTable").jqGrid('navGrid','#pager',
+                // Which buttons to show
+                {edit:false,add:false,del:false,search:true},
+                // Edit options
+                {},
+                // Add options
+                {},
+                // Delete options
+                {},
+                // Search options
+                {multipleGroup:true, multipleSearch:true}
+            );
+
             // called when the search button is clicked
             function getList(){
-                        isPageLoaded = true;
+                isPageLoaded = true;
 
-                        jQuery("#remTable").setGridParam({postData:
-                                {remType             : $("#remType").val(),
-                                from                : $("#from").val(),
-                                to                  : $("#to").val(),
-                                action              : "listReminder"
-                            }});
-                        jQuery("#remTable").setGridParam({ datatype: "xml" });
-                        jQuery("#remTable").trigger("clearGridData");
-                        jQuery("#remTable").trigger("reloadGrid");
+                jQuery("#remTable").setGridParam({postData:
+                        {remType             : $("#remType").val(),
+                        from                : $("#from").val(),
+                        to                  : $("#to").val(),
+                        action              : "listReminder"
+                    }});
+                jQuery("#remTable").setGridParam({ datatype: "xml" });
+                jQuery("#remTable").trigger("clearGridData");
+                jQuery("#remTable").trigger("reloadGrid");
 
+                jQuery("#remTable").jqGrid('navGrid','#pager',
+                    // Which buttons to show
+                    {edit:false,add:false,del:false,search:true},
+                    // Edit options
+                    {},
+                    // Add options
+                    {},
+                    // Delete options
+                    {},
+                    // Search options
+                    {multipleGroup:true, multipleSearch:true}
+                );
             }
 
 

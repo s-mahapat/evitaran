@@ -9,6 +9,10 @@
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/subscriber.css"%>"/>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/searchsubscriber.js"%>"></script>
+        <script type="text/javascript" src="js/jquery/grid.common.js"></script>
+        <script type="text/javascript" src="js/jquery/grid.formedit.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.jqGrid.src.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.jqGrid.min.js"></script>
         <title>Search Subscriber</title>
         <script type="text/javascript">
             $(document).ready(function() {
@@ -40,12 +44,12 @@
                         loadtext: "Loading...",
                         colNames:['Subscriber Number','Subscriber Name', 'Subscriber Type', 'City','State','Country'],
                         colModel :[
-                            {name:'subscriberNumber', index:'subscriberNumber', width:40, align:'center', xmlmap:'subscriberNumber'},
-                            {name:'subscriberName', index:'subscriberName', width:40, align:'center', xmlmap:'subscriberName'},
+                            {name:'subscriberNumber', index:'subscriberNumber', width:40, align:'center', xmlmap:'subscriberNumber', search: true},
+                            {name:'subscriberName', index:'subscriberName', width:40, align:'center', xmlmap:'subscriberName', search: true},
                             {name:'subtypecode', index:'subtypecode', width:40, align:'center', xmlmap:'subtypecode'},
-                            {name:'city', index:'city', width:30, align:'center', xmlmap:'city'},
-                            {name:'state', index:'state', width:30, align:'center', xmlmap:'state'},
-                            {name:'country', index:'country', width:30, align:'center', xmlmap:'country'},
+                            {name:'city', index:'city', width:30, align:'center', xmlmap:'city', search: true},
+                            {name:'state', index:'state', width:30, align:'center', xmlmap:'state', search: true},
+                            {name:'country', index:'country', width:30, align:'center', xmlmap:'country', search: true},
                           ],
                         xmlReader : {
                             root: "results",
@@ -82,6 +86,19 @@
                 });
             });
 
+            jQuery("#subscriberTable").jqGrid('navGrid','#pager',
+                // Which buttons to show
+                {edit:false,add:false,del:false,search:true},
+                // Edit options
+                {},
+                // Add options
+                {},
+                // Delete options
+                {},
+                // Search options
+                {multipleGroup:true, multipleSearch:true}
+            );
+
             // called when the search button is clicked
             function searchSubscriber(){
                 //if(validateSearchSubscriber() == true)
@@ -109,6 +126,19 @@
                     jQuery("#subscriberTable").setGridParam({ datatype: "xml" });
                     jQuery("#subscriberTable").trigger("clearGridData");
                     jQuery("#subscriberTable").trigger("reloadGrid");
+
+                    jQuery("#subscriberTable").jqGrid('navGrid','#pager',
+                        // Which buttons to show
+                        {edit:false,add:false,del:false,search:true},
+                        // Edit options
+                        {},
+                        // Add options
+                        {},
+                        // Delete options
+                        {},
+                        // Search options
+                        {multipleGroup:true, multipleSearch:true}
+                    );
                 }
 
             }

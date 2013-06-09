@@ -20,57 +20,70 @@
 
             $(function(){
 
-                      $("#mlTable").jqGrid({
-                        url:"<%=request.getContextPath() + "/reports?action=gml"%>",
-                        datatype: 'xml',
-                        mtype: 'GET',
-                        width: '100%',
-                        height: 250,
-                        autowidth: true,
-                        forceFit: true,
-                        sortable: true,
-                        loadonce: true,
-                        rownumbers: true,
-                        emptyrecords: "No records to view",
-                        loadtext: "Loading...",
-                        colNames:['Journal Code','Volume','Issue', 'Year','month','Generation Date'],
-                        colModel :[
-                          {name:'journalCode', index:'journalCode', width:30, align:'center', xmlmap:'journalCode'},
-                          {name:'volume', index:'volume', width:30, align:'center', xmlmap:'volume'},
-                          {name:'issue', index:'issue', width:30, align:'center', xmlmap:'issue'},
-                          {name:'year', index:'year', width:25, align:'center', xmlmap:'year'},
-                          {name:'months', index:'months', width:25, align:'center', xmlmap:'months'},
-                          {name:'creationDate', index:'creationDate', width:30, align:'center', xmlmap:'creationDate'},
-                        ],
-                        xmlReader : {
-                          root: "results",
-                          row: "row",
-                          page: "results>page",
-                          total: "results>total",
-                          records : "results>records",
-                          repeatitems: false,
-                          id: "journalCode"
-                       },
-                        pager: '#pager',
-                        rowNum:15,
-                        rowList:[15,30,50],
-                        viewrecords: true,
-                        gridview: true,
-                        caption: '&nbsp;',
-                        gridComplete: function() {
-                            var ids = jQuery("#mlTable").jqGrid('getDataIDs');
-                            if(ids.length > 0){
-                                $("#printReportBtn").button("enable");
-                            }
-                        },
-                        beforeRequest: function(){
-                          return isPageLoaded;
-                        },
-                        loadError: function(xhr,status,error){
-                            alert("Failed getting data from server: " + status);
+                  $("#mlTable").jqGrid({
+                    url:"<%=request.getContextPath() + "/reports?action=gml"%>",
+                    datatype: 'xml',
+                    mtype: 'GET',
+                    width: '100%',
+                    height: 250,
+                    autowidth: true,
+                    forceFit: true,
+                    sortable: true,
+                    loadonce: true,
+                    rownumbers: true,
+                    emptyrecords: "No records to view",
+                    loadtext: "Loading...",
+                    colNames:['Journal Code','Volume','Issue', 'Year','month','Generation Date'],
+                    colModel :[
+                      {name:'journalCode', index:'journalCode', width:30, align:'center', xmlmap:'journalCode'},
+                      {name:'volume', index:'volume', width:30, align:'center', xmlmap:'volume'},
+                      {name:'issue', index:'issue', width:30, align:'center', xmlmap:'issue'},
+                      {name:'year', index:'year', width:25, align:'center', xmlmap:'year'},
+                      {name:'months', index:'months', width:25, align:'center', xmlmap:'months'},
+                      {name:'creationDate', index:'creationDate', width:30, align:'center', xmlmap:'creationDate'},
+                    ],
+                    xmlReader : {
+                      root: "results",
+                      row: "row",
+                      page: "results>page",
+                      total: "results>total",
+                      records : "results>records",
+                      repeatitems: false,
+                      id: "journalCode"
+                   },
+                    pager: '#pager',
+                    rowNum:15,
+                    rowList:[15,30,50],
+                    viewrecords: true,
+                    gridview: true,
+                    caption: '&nbsp;',
+                    gridComplete: function() {
+                        var ids = jQuery("#mlTable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+                            $("#printReportBtn").button("enable");
                         }
-                    });
+                    },
+                    beforeRequest: function(){
+                      return isPageLoaded;
+                    },
+                    loadError: function(xhr,status,error){
+                        alert("Failed getting data from server: " + status);
+                    }
+                });
             });
+
+            jQuery("#mlTable").jqGrid('navGrid','#pager',
+                // Which buttons to show
+                {edit:false,add:false,del:false,search:true},
+                // Edit options
+                {},
+                // Add options
+                {},
+                // Delete options
+                {},
+                // Search options
+                {multipleGroup:true, multipleSearch:true}
+            );
 
             function getReport(){
                 if($("#year").val() == 0)
@@ -87,6 +100,18 @@
                     jQuery("#mlTable").trigger("clearGridData");
                     jQuery("#mlTable").trigger("reloadGrid");
 
+                    jQuery("#mlTable").jqGrid('navGrid','#pager',
+                        // Which buttons to show
+                        {edit:false,add:false,del:false,search:true},
+                        // Edit options
+                        {},
+                        // Add options
+                        {},
+                        // Delete options
+                        {},
+                        // Search options
+                        {multipleGroup:true, multipleSearch:true}
+                    );
                 }
             }
 

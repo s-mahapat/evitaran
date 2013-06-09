@@ -80,6 +80,19 @@
 
             });
 
+            jQuery("#balanceTable").jqGrid('navGrid','#pager',
+                // Which buttons to show
+                {edit:false,add:false,del:false,search:true},
+                // Edit options
+                {},
+                // Add options
+                {},
+                // Delete options
+                {},
+                // Search options
+                {multipleGroup:true, multipleSearch:true}
+            );
+
             // called when the search button is clicked
             function getOutstandingBalance(){
                 if($("#periodStart").val() == 0 && $("#periodEnd").val() == 0 && $("#subEnd").val() == 0 && ("#selall:checked").length  == 0){
@@ -98,6 +111,19 @@
                     jQuery("#balanceTable").setGridParam({ datatype: "xml" });
                     jQuery("#balanceTable").trigger("clearGridData");
                     jQuery("#balanceTable").trigger("reloadGrid");
+
+                    jQuery("#balanceTable").jqGrid('navGrid','#pager',
+                        // Which buttons to show
+                        {edit:false,add:false,del:false,search:true},
+                        // Edit options
+                        {},
+                        // Add options
+                        {},
+                        // Delete options
+                        {},
+                        // Search options
+                        {multipleGroup:true, multipleSearch:true}
+                    );
                 }
             }
         </script>

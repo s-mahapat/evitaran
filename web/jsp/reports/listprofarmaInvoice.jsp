@@ -78,6 +78,19 @@
 
             });
 
+            jQuery("#subTypeTable").jqGrid('navGrid','#pager',
+                // Which buttons to show
+                {edit:false,add:false,del:false,search:true},
+                // Edit options
+                {},
+                // Add options
+                {},
+                // Delete options
+                {},
+                // Search options
+                {multipleGroup:true, multipleSearch:true}
+            );
+
             // called when the search button is clicked
             function getList(){
                 isPageLoaded = true;
@@ -91,6 +104,19 @@
                 jQuery("#subTypeTable").setGridParam({ datatype: "xml" });
                 jQuery("#subTypeTable").trigger("clearGridData");
                 jQuery("#subTypeTable").trigger("reloadGrid");
+
+                jQuery("#subTypeTable").jqGrid('navGrid','#pager',
+                    // Which buttons to show
+                    {edit:false,add:false,del:false,search:true},
+                    // Edit options
+                    {},
+                    // Add options
+                    {},
+                    // Delete options
+                    {},
+                    // Search options
+                    {multipleGroup:true, multipleSearch:true}
+                );
 
             }
 
