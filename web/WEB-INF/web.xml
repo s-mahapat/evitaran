@@ -25,6 +25,18 @@
         <param-name>db_driver</param-name>
         <param-value>jdbc:mysql</param-value>
     </context-param>
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>IAS.Class.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/jsp/home.jsp</url-pattern>
+        <url-pattern>/main</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
     <listener>
         <listener-class>IAS.Class.Database</listener-class>
     </listener>
@@ -415,7 +427,7 @@
     </session-config>
     <!-- error-code related error pages -->
     <welcome-file-list>
-        <welcome-file>home</welcome-file>
+        <welcome-file>jsp/home.jsp</welcome-file>
     </welcome-file-list>
     <error-page>
         <error-code>403</error-code>
@@ -440,21 +452,21 @@
     <security-constraint>
         <display-name>Authentication</display-name>
         <web-resource-collection>
-            <web-resource-name>home</web-resource-name>
-            <description/>
-            <url-pattern>/home</url-pattern>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>JDS</web-resource-name>
+            <web-resource-name>secure pages</web-resource-name>
             <description/>
             <url-pattern>/jsp/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>servlets</web-resource-name>
+            <description/>
+            <url-pattern>/main</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>user</role-name>
             <role-name>admin</role-name>
-            <role-name>monochrome</role-name>
             <role-name>readonly</role-name>
+            <role-name>monochrome</role-name>
         </auth-constraint>
     </security-constraint>
     <security-constraint>
@@ -471,7 +483,6 @@
     </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
-        <realm-name>JDBCRealm</realm-name>
         <form-login-config>
             <form-login-page>/jsp/login/login.jsp</form-login-page>
             <form-error-page>/jsp/login/loginerror.jsp</form-error-page>

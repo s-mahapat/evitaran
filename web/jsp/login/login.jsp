@@ -1,22 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-
-    if (request.getRemoteUser() != null) {
-        String redirecturl = request.getContextPath() + "/home";
-        if (request.getParameter("from") != null) {
-            redirecturl = request.getParameter("from");
-        }
-        response.sendRedirect(redirecturl);
-    }
-%>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <%--@include file="../templates/style.jsp"--%>
         <%@include file="../templates/jquery.jsp" %>
-        <script type="text/javascript" src="js/login.js"></script>
+        <script type="text/javascript" src="<%=request.getContextPath() + "/js/login.js"%>"></script>
         <title>Login</title>
         <script type="text/javascript">
             $(function() {
@@ -94,7 +83,7 @@
         <jsp:include page="../templates/header.jsp"></jsp:include>
         <%--<jsp:include page="../templates/loginsidebar.jsp"></jsp:include>--%>
         <div id="bodyContainer">
-            <form action="j_security_check" method="post" name="frmlogin" onsubmit="return validate('loginFieldId','passwordField')">
+            <form action="<%=request.getContextPath() + "/j_security_check"%>" method="post" name="frmlogin" onsubmit="return validate('loginFieldId','passwordField')">
                 <div id="loginDiv">
                     <ul>
                         <li><a href="#login">Login</a></li>
@@ -103,17 +92,16 @@
                     <div id="login">
                         <div class="authField">
                             <span class="authLabel">User Name</span>
-                            <span class="authInput"><input type="text" style="width:250px" class="IASTextBoxMandatory login" name="j_username" value="" id="loginFieldId" onblur="validateEmail(this.id)"/></span>
+                            <span class="authInput"><input type="text" style="width:250px" class="IASTextBoxMandatory login" name="j_username" value="" id="loginFieldId" placeholder="Email" onblur="validateEmail(this.id)"/></span>
                         </div>
                         <div class="authField">
                             <span class="authLabel">Password</span>
-                            <span class="authInput"><input type="password" maxlength="16" style="width:250px" class="IASTextBoxMandatory login" value="" name="j_password" id="passwordField"/></span>
+                            <span class="authInput"><input type="password" maxlength="16" style="width:250px" class="IASTextBoxMandatory login" value="" name="j_password" placeholder="Password" id="passwordField"/></span>
                         </div>
                         <div class="authAction">
                             <input type="submit" value="Login"/>
                             <input type="reset" value="Reset"/>
                         </div>
-                        <input type="hidden" name="from" value="<%=request.getRequestURI()%>">
 
                     </div>
 

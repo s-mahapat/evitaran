@@ -14,11 +14,9 @@ function validateNewSubscriber(){
 
 function subtypeAppend(){
     $("#subtypedesc").empty();
-    $("#subtypecode").text("");
-    var newOption = new Option("Select", "value");
-    $(newOption).html("Select");
-    $("#subtypedesc").append(newOption);
-    var subType = document.subscriberForm.subtype.options[document.subscriberForm.subtype.selectedIndex].text;
+    $("#subtypedesc").append('<option value="" selected>Select</option>');
+    var subType = $("#subtype").val();
     requestURL = "CMasterData?md=subtype_desc&mdvalue=" + subType;
-    jdsAppend(requestURL,"subtypedesc","subtypedesc");
+    jdsAppend(requestURL,"subtypedesc","subtypedesc", "Select");
+
 }

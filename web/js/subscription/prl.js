@@ -30,7 +30,7 @@ function GeneratePRLGrid(gridheight){
         {
             name:'subno',
             index:'subno',
-            width:25,
+            width:20,
             align:'center',
             xmlmap:'subscriberNumber',
             sortable: false
@@ -55,7 +55,7 @@ function GeneratePRLGrid(gridheight){
         {
             name:'name',
             index:'name',
-            width:50,
+            width:40,
             align:'center',
             sortable: false,
             xmlmap:'subscriberName'
@@ -105,6 +105,8 @@ function GeneratePRLGrid(gridheight){
         viewrecords: true,
         gridview: true,
         caption: '&nbsp;',
+        scroll: true,
+        scrollOffset: 20,
         beforeRequest: function(){
             return isPageLoaded;
         },

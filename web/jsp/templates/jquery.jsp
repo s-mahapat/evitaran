@@ -12,9 +12,6 @@
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.validate.min.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery-ui-1.10.0.custom.min.js"%>" type="text/javascript"></script>
 
-<%-- jquery alerts --%>
-<%--<script src="<%=request.getContextPath() + "/js/jquery/jquery.alerts.js"%>" type="text/javascript"></script>
-<link href="<%=request.getContextPath() + "/css/jquery/jquery.alerts.css"%>" type="text/css" rel="stylesheet"/>--%>
 <%-- jquery ui --%>
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery.ui.theme.css"%>" />
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/redmond/jquery-ui.css"%>" />
@@ -24,5 +21,5 @@
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.jqGrid.min.js"%>" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/ui.jqgrid.css"%>"/>
 
-<%-- jquery hot keys --%>
-<script src="<%=request.getContextPath() + "/js/jquery/jquery.hotkeys.js"%>" type="text/javascript"></script>
+<%-- jquery hot keys
+<script src="<%=request.getContextPath() + "/js/jquery/jquery.hotkeys.js"%>" type="text/javascript"></script> --%>

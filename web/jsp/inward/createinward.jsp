@@ -58,7 +58,7 @@
     <body>
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/inward"%>" name="inwardForm" id="inwardForm" onsubmit="return validateNewInward()">
+            <form class="jqtransform" method="post" action="<%=request.getContextPath() + "/inward"%>" name="inwardForm" id="inwardForm" onsubmit="return validateNewInward()">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Create Inward</legend>

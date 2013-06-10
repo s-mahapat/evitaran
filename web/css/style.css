@@ -223,7 +223,7 @@ fieldset {
 }
 
 .IASDisabledTextBox{
-    width: 60%;
+    width: 50%;
     background-color: #EEE;
     height: 20px;
 }
@@ -233,18 +233,18 @@ fieldset {
 }
 
 .IASDisabledTextBoxWide{
-    width: 70%;
+    width: 50%;
     background-color: #EEE;
     height: 20px;
 }
 
 .IASTextBoxWide{
-    width: 60%;
+    width: 50%;
     height: 20px;
 }
 
 .IASEmailTextBox{
-    width: 70%;
+    width: 50%;
     height: 20px;
 }
 
@@ -259,13 +259,13 @@ fieldset {
 }
 
 .IASTextBoxMandatoryWide{
-    width: 70%;
+    width: 50%;
     background-color: antiquewhite;
     height: 20px;
 }
 
 .IASTextBoxMandatoryMax{
-    width: 80%;
+    width: 60%;
     height: 20px;
     background-color: antiquewhite;
 }

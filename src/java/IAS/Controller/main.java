@@ -72,14 +72,8 @@ public class main extends JDSController {
             url = "/jsp/masterdata/searchSubType.jsp";
         } else if (action.equalsIgnoreCase("searchJournal")) {
             url = "/jsp/masterdata/searchJournal.jsp";
-        } else if (action.equalsIgnoreCase("journalDetails")) {
-            url = "/jsp/masterdata/journalDetails.jsp";
-        } else if (action.equalsIgnoreCase("journalVolumeDetails")) {
-            url = "/jsp/masterdata/journalVolumeDetails.jsp";
         } else if (action.equalsIgnoreCase("searchAgent")) {
             url = "/jsp/masterdata/searchAgent.jsp";
-        } else if (action.equalsIgnoreCase("subRate")) {
-            url = "/jsp/masterdata/annualSubscriptionrates.jsp";
         } else if (action.equalsIgnoreCase("searchCity")) {
             url = "/jsp/masterdata/searchCity.jsp";
         } else if (action.equalsIgnoreCase("searchCountry")) {
@@ -131,9 +125,7 @@ public class main extends JDSController {
             url = "/jsp/inward/gatekeeperinward.jsp?inwardPurpose=New Subscription&asf=1";
         } else if (action.equals("afs")) {
             url = "/jsp/inward/gatekeeperinward.jsp?inwardPurpose=New Subscription&afs=1";
-        } else if (action.equals("printOrder")) {
-            url = "/jsp/masterdata/displayPrintOrder.jsp";
-        } else if (action.equals("jsGroup")) {
+        }else if (action.equals("jsGroup")) {
 
             // url = "/jsp/masterdata/searchJournalSubGroup.jsp";
             url = "/jsp/masterdata/journalSubjectGroup.jsp";

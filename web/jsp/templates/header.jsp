@@ -13,7 +13,7 @@
             lastName = _userBean.getLastName();
         }
     } catch (NullPointerException e) {
-        userPrincipal = null;
+        //userPrincipal = null;
     }
 
 
@@ -30,7 +30,7 @@
                     out.println("&nbsp;&nbsp;&nbsp;");
                     out.println("<a href=\"" + request.getContextPath() + "/main?action=logout\"" + "><font color=\"white\">Logout</font></a>");
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/jsp/login/login.jsp");
+                    //response.sendRedirect(request.getContextPath() + "/jsp/login/login.jsp");
                 }
 
             %>

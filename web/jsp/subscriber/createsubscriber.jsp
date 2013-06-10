@@ -18,7 +18,7 @@
                 jdsAppend("CMasterData?md=state","state","state");
                 jdsAppend("CMasterData?md=district","district","district");
                 jdsAppend("CMasterData?md=agent","agentName","agent");
-                jdsAppend("CMasterData?md=sub_type","subtype","subtype", "", function(){
+                jdsAppend("CMasterData?md=sub_type","subtype","subtype", "Paid", function(){
                     $("#subtype").val("Paid");
                     $("#subtype").change();
                 });

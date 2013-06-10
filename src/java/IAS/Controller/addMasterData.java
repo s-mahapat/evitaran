@@ -1,7 +1,6 @@
 package IAS.Controller;
 
 //~--- non-JDK imports --------------------------------------------------------
-
 import IAS.Class.JDSLogger;
 
 import org.apache.log4j.Logger;
@@ -16,13 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class addMasterData extends JDSController {
+
     private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.masterData");
 
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        String url    = "/jsp/errors/404.jsp";
+        String url = "/jsp/errors/404.jsp";
 
         try {
             if (action.equalsIgnoreCase("addSubType")) {
@@ -39,6 +39,14 @@ public class addMasterData extends JDSController {
                 url = "/jsp/masterdata/addDistrict.jsp";
             } else if (action.equalsIgnoreCase("addState")) {
                 url = "/jsp/masterdata/addState.jsp";
+            } else if (action.equalsIgnoreCase("journalDetails")) {
+                url = "/jsp/masterdata/journalDetails.jsp";
+            } else if (action.equalsIgnoreCase("journalVolumeDetails")) {
+                url = "/jsp/masterdata/journalVolumeDetails.jsp";
+            } else if (action.equalsIgnoreCase("subRate")) {
+                url = "/jsp/masterdata/annualSubscriptionrates.jsp";
+            } else if (action.equals("printOrder")) {
+                url = "/jsp/masterdata/displayPrintOrder.jsp";
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -54,9 +62,10 @@ public class addMasterData extends JDSController {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP
+     * <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -69,7 +78,9 @@ public class addMasterData extends JDSController {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -83,6 +94,7 @@ public class addMasterData extends JDSController {
 
     /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
