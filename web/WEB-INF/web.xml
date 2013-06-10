@@ -33,6 +33,7 @@
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/jsp/home.jsp</url-pattern>
         <url-pattern>/main</url-pattern>
+        <url-pattern>/addMasterData</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>

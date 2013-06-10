@@ -6,8 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    String url = request.getParameter("continue") != null ? request.getParameter("continue") : request.getContextPath() + "/jsp/home.jsp";
     session.invalidate();
-    response.sendRedirect(request.getContextPath() + "/jsp/home.jsp");
+    response.sendRedirect(url);
 %>
 
 
