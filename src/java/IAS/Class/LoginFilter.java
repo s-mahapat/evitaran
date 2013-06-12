@@ -78,8 +78,11 @@ public class LoginFilter implements Filter {
         // the rest of the filter chain is invoked.
         HttpServletRequest req = (HttpServletRequest) request;
         HttpSession session = req.getSession(false);
+        LoggedInUserBean ubean = (LoggedInUserBean)session.getAttribute("userBean");
 
-        if (req.getUserPrincipal() != null) {
+        // if the user bean is already populated, we do not need
+        // to create the bean and connection again.
+        if (ubean == null && req.getUserPrincipal() != null) {
             synchronized (session) {
                 // get the connection from the session if it exists.
                 try {
