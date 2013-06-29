@@ -147,7 +147,11 @@ public class main extends JDSController {
             url = "/jsp/help/help.jsp";
         } else if (action.equals("outstandingbill")) {
             url = "/jsp/reports/outstandingBill.jsp";
-        }
+        }else if (action.equalsIgnoreCase("gmil")) {
+            url = "/jsp/missingissue/generatemil.jsp?list=mil";
+        } else if (action.equalsIgnoreCase("vmil")) {
+            url = "/jsp/missingissue/viewmil.jsp?list=mil";
+        } 
 
         if (url == null) {
             url = "/jsp/errors/404.jsp";

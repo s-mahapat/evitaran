@@ -402,4 +402,26 @@ function reprint(){
        });
 }
 
-
+function getMiMlLater(){
+    var act;
+    $.ajax({
+        type: 'POST',
+        dataType: 'xml',
+        async: false,
+        url: "missingissue?action=saveList&miId=" +  $("#miId").val()
+        + "&inwardNumber=" + $("#inwardNumber").val()
+        + "&printOption=" + $("#printOption").val(),
+        success: function(xmlResponse, textStatus, jqXHR){
+            $("#btngMi").button("disable");
+            $("#btnReprint").button("disable");
+            $("#btnNoCopy").button("disable");
+            $("#btnSentMsg").button("disable");
+            $("#btnMailing").button("disable");
+            return true;
+        },
+        error: function(jqXHR,textStatus,errorThrown){
+            alert("Failed to Add to List. " + textStatus + ": "+ errorThrown);
+            return false;
+        }
+       });
+}

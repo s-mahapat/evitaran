@@ -105,7 +105,12 @@ public class missingissue extends JDSController {
 
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
-            } else if (action.equalsIgnoreCase("generateMlForMi")) {
+            }  else if (action.equalsIgnoreCase("saveList")) {
+                String xml = _missingissueModel.saveList();
+
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            }  else if (action.equalsIgnoreCase("generateMlForMi")) {
 
                 /*
                  * String xml = _missingissueModel.generateMLforMI(response);

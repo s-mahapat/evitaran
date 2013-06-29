@@ -81,6 +81,12 @@
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=vbil"%>">View/Print Back Issue List</a></li>
                     </ul>
                 </li>
+                <li class="submenu"><a href="#">Missing Claims</a>
+                    <ul>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=gmil"%>">Generate/Print Missing Issue</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=vmil"%>">View/Reprint Missing Issue</a></li>
+                    </ul>
+                </li>                  
              </ul>
         </li>
         <li class="menu">

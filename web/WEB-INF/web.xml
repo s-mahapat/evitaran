@@ -241,6 +241,10 @@
         <servlet-name>StartController</servlet-name>
         <servlet-class>IAS.Controller.StartController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>generatemil</servlet-name>
+        <servlet-class>IAS.Controller.missingissue.generatemil</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -422,6 +426,10 @@
     <servlet-mapping>
         <servlet-name>StartController</servlet-name>
         <url-pattern>/main2/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>generatemil</servlet-name>
+        <url-pattern>/generatemil</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

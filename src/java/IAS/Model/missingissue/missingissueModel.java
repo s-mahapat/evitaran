@@ -311,6 +311,14 @@ public class missingissueModel extends JDSModel {
         return xml;
     }
 
+    public String saveList() throws IllegalAccessException, ParseException,
+            ParserConfigurationException, SQLException, TransformerException,
+            IOException, InvocationTargetException, Exception {
+        String xml = null;
+        setAction("L");
+        completeInward();
+        return xml;
+    }
     public String noCopies() throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
