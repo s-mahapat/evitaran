@@ -112,22 +112,26 @@
                         window.location.href = "subscriber?action=display&subscriberNumber=" + rowid;
                     }
                 });
-                if(sessionStorage.searchsubscriber != "false"){
-                    var json = JSON.parse(sessionStorage.searchsubscriber);
-                    $("#city").val(json.city);
-                    $("#subscriberNumber").val(json.subscriberNumber);
-                    $("#subscriberName").val(json.subscriberName);
-                    $("#email").val(json.email);
-                    $("#pincode").val(json.pincode);
-                    $("#institute").val(json.institute);
-                    $("#department").val(json.department);
-                    isPageLoaded = true;
-                    jQuery("#subscriberTable").setGridParam({
-                        'rowNum': json.rowNum,
-                        'page': json.page
+                if(sessionStorage.searchsubscriber){
+                    try{
+                        var json = JSON.parse(sessionStorage.searchsubscriber);
+                        $("#city").val(json.city);
+                        $("#subscriberNumber").val(json.subscriberNumber);
+                        $("#subscriberName").val(json.subscriberName);
+                        $("#email").val(json.email);
+                        $("#pincode").val(json.pincode);
+                        $("#institute").val(json.institute);
+                        $("#department").val(json.department);
+                        isPageLoaded = true;
+                        jQuery("#subscriberTable").setGridParam({
+                            'rowNum': json.rowNum,
+                            'page': json.page
 
-                    });
-                    searchSubscriber();
+                        });
+                        searchSubscriber();
+                    }catch(err){
+
+                    }
                 }
 
             });
