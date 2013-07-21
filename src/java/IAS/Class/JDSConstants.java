@@ -52,11 +52,11 @@ public class JDSConstants {
     public static String IAS_PAYMENTFOOT_ACCNO_DTLS = "10356 553343";
     public static String IAS_PAYMENTFOOT_IFSCOD = "IFS Code(For non-SBI banks)";
     public static String IAS_PAYMENTFOOT_IFSCOD_DTLS = "SBI N 000 1811";
-    public static String IAS_PAYMENTFOOTER = "* After electronic transfer please confirm the remittance made by e-mail/post.";
+    public static String IAS_PAYMENTFOOTER = "* After electronic transfer please confirm the remittance by e-mail/post or SMS to 9008032004.";
 
     // Footer dimensions (in mm) and other details
     public static float width = 140.0f;
-    public static float height = 40.0f;
+    public static float height = 30.0f;
     public static float heightFromBottomOfPage = 15.0f;
     public static float heightFromBottom = 136.0f;
 

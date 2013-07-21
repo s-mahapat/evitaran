@@ -7,6 +7,7 @@ package IAS.Class;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.ByteArrayOutputStream;
@@ -23,10 +24,10 @@ public class JDSPDF implements IJDSPDF {
     public static int LEFT_INDENTATION_LESS = 15;
     public static int RIGHT_INDENTATION_LESS = 15;
     public static int LEFT_INDENTATION_MORE = 30;
-    public static Font JDS_BOLD_FONT = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD, BaseColor.BLACK);
-    public static Font JDS_FONT_NORMAL_SMALL = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
+    public static Font JDS_BOLD_FONT = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.BLACK);
+    public static Font JDS_FONT_NORMAL_SMALL = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK);
     public static Font JDS_FONT_BODY = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
-    public static Font JDS_FONT_NORMAL_SMALL_BOLD = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.BLACK);
+    public static Font JDS_FONT_NORMAL_SMALL_BOLD = new Font(Font.FontFamily.HELVETICA, 8, Font.BOLD, BaseColor.BLACK);
     public static Font JDS_FONT_AUTOGEN_FOOTER = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.GRAY);
     public static final int JDS_PDF_LEFT_MARGIN = 10;
     public static final int JDS_PDF_RIGHT_MARGIN = 10;
@@ -225,41 +226,80 @@ public class JDSPDF implements IJDSPDF {
         int go = ct.go();
     }
 
-    public Paragraph getLetterHead() throws BadElementException, java.net.MalformedURLException, IOException {
-        Paragraph paragraph = new Paragraph();
-        Paragraph paragraphDate = new Paragraph();
+    public Paragraph getLetterHead() throws BadElementException, java.net.MalformedURLException, IOException, DocumentException {
+        /*//paragraphOuter
+         * ----------------------------------------------------------------------
+         * //headerTable
+         * -------------------------------------------------------------------
+         *     logoCell   | addressCell caontains the paragraphAddress
+         * -------------------------------------------------------------------
+         * ---------------------------------------------------------------------
+         */
 
-        paragraph.setAlignment(Element.ALIGN_CENTER);
+        // the outer para, this is returned by the function
+        Paragraph paragraphOuter = new Paragraph();
+        paragraphOuter.setAlignment(Element.ALIGN_CENTER);
+
+        // the address para
+        Paragraph paragraphAddress = new Paragraph();
+        paragraphAddress.setAlignment(Element.ALIGN_CENTER);
+
+
+        Paragraph paragraphDate = new Paragraph();
         paragraphDate.setAlignment(Element.ALIGN_RIGHT);
         paragraphDate.setIndentationRight(JDSPDF.RIGHT_INDENTATION_LESS);
 
+        /* the header table, the first cell is the logo and the second cell is the address */
+        PdfPTable headerTable = new PdfPTable(2);
+        headerTable.setWidthPercentage(90);
+        headerTable.setWidths(new int[]{1,6});
+
+
+        // get the logo
         ServletContext context = ServletContextInfo.getServletContext();
         String logo = context.getRealPath("/images/pdflogo.jpg");
-
         Image _logo = Image.getInstance(logo);
-        _logo.setAlignment(Element.ALIGN_CENTER);
-        paragraph.add(_logo);
-        Chunk HeaderIAS = new Chunk(JDSConstants.IAS_LETTERHEAD);
-        HeaderIAS.setFont(JDSPDF.JDS_BOLD_FONT);
+        PdfPCell logoCell = new PdfPCell(_logo);
+        logoCell.setBorder(Rectangle.NO_BORDER);
+        logoCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        logoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        headerTable.addCell(logoCell);
 
+
+        // for the address now
+        Chunk HeaderIAS = new Chunk(JDSConstants.IAS_LETTERHEAD, JDSPDF.JDS_BOLD_FONT);
         Chunk HeaderIASAddress = new Chunk(JDSConstants.IAS_LETTERHEAD_ADDRESS, JDSPDF.JDS_BOLD_FONT);
         Chunk HeaderIASTel = new Chunk(JDSConstants.IAS_LETTERHEAD_TELEPHONE, JDSPDF.JDS_BOLD_FONT);
         Chunk HeaderEmail_Web = new Chunk(JDSConstants.IAS_LETTERHEAD_EMAIL + " " + JDSConstants.IAS_LETTERHEAD_WEB, JDSPDF.JDS_BOLD_FONT);
         Chunk LetterDate = new Chunk("Date: " + util.getDateString(), JDSPDF.JDS_FONT_BODY);
         paragraphDate.add(LetterDate);
 
-        paragraph.add(HeaderIAS);
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(HeaderIASAddress);
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(HeaderIASTel);
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.add(HeaderEmail_Web);
+        paragraphAddress.add(HeaderIAS);
+        paragraphAddress.add(Chunk.NEWLINE);
+        paragraphAddress.add(HeaderIASAddress);
+        paragraphAddress.add(Chunk.NEWLINE);
+        paragraphAddress.add(HeaderIASTel);
+        paragraphAddress.add(Chunk.NEWLINE);
+        paragraphAddress.add(HeaderEmail_Web);
 
-        paragraphDate.setSpacingBefore(INNER_PARAGRAPH_SPACE);
-        paragraph.add(paragraphDate);
+        // create a cell for the headerTable, this cell contains the address
+        PdfPCell addressCell = new PdfPCell(paragraphAddress);
+        addressCell.setBorder(Rectangle.NO_BORDER);
+        addressCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-        return paragraph;
+        // add this cell to the table
+        headerTable.addCell(addressCell);
+
+        // add the entire header table to the outer paragraph so that
+        // is returned back to the caller
+        paragraphOuter.add(headerTable);
+
+        // add the date to the header
+        //paragraphDate.setSpacingBefore(INNER_PARAGRAPH_SPACE);
+        paragraphDate.setAlignment(Element.ALIGN_RIGHT);
+        paragraphOuter.add(paragraphDate);
+
+        return paragraphOuter;
     }
 
     public Paragraph getSalutation() {

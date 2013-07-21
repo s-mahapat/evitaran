@@ -470,6 +470,16 @@
             <description/>
             <url-pattern>/main</url-pattern>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>print servlets</web-resource-name>
+            <description/>
+            <url-pattern>/print/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>email servlets</web-resource-name>
+            <description/>
+            <url-pattern>/email/*</url-pattern>
+        </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>user</role-name>
