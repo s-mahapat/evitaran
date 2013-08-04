@@ -122,13 +122,13 @@ public class missingissue extends JDSController {
 
                 request.setAttribute("ResultSet", rs);
 
-                String type = request.getParameter("printOption");
+                String type = request.getParameter("printType");
 
-                if (type.equals("LABEL")) {
+                if (type.equals("printLabel")) {
                     url = "/pdfserver?action=generatebilPrintLabel";
                 }
 
-                if (type.equals("STICKER")) {
+                if (type.equals("printSticker")) {
                     url = "/pdfserver?action=generatebilPrintSticker";
                 }
             } else if (action.equalsIgnoreCase("printNoCopies")) {

@@ -292,7 +292,7 @@ function gMiList(){
         async: false,
         url: "missingissue?action=gMiList&miId=" +  $("#miId").val()
         + "&inwardNumber=" + $("#inwardNumber").val()
-        + "&printOption=" + $("#printOption").val(),
+        + "&printType=" + $("#printType").val(),
         success: function(xmlResponse, textStatus, jqXHR){
 
             $(xmlResponse).find("results").each(function(){
@@ -323,7 +323,7 @@ function reprint(){
         async: false,
         url: "missingissue?action=reprint&miId=" +  $("#miId").val()
         + "&inwardNumber=" + $("#inwardNumber").val()
-        + "&printOption=" + $("#printOption").val(),
+        + "&printType=" + $("#printType").val(),
         success: function(xmlResponse, textStatus, jqXHR){
 
             $(xmlResponse).find("results").each(function(){
@@ -379,7 +379,7 @@ function reprint(){
         async: false,
         url: "missingissue?action=getLabel&miId=" +  $("#miId").val()
         + "&inwardNumber=" + $("#inwardNumber").val()
-        + "&printOption=" + $("#printOption").val(),
+        + "&printType=" + $("#printType").val(),
         success: function(xmlResponse, textStatus, jqXHR){
 
             $(xmlResponse).find("results").each(function(){
@@ -410,7 +410,7 @@ function getMiMlLater(){
         async: false,
         url: "missingissue?action=saveList&miId=" +  $("#miId").val()
         + "&inwardNumber=" + $("#inwardNumber").val()
-        + "&printOption=" + $("#printOption").val(),
+        + "&printType=" + $("#printType").val(),
         success: function(xmlResponse, textStatus, jqXHR){
             $("#btngMi").button("disable");
             $("#btnReprint").button("disable");

@@ -130,7 +130,7 @@
             function printLabel()
             {
                 var x = "printLabel";
-                $('#action').val(x);
+                $('#printType').val(x);
                 printMissingInfo();
                 
             }
@@ -138,7 +138,7 @@
             function printSticker()
             {
                 var x = "printSticker";
-                $('#action').val(x);
+                $('#printType').val(x);
                 printMissingInfo();
             }
 
@@ -214,7 +214,7 @@
                         <%-- Journal Actions Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
 
-                        <input type="hidden" name="action" id="action"/>
+                        <input type="hidden" name="printType" id="printType"/>
                         <input type="hidden" name="mailingids" id="mailingids"/>
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv">

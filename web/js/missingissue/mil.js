@@ -29,7 +29,7 @@ function printMissingInfo(){
             + "&subscriberNumber=" + $("#subscriberNumber").val()
             + "&from=" + $("#from").val()
             + "&to=" + $("#to").val()
-            + "&printType=" + $("#action").val(),
+            + "&printType=" + $("#printType").val(),
         data: $.param(rowRequiredData),
         success: function(xmlResponse, textStatus, jqXHR){
 

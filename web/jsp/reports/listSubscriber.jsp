@@ -98,7 +98,7 @@
                 // Delete options
                 {},
                 // Search options
-                {multipleGroup:true, multipleSearch:true}
+                {multipleGroup:true, multipleSearch:false}
             );
 
             // called when the search button is clicked

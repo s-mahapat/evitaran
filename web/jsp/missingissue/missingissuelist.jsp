@@ -133,7 +133,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/missingissue?"%>" name="missingissueForm">
+            <form method="post" action="<%=request.getContextPath() + "/generatemil?action=printLabel"%>" name="missingissueForm">
                 <input type="hidden" name="action" id="action"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
@@ -284,9 +284,9 @@
                                             <label>Print Option</label>
                                         </span>
                                         <span class="IASFormDivSpanInputBox">
-                                            <select class="IASComboBoxMandatory" TABINDEX="1" name="printOption" id="printOption">
-                                                <option value ="LABEL">Label</option>
-                                                <option value ="STICKER">Sticker</option>
+                                            <select class="IASComboBoxMandatory" TABINDEX="1" name="printType" id="printType">
+                                                <option value ="printLabel">Label</option>
+                                                <option value ="printSticker">Sticker</option>
                                             </select>
                                         </span>
                                     </div>

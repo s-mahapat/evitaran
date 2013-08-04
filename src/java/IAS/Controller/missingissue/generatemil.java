@@ -56,7 +56,7 @@ public class generatemil extends JDSController {
                 ResultSet rs = _milModel.printmil();
                 request.setAttribute("ResultSet", rs);
                 
-                if (request.getParameter("action").equals("printLabel")){
+                if (request.getParameter("printType").equals("printLabel")){
                   url = "/pdfserver?action=generatebilPrintLabel";  
                 }
                 else{
