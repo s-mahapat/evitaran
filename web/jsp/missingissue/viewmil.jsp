@@ -90,6 +90,9 @@
                 if (($("#subscriberNumber").val() == 0) && (($("#to").val()) == 0 && ($("#from").val()) == 0)){
                     alert("Select Subscriber Number or Date Range");
                 }
+                else if (($("#subscriberNumber").val() != 0) && (($("#to").val()) == 0 && ($("#from").val()) == 0)){
+                    alert("Please enter date range for entered Subscriber Number");
+                }
 
                 else {
                     isPageLoaded = true;
