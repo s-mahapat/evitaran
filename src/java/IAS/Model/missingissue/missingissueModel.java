@@ -246,11 +246,19 @@ public class missingissueModel extends JDSModel {
         return xml;
     }
 
-    public ResultSet generateMLforMI() throws SQLException {
+    public ResultSet generateMLforMI() throws SQLException, IllegalAccessException, InvocationTargetException {
+        
+        missingissueFormBean missingissueFormBean = new IAS.Bean.missingissue.missingissueFormBean();
+        request.setAttribute("missingissueFormBean", missingissueFormBean);
+        
+        FillBean(this.request, missingissueFormBean);
+        this._missingissueFormBean = missingissueFormBean;
+                
         String sql = Queries.getQuery("reprint_mi_list");
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("miId"));
+        //stGet.setString(paramIndex, request.getParameter("miId"));
+        stGet.setString(paramIndex, Integer.toString(_missingissueFormBean.getMiId()));
 
         String type = request.getParameter("printOption");
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);

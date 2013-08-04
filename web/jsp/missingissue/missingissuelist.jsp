@@ -133,7 +133,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/generatemil?action=printLabel"%>" name="missingissueForm">
+            <form method="post" action="<%=request.getContextPath() + "/missingissue?"%>" name="missingissueForm">
                 <input type="hidden" name="action" id="action"/>
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
