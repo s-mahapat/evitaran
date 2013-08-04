@@ -32,8 +32,8 @@ root {
 }
 
 #gMiBtnDiv{
-    float: left;
-    width: 15%;
+    float: center;
+    width: 85%;
 }
 
 #reprintBtnDiv{

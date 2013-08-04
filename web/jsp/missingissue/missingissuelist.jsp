@@ -279,6 +279,7 @@
                                 <legend>Generate/ Print Mailing List</legend>
 
                                 <div class="IASFormFieldDiv">
+                                   <%--
                                     <div id="mlOptionDiv">
                                         <span class="IASFormDivSpanLabel">
                                             <label>Print Option</label>
@@ -290,8 +291,10 @@
                                             </select>
                                         </span>
                                     </div>
-                                    <div id="getMailingBtnDiv">
-                                        <input class="IASButton" TABINDEX="3" type="button" value="Generate Mailing List Now" id="btnMailing" name="btnMailing" onclick="getMiMl()"/>
+                                    
+                                        <input class="IASButton" TABINDEX="3" type="button" value="Generate Mailing List Now" id="btnMailing" name="btnMailing" onclick="getMiMl()"/> 
+                                   --%>
+                                   <div id="gMiBtnDiv">
                                         <input class="IASButton" TABINDEX="4" type="button" value="Add to List" id="btnMailingLater" name="btnMailingLater" onclick="getMiMlLater()"/>
                                     </div>
                                    <%--
