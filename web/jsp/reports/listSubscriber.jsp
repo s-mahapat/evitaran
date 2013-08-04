@@ -6,12 +6,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
         <%@include file="../templates/style.jsp" %>
+
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/subscriber.css"%>"/>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/searchsubscriber.js"%>"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
         <script type="text/javascript" src="js/jquery/grid.formedit.js"></script>
-        <script type="text/javascript" src="js/jquery/jquery.jqGrid.src.js"></script>
+        <!--<script type="text/javascript" src="js/jquery/jquery.jqGrid.src.js"></script>-->
         <script type="text/javascript" src="js/jquery/jquery.jqGrid.min.js"></script>
         <title>Search Subscriber</title>
         <script type="text/javascript">
