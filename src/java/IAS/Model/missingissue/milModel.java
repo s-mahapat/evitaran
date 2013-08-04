@@ -326,4 +326,130 @@ public class milModel extends JDSModel {
      
         return mailing;
     }
+    
+    public String search() throws IllegalAccessException, ParseException,
+            ParserConfigurationException, SQLException, TransformerException,
+            IOException, InvocationTargetException, Exception {
+        
+        String xml = "";
+        String fromDate = request.getParameter("from");
+        String toDate = request.getParameter("to");
+        String subscriberNumber = request.getParameter("subscriberNumber");
+        if ("0".equals(fromDate)) {
+            fromDate = null;
+        }
+        if ("0".equals(toDate)) {
+            toDate = null;
+        }
+        if ("0".equals(subscriberNumber)) {
+            subscriberNumber = null;
+        }
+        
+        String sql = null;
+        if (subscriberNumber != null && subscriberNumber.compareToIgnoreCase("NULL") != 0 && subscriberNumber.length() > 0){
+            sql = Queries.getQuery("retrieve_missing_issue_id_by_sub");
+        }
+        else {
+            sql = Queries.getQuery("retrieve_missing_issue_id_by_date");
+            sql += " and missing_issue.msEntryDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+        }        
+ 
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        if (subscriberNumber != null && subscriberNumber.compareToIgnoreCase("NULL") != 0 && subscriberNumber.length() > 0){
+            stGet.setString(1, subscriberNumber);
+        }   
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        int miJlId = 0;
+        int mailingid = 0;
+        int miId = 0;
+        
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+        
+        while (rs.next()) {
+
+            Object value = null;
+            value = rs.getObject(1);
+            miJlId = Integer.parseInt(value.toString());
+            value = rs.getObject(2);
+            miId = Integer.parseInt(value.toString());  
+            value = rs.getObject(3);
+            mailingid = Integer.parseInt(value.toString());   
+            
+            ResultSet rsGet = getList(miJlId);
+            
+             while (rsGet.next()){
+            //Extract subscriber Details
+                int id    = rsGet.getInt(1);
+                int mailinglistid            = rsGet.getInt(2);
+                subscriberNumber = rsGet.getString(3);
+                String subscriberName = rsGet.getString(4);
+                String journalCode    = rsGet.getString(5);
+                String journalName    = rsGet.getString(6);
+                int year    = rsGet.getInt(7);
+                int volumeNo    = rsGet.getInt(8);
+                int issue    = rsGet.getInt(9);
+                int missingCopies    = rsGet.getInt(10);
+
+                // Add the row element
+                
+                Element missingissue = doc.createElement("row");
+                results.appendChild(missingissue);
+
+                Element _id = doc.createElement("id");
+                missingissue.appendChild(_id);
+                _id.appendChild(doc.createTextNode(Integer.toString(id)));
+
+                Element _mailinglistid = doc.createElement("mailinglistid");
+                missingissue.appendChild(_mailinglistid);
+                _mailinglistid.appendChild(doc.createTextNode(Integer.toString(mailinglistid)));
+
+                Element _subscriberNumber = doc.createElement("subscriberNumber");
+                missingissue.appendChild(_subscriberNumber);
+                _subscriberNumber.appendChild(doc.createTextNode(subscriberNumber));
+
+                Element _subscriberName = doc.createElement("subscriberName");
+                missingissue.appendChild(_subscriberName);
+                _subscriberName.appendChild(doc.createTextNode(subscriberName));
+
+                Element _journalCode = doc.createElement("journalCode");
+                missingissue.appendChild(_journalCode);
+                _journalCode.appendChild(doc.createTextNode(journalCode));
+
+                Element _journalName = doc.createElement("journalName");
+                missingissue.appendChild(_journalName);
+                _journalName.appendChild(doc.createTextNode(journalName));
+
+                Element _year = doc.createElement("year");
+                missingissue.appendChild(_year);
+                _year.appendChild(doc.createTextNode(Integer.toString(year)));
+
+                Element _volumeNo = doc.createElement("volumeNo");
+                missingissue.appendChild(_volumeNo);
+                _volumeNo.appendChild(doc.createTextNode(Integer.toString(volumeNo)));   
+
+                Element _issue = doc.createElement("issue");
+                missingissue.appendChild(_issue);
+                _issue.appendChild(doc.createTextNode(Integer.toString(issue)));
+
+                Element _missingCopies = doc.createElement("missingCopies");
+                missingissue.appendChild(_missingCopies);
+                _missingCopies.appendChild(doc.createTextNode(Integer.toString(missingCopies)));   
+            }
+        }   
+        
+        DOMSource domSource = new DOMSource(doc);
+        try (StringWriter writer = new StringWriter()) {
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            xml = writer.toString();
+        }
+        
+        return xml;
+    }
 }

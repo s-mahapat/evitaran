@@ -37,7 +37,13 @@ public class generatemil extends JDSController {
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            } else if(action.equalsIgnoreCase("print")) {
+            } else if(action.equalsIgnoreCase("search")) {
+                
+                String xml = _milModel.search();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+                
+            }else if(action.equalsIgnoreCase("print")) {
                 
                 String mailingids = _milModel.getIds();           
                 String xml = util.convertStringToXML(mailingids, "mailingids");                            

@@ -10,13 +10,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <jsp:include page="../templates/style.jsp"></jsp:include>
             <link rel="stylesheet" type="text/css" href="css/ml/generatebil.css"/>
-            <title>View and Reprint Missing Issue List</title>
-            <script type="text/javascript" src="<%=request.getContextPath() + "/js/missingissue/generatemil.js"%>"></script>
+            <title>View and Print Missing Issue List</title>
+            <script type="text/javascript" src="<%=request.getContextPath() + "/js/missingissue/mil.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/common.js"%>"></script>
         <script type="text/javascript" src="js/jquery/grid.common.js"></script>
-        <script type="text/javascript" src="js/jquery/grid.formedit.js"></script>
-        <script type="text/javascript" src="js/jquery/jquery.jqGrid.src.js"></script>
-        <script type="text/javascript" src="js/jquery/jquery.jqGrid.min.js"></script>
 
 
         <script type="text/javascript">
@@ -26,7 +23,7 @@
 
             $(document).ready(function(){
                 jQuery("#btnPrint").attr("disabled",true);
-                //reloadSubscriberNumber('s');
+                reloadSubscriberNumber('g');
             });
 
             $(function(){
@@ -44,23 +41,19 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found",
                     loadtext: "Loading...",
-                    colNames:['Journal Code', 'Sub. Type', 'Subscriber Number', 'Subscriber Name', 'City',
-                        'State', 'Country', 'PIN code', 'Copies', 'Volume','Issue', 'Year', 'Date', 'Page Size'],
+                    colNames:['missing Issue Id','mailinglist id', 'Subscriber Number', 'Subscriber Name', 'Journal Code', 'Journal Name',
+                        'Year', 'Volume','Issue', 'Copies'],
                     colModel :[
-                        {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
-                        {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
+                        {name:'id', index:'id', width:10, align:'center', xmlmap:'id'},
+                        {name:'mailinglistid', index:'mailinglistid', width:10, align:'center', xmlmap:'mailinglistid'},
                         {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
                         {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
-                        {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
-                        {name:'state', index:'state', width:80, align:'center', xmlmap:'state'},
-                        {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
-                        {name:'pincode', index:'pincode', width:80, align:'center', xmlmap:'pincode'},
-                        {name:'copies', index:'copies', width:80, align:'copies', xmlmap:'copies'},
-                        {name:'volumeNumber', index:'volumeNumber', width:80, align:'center', xmlmap:'volumeNumber'},
-                        {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
+                        {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
+                        {name:'journalName', index:'journalName', width:80, align:'center', xmlmap:'journalName'},
                         {name:'year', index:'year', width:80, align:'center', xmlmap:'year'},
-                        {name:'bildate', index:'bildate', width:80, align:'center', xmlmap:'bildate'},
-                        {name:'page_size', index:'page_size', width:80, align:'center', xmlmap:'page_size'},
+                        {name:'volumeNo', index:'volumeNo', width:80, align:'center', xmlmap:'volumeNo'},
+                        {name:'issue', index:'issue', width:80, align:'center', xmlmap:'issue'},
+                        {name:'missingCopies', index:'missingCopies', width:80, align:'center', xmlmap:'missingCopies'},
                     ],
                     xmlReader : {
                         root: "results",
@@ -79,11 +72,7 @@
                     caption: '&nbsp;',
                     editurl:"<%=request.getContextPath()%>/generatemil?action=search",
                     gridComplete: function() {
-                        var ids = jQuery("#milTable").jqGrid('getDataIDs');
-                        for (var i = 0; i < ids.length; i++) {
-                            action = "<a style='color:blue;' href='generatemil?action=print&id=" + ids[i] + "'>Print</a>";
-                            jQuery("#generatemil").jqGrid('setRowData', ids[i], { Action: action });
-                        }
+                     
                     },
                     beforeRequest: function(){
                         return isPageLoaded;
@@ -96,27 +85,12 @@
 
             });
 
-            //jQuery("#mlTable").jqGrid('searchGrid', {multipleSearch:true} );
-
-
-            jQuery("#milTable").jqGrid('navGrid','#pager',
-            // Which buttons to show
-            {edit:false,add:false,del:false,search:true},
-            // Edit options
-            {},
-            // Add options
-            {},
-            // Delete options
-            {},
-            // Search options
-            {multipleGroup:true, multipleSearch:true}
-        );
-
             function search(){
 
                 if (($("#subscriberNumber").val() == 0) && (($("#to").val()) == 0 && ($("#from").val()) == 0)){
                     alert("Select Subscriber Number or Date Range");
                 }
+
                 else {
                     isPageLoaded = true;
                     jQuery("#milTable").setGridParam({postData:
@@ -124,7 +98,7 @@
                             subscriberNumber        : $("#subscriberNumber").val(),
                             to                      : $("#to").val(),
                             from                      : $("#from").val(),
-                            bilCreationDate          : $("#bilCreationDate").val(),
+                            milCreationDate          : $("#milCreationDate").val(),
                             periodicals             : $("#periodicals").length,
                             separateLabel           : $("#separateLabel").length,
                             action                  : "search"
@@ -132,22 +106,6 @@
                     jQuery("#milTable").setGridParam({ datatype: "xml" });
                     jQuery("#milTable").trigger("clearGridData");
                     jQuery("#milTable").trigger("reloadGrid");
-
-                    //jQuery("#mlTable").jqGrid('searchGrid', {multipleSearch:true} );
-
-                    jQuery("#milTable").jqGrid('navGrid','#pager',
-                    // Which buttons to show
-                    {edit:false,add:false,del:false,search:true},
-                    // Edit options
-                    {},
-                    // Add options
-                    {},
-                    // Delete options
-                    {},
-                    // Search options
-                    {multipleGroup:true, multipleSearch:true}
-                );
-
                 }
                 jQuery("#btnPrint").attr("disabled",false);
             }
@@ -161,7 +119,7 @@
                 $(newOption).html("Select");
                 $("#subscriberNumber").append(newOption);
                 if (mode == 'g')
-                    requestURL = "CMasterData?md=subscribernumber";
+                    requestURL = "CMasterData?md=subscribernumbermil";
                 else
                     requestURL = "CMasterData?md=subscribernumberbil";
 
@@ -173,12 +131,15 @@
             {
                 var x = "printLabel";
                 $('#action').val(x);
+                printMissingInfo();
+                
             }
 
             function printSticker()
             {
                 var x = "printSticker";
                 $('#action').val(x);
+                printMissingInfo();
             }
 
             // draw the date picker.
@@ -190,10 +151,10 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="get" action="<%=request.getContextPath() + "/generatemil"%>" name="milForm">
+            <form method="post" action="<%=request.getContextPath() + "/generatemil?action=printLabel"%>" name="milForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>View and Reprint Missing Issue List</legend>
+                        <legend>View and Print Missing Issue List</legend>
                         <jsp:useBean class="IAS.Bean.missingissue.milFormBean" id="milFormBean" scope="request"></jsp:useBean>
                         <fieldset class="subMainFieldSet">
                             <legend>Selection Criteria</legend>
@@ -233,7 +194,7 @@
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton" TABINDEX="5" type="button" value="Search" id="btnSearch" name="btnSearch" onclick="search()"/>Search</button>
+                                <input class="IASButton" TABINDEX="5" type="button" value="Search" id="btnSearch" name="btnSearch" onclick="search()"/>
                             </div>
                         </fieldset>
 
@@ -241,8 +202,7 @@
                         <%-- Search Result Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
                         <fieldset class="subMainFieldSet">
-                            <legend>Missing Issue List Table</legend>
-
+                            <legend>Missing issue Table</legend>
                             <table class="datatable" id="milTable"></table>
                             <div id="pager"></div>
                         </fieldset>
@@ -252,10 +212,11 @@
                         <%-----------------------------------------------------------------------------------------------------%>
 
                         <input type="hidden" name="action" id="action"/>
+                        <input type="hidden" name="mailingids" id="mailingids"/>
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv">
-                                <input class="IASButton" TABINDEX="7" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
-                                <input class="IASButton" TABINDEX="8" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
+                                <input class="IASButton" TABINDEX="7" type="button" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
+                                <input class="IASButton" TABINDEX="8" type="button" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
                                 <input class="IASButton" TABINDEX="9" type="reset" value="Reset"/>
                             </div>
                         </fieldset>
