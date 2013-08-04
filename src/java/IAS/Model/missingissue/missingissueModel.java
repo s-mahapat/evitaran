@@ -225,7 +225,7 @@ public class missingissueModel extends JDSModel {
     public String reprint() throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
-        String xml = null;
+        String xml = "";
         String sql = Queries.getQuery("reprint_mi_list");
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
@@ -261,7 +261,7 @@ public class missingissueModel extends JDSModel {
     public String generateMl() throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
-        String xml = null;
+        String xml = "";
         String miId = null;
         conn.setAutoCommit(false);
         miId = request.getParameter("miId");

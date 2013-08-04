@@ -152,6 +152,17 @@ public class BulkEmailModel extends JDSModel{
             }
         }
 
+        /*
+        if(city.equals("")) {
+            if (first == 0) {
+                sql += " subscriber.city = (select cities.id from cities where cities.city = 'Bengaluru')";
+                first = 1;
+            } else {
+                sql += " subscriber.city = (select cities.id from cities where cities.city = 'Bengaluru')";
+            }
+        }
+        */
+
         String message = "Failed to send email to the following address:";
         boolean success = true;
         if (first == 1){

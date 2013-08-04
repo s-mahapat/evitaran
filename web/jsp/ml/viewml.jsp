@@ -39,7 +39,7 @@
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
-                    height: 240,
+                    height: Constants.jqgrid.HEIGHT,
                     autowidth: true,
                     forceFit: true,
                     sortable: true,
@@ -383,18 +383,18 @@
                             <input type="hidden" name="action" id="action"/>
                             <fieldset class="subMainFieldSet">
                                 <div class="actionBtnDiv">
-                                   <div id="printMedium">
-                                        <span class="IASFormDivSpanLabel">
+                                    <%--<div id="printMedium">--%>
+                                    <%--<span class="IASFormDivSpanLabel">--%>
                                             <label>Print option</label>
-                                        </span>
-                                        <span class="IASFormDivSpanInputBox">
+                                            <%--</span>--%>
+                                            <%--<span class="IASFormDivSpanInputBox">--%>
                                          <select class="IASComboBox" TABINDEX="6" name="printOption" id="printOption">
                                             <option value ="O">India 1 Copy</option>
                                             <option value ="E">India Extra</option>
                                             <option value ="F">Foreign</option>
                                          </select>
-                                        </span>
-                                    </div>
+                                            <%--</span>--%>
+                                    <%--</div>--%>
                                     <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
                                     <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
                                     <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>

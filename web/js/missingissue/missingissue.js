@@ -417,6 +417,7 @@ function getMiMlLater(){
             $("#btnNoCopy").button("disable");
             $("#btnSentMsg").button("disable");
             $("#btnMailing").button("disable");
+            $("#btnMailingLater").button("disable");
             return true;
         },
         error: function(jqXHR,textStatus,errorThrown){
