@@ -59,16 +59,16 @@
             });
 
             function drawTab(selected_index){
-                if(selected_index == 1 && inwardGridCreated==false){
+                if(selected_index === 1 && inwardGridCreated === false){
                     drawInwardTable();
                     inwardGridCreated=true;
                 }
-                else if(selected_index == 2 && subscriptionGridCreated==false){
+                else if(selected_index === 2 && subscriptionGridCreated === false){
                     listSubscription();
                     subscriptionGridCreated=true;
                     //$("#subscriptionList").jqGrid('setCaption','').trigger("reloadGrid");
                 }
-                else if(selected_index == 3 && invoiceGridCreated==false){
+                else if(selected_index === 3 && invoiceGridCreated === false){
                     drawInvoiceTable();
                     invoiceGridCreated=true;
                 }
@@ -76,15 +76,15 @@
                             drawPaymentTable();
                             paymentGridCreated=true;
                         }*/
-                else if(selected_index == 4 && reminderGridCreated == false){
+                else if(selected_index === 4 && reminderGridCreated === false){
                     drawReminderTable();
                     reminderGridCreated = true;
                 }
-                else if(selected_index == 5 && missingIssueGridCreated == false){
+                else if(selected_index === 5 && missingIssueGridCreated === false){
                     drawMissingIssuesTable();
                     missingIssueGridCreated = true;
                 }
-                else if(selected_index == 6 && chqReturnGridCreated == false){
+                else if(selected_index === 6 && chqReturnGridCreated === false){
                     drawChequeReturnTable();
                     chqReturnGridCreated = true;
                 }

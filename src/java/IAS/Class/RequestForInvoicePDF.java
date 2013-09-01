@@ -279,10 +279,7 @@ public class RequestForInvoicePDF extends JDSPDF{
             names = (ArrayList) JournalNamesHash.get(_journalgrpid);
             int _rowspan = names.size();
             boolean bprinted = false;
-
-            Iterator iterator_jnames = names.iterator();
-            while (iterator_jnames.hasNext()) {
-                String _jname = (String) iterator_jnames.next();
+            for (String _jname : names) {
                 PdfPCell c1 = new PdfPCell(new Phrase(_jname, JDSPDF.JDS_FONT_NORMAL_SMALL));
                 c1.setHorizontalAlignment(Element.ALIGN_LEFT);
                 c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
