@@ -103,7 +103,7 @@ public class InwardAckPDF extends JDSPDF {
          * If the subscriber id is selected in the inward show the subscriber address in the pdf
          * else form the address using different fields of the inward
          */
-        if (_inwardFormBean.getSubscriberId().length() > 0) {
+        if (_inwardFormBean.getSubscriberId() != null && _inwardFormBean.getSubscriberId().length() > 0) {
             subscriberModel _subscriberModel = new subscriberModel();
             subscriberFormBean _subscriberFormBean;
             try {

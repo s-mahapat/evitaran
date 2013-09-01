@@ -33,6 +33,7 @@ public class InwardAcknowledgement implements IInwardAcknowledgement {
         String paymentModeText = constants.getPaymentText(paymentModeID);
         String _text;
         String purposeText = constants.getInwardPurpose(inwardPurposeID);
+        letterDate = letterDate != null && letterDate.length() > 0 ? letterDate : "-------";
 
         //if the letter number if not null we need to add it to the text
         if (letterNo.length() > 0) {

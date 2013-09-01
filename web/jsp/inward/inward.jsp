@@ -454,12 +454,12 @@
 <%-----------------------------------------------------------------------------------------------------%>
 <fieldset class="subMainFieldSet">
     <div class="actionBtnDiv">
-        <button onclick="setActionValue('save')" TABINDEX="29" class="IASButton SaveButton" id="btnSaveInward" name="submitAction"/>Save</button>
-        <button onclick="location.href='inward?action=view&inwardNumber=${inwardFormBean.inwardNumber}'" type="button" TABINDEX="30" class="IASButton CancelButton" id="btnCancel">Cancel</button>
-        <input onclick="location.href='main?action=createinward'" TABINDEX="31" class="IASButton" type="button" value="New Inward" id="btnNewInward" name="btnNewInward"/>
-        <input onclick="setActionValue('edit')" TABINDEX="32" class="IASButton" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
-        <input onclick="setActionValue('sendAck')" TABINDEX="32" class="IASButton" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>
-        <input onclick="setActionValue('sendReturn')" TABINDEX="34" class="IASButton" type="submit" value="Send Return" id="btnSendReturn" name="submitAction"/>
+        <button onclick="setActionValue('save');" TABINDEX="29" class="IASButton SaveButton" id="btnSaveInward" name="submitAction"/>Save</button>
+        <button onclick="location.href='inward?action=view&inwardNumber=${inwardFormBean.inwardNumber}';" type="button" TABINDEX="30" class="IASButton CancelButton" id="btnCancel">Cancel</button>
+        <input onclick="location.href='main?action=createinward';" TABINDEX="31" class="IASButton" type="button" value="New Inward" id="btnNewInward" name="btnNewInward"/>
+        <input onclick="setActionValue('edit');" TABINDEX="32" class="IASButton" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
+        <input onclick="setActionValue('sendAck');" TABINDEX="32" class="IASButton" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>
+        <input onclick="setActionValue('sendReturn');" TABINDEX="34" class="IASButton" type="submit" value="Send Return" id="btnSendReturn" name="submitAction"/>
     </div>
 </fieldset>
 
