@@ -194,6 +194,7 @@ public class RequestForInvoicePDF extends JDSPDF{
         invoiceAddressCell.setBorder(Rectangle.NO_BORDER);
         invoiceAddressCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         invoiceAddressCell.setVerticalAlignment(Element.ALIGN_TOP);
+        invoiceAddressCell.setPaddingLeft(30f);
 
         addressTable.addCell(invoiceAddressCell);
         addressTable.addCell(shippingAddressCell);
