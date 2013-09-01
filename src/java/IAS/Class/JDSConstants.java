@@ -60,6 +60,8 @@ public class JDSConstants {
     public static float heightFromBottomOfPage = 15.0f;
     public static float heightFromBottom = 136.0f;
 
+    public static float ADDRESS_LEFT_PADDING = 30f;
+
     public String getInwardPurpose(int purposeID){
 
         String purpose = null;

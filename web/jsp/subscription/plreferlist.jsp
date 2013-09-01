@@ -63,8 +63,8 @@
 
                         </div>
                         <div class="actionBtnDiv">
-                            <button id="btngenerateprl" class="IASButton" onclick="GeneratePRL()">Generate</button>
-                            <button id="btnprintemail" class="IASButton" onclick="PrintOrEmail()">Email / Print</button>
+                            <button id="btngenerateprl" class="IASButton" onclick="GeneratePRL();">Generate</button>
+                            <button id="btnprintemail" class="IASButton" onclick="PrintOrEmail();">Email / Print</button>
                         </div>
                     </fieldset>
                     <fieldset class="subMainFieldSet">

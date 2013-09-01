@@ -123,7 +123,7 @@ public class Print extends JDSController {
             } // for request for invoice
             else if (document.equalsIgnoreCase("prl")) {
                 PlReferListPDF _PlReferListPDF = new PlReferListPDF();
-                ByteArrayOutputStream baos = _PlReferListPDF.getPDF(Integer.parseInt(action));
+                ByteArrayOutputStream baos = _PlReferListPDF.getPDF(Integer.parseInt(action), Integer.parseInt(documentID));
                 String fileName = String.valueOf(Calendar.getInstance().get(Calendar.YEAR) + 1) + "_Invoice.pdf";
                 this.sendPDFResponse(baos, fileName, response);
             }

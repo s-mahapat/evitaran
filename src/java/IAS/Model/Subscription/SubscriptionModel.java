@@ -818,30 +818,32 @@ public class SubscriptionModel extends JDSModel {
             InvocationTargetException,
             IllegalAccessException {
 
-        /*Connection _conn = this.getConnection();
-        String sql = "select count(*) from prl where year=?";
-        int bExists = -1;
+        Connection _conn = this.getConnection();
+        // select prl that is generated on the same day, atleast this way
+        // we save some time and space else every click will generate a new PRL list
+        String sql = "select id from prl where year=? and DATE(date)=DATE(NOW())";
+        int prl_id = 0;
         try (PreparedStatement st = _conn.prepareStatement(sql)) {
             st.setInt(1, year);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.first()) {
-                    bExists = rs.getInt(1);
+                    prl_id = rs.getInt(1);
                 }
             }
         } catch (SQLException ex) {
             logger.error(ex);
             return null;
         } finally {
-            //_conn.close();
+            _conn.close();
         }
 
-        if (bExists == 0) {
+        if (prl_id == 0) {
             // this means that there is no existing PRL list for the year
-            this._generatePleaseReferList(year, ctext);
+            prl_id = this._generatePleaseReferList(year, ctext);
         }
-        return _getPleaseReferList(medium);*/
-        int prl_id = this._generatePleaseReferList(year, ctext);
         return _getPleaseReferList(prl_id, year, medium);
+
+
     }
 
     private String _getPleaseReferList(int prl_id, int year, int medium) throws SQLException,

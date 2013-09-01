@@ -38,16 +38,16 @@ public class PlReferListPDF extends JDSPDF {
 
     public PlReferListPDF() throws SQLException {
         super();
-        if(PlReferListPDF.conn == null){
+        if (PlReferListPDF.conn == null) {
             conn = Database.getConnection();
         }
         _InvoiceModel = new InvoiceModel();
         _SubscriptionModel = new SubscriptionModel();
         String sql = "select ctext from prl where year=?";
-        try(PreparedStatement st = conn.prepareStatement(sql)){
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, Calendar.getInstance().get(Calendar.YEAR));
-            try(ResultSet rs = st.executeQuery()){
-                if(rs.first()){
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.first()) {
                     ctext = rs.getString("ctext");
                 }
             }
@@ -55,7 +55,7 @@ public class PlReferListPDF extends JDSPDF {
         //conn.close();
     }
 
-    public ByteArrayOutputStream getPDF(int medium) throws DocumentException,
+    public ByteArrayOutputStream getPDF(int medium, int year) throws DocumentException,
             MalformedURLException,
             IOException,
             SQLException,
@@ -70,6 +70,24 @@ public class PlReferListPDF extends JDSPDF {
         PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
         document.open();
 
+        int prl_id = 0;
+        String prl_sql = "select id from prl where year=? limit 1";
+        try (PreparedStatement _pst = conn.prepareStatement(prl_sql)) {
+            _pst.setInt(1, year);
+            try (ResultSet _rs = _pst.executeQuery()) {
+                if (_rs.first()) {
+                    prl_id = _rs.getInt(1);
+                }
+
+            } catch (Exception ex) {
+                logger.fatal(ex);
+                throw ex;
+            }
+        } catch (Exception ex) {
+            logger.fatal(ex);
+            throw ex;
+        }
+
         String search_string = null;
         String sql = Queries.getQuery("get_pl_refer_list_for_email_and_all");
         //Connection _conn = Database.getConnection();
@@ -81,7 +99,9 @@ public class PlReferListPDF extends JDSPDF {
             search_string = "%"; // search for all
         }
         try (PreparedStatement pst = conn.prepareStatement(sql)) {
-            pst.setString(1, search_string);
+            pst.setInt(1, prl_id);
+            pst.setInt(2, year);
+            pst.setString(3, search_string);
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     String invoice_no = rs.getString("invoiceNumber");
@@ -208,6 +228,7 @@ public class PlReferListPDF extends JDSPDF {
         invoiceAddressCell.setBorder(Rectangle.NO_BORDER);
         invoiceAddressCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         invoiceAddressCell.setVerticalAlignment(Element.ALIGN_TOP);
+        invoiceAddressCell.setPaddingLeft(JDSConstants.ADDRESS_LEFT_PADDING);
         addressTable.addCell(invoiceAddressCell);
         addressTable.addCell(ctextCell);
         paragraphBody.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
@@ -273,7 +294,7 @@ public class PlReferListPDF extends JDSPDF {
                     table.addCell(c3);
                     //table.addCell(c4);
                 }
-            }catch(SQLException ex){
+            } catch (SQLException ex) {
                 logger.error(ex);
             }
         }

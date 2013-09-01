@@ -409,7 +409,7 @@ function jdsEmail(url) {
         success: function(xmlResponse) {
             $(xmlResponse).find("results").each(function() {
                 var isSucess = $(this).find("success").text();
-                if (parseInt(isSucess) == 1) {
+                if (parseInt(isSucess) === 1) {
                     alert("Email sent successfully");
                 } else {
                     alert("Failed to send Email");
@@ -429,18 +429,18 @@ function jdsPrint(url, windowName) {
     _window = window.open(url, windowName);
     _window.onload = function() {
         _window.document.title = windowName + " Print Preview";
-    }
+    };
     return false;
 }
 
 function TestFileType(fileName, fileTypes) {
     if (!fileName) return false;
 
-    dots = fileName.split(".")
+    dots = fileName.split(".");
     //get the part AFTER the LAST period.
     fileType = "." + dots[dots.length - 1];
 
-    if (fileTypes.join(".").indexOf(fileType) == -1) {
+    if (fileTypes.join(".").indexOf(fileType) === -1) {
         alert("Please only upload files that end in types: \n\n" + (fileTypes.join(" .")) + "\n\nPlease select a new file and try again.");
         return false;
     }
@@ -452,9 +452,9 @@ function IsNumeric(sText) {
     var ValidChars = "0123456789.";
     var IsNumber = true;
     var Char;
-    for (i = 0; i < sText.length && IsNumber == true; i++) {
+    for (i = 0; i < sText.length && IsNumber === true; i++) {
         Char = sText.charAt(i);
-        if (ValidChars.indexOf(Char) == -1) {
+        if (ValidChars.indexOf(Char) === -1) {
             IsNumber = false;
         }
     }
@@ -466,7 +466,7 @@ function validateForTextOnly(FieldId) {
     var str = document.getElementById(FieldId).value;
     var str1 = str.toLocaleString().toLowerCase();
 
-    if (str1.length == 0) {
+    if (str1.length === 0) {
         alert("Please input text");
         document.getElementById(FieldId).focus();
     } else {
@@ -480,7 +480,7 @@ function validateForTextOnly(FieldId) {
 
 function setEnterKeyAction(func) {
     $(document).keydown(function(event) {
-        if (event.which == 13) {
+        if (event.which === 13) {
             func();
         }
     });
@@ -494,7 +494,7 @@ function isNumber(FieldId) {
 }
 
 function YesNo2Boolean(value){
-    if(value.toLowerCase() == 'yes'){
+    if(value.toLowerCase() === 'yes'){
         return true;
     }
     return false;

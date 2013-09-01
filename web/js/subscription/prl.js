@@ -155,7 +155,7 @@ function GeneratePRL(){
 }
 
 function _getMediumSelected(){
-    if($("#prlmedium").val() == 0){
+    if($("#prlmedium").val() === 0){
         alert("Please select Email or Print");
         return 0;
     }
@@ -163,13 +163,14 @@ function _getMediumSelected(){
 }
 
 function PrintOrEmail(){
-    var medium = $("#prlmedium").val();
-    if(medium == 1){
+    var year = parseInt($("#year").val());
+    var medium = parseInt($("#prlmedium").val());
+    if(medium === 1){
         if(confirm("Do you want to start sending emails now?")){
             _sendEmails();
         }
-    }else if(medium == 2 || medium == 3){
-        jdsPrint("print/prl/1/" + medium, "Invoice")
+    }else if(medium === 2 || medium === 3){
+        jdsPrint("print/prl/" + year + "/" + medium, "Invoice");
     }
 }
 
