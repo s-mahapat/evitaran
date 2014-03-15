@@ -36,6 +36,7 @@ public class subscriberModel extends JDSModel {
 
     /**
      *
+     * @throws java.sql.SQLException
      */
     public subscriberModel() throws SQLException {
     }

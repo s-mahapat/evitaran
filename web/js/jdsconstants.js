@@ -1,6 +1,6 @@
 var Constants = {
     jqgrid: {
-        HEIGHT: 0.5 * window.innerHeight
+        HEIGHT: 0.4 * window.innerHeight
     }
 };
 
