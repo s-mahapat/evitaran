@@ -17,7 +17,7 @@ function drawInwardTable(){
             scrollOffset: 20,
             emptyrecords: "No inwards to view",
             loadtext: "Loading...",
-            colNames:['Inward No','Date','Purpose','Cheque No','Cheque Date','Amount','Receipt No.','Receipt Date','Currency','Ack Date','Chq Return','Completed','Valid','View/Edit'],
+            colNames:['Inward No','Date','Purpose','Instr. No','Instr. Date','Amount','Receipt No.','Receipt Date','Currency','Ack Date','Chq Return','Completed','Valid','View/Edit'],
             colModel :[
                 {name:'InwardNo', index:'inwardNumber', width:30, align:'center', xmlmap:'inwardNumber'},
                 {name:'ReceivedDate', index:'inwardCreationDate', width:30, align:'center', xmlmap:'inwardCreationDate'},

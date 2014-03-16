@@ -249,7 +249,9 @@ public class subscriberModel extends JDSModel {
                 //apend the year, month character and new subscriber number.
                 nextSubscriber = String.valueOf(subscriber);
             } else {
-                nextSubscriber = "1";
+                // the subscriber numbers in the legacy data range from 1 to 40000
+                // so we start from 50K
+                nextSubscriber = "50000";
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
