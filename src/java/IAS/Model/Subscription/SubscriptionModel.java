@@ -932,7 +932,7 @@ public class SubscriptionModel extends JDSModel {
                         invoiceNumber = this.getNextInvoiceNumber(invoiceNumber);
                         int subscription_id = rs.getInt(2);
                         int invoice_id = 0;
-                        float rate = getNextYearSubscriptionRate(subscription_id);
+                        float rate = getNextYearSubscriptionRate(subscription_id, year);
                         int _nextYearSubscriptionPeriod = this.getNextYearSubscriptionPeriod();
 
                         // insert the invoice and get the invoice id
@@ -981,8 +981,9 @@ public class SubscriptionModel extends JDSModel {
         return this.nextYearSubscriptionPeriod;
     }
 
-    private float getNextYearSubscriptionRate(int subscription_id) throws SQLException {
-
+    private float getNextYearSubscriptionRate(int subscription_id, int current_year) throws SQLException {
+        // the current_year does not mean the actual calendar year, but refers to the year for which the
+        // PRL is being generated
         // get subscription info for subscription id
         String sql = Queries.getQuery("get_subscription_details_prl");
         float _rate = 0;
@@ -992,7 +993,7 @@ public class SubscriptionModel extends JDSModel {
 
         try (PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setInt(1, subscription_id);
-            pst.setInt(2, Calendar.getInstance().get(Calendar.YEAR));
+            pst.setInt(2, current_year);
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     //String journalName = rs.getString("journalGroupName");
@@ -1031,6 +1032,8 @@ public class SubscriptionModel extends JDSModel {
                     }
                 }
             } catch (SQLException ex) {
+                logger.error(ex);
+            }catch (Exception ex){
                 logger.error(ex);
             }
         } finally {

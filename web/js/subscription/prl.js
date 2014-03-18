@@ -178,6 +178,7 @@ function _sendEmails(){
     var page = jQuery("#prlTable").jqGrid('getGridParam','page');
     var rows = jQuery("#prlTable").jqGrid('getGridParam','rowNum');
     var totalpages = jQuery("#prlTable").jqGrid('getGridParam','lastpage');
+    var year = parseInt($("#year").val());
 
     // for every page
     for(var i=1; i<= totalpages; i++){
@@ -203,7 +204,7 @@ function _sendEmails(){
             jQuery("#prlTable").setSelection(invoiceno,false);
 
             // send a request to send an email
-            _sendEmail("Email/prl/" + invoiceno + "/" + subno, invoiceno);
+            _sendEmail("Email/prl/" + invoiceno + "/" + subno + "?prl_year=" + year, invoiceno);
         }
 
     }

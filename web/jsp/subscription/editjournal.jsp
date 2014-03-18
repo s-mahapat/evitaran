@@ -149,9 +149,9 @@
                     width:30,
                     align:"center",
                     editable: true,
-                    edittype:'select',
-                    editoptions:{value: szCopies}
-                    //editrules: {required: true, minValue: 1, integer: true }
+                    edittype:'text',
+                    editoptions:{value: szCopies},
+                    editrules: {required: true, minValue: 1, integer: true }
                 },
                 {
                     name:"total",

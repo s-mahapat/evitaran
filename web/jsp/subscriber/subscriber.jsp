@@ -64,7 +64,7 @@
             </span>
 
             <span class="IASFormDivSpanInputBox">
-                <input class="IASTextBoxMandatory" TABINDEX="5" name="city" id="city" value="${subscriberFormBean.city}"/>
+                <input class="IASTextBoxMandatory" type="text" TABINDEX="5" name="city" id="city" value="${subscriberFormBean.city}"/>
             </span>
         </div>
 

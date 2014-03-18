@@ -38,9 +38,10 @@ public class PlReferListPDF extends JDSPDF {
 
     public PlReferListPDF() throws SQLException {
         super();
-        if (PlReferListPDF.conn == null) {
-            conn = Database.getConnection();
+        if (PlReferListPDF.conn == null || PlReferListPDF.conn.isClosed()) {
+            PlReferListPDF.conn = Database.getConnection();
         }
+        
         _InvoiceModel = new InvoiceModel();
         _SubscriptionModel = new SubscriptionModel();
         String sql = "select ctext from prl where year=?";
@@ -108,7 +109,7 @@ public class PlReferListPDF extends JDSPDF {
                     //String ctext = rs.getString("ctext");
                     document.newPage();
                     document.add(this.getLetterHead());
-                    Paragraph _page = this.getPlReferListLetterBody(invoice_no, ctext);
+                    Paragraph _page = this.getPlReferListLetterBody(invoice_no, ctext, year);
                     document.add(_page);
                     document.add(this.getLetterFooter());
                     //document.add(this.getPaymentFooter());
@@ -127,7 +128,7 @@ public class PlReferListPDF extends JDSPDF {
 
     }
 
-    public ByteArrayOutputStream getPlReferListPage(String invoice_no) throws SQLException,
+    public ByteArrayOutputStream getPlReferListPage(String invoice_no, int prl_year) throws SQLException,
             ParseException,
             ParserConfigurationException,
             TransformerException,
@@ -141,7 +142,7 @@ public class PlReferListPDF extends JDSPDF {
         PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
         document.open();
         document.add(this.getLetterHead());
-        Paragraph _page = this.getPlReferListLetterBody(invoice_no, ctext);
+        Paragraph _page = this.getPlReferListLetterBody(invoice_no, ctext, prl_year);
         document.add(_page);
         document.add(this.getLetterFooter());
         document.close();
@@ -149,7 +150,7 @@ public class PlReferListPDF extends JDSPDF {
 
     }
 
-    private Paragraph getPlReferListLetterBody(String invoice_no, String ctext) throws SQLException,
+    private Paragraph getPlReferListLetterBody(String invoice_no, String ctext, int prl_year) throws SQLException,
             ParseException,
             ParserConfigurationException,
             TransformerException,
@@ -170,7 +171,7 @@ public class PlReferListPDF extends JDSPDF {
         Paragraph paragraphBody = new Paragraph();
         Paragraph paragraphctext = new Paragraph(ctext, JDS_FONT_BODY);
         Paragraph paragraphInvoiceAddress = new Paragraph();
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int currentYear = prl_year + 1; //Calendar.getInstance().get(Calendar.YEAR);
 
         paragraphOuter.setSpacingBefore(JDSPDF.LESS_OUTER_PARAGRAPH_SPACE);
         paragraphOuter.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
@@ -247,7 +248,7 @@ public class PlReferListPDF extends JDSPDF {
         cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         cell1.setColspan(2);
 
-        PdfPCell cell2 = new PdfPCell(new Paragraph("No. of Years", JDS_FONT_BODY));
+        PdfPCell cell2 = new PdfPCell(new Paragraph("Subscription Period", JDS_FONT_BODY));
         cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
@@ -263,15 +264,17 @@ public class PlReferListPDF extends JDSPDF {
 
         try (PreparedStatement pst = conn.prepareStatement(sql)) {
             // get price for next year
-            pst.setInt(1, currentYear + 1);
+            pst.setInt(1, currentYear);
             pst.setInt(2, _invoiceBean.getSubscriptionID());
 
 
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     String journalName = rs.getString("journalGroupName");
-                    String years = String.valueOf(rs.getInt("period"));
+                    int period = rs.getInt("period");
+                    String years = String.valueOf(period);
                     float _rate = rs.getFloat("rate");
+                    String subscription_period = rs.getString("startMonth") + "/" + String.valueOf(currentYear) + " to " + rs.getString("endMonth") + "/" + String.valueOf(prl_year + period);
 
                     //total += _rate;
                     String rate = String.valueOf(_rate);
@@ -281,7 +284,7 @@ public class PlReferListPDF extends JDSPDF {
                     c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
                     c1.setColspan(2);
 
-                    PdfPCell c2 = new PdfPCell(new Phrase(years, JDSPDF.JDS_FONT_NORMAL_SMALL));
+                    PdfPCell c2 = new PdfPCell(new Phrase(subscription_period, JDSPDF.JDS_FONT_NORMAL_SMALL));
                     c2.setHorizontalAlignment(Element.ALIGN_CENTER);
                     c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
@@ -294,7 +297,7 @@ public class PlReferListPDF extends JDSPDF {
                     table.addCell(c3);
                     //table.addCell(c4);
                 }
-            } catch (SQLException ex) {
+            } catch (SQLException | NullPointerException ex) {
                 logger.error(ex);
             }
         }

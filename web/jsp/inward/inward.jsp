@@ -19,7 +19,7 @@
             // do not let the user modify the inward or send
             // chq return once the inward in complete
             $("#btnEditInward").hide();
-            $("#btnSendReturn").hide();
+            //$("#btnSendReturn").hide();
         }
 
         $(function() {

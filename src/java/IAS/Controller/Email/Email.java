@@ -179,13 +179,14 @@ public class Email extends JDSController {
             } else if (document.equalsIgnoreCase("prl")) {
                 PlReferListPDF _PlReferListPDF = new PlReferListPDF();
                 InvoiceModel _invoiceModel = new InvoiceModel(request);
+                int prl_year = Integer.parseInt(request.getParameter("prl_year"));
 
                 String invoice_no = documentID;
-                ByteArrayOutputStream baos = _PlReferListPDF.getPlReferListPage(invoice_no);
+                ByteArrayOutputStream baos = _PlReferListPDF.getPlReferListPage(invoice_no, prl_year);
                 byte pdfData[] = baos.toByteArray();
 
                 // form the file name from next year
-                String fileName = "Invoice_for_" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR) + 1) + ".pdf";
+                String fileName = "Invoice_for_" + String.valueOf(prl_year + 1) + ".pdf";
                 String subscriber_number = action;
                 subscriberModel _subModel = new subscriberModel(request);
                 IAS.Bean.Subscriber.subscriberFormBean _subscriberBean = _subModel.GetSubscriber(subscriber_number);
@@ -196,7 +197,7 @@ public class Email extends JDSController {
 
                 // send the email
                 success = _mailer.sendEmailToSubscriberWithAttachment(_subscriberBean.getEmail(),
-                        "Invoice for " + String.valueOf(Calendar.getInstance().get(Calendar.YEAR) + 1),
+                        "Invoice for " + String.valueOf(prl_year + 1),
                         emailBody,
                         fileName,
                         pdfData,

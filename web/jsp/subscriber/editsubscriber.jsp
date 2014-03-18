@@ -12,9 +12,11 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/subscriber.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/createsubscriber.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/editsubscriber.js"%>"></script>
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/city.js"></script>
         <script>
             $(document).ready(function() {
-                jdsAppend("CMasterData?md=city","city","city");
+                loadCities();
+                //jdsAppend("CMasterData?md=city","city","city");
                 jdsAppend("CMasterData?md=country","country","country");
                 jdsAppend("CMasterData?md=state","state","state");
                 jdsAppend("CMasterData?md=district","district","district");
