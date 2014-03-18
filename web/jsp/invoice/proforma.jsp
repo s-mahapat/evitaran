@@ -43,7 +43,7 @@
 
                             // for each journal group id create an array, this way we
                             // group them on the UI
-                            if(JournalNamesHash[journalGrpID] === undefined){
+                            if(JournalNamesHash[journalGrpID] == undefined){
                                 JournalNamesHash[journalGrpID] = new Array();
                             }
                             JournalNamesHash[journalGrpID].push(journalName);

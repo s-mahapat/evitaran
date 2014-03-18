@@ -147,6 +147,11 @@ function deleteRow(rowid) {
 
 function saveSubscription() {
 
+    var ids = $("#newSubscription").getDataIDs();
+    if (ids.length == 0) {
+        alert("No subscription data to save. Please select the journal group and click Add");
+        return false;
+    }
     // if the subscription is duplicate do not submit the form
     var isDuplicate = isSubscriptionDuplicate();
     if (isDuplicate == true) {
@@ -160,11 +165,7 @@ function saveSubscription() {
     var arrRowData = $("#newSubscription").getRowData();
     var rowRequiredData = [];
     var subscriptionTotal = $("#subscriptionTotalValue").text();
-    var ids = $("#newSubscription").getDataIDs();
-    if (ids.length == 0) {
-        alert("No subscription data to save. Please select the journal group and click Add");
-        return false;
-    }
+    
     for (intIndex in arrRowData) {
         var rowObj = arrRowData[intIndex];
         //alert(rowObj.startMonth)
