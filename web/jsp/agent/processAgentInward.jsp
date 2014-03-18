@@ -68,7 +68,7 @@
                 .click(function() {
                     validateSearchSubscriber();
                     return false;
-                })
+                });
             });
 
             $(function() {
@@ -76,7 +76,7 @@
                 .click(function() {
                     $("#createAgntSubscription").val("true");
                     $("#processInwardForm").submit();
-                })
+                });
             });
 
             $(function(){
@@ -85,7 +85,7 @@
                     $("#subscriberNumber").val($("#subscriberId").val());
                     $("#createAgntSubscription").val("true");
                     $("#processInwardForm").submit();
-                })
+                });
             });
 
             $(function(){
@@ -93,7 +93,7 @@
                 .click(function() {
                     $("#completeInward").val("true");
                     $("#processInwardForm").submit();
-                })
+                });
             });
 
             function drawResultsTable(){
@@ -115,7 +115,7 @@
                     colNames:['Subscriber Number', 'Subscription Number'],
                     colModel :[
                         {name:'Subscriber Number', index:'subscriberNumber', align:'center', xmlmap:'subscriberNumber', formatter: linktosubscriber},
-                        {name:'Subscription Number', index:'subscriptionNumber', align:'center', xmlmap:'subscriptionNumber'},
+                        {name:'Subscription Number', index:'subscriptionNumber', align:'center', xmlmap:'subscriptionNumber'}
                     ],
                     xmlReader : {
                         root: "results",
@@ -123,10 +123,17 @@
                         repeatitems: false,
                         id: "subscriptionNumber"
                     },
+                    gridComplete: function() {
+                        // enable the save button only when a subscription gets
+                        // added
+                        var ids = jQuery("#resultTable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+                            $("#btnCompleteInward").button("enable");
+                        }
+                    },
                     pager: '#pager',
                     rowNum:10,
                     rowList:[10,20,30],
-                    viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
 
@@ -201,7 +208,7 @@
                             <%@include file="../subscriber/subscriberdtls.jsp" %>
                             <div class="singleActionBtnDiv">
                                 <button class ="IASButton" type="button" id="btnCreateSubscription" TABINDEX="2">Create Subscription</button>
-                                <button class ="IASButton" type="button" id="btnCompleteInward" TABINDEX="3">Save</button>
+                                <button class ="IASButton" type="button" id="btnCompleteInward" TABINDEX="3" disabled>Save</button>
                             </div>
                         </div>
                     </div>

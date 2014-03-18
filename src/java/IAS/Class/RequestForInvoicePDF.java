@@ -202,9 +202,9 @@ public class RequestForInvoicePDF extends JDSPDF{
         paragraphBody.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         paragraphBody.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
 
-        PdfPTable table = new PdfPTable(5);
+        PdfPTable table = new PdfPTable(6);
         table.setWidthPercentage(100);
-        table.setWidths(new int[]{4,1,1,1,1});
+        table.setWidths(new int[]{4,1,1,2,1,1});
 
         PdfPCell cell1 = new PdfPCell(new Paragraph("Journal Name", JDSPDF.JDS_FONT_BODY));
         cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -214,6 +214,11 @@ public class RequestForInvoicePDF extends JDSPDF{
         PdfPCell cell4 = new PdfPCell(new Paragraph("Copies", JDSPDF.JDS_FONT_BODY));
         cell4.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        
+        PdfPCell cell5 = new PdfPCell(new Paragraph("Subsciption period", JDSPDF.JDS_FONT_BODY));
+        cell5.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell5.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        //cell5.setColspan(2);
 
         PdfPCell cell2 = new PdfPCell(new Paragraph("No. of Years", JDSPDF.JDS_FONT_BODY));
         cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -225,6 +230,7 @@ public class RequestForInvoicePDF extends JDSPDF{
 
         table.addCell(cell1);
         table.addCell(cell4);
+        table.addCell(cell5);
         table.addCell(cell2);
         table.addCell(cell3);
 
@@ -236,6 +242,8 @@ public class RequestForInvoicePDF extends JDSPDF{
         HashMap JournalGrpPriceHash = new HashMap();
         HashMap JournalGrpCopiesHash = new HashMap();
         HashMap JournalGrpPeriodHash = new HashMap();
+        HashMap JournalGrpStartDateHash = new HashMap();
+        HashMap JournalGrpEndDateHash = new HashMap();
         int total = 0;
 
         ArrayList<String> names;
@@ -267,6 +275,8 @@ public class RequestForInvoicePDF extends JDSPDF{
             JournalGrpCopiesHash.put(_journalgrpid, detail.getCopies());
             JournalGrpPriceHash.put(_journalgrpid, detail.getTotal());
             JournalGrpPeriodHash.put(_journalgrpid, detail.getPeriod());
+            JournalGrpStartDateHash.put(_journalgrpid, detail.getStartMonth() + "/" + detail.getStartYear());
+            JournalGrpEndDateHash.put(_journalgrpid, detail.getEndMonth() + "/" + detail.getEndYear());
 
         }
 
@@ -303,10 +313,17 @@ public class RequestForInvoicePDF extends JDSPDF{
                     c4.setHorizontalAlignment(Element.ALIGN_CENTER);
                     c4.setVerticalAlignment(Element.ALIGN_MIDDLE);
                     c4.setRowspan(_rowspan);
+                    
+                    PdfPCell c5 = new PdfPCell(new Paragraph(String.valueOf(JournalGrpStartDateHash.get(_journalgrpid) + " to " + String.valueOf(JournalGrpEndDateHash.get(_journalgrpid))), JDSPDF.JDS_FONT_NORMAL_SMALL));
+                    c5.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    c5.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    //c5.setColspan(2);
+                    c5.setRowspan(_rowspan);
 
                     bprinted = true;
 
                     table.addCell(c4);
+                    table.addCell(c5);
                     table.addCell(c2);
                     table.addCell(c3);
                 }
@@ -316,7 +333,7 @@ public class RequestForInvoicePDF extends JDSPDF{
         PdfPCell blankCell = new PdfPCell(new Phrase("", JDSPDF.JDS_FONT_NORMAL_SMALL));
         blankCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         blankCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        blankCell.setColspan(3);
+        blankCell.setColspan(4);
 
         PdfPCell totalCell = new PdfPCell(new Phrase("Total", JDSPDF.JDS_FONT_NORMAL_SMALL));
         totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);

@@ -34,13 +34,14 @@
             <option value="7">Jul</option>
         </select>
         <label class="inlinelabel">Copies:</label>
-        <select class="IASComboBoxMandatory" TABINDEX="11" name="copies" id="copies">
+        <input type="text" maxlength="3" required min="1" value="1" class="IASTextBoxMandatory" style="width: 30px;" TABINDEX="11" name="copies" id="copies">
+        <%--<select class="IASComboBoxMandatory" TABINDEX="11" name="copies" id="copies">
             <%
                 for (int i = 1; i <= 10; i++) {
                     out.println("<option value =\"" + i + "\">" + i + "</option>");
                 }
             %>
-        </select>
+        </select>--%>
     </div>
     <div class="IASFormFieldDiv">
         <span class="IASFormDivSpanLabel">

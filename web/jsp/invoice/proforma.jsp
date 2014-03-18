@@ -16,6 +16,8 @@
             var _total = 0;
             var JournalNamesHash = new Object();
             var JournalYearsHash = new Object();
+            var JournalStartDate = new Object();
+            var JournalEndDate = new Object();
             var JournalPriceHash = new Object();
             var JournalCopiesHash = new Object();
             $(document).ready(function(){
@@ -41,7 +43,7 @@
 
                             // for each journal group id create an array, this way we
                             // group them on the UI
-                            if(JournalNamesHash[journalGrpID] == undefined){
+                            if(JournalNamesHash[journalGrpID] === undefined){
                                 JournalNamesHash[journalGrpID] = new Array();
                             }
                             JournalNamesHash[journalGrpID].push(journalName);
@@ -52,6 +54,11 @@
                             grptotal = parseInt($(this).find("total").text());
                             // also maintain totals group wise
                             JournalPriceHash[journalGrpID] = grptotal;
+                            
+                            start_date = $(this).find("startMonth").text() + "/" + $(this).find("startYear").text();
+                            end_date = $(this).find("endMonth").text() + "/" + $(this).find("endYear").text();
+                            JournalStartDate[journalGrpID] = start_date;
+                            JournalEndDate[journalGrpID] = end_date;
 
                         });
                         html += "<tr>";
@@ -65,6 +72,7 @@
                                 html += "<td class=\"journalname\">" + _journals[indx] + "</td>";
                                 if(!bprinted){
                                     html += "<td rowspan=\"" + _rowspan + "\">" + JournalCopiesHash[id] + "</td>";
+                                    html += "<td rowspan=\"" + _rowspan + "\">" + JournalStartDate[id] + " to " + JournalEndDate[id] + "</td>";
                                     html += "<td rowspan=\"" + _rowspan + "\">" + JournalYearsHash[id] + "</td>";
                                     html += "<td rowspan=\"" + _rowspan + "\">" + JournalPriceHash[id] + "</td>";
                                     bprinted = true;
@@ -75,7 +83,7 @@
 
                         }
                         _total = ${invoiceFormBean.amount};
-                        html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Total</td><td>" + _total + "</td></tr>"
+                        html += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>Total</td><td>" + _total + "</td></tr>"
                         html += "</tbody>";
                         var _orightml = $(".datatable").html();
                         html = _orightml + html;
@@ -183,6 +191,7 @@
                                     <tr>
                                         <th>Journal Name</th>
                                         <th>Copies</th>
+                                        <th>Subscription Period</th>
                                         <th>No. of Years</th>
                                         <th>Rs.</th>
                                     </tr>

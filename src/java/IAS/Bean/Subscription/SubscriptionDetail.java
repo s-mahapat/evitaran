@@ -19,6 +19,7 @@ public class SubscriptionDetail {
     private int startMonth;
     private int period;
     private int rate;
+    private int endMonth;
     
     public int getCopies(){
         return this.copies;
@@ -82,6 +83,14 @@ public class SubscriptionDetail {
 
     public void setStartMonth(int _month){
         this.startMonth = _month;
+    }
+    
+    public int getEndMonth(){
+        return this.endMonth;
+    }
+
+    public void setEndMonth(int _month){
+        this.endMonth = _month;
     }
     
     public int getPeriod(){
