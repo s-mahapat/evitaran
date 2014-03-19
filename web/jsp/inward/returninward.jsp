@@ -9,8 +9,6 @@
         <link rel="stylesheet" type="text/css" href="css/inward/inward.css"/>
         <link rel="stylesheet" media="print" type="text/css" href="css/inward/printchequereturn.css"/>
         <title>Cheque/DD Return</title>
-        <script type="text/javascript" src="js/jquery/jquery.print-preview.js"></script>
-        <link rel="stylesheet"  media="screen" type="text/css" href="<%=request.getContextPath() + "/css/jquery/print-preview.css"%>"/>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/returninward.js"%>"></script>
         <script type="text/javascript">
             $(document).ready(function(){
