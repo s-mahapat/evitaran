@@ -331,7 +331,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         blankCell.setColspan(3);*/
 
         PdfPCell totalCell = new PdfPCell(new Phrase("Total", JDSPDF.JDS_FONT_NORMAL_SMALL));
-        totalCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        totalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         totalCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         totalCell.setColspan(5);
 
@@ -355,7 +355,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
             PdfPCell amountPaidCell = new PdfPCell(new Phrase(lessamount, JDSPDF.JDS_FONT_NORMAL_SMALL));
             amountPaidCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             amountPaidCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            amountPaidCell.setColspan(4);
+            amountPaidCell.setColspan(5);
 
             PdfPCell amountPaidValueCell = new PdfPCell(new Phrase(String.valueOf(_invoiceBean.getInwardAmount()), JDSPDF.JDS_FONT_NORMAL_SMALL));
             amountPaidValueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -364,7 +364,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
             PdfPCell balanceCell = new PdfPCell(new Phrase("Balance amount due", JDSPDF.JDS_FONT_NORMAL_SMALL));
             balanceCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             balanceCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            balanceCell.setColspan(4);
+            balanceCell.setColspan(5);
 
             float balance = _invoiceBean.getBalance();
             PdfPCell balanceValueCell = new PdfPCell(new Phrase(String.valueOf(balance), JDSPDF.JDS_FONT_NORMAL_SMALL));
