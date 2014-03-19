@@ -45,7 +45,6 @@
 
 </script>
 <link href="<%=request.getContextPath() + "/css/style.css"%>" type="text/css" rel="stylesheet"/>
-<!--<link href="<%=request.getContextPath() + "/css/custom-theme/jquery-ui-1.10.0.custom.css"%>" type="text/css" rel="stylesheet"/>-->
 <%if (userRole != null && userRole.equalsIgnoreCase("monochrome")) {
         out.println("<link href=\"" + request.getContextPath() + "/css/monochrome.css\"" + " type=\"text/css\" rel=\"stylesheet\"/>");
     }
