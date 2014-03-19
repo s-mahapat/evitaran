@@ -1407,7 +1407,7 @@ public class reportModel extends JDSModel {
                     sqlSubFigures += " and " + date;
                 }
                 sqlSubFigures += " BETWEEN date_format( concat(subscriptiondetails.startYear, '-', subscriptiondetails.startMonth, '-', '1'), '%Y/%m/%d')";
-                sqlSubFigures += " AND LAST_DAY(concat(subscriptiondetails.endYear, '-', subscriptiondetails.endMonth, '-', '1'))";
+                sqlSubFigures += " AND LAST_DAY(concat(subscriptiondetails.endYear, '-', subscriptiondetails.endMonth, '-', '1')) and subscriptiondetails.active = '1'";
                 sqlSubFigures += " GROUP BY journals.journalCode AND subscriber_type.subtypecode";
 
                 PreparedStatement stGetFigures = this.conn.prepareStatement(sqlSubFigures);
