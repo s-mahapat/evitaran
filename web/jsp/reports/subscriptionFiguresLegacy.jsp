@@ -94,7 +94,7 @@
 
         <div id="bodyContainer">
             <jsp:useBean class="IAS.Bean.Reports.subscriptionFiguresFormBeanReport" id="subscriptionFiguresFormBeanReport" scope="request"></jsp:useBean>
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printSubscriptionFigures"%>" name="subscriptionFigures">
+            <form method="post" action="<%=request.getContextPath() + "/reports?action=printSubscriptionFiguresLegacy"%>" name="subscriptionFigures">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Subscription Figures</legend>
