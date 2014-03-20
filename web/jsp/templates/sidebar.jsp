@@ -122,6 +122,7 @@
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=statement"%>">Statement of Label</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=circulationFigure"%>">Circulation Figures for journals</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=subscriptionFigures"%>">Subscription Figures</a></li>
+                        <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=subscriptionFiguresLegacy"%>">Subscription Figures Legacy</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listInwards"%>">Inwards</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=outstandingbill"%>">Outstanding Bill</a></li>
                         <li class="menuitem"><a tabindex="-1" href="<%=contextPath + "/main?action=listGml"%>">Mailing List</a></li>

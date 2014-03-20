@@ -285,6 +285,22 @@ import javax.servlet.http.HttpServletResponse;
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printXML";
             }
+            /* ---------------------------------------------------------------- */
+            else if (action.equalsIgnoreCase("subscriptionFiguresLegacy")) {
+                String xml = _reportModel.subscriptionFiguresLegacy();
+
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+            } else if (action.equalsIgnoreCase("printSubscriptionFiguresLegacy")) {
+                String xml = _reportModel.subscriptionFiguresLegacy();
+
+                request.setAttribute("xml", xml);
+
+                String query = "Circulation Figures for " + request.getParameter("year");
+
+                request.setAttribute("query", query);
+                url = "/pdfserver?action=printXML";
+            }            
 
             /* ---------------------------------------------------------------- */
             else if (action.equalsIgnoreCase("listMl")) {

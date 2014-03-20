@@ -1471,6 +1471,110 @@ public class reportModel extends JDSModel {
 
         return xml;
     }
+    
+        public String subscriptionFiguresLegacy() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+
+        String year = request.getParameter("year");
+        // Add the results element
+        String xml = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+
+        String sql = null;
+        sql = Queries.getQuery("get_list_of_journals");
+        PreparedStatement stGetJournals = this.conn.prepareStatement(sql);
+        ResultSet rs1 = db.executeQueryPreparedStatement(stGetJournals);
+
+        // Should be the size of the total no of subscribers
+        //int[] tNoS = new int[16];
+        //int[] tNoC = new int[16];
+
+        while(rs1.next())
+        {
+            int totalNoOfSubscribers = 0;
+            int totalNoOfCopies = 0;
+            String journalCode = rs1.getString(1);
+
+            // Add the row element
+            Element row = doc.createElement("row");
+            results.appendChild(row);
+
+            Element _journalCode = doc.createElement("journalCode");
+            row.appendChild(_journalCode);
+            _journalCode.appendChild(doc.createTextNode(journalCode));
+
+            String subTypes[] = {"Inst_I", "Inst_A", "IND_I", "IND_A", "COMP"};
+            String subTypesQueries[] = 
+            {"(subscriber_type.subtypecode = 'II' OR subscriber_type.subtypecode = 'IN' OR subscriber_type.subtypecode = 'IC' OR subscriber_type.subtypecode = 'MEMBER')",
+            "(subscriber_type.subtypecode = 'FI')",
+            "(subscriber_type.subtypecode = 'IP')",
+            "(subscriber_type.subtypecode = 'FP')",
+            "(subscriber_type.subtypecode = 'AS' OR subscriber_type.subtypecode = 'EBALL' OR subscriber_type.subtypecode = 'EF' OR subscriber_type.subtypecode = 'EI' OR subscriber_type.subtypecode = 'FELJM' OR subscriber_type.subtypecode = 'GRANT' OR subscriber_type.subtypecode = 'HONFEL' OR subscriber_type.subtypecode = 'LSP' OR subscriber_type.subtypecode = 'WC')"
+            };
+ 
+            for(int i=0; i<subTypes.length; i++) {
+                String sqlSubFigures = null; 
+                int paramIndex = 1;
+                
+                sqlSubFigures = Queries.getQuery("subscription_Figures_Legacy");
+                sqlSubFigures = sqlSubFigures + " AND " + subTypesQueries[i];
+                Calendar cal = Calendar.getInstance();
+                int currYear = cal.get(Calendar.YEAR);
+                String date = "";
+                if (Integer.parseInt(year) == currYear) {
+                    sqlSubFigures += " AND curdate()";
+                }
+                else{
+                    date = year + "-12-31";
+                    date = "date_format(" + '"' + date + '"' + ",'%y/%m/%d')";
+                    sqlSubFigures += " and " + date;
+                }
+                sqlSubFigures += " BETWEEN date_format( concat(subscriptiondetails.startYear, '-', subscriptiondetails.startMonth, '-', '1'), '%Y/%m/%d')";
+                sqlSubFigures += " AND LAST_DAY(concat(subscriptiondetails.endYear, '-', subscriptiondetails.endMonth, '-', '1')) and subscriptiondetails.active = '1'";
+                sqlSubFigures += " GROUP BY journals.journalCode AND subscriber_type.subtypecode";
+
+                PreparedStatement stGetFigures = this.conn.prepareStatement(sqlSubFigures);
+                stGetFigures.setString(paramIndex, journalCode);
+
+                ResultSet rs3 = db.executeQueryPreparedStatement(stGetFigures);
+                int subscriberCount = 0;
+                int copies = 0;
+                if (rs3.next())
+                {
+                    subscriberCount = rs3.getInt(1);
+                    copies = rs3.getInt(2);
+                }              
+                               
+                if(i == (subTypes.length-1)) {
+                    Element _subCountTotal = doc.createElement("SUB_COPIES");
+                    row.appendChild(_subCountTotal);
+                    _subCountTotal.appendChild(doc.createTextNode(Integer.toString(totalNoOfCopies)));                     
+                }                
+                
+                totalNoOfSubscribers = totalNoOfSubscribers + subscriberCount;
+                totalNoOfCopies = totalNoOfCopies + copies;                
+
+                Element _subCount = doc.createElement(subTypes[i]);
+                row.appendChild(_subCount);
+                _subCount.appendChild(doc.createTextNode(Integer.toString(copies)));
+                
+            }             
+        }
+
+        DOMSource domSource = new DOMSource(doc);
+        try (StringWriter writer = new StringWriter()) {
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            xml = writer.toString();
+        }
+
+        return xml;
+    }
 
         public void constructTableSubcriptionFigures() throws SQLException, ParserConfigurationException, SAXException, IOException, IllegalAccessException, InvocationTargetException {
 

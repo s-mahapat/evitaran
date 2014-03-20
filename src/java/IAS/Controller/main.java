@@ -104,6 +104,8 @@ public class main extends JDSController {
             url = "/jsp/reports/circulationFiguresJournal.jsp";
         } else if (action.equalsIgnoreCase("subscriptionFigures")) {
             url = "/reports?action=constructTableSubcriptionFigures";
+        } else if (action.equalsIgnoreCase("subscriptionFiguresLegacy")) {
+            url = "/jsp/reports/subscriptionFiguresLegacy.jsp";
         } else if (action.equalsIgnoreCase("listprofarmaInvoice")) {
             url = "/jsp/reports/listprofarmaInvoice.jsp";
         } else if (action.equalsIgnoreCase("listInwards")) {
