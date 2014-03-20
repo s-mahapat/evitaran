@@ -53,6 +53,7 @@ public class RequestForInvoicePDF extends JDSPDF{
         document.open();
         document.add(this.getLetterHead());
         document.add(this.getRFILetterBody(InwardNumber));
+        document.add(this.getLetterFooter());
         this.addPaymentFooter(document, pdfWriter);
         document.close();
         pdfWriter.close();
