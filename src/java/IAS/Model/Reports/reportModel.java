@@ -1510,9 +1510,9 @@ public class reportModel extends JDSModel {
             String subTypesQueries[] = 
             {"(subscriber_type.subtypecode = 'II' OR subscriber_type.subtypecode = 'IN' OR subscriber_type.subtypecode = 'IC' OR subscriber_type.subtypecode = 'MEMBER')",
             "(subscriber_type.subtypecode = 'FI')",
-            "(subscriber_type.subtypecode = 'IP')",
+            "(subscriber_type.subtypecode = 'IP' OR subscriber_type.subtypecode = 'LSP')",
             "(subscriber_type.subtypecode = 'FP')",
-            "(subscriber_type.subtypecode = 'AS' OR subscriber_type.subtypecode = 'EBALL' OR subscriber_type.subtypecode = 'EF' OR subscriber_type.subtypecode = 'EI' OR subscriber_type.subtypecode = 'FELJM' OR subscriber_type.subtypecode = 'GRANT' OR subscriber_type.subtypecode = 'HONFEL' OR subscriber_type.subtypecode = 'LSP' OR subscriber_type.subtypecode = 'WC')"
+            "(subscriber_type.subtypecode = 'AS' OR subscriber_type.subtypecode = 'EBALL' OR subscriber_type.subtypecode = 'EF' OR subscriber_type.subtypecode = 'EI' OR subscriber_type.subtypecode = 'FELJM' OR subscriber_type.subtypecode = 'GRANT' OR subscriber_type.subtypecode = 'HONFEL' OR subscriber_type.subtypecode = 'WC')"
             };
  
             for(int i=0; i<subTypes.length; i++) {
