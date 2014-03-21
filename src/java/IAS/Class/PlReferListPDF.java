@@ -34,7 +34,6 @@ public class PlReferListPDF extends JDSPDF {
     private InvoiceModel _InvoiceModel = null;
     private SubscriptionModel _SubscriptionModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger(PlReferListPDF.class.getName());
-    private String ctext;
 
     public PlReferListPDF() throws SQLException {
         super();
@@ -44,15 +43,7 @@ public class PlReferListPDF extends JDSPDF {
         
         _InvoiceModel = new InvoiceModel();
         _SubscriptionModel = new SubscriptionModel();
-        String sql = "select ctext from prl where year=?";
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setInt(1, Calendar.getInstance().get(Calendar.YEAR));
-            try (ResultSet rs = st.executeQuery()) {
-                if (rs.first()) {
-                    ctext = rs.getString("ctext");
-                }
-            }
-        }
+        
         //conn.close();
     }
 
@@ -109,7 +100,7 @@ public class PlReferListPDF extends JDSPDF {
                     //String ctext = rs.getString("ctext");
                     document.newPage();
                     document.add(this.getLetterHead());
-                    Paragraph _page = this.getPlReferListLetterBody(invoice_no, ctext, year);
+                    Paragraph _page = this.getPlReferListLetterBody(invoice_no, year);
                     document.add(_page);
                     document.add(this.getLetterFooter());
                     //document.add(this.getPaymentFooter());
@@ -142,15 +133,33 @@ public class PlReferListPDF extends JDSPDF {
         PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
         document.open();
         document.add(this.getLetterHead());
-        Paragraph _page = this.getPlReferListLetterBody(invoice_no, ctext, prl_year);
+        Paragraph _page = this.getPlReferListLetterBody(invoice_no, prl_year);
         document.add(_page);
         document.add(this.getLetterFooter());
         document.close();
         return outputStream;
 
     }
+    
+    private String getCustomText(int prl_year){
+        String sql = "select ctext from prl where year=? order by id desc limit 1";
+        String ctext= "";
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, prl_year);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.first()) {
+                    ctext = rs.getString("ctext");
+                }
+            }
+        }
+        catch(SQLException ex){
+            
+        }finally{
+            return ctext;
+        }
+    }
 
-    private Paragraph getPlReferListLetterBody(String invoice_no, String ctext, int prl_year) throws SQLException,
+    private Paragraph getPlReferListLetterBody(String invoice_no, int prl_year) throws SQLException,
             ParseException,
             ParserConfigurationException,
             TransformerException,
@@ -162,6 +171,7 @@ public class PlReferListPDF extends JDSPDF {
             logger.error(String.format("Invoice Bean is null for %s", invoice_no));
             return null;
         }
+        String ctext = this.getCustomText(prl_year);
         Paragraph paragraphOuter;
         paragraphOuter = new Paragraph();
         Paragraph addressParagraph = new Paragraph();
