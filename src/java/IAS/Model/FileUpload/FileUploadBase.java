@@ -8,13 +8,11 @@ import IAS.Model.JDSModel;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.fileupload.FileItem;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  *
@@ -28,10 +26,8 @@ public class FileUploadBase extends JDSModel {
     private ArrayList<FileItem> uploadedFiles=new ArrayList<>();
 
     public void addFiles(List<FileItem> _uploadedFiles) {        
-        Iterator i = _uploadedFiles.iterator();
-        while (i.hasNext()) {
-            FileItem fileItem = (FileItem) i.next();
-            if (fileItem.isFormField() == false) {                
+        for (FileItem fileItem : _uploadedFiles) {
+            if (fileItem.isFormField() == false) {
                 uploadedFiles.add(fileItem);                
             }
         }
@@ -43,14 +39,14 @@ public class FileUploadBase extends JDSModel {
     }
 
     public void processFiles() throws IOException, SQLException {
-        throw (new NotImplementedException());
+        throw (new UnsupportedOperationException());
     }
 
     public String getOutputAsXML() throws IOException, TransformerException, ParserConfigurationException{
-        throw (new NotImplementedException());
+        throw (new UnsupportedOperationException());
     }
     
-    public ArrayList<String> getOutputAsLIST() {
-        throw (new NotImplementedException());
+    public ArrayList<String> getOutputAsLIST() throws IOException {
+        throw (new UnsupportedOperationException());
     }
 }
