@@ -2196,7 +2196,7 @@ BEGIN
   DECLARE is_active int DEFAULT 0;
   DECLARE journal_group_price float DEFAULT 0;
   SELECT count(*) INTO is_active FROM subscriptiondetails t1
-  WHERE t1.active = TRUE AND t1.id=new.id;
+  WHERE t1.active = TRUE AND t1.subscriptionID=new.subscriptionID;
   IF is_active = 0 THEN
     UPDATE subscription t1 SET t1.active=FALSE WHERE t1.id=new.subscriptionID;
   ELSE
