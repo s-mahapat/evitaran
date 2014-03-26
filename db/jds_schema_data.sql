@@ -2194,6 +2194,7 @@ BEGIN
   * marked as false
   */
   DECLARE is_active int DEFAULT 0;
+  DECLARE journal_group_price float DEFAULT 0;
   SELECT count(*) INTO is_active FROM subscriptiondetails t1
   WHERE t1.active = TRUE AND t1.id=new.id;
   IF is_active = 0 THEN
@@ -2201,6 +2202,25 @@ BEGIN
   ELSE
     UPDATE subscription t1 SET t1.active=TRUE WHERE t1.id=new.subscriptionID;
   END IF;
+
+  /*
+    If the subscription is made inactive deduct the invoice amount also.
+   */
+   SELECT t1.rate
+     INTO journal_group_price
+     FROM subscription_rates t1
+    WHERE t1.id = new.journalPriceGroupID;
+
+   IF new.active = TRUE
+   THEN
+      UPDATE invoice
+         SET amount = amount + journal_group_price
+       WHERE subscriptionID = new.subscriptionID;
+   ELSE
+      UPDATE invoice
+         SET amount = amount - journal_group_price
+       WHERE subscriptionID = new.subscriptionID;
+   END IF;
   /* end of subscription deactivate */
 END;;
 DELIMITER ;
@@ -2401,8 +2421,8 @@ BEGIN
            FROM mailing_list_detail t1
           WHERE     t1.mailinglistId = mailing_list_id
                 AND t1.subscriptionDetailId = _subscription_detail_id;
-                
-          
+
+
           /*select mailing_list_id;
           select rec_count;
           */
@@ -2826,7 +2846,7 @@ BEGIN
                                 and reminders.reminderType = '1'
                                 and reminders.reminderType <> '2'
                                 and reminders.reminderType <> '3';
-      
+
 	  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
       OPEN cur1;
      read_loop: LOOP
@@ -2867,7 +2887,7 @@ BEGIN
                 AND inward.inwardPurpose = inward_purpose.id
                 AND subscription.id = subid
          GROUP BY subscription.id, inward.id;
-         
+
 		 SET balance = subscription_total - payment_total;
          IF balance > 0
          THEN
