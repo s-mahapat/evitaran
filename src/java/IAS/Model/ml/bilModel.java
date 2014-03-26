@@ -34,10 +34,10 @@ public class bilModel extends JDSModel {
         conn = this.getConnection();
     }
 
-    public String searchGen() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public String searchGen(String bilIDsForDisplay) throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
 
-        ResultSet rs = getBILDtlUi();
+        ResultSet rs = getBILDtlUi(bilIDsForDisplay);
 
         xml = util.convertResultSetToXML(rs);
         return xml;
@@ -50,6 +50,35 @@ public class bilModel extends JDSModel {
 
         xml = util.convertResultSetToXML(rs);
         return xml;
+    }
+    
+    public ResultSet getBILDtlUi(String bilIDsForDisplay) throws SQLException {
+
+        String fromDate = request.getParameter("from");
+        String toDate = request.getParameter("to");
+        String subscriberNumber = request.getParameter("subscriberNumber");
+        if ("0".equals(fromDate)) {
+            fromDate = null;
+        }
+        if ("0".equals(toDate)) {
+            toDate = null;
+        }
+        if ("0".equals(subscriberNumber) || "value".equals(subscriberNumber)) {
+            subscriberNumber = null;
+        }
+        String sql = Queries.getQuery("search_bil_ui");
+
+        if (subscriberNumber != null && subscriberNumber.compareToIgnoreCase("NULL") != 0 && subscriberNumber.length() > 0) {
+            sql += " and mailing_list_detail.subscriberNumber =" + "'" + subscriberNumber + "'";
+        } else {
+            sql += bilIDsForDisplay;
+        }
+
+        PreparedStatement stGet = conn.prepareStatement(sql);
+        //int paramIndex = 1;
+        //stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
+        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+        return rs;
     }
 
     public ResultSet getBILDtlUi() throws SQLException {
@@ -146,6 +175,8 @@ public class bilModel extends JDSModel {
 
         String sqlInsBil = Queries.getQuery("insert_mldtl_bil");
         PreparedStatement stInsMlBil = conn.prepareStatement(sqlInsBil);
+        
+        String bilIDsForDisplay = " and mailing_list_detail.bilid in (";
 
         try (PreparedStatement stGet = conn.prepareStatement(sql);) {
             try (ResultSet rs = stGet.executeQuery();) {
@@ -174,13 +205,22 @@ public class bilModel extends JDSModel {
                     stUpdBil.setString(paramIndexUpd, bilid);
                     stUpdBil.executeUpdate();
                     //db.executeUpdatePreparedStatement(stUpdBil);
+                    bilIDsForDisplay = bilIDsForDisplay + bilid;
+                    if(!rs.isLast()) {
+                        bilIDsForDisplay = bilIDsForDisplay + ",";
+                    }
                 }
+                bilIDsForDisplay = bilIDsForDisplay + ")";
             }
         } catch (Exception e) {
             logger.error(e);
         } finally {
             conn.close();
-            xml = this.searchGen();
+            if(bilIDsForDisplay.contains("()")) {
+                xml = xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n" + "<results>" + "</results>";
+            } else {
+                xml = this.searchGen(bilIDsForDisplay);
+            }
             return xml;
         }
     }
