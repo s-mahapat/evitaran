@@ -144,8 +144,14 @@ public class subscriber extends JDSController {
             } else if (action.equalsIgnoreCase("subscriberInvoice")) {
 
                 // searchInvoice gets all the invoices based on the search criteria entered on screen by the user.
-                String xml = _subscriberModel.subscriberInvoices();
-
+                int invoice_type_to_exclude = 0;
+                try{
+                    invoice_type_to_exclude = Integer.parseInt(request.getParameter("exclude"));
+                }catch(NumberFormatException ex){
+                    invoice_type_to_exclude = 0;
+                }
+                String xml = _subscriberModel.subscriberInvoices(invoice_type_to_exclude);
+                
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             } else if (action.equalsIgnoreCase("printInvoice")) {

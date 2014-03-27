@@ -4,7 +4,7 @@
  */
 function drawPaymentTable(inward_amount) {
     $("#paymentTable").jqGrid({
-        url: contextPath + '/subscriber?action=subscriberInvoice',
+        url: contextPath + '/subscriber?action=subscriberInvoice&exclude=3',
         postData: {
             'pending': true,
             'subscriberNumber': $("#subscriberNumber").val()

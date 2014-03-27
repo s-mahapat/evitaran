@@ -611,7 +611,7 @@ public class subscriberModel extends JDSModel {
         return subscriberType;
     }
 
-    public String subscriberInvoices() throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
+    public String subscriberInvoices(int invoice_type_to_exclude) throws SQLException, ParseException, ParserConfigurationException, TransformerException, SAXException, IOException {
 
         // get the connection from connection pool
         Connection _conn = this.getConnection();
@@ -628,13 +628,15 @@ public class subscriberModel extends JDSModel {
         int totalQueryCount;
         try (PreparedStatement pst = _conn.prepareStatement(ajax_sql);) {
             pst.setString(1, subscriberNumber);
-            pst.setInt(2, (pageSize * (pageNumber - 1)));
-            pst.setInt(3, pageSize);
+            pst.setInt(2, invoice_type_to_exclude);
+            pst.setInt(3, (pageSize * (pageNumber - 1)));
+            pst.setInt(4, pageSize);
 
             try (ResultSet rs = pst.executeQuery();) {
                 sql = "select count(*) from (" + sql + ") as tbl";
                 PreparedStatement pst2 = _conn.prepareStatement(sql);
                 pst2.setString(1, subscriberNumber);
+                pst2.setInt(2, invoice_type_to_exclude);
                 ResultSet rs_count = pst2.executeQuery();
                 rs_count.first();
                 totalQueryCount = rs_count.getInt(1);
