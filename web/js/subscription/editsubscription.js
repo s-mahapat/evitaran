@@ -43,7 +43,6 @@ function addJournal(){
                     copies: $("#copies").val(),
                     total: price * $("#copies").val(),
                     journalPriceGroupID: priceInfo[0]
-
                 },
                 success: function(xmlResponse, textStatus, jqXHR){
 

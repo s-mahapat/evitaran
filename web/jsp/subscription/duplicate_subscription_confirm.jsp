@@ -6,21 +6,35 @@
         <jsp:include page="../templates/style.jsp"></jsp:include>
         <title>Confirm</title>
         <script type="text/javascript">
-            $(document).ready(function(){
+            var balance = 0;
+            $(document).ready(function() {
                 window.returnValue = 0;
-                $("#savebtn").click(function(){
+                var subscriber_number = 50000; //window.dialogArguments;
+                $.ajax({                    
+                    type: "GET",
+                    url: "<%=request.getContextPath()%>" + "/subscriber?action=balance&subscriber=" + subscriber_number,
+                    async: false,
+                    // change to full path of file on server
+                    dataType: "json",
+                    success: function(json) {
+                        balance = json['balance'];
+                        //$("#subscriberid").text(subscriber_number);
+                        $("#balance").text(balance);
+                    }
+                });
+                $("#savebtn").click(function() {
                     window.returnValue = 1;
                     window.close();
                 });
-                $("#paymentbtn").click(function(){
+                $("#paymentbtn").click(function() {
                     window.returnValue = 2;
                     window.close();
                 });
-                $("#cancelbtn").click(function(){
+                $("#cancelbtn").click(function() {
                     window.close();
                 });
-
             });
+
         </script>
     </head>
     <body>
@@ -28,6 +42,7 @@
             <fieldset class="subMainFieldSet">
                 <div id="duplicatedialog" style="margin: 20px;">
                     <p>There are subscriptions already existing for the Journals marked in red. <br>Click on Save to continue</p>
+                    <p>The subscriber has an outstanding balance of INR <strong><span id="balance"></span></strong></p>
                 </div>
                 <div class="actionBtnDiv">
                     <button type="button" class="IASButton CancelButton" id="cancelbtn">Cancel</button>

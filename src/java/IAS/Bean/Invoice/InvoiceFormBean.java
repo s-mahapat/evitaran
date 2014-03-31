@@ -44,6 +44,7 @@ public class InvoiceFormBean {
     private String chqddNumber;
     private String chqDate;
     private int paymentModeID = 0;
+    private boolean subscriptionActive;
 
     public int getInvoiceTypeID() {
         return this.invoiceTypeID;
@@ -70,6 +71,12 @@ public class InvoiceFormBean {
     }
 
     public float getBalance() {
+        if(!this.isSubscriptionActive()){
+            /* if the subscription is not active, then the total subscription
+            value is 0, in which case the balance is the inward amount
+            */
+            this.balance = (0 - this.getInwardAmount());
+        }
         return this.balance;
     }
 
@@ -345,5 +352,13 @@ public class InvoiceFormBean {
 
     public void setPaymentModeID(int _in) {
         this.paymentModeID = _in;
+    }
+    
+    public boolean isSubscriptionActive(){
+        return this.subscriptionActive;
+    }
+    
+    public void setSubscriptionActive(boolean _active){
+        this.subscriptionActive = _active;
     }
 }

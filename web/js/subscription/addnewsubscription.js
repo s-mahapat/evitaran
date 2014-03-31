@@ -312,7 +312,7 @@ function isSubscriptionDuplicate() {
                 var x = (window.screen.availWidth - width) / 2;
                 var y = (window.screen.availHeight - height) / 2;
                 var windowParameters = "dialogHeight: " + height + "px; dialogWidth: " + width + "px; dialogTop:" + y + "px; dialogLeft:" + x + "px; center:yes; resizeable: no; location:no; status:no; menubar: no; scrollbars: no; toolbar: no;";
-                var ret = openModalPopUp("jsp/subscription/duplicate_subscription_confirm.jsp", "", windowParameters);
+                var ret = openModalPopUp("jsp/subscription/duplicate_subscription_confirm.jsp", $("#subscriberNumber").val(), windowParameters);
                 var jdsconstants = new JDSConstants();
                 if(ret == jdsconstants.SAVE_DUPLICATE_SUBSCRIPTION){
                     isDuplicate = false;

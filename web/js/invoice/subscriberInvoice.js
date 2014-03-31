@@ -143,14 +143,20 @@ function drawInvoiceTable() {
                 var inward_no = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'inwardNumber');
                 var inwardNumber = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'inwardNumber');
                 var action = null;
+                var new_balance = jQuery("#invoiceTable").jqGrid('getCell', ids[i], 'balance');
 
                 // disable the view link for Please refer list invoices and if there are no payments made
                 if (invoice_type_id != jdsconstants.INVOICE_UPCOMING_YEAR_INVOICE && inwardNumber) {
                     action = '<a style="color:blue;" href="#" onclick="showInvoice(\'' + inward_no + '\',' + invoice_type_id + ')">Invoice</a>';
                     action += '<a style="color:blue;" href="#" onclick="showBill(' + invoice_id  + ')">Bill</a>';
                 }
+                else{
+                    // if it is a please refer list show the balance as 0
+                    new_balance = 0;
+                }
                 jQuery("#invoiceTable").jqGrid('setRowData', ids[i], {
-                    Action: action
+                    Action: action,
+                    balance: new_balance
                 });
             }
         },

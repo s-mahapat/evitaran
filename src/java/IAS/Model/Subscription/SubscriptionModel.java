@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -91,7 +92,7 @@ public class SubscriptionModel extends JDSModel {
         AjaxResponse resp = new AjaxResponse();
 
         // check that there is a valid subscriber number
-        if(this.subscriberNumber == null || this.subscriberNumber.length() == 0){
+        if (this.subscriberNumber == null || this.subscriberNumber.length() == 0) {
             xml = resp.getSuccessXML(false, "Cannot add subscription without a valid subscriber ID");
             return xml;
         }
@@ -307,12 +308,16 @@ public class SubscriptionModel extends JDSModel {
         int[] _copies = {copies};
         float[] _total = {total};
 
-
         int res[] = this.__addSubscriptionDetail(
                 subscriptionID, _journalGroupID,
                 _startYear, _startMonth,
                 _endYear, _copies,
                 _total, _journalPriceGroupID);
+        try {
+            this.insertUpdateInvoiceForSubscription(subscriptionID, 2, total);
+                    } catch (ParseException | InvocationTargetException | IllegalAccessException ex) {
+            throw new SQLException(ex);
+        }
         return res;
     }
 
@@ -394,7 +399,6 @@ public class SubscriptionModel extends JDSModel {
          * oldactive=True then subscriptionValue = subscriptionValue - new
          * Total value update the database
          */
-
         //set autocommit(false) to start transaction
         _conn.setAutoCommit(false);
 
@@ -791,6 +795,47 @@ public class SubscriptionModel extends JDSModel {
         return invoiceID;
     }
 
+    private int insertUpdateInvoiceForSubscription(int subscriptionID,
+            int invoice_type_id,
+            float amount) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException {
+
+        Connection _conn = this.getConnection();
+        String sql = Queries.getQuery("select_invoice_by_subid");
+        int invoice_id;
+        try (PreparedStatement st = _conn.prepareStatement(sql)) {
+            st.setInt(1, subscriptionID);
+            st.setInt(2, invoice_type_id);
+            ResultSet rs = st.executeQuery();
+            if (rs.first()) {
+                // there is already an row for the subscriptiton, we need to update the amount
+                invoice_id = rs.getInt("id");
+                sql = Queries.getQuery("update_invoice_amount");
+                try (PreparedStatement upd_st = _conn.prepareStatement(sql)) {
+                    upd_st.setFloat(1, amount);
+                    upd_st.setInt(2, invoice_id);
+                    upd_st.executeUpdate();
+                }
+
+            } else {
+                // here there is no existing invoice for this subscriptionid and invoice_type_id
+                // we will add a new invoice here
+                String invoiceNumber = getNextInvoiceNumber();
+                sql = Queries.getQuery("insert_new_invoice");
+                try (PreparedStatement insert_st = _conn.prepareStatement(sql)) {
+                    insert_st.setString(1, invoiceNumber);
+                    insert_st.setInt(2, subscriptionID);
+                    insert_st.setDate(3, util.dateStringToSqlDate(util.getDateString()));
+                    insert_st.setInt(4, invoice_type_id);
+                    insert_st.setFloat(5, amount);
+                    invoice_id = insert_st.executeUpdate();
+                }
+
+            }
+
+        } 
+        return invoice_id;
+    }
+
     public String getSubscriptionInwardInfo(int subid) throws
             SQLException,
             ParserConfigurationException,
@@ -842,7 +887,6 @@ public class SubscriptionModel extends JDSModel {
             prl_id = this._generatePleaseReferList(year, ctext);
         }
         return _getPleaseReferList(prl_id, year, medium);
-
 
     }
 
@@ -1033,7 +1077,7 @@ public class SubscriptionModel extends JDSModel {
                 }
             } catch (SQLException ex) {
                 logger.error(ex);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 logger.error(ex);
             }
         } finally {

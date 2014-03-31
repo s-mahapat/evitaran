@@ -8,35 +8,27 @@ package IAS.Controller;
 //~--- non-JDK imports --------------------------------------------------------
 import IAS.Bean.Invoice.InvoiceFormBean;
 import IAS.Bean.Inward.inwardFormBean;
+import IAS.Class.Ajax.AjaxResponse;
 
 import IAS.Class.JDSConstants;
 import IAS.Class.JDSLogger;
 import IAS.Class.util;
-
 import IAS.Model.Subscriber.subscriberModel;
-
-import org.apache.log4j.Logger;
-
-import org.xml.sax.SAXException;
-
-//~--- JDK imports ------------------------------------------------------------
-
+import com.google.gson.Gson;
 import java.io.IOException;
-
 import java.lang.reflect.InvocationTargetException;
-
 import java.sql.SQLException;
-
 import java.text.ParseException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
+import org.xml.sax.SAXException;
 
 public class subscriber extends JDSController {
 
@@ -203,6 +195,13 @@ public class subscriber extends JDSController {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                             "Failed to cheque return details for subscriber");
                 }
+            }else if(action.equalsIgnoreCase("balance")){
+                int _subscriberNumber = Integer.parseInt(request.getParameter("subscriber"));
+                subscriberModel sm = new subscriberModel(request);
+                float balance = sm.getBalance(_subscriberNumber);
+                JSONObject obj = new JSONObject();
+		obj.put("balance", balance);
+                response.getWriter().write(obj.toJSONString());
             }
 
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);

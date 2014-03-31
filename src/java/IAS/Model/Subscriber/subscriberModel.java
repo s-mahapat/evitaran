@@ -108,7 +108,6 @@ public class subscriberModel extends JDSModel {
 
             // return the connection back to the pool
             //_conn.close();
-
             return _subscriberId;
 
         }
@@ -819,6 +818,21 @@ public class subscriberModel extends JDSModel {
             }
         }
         return strInvoiceAddress;
+    }
+
+    public float getBalance(int subscriber_number) throws SQLException {
+        float balance = 0;
+
+        String sql = Queries.getQuery("get_subscriber_balance");
+        try (Connection conn = this.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, subscriber_number);            
+            ResultSet rs = pst.executeQuery();
+            if(rs.first()){
+                balance = rs.getFloat("balance");
+            }            
+        }
+        return balance;
     }
 
     class SubscriberNumberNotFoundException extends Exception {

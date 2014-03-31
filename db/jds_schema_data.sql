@@ -313,7 +313,7 @@ CREATE TABLE `invoice` (
   `subscriptionId` int(15) DEFAULT NULL,
   `invoiceCreationDate` date DEFAULT NULL,
   `invoice_type_id` int(11) NOT NULL DEFAULT '1',
-  `amount` float unsigned NOT NULL DEFAULT '0',
+  `amount` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `invoice_idx1` (`subscriptionId`,`invoice_type_id`),
   KEY `invoice_indx2` (`invoiceNumber`)
@@ -2189,39 +2189,55 @@ DELIMITER ;
 DELIMITER ;;
 CREATE TRIGGER `after_subscription_details_update` AFTER UPDATE ON subscriptiondetails FOR EACH ROW
 BEGIN
-  /*
-  * set the active flag for subscription to false once all the details are
-  * marked as false
-  */
-  DECLARE is_active int DEFAULT 0;
-  DECLARE journal_group_price float DEFAULT 0;
-  SELECT count(*) INTO is_active FROM subscriptiondetails t1
-  WHERE t1.active = TRUE AND t1.subscriptionID=new.subscriptionID;
-  IF is_active = 0 THEN
-    UPDATE subscription t1 SET t1.active=FALSE WHERE t1.id=new.subscriptionID;
-  ELSE
-    UPDATE subscription t1 SET t1.active=TRUE WHERE t1.id=new.subscriptionID;
-  END IF;
-
-  /*
-    If the subscription is made inactive deduct the invoice amount also.
+   /*
+   * set the active flag for subscription to false once all the details are
+   * marked as false
    */
-   SELECT t1.rate
-     INTO journal_group_price
-     FROM subscription_rates t1
-    WHERE t1.id = new.journalPriceGroupID;
+   DECLARE is_active             int DEFAULT 0;
+   DECLARE journal_group_price   float DEFAULT 0;
+   DECLARE inward_amount   float DEFAULT 0;
+   DECLARE new_amount   float DEFAULT 0;
+   DECLARE existing_invoice_id int DEFAULT 0;
+   DECLARE INVOICE_TYPE int DEFAULT 2; /* for outstanding payment */
 
-   IF new.active = TRUE
+   SELECT count(*)
+     INTO is_active
+     FROM subscriptiondetails t1
+    WHERE t1.active = TRUE AND t1.subscriptionID=new.subscriptionID;
+
+   IF is_active = 0
    THEN
-      UPDATE invoice
-         SET amount = amount + journal_group_price
-       WHERE subscriptionID = new.subscriptionID;
+      UPDATE subscription t1
+         SET t1.active = FALSE
+       WHERE t1.id = new.subscriptionID;
    ELSE
-      UPDATE invoice
-         SET amount = amount - journal_group_price
-       WHERE subscriptionID = new.subscriptionID;
+      UPDATE subscription t1
+         SET t1.active = TRUE
+       WHERE t1.id = new.subscriptionID;
    END IF;
-  /* end of subscription deactivate */
+
+   /*
+    Get the sum of all the subscription detail entries
+    then find the inward amount, subtract them to get the
+    new invoice amount when a subscription is edited.
+   */
+   SELECT COALESCE(sum(t1.copies * t2.rate), 0) INTO new_amount
+    FROM subscriptiondetails t1, subscription_rates t2
+      WHERE     t1.journalPriceGroupID = t2.id
+       AND t1.active = TRUE
+       AND t1.subscriptionID = new.subscriptionID;
+
+   SELECT COALESCE(t2.amount, 0)
+    INTO inward_amount
+    FROM subscription t1
+         LEFT JOIN inward t2
+            ON t1.inwardid = t2.id WHERE t1.id = new.subscriptionID
+   LIMIT 1;
+
+   UPDATE invoice SET amount = (new_amount - inward_amount) WHERE subscriptionid=new.subscriptionID AND invoice_type_id=INVOICE_TYPE;
+
+
+/* end of subscription deactivate */
 END;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;

@@ -72,7 +72,7 @@
             url:'subscription?oper=subid&id=' + $("#subscriptionID").val() + "&subtypeid=" + $("#subtypeid").val(),
             datatype: 'xml',
             mtype: 'GET',
-            height: 180,
+            height: 240,
             autowidth: true,
             forceFit: true,
             sortable: true,
