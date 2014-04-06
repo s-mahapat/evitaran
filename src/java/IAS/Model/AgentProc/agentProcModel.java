@@ -60,41 +60,41 @@ public class agentProcModel extends JDSModel {
     /*
      * Gets the discount for an agent
      */
-    public float getDiscount(int agent_id) throws SQLException{
+    public float getDiscount(int agent_id) throws SQLException {
         float discount = 0;
         String sql = Queries.getQuery("get_agent_discount");
         Connection conn = this.getConnection();
-        try(PreparedStatement pst = conn.prepareStatement(sql)){
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, agent_id);
-            try(ResultSet rs = pst.executeQuery()){
-                if(rs.first()){
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.first()) {
                     discount = rs.getFloat("discount");
                 }
             }
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             logger.error(ex);
-        }finally{
+        } finally {
             conn.close();
             return discount;
         }
 
     }
 
-    public List searchAgent(String agent_name) throws SQLException{
+    public List searchAgent(String agent_name) throws SQLException {
 
         ArrayList<String> agents = new ArrayList<>();
         String sql = Queries.getQuery("search_agent");
         Connection conn = this.getConnection();
-        try(PreparedStatement pst = conn.prepareStatement(sql)){
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, agent_name + "%");
-            try(ResultSet rs = pst.executeQuery()){
-                while(rs.next()){
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
                     agents.add(rs.getString("agentName"));
                 }
             }
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             logger.error(ex);
-        }finally{
+        } finally {
             conn.close();
             return agents;
         }
@@ -104,23 +104,21 @@ public class agentProcModel extends JDSModel {
     public InvoiceFormBean followOnProcessForAgentInward(String inward_number, HttpServletRequest request) throws SQLException, ParseException,
             InvocationTargetException, IllegalAccessException, ClassNotFoundException, IOException {
 
-        Connection _conn = this.getConnection();
         String sql;
         inwardModel _inwardModel = new inwardModel(request);
         inwardFormBean _inwardFormBean = _inwardModel.GetInward(inward_number);
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
         sql = Queries.getQuery("get_agent_invoice_dtls");
-        PreparedStatement st = _conn.prepareStatement(sql);
-        st.setString(1, inward_number);
-        try (ResultSet rs = st.executeQuery()) {
-            while (rs.next()) {
-                BeanProcessor bProc = new BeanProcessor();
-                invoiceFormBean = bProc.toBean(rs, IAS.Bean.Invoice.InvoiceFormBean.class);
+        try (Connection _conn = this.getConnection();
+                PreparedStatement st = _conn.prepareStatement(sql)) {
+            st.setString(1, inward_number);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    invoiceFormBean = bProc.toBean(rs, IAS.Bean.Invoice.InvoiceFormBean.class);
+                }
             }
-            rs.close();
         }
-        // return the connection back to the pool
-        _conn.close();
         invoiceFormBean.setInwardNumber(inward_number);
         invoiceFormBean.setInwardID(_inwardFormBean.getInwardID());
         request.setAttribute("invoiceFormBean", invoiceFormBean);
@@ -140,8 +138,8 @@ public class agentProcModel extends JDSModel {
         String lastAgentInvoice;
 
         // get connection from pool
-        Connection _conn = this.getConnection();
-        try (PreparedStatement pst = _conn.prepareStatement(lastAgentInvoiceSql);) {
+        try (Connection _conn = this.getConnection();
+                PreparedStatement pst = _conn.prepareStatement(lastAgentInvoiceSql);) {
             try (ResultSet rs = pst.executeQuery()) {
                 Calendar calendar = Calendar.getInstance();
                 //if true there exists a previous invoice for the year, so just increment the invoice number.
@@ -173,8 +171,6 @@ public class agentProcModel extends JDSModel {
     private int updateAgentInvoice(InvoiceFormBean invoiceFormBean, HttpServletRequest request) throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
-        Connection _conn = (Connection) request.getSession(false).getAttribute("connection");
-
         String sql;
         int paramIndex = 0;
         int invoiceID = 0;
@@ -190,7 +186,8 @@ public class agentProcModel extends JDSModel {
         invoiceFormBean.setAmount(amount);
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("agent_invoice_insert");
-        try (PreparedStatement st = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection _conn = this.getConnection();
+                PreparedStatement st = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(++paramIndex, invoiceNumber);
             st.setInt(++paramIndex, inwardID);
             st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
@@ -211,36 +208,34 @@ public class agentProcModel extends JDSModel {
     public InvoiceFormBean getAgentInvoiceDetail(String inwardNumber, HttpServletRequest request) throws SQLException, ParseException,
             InvocationTargetException, IllegalAccessException, ClassNotFoundException, IOException {
         // get the connection from connection pool
-        Connection _conn = this.getConnection();
+
         String invoiceNumber;
         inwardModel _inwardModel = new inwardModel(request);
         inwardFormBean _inwardFormBean = _inwardModel.GetInward(inwardNumber);
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
         String sql = Queries.getQuery("get_agent_invoice_dtls");
         String sql1 = Queries.getQuery("get_agent_invoice_number");
-        PreparedStatement st = _conn.prepareStatement(sql);
-        PreparedStatement st1 = _conn.prepareStatement(sql1);
-        st.setString(1, inwardNumber);
-        st1.setString(1, inwardNumber);
-        try (ResultSet rs = st.executeQuery()) {
-            while (rs.next()) {
-                BeanProcessor bProc = new BeanProcessor();
-                invoiceFormBean = bProc.toBean(rs, IAS.Bean.Invoice.InvoiceFormBean.class);
+        try (Connection _conn = this.getConnection();
+                PreparedStatement st = _conn.prepareStatement(sql);
+                PreparedStatement st1 = _conn.prepareStatement(sql1)) {
+            st.setString(1, inwardNumber);
+            st1.setString(1, inwardNumber);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    invoiceFormBean = bProc.toBean(rs, IAS.Bean.Invoice.InvoiceFormBean.class);
+                }
             }
-            rs.close();
+            try (ResultSet rs1 = st1.executeQuery();) {
+                rs1.first();
+                invoiceNumber = rs1.getString("invoiceNumber");
+            }
+            invoiceFormBean.setInwardNumber(inwardNumber);
+            invoiceFormBean.setInwardID(_inwardFormBean.getInwardID());
+            invoiceFormBean.setInvoiceNumber(invoiceNumber);
+            request.setAttribute("invoiceFormBean", invoiceFormBean);
+            request.setAttribute("inwardFormBean", _inwardFormBean);
+            return invoiceFormBean;
         }
-
-        try (ResultSet rs1 = st1.executeQuery();) {
-            rs1.first();
-            invoiceNumber = rs1.getString("invoiceNumber");
-        }
-        // return the connection back to the pool
-        _conn.close();
-        invoiceFormBean.setInwardNumber(inwardNumber);
-        invoiceFormBean.setInwardID(_inwardFormBean.getInwardID());
-        invoiceFormBean.setInvoiceNumber(invoiceNumber);
-        request.setAttribute("invoiceFormBean", invoiceFormBean);
-        request.setAttribute("inwardFormBean", _inwardFormBean);
-        return invoiceFormBean;
     }
 }

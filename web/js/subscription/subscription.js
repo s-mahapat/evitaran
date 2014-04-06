@@ -23,7 +23,7 @@ function listSubscription(){
             url:'subscription?oper=getsubscription&subscriberNumber=' + $("#subscriberNumber").val(),
             datatype: 'xml',
             mtype: 'GET',
-            height: 255,
+            height: $("#subscriberDtlsTabs").height() * 0.80,
             autowidth: true,
             forceFit: true,
             shrinkToFit: true,

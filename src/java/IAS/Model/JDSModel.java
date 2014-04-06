@@ -75,16 +75,25 @@ public class JDSModel extends HttpServlet {
         BeanUtils.populate(_bean, paramMap);
     }
 
-    public int CompleteInward(int inwardID) throws SQLException {
+    public int CompleteInward(int inwardID) {
         //Update inward with completed flag once the transaction is completed
         int rc = 0;
-        String sql = Queries.getQuery("update_inward_complete_flag");
+        String sql = null;
+        try {
+            sql = Queries.getQuery("update_inward_complete_flag");
+        } catch (SQLException ex) {
+            logger.error(ex);
+        }
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, inwardID);
-            if (db.executeUpdatePreparedStatement(st) == 1) {
-                session.setAttribute("inwardUnderProcess", null);
+            if (db.executeUpdatePreparedStatement(st) == 1) {                
                 rc = 1;
             }
+        }catch(SQLException ex){
+            logger.error(ex);
+        }
+        finally{
+            session.setAttribute("inwardUnderProcess", null);
         }
         return (rc);
     }

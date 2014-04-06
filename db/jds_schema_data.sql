@@ -2198,7 +2198,7 @@ BEGIN
    DECLARE inward_amount   float DEFAULT 0;
    DECLARE new_amount   float DEFAULT 0;
    DECLARE existing_invoice_id int DEFAULT 0;
-   DECLARE INVOICE_TYPE int DEFAULT 2; /* for outstanding payment */
+   DECLARE PRL_INVOICE_TYPE int DEFAULT 3; /* for Please refer list, we should not update this type of invoice when subscription is edited*/
 
    SELECT count(*)
      INTO is_active
@@ -2234,7 +2234,7 @@ BEGIN
             ON t1.inwardid = t2.id WHERE t1.id = new.subscriptionID
    LIMIT 1;
 
-   UPDATE invoice SET amount = (new_amount - inward_amount) WHERE subscriptionid=new.subscriptionID AND invoice_type_id=INVOICE_TYPE;
+   UPDATE invoice SET amount = (new_amount - inward_amount) WHERE subscriptionid=new.subscriptionID AND invoice_type_id <> PRL_INVOICE_TYPE;
 
 
 /* end of subscription deactivate */

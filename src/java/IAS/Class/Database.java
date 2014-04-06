@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
@@ -38,7 +39,7 @@ public class Database implements HttpSessionBindingListener {
                 Context initCtx = new InitialContext();
                 Context envCtx = (Context) initCtx.lookup("java:comp/env");
                 datasource = (DataSource) envCtx.lookup("jdbc/evitaran");
-            } catch (Exception e) {
+            } catch (NamingException e) {
                 logger.fatal(e);
                 throw (new SQLException(e.getMessage()));
             }

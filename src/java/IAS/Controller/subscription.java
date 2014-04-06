@@ -1,7 +1,6 @@
 package IAS.Controller;
 
 //~--- non-JDK imports --------------------------------------------------------
-import IAS.Bean.Subscription.SubscriptionFormBean;
 import IAS.Class.JDSLogger;
 import IAS.Class.util;
 import IAS.Model.Subscriber.subscriberModel;
@@ -33,7 +32,7 @@ public class subscription extends JDSController {
         try {
             SubscriptionModel _subscriptionModel = new SubscriptionModel(request);
             subscriberModel _subscriberModel = new IAS.Model.Subscriber.subscriberModel(request);
-            SubscriptionFormBean _subscriptionFormBean = new IAS.Bean.Subscription.SubscriptionFormBean();
+            //SubscriptionFormBean _subscriptionFormBean = new IAS.Bean.Subscription.SubscriptionFormBean();
 
             if (oper.equalsIgnoreCase("view")) {
                 url = "/jsp/subscription/viewsubscription.jsp";

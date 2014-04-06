@@ -149,7 +149,7 @@
                             </div>
                         </fieldset>
                         <fieldset class="subMainFieldSet" style="border: none">
-                            <div id="subscriberDtlsTabs" style="padding-left: 0px;font-size: 12px;" >
+                            <div id="subscriberDtlsTabs" style="padding-left: 0px;font-size: 12px; height:500px;" >
                                 <ul>
                                     <li><a href="#subDtls">Subscriber Details</a></li>
                                     <li><a href="#inwards">Inwards</a></li>

@@ -92,6 +92,8 @@ public class RequestForInvoicePDF extends JDSPDF{
 
         InvoiceInfoTable.setWidthPercentage(100);
         Paragraph invoiceNumber = new Paragraph(new Chunk("Invoice No: " + _invoiceBean.getInvoiceNumber(), JDSPDF.JDS_FONT_BODY));
+        invoiceNumber.add(Chunk.NEWLINE);
+        invoiceNumber.add(new Chunk("Invoice Dt: " + _invoiceBean.getInvoiceCreationDate(), JDSPDF.JDS_FONT_BODY));        
         Paragraph subscriberNumber = new Paragraph(new Chunk("Sub No: " + _invoiceBean.getSubscriberNumber(), JDSPDF.JDS_FONT_BODY));
 
 

@@ -5,7 +5,7 @@ function drawInvoiceTable() {
         datatype: 'xml',
         mtype: 'GET',
         width: '100%',
-        height: 300,
+        height: $("#subscriberDtlsTabs").height() * 0.8,
         autowidth: true,
         forceFit: true,
         sortable: true,

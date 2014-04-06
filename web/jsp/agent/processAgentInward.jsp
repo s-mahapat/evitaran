@@ -190,11 +190,9 @@
                             </span>
                             <span class="IASFormDivSpanInputBox">
                                 <input autocomplete="off" class="IASTextBox" TABINDEX="1" type="text" name="subscriberId" id="subscriberId" value=""/>
-                            </span>
-                            <span class="IASFormDivSpanInputBox" style="font-size: 8px;">
                                 <button type="button" id="btnSearchSubscriber" TABINDEX="2">Search Subscriber</button>
                                 <button type="button" id="btnCreateSubscriber" TABINDEX="3">Create Subscriber</button>
-                            </span>
+                            </span>                            
                         </div>
                         <div class="IASFormRightDiv">
                             <span class="IASFormDivSpanLabel">

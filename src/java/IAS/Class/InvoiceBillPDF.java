@@ -259,7 +259,7 @@ public class InvoiceBillPDF extends JDSPDF {
         Iterator iterator = payment_details.iterator();
         float totalPaid = 0;
         float invoiceAmount = invoiceBean.getAmount();
-        float due;
+        float due = 0;
 
         while (iterator.hasNext()) {
 

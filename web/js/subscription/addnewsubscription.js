@@ -76,10 +76,11 @@ function addJournal() {
 
 function updateTotal(val) {
     var balance = 0;
-    var currentTotal = $("#subscriptionTotalValue").text()
+    var currentTotal = $("#subscriptionTotalValue").text();
+    var gross_value = parseFloat($("#grosssubscriptionTotalValue").text()) + parseFloat(val);
     var newTotal;
     var agentid = parseInt($("#agentid").val());
-
+    
     // set the discount to 0% update later
     $("#discount").text(0);
 
@@ -96,6 +97,7 @@ function updateTotal(val) {
         newTotal = parseInt(currentTotal) + parseInt(val);
         balance = newTotal - $("#amount").text();
     }
+    $("#grosssubscriptionTotalValue").text(gross_value);
     $("#subscriptionTotalValue").text(newTotal);
     $("#balancelabel").text(balance);
     $("#balance").val(balance);

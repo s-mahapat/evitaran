@@ -5,7 +5,7 @@ function drawInwardTable(){
             datatype: 'xml',
             mtype: 'GET',
             width: '99%',
-            height: 300,
+            height: $("#subscriberDtlsTabs").height() * 0.80,
             autowidth: true,
             forceFit: true,
             shrinkToFit: true,

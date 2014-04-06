@@ -135,11 +135,13 @@
         <div id="pager"></div>
     </div>
     <div id="subscriptionTotal">
+        <span>Gross Subscription Total:</span>
+        <span id="grosssubscriptionTotalValue">0</span>
         <span style="margin-right: 10px;">
             <label>Discount(%):</label>
-            <span id="discount"></span>
+            <span id="discount">0</span>
         </span>
-        <span>Subscription Total(INR):</span>
+        <span>Net Subscription Total:</span>
         <span id="subscriptionTotalValue">0</span>
     </div>
     <div id="journalGroupContents"></div>

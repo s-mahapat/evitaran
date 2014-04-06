@@ -175,9 +175,7 @@ public class SubscriptionModel extends JDSModel {
 
     public void complete_inward() throws SQLException {
         //Update inward with completed flag once the transaction is completed
-        if (this.CompleteInward(this.inwardID) == 1) {
-            session.setAttribute("inwardUnderProcess", null);
-        }
+        this.CompleteInward(this.inwardID);
     }
 
     private int[] __addSubscriptionDetail(Connection conn,
@@ -213,10 +211,10 @@ public class SubscriptionModel extends JDSModel {
             int[] startYear, int[] startMonth, int[] endYear, int[] copies,
             float[] total, int[] journalPriceGroupID) throws SQLException {
 
-        Connection conn = (Connection) request.getSession(false).getAttribute("connection");
         String sql = Queries.getQuery("insert_subscription_detail");
         int[] res;
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
+        try (Connection conn = this.getConnection();
+                PreparedStatement st = conn.prepareStatement(sql)) {
             int paramIndex;
             for (int i = 0; i < journalGroupID.length; i++) {
                 paramIndex = 0;
@@ -268,12 +266,12 @@ public class SubscriptionModel extends JDSModel {
 
     public int addNewSubscription(String subscriberNumber, String inwardNumber, String subscriptionDate) throws SQLException {
 
-        Connection conn = this.getConnection();
         int subscriptionID = 0;
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("insert_subscription");
-        try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+        try (Connection conn = this.getConnection();
+                PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
             int paramIndex = 0;
             st.setString(++paramIndex, subscriberNumber);
             st.setString(++paramIndex, inwardNumber);
@@ -290,7 +288,7 @@ public class SubscriptionModel extends JDSModel {
         } catch (ParseException ex) {
             logger.error(ex);
         } finally {
-            conn.close();
+            //conn.close();
             return subscriptionID;
         }
 
@@ -315,7 +313,7 @@ public class SubscriptionModel extends JDSModel {
                 _total, _journalPriceGroupID);
         try {
             this.insertUpdateInvoiceForSubscription(subscriptionID, 2, total);
-                    } catch (ParseException | InvocationTargetException | IllegalAccessException ex) {
+        } catch (ParseException | InvocationTargetException | IllegalAccessException ex) {
             throw new SQLException(ex);
         }
         return res;
@@ -451,17 +449,17 @@ public class SubscriptionModel extends JDSModel {
 
     public int deleteSubscription() throws ParserConfigurationException, SQLException, TransformerException {
 
-        Connection _conn = this.getConnection();
+        
 
         String sql = Queries.getQuery("delete_subscription");
         int rc;
-        try (PreparedStatement st = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection();PreparedStatement st = _conn.prepareStatement(sql)) {
             int paramIndex = 0;
             int subscriptionId = Integer.parseInt(request.getParameter("id"));
             st.setInt(++paramIndex, subscriptionId);
             rc = st.executeUpdate();
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return rc;
     }
@@ -469,11 +467,11 @@ public class SubscriptionModel extends JDSModel {
     public String getSubscription() throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
         String xml;
-        Connection _conn = this.getConnection();
+        
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("get_subscription_for_subscriber");
-        try (PreparedStatement st = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection();PreparedStatement st = _conn.prepareStatement(sql)) {
             int paramIndex = 0;
             st.setString(++paramIndex, this.subscriberNumber);
             try (ResultSet rs = st.executeQuery()) {
@@ -484,7 +482,7 @@ public class SubscriptionModel extends JDSModel {
                 }
             }
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return xml;
 
@@ -504,7 +502,7 @@ public class SubscriptionModel extends JDSModel {
     public String getSubscriptionDetailBySubscriptionID(int _id, int subscriber_type_id) throws ParserConfigurationException,
             SQLException, TransformerException, IOException {
 
-        Connection _conn = this.getConnection();
+        
         String xml;
         String sql;
         subscriberModel _subscriberModel = new subscriberModel(request);
@@ -517,7 +515,7 @@ public class SubscriptionModel extends JDSModel {
             sql = Queries.getQuery("get_subscription_detail_by_subscription_id");
         }
 
-        try (PreparedStatement st = _conn.prepareStatement(sql);) {
+        try (Connection _conn = this.getConnection();PreparedStatement st = _conn.prepareStatement(sql);) {
             st.setInt(1, _id);
             try (ResultSet rs = st.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
@@ -530,7 +528,7 @@ public class SubscriptionModel extends JDSModel {
 
     public String getSubscriptionDetails() throws ParserConfigurationException, SQLException, TransformerException, IOException {
 
-        Connection _conn = this.getConnection();
+        
         String xml;
         String sql;
         int subscription_id = Integer.parseInt(request.getParameter("id"));
@@ -549,7 +547,8 @@ public class SubscriptionModel extends JDSModel {
             // the query name from the jds_sql properties files in WEB-INF/properties folder
             sql = Queries.getQuery("get_subscription_details");
         }
-        try (PreparedStatement st = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection();
+                PreparedStatement st = _conn.prepareStatement(sql)) {
             int paramIndex = 0;
             st.setInt(++paramIndex, subscription_id);
             try (ResultSet rs = st.executeQuery()) {
@@ -577,9 +576,8 @@ public class SubscriptionModel extends JDSModel {
             xml = xstream.toXML(sub_details);
         } catch (Exception e) {
             logger.error(e);
-        } finally {
-            return xml;
         }
+        return xml;
     }
 
     public List<IAS.Bean.Subscription.SubscriptionDetail> getSubscriptionDetailsObjectsForInward(String InwardNumber) throws SQLException {
@@ -601,14 +599,7 @@ public class SubscriptionModel extends JDSModel {
             sub_details = run.query(_conn, Queries.getQuery("get_subscription_details_for_inward"),
                     h, InwardNumber);
 
-            // iterate through the objects and remove price for all journals
-            // that belong to the same journal group other than the first one.
-            // this is needed else the journal request for invoice shows the price of the journal grp
-            // as JournalGrpPrice * no of journal in the grp
-            // work around for the sql query
-            Iterator iterator = sub_details.iterator();
-            while (iterator.hasNext()) {
-                IAS.Bean.Subscription.SubscriptionDetail detail = (IAS.Bean.Subscription.SubscriptionDetail) iterator.next();
+            for (IAS.Bean.Subscription.SubscriptionDetail detail : sub_details) {
                 if (JournalGrpIDsMap.containsKey(detail.getJournalGroupID())) {
                     detail.setRate(0);
                 } else {
@@ -631,10 +622,10 @@ public class SubscriptionModel extends JDSModel {
         if (_subscriberModel.isSubscriberTypeFree(subscriberTypeID)) {
             return "<results><row><id>0</id><rate>0.0</rate></row></results>";
         }
-        Connection _conn = this.getConnection();
+        
         String xml = null;
         String sql = Queries.getQuery("get_journal_group_price");
-        try (PreparedStatement ps = _conn.prepareStatement(sql);) {
+        try (Connection _conn = this.getConnection();PreparedStatement ps = _conn.prepareStatement(sql);) {
             ps.setInt(1, journalGroupID);
             ps.setInt(2, subscriberTypeID);
             ps.setInt(3, startYear);
@@ -642,20 +633,17 @@ public class SubscriptionModel extends JDSModel {
             try (ResultSet rs = ps.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
             }
-        } finally {
-            //_conn.close();
-            return xml;
         }
+        return xml;
     }
 
     public int getJournalPriceGroupID(int startYear, int numYears, int journalGroupID, int subscriberTypeID) throws TransformerException,
             ParserConfigurationException,
             SQLException {
 
-        int priceGroupID = 0;
-        Connection _conn = this.getConnection();
+        int priceGroupID = 0;        
         String sql = Queries.getQuery("get_journal_group_price");
-        try (PreparedStatement ps = _conn.prepareStatement(sql);) {
+        try (Connection _conn = this.getConnection();PreparedStatement ps = _conn.prepareStatement(sql);) {
             ps.setInt(1, journalGroupID);
             ps.setInt(2, subscriberTypeID);
             ps.setInt(3, startYear);
@@ -673,11 +661,11 @@ public class SubscriptionModel extends JDSModel {
 
     public String getJournalGroupContents(int journalGroupID) throws SQLException, ParserConfigurationException, TransformerException {
         // get connection from pool
-        Connection _conn = this.getConnection();
+        
         String xml = null;
 
         String sql = Queries.getQuery("get_journal_groupid_contents");
-        try (PreparedStatement ps = _conn.prepareStatement(sql);) {
+        try (Connection _conn = this.getConnection();PreparedStatement ps = _conn.prepareStatement(sql);) {
             ps.setInt(1, journalGroupID);
             try (ResultSet rs = ps.executeQuery();) {
                 xml = util.convertResultSetToXML(rs);
@@ -699,8 +687,8 @@ public class SubscriptionModel extends JDSModel {
         String lastInvoice;
 
         // get connection from pool
-        Connection _conn = this.getStaticConnection();
-        try (PreparedStatement pst = _conn.prepareStatement(lastInvoiceSql);) {
+        
+        try (Connection _conn = this.getStaticConnection();PreparedStatement pst = _conn.prepareStatement(lastInvoiceSql);) {
             try (ResultSet rs = pst.executeQuery()) {
                 Calendar calendar = Calendar.getInstance();
                 //if true there exists a previous invoice for the year, so just increment the invoice number.
@@ -751,7 +739,7 @@ public class SubscriptionModel extends JDSModel {
     private int updateInvoice(int invoice_type_id) throws SQLException, ParseException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
-        Connection _conn = (Connection) request.getSession(false).getAttribute("connection");
+        //Connection _conn = (Connection) request.getSession(false).getAttribute("connection");
         InvoiceFormBean invoiceFormBean = new IAS.Bean.Invoice.InvoiceFormBean();
         request.setAttribute("invoiceFormBean", invoiceFormBean);
         String sql;
@@ -775,7 +763,8 @@ public class SubscriptionModel extends JDSModel {
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("invoice_insert");
-        try (PreparedStatement st = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection _conn = this.getConnection();
+                PreparedStatement st = _conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(++paramIndex, invoiceNumber);
             st.setInt(++paramIndex, SubscriptionID);
             st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
@@ -799,10 +788,10 @@ public class SubscriptionModel extends JDSModel {
             int invoice_type_id,
             float amount) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException {
 
-        Connection _conn = this.getConnection();
+        
         String sql = Queries.getQuery("select_invoice_by_subid");
         int invoice_id;
-        try (PreparedStatement st = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection();PreparedStatement st = _conn.prepareStatement(sql)) {
             st.setInt(1, subscriptionID);
             st.setInt(2, invoice_type_id);
             ResultSet rs = st.executeQuery();
@@ -832,7 +821,7 @@ public class SubscriptionModel extends JDSModel {
 
             }
 
-        } 
+        }
         return invoice_id;
     }
 
@@ -841,10 +830,10 @@ public class SubscriptionModel extends JDSModel {
             ParserConfigurationException,
             TransformerException {
 
-        Connection _conn = this.getConnection();
+        
         String sql = Queries.getQuery("get_subscription_inward_amount");
         String xml;
-        try (PreparedStatement st = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection();PreparedStatement st = _conn.prepareStatement(sql)) {
             st.setInt(1, subid);
             try (ResultSet rs = st.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
@@ -863,12 +852,12 @@ public class SubscriptionModel extends JDSModel {
             InvocationTargetException,
             IllegalAccessException {
 
-        Connection _conn = this.getConnection();
+        
         // select prl that is generated on the same day, atleast this way
         // we save some time and space else every click will generate a new PRL list
         String sql = "select id from prl where year=? and DATE(date)=DATE(NOW())";
         int prl_id = 0;
-        try (PreparedStatement st = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection();PreparedStatement st = _conn.prepareStatement(sql)) {
             st.setInt(1, year);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.first()) {
@@ -879,7 +868,7 @@ public class SubscriptionModel extends JDSModel {
             logger.error(ex);
             return null;
         } finally {
-            _conn.close();
+            //_conn.close();
         }
 
         if (prl_id == 0) {
@@ -894,7 +883,7 @@ public class SubscriptionModel extends JDSModel {
             ParserConfigurationException,
             TransformerException {
 
-        Connection _conn = this.getConnection();
+        
         String sql = Queries.getQuery("get_pl_refer_list_for_email_and_all");
         String xml = null;
         String email_search_string = null;
@@ -909,7 +898,7 @@ public class SubscriptionModel extends JDSModel {
         } else if (medium == 3) {
             email_search_string = "%"; // search for all
         }
-        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection();PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setInt(1, prl_id);
             pst.setInt(2, year);
             pst.setString(3, email_search_string);
@@ -963,6 +952,7 @@ public class SubscriptionModel extends JDSModel {
         try (PreparedStatement pst = _conn.prepareStatement(sql_insert_prl_details)) {
             try (PreparedStatement st = _conn.prepareStatement(sql)) {
                 st.setInt(1, year); // set the year for which prl list should be retreived
+                st.setInt(2, year);
                 try (ResultSet rs = st.executeQuery()) {
                     if (!rs.isBeforeFirst()) {
                         isNullRs = true;   // set this if there is atleast 1 record is the resultset, this ensures
@@ -1016,7 +1006,7 @@ public class SubscriptionModel extends JDSModel {
                 _conn.commit();
             }
             _conn.setAutoCommit(true);
-            // _conn.close();
+            _conn.close();
         }
         return prl_id;
     }
@@ -1033,9 +1023,9 @@ public class SubscriptionModel extends JDSModel {
         float _rate = 0;
         this.nextYearSubscriptionPeriod = 0;
 
-        Connection _conn = this.getStaticConnection();
+        
 
-        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getStaticConnection();PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setInt(1, subscription_id);
             pst.setInt(2, current_year);
             try (ResultSet rs = pst.executeQuery()) {
@@ -1088,10 +1078,11 @@ public class SubscriptionModel extends JDSModel {
 
     private float getRate(int journalGrpID, int subtypeID, int startYear, int period) throws SQLException {
 
-        Connection _conn = this.getStaticConnection();
+        
         String sql = Queries.getQuery("get_journal_grp_price");
         int _rate = 0;
-        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getStaticConnection();
+                PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setInt(1, journalGrpID);
             pst.setInt(2, subtypeID);
             pst.setInt(3, startYear);
@@ -1108,10 +1099,10 @@ public class SubscriptionModel extends JDSModel {
     }
 
     private int getMinimumSubscriptionPeriod(int journalGrpID, int subtypeID, int startYear) throws SQLException {
-        Connection _conn = this.getStaticConnection();
+        
         String sql = Queries.getQuery("get_journal_group_price_for_minimum_period");
         int _period = 0;
-        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection();PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setInt(1, journalGrpID);
             pst.setInt(2, subtypeID);
             pst.setInt(3, startYear);
@@ -1127,10 +1118,10 @@ public class SubscriptionModel extends JDSModel {
     }
 
     public String getPaymentsForSubscription(int subscription_id) throws SQLException, ParserConfigurationException, TransformerException {
-        Connection _conn = this.getConnection();
+        
         String sql = Queries.getQuery("get_payments_for_subscription");
         String xml = null;
-        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection();PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setInt(1, subscription_id);
             try (ResultSet rs = pst.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
@@ -1149,9 +1140,9 @@ public class SubscriptionModel extends JDSModel {
     public List<Integer> getDuplicateSubscription(int subscriber_id, int[] journal_grp_ids, int[] start_years, int[] start_months) throws SQLException {
         List<Integer> duplicate_journal_grp_ids = new ArrayList<>();
         int count;
-        Connection _conn = this.getConnection();
+        
         String sql = Queries.getQuery("check_dup_subscription");
-        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection();PreparedStatement pst = _conn.prepareStatement(sql)) {
             for (int i = 0; i < journal_grp_ids.length; i++) {
                 int journal_grp_id = journal_grp_ids[i];
                 pst.setInt(1, start_years[i]);
@@ -1170,7 +1161,7 @@ public class SubscriptionModel extends JDSModel {
             }
 
         } finally {
-            _conn.close();
+            //_conn.close();
         }
         return duplicate_journal_grp_ids;
     }

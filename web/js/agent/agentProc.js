@@ -14,6 +14,7 @@ function hideSubsciberFields(){
     $("#fax").hide();
     $("#lblphone").hide();
     $("#lblfax").hide();
+    $("#deactivationReason").hide();
 }
 function makeReadOnlySubscriberFields(){
     $("#city").attr("disabled",true);
