@@ -84,9 +84,10 @@ public class JDSModel extends HttpServlet {
         } catch (SQLException ex) {
             logger.error(ex);
         }
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection();
+                PreparedStatement st = _conn.prepareStatement(sql)) {
             st.setInt(1, inwardID);
-            if (db.executeUpdatePreparedStatement(st) == 1) {                
+            if (st.executeUpdate() == 1) {                
                 rc = 1;
             }
         }catch(SQLException ex){
