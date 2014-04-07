@@ -222,6 +222,11 @@ fieldset {
     height: 20px;
 }
 
+.IASEnabledTextBox{
+    height: 20px;
+    background-color: white;
+}
+
 .IASDisabledTextBox{
     width: 50%;
     background-color: #EEE;

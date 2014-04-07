@@ -20,80 +20,100 @@
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscriber/chqreturned.js"%>"></script>
         <script type="text/javascript" src="<%=request.getContextPath() + "/js/subscription/paymentinfo.js"%>"></script>
         <script>
-            $(document).ready(function(){
+            var subscriber_changed = false;
+            $(document).ready(function() {
                 inwardGridCreated = false;
                 subscriptionGridCreated = false;
                 invoiceGridCreated = false;
                 reminderGridCreated = false;
                 missingIssueGridCreated = false;
                 chqReturnGridCreated = false;
+
                 //paymentGridCreated = false;
                 var detail_requested = <%=request.getParameter("detail")%>
                 var tab_cookie_id = parseInt($.cookie("the_tab_cookie")) || 0;
 
-                setEnterKeyAction(nextSubscriber);
+                // set the enter action to search for the subscriber
+                setEnterKeyAction(getSubscriber);
 
                 $("#subscriberDtlsTabs").tabs({
-                    selected:-1,
+                    selected: -1,
                     show: false
                 });
 
-                $("#subscriberDtlsTabs").on('tabsactivate', function(event, ui){
+                $("#subscriberDtlsTabs").on('tabsactivate', function(event, ui) {
                     var index = ui.newTab.index();
                     drawTab(index);
                     $.cookie("the_tab_cookie", index);
                     detail_requested = null;
                 });
 
+                // detect if subscriber changed
+                $("#subscriberNumber").keydown(function() {
+                    subscriber_changed = true;
 
-                if(detail_requested){
+                });
+
+
+                if (detail_requested) {
                     $("#subscriberDtlsTabs").tabs("option", "active", 2);
                     //$("#subscriberDtlsTabs").tabs({ show: false });
-                }else if(tab_cookie_id){
-                    $("#subscriberDtlsTabs" ).tabs( "option", "active", tab_cookie_id );
+                } else if (tab_cookie_id) {
+                    $("#subscriberDtlsTabs").tabs("option", "active", tab_cookie_id);
                 }
                 makeReadOnly();
                 makeViewSubscriberReadOnly();
                 subtypeCodeAppend();
 
+
             });
 
-            function drawTab(selected_index){
-                if(selected_index === 1 && inwardGridCreated === false){
+            function drawTab(selected_index) {
+                if (selected_index === 1 && inwardGridCreated === false) {
                     drawInwardTable();
-                    inwardGridCreated=true;
+                    inwardGridCreated = true;
                 }
-                else if(selected_index === 2 && subscriptionGridCreated === false){
+                else if (selected_index === 2 && subscriptionGridCreated === false) {
                     listSubscription();
-                    subscriptionGridCreated=true;
+                    subscriptionGridCreated = true;
                     //$("#subscriptionList").jqGrid('setCaption','').trigger("reloadGrid");
                 }
-                else if(selected_index === 3 && invoiceGridCreated === false){
+                else if (selected_index === 3 && invoiceGridCreated === false) {
                     drawInvoiceTable();
-                    invoiceGridCreated=true;
+                    invoiceGridCreated = true;
                 }
                 /*else if(selected_index == 4 && paymentGridCreated==false){
-                            drawPaymentTable();
-                            paymentGridCreated=true;
-                        }*/
-                else if(selected_index === 4 && reminderGridCreated === false){
+                 drawPaymentTable();
+                 paymentGridCreated=true;
+                 }*/
+                else if (selected_index === 4 && reminderGridCreated === false) {
                     drawReminderTable();
                     reminderGridCreated = true;
                 }
-                else if(selected_index === 5 && missingIssueGridCreated === false){
+                else if (selected_index === 5 && missingIssueGridCreated === false) {
                     drawMissingIssuesTable();
                     missingIssueGridCreated = true;
                 }
-                else if(selected_index === 6 && chqReturnGridCreated === false){
+                else if (selected_index === 6 && chqReturnGridCreated === false) {
                     drawChequeReturnTable();
                     chqReturnGridCreated = true;
                 }
 
             }
 
-            function nextSubscriber(){
+            function nextSubscriber() {
                 $("#btnNextSubscriber").click();
             }
+
+            function getSubscriber() {
+                $("#subscriberForm").submit(function(e) {
+                    e.preventDefault();
+                });
+                if (subscriber_changed) {
+                    window.location = 'subscriber?action=display&subscriberNumber=' + $("#subscriberNumber").val();
+                }
+            }
+
         </script>
         <style>
             .datatable table{
@@ -108,7 +128,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/subscriber"%>" name="subscriberForm">
+            <form method="post" action="<%=request.getContextPath() + "/subscriber"%>" name="subscriberForm" id="subscriberForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>View Subscriber</legend>
@@ -121,7 +141,7 @@
                                     </span>
 
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDisabledTextBox smalltextbox" readonly type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
+                                        <input class="IASEnabledTextBox" type="text" name="subscriberNumber" id="subscriberNumber" value="${subscriberFormBean.subscriberNumber}"/>
                                         <input type="hidden" name="subscriberid" id="subscriberid" value="${subscriberFormBean.subscriberID}"/>
                                         <input type="hidden" name="subtypeid" id="subtypeid" value="${subscriberFormBean.subtypeID}"/>
                                     </span>
@@ -200,7 +220,7 @@
                         </fieldset>
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv">
-                                <input onclick="location.href='subscriber?action=nextsubscriber&sid=' + $('#subscriberid').val()" TABINDEX="30" class="IASButton" type="button" value="Next Subscriber" id="btnNextSubscriber" name="btnNextSubscriber"/>
+                                <input onclick="location.href = 'subscriber?action=nextsubscriber&sid=' + $('#subscriberid').val()" TABINDEX="30" class="IASButton" type="button" value="Next Subscriber" id="btnNextSubscriber" name="btnNextSubscriber"/>
                             </div>
                         </fieldset>
                     </fieldset>
