@@ -9,7 +9,7 @@ function drawMultiSubscriberTable(){
         datatype: 'local',
         mtype: 'GET',
         //width: '100%',
-        height: 300,
+        height: Constants.jqgrid.HEIGHT,
         //autowidth: true,
         //forceFit: true,
         sortable: true,

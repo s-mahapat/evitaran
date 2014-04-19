@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Calendar;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
@@ -30,20 +29,15 @@ import org.apache.log4j.Logger;
  */
 public class PlReferListPDF extends JDSPDF {
 
-    private static Connection conn = null;
     private InvoiceModel _InvoiceModel = null;
     private SubscriptionModel _SubscriptionModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger(PlReferListPDF.class.getName());
 
     public PlReferListPDF() throws SQLException {
         super();
-        if (PlReferListPDF.conn == null || PlReferListPDF.conn.isClosed()) {
-            PlReferListPDF.conn = Database.getConnection();
-        }
-        
         _InvoiceModel = new InvoiceModel();
         _SubscriptionModel = new SubscriptionModel();
-        
+
         //conn.close();
     }
 
@@ -64,7 +58,7 @@ public class PlReferListPDF extends JDSPDF {
 
         int prl_id = 0;
         String prl_sql = "select id from prl where year=? limit 1";
-        try (PreparedStatement _pst = conn.prepareStatement(prl_sql)) {
+        try (Connection conn = Database.getConnection(); PreparedStatement _pst = conn.prepareStatement(prl_sql)) {
             _pst.setInt(1, year);
             try (ResultSet _rs = _pst.executeQuery()) {
                 if (_rs.first()) {
@@ -90,7 +84,7 @@ public class PlReferListPDF extends JDSPDF {
         } else if (medium == 3) {
             search_string = "%"; // search for all
         }
-        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+        try (Connection conn = Database.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, prl_id);
             pst.setInt(2, year);
             pst.setString(3, search_string);
@@ -100,7 +94,7 @@ public class PlReferListPDF extends JDSPDF {
                     //String ctext = rs.getString("ctext");
                     document.newPage();
                     document.add(this.getLetterHead());
-                    Paragraph _page = this.getPlReferListLetterBody(invoice_no, year);
+                    Paragraph _page = this.getPlReferListLetterBody(conn, invoice_no, year);
                     document.add(_page);
                     document.add(this.getLetterFooter());
                     //document.add(this.getPaymentFooter());
@@ -133,40 +127,41 @@ public class PlReferListPDF extends JDSPDF {
         PdfWriter pdfWriter = this.getPDFWriter(document, outputStream);
         document.open();
         document.add(this.getLetterHead());
-        Paragraph _page = this.getPlReferListLetterBody(invoice_no, prl_year);
-        document.add(_page);
-        document.add(this.getLetterFooter());
-        document.close();
+        try (Connection conn = Database.getConnection();) {
+            Paragraph _page = this.getPlReferListLetterBody(conn, invoice_no, prl_year);
+            document.add(_page);
+            document.add(this.getLetterFooter());
+            document.close();
+        }
         return outputStream;
 
     }
-    
-    private String getCustomText(int prl_year){
+
+    private String getCustomText(int prl_year) {
         String sql = "select ctext from prl where year=? order by id desc limit 1";
-        String ctext= "";
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
+        String ctext = "";
+        try (Connection conn = Database.getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, prl_year);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.first()) {
                     ctext = rs.getString("ctext");
                 }
             }
-        }
-        catch(SQLException ex){
-            
-        }finally{
+        } catch (SQLException ex) {
+
+        } finally {
             return ctext;
         }
     }
 
-    private Paragraph getPlReferListLetterBody(String invoice_no, int prl_year) throws SQLException,
+    private Paragraph getPlReferListLetterBody(Connection conn, String invoice_no, int prl_year) throws SQLException,
             ParseException,
             ParserConfigurationException,
             TransformerException,
             ClassNotFoundException,
             IOException {
 
-        InvoiceFormBean _invoiceBean = _InvoiceModel.getInvoiceInfoPRL(invoice_no);
+        InvoiceFormBean _invoiceBean = _InvoiceModel.getInvoiceInfoPRL(conn, invoice_no);
         if (_invoiceBean == null) {
             logger.error(String.format("Invoice Bean is null for %s", invoice_no));
             return null;
@@ -205,7 +200,6 @@ public class PlReferListPDF extends JDSPDF {
         /*invoiceHeaderCell.setBorder(Rectangle.NO_BORDER);
          invoiceHeaderCell.setHorizontalAlignment(Element.ALIGN_CENTER);
          invoiceHeaderCell.setVerticalAlignment(Element.ALIGN_TOP);*/
-
         invoiceNumberCell.setBorder(Rectangle.NO_BORDER);
         invoiceNumberCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         invoiceNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
@@ -271,12 +265,10 @@ public class PlReferListPDF extends JDSPDF {
         table.addCell(cell3);
 
         //float total = 0;
-
         try (PreparedStatement pst = conn.prepareStatement(sql)) {
             // get price for next year
             pst.setInt(1, currentYear);
             pst.setInt(2, _invoiceBean.getSubscriptionID());
-
 
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
@@ -336,7 +328,6 @@ public class PlReferListPDF extends JDSPDF {
         EnglishNumberToWords _EnglishNumberToWords = new EnglishNumberToWords();
         paragraphBody.add(Chunk.NEWLINE);
         paragraphBody.add(new Phrase(_EnglishNumberToWords.convertDouble(_invoiceBean.getAmount()).toUpperCase(), JDSPDF.JDS_FONT_NORMAL_SMALL));//Convert total value in words
-
 
         // add the invoice header, subscriber number and invoice number
         paragraphOuter.add(invoiceHeader);

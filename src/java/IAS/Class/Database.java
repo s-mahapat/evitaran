@@ -37,8 +37,7 @@ public class Database implements HttpSessionBindingListener {
         if (datasource == null) {
             try {
                 Context initCtx = new InitialContext();
-                Context envCtx = (Context) initCtx.lookup("java:comp/env");
-                datasource = (DataSource) envCtx.lookup("jdbc/evitaran");
+                datasource = (DataSource) initCtx.lookup("java:/comp/env/jdbc/evitaran");
             } catch (NamingException e) {
                 logger.fatal(e);
                 throw (new SQLException(e.getMessage()));
@@ -54,10 +53,10 @@ public class Database implements HttpSessionBindingListener {
     public ResultSet executeQuery(String query) throws SQLException {
         PreparedStatement st;
         ResultSet rs;
-        try{
+        try {
             st = Database.getConnection().prepareStatement(query);
-        }catch(SQLException e){
-            throw(new SQLException(e.getMessage()));
+        } catch (SQLException e) {
+            throw (new SQLException(e.getMessage()));
         }
 
         rs = st.executeQuery();

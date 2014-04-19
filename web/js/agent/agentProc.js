@@ -107,7 +107,7 @@ function agentXLUpload(){
             datatype: 'xmlstring',
             //mtype: 'GET',
             width: '100%',
-            height: 240,
+            height: Constants.jqgrid.HEIGHT,
             autowidth: true,
             viewrecords: true, 
             forceFit: true,

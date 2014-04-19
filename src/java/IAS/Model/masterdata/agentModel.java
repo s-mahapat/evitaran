@@ -16,25 +16,22 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.log4j.Logger;
+
 /**
  *
  * @author Deepali
  */
-public class agentModel extends JDSModel{
+public class agentModel extends JDSModel {
 
     private agentFormBean _agentFormBean = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
-    private Connection conn;
+    private static final Logger logger = JDSLogger.getJDSLogger(IAS.Model.masterdata.agentModel.class.getName());
 
-    public agentModel(HttpServletRequest request) throws SQLException{
-
+    public agentModel(HttpServletRequest request) throws SQLException {
         super(request);
-        conn = this.getConnection();
-
     }
 
-    public synchronized void Save () throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
+    public synchronized void Save() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         agentFormBean agentFormBean = new IAS.Bean.masterdata.agentFormBean();
         request.setAttribute("agentFormBean", agentFormBean);
@@ -53,36 +50,35 @@ public class agentModel extends JDSModel{
 
             // the query name from the jds_sql properties files in WEB-INF/properties folder
             sql = Queries.getQuery("agent_insert");
+            try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);) {
+                int paramIndex = 1;
+                st.setString(paramIndex, _agentFormBean.getAgentName());
+                st.setDate(++paramIndex, util.dateStringToSqlDate(_agentFormBean.getRegDate()));
+                st.setString(++paramIndex, _agentFormBean.getEmailId());
+                st.setString(++paramIndex, _agentFormBean.getAddress());
+                st.setString(++paramIndex, _agentFormBean.getCity());
+                st.setString(++paramIndex, _agentFormBean.getDistrict());
+                st.setString(++paramIndex, _agentFormBean.getState());
+                st.setString(++paramIndex, _agentFormBean.getCountry());
+                st.setInt(++paramIndex, _agentFormBean.getPinCode());
+                st.setInt(++paramIndex, _agentFormBean.getDiscount());
 
-            PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
-            int paramIndex = 1;
-            st.setString(paramIndex, _agentFormBean.getAgentName());
-            st.setDate(++paramIndex, util.dateStringToSqlDate(_agentFormBean.getRegDate()));
-            st.setString(++paramIndex, _agentFormBean.getEmailId());
-            st.setString(++paramIndex, _agentFormBean.getAddress());
-            st.setString(++paramIndex, _agentFormBean.getCity());
-            st.setString(++paramIndex, _agentFormBean.getDistrict());
-            st.setString(++paramIndex, _agentFormBean.getState());
-            st.setString(++paramIndex, _agentFormBean.getCountry());
-            st.setInt(++paramIndex, _agentFormBean.getPinCode());
-            st.setInt(++paramIndex, _agentFormBean.getDiscount());
-
-            try
-            {
-                if (db.executeUpdatePreparedStatement(st) == 1) {
+                try {
+                    if (st.executeUpdate() == 1) {
                         try (ResultSet rs = st.getGeneratedKeys()) {
-                            while(rs.next()){
+                            while (rs.next()) {
                                 int i = rs.getInt(1);
                                 //set the city id generated at the database
                                 _agentFormBean.setId(i);
                             }
                         }
                     }
-            }catch (Exception MySQLIntegrityConstraintViolationException)
-            {
-                logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
+                } catch (SQLException MySQLIntegrityConstraintViolationException) {
+                    logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
+                }
+                request.setAttribute("subTypeFormBean", this._agentFormBean);
             }
-            request.setAttribute("subTypeFormBean", this._agentFormBean);
+
         }
     }
 
@@ -114,18 +110,19 @@ public class agentModel extends JDSModel{
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("get_agent_by_id");
 
-        PreparedStatement st = conn.prepareStatement(sql);
+        try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
 
-        st.setInt(1, _agentFormBean.getId());
-
-        ResultSet rs = db.executeQueryPreparedStatement(st);
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.agentFormBean");
-            this._agentFormBean = (IAS.Bean.masterdata.agentFormBean) bProc.toBean(rs, type);
+            st.setInt(1, _agentFormBean.getId());
+            // populate the bean from the resultset using the beanprocessor class
+            try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
+                // populate the bean from the resultset using the beanprocessor class
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    Class type = Class.forName("IAS.Bean.masterdata.agentFormBean");
+                    this._agentFormBean = (IAS.Bean.masterdata.agentFormBean) bProc.toBean(rs, type);
+                }
+            }
         }
-        rs.close();
 
         request.setAttribute("agentFormBean", this._agentFormBean);
         return _agentFormBean.getAgentName();
@@ -136,59 +133,57 @@ public class agentModel extends JDSModel{
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("update_agent");
+        try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
+            int paramIndex = 1;
+            st.setString(paramIndex, _agentFormBean.getAgentName());
 
-        PreparedStatement st = conn.prepareStatement(sql);
+            String dateFromDb = _agentFormBean.getRegDate();
+            if (!util.checkDateFormat(dateFromDb)) {
+                dateFromDb = util.changeDateFormat(dateFromDb);
+            }
 
-        int paramIndex = 1;
-        st.setString(paramIndex, _agentFormBean.getAgentName());
-
-        String dateFromDb = _agentFormBean.getRegDate();
-        if(!util.checkDateFormat(dateFromDb))
-        dateFromDb = util.changeDateFormat(dateFromDb);
-
-        st.setDate(++paramIndex, util.dateStringToSqlDate(dateFromDb));
-        st.setString(++paramIndex, _agentFormBean.getAddress());
-        st.setString(++paramIndex, _agentFormBean.getEmailId());
-        st.setString(++paramIndex, _agentFormBean.getCity());
-        st.setString(++paramIndex, _agentFormBean.getDistrict());
-        st.setString(++paramIndex, _agentFormBean.getState());
-        st.setString(++paramIndex, _agentFormBean.getCountry());
-        st.setInt(++paramIndex, _agentFormBean.getPinCode());
-        st.setInt(++paramIndex, _agentFormBean.getDiscount());
-        st.setInt(++paramIndex, _agentFormBean.getId());
-
-        try
-        {
-            db.executeUpdatePreparedStatement(st);
-        }catch (Exception MySQLIntegrityConstraintViolationException)
-        {
+            st.setDate(++paramIndex, util.dateStringToSqlDate(dateFromDb));
+            st.setString(++paramIndex, _agentFormBean.getAddress());
+            st.setString(++paramIndex, _agentFormBean.getEmailId());
+            st.setString(++paramIndex, _agentFormBean.getCity());
+            st.setString(++paramIndex, _agentFormBean.getDistrict());
+            st.setString(++paramIndex, _agentFormBean.getState());
+            st.setString(++paramIndex, _agentFormBean.getCountry());
+            st.setInt(++paramIndex, _agentFormBean.getPinCode());
+            st.setInt(++paramIndex, _agentFormBean.getDiscount());
+            st.setInt(++paramIndex, _agentFormBean.getId());
+            st.executeUpdate();
+        } catch (Exception MySQLIntegrityConstraintViolationException) {
             logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
         }
         request.setAttribute("agentFormBean", this._agentFormBean);
     }
 
     public String searchAgent() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        String xml = null;
+        String xml;
         String sql = Queries.getQuery("search_agent_screen");
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
+        try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql)) {
+            int paramIndex = 1;
 
-        String agentName = request.getParameter("agentName");
-        String city = request.getParameter("city");
+            String agentName = request.getParameter("agentName");
+            String city = request.getParameter("city");
 
-        if(!city.isEmpty())
-            stGet.setString(paramIndex++, "%" + city + "%");
-        else
-            stGet.setString(paramIndex++, "%%");
+            if (!city.isEmpty()) {
+                stGet.setString(paramIndex++, "%" + city + "%");
+            } else {
+                stGet.setString(paramIndex++, "%%");
+            }
 
-        if(!agentName.isEmpty())
-            stGet.setString(paramIndex++, "%" + agentName + "%");
-        else
-            stGet.setString(paramIndex++, "%%");
+            if (!agentName.isEmpty()) {
+                stGet.setString(paramIndex++, "%" + agentName + "%");
+            } else {
+                stGet.setString(paramIndex++, "%%");
+            }
 
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        xml = util.convertResultSetToXML(rs);
+            ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
+            xml = util.convertResultSetToXML(rs);
+        }
+
         return xml;
     }
 }
-

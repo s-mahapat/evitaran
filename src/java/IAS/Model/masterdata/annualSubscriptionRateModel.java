@@ -1,4 +1,3 @@
-
 package IAS.Model.masterdata;
 
 import IAS.Bean.masterdata.annualSubscriptionRateFormBean;
@@ -22,17 +21,13 @@ import java.text.ParseException;
 public class annualSubscriptionRateModel extends JDSModel {
 
     private annualSubscriptionRateFormBean _annualSubscriptionRateFormBean = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
-    private Connection conn;
+    private static final Logger logger = JDSLogger.getJDSLogger(IAS.Model.masterdata.annualSubscriptionRateModel.class.getName());
 
-    public annualSubscriptionRateModel(HttpServletRequest request) throws SQLException{
-
-       super(request);
-       conn = this.getConnection();
-
+    public annualSubscriptionRateModel(HttpServletRequest request) throws SQLException {
+        super(request);
     }
 
-    public synchronized void save () throws IllegalAccessException, InvocationTargetException, SQLException{
+    public synchronized void save() throws IllegalAccessException, InvocationTargetException, SQLException {
         annualSubscriptionRateFormBean annualSubscriptionRateFormBean = new IAS.Bean.masterdata.annualSubscriptionRateFormBean();
         request.setAttribute("annualSubscriptionRateFormBean", annualSubscriptionRateFormBean);
 
@@ -41,67 +36,65 @@ public class annualSubscriptionRateModel extends JDSModel {
         this._annualSubscriptionRateFormBean = annualSubscriptionRateFormBean;
 
         String sql = Queries.getQuery("update_printOrder");
-
-        PreparedStatement st = conn.prepareStatement(sql);
-
-        int paramIndex = 1;
-
-        //st.setInt(paramIndex, _printOrderFormBean.getPrintOrder());
-
-        try
-        {
-            int success = db.executeUpdatePreparedStatement(st);
-        }catch (Exception MySQLIntegrityConstraintViolationException)
-        {
+        try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
+            int paramIndex = 1;
+            int success = st.executeUpdate();
+        } catch (Exception MySQLIntegrityConstraintViolationException) {
             logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
         }
         request.setAttribute("printOrderFormBean", this._annualSubscriptionRateFormBean);
 
     }
 
-    public synchronized String addAndSearch()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public synchronized String addAndSearch() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
         // First check if the entry exist
         String sql = Queries.getQuery("check_subRate");
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("journalGroupName"));
-        stGet.setString(++paramIndex, request.getParameter("subscriberType"));
-        stGet.setString(++paramIndex, request.getParameter("year"));
-        stGet.setString(++paramIndex, request.getParameter("noofYear"));
-        //stGet.setString(++paramIndex, request.getParameter("rate"));
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        // If the entry does not exist, then add to the db
-        if(!rs.next())
-        {
-            sql = Queries.getQuery("add_subRate");
-            PreparedStatement stAdd = conn.prepareStatement(sql);
-            paramIndex = 1;
-            stAdd.setString(paramIndex, request.getParameter("journalGroupName"));
-            stAdd.setString(++paramIndex, request.getParameter("subscriberType"));
-            stAdd.setString(++paramIndex, request.getParameter("year"));
-            stAdd.setString(++paramIndex, request.getParameter("noofYear"));
-            stAdd.setString(++paramIndex, request.getParameter("rate"));
-            int success = db.executeUpdatePreparedStatement(stAdd);
-            //rs = this.db.executeQueryPreparedStatement(stAdd);
-        }
+        String xml = null;
+        try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql)) {
+            int paramIndex = 1;
+            stGet.setString(paramIndex, request.getParameter("journalGroupName"));
+            stGet.setString(++paramIndex, request.getParameter("subscriberType"));
+            stGet.setString(++paramIndex, request.getParameter("year"));
+            stGet.setString(++paramIndex, request.getParameter("noofYear"));
+            //stGet.setString(++paramIndex, request.getParameter("rate"));
+            try (ResultSet rs = stGet.executeQuery()) {
+                // If the entry does not exist, then add to the db
+                if (!rs.next()) {
+                    sql = Queries.getQuery("add_subRate");
+                    PreparedStatement stAdd = conn.prepareStatement(sql);
+                    paramIndex = 1;
+                    stAdd.setString(paramIndex, request.getParameter("journalGroupName"));
+                    stAdd.setString(++paramIndex, request.getParameter("subscriberType"));
+                    stAdd.setString(++paramIndex, request.getParameter("year"));
+                    stAdd.setString(++paramIndex, request.getParameter("noofYear"));
+                    stAdd.setString(++paramIndex, request.getParameter("rate"));
+                    int success = db.executeUpdatePreparedStatement(stAdd);
+                    //rs = this.db.executeQueryPreparedStatement(stAdd);
+                }
 
-        // Now run the search query and display
-        String xml = search();
-        return xml;
+            }
+
+            // Now run the search query and display
+            xml = search();
+        } finally {
+            return xml;
+        }
     }
 
-    public String search()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public String search() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
-        String xml = null;
+        String xml;
         String sql = Queries.getQuery("search_subRate");
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("year"));
-        stGet.setString(++paramIndex, request.getParameter("journalGroupName"));
-        stGet.setString(++paramIndex, request.getParameter("subscriberType"));
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        xml = util.convertResultSetToXML(rs);
+        try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql)) {
+            int paramIndex = 1;
+            stGet.setString(paramIndex, request.getParameter("year"));
+            stGet.setString(++paramIndex, request.getParameter("journalGroupName"));
+            stGet.setString(++paramIndex, request.getParameter("subscriberType"));
+            try (ResultSet rs = stGet.executeQuery()) {
+                xml = util.convertResultSetToXML(rs);
+            }
+        }
         return xml;
     }
 
@@ -109,7 +102,7 @@ public class annualSubscriptionRateModel extends JDSModel {
 
         annualSubscriptionRateFormBean annualSubscriptionRateFormBean = new IAS.Bean.masterdata.annualSubscriptionRateFormBean();
         request.setAttribute("annualSubscriptionRateFormBean", annualSubscriptionRateFormBean);
-
+        String xml;
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, annualSubscriptionRateFormBean);
         this._annualSubscriptionRateFormBean = annualSubscriptionRateFormBean;
@@ -117,13 +110,10 @@ public class annualSubscriptionRateModel extends JDSModel {
         request.setAttribute("printOrderFormBean", this._annualSubscriptionRateFormBean);
 
         String sql = Queries.getQuery("update_printOrder");
+        try (Connection conn = this.getConnection(); ResultSet rs = conn.prepareStatement(sql).executeQuery()) {
+            xml = util.convertResultSetToXML(rs);
+        }
 
-        PreparedStatement st = conn.prepareStatement(sql);
-        //st.setInt(1, this._annualSubscriptionRateFormBean.getYear());
-
-        ResultSet rs = this.db.executeQueryPreparedStatement(st);
-        String xml = null;
-        xml = util.convertResultSetToXML(rs);
         return xml;
     }
 

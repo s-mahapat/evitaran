@@ -15,7 +15,7 @@
                     url : "<%=request.getContextPath()%>/subscription?oper=detail&id=<%=request.getParameter("id")%>&subtypeid=<%=request.getParameter("subtypeid")%>",
                     datatype: 'xml',
                     mtype: 'GET',
-                    height: 240,
+                    height: Constants.jqgrid.HEIGHT,
                     width: '100%',
                     altRows: false,
                     autowidth: true,

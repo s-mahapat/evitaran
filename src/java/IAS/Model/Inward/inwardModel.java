@@ -63,67 +63,65 @@ public class inwardModel extends JDSModel {
         String sql;
         int rc;
         int inwardID = 0;
-        Connection conn = this.getConnection();
-
         //throw new SQLException("Generated this exception");
-
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
-        FillBean(this.request, inwardFormBean);
-        this._inwardFormBean = inwardFormBean;
+        try (Connection conn = this.getConnection()) {
+            //throw new SQLException("Generated this exception");
+            //FillBean is defined in the parent class IAS.Model/JDSModel.java
+            FillBean(this.request, inwardFormBean);
+            this._inwardFormBean = inwardFormBean;
 
-        // check that the inward number is not present on the screen, if present means its and edit inward else create new inward.
-        //start of transaction
-        conn.setAutoCommit(false);
-        if (inwardFormBean.getInwardNumber().isEmpty() == false) {
-            rc = this._updateInward();
-        } else {
+            // check that the inward number is not present on the screen, if present means its and edit inward else create new inward.
+            //start of transaction
+            conn.setAutoCommit(false);
+            if (inwardFormBean.getInwardNumber().isEmpty() == false) {
+                rc = this._updateInward();
+            } else {
 
-            //get the next inward number
-            inwardFormBean.setInwardNumber(getNextInwardNumber());
+                //get the next inward number
+                inwardFormBean.setInwardNumber(getNextInwardNumber());
 
-            // the query name from the jds_sql properties files in WEB-INF/properties folder
-            sql = Queries.getQuery("insert_inward");
+                // the query name from the jds_sql properties files in WEB-INF/properties folder
+                sql = Queries.getQuery("insert_inward");
 
-            PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            // fill in the statement params
-            this._setNewInwardStatementParams(st);
+                // fill in the statement params
+                this._setNewInwardStatementParams(st);
 
-            rc = st.executeUpdate();
+                rc = st.executeUpdate();
 
-            try (ResultSet rs = st.getGeneratedKeys()) {
-                rs.first();
-                inwardID = rs.getInt(1);
-                rs.close();
-            } catch (SQLException e) {
-                throw (new SQLException(e));
-            }
+                try (ResultSet rs = st.getGeneratedKeys()) {
+                    rs.first();
+                    inwardID = rs.getInt(1);
+                    rs.close();
+                } catch (SQLException e) {
+                    throw (new SQLException(e));
+                }
 
-
-            int subscriptionID = inwardFormBean.getSubscriptionID();
-            //update the payment info if subscription id is not null
-            if (subscriptionID != 0 && rc == 1) {
-                sql = Queries.getQuery("insert_payment");
-                try (PreparedStatement pst = conn.prepareStatement(sql)) {
+                int subscriptionID = inwardFormBean.getSubscriptionID();
+                //update the payment info if subscription id is not null
+                if (subscriptionID != 0 && rc == 1) {
+                    sql = Queries.getQuery("insert_payment");
+                    try (PreparedStatement pst = conn.prepareStatement(sql)) {
+                        pst.setInt(1, inwardID);
+                        pst.setInt(2, subscriptionID);
+                        rc = pst.executeUpdate();
+                    }
+                }
+                //update inward-agent details
+                String agentName = inwardFormBean.getAgentName();
+                if (!agentName.isEmpty() && rc == 1) {
+                    sql = Queries.getQuery("insert_in_agent_dtls");
+                    PreparedStatement pst = conn.prepareStatement(sql);
                     pst.setInt(1, inwardID);
-                    pst.setInt(2, subscriptionID);
+                    pst.setString(2, agentName);
                     rc = pst.executeUpdate();
                 }
             }
-            //update inward-agent details
-            String agentName = inwardFormBean.getAgentName();
-            if (!agentName.isEmpty() && rc == 1) {
-                sql = Queries.getQuery("insert_in_agent_dtls");
-                PreparedStatement pst = conn.prepareStatement(sql);
-                pst.setInt(1, inwardID);
-                pst.setString(2, agentName);
-                rc = pst.executeUpdate();
-            }
+            conn.commit();
+            conn.setAutoCommit(true);
         }
-        conn.commit();
-        conn.setAutoCommit(true);
-
-        this.CloseConnection(conn);
         return rc;
 
     }
@@ -192,24 +190,25 @@ public class inwardModel extends JDSModel {
 
     public inwardFormBean getChequeReturnDetails(String inwardNumber, int chq_no) throws SQLException {
 
-        Connection _conn = this.getConnection();
         inwardFormBean _inwardFormBean2return;
-        String sql = Queries.getQuery("print_email_chq_return");
+        try (Connection _conn = this.getConnection()) {
+            String sql = Queries.getQuery("print_email_chq_return");
 
-        ResultSetHandler<inwardFormBean> h = new ResultSetHandler<inwardFormBean>() {
-            @Override
-            public inwardFormBean handle(ResultSet rs) throws SQLException {
-                inwardFormBean inwardFormBean = null;
-                while (rs.next()) {
-                    BeanProcessor bProc = new BeanProcessor();
-                    inwardFormBean = bProc.toBean(rs, IAS.Bean.Inward.inwardFormBean.class);
+            ResultSetHandler<inwardFormBean> h = new ResultSetHandler<inwardFormBean>() {
+                @Override
+                public inwardFormBean handle(ResultSet rs) throws SQLException {
+                    inwardFormBean inwardFormBean = null;
+                    while (rs.next()) {
+                        BeanProcessor bProc = new BeanProcessor();
+                        inwardFormBean = bProc.toBean(rs, IAS.Bean.Inward.inwardFormBean.class);
+                    }
+                    return inwardFormBean;
                 }
-                return inwardFormBean;
-            }
-        };
+            };
 
-        QueryRunner run = new QueryRunner();
-        _inwardFormBean2return = run.query(_conn, sql, h, inwardNumber, chq_no);
+            QueryRunner run = new QueryRunner();
+            _inwardFormBean2return = run.query(_conn, sql, h, inwardNumber, chq_no);
+        }
         return _inwardFormBean2return;
     }
 
@@ -219,15 +218,14 @@ public class inwardModel extends JDSModel {
         int rc = 0;
 
         // get the connection from base class
-        Connection conn = this.getConnection();
-
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("update_inward");
 
-        // mulitple tables are updated, so it should be done in a transaction
-        conn.setAutoCommit(false);
+        
 
-        try (PreparedStatement st = conn.prepareStatement(sql)) {
+        try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
+            // mulitple tables are updated, so it should be done in a transaction
+            conn.setAutoCommit(false);
             this._setUpdateInwardStatementParams(st);
             rc = st.executeUpdate();
 
@@ -265,11 +263,8 @@ public class inwardModel extends JDSModel {
             conn.commit();
             conn.setAutoCommit(true);
         } finally {
-            // close the connection
-            conn.close();
             return rc;
         }
-
 
     }
 
@@ -279,31 +274,22 @@ public class inwardModel extends JDSModel {
         String sql;
         inwardFormBean inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
 
-        // get the connection from base class
-        Connection conn = this.getConnection();
-
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, inwardFormBean);
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("get_inward_by_number");
+        try (Connection conn = this.getConnection();
+                PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, inwardFormBean.getInwardNumber());
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    inwardFormBean = bProc.toBean(rs, IAS.Bean.Inward.inwardFormBean.class);
 
-        PreparedStatement st = conn.prepareStatement(sql);
-
-        st.setString(1, inwardFormBean.getInwardNumber());
-
-        try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
-            while (rs.next()) {
-                BeanProcessor bProc = new BeanProcessor();
-                inwardFormBean = bProc.toBean(rs, IAS.Bean.Inward.inwardFormBean.class);
-
+                }
             }
-            rs.close();
-            st.close();
         }
-
-        // close the connection
-        this.CloseConnection(conn);
 
         //request.setAttribute("inwardFormBean", inwardFormBean);
         return inwardFormBean;
@@ -417,18 +403,15 @@ public class inwardModel extends JDSModel {
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException {
 
         String nextInward;
-
-        // get the connection from base class
-        Connection conn = this.getConnection();
-
         //get the last inward number from inward table
         String lastInwardSql = Queries.getQuery("get_last_inward");
         Calendar calendar;
         String lastInward;
         int lastInwardYear;
 
-        PreparedStatement pst = conn.prepareStatement(lastInwardSql);
-        try (ResultSet rs = pst.executeQuery()) {
+        try (Connection conn = this.getConnection();
+                PreparedStatement pst = conn.prepareStatement(lastInwardSql);
+                ResultSet rs = pst.executeQuery()) {
             calendar = Calendar.getInstance();
             //ResultSetMetaData rsmd = rs.getMetaData();
             lastInward = null;
@@ -455,7 +438,6 @@ public class inwardModel extends JDSModel {
             //increment
             ++inward;
 
-
             //apend the year, month character and new inward number.
             nextInward = lastInward.substring(0, 2) + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + String.format("%05d", inward);
         } else {
@@ -463,9 +445,6 @@ public class inwardModel extends JDSModel {
             String year = String.valueOf(calendar.get(Calendar.YEAR)).substring(2);
             nextInward = year + getMonthToCharacterMap(calendar.get(Calendar.MONTH)) + "-" + String.format("%05d", 1);
         }
-
-        // close the connection
-        this.CloseConnection(conn);
 
         return nextInward;
     }
@@ -487,13 +466,9 @@ public class inwardModel extends JDSModel {
         String completed = request.getParameter("completed");
         int totalQueryCount;
 
-        // get the connection from base class
-        Connection conn = this.getConnection();
-
         if (from != null && from.length() > 0) {
             sql += " and t1.from like" + "'%" + from + "%'";
         }
-
 
         if (inwardNumber != null && inwardNumber.length() > 0) {
             sql += " and inwardNumber like" + "'%" + inwardNumber + "%'";
@@ -523,9 +498,10 @@ public class inwardModel extends JDSModel {
         // if the user selects ALL from the UI then do not limit the number of rows that are displayed
         if (pageSize > 0) {
             String sql_count = "select count(*) from (" + sql + ") as tbl";
-            PreparedStatement pst;
-            pst = conn.prepareStatement(sql_count);
-            try (ResultSet rs_count = pst.executeQuery();) {
+
+            try (Connection conn = this.getConnection();
+                    PreparedStatement pst = conn.prepareStatement(sql_count);
+                    ResultSet rs_count = pst.executeQuery();) {
                 rs_count.first();
                 totalQueryCount = rs_count.getInt(1);
             }
@@ -533,22 +509,21 @@ public class inwardModel extends JDSModel {
             int start = (pageNumber - 1) * pageSize;
             sql += " LIMIT " + start + "," + pageSize;
 
-            try (PreparedStatement pstatement = conn.prepareStatement(sql);) {
+            try (Connection conn = this.getConnection();
+                    PreparedStatement pstatement = conn.prepareStatement(sql);) {
                 try (ResultSet rs = pstatement.executeQuery();) {
                     xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
                 }
             }
         } else {
             // this is executed when the user selects all from the UI
-            try (PreparedStatement pstatement = conn.prepareStatement(sql);) {
+            try (Connection conn = this.getConnection();
+                    PreparedStatement pstatement = conn.prepareStatement(sql);) {
                 try (ResultSet rs = pstatement.executeQuery();) {
                     xml = util.convertResultSetToXML(rs);
                 }
             }
         }
-
-        // close the connection
-        this.CloseConnection(conn);
 
         return xml;
     }
@@ -562,32 +537,27 @@ public class inwardModel extends JDSModel {
         int pageSize = Integer.parseInt(request.getParameter("rows"));
         //String orderBy = request.getParameter("sidx");
         //String sortOrder = request.getParameter("sord");
+        try ( // get the connection from base class
+                Connection conn = this.getConnection();) {
+            int totalQueryCount;
+            String sql_count = "select count(*) from (" + sql + ") as tbl";
+            try (PreparedStatement pst = conn.prepareStatement(sql_count);) {
+                pst.setString(1, subscriberNumber);
+                try (ResultSet rs_count = pst.executeQuery();) {
+                    rs_count.first();
+                    totalQueryCount = rs_count.getInt(1);
+                }
+            }
+            try (PreparedStatement pst = conn.prepareStatement(ajax_sql)) {
+                pst.setString(1, subscriberNumber);
+                pst.setInt(2, (pageSize * (pageNumber - 1)));
+                pst.setInt(3, pageSize);
+                try (ResultSet rs = pst.executeQuery();) {
+                    xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+                }
 
-        // get the connection from base class
-        Connection conn = this.getConnection();
-
-        int totalQueryCount;
-
-        String sql_count = "select count(*) from (" + sql + ") as tbl";
-        try (PreparedStatement pst = conn.prepareStatement(sql_count);) {
-            pst.setString(1, subscriberNumber);
-            try (ResultSet rs_count = pst.executeQuery();) {
-                rs_count.first();
-                totalQueryCount = rs_count.getInt(1);
             }
         }
-        try (PreparedStatement pst = conn.prepareStatement(ajax_sql)) {
-            pst.setString(1, subscriberNumber);
-            pst.setInt(2, (pageSize * (pageNumber - 1)));
-            pst.setInt(3, pageSize);
-            try (ResultSet rs = pst.executeQuery();) {
-                xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
-            }
-
-        }
-
-        // close the connection
-        this.CloseConnection(conn);
 
         return xml;
     }
@@ -605,38 +575,30 @@ public class inwardModel extends JDSModel {
         String sortOrder = request.getParameter("sord");
         int totalQueryCount = 0;
 
-        // get the connection from base class
-        Connection conn = this.getConnection();
-
-        if (inwardPurpose != null && inwardPurpose.compareToIgnoreCase("NULL") != 0 && inwardPurpose.length() > 0) {
-            sql += " and t3.purpose =" + "'" + inwardPurpose + "'";
-        }
-
-        if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
-            sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
-        }
-
-        sql += " order by t1.id desc, sortdate " + sortOrder;
-
-        String sql_count = "select count(*) from (" + sql + ") as tbl";
-
-        try (PreparedStatement pst = conn.prepareStatement(sql_count);) {
-            try (ResultSet rs_count = pst.executeQuery();) {
-                rs_count.first();
-                totalQueryCount = rs_count.getInt(1);
+        try ( // get the connection from base class
+                Connection conn = this.getConnection();) {
+            if (inwardPurpose != null && inwardPurpose.compareToIgnoreCase("NULL") != 0 && inwardPurpose.length() > 0) {
+                sql += " and t3.purpose =" + "'" + inwardPurpose + "'";
+            }
+            if (fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0) {
+                sql += " and inwardCreationDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
+            }
+            sql += " order by t1.id desc, sortdate " + sortOrder;
+            String sql_count = "select count(*) from (" + sql + ") as tbl";
+            try (PreparedStatement pst = conn.prepareStatement(sql_count);) {
+                try (ResultSet rs_count = pst.executeQuery();) {
+                    rs_count.first();
+                    totalQueryCount = rs_count.getInt(1);
+                }
+            }
+            int start = (pageNumber - 1) * pageSize;
+            sql += " LIMIT " + start + "," + pageSize;
+            try (PreparedStatement pstatement = conn.prepareStatement(sql);) {
+                try (ResultSet rs = pstatement.executeQuery();) {
+                    xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
+                }
             }
         }
-
-        int start = (pageNumber - 1) * pageSize;
-        sql += " LIMIT " + start + "," + pageSize;
-        try (PreparedStatement pstatement = conn.prepareStatement(sql);) {
-            try (ResultSet rs = pstatement.executeQuery();) {
-                xml = util.convertResultSetToXML(rs, pageNumber, pageSize, totalQueryCount);
-            }
-        }
-
-        // close the connection
-        this.CloseConnection(conn);
 
         return xml;
     }
@@ -712,25 +674,23 @@ public class inwardModel extends JDSModel {
     public subscriberFormBean getSubscriberDetails(String SubscriberNo) throws SQLException, ParseException, ParserConfigurationException, TransformerException, ClassNotFoundException {
 
         // get the connection from connection pool
-        Connection conn = this.getConnection();
         String sql;
         subscriberFormBean _subscriberFormBean = new IAS.Bean.Subscriber.subscriberFormBean();
         sql = Queries.getQuery("get_subscriber_by_number");
-        PreparedStatement st = conn.prepareStatement(sql);
-        st.setString(1, SubscriberNo);
 
-        try (ResultSet rs = st.executeQuery()) {
-            while (rs.next()) {
-                BeanProcessor bProc = new BeanProcessor();
-                Class type = Class.forName("IAS.Bean.Subscriber.subscriberFormBean");
-                _subscriberFormBean = (IAS.Bean.Subscriber.subscriberFormBean) bProc.toBean(rs, type);
+        try (Connection conn = this.getConnection();
+                PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, SubscriberNo);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    Class type = Class.forName("IAS.Bean.Subscriber.subscriberFormBean");
+                    _subscriberFormBean = (IAS.Bean.Subscriber.subscriberFormBean) bProc.toBean(rs, type);
+                }
+                rs.close();
             }
-            rs.close();
+
         }
-
-        // return the connection back to the pool
-        this.CloseConnection(conn);
-
         request.setAttribute("subscriberFormBean", _subscriberFormBean);
         return _subscriberFormBean;
     }
@@ -767,20 +727,25 @@ public class inwardModel extends JDSModel {
 
     /**
      * inward_number: inward to: new inward type code from database
+     *
+     * @param inward_number
+     * @param to
+     * @return
+     * @throws java.sql.SQLException
      */
     public int modifyInwardPurpose(String inward_number, int to) throws SQLException {
         String sql = Queries.getQuery("change_inward_type");
-        Connection conn = this.getConnection();
+
         int rc = 0;
 
-        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+        try (Connection conn = this.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, to);
             pst.setString(2, inward_number);
             rc = pst.executeUpdate();
         } catch (Exception ex) {
             // no op
         } finally {
-            conn.close();
             return rc;
         }
     }
@@ -788,15 +753,14 @@ public class inwardModel extends JDSModel {
     public int invalidateInward(String inward_number) throws SQLException {
         int rc = 0;
         String sql = Queries.getQuery("invalidate_inward");
-        Connection conn = this.getConnection();
-        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+        try (Connection conn = this.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setBoolean(1, false);
             pst.setString(2, inward_number);
             rc = pst.executeUpdate();
         } catch (Exception ex) {
             // no op
         } finally {
-            conn.close();
             return rc;
         }
     }

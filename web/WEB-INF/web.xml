@@ -34,9 +34,12 @@
         <url-pattern>/jsp/home.jsp</url-pattern>
         <url-pattern>/main</url-pattern>
         <url-pattern>/addMasterData</url-pattern>
+        <url-pattern>/j_security_check</url-pattern>
+        <url-pattern>/main2</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
     </filter-mapping>
     <listener>
         <listener-class>IAS.Class.Database</listener-class>
@@ -245,6 +248,10 @@
         <servlet-name>generatemil</servlet-name>
         <servlet-class>IAS.Controller.missingissue.generatemil</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>IAS.Controller.LogoutController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -430,6 +437,10 @@
     <servlet-mapping>
         <servlet-name>generatemil</servlet-name>
         <url-pattern>/generatemil</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/LogoutController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

@@ -88,7 +88,7 @@ function getSubscriptionInfo(){
         url: "subscription?action=subscriptioninfo&id=" + $("#subscriptionID").val(),
         success: function(xmlResponse, textStatus, jqXHR){
 
-            $(xmlResponse).find("results").find("row").each(function(){
+            $(xmlResponse).find("results").each(function(){
 
                 var agentName = $(this).find("agentName").text();
 

@@ -2,10 +2,10 @@
 <jsp:useBean class="IAS.Bean.Inward.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
 <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
 <script>
-    $(document).ajaxStop(function(){
+    $(document).ajaxStop(function() {
         MakePaymentFieldsMandatory();
     });
-    $(document).ready(function(){
+    $(document).ready(function() {
         $("#subscriberId").focus();
 
         // get the inward complete state from the bean
@@ -13,9 +13,9 @@
 
         // disable the send return button if the inward is not complete yet
         // perform other actions that are required when inward is not complete inside this
-        if(iscomplete == false){
+        if (iscomplete == false) {
             //$("#btnSendReturn").button("disable");
-        }else{
+        } else {
             // do not let the user modify the inward or send
             // chq return once the inward in complete
             $("#btnEditInward").hide();
@@ -23,59 +23,114 @@
         }
 
         $(function() {
-            $( "#btnSearchSubscriber" )
-            .button({ icons: { primary: "ui-icon-circle-zoomin"} })
-            .click(function() {
-                validateSearchSubscriber();
-                return false;
-            })
+            $("#btnSearchSubscriber")
+                    .button({icons: {primary: "ui-icon-circle-zoomin"}})
+                    .click(function() {
+                        validateSearchSubscriber();
+                        return false;
+                    });
         });
 
         $(function() {
-            $( "#btnResetSubscriber" )
-            .button({ icons: { primary: "ui-icon-trash"} })
-            .click(function() {
-                clearSubscriber();
-                return false;
-            })
+            $("#btnResetSubscriber")
+                    .button({icons: {primary: "ui-icon-trash"}})
+                    .click(function() {
+                        clearSubscriber();
+                        return false;
+                    });
         });
 
         $(function() {
-            $( "#btnUE" )
-            .button("disable")
-            .click(function(){$("#agentName").val("");$("#agentName").change();return false;})
-            .parent()
-            .buttonset();
+            $("#btnUE")
+                    .button("disable")
+                    .click(function() {
+                        $("#agentName").val("");
+                        $("#agentName").change();
+                        return false;
+                    })
+                    .parent()
+                    .buttonset();
+        });
+
+        $(function() {
+            $("#add-new-city").button()
+                    .click(function() {
+                        $("#new-city-dialog-form").dialog("open");
+                    });
         });
 
 
-        $("#inwardPurpose").change(function(){
+        $("#inwardPurpose").change(function() {
             var inward_purpose = $("#inwardPurpose").val();
             // if the inward type is new subscription disable the search subscriber button
-            if(inward_purpose.toLowerCase() == 0){
-                $( "#btnSearchSubscriber" ).button("disable");
+            if (inward_purpose.toLowerCase() == 0) {
+                $("#btnSearchSubscriber").button("disable");
                 $("#btnResetSubscriber").button("disable");
-            }else{
-                $( "#btnSearchSubscriber" ).button("enable");
+            } else {
+                $("#btnSearchSubscriber").button("enable");
                 $("#btnResetSubscriber").button("enable");
             }
         });
 
-        $("#agentName").change(function(){
+        $("#agentName").change(function() {
             // disable the search subscriber and reset button
-            if(!isEmptyValue($("#agentName").val())){
+            if (!isEmptyValue($("#agentName").val())) {
                 $("#btnSearchSubscriber").button("disable");
                 $("#btnResetSubscriber").button("disable");
                 $("#btnUE").button("enable");
                 $("#btnResetUE").button("enable");
             }
-            else{
+            else {
                 $("#btnSearchSubscriber").button("enable");
                 $("#btnResetSubscriber").button("enable");
                 $("#btnUE").button("disable");
                 $("#btnResetUE").button("disable");
             }
         });
+
+        $("#new-city-dialog-form").dialog({
+            autoOpen: false,
+            height: 200,
+            width: 250,
+            modal: true,
+            buttons: {
+                Save: function() {
+                    var new_city = $("#newcity").val();
+                    if(new_city === ""){
+                        return;
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "<%=request.getContextPath()%>" + "/city?action=add&city=" + new_city,
+                        async: false,
+                        dataType: "json",
+                        success: function(json) {
+                            id = json['id'];
+                            message = json['message'];                            
+                            if(parseInt(id) > 0){
+                                $("#city-add-message").removeClass("ui-state-error-text");
+                                $("#city-add-message").addClass("ui-state-highlight");
+                                $("#city").val(new_city);                                
+                            }else{
+                                $("#city-add-message").addClass("ui-state-error-text");
+                            }
+                            $("#city-add-message").text(message);
+                        },
+                        error: function() {
+                            alert("Error getting data from server");
+                        }
+                    });
+                },
+                Cancel: function() {
+                    $(this).dialog("close");
+                }
+            },
+            close: function() {
+                $("#city-add-message").val("").removeClass("ui-state-error-text");
+                $("#city-add-message").val("").removeClass("ui-state-highlight");
+            }
+        });
+
     });
 </script>
 <%-----------------------------------------------------------------------------------------------------%>
@@ -94,7 +149,7 @@
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input autocomplete="off" class="IASTextBox" TABINDEX="1" type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}" onblur="removeInvalidSubscriber()"/>
-                <span class="" style="font-size: 0.75em; float: next; vertical-align: top;">
+                <span class="" style="font-size: 0.85em; float: next; vertical-align: top;">
                     <button type="button" id="btnSearchSubscriber" TABINDEX="2">Search</button>
                     <button type="button" id="btnResetSubscriber" TABINDEX="3">Reset</button>
                 </span>
@@ -152,7 +207,7 @@
                                out.println(inwardFormBean.getDistrict());
                            }
                        %>"/>
-                       <%--<jsp:getProperty name="inwardFormBean" property="district"/>"/>--%>
+                <%--<jsp:getProperty name="inwardFormBean" property="district"/>"/>--%>
             </span>
         </div>
         <div class="IASFormFieldDiv">
@@ -161,7 +216,19 @@
             </span>
             <span class="IASFormDivSpanInputBox">
                 <input class="IASTextBoxMandatory required" TABINDEX="8" name="city" id="city" value="<jsp:getProperty name="inwardFormBean" property="city"/>"/>
+                <span class="" style="font-size: 0.85em; float: next; vertical-align: top;">
+                    <button type="button" id="add-new-city">Add city</button>
+                </span>
             </span>
+
+            <div id="new-city-dialog-form" title="New city" >
+                <p class="validateTips">All form fields are required.</p>
+                <form>
+                    <label for="name">City Name</label>
+                    <input type="text" name="newcity" id="newcity" class="text ui-widget-content ui-corner-all" >
+                </form>
+                <p class="" id="city-add-message"></p>
+            </div>
         </div>
         <div class="IASFormFieldDiv">
             <span class="IASFormDivSpanLabel">
@@ -455,8 +522,8 @@
 <fieldset class="subMainFieldSet">
     <div class="actionBtnDiv">
         <button onclick="setActionValue('save');" TABINDEX="29" class="IASButton SaveButton" id="btnSaveInward" name="submitAction"/>Save</button>
-        <button onclick="location.href='inward?action=view&inwardNumber=${inwardFormBean.inwardNumber}';" type="button" TABINDEX="30" class="IASButton CancelButton" id="btnCancel">Cancel</button>
-        <input onclick="location.href='main?action=createinward';" TABINDEX="31" class="IASButton" type="button" value="New Inward" id="btnNewInward" name="btnNewInward"/>
+        <button onclick="location.href = 'inward?action=view&inwardNumber=${inwardFormBean.inwardNumber}';" type="button" TABINDEX="30" class="IASButton CancelButton" id="btnCancel">Cancel</button>
+        <input onclick="location.href = 'main?action=createinward';" TABINDEX="31" class="IASButton" type="button" value="New Inward" id="btnNewInward" name="btnNewInward"/>
         <input onclick="setActionValue('edit');" TABINDEX="32" class="IASButton" type="submit" value="Edit Inward" id="btnEditInward" name="submitAction"/>
         <input onclick="setActionValue('sendAck');" TABINDEX="32" class="IASButton" type="submit" value="Send Acknowledgement" id="btnSendAck" name="submitAction"/>
         <input onclick="setActionValue('sendReturn');" TABINDEX="34" class="IASButton" type="submit" value="Send Return" id="btnSendReturn" name="submitAction"/>

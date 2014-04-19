@@ -6,13 +6,14 @@ import IAS.Class.util;
 import IAS.Model.Subscriber.subscriberModel;
 import IAS.Model.Subscription.SubscriptionModel;
 import java.io.IOException;
-import java.sql.ResultSet;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.log4j.Logger;
+import IAS.Class.Ajax.AjaxResponse;
+import com.thoughtworks.xstream.XStream;
+import java.util.List;
 
 public class subscription extends JDSController {
 
@@ -82,33 +83,18 @@ public class subscription extends JDSController {
                 url = "/xmlserver";
             } else if ((action != null) && action.equalsIgnoreCase("edit")) {
 
-                // fill in the subscriber bean
-                ResultSet rs;
-
-                rs = _subscriptionModel.getSubscriptionByID(Integer.parseInt(request.getParameter("id")));
-
-                IAS.Bean.Subscription.SubscriptionFormBean _SubscriptionFormBean = null;
-
-                while (rs.next()) {
-                    BeanProcessor bProc = new BeanProcessor();
-
-                    _SubscriptionFormBean = bProc.toBean(rs, IAS.Bean.Subscription.SubscriptionFormBean.class);
-                }
-
-                rs.close();
+                IAS.Bean.Subscription.SubscriptionFormBean _SubscriptionFormBean = _subscriptionModel.getSubscriptionByID(Integer.parseInt(request.getParameter("id")));
 
                 if (_subscriberModel.GetSubscriber() != null) {
                     request.setAttribute("SubscriptionFormBean", _SubscriptionFormBean);
                     url = "/jsp/subscription/editsubscription.jsp";
                 }
-            } else if (action.equalsIgnoreCase("subscriptioninfo")) {
-                String xml;
-
-                try (ResultSet rs =
-                                _subscriptionModel.getSubscriptionByID(Integer.parseInt(request.getParameter("id")))) {
-                    xml = util.convertResultSetToXML(rs);
-                }
-
+            } else if ((action != null) && action.equalsIgnoreCase("subscriptioninfo")) {
+                String xml = null;
+                IAS.Bean.Subscription.SubscriptionFormBean _SubscriptionFormBean = _subscriptionModel.getSubscriptionByID(Integer.parseInt(request.getParameter("id")));
+                XStream xstream = new XStream();
+                xstream.alias("results", IAS.Bean.Subscription.SubscriptionFormBean.class);
+                xml = xstream.toXML(_SubscriptionFormBean);
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
             } else if (oper.equalsIgnoreCase("edit")) {
@@ -212,8 +198,7 @@ public class subscription extends JDSController {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -227,8 +212,7 @@ public class subscription extends JDSController {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

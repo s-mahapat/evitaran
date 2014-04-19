@@ -10,6 +10,7 @@ function makeInwardReadOnly() {
     $("#btnCancel").hide();
     $("#btnSearchSubscriber").button("disable");
     $("#btnResetSubscriber").button("disable");
+    $("#add-new-city").button("disable");
     $("#btnNewInward").button("enable");
     $("#paymentDate").attr("readonly", true);
     $("#chequeDDReturn").attr("disabled", true);

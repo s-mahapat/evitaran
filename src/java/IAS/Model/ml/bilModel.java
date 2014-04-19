@@ -2,21 +2,15 @@ package IAS.Model.ml;
 
 import IAS.Bean.MailingList.mlFormBean;
 import IAS.Model.JDSModel;
-import com.itextpdf.text.DocumentException;
-import java.io.IOException;
 import javax.xml.transform.TransformerException;
 import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import IAS.Class.Queries;
-import IAS.Class.convertToPdf;
 import IAS.Class.util;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import javax.xml.parsers.ParserConfigurationException;
 import java.text.ParseException;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -26,12 +20,10 @@ public class bilModel extends JDSModel {
 
     private mlFormBean _mlFormBean = null;
     private static final Logger logger = JDSLogger.getJDSLogger(bilModel.class.getName());
-    private Connection conn;
 
     public bilModel(HttpServletRequest request) throws SQLException {
-
         super(request);
-        conn = this.getConnection();
+
     }
 
     public String searchGen(String bilIDsForDisplay) throws SQLException, ParseException, ParserConfigurationException, TransformerException {
@@ -51,7 +43,7 @@ public class bilModel extends JDSModel {
         xml = util.convertResultSetToXML(rs);
         return xml;
     }
-    
+
     public ResultSet getBILDtlUi(String bilIDsForDisplay) throws SQLException {
 
         String fromDate = request.getParameter("from");
@@ -73,7 +65,7 @@ public class bilModel extends JDSModel {
         } else {
             sql += bilIDsForDisplay;
         }
-
+        Connection conn = this.getConnection();
         PreparedStatement stGet = conn.prepareStatement(sql);
         //int paramIndex = 1;
         //stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
@@ -102,7 +94,7 @@ public class bilModel extends JDSModel {
         } else {
             sql += " and back_issue_list.added_on between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
-
+        Connection conn = this.getConnection();
         PreparedStatement stGet = conn.prepareStatement(sql);
         //int paramIndex = 1;
         //stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
@@ -130,7 +122,7 @@ public class bilModel extends JDSModel {
         } else {
             sql += " and back_issue_list.added_on between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
-
+        Connection conn = this.getConnection();
         PreparedStatement stGet = conn.prepareStatement(sql);
         //int paramIndex = 1;
         //stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
@@ -144,7 +136,6 @@ public class bilModel extends JDSModel {
         String xml = null;
         //int i = 0;
         Connection conn = this.getConnection();
-
 
         // Get the records from back_issue_list where bil is not generated.
         // Prepare insert string string for bil to ml_dtl
@@ -172,10 +163,9 @@ public class bilModel extends JDSModel {
             sql += " and back_issue_list.added_on between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
 
-
         String sqlInsBil = Queries.getQuery("insert_mldtl_bil");
         PreparedStatement stInsMlBil = conn.prepareStatement(sqlInsBil);
-        
+
         String bilIDsForDisplay = " and mailing_list_detail.bilid in (";
 
         try (PreparedStatement stGet = conn.prepareStatement(sql);) {
@@ -206,7 +196,7 @@ public class bilModel extends JDSModel {
                     stUpdBil.executeUpdate();
                     //db.executeUpdatePreparedStatement(stUpdBil);
                     bilIDsForDisplay = bilIDsForDisplay + bilid;
-                    if(!rs.isLast()) {
+                    if (!rs.isLast()) {
                         bilIDsForDisplay = bilIDsForDisplay + ",";
                     }
                 }
@@ -216,7 +206,7 @@ public class bilModel extends JDSModel {
             logger.error(e);
         } finally {
             conn.close();
-            if(bilIDsForDisplay.contains("()")) {
+            if (bilIDsForDisplay.contains("()")) {
                 xml = xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n" + "<results>" + "</results>";
             } else {
                 xml = this.searchGen(bilIDsForDisplay);

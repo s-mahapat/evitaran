@@ -4,9 +4,6 @@
 
 <link rel="shortcut icon" href="<%=request.getContextPath() + "/images/favicon.ico"%>" type="image/x-icon" />
 
-<script src="<%=request.getContextPath() + "/js/common.js"%>" type="text/javascript"></script>
-<script src="<%=request.getContextPath() + "/js/jdsconstants.js"%>" type="text/javascript"></script>
-
 <%-- jquery Core --%>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery-1.9.0.min.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.validate.min.js"%>" type="text/javascript"></script>
@@ -21,5 +18,7 @@
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.jqGrid.min.js"%>" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/ui.jqgrid.css"%>"/>
 
+<script src="<%=request.getContextPath() + "/js/common.js"%>" type="text/javascript"></script>
+<script src="<%=request.getContextPath() + "/js/jdsconstants.js"%>" type="text/javascript"></script>
 <%-- jquery hot keys
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.hotkeys.js"%>" type="text/javascript"></script> --%>

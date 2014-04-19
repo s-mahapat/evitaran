@@ -11,9 +11,9 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -35,7 +35,6 @@ public class LoginFilter implements Filter {
     private static final boolean debug = false;
     private static final String jdbcDriver = "com.mysql.jdbc.Driver";
     private static final Logger logger = JDSLogger.getJDSLogger(home.class.getName());
-    private Connection connection;
     private ServletContext context;
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
@@ -47,8 +46,6 @@ public class LoginFilter implements Filter {
         try {
             Class.forName(jdbcDriver);    // set Java database connectivity driver
         } catch (ClassNotFoundException e) {
-            logger.error(e.getMessage());
-        } catch (Exception e) {
             logger.error(e.getMessage());
         }
     }
@@ -63,11 +60,10 @@ public class LoginFilter implements Filter {
 
         // For example, a logging filter might log items on the request object,
         // such as the parameters.
-
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
+            throws IOException, ServletException, SQLException {
         if (debug) {
             log("LoginFilter:DoAfterProcessing");
         }
@@ -78,33 +74,15 @@ public class LoginFilter implements Filter {
         // the rest of the filter chain is invoked.
         HttpServletRequest req = (HttpServletRequest) request;
         HttpSession session = req.getSession(false);
-        LoggedInUserBean ubean = (LoggedInUserBean)session.getAttribute("userBean");
+        LoggedInUserBean ubean = (LoggedInUserBean) session.getAttribute("userBean");
 
         // if the user bean is already populated, we do not need
         // to create the bean and connection again.
         if (ubean == null && req.getUserPrincipal() != null) {
             synchronized (session) {
                 // get the connection from the session if it exists.
-                try {
-                    connection = (Connection) session.getAttribute("connection");
-
-                    if (connection == null) {
-                        String username = context.getInitParameter("db_user");
-                        String password = context.getInitParameter("db_password");
-                        String dbURL = context.getInitParameter("db_driver") + "://"
-                                + context.getInitParameter("db_host") + "/"
-                                + context.getInitParameter("db_name");
-
-                        connection = DriverManager.getConnection(dbURL, username, password);
-                        session.setAttribute("connection", connection);
-                    }
-
-                    connection.setAutoCommit(true);
-
-                    // db = new Database(connection);
-                    // session.setAttribute("db_connection", db);
+                try (Connection conn = Database.getConnection()) {
                     session.setAttribute("inwardUnderProcess", null);
-
                     String sql = Queries.getQuery("logged_in_user");
                     if (req.getUserPrincipal() != null) {
                         String userName = req.getUserPrincipal().getName();
@@ -120,23 +98,22 @@ public class LoginFilter implements Filter {
                             userRole = "readonly";
                         }
 
-                        // set the user information in the session
-                        PreparedStatement pst = connection.prepareStatement(sql);
-
-                        pst.setString(1, userName);
-
-                        ResultSet rs = pst.executeQuery();
-
-                        rs.first();
-
-                        String firstName = rs.getString(1);
-                        String lastName = rs.getString(2);
-                        isPasswordReset = rs.getBoolean(3);
                         LoggedInUserBean userBean = new LoggedInUserBean();
 
-                        userBean.setUserName(userName);
-                        userBean.setFirstName(firstName);
-                        userBean.setLastName(lastName);
+                        // set the user information in the session
+                        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+                            pst.setString(1, userName);
+                            try (ResultSet rs = pst.executeQuery()) {
+                                rs.first();
+                                String firstName = rs.getString(1);
+                                String lastName = rs.getString(2);
+                                isPasswordReset = rs.getBoolean(3);
+                                userBean.setUserName(userName);
+                                userBean.setFirstName(firstName);
+                                userBean.setLastName(lastName);
+                            }
+
+                        }
                         userBean.setUserRole(userRole);
                         session.setAttribute("userBean", userBean);
                     }
@@ -145,9 +122,6 @@ public class LoginFilter implements Filter {
                     if (isPasswordReset) {
                         url = "jsp/login/changepwd.jsp";
                     }
-                } catch (Exception e) {
-                    logger.fatal(e);
-                    url = "jsp/errors/error.jsp";
                 }
             }
             // if the url is set then only forward the request, else just ignore
@@ -171,25 +145,20 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-
+        Throwable problem = null;
         if (debug) {
             log("LoginFilter:doFilter()");
         }
-
-        doBeforeProcessing(request, response);
-
-        Throwable problem = null;
         try {
+            doBeforeProcessing(request, response);
             chain.doFilter(request, response);
-        } catch (Throwable t) {
-            // If an exception is thrown somewhere down the filter chain,
-            // we still want to execute our after processing, and then
-            // rethrow the problem after that.
-            problem = t;
-            t.printStackTrace();
+            doAfterProcessing(request, response);
+        } catch (SQLException ex) {
+            RequestDispatcher rd = request.getRequestDispatcher("/jsp/login/login.jsp");
+            rd.forward(request, response);
+        } catch (IOException | ServletException ex) {
+            problem = ex;
         }
-
-        doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.

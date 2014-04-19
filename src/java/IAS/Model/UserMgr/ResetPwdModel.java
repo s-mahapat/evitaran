@@ -84,10 +84,9 @@ public class ResetPwdModel extends JDSModel {
             isReset = false;
             logger.error(e);
         } finally {
-            _conn.close();
-            return isReset;
+            _conn.close();            
         }
-
+        return isReset;
 
     }
 }

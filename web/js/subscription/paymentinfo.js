@@ -13,7 +13,7 @@ function drawPaymenDetailstInfo(subscription_id){
         datatype: 'xml',
         mtype: 'GET',
         width: '100%',
-        height: 280,
+        height: Constants.jqgrid.HEIGHT,
         autowidth: true,
         forceFit: true,
         //shrinkToFit: true,

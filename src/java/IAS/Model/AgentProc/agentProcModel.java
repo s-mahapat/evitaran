@@ -38,22 +38,22 @@ public class agentProcModel extends JDSModel {
     }
 
     public ArrayList getSubscriptionInfo(String inwardNumber) throws SQLException {
-        String sql;
+        String sql = Queries.getQuery("result_process_agent_inward");
         ArrayList<SubscriptionInfo> listSubsriptionInfo = new ArrayList<>();
-        Connection conn = this.getConnection();
-        sql = Queries.getQuery("result_process_agent_inward");
-        PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setString(1, inwardNumber);
-        ResultSet rs;
-        rs = pst.executeQuery();
-        while (rs.next()) {
-            SubscriberInfo oSubscriberInfo = new SubscriberInfo();
-            SubscriptionInfo oSubscriptionInfo = new SubscriptionInfo();
-            oSubscriberInfo.setSubscriberNumber(rs.getString("subscriberNumber"));
-            oSubscriptionInfo.setSubscriberInfo(oSubscriberInfo);
-            oSubscriptionInfo.setSubscriptionNumber(rs.getInt("subscriptionNumber"));
-            listSubsriptionInfo.add(oSubscriptionInfo);
+        try (Connection conn = this.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setString(1, inwardNumber);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    SubscriberInfo oSubscriberInfo = new SubscriberInfo();
+                    SubscriptionInfo oSubscriptionInfo = new SubscriptionInfo();
+                    oSubscriberInfo.setSubscriberNumber(rs.getString("subscriberNumber"));
+                    oSubscriptionInfo.setSubscriberInfo(oSubscriberInfo);
+                    oSubscriptionInfo.setSubscriptionNumber(rs.getInt("subscriptionNumber"));
+                    listSubsriptionInfo.add(oSubscriptionInfo);
+                }
+            }
         }
+
         return listSubsriptionInfo;
     }
 
@@ -63,8 +63,8 @@ public class agentProcModel extends JDSModel {
     public float getDiscount(int agent_id) throws SQLException {
         float discount = 0;
         String sql = Queries.getQuery("get_agent_discount");
-        Connection conn = this.getConnection();
-        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+
+        try (Connection conn = this.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, agent_id);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.first()) {
@@ -74,7 +74,6 @@ public class agentProcModel extends JDSModel {
         } catch (SQLException ex) {
             logger.error(ex);
         } finally {
-            conn.close();
             return discount;
         }
 
@@ -84,8 +83,7 @@ public class agentProcModel extends JDSModel {
 
         ArrayList<String> agents = new ArrayList<>();
         String sql = Queries.getQuery("search_agent");
-        Connection conn = this.getConnection();
-        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+        try (Connection conn = this.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, agent_name + "%");
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
@@ -95,7 +93,6 @@ public class agentProcModel extends JDSModel {
         } catch (SQLException ex) {
             logger.error(ex);
         } finally {
-            conn.close();
             return agents;
         }
 

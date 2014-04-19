@@ -14,7 +14,7 @@
                     url:'<%=request.getContextPath()%>/subscription?oper=getsubscription&subscriberNumber=' + subscriberNumber,
                     datatype: 'xml',
                     mtype: 'GET',
-                    height: 300,
+                    height: Constants.jqgrid.HEIGHT,
                     autowidth: true,
                     forceFit: true,
                     sortable: false,

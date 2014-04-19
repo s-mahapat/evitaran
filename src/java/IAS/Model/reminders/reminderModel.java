@@ -1,4 +1,3 @@
-
 package IAS.Model.reminders;
 
 import IAS.Bean.MailingList.mlFormBean;
@@ -36,6 +35,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
 /**
  *
  * @author aloko
@@ -44,54 +44,50 @@ public class reminderModel extends JDSModel {
 
     private mlFormBean _mlFormBean = null;
     private static final Logger logger = JDSLogger.getJDSLogger(reminderModel.class.getName());
-    private Connection conn;
 
-    public reminderModel(HttpServletRequest request) throws SQLException{
-
-       super(request);
-       conn = this.getConnection();
-
+    public reminderModel(HttpServletRequest request) throws SQLException {
+        super(request);
     }
 
-    public String search()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public String search() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml = null;
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
         String sql = Queries.getQuery("gen_reminders_subscriber");
         sql += " and reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("reminderType"));
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-
-        xml = util.convertResultSetToXML(rs);
+        try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
+            int paramIndex = 1;
+            stGet.setString(paramIndex, request.getParameter("reminderType"));
+            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+                xml = util.convertResultSetToXML(rs);
+            }
+        }
         return xml;
     }
 
-    public ResultSet getReminders(String medium, String sender)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public ResultSet getReminders(String medium, String sender) throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
         String sql = Queries.getQuery("get_reminders_subscriber");
-        if (sender =="send"){
+        if (sender == "send") {
             sql += " and reminders.reminderDate = curdate()";
-        }else {
+        } else {
             sql += " and reminderDate between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
 
-                // E = Email Only
+        // E = Email Only
         if (medium.equals("E")) {
 
             sql += " and (subscriber.email <> \"\"  or subscriber.email <> null)";
 
-        }
-        // P = print only
-        else if (medium.equals("P")){
+        } // P = print only
+        else if (medium.equals("P")) {
             sql += " and (subscriber.email = \"\" or subscriber.email = null)";
-        }
-        // A = print all
-        else if(medium.equals("A")) {
+        } // A = print all
+        else if (medium.equals("A")) {
 
         }
+        Connection conn = this.getConnection();
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("reminderType"));
@@ -99,10 +95,10 @@ public class reminderModel extends JDSModel {
         return rs;
     }
 
-
-    public ResultSet getGenReminders()  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public ResultSet getGenReminders() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String sql = Queries.getQuery("gen_reminders_subscriber");
         sql += " and reminders.reminderDate = curdate()";
+        Connection conn = this.getConnection();
         PreparedStatement stGet = conn.prepareStatement(sql);
         int paramIndex = 1;
         stGet.setString(paramIndex, request.getParameter("reminderType"));
@@ -114,63 +110,61 @@ public class reminderModel extends JDSModel {
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         String xml = null;
-        ResultSet rs = null;
-        Connection conn = this.getConnection();
 
         String sqlInsRem = Queries.getQuery("insert_rem");
-        PreparedStatement stInsRem = conn.prepareStatement(sqlInsRem);
-
         String sql = null;
         int remType = 0;
         remType = Integer.parseInt(request.getParameter("reminderType"));
-        if (remType == 1){
+        if (remType == 1) {
             sql = Queries.getQuery("get_susbcriber_for_rem1");
-        }
-        else if (remType == 2){
+        } else if (remType == 2) {
             sql = Queries.getQuery("get_susbcriber_for_rem2");
-        }
-        else if (remType == 3){
+        } else if (remType == 3) {
             sql = Queries.getQuery("get_susbcriber_for_rem3");
         }
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        rs = stGet.executeQuery();
-        int subscriptionId = 0;
-        int paramIndex = 1;
-        while (rs.next()){
-            subscriptionId = rs.getInt("subscriptionId");
-            int amount = rs.getInt("amount");
-            int payment = rs.getInt("payment");
-            int balance = 0;
-            balance = amount - payment;
-            if (balance > 0){
-                paramIndex = 1;
-                stInsRem.setInt(paramIndex, subscriptionId);
-                stInsRem.setInt(++paramIndex, balance);
-                stInsRem.setInt(++paramIndex, remType);
-                stInsRem.executeUpdate();
+        try (Connection conn = this.getConnection();
+                PreparedStatement stInsRem = conn.prepareStatement(sqlInsRem);
+                PreparedStatement stGet = conn.prepareStatement(sql);) {
+            try (ResultSet rs = stGet.executeQuery();) {
+                int subscriptionId = 0;
+                int paramIndex = 1;
+                while (rs.next()) {
+                    subscriptionId = rs.getInt("subscriptionId");
+                    int amount = rs.getInt("amount");
+                    int payment = rs.getInt("payment");
+                    int balance = 0;
+                    balance = amount - payment;
+                    if (balance > 0) {
+                        paramIndex = 1;
+                        stInsRem.setInt(paramIndex, subscriptionId);
+                        stInsRem.setInt(++paramIndex, balance);
+                        stInsRem.setInt(++paramIndex, remType);
+                        stInsRem.executeUpdate();
+                    }
+                }
+                ResultSet rsReminders = getGenReminders();
+                xml = util.convertResultSetToXML(rsReminders);
             }
         }
-        ResultSet rsReminders = getGenReminders();
-        xml = util.convertResultSetToXML(rsReminders);
         return xml;
     }
 
-    public List<subscriberInfo> buildRemindersData(ResultSet rsGet, String medium)   throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
+    public List<subscriberInfo> buildRemindersData(ResultSet rsGet, String medium) throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
 
-        List<subscriberInfo> subscriberInfo = new ArrayList<subscriberInfo>();
+        List<subscriberInfo> subscriberInfo = new ArrayList<>();
 
         //Loop the data for individual subscriber for reminder
-        while (rsGet.next()){
+        while (rsGet.next()) {
             subscriberInfo sInfo = new subscriberInfo();
 
             //Extract subscriber Details
-            int subscriber_id    = rsGet.getInt(1);
+            int subscriber_id = rsGet.getInt(1);
             sInfo.setSubscriber_id(subscriber_id);
 
-            int subId            = rsGet.getInt(2);
+            int subId = rsGet.getInt(2);
             sInfo.setSubId(subId);
 
-            String subtypecode   = rsGet.getString(3);
+            String subtypecode = rsGet.getString(3);
             sInfo.setSubtypecode(subtypecode);
 
             String subscriberNumber = rsGet.getString(4);
@@ -179,93 +173,95 @@ public class reminderModel extends JDSModel {
             String subscriberName = rsGet.getString(5);
             sInfo.setSubscriberName(subscriberName);
 
-            int balance          = rsGet.getInt(6);
+            int balance = rsGet.getInt(6);
             sInfo.setBalance(balance);
 
-            int reminderType     = rsGet.getInt(7);
+            int reminderType = rsGet.getInt(7);
             sInfo.setReminderType(reminderType);
 
-            String reminderDate  = rsGet.getString(8);
+            String reminderDate = rsGet.getString(8);
             sInfo.setReminderDate(reminderDate);
 
-            String department    = rsGet.getString(9);
+            String department = rsGet.getString(9);
             sInfo.setDepartment(department);
 
-            String institution   = rsGet.getString(10);
+            String institution = rsGet.getString(10);
             sInfo.setInstitution(institution);
 
             String shippingAddress = rsGet.getString(11);
             sInfo.setShippingAddress(shippingAddress);
 
-            String city          = rsGet.getString(12);
+            String city = rsGet.getString(12);
             sInfo.setCity(city);
 
-            String district      = rsGet.getString(13);
+            String district = rsGet.getString(13);
             sInfo.setDistrict(district);
 
-            String state         = rsGet.getString(14);
+            String state = rsGet.getString(14);
             sInfo.setState(state);
 
-            String country       = rsGet.getString(15);
+            String country = rsGet.getString(15);
             sInfo.setCountry(country);
 
-            String pincode       = rsGet.getString(16);
+            String pincode = rsGet.getString(16);
             sInfo.setPincode(pincode);
 
-            String email         = rsGet.getString(17);
+            String email = rsGet.getString(17);
             sInfo.setEmail(email);
 
-            int reminders_id     = rsGet.getInt(18);
+            int reminders_id = rsGet.getInt(18);
             sInfo.setReminders_id(reminders_id);
 
-            String letterNumber  = rsGet.getString(19);
+            String letterNumber = rsGet.getString(19);
             sInfo.setLetterNumber(letterNumber);
 
-            String letterDate    = rsGet.getString(20);
+            String letterDate = rsGet.getString(20);
             sInfo.setLetterDate(letterDate);
 
-            String invoiceAddress    = rsGet.getString(21);
+            String invoiceAddress = rsGet.getString(21);
             sInfo.setInvoiceAddress(invoiceAddress);
 
             //int invoiceNo    = rsGet.getInt(22);
-            String invoiceNo    = rsGet.getString(22);
+            String invoiceNo = rsGet.getString(22);
             sInfo.setInvoiceNo(invoiceNo);
 
-            String invoiceDate    = rsGet.getString(23);
+            String invoiceDate = rsGet.getString(23);
             sInfo.setInvoiceDate(invoiceDate);
 
             //get the subscription details
             String sqlgetjnls = Queries.getQuery("get_subscribed_journals");
-            PreparedStatement stgetjnls = conn.prepareStatement(sqlgetjnls);
-            int paramIndex = 1;
+            try (Connection conn = this.getConnection(); PreparedStatement stgetjnls = conn.prepareStatement(sqlgetjnls);) {
+                int paramIndex = 1;
 
-            stgetjnls.setInt(paramIndex, reminders_id);
-            ResultSet rsgetjnls = this.db.executeQueryPreparedStatement(stgetjnls);
+                stgetjnls.setInt(paramIndex, reminders_id);
+                try (ResultSet rsgetjnls = this.db.executeQueryPreparedStatement(stgetjnls);) {
 
-            while (rsgetjnls.next()){
+                    while (rsgetjnls.next()) {
 
-                subscriptionInfo subsInfo = new subscriptionInfo();
+                        subscriptionInfo subsInfo = new subscriptionInfo();
 
-                String journalName   = rsgetjnls.getString(1);
-                subsInfo.setJournalName(journalName);
+                        String journalName = rsgetjnls.getString(1);
+                        subsInfo.setJournalName(journalName);
 
-                int startYear        = rsgetjnls.getInt(2);
-                subsInfo.setStartYear(startYear);
+                        int startYear = rsgetjnls.getInt(2);
+                        subsInfo.setStartYear(startYear);
 
-                int startMonth       = rsgetjnls.getInt(3);
-                subsInfo.setStartMonth(startMonth);
+                        int startMonth = rsgetjnls.getInt(3);
+                        subsInfo.setStartMonth(startMonth);
 
-                int endMonth         = rsgetjnls.getInt(4);
-                subsInfo.setEndMonth(endMonth);
+                        int endMonth = rsgetjnls.getInt(4);
+                        subsInfo.setEndMonth(endMonth);
 
-                int endYear          = rsgetjnls.getInt(5);
-                subsInfo.setEndYear(endYear);
+                        int endYear = rsgetjnls.getInt(5);
+                        subsInfo.setEndYear(endYear);
 
-                int copies           = rsgetjnls.getInt(6);
-                subsInfo.setCopies(copies);
+                        int copies = rsgetjnls.getInt(6);
+                        subsInfo.setCopies(copies);
 
-                sInfo.getSubscriptionInfo().add(subsInfo);
+                        sInfo.getSubscriptionInfo().add(subsInfo);
 
+                    }
+                }
             }
 
             //insert the record to sent reminders
@@ -278,7 +274,7 @@ public class reminderModel extends JDSModel {
         return subscriberInfo;
     }
 
-    public String buildXml(ResultSet rsGet, String medium)   throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
+    public String buildXml(ResultSet rsGet, String medium) throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
         String xml = null;
         // Get data for reminders
         //ResultSet rsGet = getReminders();
@@ -290,29 +286,28 @@ public class reminderModel extends JDSModel {
         doc.appendChild(results);
 
         //Loop the data for individual subscriber for reminder
-        while (rsGet.next()){
+        while (rsGet.next()) {
             //Extract subscriber Details
-            int subscriber_id    = rsGet.getInt(1);
-            int subId            = rsGet.getInt(2);
-            String subtypecode   = rsGet.getString(3);
+            int subscriber_id = rsGet.getInt(1);
+            int subId = rsGet.getInt(2);
+            String subtypecode = rsGet.getString(3);
             String subscriberNumber = rsGet.getString(4);
             String subscriberName = rsGet.getString(5);
-            int balance          = rsGet.getInt(6);
-            int reminderType     = rsGet.getInt(7);
-            String reminderDate  = rsGet.getString(8);
-            String department    = rsGet.getString(9);
-            String institution   = rsGet.getString(10);
+            int balance = rsGet.getInt(6);
+            int reminderType = rsGet.getInt(7);
+            String reminderDate = rsGet.getString(8);
+            String department = rsGet.getString(9);
+            String institution = rsGet.getString(10);
             String shippingAddress = rsGet.getString(11);
-            String city          = rsGet.getString(12);
-            String district      = rsGet.getString(13);
-            String state         = rsGet.getString(14);
-            String country       = rsGet.getString(15);
-            String pincode       = rsGet.getString(16);
-            String email         = rsGet.getString(17);
-            int reminders_id     = rsGet.getInt(18);
-            String letterNumber  = rsGet.getString(19);
-            String letterDate    = rsGet.getString(20);
-
+            String city = rsGet.getString(12);
+            String district = rsGet.getString(13);
+            String state = rsGet.getString(14);
+            String country = rsGet.getString(15);
+            String pincode = rsGet.getString(16);
+            String email = rsGet.getString(17);
+            int reminders_id = rsGet.getInt(18);
+            String letterNumber = rsGet.getString(19);
+            String letterDate = rsGet.getString(20);
 
             // Add the row element
             Element subscriber = doc.createElement("subscriber");
@@ -384,54 +379,56 @@ public class reminderModel extends JDSModel {
 
             //get the subscription details
             String sqlgetjnls = Queries.getQuery("get_subscribed_journals");
-            PreparedStatement stgetjnls = conn.prepareStatement(sqlgetjnls);
-            int paramIndex = 1;
-            //Object reminderId = null;
-            //reminderId = rsGet.getObject(1);
-            stgetjnls.setInt(paramIndex, reminders_id);
-            ResultSet rsgetjnls = this.db.executeQueryPreparedStatement(stgetjnls);
-            while (rsgetjnls.next()){
-                String journalCode   = rsgetjnls.getString(1);
-                String journalName   = rsgetjnls.getString(2);
-                String journalGroupName  = rsgetjnls.getString(3);
-                int copies           = rsgetjnls.getInt(4);
-                int startYear        = rsgetjnls.getInt(5);
-                int startMonth       = rsgetjnls.getInt(6);
-                int endMonth         = rsgetjnls.getInt(7);
-                int endYear          = rsgetjnls.getInt(8);
+            try (Connection conn = this.getConnection(); PreparedStatement stgetjnls = conn.prepareStatement(sqlgetjnls);) {
+                int paramIndex = 1;
+                //Object reminderId = null;
+                //reminderId = rsGet.getObject(1);
+                stgetjnls.setInt(paramIndex, reminders_id);
+                try (ResultSet rsgetjnls = this.db.executeQueryPreparedStatement(stgetjnls);) {
+                    while (rsgetjnls.next()) {
+                        String journalCode = rsgetjnls.getString(1);
+                        String journalName = rsgetjnls.getString(2);
+                        String journalGroupName = rsgetjnls.getString(3);
+                        int copies = rsgetjnls.getInt(4);
+                        int startYear = rsgetjnls.getInt(5);
+                        int startMonth = rsgetjnls.getInt(6);
+                        int endMonth = rsgetjnls.getInt(7);
+                        int endYear = rsgetjnls.getInt(8);
 
-                // Add the row element
-                 Element journals = doc.createElement("journals");
-                 subscriber.appendChild(journals);
+                        // Add the row element
+                        Element journals = doc.createElement("journals");
+                        subscriber.appendChild(journals);
 
-                 Element _journalCode = doc.createElement("journalCode");
-                 journals.appendChild(_journalCode);
-                 _journalCode.appendChild(doc.createTextNode(journalCode));
+                        Element _journalCode = doc.createElement("journalCode");
+                        journals.appendChild(_journalCode);
+                        _journalCode.appendChild(doc.createTextNode(journalCode));
 
-                 Element _journalName = doc.createElement("journalName");
-                 journals.appendChild(_journalName);
-                 _journalName.appendChild(doc.createTextNode(journalName));
+                        Element _journalName = doc.createElement("journalName");
+                        journals.appendChild(_journalName);
+                        _journalName.appendChild(doc.createTextNode(journalName));
 
-                 Element _copies = doc.createElement("copies");
-                 journals.appendChild(_copies);
-                 _copies.appendChild(doc.createTextNode(Integer.toString(copies)));
+                        Element _copies = doc.createElement("copies");
+                        journals.appendChild(_copies);
+                        _copies.appendChild(doc.createTextNode(Integer.toString(copies)));
 
-                 Element _startMonth = doc.createElement("startMonth");
-                 journals.appendChild(_startMonth);
-                 _startMonth.appendChild(doc.createTextNode(Integer.toString(startMonth)));
+                        Element _startMonth = doc.createElement("startMonth");
+                        journals.appendChild(_startMonth);
+                        _startMonth.appendChild(doc.createTextNode(Integer.toString(startMonth)));
 
-                 Element _startYear = doc.createElement("startYear");
-                 journals.appendChild(_startYear);
-                 _startYear.appendChild(doc.createTextNode(Integer.toString(startYear)));
+                        Element _startYear = doc.createElement("startYear");
+                        journals.appendChild(_startYear);
+                        _startYear.appendChild(doc.createTextNode(Integer.toString(startYear)));
 
-                 Element _endMonth = doc.createElement("endMonth");
-                 journals.appendChild(_endMonth);
-                 _endMonth.appendChild(doc.createTextNode(Integer.toString(endMonth)));
+                        Element _endMonth = doc.createElement("endMonth");
+                        journals.appendChild(_endMonth);
+                        _endMonth.appendChild(doc.createTextNode(Integer.toString(endMonth)));
 
-                 Element _endYear = doc.createElement("endYear");
-                 journals.appendChild(_endYear);
-                 _endYear.appendChild(doc.createTextNode(Integer.toString(endYear)));
+                        Element _endYear = doc.createElement("endYear");
+                        journals.appendChild(_endYear);
+                        _endYear.appendChild(doc.createTextNode(Integer.toString(endYear)));
 
+                    }
+                }
             }
             // insert the record to sent reminders
             int ins = insertReminderDetails(Integer.toString(reminders_id), medium);
@@ -450,7 +447,7 @@ public class reminderModel extends JDSModel {
         return xml;
     }
 
-    public String sendEmail(String medium, String sender)  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException, DocumentException, SAXException {
+    public String sendEmail(String medium, String sender) throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException, DocumentException, SAXException {
 
         boolean status = false;
         String xml = "";
@@ -464,11 +461,11 @@ public class reminderModel extends JDSModel {
         //Loop the data for individual subscriber for reminder
         Iterator itr = sinfo.listIterator();
 
-        while (itr.hasNext()){
+        while (itr.hasNext()) {
 
-            subscriberInfo s = (subscriberInfo)itr.next();
-            int reminderType     = s.getReminderType();
-            String email         = s.getEmail();
+            subscriberInfo s = (subscriberInfo) itr.next();
+            int reminderType = s.getReminderType();
+            String email = s.getEmail();
             List<subscriberInfo> singleSubscriberInfo = new ArrayList<subscriberInfo>();
             singleSubscriberInfo.add(s);
 
@@ -477,16 +474,16 @@ public class reminderModel extends JDSModel {
 
             String msg;
 
-            convertToPdf c2Pdf          = new convertToPdf();
-            ByteArrayOutputStream baos  = c2Pdf.generateReminders(singleSubscriberInfo);
+            convertToPdf c2Pdf = new convertToPdf();
+            ByteArrayOutputStream baos = c2Pdf.generateReminders(singleSubscriberInfo);
 
-            if(reminderType == 1){
+            if (reminderType == 1) {
                 Properties properties = c2Pdf.getRemindersProperties();
                 msg = properties.getProperty("reminderType1");
-            }else if(reminderType == 2) {
+            } else if (reminderType == 2) {
                 Properties properties = c2Pdf.getRemindersProperties();
                 msg = properties.getProperty("reminderType2");
-            }else if(reminderType == 3) {
+            } else if (reminderType == 3) {
                 Properties properties = c2Pdf.getRemindersProperties();
                 msg = properties.getProperty("reminderType3");
             } else {
@@ -500,7 +497,7 @@ public class reminderModel extends JDSModel {
             // If message sending passed
             byte[] bytes = baos.toByteArray();
             DataSource ds = new ByteArrayDataSource(bytes, "application/pdf");
-            if(!sendMsg.sendMail(email, "", "jds.ias.mails@gmail.com", "Reminder", msg, "", "invoice.pdf", ds)){
+            if (!sendMsg.sendMail(email, "", "jds.ias.mails@gmail.com", "Reminder", msg, "", "invoice.pdf", ds)) {
                 success = false;
                 message = message + " " + email;
             }
@@ -509,9 +506,9 @@ public class reminderModel extends JDSModel {
 
         // Communicate status back to the user
         String successValue = (success == true) ? "1" : "0";
-        if(successValue.equals("1")){
+        if (successValue.equals("1")) {
             xml = util.convertStringToXML(successValue, "success");
-        }else {
+        } else {
             HashMap<String, String> xmlResponse = new HashMap<>();
             xmlResponse.put("success", successValue);
             xmlResponse.put("message", message);
@@ -532,7 +529,7 @@ public class reminderModel extends JDSModel {
         return sinfo;
     }
 
-    public List<subscriberInfo> printAll(String medium, String sender)  throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
+    public List<subscriberInfo> printAll(String medium, String sender) throws SQLException, ParseException, ParserConfigurationException, TransformerException, IOException {
         boolean status = false;
         String xml = null;
         // Get data for reminders
@@ -543,16 +540,18 @@ public class reminderModel extends JDSModel {
         return sinfo;
     }
 
-   public int insertReminderDetails(String reminderId, String medium)  throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public int insertReminderDetails(String reminderId, String medium) throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String sqlins = Queries.getQuery("insert_reminder_details");
-        PreparedStatement stins = conn.prepareStatement(sqlins);
-        int paramIndex = 0;
-        stins.setString(++paramIndex, reminderId.toString());
-        stins.setString(++paramIndex, medium);
-        stins.setString(++paramIndex, "1");
-        if (db.executeUpdatePreparedStatement(stins) == 1)
-            return 1;
-        else
-            return 0;
+        try (Connection conn = this.getConnection(); PreparedStatement stins = conn.prepareStatement(sqlins);) {
+            int paramIndex = 0;
+            stins.setString(++paramIndex, reminderId);
+            stins.setString(++paramIndex, medium);
+            stins.setString(++paramIndex, "1");
+            if (db.executeUpdatePreparedStatement(stins) == 1) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     }
 }

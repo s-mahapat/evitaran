@@ -40,9 +40,9 @@ public class URNModel extends FileUploadBase {
 
     public URNModel(HttpServletRequest request) throws SQLException {
         super(request);
-        this.conn = this.getConnection();
+        //this.conn = this.getConnection();
         sql = Queries.getQuery("update_urn_info");
-        pst = this.conn.prepareStatement(sql);
+        //pst = this.conn.prepareStatement(sql);
     }
 
     @Override

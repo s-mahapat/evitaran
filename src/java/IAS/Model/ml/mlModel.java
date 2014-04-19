@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 public class mlModel extends JDSModel {
 
     private mlFormBean _mlFormBean = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.MailingList");
+    private static final Logger logger = JDSLogger.getJDSLogger(IAS.Model.ml.mlModel.class.getName());
 
     public mlModel(HttpServletRequest request) throws SQLException {
 
@@ -32,10 +32,8 @@ public class mlModel extends JDSModel {
     public int searchMl() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
         // get the connection from connection pool
-        Connection conn = this.getConnection();
-
         String sql = Queries.getQuery("check_ml");
-        try (PreparedStatement stGet = conn.prepareStatement(sql);) {
+        try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setString(paramIndex, request.getParameter("journalName"));
             stGet.setString(++paramIndex, request.getParameter("year"));
@@ -50,20 +48,17 @@ public class mlModel extends JDSModel {
                 }
             }
         } finally {
-            // return the connection back to the pool
-            this.CloseConnection(conn);
+
         }
 
     }
 
     public String getMlDtl(int mlId) throws SQLException, ParseException, ParserConfigurationException, TransformerException {
 
-        // get the connection from connection pool
-        Connection conn = this.getConnection();
-
+        // get the connection from connection pool       
         String xml = null;
         String sql = Queries.getQuery("search_mldtl_ui");
-        try (PreparedStatement stGet = conn.prepareStatement(sql);) {
+        try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setInt(paramIndex, mlId);
             try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
@@ -71,8 +66,6 @@ public class mlModel extends JDSModel {
             }
 
         } finally {
-            // return the connection back to the pool
-            this.CloseConnection(conn);
             return xml;
         }
 
@@ -110,11 +103,11 @@ public class mlModel extends JDSModel {
 
         String sql = Queries.getQuery("search_mldtl");
 
-        if (printOption.equals("O")){
+        if (printOption.equals("O")) {
             sql += " and ml.copies = 1 and country = 'India' order by ml.pincode";
-        }else if(printOption.equals("E")){
+        } else if (printOption.equals("E")) {
             sql += " and ml.copies > 1 and country = 'India' order by ml.pincode";
-        }else if(printOption.equals("F")){
+        } else if (printOption.equals("F")) {
             sql += " and country <> 'India' order by ml.pincode";
         }
 
@@ -130,8 +123,6 @@ public class mlModel extends JDSModel {
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, SQLException, ParseException, ParserConfigurationException, TransformerException,
             ClassNotFoundException {
-
-
 
         //  Declare Variables
         String xml;
@@ -165,61 +156,58 @@ public class mlModel extends JDSModel {
                 st.setString(++paramIndex, month);
                 st.setString(++paramIndex, volumeNumber);
 
-
                 if (st.executeUpdate() == 1) {
-                    try(ResultSet rsml = st.getGeneratedKeys();){
-                        if(rsml.first()){
+                    try (ResultSet rsml = st.getGeneratedKeys();) {
+                        if (rsml.first()) {
                             // get the newly added mailing list id
                             mailing_list_id = rsml.getInt(1);
                         }
                     }
 
                     String sqlgetml = Queries.getQuery("select_generateml");
-                    PreparedStatement stgetml = conn.prepareStatement(sqlgetml);
-
                     String sqlmldtl = Queries.getQuery("insert_mldtl");
-                    PreparedStatement stmldtl = conn.prepareStatement(sqlmldtl);
+                    try (PreparedStatement stgetml = conn.prepareStatement(sqlgetml);
+                            PreparedStatement stmldtl = conn.prepareStatement(sqlmldtl);) {
 
-                    if (mailing_list_id > 0) {
-                        i = mailing_list_id;
-                        int mlIndex = 0;
-                        paramIndex = 1;
-                        stgetml.setString(paramIndex, journalName);
-                        stgetml.setString(++paramIndex, year);
-                        stgetml.setString(++paramIndex, month);
-                        //stgetml.setString(++paramIndex, year);
-                        //stgetml.setString(++paramIndex, month);
-                        ResultSet rsgetml = stgetml.executeQuery();
-                        while (rsgetml.next()) {
-                            ++mlIndex;
+                        if (mailing_list_id > 0) {
+                            i = mailing_list_id;
+                            int mlIndex = 0;
                             paramIndex = 1;
-                            stmldtl.setInt(paramIndex, i);
-                            Object value = null;
-                            for (int j = 1; j <= 21; j++) {
-                                value = rsgetml.getObject(j);
-                                if (value == null) {
-                                    stmldtl.setString(++paramIndex, "");
-                                } else {
-                                    stmldtl.setString(++paramIndex, value.toString());
+                            stgetml.setString(paramIndex, journalName);
+                            stgetml.setString(++paramIndex, year);
+                            stgetml.setString(++paramIndex, month);
+                            try (ResultSet rsgetml = stgetml.executeQuery()) {
+                                while (rsgetml.next()) {
+                                    ++mlIndex;
+                                    paramIndex = 1;
+                                    stmldtl.setInt(paramIndex, i);
+                                    Object value = null;
+                                    for (int j = 1; j <= 21; j++) {
+                                        value = rsgetml.getObject(j);
+                                        if (value == null) {
+                                            stmldtl.setString(++paramIndex, "");
+                                        } else {
+                                            stmldtl.setString(++paramIndex, value.toString());
+                                        }
+                                    }
+                                    stmldtl.setString(++paramIndex, volumeNumber);
+                                    stmldtl.setString(++paramIndex, issue);
+                                    stmldtl.setString(++paramIndex, month);
+                                    stmldtl.setString(++paramIndex, year);
+                                    stmldtl.executeUpdate();
+                                    //stmldtl.close();
                                 }
                             }
-                            stmldtl.setString(++paramIndex, volumeNumber);
-                            stmldtl.setString(++paramIndex, issue);
-                            stmldtl.setString(++paramIndex, month);
-                            stmldtl.setString(++paramIndex, year);
-                            stmldtl.executeUpdate();
-                            //stmldtl.close();
-                        }
-                        //rsgetml.close();
-                        if (mlIndex == 0) {
-                            throw new SQLException("No record found");
-                        } else {
-                            conn.commit();
+                            if (mlIndex == 0) {
+                                throw new SQLException("No record found");
+                            } else {
+                                conn.commit();
+                            }
                         }
                     }
                 }
 
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 logger.error(e);
                 //SQLException | NumberFormatException
                 conn.rollback();

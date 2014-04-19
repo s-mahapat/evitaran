@@ -27,7 +27,7 @@ public class JDSModel extends HttpServlet {
     protected HttpServletRequest request = null;
     protected Database db = null;
     protected HttpSession session = null;
-    private static Connection conn = null;
+    //private static Connection conn = null;
     private static final Logger logger = JDSLogger.getJDSLogger(JDSModel.class.getName());
 
     public JDSModel() throws SQLException {
@@ -37,29 +37,29 @@ public class JDSModel extends HttpServlet {
         this.db = new Database();
     }
 
-    private static Connection _getConnection() throws SQLException{
+    /*private static Connection _getConnection() throws SQLException{
         if(conn == null || conn.isClosed()){
             conn = Database.getConnection();
         }
         return conn;
-    }
+    }*/
 
     protected Connection getConnection() throws SQLException{
         return Database.getConnection();
     }
 
-    protected Connection getStaticConnection() throws SQLException{
+    /*protected Connection getStaticConnection() throws SQLException{
         return _getConnection();
-    }
+    }*/
 
     protected void CloseConnection(Connection conn) throws SQLException{
 
     }
 
     public JDSModel(HttpServletRequest request) throws SQLException {
-        if (JDSModel.conn == null || JDSModel.conn.isClosed() == true) {
+        /*if (JDSModel.conn == null || JDSModel.conn.isClosed() == true) {
             JDSModel.conn = Database.getConnection();
-        }
+        }*/
         this.db = new Database();
         this.request = request;
         this.session = request.getSession(false);

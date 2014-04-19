@@ -1,4 +1,3 @@
-
 package IAS.Model.masterdata;
 
 import IAS.Bean.masterdata.cityFormBean;
@@ -17,27 +16,26 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.log4j.Logger;
+
 /**
  *
  * @author Deepali
  */
-public class cityModel extends JDSModel{
+public class cityModel extends JDSModel {
 
     private cityFormBean _cityFormBean = null;
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Model.masterdata");
-    private Connection conn;
+    private static final Logger logger = JDSLogger.getJDSLogger(IAS.Model.masterdata.cityModel.class.getName());
 
-    public cityModel(HttpServletRequest request) throws SQLException{
-
+    public cityModel(HttpServletRequest request) throws SQLException {
         super(request);
-        conn = this.getConnection();
     }
 
-    public synchronized void Save () throws SQLException, ParseException,
-            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException{
+    public synchronized int Save() throws SQLException, ParseException,
+            java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         cityFormBean cityFormBean = new IAS.Bean.masterdata.cityFormBean();
         request.setAttribute("cityFormBean", cityFormBean);
+        int cityID = 0;
 
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, cityFormBean);
@@ -53,28 +51,22 @@ public class cityModel extends JDSModel{
 
             // the query name from the jds_sql properties files in WEB-INF/properties folder
             sql = Queries.getQuery("city_insert");
-
-            PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS);
-            int paramIndex = 1;
-            st.setString(paramIndex, _cityFormBean.getCity());
-
-            try
-            {
-                if (db.executeUpdatePreparedStatement(st) == 1) {
+            try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS)) {
+                int paramIndex = 1;
+                st.setString(paramIndex, _cityFormBean.getCity());
+                if (st.executeUpdate() == 1) {
                     try (ResultSet rs = st.getGeneratedKeys()) {
-                        while(rs.next()){
-                            int i = rs.getInt(1);
+                        while (rs.next()) {
+                            cityID = rs.getInt(1);
                             //set the city id generated at the database
-                            _cityFormBean.setId(i);
+                            _cityFormBean.setId(cityID);
                         }
                     }
                 }
-            }catch (Exception MySQLIntegrityConstraintViolationException)
-            {
-                logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
             }
             request.setAttribute("cityFormBean", this._cityFormBean);
         }
+        return cityID;
     }
 
     public String editCity() throws SQLException, ParseException,
@@ -104,19 +96,17 @@ public class cityModel extends JDSModel{
         String sql;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         sql = Queries.getQuery("get_city_by_id");
-
-        PreparedStatement st = conn.prepareStatement(sql);
-
-        st.setInt(1, _cityFormBean.getId());
-
-        ResultSet rs = db.executeQueryPreparedStatement(st);
-        // populate the bean from the resultset using the beanprocessor class
-        while (rs.next()) {
-            BeanProcessor bProc = new BeanProcessor();
-            Class type = Class.forName("IAS.Bean.masterdata.cityFormBean");
-            this._cityFormBean = (IAS.Bean.masterdata.cityFormBean) bProc.toBean(rs, type);
+        try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, _cityFormBean.getId());
+            // populate the bean from the resultset using the beanprocessor class
+            try (ResultSet rs = st.executeQuery()) {
+                // populate the bean from the resultset using the beanprocessor class
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    this._cityFormBean = bProc.toBean(rs, IAS.Bean.masterdata.cityFormBean.class);
+                }
+            }
         }
-        rs.close();
 
         request.setAttribute("cityFormBean", this._cityFormBean);
         return _cityFormBean.getCity();
@@ -127,47 +117,42 @@ public class cityModel extends JDSModel{
 
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("update_city");
-
-        PreparedStatement st = conn.prepareStatement(sql);
-
-        int paramIndex = 1;
-        st.setString(paramIndex, _cityFormBean.getCity());
-        st.setInt(++paramIndex, _cityFormBean.getId());
-        try
-        {
-            db.executeUpdatePreparedStatement(st);
-        }catch (Exception MySQLIntegrityConstraintViolationException)
-        {
+        try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
+            int paramIndex = 1;
+            st.setString(paramIndex, _cityFormBean.getCity());
+            st.setInt(++paramIndex, _cityFormBean.getId());
+            st.executeUpdate();
+        } catch (Exception MySQLIntegrityConstraintViolationException) {
             logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
         }
         request.setAttribute("cityFormBean", this._cityFormBean);
     }
 
     public String searchCity() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        String xml = null;
+        String xml;
         String sql = Queries.getQuery("search_city");
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, "%" + request.getParameter("city") + "%");
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        xml = util.convertResultSetToXML(rs);
+        try (Connection _conn = Database.getConnection(); PreparedStatement stGet = _conn.prepareStatement(sql)) {
+            int paramIndex = 1;
+            stGet.setString(paramIndex, "%" + request.getParameter("city") + "%");
+            try (ResultSet rs = stGet.executeQuery()) {
+                xml = util.convertResultSetToXML(rs);
+            }
+        }
         return xml;
     }
 
-    public String CitySearch(String term) throws SQLException{
-        Connection _conn = Database.getConnection();
+    public String CitySearch(String term) throws SQLException {
+
         String xml = null;
         String sql = Queries.getQuery("city_search");
-        try(PreparedStatement stGet = _conn.prepareStatement(sql)){
+        try (Connection _conn = Database.getConnection(); PreparedStatement stGet = _conn.prepareStatement(sql)) {
             stGet.setString(1, term + "%");
-            try(ResultSet rs = stGet.executeQuery()){
+            try (ResultSet rs = stGet.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
             }
-        }finally{
-            _conn.close();
+        } finally {
             return xml;
         }
-
 
     }
 }

@@ -31,7 +31,7 @@
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
-                    height: 350,
+                    height: Constants.jqgrid.HEIGHT,
                     autowidth: true,
                     forceFit: true,
                     sortable: true,

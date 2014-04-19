@@ -32,23 +32,37 @@ import org.apache.log4j.Logger;
 public class InvoiceModel extends JDSModel {
 
     private static final Logger logger = JDSLogger.getJDSLogger(InvoiceModel.class.getName());
-    private Connection _conn = null;
+    //private Connection _conn = null;
 
     public InvoiceModel() throws SQLException {
         super();
-        this._conn = this.getConnection();
+        //this._conn = this.getConnection();
     }
 
     public InvoiceModel(HttpServletRequest request) throws SQLException {
         super(request);
-        this._conn = this.getConnection();
+        //this._conn = this.getConnection();
     }
 
     public InvoiceFormBean getInvoiceInfoPRL(String invoice_no) throws SQLException {
 
+        InvoiceFormBean _InvoiceFormBean;
+        try (Connection conn = this.getConnection()) {
+            _InvoiceFormBean = this.getInvoiceInfoPRL(conn, invoice_no);
+        }
+        return _InvoiceFormBean;
+
+    }
+
+    /*
+     This method is required so that it could be used for generation for PRL list,
+     we pass the connection object around else the pool gets full if we pick a new
+     connection every time.
+     */
+    public InvoiceFormBean getInvoiceInfoPRL(Connection conn, String invoice_no) throws SQLException {
         InvoiceFormBean _InvoiceFormBean = null;
         String sql = Queries.getQuery("get_invoice_detail_for_prl");
-        try (PreparedStatement pst = this.getStaticConnection().prepareStatement(sql)) {
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, invoice_no);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.first()) {
@@ -65,7 +79,6 @@ public class InvoiceModel extends JDSModel {
         } finally {
             return _InvoiceFormBean;
         }
-
     }
 
     public InvoiceFormBean getInvoiceInfo(String invoice_no) throws SQLException {
@@ -202,7 +215,7 @@ public class InvoiceModel extends JDSModel {
             try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
                 pst.setInt(1, invoice_id);
                 try (ResultSet rs = pst.executeQuery()) {
-                    while(rs.next()){
+                    while (rs.next()) {
                         BeanProcessor bProc = new BeanProcessor();
                         _subscriberFormBean = (IAS.Bean.Subscriber.subscriberFormBean) bProc.toBean(rs, IAS.Bean.Subscriber.subscriberFormBean.class);
                     }

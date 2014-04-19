@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.apache.log4j.Logger;
+
 /**
  *
  * @author smahapat
@@ -25,9 +26,8 @@ public class PaymentModel extends JDSModel {
     public int UpdatePayment(int invoice_id, int inward_id, float amount, String remarks) {
 
         try {
-            Connection _conn = this.getConnection();
             String sql = Queries.getQuery("insert_payment");
-            try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+            try (Connection _conn = this.getConnection(); PreparedStatement pst = _conn.prepareStatement(sql)) {
                 pst.setInt(1, inward_id);
                 pst.setInt(2, invoice_id);
                 pst.setFloat(3, amount);
@@ -36,8 +36,6 @@ public class PaymentModel extends JDSModel {
                 return rc;
             } catch (Exception ex) {
                 return 0;
-            } finally {
-                _conn.close();
             }
         } catch (SQLException ex) {
             return 0;
@@ -46,8 +44,7 @@ public class PaymentModel extends JDSModel {
 
     public int UpdatePayments(String[] invoice_ids, int inward_id, String[] amount, String[] remarks) {
         int[] rc = new int[invoice_ids.length];
-        try {
-            Connection _conn = this.getConnection();
+        try (Connection _conn = this.getConnection()) {
             _conn.setAutoCommit(false);
             String sql = Queries.getQuery("insert_payment");
             try (PreparedStatement pst = _conn.prepareStatement(sql)) {
@@ -64,15 +61,15 @@ public class PaymentModel extends JDSModel {
                 return 0;
             } finally {
                 boolean areAllUpdated = true;
-                for(int i=0; i<rc.length; i++){
-                    if(rc[i] == 0){
+                for (int i = 0; i < rc.length; i++) {
+                    if (rc[i] == 0) {
                         areAllUpdated = false;
                         break;
                     }
                 }
-                if(areAllUpdated){
+                if (areAllUpdated) {
                     _conn.commit();
-                }else{
+                } else {
                     _conn.rollback();
                 }
                 _conn.setAutoCommit(true);

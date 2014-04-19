@@ -28,9 +28,10 @@ public class MasterDataModel extends JDSModel {
     public String getMasterData(String mdataRequested, String mdataReqValue,
             String[] optionalParam) throws SQLException, ParserConfigurationException,
             TransformerException   {
-        _conn = Database.getConnection();
+        
         String xml;
-        try (PreparedStatement ps = _conn.prepareStatement(Queries.getQuery(mdataRequested))) {
+        try (Connection conn = Database.getConnection();
+                PreparedStatement ps = conn.prepareStatement(Queries.getQuery(mdataRequested))) {
             if (mdataReqValue != null) {
                 //PreparedStatement ps = conn.prepareStatement(Queries.getQuery(mdataRequested));
                 ps.setString(1, mdataReqValue);
@@ -45,21 +46,20 @@ public class MasterDataModel extends JDSModel {
                 xml = util.convertResultSetToXML(rs);
             }
         }
-        _conn.close();
+        //_conn.close();
         return xml;
     }
 
-    public String searchBank(String bank_name) throws SQLException, ParserConfigurationException, TransformerException{
-        _conn = Database.getConnection();
+    public String searchBank(String bank_name) throws SQLException, ParserConfigurationException, TransformerException{        
         String sql = Queries.getQuery("search_bank_name");
         String xml = null;
-        try (PreparedStatement ps = _conn.prepareStatement(sql)){
+        try (Connection conn = Database.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setString(1, bank_name + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
             }
         }finally{
-            _conn.close();
             return xml;
         }
 

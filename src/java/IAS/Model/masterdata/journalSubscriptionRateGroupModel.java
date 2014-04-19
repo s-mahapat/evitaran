@@ -1,4 +1,3 @@
-
 package IAS.Model.masterdata;
 
 import IAS.Bean.masterdata.journalSubscriptionRateGroupFormBean;
@@ -21,16 +20,12 @@ public class journalSubscriptionRateGroupModel extends JDSModel {
 
     private journalSubscriptionRateGroupFormBean _journalSubscriptionRateGroupFormBean = null;
     private static final Logger logger = JDSLogger.getJDSLogger(journalSubscriptionRateGroupModel.class.getName());
-    private Connection conn;
 
-    public journalSubscriptionRateGroupModel(HttpServletRequest request) throws SQLException{
-
-       super(request);
-       conn = this.getConnection();
-
+    public journalSubscriptionRateGroupModel(HttpServletRequest request) throws SQLException {
+        super(request);
     }
 
-    public synchronized void save () throws IllegalAccessException, InvocationTargetException, SQLException{
+    public synchronized void save() throws IllegalAccessException, InvocationTargetException, SQLException {
         journalSubscriptionRateGroupFormBean journalSubscriptionRateGroupFormBean = new IAS.Bean.masterdata.journalSubscriptionRateGroupFormBean();
         request.setAttribute("journalSubscriptionRateGroupFormBean", journalSubscriptionRateGroupFormBean);
 
@@ -40,24 +35,18 @@ public class journalSubscriptionRateGroupModel extends JDSModel {
 
         String sql = Queries.getQuery("update_printOrder");
 
-        PreparedStatement st = conn.prepareStatement(sql);
+        try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
 
-        int paramIndex = 1;
-
-        //st.setInt(paramIndex, _printOrderFormBean.getPrintOrder());
-
-        try
-        {
-            int success = db.executeUpdatePreparedStatement(st);
-        }catch (Exception MySQLIntegrityConstraintViolationException)
-        {
+            //int paramIndex = 1;
+            st.executeUpdate();
+        } catch (Exception MySQLIntegrityConstraintViolationException) {
             logger.error(MySQLIntegrityConstraintViolationException.getMessage(), MySQLIntegrityConstraintViolationException);
         }
         request.setAttribute("printOrderFormBean", this._journalSubscriptionRateGroupFormBean);
 
     }
 
-    public String search() throws IllegalAccessException, InvocationTargetException, SQLException, ParserConfigurationException, TransformerException{
+    public String search() throws IllegalAccessException, InvocationTargetException, SQLException, ParserConfigurationException, TransformerException {
         journalSubscriptionRateGroupFormBean journalSubscriptionRateGroupFormBean = new IAS.Bean.masterdata.journalSubscriptionRateGroupFormBean();
         request.setAttribute("journalSubscriptionRateGroupFormBean", journalSubscriptionRateGroupFormBean);
 
@@ -68,13 +57,12 @@ public class journalSubscriptionRateGroupModel extends JDSModel {
         request.setAttribute("printOrderFormBean", this._journalSubscriptionRateGroupFormBean);
 
         String sql = Queries.getQuery("update_printOrder");
-
-        PreparedStatement st = conn.prepareStatement(sql);
-        //st.setInt(1, this._journalSubscriptionRateGroupFormBean.getYear());
-
-        ResultSet rs = this.db.executeQueryPreparedStatement(st);
-        String xml = null;
-        xml = util.convertResultSetToXML(rs);
+        String xml;
+        try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
+            try (ResultSet rs = this.db.executeQueryPreparedStatement(st)) {
+                xml = util.convertResultSetToXML(rs);
+            }
+        }
         return xml;
     }
 
@@ -88,15 +76,11 @@ public class journalSubscriptionRateGroupModel extends JDSModel {
         this._journalSubscriptionRateGroupFormBean = journalSubscriptionRateGroupFormBean;
 
         request.setAttribute("printOrderFormBean", this._journalSubscriptionRateGroupFormBean);
-
+        String xml;
         String sql = Queries.getQuery("update_printOrder");
-
-        PreparedStatement st = conn.prepareStatement(sql);
-        //st.setInt(1, this._journalSubscriptionRateGroupFormBean.getYear());
-
-        ResultSet rs = this.db.executeQueryPreparedStatement(st);
-        String xml = null;
-        xml = util.convertResultSetToXML(rs);
+        try (Connection conn = this.getConnection(); ResultSet rs = conn.prepareStatement(sql).executeQuery()) {            
+            xml = util.convertResultSetToXML(rs);
+        }
         return xml;
     }
 
