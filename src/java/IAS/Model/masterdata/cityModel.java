@@ -6,6 +6,7 @@ import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,7 +41,6 @@ public class cityModel extends JDSModel {
         //FillBean is defined in the parent class IAS.Model/JDSModel.java
         FillBean(this.request, cityFormBean);
         this._cityFormBean = cityFormBean;
-
         if (_cityFormBean.getId() != 0) {
 
             this._updateCity();
@@ -62,9 +62,11 @@ public class cityModel extends JDSModel {
                             _cityFormBean.setId(cityID);
                         }
                     }
+                    request.setAttribute("cityFormBean", this._cityFormBean);
                 }
+
             }
-            request.setAttribute("cityFormBean", this._cityFormBean);
+
         }
         return cityID;
     }

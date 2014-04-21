@@ -35,9 +35,14 @@ public class city extends JDSController {
             _cityModel = new IAS.Model.masterdata.cityModel(request);
 
             if (action.equalsIgnoreCase("save")) {
-
-                _cityModel.Save();
-                url = "/jsp/masterdata/displayCity.jsp";
+                try {
+                    _cityModel.Save();
+                    request.setAttribute("user-status-message", "Successfully added city");
+                } catch (SQLException ex) {
+                    request.setAttribute("user-status-message", ex.getMessage());
+                } finally {
+                    url = "/jsp/masterdata/displayCity.jsp";
+                }
 
             } else if (action.equalsIgnoreCase("add")) {
                 int cityID = 0;
