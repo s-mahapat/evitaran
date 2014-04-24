@@ -2031,7 +2031,7 @@ BEGIN
           WHERE     subscription_detail_id = old.id
                 AND sent_to_subscriber = FALSE
                 AND back_issue_list.month >= new.startMonth;
-         SET diff := getDeltaCopies(old.id);
+         SET diff := new.copies - old.copies;
          IF diff > 0
          THEN
             CALL addBackIssues(old.id,

@@ -321,6 +321,15 @@ public class SubscriptionModel extends JDSModel {
     }
 
     /*
+     Given a subscription id, it returns the invoice type associated with the
+     subscription. All Please refer invoices will not be considered
+     */
+    private int getInvoiceType(int subscriptionID) {
+        int invoice_type_id = 0;
+        return invoice_type_id;
+    }
+
+    /*
      * This method is to be used by agent excel upload functionality
      * to save subscription detail
      */
@@ -385,6 +394,14 @@ public class SubscriptionModel extends JDSModel {
         int journalGroupID = 0;
         boolean oldactiveFlag;
         boolean inactive = false;
+        int endMonth = 12;
+
+        /* set the month to month-1 if the start month in not jan else the end
+         month is default december
+         */
+        if (startMonth > 1) {
+            endMonth = startMonth - 1;
+        }
 
         /*
          * The logic used here is first get the old journalgroupid, active
@@ -430,6 +447,7 @@ public class SubscriptionModel extends JDSModel {
             int paramIndex = 0;
             st.setInt(++paramIndex, startYear);
             st.setInt(++paramIndex, startMonth);
+            st.setInt(++paramIndex, endMonth);
             st.setInt(++paramIndex, endYear);
             st.setInt(++paramIndex, newPriceGroupID);
             st.setInt(++paramIndex, copies);
@@ -441,6 +459,7 @@ public class SubscriptionModel extends JDSModel {
             _conn.rollback();
             throw (e);
         } finally {
+            _conn.commit();
             _conn.setAutoCommit(true);
             _conn.close();
             return rc;
@@ -790,11 +809,12 @@ public class SubscriptionModel extends JDSModel {
             int invoice_type_id,
             float amount) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException {
 
+        /* get the existing invoice if any */
         String sql = Queries.getQuery("select_invoice_by_subid");
         int invoice_id;
         try (Connection _conn = this.getConnection(); PreparedStatement st = _conn.prepareStatement(sql)) {
             st.setInt(1, subscriptionID);
-            st.setInt(2, invoice_type_id);
+            //st.setInt(2, invoice_type_id);
             ResultSet rs = st.executeQuery();
             if (rs.first()) {
                 // there is already an row for the subscriptiton, we need to update the amount
