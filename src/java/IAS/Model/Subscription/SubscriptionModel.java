@@ -395,12 +395,16 @@ public class SubscriptionModel extends JDSModel {
         boolean oldactiveFlag;
         boolean inactive = false;
         int endMonth = 12;
+        int numYears = endYear - startYear + 1;
 
-        /* set the month to month-1 if the start month in not jan else the end
+        /* set the endmonth to month - 1 if the start month in not jan else the end
          month is default december
+        
+         also decrease the numYears by 1 for such a case
          */
         if (startMonth > 1) {
             endMonth = startMonth - 1;
+            numYears--;
         }
 
         /*
@@ -439,7 +443,7 @@ public class SubscriptionModel extends JDSModel {
         }
 
         // get the new price group id and price
-        int newPriceGroupID = this.getJournalPriceGroupID(startYear, (endYear - startYear + 1), journalGroupID, SubscriberTypeID);
+        int newPriceGroupID = this.getJournalPriceGroupID(startYear, numYears, journalGroupID, SubscriberTypeID);
 
         //float total = copies * rs.getInt(2);
         sql = Queries.getQuery("update_subscription_detail");

@@ -18,6 +18,7 @@ function addJournal(){
 
         //else get the price details from the server
         startYear = parseInt($("#subscriptionStartYear").val());
+        // end year is the number of years, name is misleading
         numYears = parseInt($("#endYear").val());
         startmonth = parseInt($("#startMonth").val());
         // handle the case where the start month may not be Jan
