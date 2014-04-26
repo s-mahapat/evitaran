@@ -69,7 +69,9 @@ public class convertToPdf extends JDSPDF {
 
     boolean noHeader = false;
     boolean periodicals = false;
-    boolean separateOutLatestIssue= false;
+    boolean separateLabelForP= false;
+    boolean separateLabelForRES= false;
+    boolean separateLabelForCURR= false;
 
     String reminderType1Text = "";
     String reminderType2Text = "";
@@ -89,7 +91,7 @@ public convertToPdf(String _noHeader, String _periodicals){
         }
     }
 
-public convertToPdf(String _noHeader, String _periodicals, String _separateLabel, boolean _backIssue){
+public convertToPdf(String _noHeader, String _periodicals, String _separateLabelForP, String _separateLabelForRES, String _separateLabelForCURR, boolean _backIssue){
         super();
         if(_noHeader!= null && _noHeader.equals("on")){
             noHeader    = true;
@@ -97,9 +99,15 @@ public convertToPdf(String _noHeader, String _periodicals, String _separateLabel
         if(_periodicals!= null && _periodicals.equals("on")){
             periodicals = true;
         }
-        if(_separateLabel!= null && _separateLabel.equals("on")){
-            separateOutLatestIssue = true;
+        if(_separateLabelForP!= null && _separateLabelForP.equals("on")){
+            separateLabelForP = true;
         }
+        if(_separateLabelForRES!= null && _separateLabelForRES.equals("on")){
+            separateLabelForRES = true;
+        }
+        if(_separateLabelForCURR!= null && _separateLabelForCURR.equals("on")){
+            separateLabelForCURR = true;
+        }        
         backIssue = _backIssue;
     }
 
@@ -1214,15 +1222,31 @@ public convertToPdf(){
 
                             // If this is the last volume and for the select journal check if there are more than 1 issue
                             if(Integer.parseInt(volume_number) == highestVolumeNo &&
-                            (separateOutLatestIssue && journalCode.equals("P") && startIssue < endIssue ||
-                             separateOutLatestIssue && journalCode.equals("RES") && startIssue < endIssue ||
-                             separateOutLatestIssue && journalCode.equals("CURR") && startIssue < endIssue)) {
+                            (separateLabelForP && journalCode.equals("P") && startIssue < endIssue)) {
 
                                 String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
                                 labels.add(labelSeparate);
 
                                 endIssue = endIssue - 1;
                             }
+                            
+                            if(Integer.parseInt(volume_number) == highestVolumeNo &&
+                            (separateLabelForRES && journalCode.equals("RES") && startIssue < endIssue)) {
+
+                                String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
+                                labels.add(labelSeparate);
+
+                                endIssue = endIssue - 1;
+                            }
+                            
+                            if(Integer.parseInt(volume_number) == highestVolumeNo &&
+                            (separateLabelForCURR && journalCode.equals("CURR") && startIssue < endIssue)) {
+
+                                String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
+                                labels.add(labelSeparate);
+
+                                endIssue = endIssue - 1;
+                            }                            
 
                             label = label + createLabel(journalCode, volume_number, startIssue, endIssue, no_of_copies);
                         }

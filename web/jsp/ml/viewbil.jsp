@@ -259,9 +259,15 @@
                                 <input class="IASButton" TABINDEX="7" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
                                 <input class="IASButton" TABINDEX="8" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
                                 <input class="IASButton" TABINDEX="9" type="reset" value="Reset"/>
-                                <input class="IASCheckBox" TABINDEX="10" type="checkbox" name="separateLabel" id="separateLabel"/>
-                                <label>Generate separate label for latest issue of P, JAA, CURR</label>
                             </div>
+                            <div class="SeparateLabel">
+                                <input class="IASCheckBox" TABINDEX="10" type="checkbox" name="separateLabelForP" id="separateLabelForP"/>
+                                <label>Generate separate label for latest issue of P</label>
+                                <input class="IASCheckBox" TABINDEX="11" type="checkbox" name="separateLabelForRES" id="separateLabelForRES"/>
+                                <label>Generate separate label for latest issue of RES</label>
+                                <input class="IASCheckBox" TABINDEX="12" type="checkbox" name="separateLabelForCURR" id="separateLabelForCURR"/>
+                                <label>Generate separate label for latest issue of CURR</label>                                
+                            </div>                            
                         </fieldset>
                     </fieldset>
                 </div>
