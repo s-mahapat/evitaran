@@ -1,7 +1,10 @@
 @echo OFF
-REM "%PROGRAMFILES%\MySQL\MySQL Server 5.5\bin\mysql.exe" -u root -proot -D jds < jds_schema.sql >> import_jds_data.log
 echo Creating the database schema
-"%PROGRAMFILES%\MySQL\MySQL Server 5.6\bin\mysql.exe" -u root -proot < jds_schema_data.sql > import_jds_data.log 2>&1
+"%PROGRAMFILES%\MySQL\MySQL Server 5.6\bin\mysql.exe" -u root -proot --comments < jds_schema_data.sql > import_jds_data.log 2>&1
+echo Creating the database procedures
+"%PROGRAMFILES%\MySQL\MySQL Server 5.6\bin\mysql.exe" -u root -proot --comments < jds_schema_procedures.sql >> import_jds_data.log 2>&1
+echo Creating the database triggers
+"%PROGRAMFILES%\MySQL\MySQL Server 5.6\bin\mysql.exe" -u root -proot --comments < jds_schema_triggers.sql >> import_jds_data.log 2>&1
 IF %ERRORLEVEL% EQU 0 (
     echo Import completed successfully 
 ) ELSE (
