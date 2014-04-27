@@ -96,3 +96,88 @@ function _generateLabel(){
     }
     return htmlStr;
 }
+
+function printLabelGbil()
+{
+    var arrRowData = $("#bilTable").getRowData();
+    var rowRequiredData = [];
+    var ids = $("#bilTable").getDataIDs();
+    //var ids = jQuery("#bilTable").jqGrid('getDataIDs');
+
+    for(intIndex in arrRowData){
+        var rowObj = arrRowData[intIndex];
+        /*pick on required fields from the UI. Not fields are requred, they can be derieved from the database itself.
+         * e.g. the journal name can be derieved from the code if required.
+         */
+        rowRequiredData.push({
+            name: "bilid",
+            value: rowObj.bilid
+        });        
+    }
+    
+    
+    $('#bilid').val($.param(rowRequiredData));
+    //$('#bil_ids').val(rowRequiredData);
+    var x = "printLabelGbil";
+    $('#action').val(x);   
+
+    /*
+    $.ajax({
+        type: 'POST',
+        url: "generatebil?action=printLabelGbil",
+        data: $.param(rowRequiredData),
+        success: function(xmlResponse, textStatus, jqXHR){
+
+            if(xmlResponse == null){
+                alert("Failed to Print");
+                return false;
+            }
+            $(xmlResponse).find("results").each(function(){
+                var error = $(this).find("error").text();
+                var missingissueId = $(this).find("missingissueId").text();
+                var mi = $(this).find("missingissueId").text();
+                document.forms["addMissingissueForm"].miId.value = mi;
+                if(error){
+                    alert(error);
+                }
+                else if(missingissueId){
+                    alert("Missing issue with ID: " + $("#miId").val() + " created successfully");
+                    $("#btnsaveMissingInfo").button("disable");
+                    $("#btnAddLine").button("disable");
+                    $("#btnDeleteAll").button("disable");
+                    document.addMissingissueForm.submit();
+                }
+            });
+        },
+        error: function(jqXHR,textStatus,errorThrown){
+            alert("Failed to Print" + errorThrown);
+        },
+        dataType: 'xml'
+    });
+    */
+}
+
+function printStickerGbil()
+{
+    var arrRowData = $("#bilTable").getRowData();
+    var rowRequiredData = [];
+    var ids = $("#bilTable").getDataIDs();
+    //var ids = jQuery("#bilTable").jqGrid('getDataIDs');
+
+    for(intIndex in arrRowData){
+        var rowObj = arrRowData[intIndex];
+        /*pick on required fields from the UI. Not fields are requred, they can be derieved from the database itself.
+         * e.g. the journal name can be derieved from the code if required.
+         */
+        rowRequiredData.push({
+            name: "bilid",
+            value: rowObj.bilid
+        });        
+    }
+    
+    
+    $('#bilid').val($.param(rowRequiredData));
+    //$('#bil_ids').val(rowRequiredData);
+    var x = "printStickerGbil";
+    $('#action').val(x); 
+}

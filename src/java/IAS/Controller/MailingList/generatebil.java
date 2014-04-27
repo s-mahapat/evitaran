@@ -54,6 +54,19 @@ public class generatebil extends JDSController {
                 request.setAttribute("ResultSet", rs);
                 //url = "/pdfserver?action=generatemlPrintSticker";
                 url = "/pdfserver?action=generatebilPrintSticker";
+            }else if(action.equalsIgnoreCase("printLabelGbil")){
+
+                ResultSet rs = _bilModel.printbilGen();
+                request.setAttribute("ResultSet", rs);
+                //url = "/pdfserver?action=generatemlPrintLabel";
+                url = "/pdfserver?action=generatebilPrintLabel";
+
+            }else if(action.equalsIgnoreCase("printStickerGbil")){
+
+                ResultSet rs = _bilModel.printbilGen();
+                request.setAttribute("ResultSet", rs);
+                //url = "/pdfserver?action=generatemlPrintSticker";
+                url = "/pdfserver?action=generatebilPrintSticker";
             }
 
         } catch (Exception e) {

@@ -24,6 +24,8 @@
             $(document).ready(function(){
                 jQuery("#btnSearch,#btnPrint").attr("disabled",true);
                 reloadSubscriberNumber('g');
+                $("#btnPrintLabel").button("disable");
+                $("#btnPrintSticker").button("disable");                 
             });
 
             $(function(){
@@ -41,9 +43,10 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found",
                     loadtext: "Loading...",
-                    colNames:['Journal Code', 'Sub. Type', 'Subscriber Number', 'Subscriber Name', 'City',
+                    colNames:['bilid','Journal Code', 'Sub. Type', 'Subscriber Number', 'Subscriber Name', 'City',
                         'State', 'Country', 'PIN code', 'Copies', 'Volume','Issue', 'Year', 'Bil Date', 'Page Size'],
                     colModel :[
+                        {name:'bilid', index:'bilid', width:40, align:'center', xmlmap:'bilid'},
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'subtypecode', index:'subtypecode', width:80, align:'center', xmlmap:'subtypecode'},
                         {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
@@ -76,10 +79,20 @@
                     caption: '&nbsp;',
                     editurl:"<%=request.getContextPath()%>/generatebil?action=generate",
                     gridComplete: function() {
+                        /*
                         var ids = jQuery("#bilTable").jqGrid('getDataIDs');
                         for (var i = 0; i < ids.length; i++) {
                             action = "<a style='color:blue;' href='generatebil?action=print&id=" + ids[i] + "'>Print</a>";
                             jQuery("#generatebil").jqGrid('setRowData', ids[i], { Action: action });
+                        }
+                        */
+                        var ids = jQuery("#bilTable").jqGrid('getDataIDs');
+                        if(ids.length > 0){
+                            $("#btnPrintLabel").button("enable");
+                            $("#btnPrintSticker").button("enable");
+                        } else {
+                            $("#btnPrintLabel").button("disable");
+                            $("#btnPrintSticker").button("disable");                            
                         }
                     },
                     beforeRequest: function(){
@@ -98,7 +111,6 @@
                 if (($("#subscriberNumber").val() == 0) && (($("#to").val()) == 0 && ($("#from").val()) == 0)){
                     alert("Select Subscriber Number or Date Range");
                 }
-
                 else {
                     isPageLoaded = true;
                     jQuery("#bilTable").setGridParam({postData:
@@ -140,13 +152,13 @@
                 var x = "printLabel";
                 $('#action').val(x);
             }
-
+            
             function printSticker()
             {
                 var x = "printSticker";
                 $('#action').val(x);
             }
-
+            
             // draw the date picker.
             jQueryDatePicker("from","to");
 
@@ -220,12 +232,13 @@
                         <%-----------------------------------------------------------------------------------------------------%>
 
                         <input type="hidden" name="action" id="action"/>
+                        <input type="hidden" name="bilid" id="bilid"/>
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv">
                                 <label>Periodicals</label>
                                 <input class="IASCheckBox" TABINDEX="6" type="checkbox" name="periodicals" id="periodicals"/>
-                                <input class="IASButton" TABINDEX="7" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
-                                <input class="IASButton" TABINDEX="8" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
+                                <input class="IASButton" TABINDEX="7" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabelGbil()"/>
+                                <input class="IASButton" TABINDEX="8" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printStickerGbil()"/>
                                 <input class="IASButton" TABINDEX="9" type="reset" value="Reset"/>                                
                             </div>
                             <div class="SeparateLabel">
