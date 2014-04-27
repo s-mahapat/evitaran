@@ -132,11 +132,12 @@ function deleteRow(rowid) {
     if (subscriptionSaved) {
         return;
     }
-    if (rowid == "All") {
+    if (rowid.toString() === "All") {
         // clears the entire grid
         $("#newSubscription").clearGridData();
         // reset the total to zero
         $("#subscriptionTotalValue").text(0);
+        $("#grosssubscriptionTotalValue").text(0);
     } else {
         rowTotal = $("#newSubscription").getCell(rowid, "Total");
         //subbtract row value from total

@@ -27,7 +27,6 @@ import javax.xml.transform.TransformerException;
 public class InvoiceBillPDF extends JDSPDF {
 
     //private HttpServletRequest request = null;
-
     public ByteArrayOutputStream getPDF(int invoiceid) throws DocumentException,
             MalformedURLException,
             IOException,
@@ -63,7 +62,6 @@ public class InvoiceBillPDF extends JDSPDF {
             DocumentException {
 
         //Connection conn = Database.getConnection();
-
         //inwardModel _inwardModel = new inwardModel(this.request);
         //InvoiceFormBean _invoiceBean = _inwardModel.getInvoiceDetail(invoiceNumber);
         InvoiceModel invoiceModel = new InvoiceModel();
@@ -89,7 +87,6 @@ public class InvoiceBillPDF extends JDSPDF {
         //Paragraph invoiceNumber = new Paragraph(new Chunk("Invoice No: " + _invoiceBean.getInvoiceNumber(), JDSPDF.JDS_FONT_BODY));
         Paragraph subscriberNumber = new Paragraph(new Chunk("Sub No: " + subscriberbean.getSubscriberNumber(), JDSPDF.JDS_FONT_BODY));
 
-
         PdfPCell subscriberNumberCell = new PdfPCell(subscriberNumber);
         //PdfPCell invoiceNumberCell = new PdfPCell(invoiceNumber);
         //PdfPCell invoiceHeaderCell = new PdfPCell(invoiceHeader);
@@ -102,11 +99,9 @@ public class InvoiceBillPDF extends JDSPDF {
         //invoiceHeaderCell.setBorder(Rectangle.NO_BORDER);
         //invoiceHeaderCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         //invoiceHeaderCell.setVerticalAlignment(Element.ALIGN_TOP);
-
         //invoiceNumberCell.setBorder(Rectangle.NO_BORDER);
         //invoiceNumberCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         // invoiceNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
-
         InvoiceInfoTable.addCell(subscriberNumberCell);
         //InvoiceInfoTable.addCell(invoiceHeaderCell);
         //InvoiceInfoTable.addCell(invoiceNumberCell);
@@ -252,18 +247,20 @@ public class InvoiceBillPDF extends JDSPDF {
         table.addCell(cell9);
         table.addCell(cell8);
 
-
         //end of 2nd row, i.e invoice info
-
         java.util.List<IAS.Class.PaymentInfo> payment_details = invoiceModel.getInvoicePayments(invoiceid);
         Iterator iterator = payment_details.iterator();
         float totalPaid = 0;
         float invoiceAmount = invoiceBean.getAmount();
-        float due = 0;
+        /* assign the invoiceamount to due since this the amount that he had to pay
+         we will keep deducting the payments from this amount. The final due will be
+         the pending amount
+         */
+        float due = invoiceAmount;
 
         while (iterator.hasNext()) {
 
-            IAS.Class.PaymentInfo payment_detail = (IAS.Class.PaymentInfo)iterator.next();
+            IAS.Class.PaymentInfo payment_detail = (IAS.Class.PaymentInfo) iterator.next();
 
             PdfPCell c1 = new PdfPCell(new Phrase("Payment", JDSPDF.JDS_FONT_NORMAL_SMALL));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -301,20 +298,20 @@ public class InvoiceBillPDF extends JDSPDF {
         // add the reference/letter number
         paragraphBody.add(Chunk.NEWLINE);
         /*String letterNoText = "Ref: Your Order No: %s Dated %s";
-        if (_invoiceBean.getLetterNumber().length() > 0) {
-            letterNoText = String.format(letterNoText, _invoiceBean.getLetterNumber(), _invoiceBean.getLetterDate());
-        } else {
-            letterNoText = String.format(letterNoText, ".....", ".....");
-        }
+         if (_invoiceBean.getLetterNumber().length() > 0) {
+         letterNoText = String.format(letterNoText, _invoiceBean.getLetterNumber(), _invoiceBean.getLetterDate());
+         } else {
+         letterNoText = String.format(letterNoText, ".....", ".....");
+         }
 
-        paragraphBody.add(new Phrase(letterNoText, JDSPDF.JDS_FONT_BODY));
-        paragraphBody.add(Chunk.NEWLINE);
-        * */
+         paragraphBody.add(new Phrase(letterNoText, JDSPDF.JDS_FONT_BODY));
+         paragraphBody.add(Chunk.NEWLINE);
+         * */
 
         EnglishNumberToWords _EnglishNumberToWords = new EnglishNumberToWords();
         paragraphBody.add(Chunk.NEWLINE);
         paragraphBody.add(
-                new Phrase("Balance: " + _EnglishNumberToWords.convertDouble(invoiceBean.getBalance()).toUpperCase(), JDSPDF.JDS_FONT_BODY));//Convert total value in words
+                new Phrase("Balance: " + _EnglishNumberToWords.convertDouble(due).toUpperCase(), JDSPDF.JDS_FONT_BODY));//Convert total value in words
         paragraphOuter.add(invoiceHeader);
         paragraphOuter.add(InvoiceInfoTable);
         paragraphOuter.add(addressParagraph);

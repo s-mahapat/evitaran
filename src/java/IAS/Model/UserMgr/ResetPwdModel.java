@@ -34,21 +34,18 @@ public class ResetPwdModel extends JDSModel {
     public boolean updatePassword(String email, String newPassword) throws SQLException {
 
         boolean isReset = false;
-        Connection _conn = this.getConnection();
-
         String sql = Queries.getQuery("update_password");
-        try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+        try (Connection _conn = this.getConnection(); PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setString(1, newPassword);
             pst.setBoolean(2, false);
             pst.setString(3, email);
             int rc = pst.executeUpdate();
-            if(rc == 1){
+            if (rc == 1) {
                 isReset = true;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             logger.error(ex);
-        }finally{
-            _conn.close();
+        } finally {
             return isReset;
         }
     }
@@ -56,7 +53,6 @@ public class ResetPwdModel extends JDSModel {
     public boolean emailNewPassword(String email) throws SQLException, FileNotFoundException, IOException {
 
         boolean isReset = false;
-        Connection _conn = this.getConnection();
 
         // get the new password from the password generator
         String newPassword = this.getNewPassword();
@@ -68,7 +64,7 @@ public class ResetPwdModel extends JDSModel {
 
         try {
             String sql = Queries.getQuery("update_password");
-            try (PreparedStatement pst = _conn.prepareStatement(sql)) {
+            try (Connection _conn = this.getConnection(); PreparedStatement pst = _conn.prepareStatement(sql)) {
                 pst.setString(1, newPassword);
                 pst.setBoolean(2, true);
                 pst.setString(3, email);
@@ -84,7 +80,6 @@ public class ResetPwdModel extends JDSModel {
             isReset = false;
             logger.error(e);
         } finally {
-            _conn.close();            
         }
         return isReset;
 

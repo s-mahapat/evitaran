@@ -382,7 +382,7 @@ function getAgentDiscount(id){
         url: 'main2/agent/discount/' + id,
         async: false,
         success: function(xmlResponse){
-            discount = $(xmlResponse).find("discount").text()
+            discount = $(xmlResponse).find("discount").text();
         },
         error: function(jqXHR,textStatus,errorThrown){
             alert("Failed to get discount for agent. " + textStatus + ": "+ errorThrown);

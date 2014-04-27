@@ -85,7 +85,7 @@ public class InvoiceModel extends JDSModel {
 
         InvoiceFormBean _InvoiceFormBean = null;
         String sql = Queries.getQuery("get_invoice_detail_usng_invno");
-        try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
+        try (Connection conn = this.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, invoice_no);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.first()) {
@@ -108,7 +108,7 @@ public class InvoiceModel extends JDSModel {
 
         InvoiceFormBean _InvoiceFormBean = null;
         String sql = Queries.getQuery("get_invoice_detail_usng_invid");
-        try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
+        try (Connection conn = this.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, invoice_id);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.first()) {
@@ -159,7 +159,7 @@ public class InvoiceModel extends JDSModel {
 
         List<IAS.Class.PaymentInfo> payments = new ArrayList<>();
         String sql = Queries.getQuery("invoice_payments");
-        try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
+        try (Connection conn = this.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, invoice_id);
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
@@ -181,8 +181,9 @@ public class InvoiceModel extends JDSModel {
     }
 
     public String getInvoicePaymentInfo(int invoice_id) {
+
         String sql = Queries.getQuery("invoice_payments");
-        try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
+        try (Connection conn = this.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, invoice_id);
             try (ResultSet rs = pst.executeQuery()) {
                 return util.convertResultSetToXML(rs);
@@ -197,7 +198,7 @@ public class InvoiceModel extends JDSModel {
 
         subscriberFormBean _subscriberFormBean = null;
         String sql = Queries.getQuery("get_subscriber_info_from_invoice");
-        try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
+        try (Connection conn = this.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, invoice_id);
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {

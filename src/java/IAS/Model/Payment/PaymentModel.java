@@ -24,6 +24,7 @@ public class PaymentModel extends JDSModel {
     }
 
     public int UpdatePayment(int invoice_id, int inward_id, float amount, String remarks) {
+
         String sql = Queries.getQuery("insert_payment");
         try (Connection _conn = this.getConnection(); PreparedStatement pst = _conn.prepareStatement(sql)) {
             pst.setInt(1, inward_id);

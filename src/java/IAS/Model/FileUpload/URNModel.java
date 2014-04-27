@@ -32,17 +32,11 @@ import org.xml.sax.SAXException;
 
 public class URNModel extends FileUploadBase {
 
-    private String sql;
-    private PreparedStatement pst;
-    private ArrayList<InwardInfo> _failures = new ArrayList<>();
-    private static Logger logger = JDSLogger.getJDSLogger(URNModel.class.getName());
-    private Connection conn;
+    private final ArrayList<InwardInfo> _failures = new ArrayList<>();
+    private static final Logger logger = JDSLogger.getJDSLogger(URNModel.class.getName());
 
     public URNModel(HttpServletRequest request) throws SQLException {
         super(request);
-        //this.conn = this.getConnection();
-        sql = Queries.getQuery("update_urn_info");
-        //pst = this.conn.prepareStatement(sql);
     }
 
     @Override
@@ -82,15 +76,16 @@ public class URNModel extends FileUploadBase {
     private Boolean updateInward(InwardInfo _inwardinfo) throws SQLException, ParseException {
 
         int paramIndex = 0;
-        pst.setInt(++paramIndex, _inwardinfo.getInstrumentNo());
-        pst.setFloat(++paramIndex, _inwardinfo.getAmount());
-        pst.setDate(++paramIndex, util.dateStringToSqlDate(_inwardinfo.getInstrumentDate()));
-        pst.setString(++paramIndex, _inwardinfo.getInwardNo());
-        int rc = pst.executeUpdate();
-        if (rc == 1) {
-            return true;
+        int rc;
+        String sql = Queries.getQuery("update_urn_info");
+        try (Connection conn = this.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(++paramIndex, _inwardinfo.getInstrumentNo());
+            pst.setFloat(++paramIndex, _inwardinfo.getAmount());
+            pst.setDate(++paramIndex, util.dateStringToSqlDate(_inwardinfo.getInstrumentDate()));
+            pst.setString(++paramIndex, _inwardinfo.getInwardNo());
+            rc = pst.executeUpdate();
         }
-        return false;
+        return rc == 1;
     }
 
     private InwardInfo getInwardInfo(Element el) {
@@ -118,10 +113,10 @@ public class URNModel extends FileUploadBase {
     private float getAmount(Element el) {
         NodeList amountList = el.getElementsByTagNameNS("*", "ALLLEDGERENTRIES.LIST");
         float amount = 0;
-        for (int i = 0; i < amountList.getLength(); i++){
+        for (int i = 0; i < amountList.getLength(); i++) {
             Element _amount_list_el = (Element) amountList.item(i);
             float _amount = this.getFloatValue(_amount_list_el, "AMOUNT");
-            if(_amount > 0){
+            if (_amount > 0) {
                 amount += _amount;
             }
         }
@@ -227,9 +222,8 @@ public class URNModel extends FileUploadBase {
         } catch (ParserConfigurationException | TransformerException e) {
             logger.error(e.getMessage());
             xml = ajaxResponse.getSuccessXML(false, "Failed to update inwards");
-        }finally{
-            return xml;
         }
+        return xml;
 
     }
 

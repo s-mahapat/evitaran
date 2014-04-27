@@ -11,6 +11,7 @@ import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import IAS.Model.Subscription.SubscriptionModel;
 import com.mysql.jdbc.Statement;
 import java.io.IOException;
 import java.io.InputStream;
@@ -145,47 +146,68 @@ public class inwardModel extends JDSModel {
 
         inwardFormBean inwardFormBean = new IAS.Bean.Inward.inwardFormBean();
         request.setAttribute("inwardFormBean", inwardFormBean);
-        inwardFormBean __inwardFormBean = null;
-        try (Connection _conn = this.getConnection()) {
-            _conn.setAutoCommit(false);
-            FillBean(this.request, inwardFormBean);
-            this._inwardFormBean = inwardFormBean;
-            String sql = Queries.getQuery("update_cheque_return");
-            try {
+        inwardFormBean __inwardFormBean;
+        FillBean(this.request, inwardFormBean);
+        this._inwardFormBean = inwardFormBean;
+        String sql = Queries.getQuery("update_cheque_return");
+        String sql_details = Queries.getQuery("update_cheque_return_details");
+        try (Connection _conn = this.getConnection();
                 PreparedStatement st = _conn.prepareStatement(sql);
-                int paramIndex = 0;
-                st.setBoolean(++paramIndex, true);
-                st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReason());
-                st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReasonOther());
-                st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
-                st.setString(++paramIndex, inwardFormBean.getInwardNumber());
-                st.executeUpdate();
+                PreparedStatement pst = _conn.prepareStatement(sql_details);) {
+            _conn.setAutoCommit(false);
+            int paramIndex = 0;
+            st.setBoolean(++paramIndex, true);
+            st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReason());
+            st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReasonOther());
+            st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+            st.setString(++paramIndex, "Instrument of amount " + inwardFormBean.getAmount() + " returned");
+            st.setString(++paramIndex, inwardFormBean.getInwardNumber());
+            st.executeUpdate();
+            paramIndex = 0;
+            pst.setString(++paramIndex, inwardFormBean.getChequeDDReturnReason());
+            pst.setString(++paramIndex, inwardFormBean.getChequeDDReturnReasonOther());
+            pst.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+            pst.setFloat(++paramIndex, inwardFormBean.getAmount());
+            pst.setInt(++paramIndex, inwardFormBean.getInwardID());
+            pst.setInt(++paramIndex, inwardFormBean.getChqddNumber());
+            pst.setDate(++paramIndex, util.dateStringToSqlDate(inwardFormBean.getPaymentDate()));
+            pst.executeUpdate();
+            _conn.commit();
+            /*
+             Create or update an invoice when the cheque is returned
+             */
+            int subscriptionID = this.getSubscriptionID(inwardFormBean.getInwardID());
+            SubscriptionModel subscriptionModel = new SubscriptionModel();
+            int invoice_type_id = 2; // for outstanding payment
+            subscriptionModel.insertUpdateInvoiceForSubscription(subscriptionID, invoice_type_id, inwardFormBean.getAmount());
 
-                sql = Queries.getQuery("update_cheque_return_details");
-                st = _conn.prepareStatement(sql);
-                paramIndex = 0;
-
-                st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReason());
-                st.setString(++paramIndex, inwardFormBean.getChequeDDReturnReasonOther());
-                st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
-                st.setFloat(++paramIndex, inwardFormBean.getAmount());
-                st.setInt(++paramIndex, inwardFormBean.getInwardID());
-                st.setInt(++paramIndex, inwardFormBean.getChqddNumber());
-                st.setDate(++paramIndex, util.dateStringToSqlDate(inwardFormBean.getPaymentDate()));
-                st.executeUpdate();
-
-                _conn.commit();
-                __inwardFormBean = this.GetInward();
-
-            } catch (SQLException ex) {
-                _conn.rollback();
-            } finally {
-                _conn.setAutoCommit(true);
-            }
+            __inwardFormBean = this.GetInward();
 
         }
         return __inwardFormBean;
 
+    }
+
+    /**
+     * Given an inward id returns the subscription id that was created from the
+     * inward
+     *
+     * @param inwardID inward id
+     * @return subscription id
+     * @throws SQLException
+     */
+    private int getSubscriptionID(int inwardID) throws SQLException {
+        int subscriptionID = 0;
+        String sql = Queries.getQuery("get_subscription_for_inward");
+        try (Connection conn = this.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, inwardID);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.first()) {
+                    subscriptionID = rs.getInt("subscriptionID");
+                }
+            }
+        }
+        return subscriptionID;
     }
 
     public inwardFormBean getChequeReturnDetails(String inwardNumber, int chq_no) throws SQLException {
@@ -220,8 +242,6 @@ public class inwardModel extends JDSModel {
         // get the connection from base class
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("update_inward");
-
-        
 
         try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
             // mulitple tables are updated, so it should be done in a transaction

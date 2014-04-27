@@ -809,7 +809,20 @@ public class SubscriptionModel extends JDSModel {
         return invoiceID;
     }
 
-    private int insertUpdateInvoiceForSubscription(int subscriptionID,
+    /**
+     * Given a subscription id creates/updates an invoice of the given type
+     *
+     * @param subscriptionID The subscription ID for which invoice should be
+     * created/updated
+     * @param invoice_type_id The type of invoice to be created/updated. 1,2,3
+     * @param amount The invoice amount
+     * @return Invoice id
+     * @throws java.sql.SQLException
+     * @throws java.text.ParseException
+     * @throws java.lang.reflect.InvocationTargetException
+     * @throws java.lang.IllegalAccessException
+     */
+    public int insertUpdateInvoiceForSubscription(int subscriptionID,
             int invoice_type_id,
             float amount) throws SQLException, ParseException, InvocationTargetException, IllegalAccessException {
 

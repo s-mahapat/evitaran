@@ -32,34 +32,32 @@ public class JDSModel extends HttpServlet {
 
     public JDSModel() throws SQLException {
         /*if (this.conn == null || this.conn.isClosed() == true) {
-            this.conn = Database.getConnection();
-        }*/
+         this.conn = Database.getConnection();
+         }*/
         this.db = new Database();
     }
 
     /*private static Connection _getConnection() throws SQLException{
-        if(conn == null || conn.isClosed()){
-            conn = Database.getConnection();
-        }
-        return conn;
-    }*/
-
-    protected Connection getConnection() throws SQLException{
+     if(conn == null || conn.isClosed()){
+     conn = Database.getConnection();
+     }
+     return conn;
+     }*/
+    protected Connection getConnection() throws SQLException {
         return Database.getConnection();
     }
 
     /*protected Connection getStaticConnection() throws SQLException{
-        return _getConnection();
-    }*/
-
-    protected void CloseConnection(Connection conn) throws SQLException{
+     return _getConnection();
+     }*/
+    protected void CloseConnection(Connection conn) throws SQLException {
 
     }
 
     public JDSModel(HttpServletRequest request) throws SQLException {
         /*if (JDSModel.conn == null || JDSModel.conn.isClosed() == true) {
-            JDSModel.conn = Database.getConnection();
-        }*/
+         JDSModel.conn = Database.getConnection();
+         }*/
         this.db = new Database();
         this.request = request;
         this.session = request.getSession(false);
@@ -83,13 +81,12 @@ public class JDSModel extends HttpServlet {
         try (Connection _conn = this.getConnection();
                 PreparedStatement st = _conn.prepareStatement(sql)) {
             st.setInt(1, inwardID);
-            if (st.executeUpdate() == 1) {                
+            if (st.executeUpdate() == 1) {
                 rc = 1;
             }
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             logger.error(ex);
-        }
-        finally{
+        } finally {
             session.setAttribute("inwardUnderProcess", null);
         }
         return (rc);

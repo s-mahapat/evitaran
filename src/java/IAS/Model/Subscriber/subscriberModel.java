@@ -116,15 +116,13 @@ public class subscriberModel extends JDSModel {
 
     public int SaveNewSubscriber(subscriberFormBean _subscriberFormBean) throws IllegalAccessException, SQLException, ParseException, InvocationTargetException {
 
-        Connection conn = this.getConnection();
         int _subscriberId = 0;
-
         //get the next subscriber number
         _subscriberFormBean.setSubscriberNumber(getNextSubscriberNumber());
         this._subscriberFormBean = _subscriberFormBean;
         // the query name from the jds_sql properties files in WEB-INF/properties folder
         String sql = Queries.getQuery("subscriber_insert");
-        try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+        try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
             // fill in the statement params
             this._setSubscriberStatementParams(st, "create");
             int rowsAffected = st.executeUpdate();
@@ -139,9 +137,6 @@ public class subscriberModel extends JDSModel {
             logger.error(e);
             throw e;
         } finally {
-
-            // return the connection to the pool
-            conn.close();
             return _subscriberId;
         }
     }
@@ -707,10 +702,8 @@ public class subscriberModel extends JDSModel {
                     try {
                         xml = util.convertResultSetToXML(rs);
                     } catch (ParserConfigurationException | TransformerException ex) {
-                    } finally {
-                        return xml;
                     }
-
+                    return xml;
                 }
             };
 
