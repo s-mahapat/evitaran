@@ -78,8 +78,8 @@ DELIMITER ;;
 BEGIN
    DECLARE subscription_date varchar(20);
    SET subscription_date = CONCAT(new.startYear, '-', new.startMonth, '-', 1);
-   /* only add back issue if subscription date is less than today */
-   IF DATE_FORMAT(subscription_date, '%Y-%m-%d') < current_date() THEN
+   /* only add back issue if subscription date is less than equal to today */
+   IF DATE_FORMAT(subscription_date, '%Y-%m-%d') <= current_date() THEN
      CALL addBackIssues(new.id,
                         new.startMonth,
                         new.startYear,
