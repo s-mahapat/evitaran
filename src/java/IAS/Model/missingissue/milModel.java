@@ -189,7 +189,6 @@ public class milModel extends JDSModel {
         PreparedStatement stGet = conn.prepareStatement(sql);
         stGet.setInt(1, miJlId);
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        //xml = util.convertResultSetToXML(rs);
         return rs;
     }
 

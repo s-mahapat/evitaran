@@ -75,39 +75,39 @@ public class missingissueModel extends JDSModel {
         String missingIssue[] = request.getParameterValues("issue");
         String mcopies[] = request.getParameterValues("mcopies");
         int missingissueId = 0;
-        Connection conn = this.getConnection();
-        conn.setAutoCommit(false);
         String sql = Queries.getQuery("insert_missing_issue");
-        try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+        try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+            conn.setAutoCommit(false);
             int paramIndex = 0;
             //float balance = subscriptionTotal - this._inwardFormBean.getAmount();
 
             st.setString(++paramIndex, inwardNumber);
             st.setString(++paramIndex, subscriberNumber);
-            //st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
-            if (db.executeUpdatePreparedStatement(st) == 1) {
-                try (ResultSet rs = st.getGeneratedKeys();) {
-                    rs.first();
-                    missingissueId = rs.getInt(1);
+            try {
+                //st.setDate(++paramIndex, util.dateStringToSqlDate(util.getDateString()));
+                if (db.executeUpdatePreparedStatement(st) == 1) {
+                    try (ResultSet rs = st.getGeneratedKeys();) {
+                        rs.first();
+                        missingissueId = rs.getInt(1);
+                    }
+
+                    int[] res = this.__addMissingJournals(missingissueId,
+                            util.convertStringArraytoIntArray(subscriptionId),
+                            journalGroupName,
+                            journalName,
+                            missingIssue,
+                            util.convertStringArraytoIntArray(year),
+                            util.convertStringArraytoIntArray(volume),
+                            util.convertStringArraytoIntArray(mcopies));
+
+                    xml = util.convertStringToXML(String.valueOf(missingissueId), "missingissueId");
+                    conn.commit();
                 }
-
-                int[] res = this.__addMissingJournals(missingissueId,
-                        util.convertStringArraytoIntArray(subscriptionId),
-                        journalGroupName,
-                        journalName,
-                        missingIssue,
-                        util.convertStringArraytoIntArray(year),
-                        util.convertStringArraytoIntArray(volume),
-                        util.convertStringArraytoIntArray(mcopies));
-
-                xml = util.convertStringToXML(String.valueOf(missingissueId), "missingissueId");
-                conn.commit();
+            } catch (SQLException ex) {
+                conn.rollback();
+            } finally {
+                conn.setAutoCommit(true);
             }
-        } catch (SQLException | NumberFormatException e) {
-            conn.rollback();
-        } finally {
-            conn.setAutoCommit(true);
-            conn.close();
         }
         return xml;
     }

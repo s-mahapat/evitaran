@@ -173,26 +173,27 @@ public class journalDetailsModel extends JDSModel {
                     int no_of_volumes = rs.getInt(2);
 
                     sql = Queries.getQuery("get_journal_volume_details");
-                    PreparedStatement pst = conn.prepareStatement(sql);
-                    pst.setInt(1, journalDetailsId);
-                    try (ResultSet rs1 = pst.executeQuery()) {
-                        for (int i = 0; i < no_of_volumes; i++) {
-                            // if the journal_volume_details do not exist, then send blank information
-                            int id = 0;
-                            int volume_number = 0;
-                            String start_month = "";
-                            if (rs1.next()) {
-                                id = rs1.getInt(1);
-                                volume_number = rs1.getInt(2);
-                                start_month = rs1.getString(3);
+                    try (PreparedStatement pst = conn.prepareStatement(sql);) {
+                        pst.setInt(1, journalDetailsId);
+                        try (ResultSet rs1 = pst.executeQuery()) {
+                            for (int i = 0; i < no_of_volumes; i++) {
+                                // if the journal_volume_details do not exist, then send blank information
+                                int id = 0;
+                                int volume_number = 0;
+                                String start_month = "";
+                                if (rs1.next()) {
+                                    id = rs1.getInt(1);
+                                    volume_number = rs1.getInt(2);
+                                    start_month = rs1.getString(3);
+                                }
+                                xml = xml + "<row>";
+                                xml = xml + "<vid>" + id + "</vid>";
+                                xml = xml + "<journalName>" + journalName + "</journalName>";
+                                xml = xml + "<no_of_volumes>" + no_of_volumes + "</no_of_volumes>";
+                                xml = xml + "<volume_number>" + volume_number + "</volume_number>";
+                                xml = xml + "<start_month>" + start_month + "</start_month>";
+                                xml = xml + "</row>";
                             }
-                            xml = xml + "<row>";
-                            xml = xml + "<vid>" + id + "</vid>";
-                            xml = xml + "<journalName>" + journalName + "</journalName>";
-                            xml = xml + "<no_of_volumes>" + no_of_volumes + "</no_of_volumes>";
-                            xml = xml + "<volume_number>" + volume_number + "</volume_number>";
-                            xml = xml + "<start_month>" + start_month + "</start_month>";
-                            xml = xml + "</row>";
                         }
                     }
                 } else {
@@ -236,25 +237,26 @@ public class journalDetailsModel extends JDSModel {
 
                 // For the selected journal get journal details
                 sql = Queries.getQuery("get_journal_details");
-                PreparedStatement st = conn.prepareStatement(sql);
-                st.closeOnCompletion();
-                st.setString(1, journalName);
-                st.setInt(2, year);
-                try (ResultSet rs1 = st.executeQuery()) {
-                    if (rs1.next()) {
-                        pages = rs1.getString(1);
-                        issues = rs1.getInt(2);
-                        page_size = rs1.getString(3);
-                        no_of_volumes = rs1.getInt(4);
-                    }
-                    xml = xml + "<row>";
-                    xml = xml + "<journalName>" + journalName + "</journalName>";
-                    xml = xml + "<pages>" + pages + "</pages>";
-                    xml = xml + "<issues>" + issues + "</issues>";
-                    xml = xml + "<page_size>" + page_size + "</page_size>";
-                    xml = xml + "<no_of_volumes>" + no_of_volumes + "</no_of_volumes>";
+                try (PreparedStatement st = conn.prepareStatement(sql);) {
 
-                    xml = xml + "</row>";
+                    st.setString(1, journalName);
+                    st.setInt(2, year);
+                    try (ResultSet rs1 = st.executeQuery()) {
+                        if (rs1.next()) {
+                            pages = rs1.getString(1);
+                            issues = rs1.getInt(2);
+                            page_size = rs1.getString(3);
+                            no_of_volumes = rs1.getInt(4);
+                        }
+                        xml = xml + "<row>";
+                        xml = xml + "<journalName>" + journalName + "</journalName>";
+                        xml = xml + "<pages>" + pages + "</pages>";
+                        xml = xml + "<issues>" + issues + "</issues>";
+                        xml = xml + "<page_size>" + page_size + "</page_size>";
+                        xml = xml + "<no_of_volumes>" + no_of_volumes + "</no_of_volumes>";
+
+                        xml = xml + "</row>";
+                    }
                 }
             }
 

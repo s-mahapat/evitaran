@@ -18,7 +18,7 @@ import java.text.ParseException;
  */
 public class bilModel extends JDSModel {
 
-    private mlFormBean _mlFormBean = null;
+    private final mlFormBean _mlFormBean = null;
     private static final Logger logger = JDSLogger.getJDSLogger(bilModel.class.getName());
 
     public bilModel(HttpServletRequest request) throws SQLException {
@@ -27,19 +27,15 @@ public class bilModel extends JDSModel {
     }
 
     public String searchGen(String bilIDsForDisplay) throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        String xml = null;
-
+        String xml;
         ResultSet rs = getBILDtlUi(bilIDsForDisplay);
-
         xml = util.convertResultSetToXML(rs);
         return xml;
     }
 
     public String search() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
-        String xml = null;
-
+        String xml;
         ResultSet rs = getBILDtlUi();
-
         xml = util.convertResultSetToXML(rs);
         return xml;
     }
@@ -118,14 +114,14 @@ public class bilModel extends JDSModel {
         }
         for (int i = 0; i < bilid.length; i++) {
             billist = billist + bilid[i];
-            if(i != bilid.length-1) {
+            if (i != bilid.length - 1) {
                 billist = billist + ",";
             }
         }
         String sql = Queries.getQuery("search_bil");
         if (billist != null) {
             sql += " and mailing_list_detail.bilid in (" + billist + ")";
-        } 
+        }
         if (subscriberNumber != null && subscriberNumber.compareToIgnoreCase("NULL") != 0 && subscriberNumber.length() > 0) {
             sql += " and mailing_list_detail.subscriberNumber = " + "'" + subscriberNumber + "'";
         } else {
@@ -139,7 +135,7 @@ public class bilModel extends JDSModel {
         return rs;
     }
 
-        public ResultSet getBILDtl() throws SQLException {
+    public ResultSet getBILDtl() throws SQLException {
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
         String subscriberNumber = request.getParameter("subscriberNumber");
@@ -167,13 +163,12 @@ public class bilModel extends JDSModel {
         ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
         return rs;
     }
-        
+
     public synchronized String generate() throws SQLException, ParseException, ParserConfigurationException, TransformerException,
             java.lang.reflect.InvocationTargetException, java.lang.IllegalAccessException, ClassNotFoundException {
 
         String xml = null;
         //int i = 0;
-        Connection conn = this.getConnection();
 
         // Get the records from back_issue_list where bil is not generated.
         // Prepare insert string string for bil to ml_dtl
@@ -202,54 +197,55 @@ public class bilModel extends JDSModel {
         }
 
         String sqlInsBil = Queries.getQuery("insert_mldtl_bil");
-        PreparedStatement stInsMlBil = conn.prepareStatement(sqlInsBil);
+        try (Connection conn = this.getConnection(); PreparedStatement stInsMlBil = conn.prepareStatement(sqlInsBil);) {
 
-        String bilIDsForDisplay = " and mailing_list_detail.bilid in (";
+            String bilIDsForDisplay = " and mailing_list_detail.bilid in (";
 
-        try (PreparedStatement stGet = conn.prepareStatement(sql);) {
-            try (ResultSet rs = stGet.executeQuery();) {
-                while (rs.next()) {
-                    // insert record by record to mailing list
-                    String bilid = null;
-                    int paramIndex = 0;
-                    Object value = null;
-                    for (int j = 1; j <= 27; j++) {
-                        value = rs.getObject(j);
-                        if (value == null) {
-                            stInsMlBil.setString(++paramIndex, "");
-                        } else {
-                            stInsMlBil.setString(++paramIndex, value.toString());
+            try (PreparedStatement stGet = conn.prepareStatement(sql);) {
+                try (ResultSet rs = stGet.executeQuery();) {
+                    while (rs.next()) {
+                        // insert record by record to mailing list
+                        String bilid = null;
+                        int paramIndex = 0;
+                        Object value = null;
+                        for (int j = 1; j <= 27; j++) {
+                            value = rs.getObject(j);
+                            if (value == null) {
+                                stInsMlBil.setString(++paramIndex, "");
+                            } else {
+                                stInsMlBil.setString(++paramIndex, value.toString());
+                            }
+                            if (j == 27) {
+                                bilid = value.toString();
+                            }
                         }
-                        if (j == 27) {
-                            bilid = value.toString();
+                        stInsMlBil.setDate(++paramIndex, util.dateStringToSqlDate(request.getParameter("bilCreationDate")));
+                        stInsMlBil.executeUpdate();
+                        //db.executeUpdatePreparedStatement(stInsMlBil);
+                        String sqlUpdBil = Queries.getQuery("update_bil");
+                        PreparedStatement stUpdBil = conn.prepareStatement(sqlUpdBil);
+                        int paramIndexUpd = 1;
+                        stUpdBil.setString(paramIndexUpd, bilid);
+                        stUpdBil.executeUpdate();
+                        //db.executeUpdatePreparedStatement(stUpdBil);
+                        bilIDsForDisplay = bilIDsForDisplay + bilid;
+                        if (!rs.isLast()) {
+                            bilIDsForDisplay = bilIDsForDisplay + ",";
                         }
                     }
-                    stInsMlBil.setDate(++paramIndex, util.dateStringToSqlDate(request.getParameter("bilCreationDate")));
-                    stInsMlBil.executeUpdate();
-                    //db.executeUpdatePreparedStatement(stInsMlBil);
-                    String sqlUpdBil = Queries.getQuery("update_bil");
-                    PreparedStatement stUpdBil = conn.prepareStatement(sqlUpdBil);
-                    int paramIndexUpd = 1;
-                    stUpdBil.setString(paramIndexUpd, bilid);
-                    stUpdBil.executeUpdate();
-                    //db.executeUpdatePreparedStatement(stUpdBil);
-                    bilIDsForDisplay = bilIDsForDisplay + bilid;
-                    if (!rs.isLast()) {
-                        bilIDsForDisplay = bilIDsForDisplay + ",";
-                    }
+                    bilIDsForDisplay = bilIDsForDisplay + ")";
                 }
-                bilIDsForDisplay = bilIDsForDisplay + ")";
+            } catch (Exception e) {
+                logger.error(e);
+            } finally {
+                conn.close();
+                if (bilIDsForDisplay.contains("()")) {
+                    xml = xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n" + "<results>" + "</results>";
+                } else {
+                    xml = this.searchGen(bilIDsForDisplay);
+                }
+                return xml;
             }
-        } catch (Exception e) {
-            logger.error(e);
-        } finally {
-            conn.close();
-            if (bilIDsForDisplay.contains("()")) {
-                xml = xml = xml + "<?xml version='1.0' encoding='utf-8'?>\n" + "<results>" + "</results>";
-            } else {
-                xml = this.searchGen(bilIDsForDisplay);
-            }
-            return xml;
         }
     }
 
@@ -260,24 +256,23 @@ public class bilModel extends JDSModel {
         logger.debug("End of mailing list resultset generation");
         return rs;
     }
-    
+
     public ResultSet printbilGen() throws SQLException {
         logger.debug("Start of  mailing list resultset generation");
         String bilid1[] = request.getParameterValues("bilid");
-        
+
         //bilid=677&bilid=678&bilid=679: bilid=680bilid=681bilid=682bilid=683bilid=684bilid=685bilid=686bilid=687bilid=688bilid=689bilid=690
-        
         bilid1[0] = bilid1[0].replace("&", "");
         bilid1[0] = bilid1[0].substring(6);
-        String delims = "bilid=";        
+        String delims = "bilid=";
         String[] bilid = bilid1[0].split(delims);
-        
+
         /*
-        String[] bilid = new String[3];
-        bilid[0] = "677";
-        bilid[1] = "678";
-        bilid[2] = "679";        
-        */
+         String[] bilid = new String[3];
+         bilid[0] = "677";
+         bilid[1] = "678";
+         bilid[2] = "679";        
+         */
         //Query whatever you want here
         ResultSet rs = getBILDtl(bilid);
         logger.debug("End of mailing list resultset generation");

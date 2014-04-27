@@ -51,10 +51,11 @@ public class journalSubjectGroupModel extends JDSModel {
                 if (!rs.next()) {
                     // Step2: If the group and year does not exist, then add to the table
                     sql = Queries.getQuery("createNewJournalGroup");
-                    PreparedStatement pst = conn.prepareStatement(sql);
-                    paramIndex = 1;
-                    pst.setString(paramIndex++, newJournalGroupName);
-                    pst.executeUpdate();
+                    try (PreparedStatement pst = conn.prepareStatement(sql);) {
+                        paramIndex = 1;
+                        pst.setString(paramIndex++, newJournalGroupName);
+                        pst.executeUpdate();
+                    }
                 }
             } catch (SQLException ex) {
                 logger.error(ex);
@@ -86,7 +87,7 @@ public class journalSubjectGroupModel extends JDSModel {
                     logger.error(ex);
                 }
             }
-            
+
         } catch (SQLException ex) {
             logger.error(ex);
         }
@@ -115,12 +116,11 @@ public class journalSubjectGroupModel extends JDSModel {
 
             //Get journal group contents
             sql = Queries.getQuery("getJournalGroupContents");
-
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.closeOnCompletion();
-            pst.setString(1, this._journalSubjectGroupFormBean.getJournalGroupName());
-            try (ResultSet rs2 = pst.executeQuery()) {
-                xml = convertResultSetToXMLForJournalSubjectGroup(rs2, true);
+            try (PreparedStatement pst = conn.prepareStatement(sql);) {
+                pst.setString(1, this._journalSubjectGroupFormBean.getJournalGroupName());
+                try (ResultSet rs2 = pst.executeQuery()) {
+                    xml = convertResultSetToXMLForJournalSubjectGroup(rs2, true);
+                }
             }
         }
         //xml = util.convertResultSetToXML(rs);
