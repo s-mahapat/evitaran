@@ -79,11 +79,7 @@ public class JDSModel extends HttpServlet {
         //Update inward with completed flag once the transaction is completed
         int rc = 0;
         String sql = null;
-        try {
-            sql = Queries.getQuery("update_inward_complete_flag");
-        } catch (SQLException ex) {
-            logger.error(ex);
-        }
+        sql = Queries.getQuery("update_inward_complete_flag");
         try (Connection _conn = this.getConnection();
                 PreparedStatement st = _conn.prepareStatement(sql)) {
             st.setInt(1, inwardID);

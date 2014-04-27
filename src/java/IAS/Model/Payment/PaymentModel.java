@@ -24,20 +24,15 @@ public class PaymentModel extends JDSModel {
     }
 
     public int UpdatePayment(int invoice_id, int inward_id, float amount, String remarks) {
-
-        try {
-            String sql = Queries.getQuery("insert_payment");
-            try (Connection _conn = this.getConnection(); PreparedStatement pst = _conn.prepareStatement(sql)) {
-                pst.setInt(1, inward_id);
-                pst.setInt(2, invoice_id);
-                pst.setFloat(3, amount);
-                pst.setString(4, remarks);
-                int rc = pst.executeUpdate();
-                return rc;
-            } catch (Exception ex) {
-                return 0;
-            }
-        } catch (SQLException ex) {
+        String sql = Queries.getQuery("insert_payment");
+        try (Connection _conn = this.getConnection(); PreparedStatement pst = _conn.prepareStatement(sql)) {
+            pst.setInt(1, inward_id);
+            pst.setInt(2, invoice_id);
+            pst.setFloat(3, amount);
+            pst.setString(4, remarks);
+            int rc = pst.executeUpdate();
+            return rc;
+        } catch (Exception ex) {
             return 0;
         }
     }

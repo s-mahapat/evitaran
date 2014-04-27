@@ -158,49 +158,36 @@ public class InvoiceModel extends JDSModel {
     public List<IAS.Class.PaymentInfo> getInvoicePayments(int invoice_id) {
 
         List<IAS.Class.PaymentInfo> payments = new ArrayList<>();
-        try {
-            //Connection _conn = this.getConnection();
-            String sql = Queries.getQuery("invoice_payments");
-            try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
-                pst.setInt(1, invoice_id);
-                try (ResultSet rs = pst.executeQuery()) {
-                    while (rs.next()) {
-                        PaymentInfo info = new PaymentInfo();
-                        info.setChqddNumber(rs.getString("chqddNumber"));
-                        info.setInvoiceID(rs.getInt("invoice_id"));
-                        info.setInwardNumber(rs.getString("inwardNumber"));
-                        info.setPaymentAmount(rs.getFloat("paymentAmount"));
-                        info.setPaymentDate(rs.getString("paymentDate"));
-                        info.setPaymentMode(rs.getString("paymentMode"));
-                        payments.add(info);
-                    }
-                    return payments;
+        String sql = Queries.getQuery("invoice_payments");
+        try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
+            pst.setInt(1, invoice_id);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    PaymentInfo info = new PaymentInfo();
+                    info.setChqddNumber(rs.getString("chqddNumber"));
+                    info.setInvoiceID(rs.getInt("invoice_id"));
+                    info.setInwardNumber(rs.getString("inwardNumber"));
+                    info.setPaymentAmount(rs.getFloat("paymentAmount"));
+                    info.setPaymentDate(rs.getString("paymentDate"));
+                    info.setPaymentMode(rs.getString("paymentMode"));
+                    payments.add(info);
                 }
-            } catch (Exception ex) {
-                logger.error(ex);
-                return null;
+                return payments;
             }
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             logger.error(ex);
             return null;
         }
     }
 
     public String getInvoicePaymentInfo(int invoice_id) {
-
-        try {
-            //Connection _conn = this.getConnection();
-            String sql = Queries.getQuery("invoice_payments");
-            try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
-                pst.setInt(1, invoice_id);
-                try (ResultSet rs = pst.executeQuery()) {
-                    return util.convertResultSetToXML(rs);
-                }
-            } catch (Exception ex) {
-                logger.error(ex);
-                return null;
+        String sql = Queries.getQuery("invoice_payments");
+        try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
+            pst.setInt(1, invoice_id);
+            try (ResultSet rs = pst.executeQuery()) {
+                return util.convertResultSetToXML(rs);
             }
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             logger.error(ex);
             return null;
         }
@@ -209,23 +196,17 @@ public class InvoiceModel extends JDSModel {
     public subscriberFormBean getSubscriberInfo(int invoice_id) {
 
         subscriberFormBean _subscriberFormBean = null;
-        try {
-            //Connection _conn = this.getConnection();
-            String sql = Queries.getQuery("get_subscriber_info_from_invoice");
-            try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
-                pst.setInt(1, invoice_id);
-                try (ResultSet rs = pst.executeQuery()) {
-                    while (rs.next()) {
-                        BeanProcessor bProc = new BeanProcessor();
-                        _subscriberFormBean = (IAS.Bean.Subscriber.subscriberFormBean) bProc.toBean(rs, IAS.Bean.Subscriber.subscriberFormBean.class);
-                    }
-                    return _subscriberFormBean;
+        String sql = Queries.getQuery("get_subscriber_info_from_invoice");
+        try (PreparedStatement pst = this.getConnection().prepareStatement(sql)) {
+            pst.setInt(1, invoice_id);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    BeanProcessor bProc = new BeanProcessor();
+                    _subscriberFormBean = (IAS.Bean.Subscriber.subscriberFormBean) bProc.toBean(rs, IAS.Bean.Subscriber.subscriberFormBean.class);
                 }
-            } catch (Exception ex) {
-                logger.error(ex);
-                return null;
+                return _subscriberFormBean;
             }
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             logger.error(ex);
             return null;
         }
