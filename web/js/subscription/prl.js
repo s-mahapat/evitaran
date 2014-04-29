@@ -12,12 +12,12 @@ function GeneratePRLGrid(gridheight){
         height: gridheight,
         autowidth: true,
         forceFit: true,
-        sortable: false,
+        sortable: true,
         loadonce: true,
         rownumbers: true,
         emptyrecords: "No record(s) to view",
         loadtext: "Loading...",
-        colNames:['Subscriber ID','Subscriber Number','Invoice Number','Amount','Subscriber Name','Subscription ID','End Year','Email','Status'],
+        colNames:['Subscriber ID','Subscriber No.','Invoice No.','Amount','Subscriber Name','Subscription ID','End Year','Email','Status'],
         colModel :[
         {
             name:'subid',
@@ -25,7 +25,7 @@ function GeneratePRLGrid(gridheight){
             width:22,
             align:'center',
             xmlmap:'subscriberID',
-            sortable: false
+            sortable: true
         },
         {
             name:'subno',
@@ -33,7 +33,7 @@ function GeneratePRLGrid(gridheight){
             width:20,
             align:'center',
             xmlmap:'subscriberNumber',
-            sortable: false
+            sortable: true
         },
         {
             name:'invoiceno',
@@ -41,7 +41,7 @@ function GeneratePRLGrid(gridheight){
             width:25,
             align:'center',
             xmlmap:'invoiceNumber',
-            sortable: false,
+            sortable: true,
             key: true
         },
         {
@@ -50,7 +50,7 @@ function GeneratePRLGrid(gridheight){
             width:15,
             align:'center',
             xmlmap:'amount',
-            sortable: false
+            sortable: true
         },
         {
             name:'name',
@@ -65,7 +65,7 @@ function GeneratePRLGrid(gridheight){
             index:'subscriptionID',
             width:20,
             align:'center',
-            sortable: false,
+            sortable: true,
             xmlmap:'subscriptionID'
         },
         {
