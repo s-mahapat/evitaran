@@ -19,7 +19,6 @@
 
             $(document).ready(function(){
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=invoicetype"%>","invoiceType","invoiceType");
-                jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
             });
 
             $(function(){
@@ -147,7 +146,7 @@
                                         <label>Invoice Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                        <select class="IASCombobox allusers" TABINDEX="1" name="invoicerType" id="invoiceType">
+                                        <select class="IASCombobox allusers" TABINDEX="1" name="invoiceType" id="invoiceType">
                                             <option value="0" selected>Select</option>
                                         </select>
                                     </span>
