@@ -15,7 +15,7 @@ class Backup(object):
         logging.info("backup started")
         if not backup_file:
             backup_file = self._get_backup_file_name()
-        command = 'mysqldump --user root --password=jdsdbr00t --comments evitaran > ' + \
+        command = 'mysqldump --tables --triggers --routines --user root --password=jdsdbr00t --comments evitaran > ' + \
             backup_file
         p = subprocess.Popen(command, shell=True)
         p.wait()
