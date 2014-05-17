@@ -4,47 +4,69 @@
  */
 package IAS.Class;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
 /**
  *
  * @author aloko
  */
 public class volumeInfo {
-    private int startIssue = 0;
-    private int endIssue = 0;
-    private int no_of_copies;
-    //private String volume_number = "";
+    // IssueNo, No of issues
+    private HashMap<Integer, Integer> issueInfo = new HashMap();    
 
-public int getStartIssue() {
-        return (this.startIssue);
-    }
 
-public void setStartIssue(int _StartIssue) {
-        this.startIssue = _StartIssue;
+public void addIssue(int issueNo, int noOfCopies) {
+    if(checkIfIssueExists(issueNo)) {
+        issueInfo.put(issueNo, issueInfo.get(issueNo)+noOfCopies);
+    } else {
+        issueInfo.put(issueNo, noOfCopies);
     }
+}
 
-public void setEndIssue(int _EndIssue) {
-        this.endIssue = _EndIssue;
+private boolean checkIfIssueExists(int issueNo) {
+    boolean status = true;
+    if(!issueInfo.containsKey(issueNo)){
+        status = false;
     }
+    return status;
+}
 
-public int getEndIssue() {
-        return (this.endIssue);
-    }
+public ArrayList<IssueInfo> sortIssueForThisVolume() {
+    ArrayList<Integer> intKeys = new ArrayList<Integer>(issueInfo.keySet());
+    Collections.sort(intKeys);
+    
+    ArrayList<IssueInfo> issueInfoArrayList = new ArrayList<IssueInfo>();
 
-public void setNo_of_copies(int _no_of_copies) {
-        this.no_of_copies = _no_of_copies;
-    }
+    int startIssue = intKeys.get(0);
+    int endIssue = startIssue;
+    int noOfCopies = issueInfo.get(startIssue);
+    for(int i = 1; i < intKeys.size(); i++) {
 
-public int getNo_of_copies() {
-        return (this.no_of_copies);
+        int issueNo = intKeys.get(i);
+        int copies = issueInfo.get(issueNo);
+        if(issueNo == (endIssue + 1) && copies == noOfCopies) {
+            endIssue = issueNo;
+        } else {
+            IssueInfo ii = new IssueInfo();
+            ii.setEndIssue(endIssue);
+            ii.setStartIssue(startIssue);
+            ii.setNo_of_copies(noOfCopies);
+            issueInfoArrayList.add(ii);
+            
+            startIssue = issueNo;
+            endIssue = startIssue;
+            noOfCopies = copies;
+        }
     }
-/*
-public String getVolume_number() {
-        return (this.volume_number);
-    }
-
-public void setVolume_number(String _Volume_number) {
-        this.volume_number = _Volume_number;
-    }
-*/
-
+    IssueInfo ii = new IssueInfo();
+    ii.setEndIssue(endIssue);
+    ii.setStartIssue(startIssue);
+    ii.setNo_of_copies(noOfCopies);
+    issueInfoArrayList.add(ii);
+    
+    return(issueInfoArrayList);
+}
+ 
 }

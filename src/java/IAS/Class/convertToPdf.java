@@ -1048,9 +1048,7 @@ public convertToPdf(){
 
                 // 1. Create the volume info
                 volumeInfo vInfo = new volumeInfo();
-                vInfo.setEndIssue(sInfo.getissue());
-                vInfo.setStartIssue(sInfo.getissue());
-                vInfo.setNo_of_copies(sInfo.getcopies());
+                vInfo.addIssue(sInfo.getissue(), sInfo.getcopies());
 
                 // 2. Create the journal info and add the volume info
                 journalInfo jInfo = new journalInfo();
@@ -1083,21 +1081,12 @@ public convertToPdf(){
                         if(subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()) != null) {
                             // JournalInfo exists, now check if the volume number exists
                             if(subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())) != null) {
-                                // Volume number exists, check if the issue no crosses either the max or min
-                                if(subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).getEndIssue() < sInfo.getissue()) {
-                                    subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).setEndIssue(sInfo.getissue());
-                                }
-                                if(subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).getStartIssue() > sInfo.getissue()) {
-                                    subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).setStartIssue(sInfo.getissue());
-                                }
-                                subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).setNo_of_copies(sInfo.getcopies());
+                                subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().get(Integer.toString(sInfo.getvolume_number())).addIssue(sInfo.getissue(), sInfo.getcopies());
 
                             } else {
                                 // volume number does not exist
                                 volumeInfo vInfo = new volumeInfo();
-                                vInfo.setEndIssue(sInfo.getissue());
-                                vInfo.setStartIssue(sInfo.getissue());
-                                vInfo.setNo_of_copies(sInfo.getcopies());
+                                vInfo.addIssue(sInfo.getissue(), sInfo.getcopies());
                                 subInfo.getSubscriberInfo().get(sInfo.getSubscriptionId()).getjournalType().get(sInfo.getpage_size()).getjournalInfo().get(sInfo.getjournalCode()).getvolumeInfo().put(Integer.toString(sInfo.getvolume_number()), vInfo);
                             }
 
@@ -1105,9 +1094,7 @@ public convertToPdf(){
                             // journalInfo does not exist
                             // 1. Create the volume info
                             volumeInfo vInfo = new volumeInfo();
-                            vInfo.setEndIssue(sInfo.getissue());
-                            vInfo.setStartIssue(sInfo.getissue());
-                            vInfo.setNo_of_copies(sInfo.getcopies());
+                            vInfo.addIssue(sInfo.getissue(), sInfo.getcopies());
 
                             // 2. Create the journal info and add the volume info
                             journalInfo jInfo = new journalInfo();
@@ -1120,9 +1107,7 @@ public convertToPdf(){
                         // Journal Type does not exist
                         // 1. Create the volume info
                         volumeInfo vInfo = new volumeInfo();
-                        vInfo.setEndIssue(sInfo.getissue());
-                        vInfo.setStartIssue(sInfo.getissue());
-                        vInfo.setNo_of_copies(sInfo.getcopies());
+                        vInfo.addIssue(sInfo.getissue(), sInfo.getcopies());
 
                         // 2. Create the journal info and add the volume info
                         journalInfo jInfo = new journalInfo();
@@ -1138,9 +1123,7 @@ public convertToPdf(){
                 } else {
                     // 1. Create the volume info
                     volumeInfo vInfo = new volumeInfo();
-                    vInfo.setEndIssue(sInfo.getissue());
-                    vInfo.setStartIssue(sInfo.getissue());
-                    vInfo.setNo_of_copies(sInfo.getcopies());
+                    vInfo.addIssue(sInfo.getissue(), sInfo.getcopies());
 
                     // 2. Create the journal info and add the volume info
                     journalInfo jInfo = new journalInfo();
@@ -1216,39 +1199,41 @@ public convertToPdf(){
                             Map.Entry pairs5 = (Map.Entry)journalInfoIter.next();
                             String volume_number = pairs5.getKey().toString();
                             volumeInfo vInfo = (volumeInfo)pairs5.getValue();
-                            int startIssue = vInfo.getStartIssue();
-                            int endIssue = vInfo.getEndIssue();
-                            int no_of_copies = vInfo.getNo_of_copies();
-
-                            // If this is the last volume and for the select journal check if there are more than 1 issue
-                            if(Integer.parseInt(volume_number) == highestVolumeNo &&
-                            (separateLabelForP && journalCode.equals("P") && startIssue < endIssue)) {
-
-                                String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
-                                labels.add(labelSeparate);
-
-                                endIssue = endIssue - 1;
-                            }
                             
-                            if(Integer.parseInt(volume_number) == highestVolumeNo &&
-                            (separateLabelForRES && journalCode.equals("RES") && startIssue < endIssue)) {
-
-                                String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
-                                labels.add(labelSeparate);
-
-                                endIssue = endIssue - 1;
-                            }
+                            ArrayList<IssueInfo> issueInfo = vInfo.sortIssueForThisVolume();
                             
-                            if(Integer.parseInt(volume_number) == highestVolumeNo &&
-                            (separateLabelForCURR && journalCode.equals("CURR") && startIssue < endIssue)) {
+                            for (IssueInfo sueInfo : issueInfo) {
+                                int endIssue = sueInfo.getEndIssue();
+                                int startIssue = sueInfo.getStartIssue();
+                                int no_of_copies = sueInfo.getNo_of_copies();
+                                
+                                // If this is the last volume and for the select journal check if there are more than 1 issue
+                                if(Integer.parseInt(volume_number) == highestVolumeNo &&
+                                        (separateLabelForP && journalCode.equals("P") && startIssue < endIssue)) {
+                                    
+                                    String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
+                                    labels.add(labelSeparate);
 
-                                String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
-                                labels.add(labelSeparate);
+                                    endIssue = endIssue - 1;
+                                }
+                                if(Integer.parseInt(volume_number) == highestVolumeNo &&
+                                        (separateLabelForRES && journalCode.equals("RES") && startIssue < endIssue)) {
+                                    
+                                    String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
+                                    labels.add(labelSeparate);
 
-                                endIssue = endIssue - 1;
-                            }                            
+                                    endIssue = endIssue - 1;
+                                }
+                                if(Integer.parseInt(volume_number) == highestVolumeNo &&
+                                        (separateLabelForCURR && journalCode.equals("CURR") && startIssue < endIssue)) {
+                                    
+                                    String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
+                                    labels.add(labelSeparate);
 
-                            label = label + createLabel(journalCode, volume_number, startIssue, endIssue, no_of_copies);
+                                    endIssue = endIssue - 1;
+                                }
+                                label = label + createLabel(journalCode, volume_number, startIssue, endIssue, no_of_copies);
+                            }
                         }
                     }
                     //Paragraph p = prepareBILLabelPDFContent(sLabelInfo, label);
