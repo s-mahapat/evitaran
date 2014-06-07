@@ -140,7 +140,7 @@ CREATE TABLE `back_issue_list` (
   `added_on` date NOT NULL,
   `active` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `back_issue_list_indx3` (`subscription_detail_id`,`month`,`year`,`volume_number`,`issue_number`),
+  UNIQUE KEY `back_issue_list_indx3` (`subscription_detail_id`,`journal_id`,`month`,`year`,`volume_number`,`issue_number`) USING BTREE,
   KEY `back_issue_list_indx1` (`subscription_detail_id`) USING BTREE,
   KEY `back_issue_list_indx2` (`sent_to_subscriber`,`active`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
