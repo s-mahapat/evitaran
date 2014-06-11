@@ -162,24 +162,28 @@ public class agentModel extends JDSModel {
     public String searchAgent() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String xml;
         String sql = Queries.getQuery("search_agent_screen");
-        try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql)) {
+        try (Connection conn = this.getConnection();) {
             int paramIndex = 1;
 
             String agentName = request.getParameter("agentName");
             String city = request.getParameter("city");
 
             if (!city.isEmpty()) {
-                stGet.setString(paramIndex++, "%" + city + "%");
-            } else {
-                stGet.setString(paramIndex++, "%%");
-            }
+                sql += " t2.city like" + "'%" + city + "%'" ;        
+            } 
 
             if (!agentName.isEmpty()) {
-                stGet.setString(paramIndex++, "%" + agentName + "%");
+                if (!city.isEmpty()) {
+                    sql += " and" ;        
+                } 
+                sql += " t1.agentName like " + "'%" + agentName + "%'";
             } else {
-                stGet.setString(paramIndex++, "%%");
+                if (!city.isEmpty()) {
+                    sql += " and" ;        
+                } 
+                sql += " t1.agentName like " + "'%%'";
             }
-
+            PreparedStatement stGet = conn.prepareStatement(sql);
             ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
             xml = util.convertResultSetToXML(rs);
         }

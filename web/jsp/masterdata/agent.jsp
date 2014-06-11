@@ -11,6 +11,14 @@
     });
 
     jQueryCalendar("regDate");
+    
+    /*
+    function generate(){
+        if (($("#city").val() == 0) {
+            alert("Select city from drop down list" + );
+        }
+    }
+    */
 </script>
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Agent Data Basic data Field Set --%>
@@ -174,7 +182,7 @@
     <div class="IASFormFieldDiv">
         <input type="hidden" name="action" id="action"/>
         <div id="saveBtnDiv">
-            <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="12" type="submit" value="save" id="btnSave" name="btnSubmitAction"/>
+            <input onclick="setActionValue('save')"  class="IASButton" TABINDEX="12" type="submit" value="save" id="btnSave" name="btnSubmitAction" onclick="check()"/>
         </div>
         <div id="editBtnDiv">
             <input onclick="setActionValue('edit')" class="IASButton" TABINDEX="13" type="submit" value="edit" id="btnEdit" name="btnSubmitAction"/>

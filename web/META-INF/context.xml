@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/evitaran" reloadable="true">
-    <Realm className="org.apache.catalina.realm.JDBCRealm" connectionName="evitaran" connectionPassword="evitaran" connectionURL="jdbc:mysql://localhost/evitaran" driverName="com.mysql.jdbc.Driver" roleNameCol="role" userCredCol="password" userNameCol="username" userRoleTable="user_role" userTable="users"/>
-    <Resource auth="Container" defaultAutoCommit="true" driverClassName="com.mysql.jdbc.Driver" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" initialSize="0" jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer" jmxEnabled="true" logAbandoned="true" maxActive="100" maxIdle="100" maxWait="30000" minEvictableIdleTimeMillis="60000" minIdle="0" name="jdbc/evitaran" password="evitaran" removeAbandoned="true" removeAbandonedTimeout="60" testOnBorrow="true" testOnReturn="false" testWhileIdle="true" timeBetweenEvictionRunsMillis="5000" type="javax.sql.DataSource" url="jdbc:mysql://localhost/evitaran" username="evitaran" validationInterval="30000" validationQuery="SELECT 1"/>
+    <Realm className="org.apache.catalina.realm.JDBCRealm" connectionName="evitaran" connectionPassword="evitaran" 
+           connectionURL="jdbc:mysql://localhost/evitaran?autoReconnect=true" driverName="com.mysql.jdbc.Driver" roleNameCol="role" userCredCol="password" userNameCol="username" userRoleTable="user_role" userTable="users"/>
+    <Resource auth="Container" defaultAutoCommit="true" driverClassName="com.mysql.jdbc.Driver" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" 
+              initialSize="0" jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer" jmxEnabled="true" 
+              logAbandoned="true" 
+              maxActive="100" maxIdle="100" maxWait="30000" minEvictableIdleTimeMillis="60000" minIdle="0" 
+              name="jdbc/evitaran" password="evitaran" 
+              removeAbandoned="true" removeAbandonedTimeout="60" testOnBorrow="true" testOnReturn="false" testWhileIdle="true" 
+              timeBetweenEvictionRunsMillis="5000" type="javax.sql.DataSource" 
+              url="jdbc:mysql://localhost/evitaran" username="evitaran" validationInterval="30000" validationQuery="SELECT 1"/>
 </Context>
 <!--connectionURL="jdbc:mysql://localhost/JDS?user=jds&amp;password=jds"-->
