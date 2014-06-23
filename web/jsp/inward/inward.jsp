@@ -26,7 +26,12 @@
             $("#btnSearchSubscriber")
                     .button({icons: {primary: "ui-icon-circle-zoomin"}})
                     .click(function() {
-                        validateSearchSubscriber();
+                        if ($("#subscriberId").val()) {
+                            
+                            ValidateSubscriber();
+                        } else {
+                            validateSearchSubscriber();
+                        }
                         return false;
                     });
         });
@@ -96,7 +101,7 @@
             buttons: {
                 Save: function() {
                     var new_city = $("#newcity").val();
-                    if(new_city === ""){
+                    if (new_city === "") {
                         return;
                     }
                     $.ajax({
@@ -106,12 +111,12 @@
                         dataType: "json",
                         success: function(json) {
                             id = json['id'];
-                            message = json['message'];                            
-                            if(parseInt(id) > 0){
+                            message = json['message'];
+                            if (parseInt(id) > 0) {
                                 $("#city-add-message").removeClass("ui-state-error-text");
                                 $("#city-add-message").addClass("ui-state-highlight");
-                                $("#city").val(new_city);                                
-                            }else{
+                                $("#city").val(new_city);
+                            } else {
                                 $("#city-add-message").addClass("ui-state-error-text");
                             }
                             $("#city-add-message").text(message);
@@ -147,8 +152,8 @@
             <span class="IASFormDivSpanLabel">
                 <label>Subscriber No:</label>
             </span>
-            <span class="IASFormDivSpanInputBox">
-                <input autocomplete="off" class="IASTextBox" TABINDEX="1" type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}" onblur="removeInvalidSubscriber()"/>
+            <span class="IASFormDivSpanInputBox ui-widget">
+                <input autocomplete="off" class="IASTextBox" TABINDEX="1" type="text" name="subscriberId" id="subscriberId" value="${inwardFormBean.subscriberIdAsText}"/>
                 <span class="" style="font-size: 0.85em; float: next; vertical-align: top;">
                     <button type="button" id="btnSearchSubscriber" TABINDEX="2">Search</button>
                     <button type="button" id="btnResetSubscriber" TABINDEX="3">Reset</button>
