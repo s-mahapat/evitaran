@@ -22,14 +22,7 @@
     <body>
         <%@include file="templates/layout.jsp" %>
         <div id="bodyContainer">
-            <!--<img id="watermark" src="<%=request.getContextPath() + "/images/watermark.png"%>"/>-->
-
-            <%if (usrRole != null && usrRole.equalsIgnoreCase("monochrome")) {
-                    out.println("<img id=\"watermark\"" + " src=\"" + request.getContextPath() + "/images/monochrome_watermark.png\"/>");
-                } else {
-                    out.println("<img id=\"watermark\"" + " src=\"" + request.getContextPath() + "/images/watermark.png\"/>");
-                }
-            %>
+            <div id="watermark"><img id="" src="<%=request.getContextPath() + "/images/watermark.png"%>"/></div>
         </div>
     </body>
 </html>

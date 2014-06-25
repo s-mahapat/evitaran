@@ -8,7 +8,7 @@ root {
 body{
     margin:0px;
     padding:0px;
-    /*background-color: #F6F6F6;*/
+    background: url('../images/texture.png') repeat scroll 0% 0% #FFF;
     font-family: arial,sans-serif;
     font-size: 11px;
 }
@@ -30,24 +30,24 @@ A:active {
 #header{
 
     width: 100%;
-    position: fixed;
     top: 0px;
     height: auto;
-    background-color: #F6F6F6;
+    /*background-color: #F6F6F6;*/
     z-index: 2;
 }
 
 #darksubheader{
-    background-color: #F6F6F6;
+    /*background-color: #F6F6F6;*/
     height: 40px;
     margin-bottom: 1px;
     width: 100%;
     z-index: 2;
+    background: transparent;
 }
 
 #smalldarksubheader{
     background-color: white;
-    height: 26px;
+    /*height: 26px;*/
     margin-left: 0px;
     margin-bottom: 1px;
     width: 12%;
@@ -93,7 +93,6 @@ A:active {
     height: 38px;
     width: 39px;
     float: left;
-    position: fixed;
     margin-left: 3%;
     top:1px;
     background-image: url("../images/logo_main.png");
@@ -135,17 +134,33 @@ A:active {
     z-index: 2;
 }
 
+#menubar{
+    width: auto;
+    margin: 5px;
+}
+
+#menu{
+    width: 100%;
+}
+
 #bodyContainer{
-    margin-top: 68px;
-    width: 88%;
-    overflow: auto;
-    float: right;
-    height: available;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+    background: transparent;
 }
 
 #watermark{
-    width: 50%;
-    margin: 5% 24%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    text-align: center;
+}
+
+#watermark img{
+    max-height: 30%;
+    max-width: 30%;
+    margin-top: 10%;
 }
 
 .dateDiv{
@@ -166,6 +181,7 @@ A:active {
     /*background-color: #F6F6F6;*/
     padding: 2px 2px;
     height: auto;
+    background: transparent;
 }
 
 .subMainDiv{
@@ -187,6 +203,7 @@ fieldset {
 .MainFieldset{
     /*background-color: rgb(232,245,248);*/
     padding: 3px;
+    background: transparent;
 }
 
 .MainFieldset legend{
@@ -200,6 +217,8 @@ fieldset {
     border-radius: 4px;
     padding: 3px;
     margin-bottom: 2px;
+    border-width: 0px;
+    background: transparent;
 }
 
 .subMainFieldSet legend{
@@ -577,11 +596,7 @@ fieldset {
 }
 
 #welcomeUser{
-    float: right;
-    margin-right: 20px;
-    text-align: justify;
-    padding: 5px;
-
+    color: white;
 }
 
 .singleActionBtnDiv{

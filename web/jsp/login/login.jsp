@@ -15,17 +15,22 @@
         <link href="<%=request.getContextPath() + "/css/style.css"%>" type="text/css" rel="stylesheet"/>
         <style>
             #bodyContainer{
-                margin-top: 68px;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: -140px;
+                position: absolute;
+                top: 50%;
                 width: 100%;
-                overflow: auto;
-                float: left;
-                font-size: larger;
+                left: 0;
+                font-size: small;
+                text-align: center;
             }
 
 
             #loginDiv{
-                margin: 10% auto 0 auto;
-                width: 40%;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
                 text-align: center;
                 height: 280px;
             }
