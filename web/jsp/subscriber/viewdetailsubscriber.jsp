@@ -169,7 +169,7 @@
                             </div>
                         </fieldset>
                         <fieldset class="subMainFieldSet" style="border: none">
-                            <div id="subscriberDtlsTabs" style="padding-left: 0px;font-size: 12px; height:500px;" >
+                            <div id="subscriberDtlsTabs" style="padding-left: 0px;min-height: 350px;" >
                                 <ul>
                                     <li><a href="#subDtls">Subscriber Details</a></li>
                                     <li><a href="#inwards">Inwards</a></li>
@@ -179,22 +179,22 @@
                                     <li><a href="#missing_issues">Missing Issues</a></li>
                                     <li><a href="#chq_return">Cheque Return</a></li>
                                 </ul>
-                                <div id="subDtls" style="font-size: 12px;">
+                                <div id="subDtls">
                                     <%@include file="subscriberdtls.jsp"%>
                                 </div>
 
-                                <div id="inwards" style="font-size: 12px;width: 98%;padding: 3px;">
+                                <div id="inwards" style="width: 98%;padding: 3px;">
                                     <table id="inwardTable" class="datatable" style="padding-bottom: 3px;"></table>
                                     <div id="pager"></div>
 
                                 </div>
 
-                                <div id="subscriptions" style="font-size: 12px;width: 98%;padding: 3px;">
+                                <div id="subscriptions" style="width: 98%;padding: 3px;">
                                     <table id="subscriptionList" class="datatable"></table>
                                     <div id="pager"></div>
                                 </div>
 
-                                <div id="invoices" style="font-size: 12px;width: 98%;padding: 3px;">
+                                <div id="invoices" style="width: 98%;padding: 3px;">
                                     <table id="invoiceTable" class="datatable"></table>
                                     <div id="pager_invoice"></div>
                                     <div id="invoice_dialog" style="display: none;">
@@ -202,16 +202,16 @@
                                     </div>
                                 </div>
 
-                                <div id="reminders" style="font-size: 12px;width: 98%;padding: 3px;">
+                                <div id="reminders" style="width: 98%;padding: 3px;">
                                     <table id="remindersTable" class="datatable"></table>
                                     <div id="pager_reminders"></div>
                                 </div>
 
-                                <div id="missing_issues" style="font-size: 12px;width: 98%;padding: 3px;">
+                                <div id="missing_issues" style="width: 98%;padding: 3px;">
                                     <table id="missing_issuesTable" class="datatable"></table>
                                     <div id="pager_missing_issues"></div>
                                 </div>
-                                <div id="chq_return" style="font-size: 12px;width: 98%;padding: 3px;">
+                                <div id="chq_return" style="width: 98%;padding: 3px;">
                                     <table id="chqreturnTable" class="datatable"></table>
                                     <div id="pager_chqreturn"></div>
                                 </div>

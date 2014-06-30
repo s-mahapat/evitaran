@@ -7,10 +7,10 @@
 <%-- jquery Core --%>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery-1.9.0.min.js"%>" type="text/javascript"></script>
 <script src="<%=request.getContextPath() + "/js/jquery/jquery.validate.min.js"%>" type="text/javascript"></script>
-<script src="<%=request.getContextPath() + "/js/jquery/jquery-ui-1.10.0.custom.min.js"%>" type="text/javascript"></script>
+<script src="<%=request.getContextPath() + "/js/jquery/jquery-ui.min.js"%>" type="text/javascript"></script>
 
 <%-- jquery ui --%>
-<link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/gray/jquery-ui-1.10.4.custom.min.css"%>" />
+<link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/jquery/cupertino/jquery-ui.min.css"%>" />
 <link rel="stylesheet" type="text/css" media="screen" href="<%=request.getContextPath() + "/css/menu.css"%>"/>
 
 <%-- jquery grid --%>
