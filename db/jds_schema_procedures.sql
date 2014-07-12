@@ -79,7 +79,7 @@ BEGIN
                           WHERE     t2.journalGroupID = _new_journalGroupID
                                 AND t2.journalID = t3.journalid
                                 AND t3.year = _new_startYear
-				AND t3.month >= _new_startMonth;
+								AND t3.month >= _new_startMonth;
       DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
       OPEN cur1;
      read_loop:
