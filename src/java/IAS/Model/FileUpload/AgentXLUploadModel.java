@@ -10,6 +10,7 @@ import IAS.Class.DataValidation;
 import IAS.Class.ExcelReader;
 import IAS.Class.JDSLogger;
 import IAS.Class.util;
+import IAS.Exceptions.InvalidExcelException;
 import IAS.Model.JDSModel;
 import IAS.Model.Subscriber.subscriberModel;
 import IAS.Model.Subscription.SubscriptionModel;
@@ -46,8 +47,7 @@ public class AgentXLUploadModel extends FileUploadBase {
     private String jrnlEndYear;
     private inwardFormBean _inwardFormBean;
     private String inwardNumber;
-     private static final Logger logger = JDSLogger.getJDSLogger(AgentXLUploadModel.class.getName());
-
+    private static final Logger logger = JDSLogger.getJDSLogger(AgentXLUploadModel.class.getName());
 
     public AgentXLUploadModel(Boolean uploadInd, HttpServletRequest request) throws SQLException {
         //call the base class constructor
@@ -219,7 +219,7 @@ public class AgentXLUploadModel extends FileUploadBase {
     }
 
     @Override
-    public void processFiles() throws SQLException {
+    public void processFiles() throws SQLException, InvalidExcelException {
         try {
             for (FileItem item : this.getFiles()) {
                 InputStream filecontent = item.getInputStream();
@@ -267,9 +267,11 @@ public class AgentXLUploadModel extends FileUploadBase {
                     this.CompleteInward(this._inwardFormBean.getInwardID());// Complete the inward after upload
                 }
             }
-        } catch (IOException | BiffException | SQLException | ParseException | InvocationTargetException | IllegalAccessException e) {
+        } catch (IOException | BiffException | SQLException | ParseException | InvocationTargetException | IllegalAccessException | NumberFormatException e) {
             logger.fatal(e);
+            throw new InvalidExcelException("The excel data is invalid. " + e.getMessage());
         }
+
     }
 
     public String processData(String[] Data, int rowNo) throws SQLException { // Process each cell of the Excel
@@ -353,7 +355,7 @@ public class AgentXLUploadModel extends FileUploadBase {
                     break;
                 case 8:
                     String state = Data[columnNo];
-                    if (state.isEmpty()&& subscriberNo.isEmpty()) { // State is mandatory, if not provided in the excel then log an error only if it is a new subscriber
+                    if (state.isEmpty() && subscriberNo.isEmpty()) { // State is mandatory, if not provided in the excel then log an error only if it is a new subscriber
                         this.appendToErrorLog(rowNo, columnNo, "STATE", state);
                     } else if (!state.isEmpty() && uploadInd == false && subscriberNo.isEmpty()) { // Validate state only if it is a new subscriber
                         if (!dataValiDB.validateState(state)) { // Validate State
@@ -411,77 +413,77 @@ public class AgentXLUploadModel extends FileUploadBase {
                     // Sub type description is already added along with sub type. Hence do nothing.
                     break;
                 case 14: // Pramana --> journal grp id for Pramana is 1 from DB table journal_groups
-                    int jrnlP = Data[columnNo].isEmpty() ? 0: Integer.parseInt(Data[columnNo]);
+                    int jrnlP = Data[columnNo].isEmpty() ? 0 : Integer.parseInt(Data[columnNo]);
                     if (jrnlP > 0 && uploadInd == true) { // If provided append journal group id and number of copies to the array list
                         this.jrnlGrpId.add(1);
                         this.jrnlCopies.add(jrnlP);
                     }
                     break;
                 case 15: // Journal of Astrophysics and Astronomy --> jrnl grp id is 2
-                    int jrnlJAA = Data[columnNo].isEmpty() ? 0: Integer.parseInt(Data[columnNo]);
+                    int jrnlJAA = Data[columnNo].isEmpty() ? 0 : Integer.parseInt(Data[columnNo]);
                     if (jrnlJAA > 0 && uploadInd == true) { // If provided append journal group id and number of copies to the array list
                         this.jrnlGrpId.add(2);
                         this.jrnlCopies.add(jrnlJAA);
                     }
                     break;
                 case 16: //Proceedings (Mathematical Sciences) --> jrnl grp id is 3
-                    int jrnlMS = Data[columnNo].isEmpty() ? 0: Integer.parseInt(Data[columnNo]);
+                    int jrnlMS = Data[columnNo].isEmpty() ? 0 : Integer.parseInt(Data[columnNo]);
                     if (jrnlMS > 0 && uploadInd == true) { // If provided append journal group id and number of copies to the array list
                         this.jrnlGrpId.add(3);
                         this.jrnlCopies.add(jrnlMS);
                     }
                     break;
                 case 17: // Journal of Earth System Science (formerly Proc. Earth Planet Sci.) --> jrnl id is 4
-                    int jrnlEPS = Data[columnNo].isEmpty() ? 0: Integer.parseInt(Data[columnNo]);
+                    int jrnlEPS = Data[columnNo].isEmpty() ? 0 : Integer.parseInt(Data[columnNo]);
                     if (jrnlEPS > 0 && uploadInd == true) {// If provided append journal group id and number of copies to the array list
                         this.jrnlGrpId.add(4);
                         this.jrnlCopies.add(jrnlEPS);
                     }
                     break;
                 case 18: // Journal of Chemical Sciences (formerly Proc. Chemical Sci.) --> jrnl id is 5
-                    int jrnlCS = Data[columnNo].isEmpty() ? 0: Integer.parseInt(Data[columnNo]);
-                    if (jrnlCS > 0&& uploadInd == true) {// If provided append journal group id and number of copies to the array list
+                    int jrnlCS = Data[columnNo].isEmpty() ? 0 : Integer.parseInt(Data[columnNo]);
+                    if (jrnlCS > 0 && uploadInd == true) {// If provided append journal group id and number of copies to the array list
                         this.jrnlGrpId.add(5);
                         this.jrnlCopies.add(jrnlCS);
                     }
                     break;
                 case 19: // Bulletin of Materials Science --> jrnl id is 6
-                    int jrnlBMS = Data[columnNo].isEmpty() ? 0: Integer.parseInt(Data[columnNo]);
+                    int jrnlBMS = Data[columnNo].isEmpty() ? 0 : Integer.parseInt(Data[columnNo]);
                     if (jrnlBMS > 0 && uploadInd == true) {// If provided append journal group id and number of copies to the array list
                         this.jrnlGrpId.add(6);
                         this.jrnlCopies.add(jrnlBMS);
                     }
                     break;
                 case 20: // Sadhana (Engineering Sciences) --> jrnl id is 7
-                    int jrnlS = Data[columnNo].isEmpty() ? 0: Integer.parseInt(Data[columnNo]);
+                    int jrnlS = Data[columnNo].isEmpty() ? 0 : Integer.parseInt(Data[columnNo]);
                     if (jrnlS > 0 && uploadInd == true) {// If provided append journal group id and number of copies to the array list
                         this.jrnlGrpId.add(7);
                         this.jrnlCopies.add(jrnlS);
                     }
                     break;
                 case 21: // Journal of Biosciences --> jrnl id is 8
-                    int jrnlJB = Data[columnNo].isEmpty() ? 0: Integer.parseInt(Data[columnNo]);
+                    int jrnlJB = Data[columnNo].isEmpty() ? 0 : Integer.parseInt(Data[columnNo]);
                     if (jrnlJB > 0 && uploadInd == true) {// If provided append journal group id and number of copies to the array list
                         this.jrnlGrpId.add(8);
                         this.jrnlCopies.add(jrnlJB);
                     }
                     break;
                 case 22: // Journal of Genetics --> jrnl id is 9
-                    int jrnlJG = Data[columnNo].isEmpty() ? 0: Integer.parseInt(Data[columnNo]);
+                    int jrnlJG = Data[columnNo].isEmpty() ? 0 : Integer.parseInt(Data[columnNo]);
                     if (jrnlJG > 0 && uploadInd == true) {// If provided append journal group id and number of copies to the array list
                         this.jrnlGrpId.add(9);
                         this.jrnlCopies.add(jrnlJG);
                     }
                     break;
                 case 23: // Resonanace - Journal of Science Education --> jrnl id is 10
-                    int jrnlRES = Data[columnNo].isEmpty() ? 0: Integer.parseInt(Data[columnNo]);
+                    int jrnlRES = Data[columnNo].isEmpty() ? 0 : Integer.parseInt(Data[columnNo]);
                     if (jrnlRES > 0 && uploadInd == true) {// If provided append journal group id and number of copies to the array list
                         this.jrnlGrpId.add(10);
                         this.jrnlCopies.add(jrnlRES);
                     }
                     break;
                 case 24: // Current Science --> jrnl id is 11
-                    int jrnlCURR = Data[columnNo].isEmpty() ? 0: Integer.parseInt(Data[columnNo]);
+                    int jrnlCURR = Data[columnNo].isEmpty() ? 0 : Integer.parseInt(Data[columnNo]);
                     if (jrnlCURR > 0 && uploadInd == true) {// If provided append journal group id and number of copies to the array list
                         this.jrnlGrpId.add(11);
                         this.jrnlCopies.add(jrnlCURR);
@@ -507,7 +509,7 @@ public class AgentXLUploadModel extends FileUploadBase {
                     int startMonth = Integer.parseInt(this.jrnlStartMonth);
                     int startYear = Integer.parseInt(this.jrnlStartYear);
                     int endYear = Integer.parseInt(this.jrnlEndYear);
-                    if(startMonth > 1 && endYear <= startYear){
+                    if (startMonth > 1 && endYear <= startYear) {
                         this.appendToErrorLog(rowNo, columnNo, "END YEAR", jrnlEndYear);
                     }
                     break;
