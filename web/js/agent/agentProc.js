@@ -109,7 +109,7 @@ function agentXLUpload() {
             // if there is an error in uploading then only display the 
             // cancel button
             if(is_error){
-                buttons_to_draw = buttons[1];
+                buttons_to_draw = [buttons[1]];
             }
 
             $("#ErrorPage").html(html);
@@ -118,7 +118,7 @@ function agentXLUpload() {
                 modal: true,
                 height: 300,
                 width: 500,
-                buttons: [buttons_to_draw]//start of buttons block
+                buttons: buttons_to_draw //start of buttons block
             }); //end of dialog block
         }; // end of Success block
         _fileuploader.error = function(up, args) {
