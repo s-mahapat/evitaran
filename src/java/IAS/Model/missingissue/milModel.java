@@ -1,25 +1,30 @@
 package IAS.Model.missingissue;
 
+import IAS.Bean.masterdata.MissingIssueJournalBean;
 import IAS.Bean.missingissue.milFormBean;
-import IAS.Model.JDSModel;
-import java.io.IOException;
-import javax.xml.transform.TransformerException;
-import org.apache.log4j.Logger;
 import IAS.Class.JDSLogger;
-import javax.servlet.http.HttpServletRequest;
-import java.sql.*;
 import IAS.Class.Queries;
 import IAS.Class.util;
+import IAS.Model.JDSModel;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
-import javax.xml.parsers.ParserConfigurationException;
+import java.sql.*;
 import java.text.ParseException;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -103,20 +108,21 @@ public class milModel extends JDSModel {
                         setAction("R", miJlId);
                     }
 
-                    ResultSet rsGet = getList(miJlId);
-
-                    while (rsGet.next()) {
+                    List<MissingIssueJournalBean> list = getList(miJlId);
+                    ListIterator<MissingIssueJournalBean> li = list.listIterator();
+                    while (li.hasNext()) {
                         //Extract subscriber Details
-                        int id = rsGet.getInt(1);
-                        int mailinglistid = rsGet.getInt(2);
-                        subscriberNumber = rsGet.getString(3);
-                        String subscriberName = rsGet.getString(4);
-                        String journalCode = rsGet.getString(5);
-                        String journalName = rsGet.getString(6);
-                        int year = rsGet.getInt(7);
-                        int volumeNo = rsGet.getInt(8);
-                        int issue = rsGet.getInt(9);
-                        int missingCopies = rsGet.getInt(10);
+                        MissingIssueJournalBean missingIssueJournalBean = li.next();
+                        int id = missingIssueJournalBean.getId();
+                        int mailinglistid = missingIssueJournalBean.getMailinglistid();
+                        subscriberNumber = missingIssueJournalBean.getSubscriberNumber();
+                        String subscriberName = missingIssueJournalBean.getSubscriberName();
+                        String journalCode = missingIssueJournalBean.getJournalCode();
+                        String journalName = missingIssueJournalBean.getJournalName();
+                        int year = missingIssueJournalBean.getYear();
+                        int volumeNo = missingIssueJournalBean.getVolumeNo();
+                        int issue = missingIssueJournalBean.getIssue();
+                        int missingCopies = missingIssueJournalBean.getMissingCopies();
 
                         // Add the row element
                         Element missingissue = doc.createElement("row");
@@ -178,18 +184,32 @@ public class milModel extends JDSModel {
         return xml;
     }
 
-    public ResultSet getList(int miJlId) throws IllegalAccessException, ParseException,
+    public List<MissingIssueJournalBean> getList(int miJlId) throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
-
-        String xml = "";
-        String sql = null;
-        sql = Queries.getQuery("get_missing_journals_by_mid");
-        Connection conn = this.getConnection();
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        stGet.setInt(1, miJlId);
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        return rs;
+        String sql = Queries.getQuery("get_missing_journals_by_mid");
+        List<MissingIssueJournalBean> list = new ArrayList<>();
+        try (Connection conn = this.getConnection();
+                PreparedStatement stGet = conn.prepareStatement(sql)) {
+            stGet.setInt(1, miJlId);
+            try (ResultSet rs = stGet.executeQuery()) {
+                while (rs.next()) {
+                    MissingIssueJournalBean missingIssueJournalBean = new MissingIssueJournalBean();
+                    missingIssueJournalBean.setId(rs.getInt(1));
+                    missingIssueJournalBean.setMailinglistid(rs.getInt(2));
+                    missingIssueJournalBean.setSubscriberNumber(rs.getString(3));
+                    missingIssueJournalBean.setSubscriberName(rs.getString(4));
+                    missingIssueJournalBean.setJournalCode(rs.getString(5));
+                    missingIssueJournalBean.setJournalName(rs.getString(6));
+                    missingIssueJournalBean.setYear(rs.getInt(7));
+                    missingIssueJournalBean.setVolumeNo(rs.getInt(8));
+                    missingIssueJournalBean.setIssue(rs.getInt(9));
+                    missingIssueJournalBean.setMissingCopies(rs.getInt(10));
+                    list.add(missingIssueJournalBean);
+                }
+            }
+        }
+        return list;
     }
 
     public void setAction(String action, int miJlId) throws SQLException, ParseException, ParserConfigurationException, TransformerException {
@@ -366,20 +386,21 @@ public class milModel extends JDSModel {
                     value = rs.getObject(3);
                     mailingid = Integer.parseInt(value.toString());
 
-                    ResultSet rsGet = getList(miJlId);
-
-                    while (rsGet.next()) {
+                    List<MissingIssueJournalBean> list = getList(miJlId);
+                    ListIterator<MissingIssueJournalBean> li = list.listIterator();
+                    while (li.hasNext()) {
                         //Extract subscriber Details
-                        int id = rsGet.getInt(1);
-                        int mailinglistid = rsGet.getInt(2);
-                        subscriberNumber = rsGet.getString(3);
-                        String subscriberName = rsGet.getString(4);
-                        String journalCode = rsGet.getString(5);
-                        String journalName = rsGet.getString(6);
-                        int year = rsGet.getInt(7);
-                        int volumeNo = rsGet.getInt(8);
-                        int issue = rsGet.getInt(9);
-                        int missingCopies = rsGet.getInt(10);
+                        MissingIssueJournalBean missingIssueJournalBean = li.next();
+                        int id = missingIssueJournalBean.getId();
+                        int mailinglistid = missingIssueJournalBean.getMailinglistid();
+                        subscriberNumber = missingIssueJournalBean.getSubscriberNumber();
+                        String subscriberName = missingIssueJournalBean.getSubscriberName();
+                        String journalCode = missingIssueJournalBean.getJournalCode();
+                        String journalName = missingIssueJournalBean.getJournalName();
+                        int year = missingIssueJournalBean.getYear();
+                        int volumeNo = missingIssueJournalBean.getVolumeNo();
+                        int issue = missingIssueJournalBean.getIssue();
+                        int missingCopies = missingIssueJournalBean.getMissingCopies();
 
                         // Add the row element
                         Element missingissue = doc.createElement("row");

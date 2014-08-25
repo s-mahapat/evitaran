@@ -63,7 +63,7 @@ public class SubscriptionModel extends JDSModel {
             this.inwardID = _inwardFormBean.getInwardID();
             this.inwardPurposeID = _inwardFormBean.getInwardPurposeID();
         } catch (NullPointerException ex) {
-            logger.info("Could not find inwardUnderProcess in session " + ex.getMessage());
+            logger.error("Could not find inwardUnderProcess in session " + ex.getMessage());
             this.inwardNumber = null;
         }
     }
