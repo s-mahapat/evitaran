@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 
 public class agentProc extends JDSController {
 
-    private static final Logger logger = JDSLogger.getJDSLogger("IAS.Controller.agent");
+    private static final Logger logger = JDSLogger.getJDSLogger(agentProc.class.getName());
 
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -31,7 +31,7 @@ public class agentProc extends JDSController {
             }
 
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
-            if (rd != null && url != null) {
+            if (rd != null) {
                 rd.forward(request, response);
             }
         } catch (IOException e) {

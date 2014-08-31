@@ -6,9 +6,6 @@ package IAS.Class.Ajax;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import java.io.IOException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 /**
  *
@@ -16,30 +13,23 @@ import javax.xml.transform.TransformerException;
  */
 public class AjaxResponse {
 
-    public String getSuccessXML(boolean isSuccess, String Msg) throws
-            ParserConfigurationException,
-            TransformerException,
-            IOException{
+    public String getSuccessXML(boolean isSuccess, String Msg) {
 
         // create the success object and set the attribute values
         AjaxSuccess ajaxSuccess = new AjaxSuccess();
         ajaxSuccess.setSuccess(isSuccess);
         ajaxSuccess.setMessage(Msg);
-
         XStream xstream = new XStream(new DomDriver());
         xstream.alias("results", AjaxSuccess.class);
-
         String xml = xstream.toXML(ajaxSuccess);
-
         return xml;
 
     }
 
-    public String getXMLFromObject(Object obj){
+    public String getXMLFromObject(Object obj) {
         XStream xstream = new XStream(new DomDriver());
         String xml = xstream.toXML(obj);
         return xml;
     }
-
 
 }

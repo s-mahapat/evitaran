@@ -1162,6 +1162,8 @@ CREATE TABLE `subscription_rates` (
   `year` int(11) NOT NULL,
   `period` int(11) NOT NULL,
   `rate` int(11) NOT NULL,
+  `active` TINYINT NOT NULL DEFAULT '1',
+  `dateWhenDefined` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `subscription_rates_idx1` (`journalGroupId`),
   KEY `subscription_rates_idx2` (`subtypeId`),

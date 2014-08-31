@@ -302,6 +302,7 @@ public convertToPdf(){
 
         document.add(table);
 
+        int noOfPages = document.getPageNumber();
         document.close();
         pdfWriter.close();
         outputStream.writeTo(os);
@@ -1209,7 +1210,7 @@ public convertToPdf(){
                                 
                                 // If this is the last volume and for the select journal check if there are more than 1 issue
                                 if(Integer.parseInt(volume_number) == highestVolumeNo &&
-                                        (separateLabelForP && journalCode.equals("P") && startIssue < endIssue)) {
+                                        (separateLabelForP && journalCode.equals("P") && (startIssue < endIssue || startIssue == endIssue))) {
                                     
                                     String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
                                     labels.add(labelSeparate);
@@ -1217,7 +1218,7 @@ public convertToPdf(){
                                     endIssue = endIssue - 1;
                                 }
                                 if(Integer.parseInt(volume_number) == highestVolumeNo &&
-                                        (separateLabelForRES && journalCode.equals("RES") && startIssue < endIssue)) {
+                                        (separateLabelForRES && journalCode.equals("RES") && (startIssue < endIssue || startIssue == endIssue))) {
                                     
                                     String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
                                     labels.add(labelSeparate);
@@ -1225,13 +1226,14 @@ public convertToPdf(){
                                     endIssue = endIssue - 1;
                                 }
                                 if(Integer.parseInt(volume_number) == highestVolumeNo &&
-                                        (separateLabelForCURR && journalCode.equals("CURR") && startIssue < endIssue)) {
+                                        (separateLabelForCURR && journalCode.equals("CURR") && (startIssue < endIssue || startIssue == endIssue))) {
                                     
                                     String labelSeparate = createLabel(journalCode, volume_number, endIssue, endIssue, no_of_copies);
                                     labels.add(labelSeparate);
 
                                     endIssue = endIssue - 1;
                                 }
+                                if(endIssue != 0)
                                 label = label + createLabel(journalCode, volume_number, startIssue, endIssue, no_of_copies);
                             }
                         }

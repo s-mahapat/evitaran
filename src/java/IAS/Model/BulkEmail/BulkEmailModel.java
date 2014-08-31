@@ -158,7 +158,7 @@ public class BulkEmailModel extends JDSModel {
             sql += ")";
             try (Connection conn = this.getConnection();
                     PreparedStatement st = conn.prepareStatement(sql, com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS)) {
-                try (ResultSet rs = this.db.executeQueryPreparedStatement(st)) {
+                try (ResultSet rs = st.executeQuery()) {
                     while (rs.next()) {
                         // Append all the emailIDs separated by a space
                         String id = rs.getString(1);

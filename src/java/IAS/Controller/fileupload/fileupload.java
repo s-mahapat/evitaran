@@ -1,9 +1,9 @@
 package IAS.Controller.fileupload;
 
-import IAS.Bean.Inward.inwardFormBean;
+import IAS.Class.Ajax.AjaxResponse;
 import IAS.Class.util;
 import IAS.Controller.JDSController;
-import IAS.Controller.Print.Print;
+import IAS.Exceptions.InvalidExcelException;
 import IAS.Model.FileUpload.AgentXLUploadModel;
 import IAS.Model.FileUpload.URNModel;
 import java.io.IOException;
@@ -91,7 +91,12 @@ public class fileupload extends JDSController {
                 }
             }
         } catch (ParserConfigurationException | SQLException |
-                TransformerException | IOException | FileUploadException e) {
+                TransformerException | IOException | FileUploadException | InvalidExcelException e) {
+            AjaxResponse ajaxResponse = new AjaxResponse();
+            String xml = ajaxResponse.getSuccessXML(false, e.getMessage());
+            request.setAttribute("xml", xml);
+            url = "/xmlserver";
+
         } finally {
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
             if (rd != null && url != null) {

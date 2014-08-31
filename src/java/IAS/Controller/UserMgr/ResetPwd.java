@@ -40,18 +40,18 @@ public class ResetPwd extends JDSController {
             ResetPwdModel rspwdModel = new ResetPwdModel();
             boolean isSuccess = rspwdModel.emailNewPassword(email);
             String msg = "Email with the new password has been sent to " + email;
-            
-            if(!isSuccess){
+
+            if (!isSuccess) {
                 msg = "Failed to reset password for this email id";
             }
-            
+
             xml = _ajaxres.getSuccessXML(isSuccess, msg);
 
             response.setContentType("text/xml");
             response.setHeader("Cache-Control", "no-cache");
             response.getWriter().write(xml);
 
-        } catch (SQLException | ParserConfigurationException | TransformerException ex) {
+        } catch (Exception ex) {
             logger.error(ex);
         }
 
@@ -59,8 +59,7 @@ public class ResetPwd extends JDSController {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -74,8 +73,7 @@ public class ResetPwd extends JDSController {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

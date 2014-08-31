@@ -59,7 +59,7 @@ public class journalSubscriptionRateGroupModel extends JDSModel {
         String sql = Queries.getQuery("update_printOrder");
         String xml;
         try (Connection conn = this.getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(st)) {
+            try (ResultSet rs = st.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
             }
         }
@@ -78,7 +78,7 @@ public class journalSubscriptionRateGroupModel extends JDSModel {
         request.setAttribute("printOrderFormBean", this._journalSubscriptionRateGroupFormBean);
         String xml;
         String sql = Queries.getQuery("update_printOrder");
-        try (Connection conn = this.getConnection(); ResultSet rs = conn.prepareStatement(sql).executeQuery()) {            
+        try (Connection conn = this.getConnection(); ResultSet rs = conn.prepareStatement(sql).executeQuery()) {
             xml = util.convertResultSetToXML(rs);
         }
         return xml;

@@ -19,6 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.text.ParseException;
 import java.util.Properties;
 import IAS.Class.msgsend;
+import com.sun.rowset.CachedRowSetImpl;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,14 +59,14 @@ public class reminderModel extends JDSModel {
         try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setString(paramIndex, request.getParameter("reminderType"));
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery();) {
                 xml = util.convertResultSetToXML(rs);
             }
         }
         return xml;
     }
 
-    public ResultSet getReminders(String medium, String sender) throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public CachedRowSetImpl getReminders(String medium, String sender) throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
         String sql = Queries.getQuery("get_reminders_subscriber");
@@ -87,23 +88,30 @@ public class reminderModel extends JDSModel {
         else if (medium.equals("A")) {
 
         }
-        Connection conn = this.getConnection();
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("reminderType"));
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        return rs;
+        CachedRowSetImpl crs = new CachedRowSetImpl();
+        try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
+            int paramIndex = 1;
+            stGet.setString(paramIndex, request.getParameter("reminderType"));
+            try (ResultSet rs = stGet.executeQuery()) {
+                crs.populate(rs);
+            }
+        }
+        return (crs);
     }
 
-    public ResultSet getGenReminders() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
+    public CachedRowSetImpl getGenReminders() throws SQLException, ParseException, ParserConfigurationException, TransformerException {
         String sql = Queries.getQuery("gen_reminders_subscriber");
         sql += " and reminders.reminderDate = curdate()";
+        CachedRowSetImpl crs = new CachedRowSetImpl();
         Connection conn = this.getConnection();
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setString(paramIndex, request.getParameter("reminderType"));
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        return rs;
+        try (PreparedStatement stGet = conn.prepareStatement(sql)) {
+            int paramIndex = 1;
+            stGet.setString(paramIndex, request.getParameter("reminderType"));
+            try (ResultSet rs = stGet.executeQuery()) {
+                crs.populate(rs);
+            }
+        }
+        return crs;
     }
 
     public String generate() throws SQLException, ParseException, ParserConfigurationException, TransformerException,
@@ -234,7 +242,7 @@ public class reminderModel extends JDSModel {
                 int paramIndex = 1;
 
                 stgetjnls.setInt(paramIndex, reminders_id);
-                try (ResultSet rsgetjnls = this.db.executeQueryPreparedStatement(stgetjnls);) {
+                try (ResultSet rsgetjnls = stgetjnls.executeQuery()) {
 
                     while (rsgetjnls.next()) {
 
@@ -384,7 +392,7 @@ public class reminderModel extends JDSModel {
                 //Object reminderId = null;
                 //reminderId = rsGet.getObject(1);
                 stgetjnls.setInt(paramIndex, reminders_id);
-                try (ResultSet rsgetjnls = this.db.executeQueryPreparedStatement(stgetjnls);) {
+                try (ResultSet rsgetjnls = stgetjnls.executeQuery();) {
                     while (rsgetjnls.next()) {
                         String journalCode = rsgetjnls.getString(1);
                         String journalName = rsgetjnls.getString(2);

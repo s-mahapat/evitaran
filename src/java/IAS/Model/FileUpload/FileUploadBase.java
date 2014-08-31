@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.fileupload.FileItem;
+import IAS.Exceptions.InvalidExcelException;
 
 /**
  *
@@ -23,7 +24,7 @@ public class FileUploadBase extends JDSModel {
     public FileUploadBase(HttpServletRequest request) throws SQLException {
         super(request);
     }
-    private final ArrayList<FileItem> uploadedFiles = new ArrayList<>();
+    private ArrayList<FileItem> uploadedFiles = new ArrayList<>();
 
     public void addFiles(List<FileItem> _uploadedFiles) {
         for (FileItem fileItem : _uploadedFiles) {
@@ -37,7 +38,7 @@ public class FileUploadBase extends JDSModel {
         return uploadedFiles;
     }
 
-    public void processFiles() throws IOException, SQLException {
+    public void processFiles() throws IOException, SQLException, InvalidExcelException {
         throw (new UnsupportedOperationException());
     }
 

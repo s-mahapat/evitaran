@@ -1,18 +1,16 @@
 
 /*
-* To change this template, choose Tools | Templates
-* and open the template in the editor.
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
 package IAS.Controller;
 
 //~--- non-JDK imports --------------------------------------------------------
-
 import IAS.Class.Ajax.AjaxResponse;
 
 import IAS.Model.Payment.PaymentModel;
 
 //~--- JDK imports ------------------------------------------------------------
-
 import java.io.IOException;
 
 import java.sql.SQLException;
@@ -31,9 +29,8 @@ import javax.xml.transform.TransformerException;
 public class payment extends JDSController {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -46,15 +43,15 @@ public class payment extends JDSController {
         String[] invoice_id = request.getParameterValues("id");
 
         // int subscription_id = Integer.parseInt(request.getParameter("subscriptionid"));
-        String[] remarks   = request.getParameterValues("remarks");
-        String[] payment   = request.getParameterValues("payment");
-        int      inward_id = Integer.parseInt(request.getParameter("inwardid"));
+        String[] remarks = request.getParameterValues("remarks");
+        String[] payment = request.getParameterValues("payment");
+        int inward_id = Integer.parseInt(request.getParameter("inwardid"));
 
         try {
             PaymentModel paymentmodel = new PaymentModel();
-            int          rc           = paymentmodel.UpdatePayments(invoice_id, inward_id, payment, remarks);
+            int rc = paymentmodel.UpdatePayments(invoice_id, inward_id, payment, remarks);
             AjaxResponse ajaxresponse = new AjaxResponse();
-            String       xml;
+            String xml;
 
             if (rc == 1) {
                 xml = ajaxresponse.getSuccessXML(true, "");
@@ -63,16 +60,14 @@ public class payment extends JDSController {
             }
 
             response.getWriter().write(xml);
-        } catch (SQLException | ParserConfigurationException | TransformerException ex) {
+        } catch (Exception ex) {
             throw new ServletException(ex);
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -86,8 +81,7 @@ public class payment extends JDSController {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

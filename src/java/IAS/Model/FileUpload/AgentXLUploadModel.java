@@ -10,6 +10,8 @@ import IAS.Class.DataValidation;
 import IAS.Class.ExcelReader;
 import IAS.Class.JDSLogger;
 import IAS.Class.util;
+import IAS.Exceptions.InvalidExcelException;
+import IAS.Model.JDSModel;
 import IAS.Model.Subscriber.subscriberModel;
 import IAS.Model.Subscription.SubscriptionModel;
 import java.io.IOException;
@@ -217,7 +219,7 @@ public class AgentXLUploadModel extends FileUploadBase {
     }
 
     @Override
-    public void processFiles() throws SQLException {
+    public void processFiles() throws SQLException, InvalidExcelException {
         try {
             for (FileItem item : this.getFiles()) {
                 InputStream filecontent = item.getInputStream();
@@ -265,9 +267,11 @@ public class AgentXLUploadModel extends FileUploadBase {
                     this.CompleteInward(this._inwardFormBean.getInwardID());// Complete the inward after upload
                 }
             }
-        } catch (IOException | BiffException | SQLException | ParseException | InvocationTargetException | IllegalAccessException e) {
+        } catch (IOException | BiffException | SQLException | ParseException | InvocationTargetException | IllegalAccessException | NumberFormatException e) {
             logger.fatal(e);
+            throw new InvalidExcelException("The excel data is invalid. " + e.getMessage());
         }
+
     }
 
     public String processData(String[] Data, int rowNo) throws SQLException { // Process each cell of the Excel

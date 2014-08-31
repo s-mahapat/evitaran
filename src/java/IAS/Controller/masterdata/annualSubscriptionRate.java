@@ -28,24 +28,29 @@ public class annualSubscriptionRate extends JDSController {
         try {
             _annualSubscriptionRateModel = new IAS.Model.masterdata.annualSubscriptionRateModel(request);
 
-            if(action.equalsIgnoreCase("add")){
-
-                String xml = _annualSubscriptionRateModel.add();
-                request.setAttribute("xml", xml);
-                url = "/xmlserver";
-
-            }else if(action.equalsIgnoreCase("search")){
+            if(action.equalsIgnoreCase("search")){
 
                 String xml = _annualSubscriptionRateModel.search();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
-            }else if(action.equalsIgnoreCase("addAndSearch")){
+            }else if(action.equalsIgnoreCase("addNewRate")){
 
-                String xml = _annualSubscriptionRateModel.addAndSearch();
+                String xml = _annualSubscriptionRateModel.addNewRate();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
+            }else if(action.equalsIgnoreCase("verify")){
+
+                String xml = _annualSubscriptionRateModel.verify();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
+
+            }else if(action.equalsIgnoreCase("save")){
+
+                String xml = _annualSubscriptionRateModel.save();
+                request.setAttribute("xml", xml);
+                url = "/xmlserver";
             }
 
         } catch (Exception e) {

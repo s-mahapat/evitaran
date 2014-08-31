@@ -6,19 +6,14 @@ package IAS.Servlet;
 
 import IAS.Bean.reminder.subscriberInfo;
 import IAS.Class.JDSLogger;
-import IAS.Class.Queries;
 import IAS.Class.ServletContextInfo;
 import IAS.Class.convertToPdf;
 import IAS.Controller.JDSController;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import javax.servlet.ServletContext;
@@ -41,13 +36,13 @@ public class pdfserver extends JDSController {
 
         String action = request.getParameter("action");
         try (ServletOutputStream os = response.getOutputStream()) {
-            if(action.equalsIgnoreCase("printResultset")){
+            if (action.equalsIgnoreCase("printResultset")) {
                 /*
-                ServletContext context = ServletContextInfo.getServletContext();
-                String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
-                Properties properties = new Properties();
-                properties.load(new FileInputStream(emailPropertiesFile));
-                String msg = properties.getProperty("missingIssueNoCopy");
+                 ServletContext context = ServletContextInfo.getServletContext();
+                 String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
+                 Properties properties = new Properties();
+                 properties.load(new FileInputStream(emailPropertiesFile));
+                 String msg = properties.getProperty("missingIssueNoCopy");
                  */
 
                 String query = (String) request.getAttribute("query");
@@ -60,17 +55,17 @@ public class pdfserver extends JDSController {
                 response.setHeader("Content-disposition", "attachment; filename=report.pdf");
                 os.flush();
 
-            } else if(action.equalsIgnoreCase("printXML")){
+            } else if (action.equalsIgnoreCase("printXML")) {
 
                 String query = (String) request.getAttribute("query");
                 String xml = (String) request.getAttribute("xml");
                 /*
-                String filename = "output.pdf";
-                Object obj = request.getAttribute("filename");
-                if(obj != null){
-                    filename = obj.toString();
-                }
-                */
+                 String filename = "output.pdf";
+                 Object obj = request.getAttribute("filename");
+                 if(obj != null){
+                 filename = obj.toString();
+                 }
+                 */
 
                 convertToPdf c2Pdf = new convertToPdf();
                 c2Pdf.convertXMLResponseToPDF(os, xml, query);
@@ -80,7 +75,7 @@ public class pdfserver extends JDSController {
                 //response.setHeader("Content-disposition", "attachment; filename=" + filename);
                 os.flush();
 
-            }else if(action.equalsIgnoreCase("generatemlPrintLabel")){
+            } else if (action.equalsIgnoreCase("generatemlPrintLabel")) {
                 logger.debug("Start of mailing list label generation");
                 ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
 
@@ -93,7 +88,7 @@ public class pdfserver extends JDSController {
                 os.flush();
                 logger.debug("End of mailing list label generation");
 
-            }else if(action.equalsIgnoreCase("generatemlPrintSticker")){
+            } else if (action.equalsIgnoreCase("generatemlPrintSticker")) {
                 logger.debug("Start of mailing list sticker generation");
                 ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
                 String noHeader = request.getParameter("noHeader");
@@ -105,9 +100,9 @@ public class pdfserver extends JDSController {
                 os.flush();
                 logger.debug("End of mailing list sticker generation");
 
-            }else if(action.equalsIgnoreCase("miPrintNoCopies")){
+            } else if (action.equalsIgnoreCase("miPrintNoCopies")) {
                 ServletContext context = ServletContextInfo.getServletContext();
-                String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
+                String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
                 Properties properties = new Properties();
                 properties.load(new FileInputStream(emailPropertiesFile));
 
@@ -120,9 +115,9 @@ public class pdfserver extends JDSController {
                 response.setHeader("Content-disposition", "attachment; filename=missing_issue.pdf");
                 os.flush();
 
-            }else if(action.equalsIgnoreCase("miPrintAlreadySent")){
+            } else if (action.equalsIgnoreCase("miPrintAlreadySent")) {
                 ServletContext context = ServletContextInfo.getServletContext();
-                String emailPropertiesFile =  context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
+                String emailPropertiesFile = context.getRealPath("/WEB-INF/classes/jds_missingissue.properties");
                 Properties properties = new Properties();
                 properties.load(new FileInputStream(emailPropertiesFile));
 
@@ -135,41 +130,41 @@ public class pdfserver extends JDSController {
                 response.setHeader("Content-disposition", "attachment; filename=missing_issue.pdf");
                 os.flush();
 
-            } else if(action.equalsIgnoreCase("printRemindersPrintOnly") ||
-                    action.equalsIgnoreCase("printRemindersPrintAll")){
+            } else if (action.equalsIgnoreCase("printRemindersPrintOnly")
+                    || action.equalsIgnoreCase("printRemindersPrintAll")) {
 
-                List<subscriberInfo> sinfo = (List<subscriberInfo>)request.getAttribute("subscriberInfo");
+                List<subscriberInfo> sinfo = (List<subscriberInfo>) request.getAttribute("subscriberInfo");
                 convertToPdf c2Pdf = new convertToPdf();
-                ByteArrayOutputStream baos  = c2Pdf.generateReminders(sinfo);
+                ByteArrayOutputStream baos = c2Pdf.generateReminders(sinfo);
                 baos.writeTo(os);
 
                 response.setContentType("application/pdf");
                 response.setHeader("Content-disposition", "attachment; filename=reminder.pdf");
                 os.flush();
 
-            } else if(action.equalsIgnoreCase("printHelp")){
+            } else if (action.equalsIgnoreCase("printHelp")) {
 
                 response.setContentType("application/pdf");
                 response.setHeader("Content-Disposition", "inline; filename=eVitaran - User Manual.pdf");
 
                 ServletContext context = ServletContextInfo.getServletContext();
                 InputStream is = context.getResourceAsStream("/WEB-INF/classes/eVitaran - User Manual.pdf");
-                int read=0;
+                int read = 0;
                 byte[] bytes = new byte[1024];
 
-                while((read = is.read(bytes))!= -1){
+                while ((read = is.read(bytes)) != -1) {
                     os.write(bytes, 0, read);
                 }
                 os.flush();
 
-            } else if(action.equalsIgnoreCase("generatebilPrintSticker")){
+            } else if (action.equalsIgnoreCase("generatebilPrintSticker")) {
                 logger.debug("Start of back issue list sticker generation");
                 ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
 
                 String noHeader = request.getParameter("noHeader");
                 String periodicals = request.getParameter("periodicals");
                 String separateLabelForP = request.getParameter("separateLabelForP");
-                String separateLabelForRES = request.getParameter("separateLabelForRES");                
+                String separateLabelForRES = request.getParameter("separateLabelForRES");
                 String separateLabelForCURR = request.getParameter("separateLabelForCURR");
 
                 convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, separateLabelForP, separateLabelForRES, separateLabelForCURR, true);
@@ -181,15 +176,15 @@ public class pdfserver extends JDSController {
                 os.flush();
                 logger.debug("End of back issue list sticker generation");
 
-            }else if(action.equalsIgnoreCase("generatebilPrintLabel")){
+            } else if (action.equalsIgnoreCase("generatebilPrintLabel")) {
                 logger.debug("Start of back issue list label generation");
                 ResultSet rs = (ResultSet) request.getAttribute("ResultSet");
 
                 String noHeader = request.getParameter("noHeader");
                 String periodicals = request.getParameter("periodicals");
                 String separateLabelForP = request.getParameter("separateLabelForP");
-                String separateLabelForRES = request.getParameter("separateLabelForRES");                
-                String separateLabelForCURR = request.getParameter("separateLabelForCURR");                
+                String separateLabelForRES = request.getParameter("separateLabelForRES");
+                String separateLabelForCURR = request.getParameter("separateLabelForCURR");
 
                 convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, separateLabelForP, separateLabelForRES, separateLabelForCURR, true);
                 c2Pdf.prepareBILLabelContent(rs);
@@ -210,6 +205,7 @@ public class pdfserver extends JDSController {
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -223,6 +219,7 @@ public class pdfserver extends JDSController {
 
     /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -236,6 +233,7 @@ public class pdfserver extends JDSController {
 
     /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

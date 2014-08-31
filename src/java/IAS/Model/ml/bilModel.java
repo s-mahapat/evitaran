@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import IAS.Class.Queries;
 import IAS.Class.util;
+import com.sun.rowset.CachedRowSetImpl;
 import javax.xml.parsers.ParserConfigurationException;
 import java.text.ParseException;
 
@@ -40,7 +41,7 @@ public class bilModel extends JDSModel {
         return xml;
     }
 
-    public ResultSet getBILDtlUi(String bilIDsForDisplay) throws SQLException {
+    public CachedRowSetImpl getBILDtlUi(String bilIDsForDisplay) throws SQLException {
 
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
@@ -61,15 +62,16 @@ public class bilModel extends JDSModel {
         } else {
             sql += bilIDsForDisplay;
         }
-        Connection conn = this.getConnection();
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        //int paramIndex = 1;
-        //stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        return rs;
+        CachedRowSetImpl crs = new CachedRowSetImpl();
+        try (Connection conn = this.getConnection();
+                PreparedStatement stGet = conn.prepareStatement(sql);
+                ResultSet rs = stGet.executeQuery();) {
+            crs.populate(rs);
+        }
+        return crs;
     }
 
-    public ResultSet getBILDtlUi() throws SQLException {
+    public CachedRowSetImpl getBILDtlUi() throws SQLException {
 
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
@@ -90,15 +92,16 @@ public class bilModel extends JDSModel {
         } else {
             sql += " and back_issue_list.added_on between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
-        Connection conn = this.getConnection();
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        //int paramIndex = 1;
-        //stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        return rs;
+        CachedRowSetImpl crs = new CachedRowSetImpl();
+        try (Connection conn = this.getConnection();
+                PreparedStatement stGet = conn.prepareStatement(sql);
+                ResultSet rs = stGet.executeQuery()) {
+            crs.populate(rs);
+        }
+        return crs;
     }
 
-    public ResultSet getBILDtl(String bilid[]) throws SQLException {
+    public CachedRowSetImpl getBILDtl(String bilid[]) throws SQLException {
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
         String subscriberNumber = request.getParameter("subscriberNumber");
@@ -127,15 +130,16 @@ public class bilModel extends JDSModel {
         } else {
             sql += " and back_issue_list.added_on between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
-        Connection conn = this.getConnection();
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        //int paramIndex = 1;
-        //stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        return rs;
+        CachedRowSetImpl crs = new CachedRowSetImpl();
+        try (Connection conn = this.getConnection();
+                PreparedStatement stGet = conn.prepareStatement(sql);
+                ResultSet rs = stGet.executeQuery()) {
+            crs.populate(rs);
+        }
+        return crs;
     }
 
-    public ResultSet getBILDtl() throws SQLException {
+    public CachedRowSetImpl getBILDtl() throws SQLException {
         String fromDate = request.getParameter("from");
         String toDate = request.getParameter("to");
         String subscriberNumber = request.getParameter("subscriberNumber");
@@ -156,12 +160,13 @@ public class bilModel extends JDSModel {
         } else {
             sql += " and back_issue_list.added_on between " + "STR_TO_DATE(" + '"' + fromDate + '"' + ",'%d/%m/%Y')" + " and " + "STR_TO_DATE(" + '"' + toDate + '"' + ",'%d/%m/%Y')";
         }
-        Connection conn = this.getConnection();
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        //int paramIndex = 1;
-        //stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        return rs;
+        CachedRowSetImpl crs = new CachedRowSetImpl();
+        try (Connection conn = this.getConnection();
+                PreparedStatement stGet = conn.prepareStatement(sql);
+                ResultSet rs = stGet.executeQuery()) {
+            crs.populate(rs);
+        }
+        return crs;
     }
 
     public synchronized String generate() throws SQLException, ParseException, ParserConfigurationException, TransformerException,
