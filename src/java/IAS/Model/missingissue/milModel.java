@@ -6,6 +6,7 @@ import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import com.sun.rowset.CachedRowSetImpl;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
@@ -280,7 +281,7 @@ public class milModel extends JDSModel {
         return mailingid;
     }
 
-    public ResultSet printmil() throws IllegalAccessException, ParseException,
+    public CachedRowSetImpl printmil() throws IllegalAccessException, ParseException,
             ParserConfigurationException, SQLException, TransformerException,
             IOException, InvocationTargetException, Exception {
 
@@ -311,10 +312,11 @@ public class milModel extends JDSModel {
 //            }
 //        } 
         sql = sql + mailing + ")";
-        Connection conn = this.getConnection();
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-        return rs;
+        CachedRowSetImpl crs = new CachedRowSetImpl();
+        try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql); ResultSet rs = stGet.executeQuery();) {
+            crs.populate(rs);
+        }
+        return crs;
     }
 
     public String getIds() throws IllegalAccessException, ParseException,

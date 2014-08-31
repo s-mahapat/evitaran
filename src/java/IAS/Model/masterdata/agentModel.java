@@ -114,7 +114,7 @@ public class agentModel extends JDSModel {
 
             st.setInt(1, _agentFormBean.getId());
             // populate the bean from the resultset using the beanprocessor class
-            try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
+            try (ResultSet rs = st.executeQuery()) {
                 // populate the bean from the resultset using the beanprocessor class
                 while (rs.next()) {
                     BeanProcessor bProc = new BeanProcessor();
@@ -169,23 +169,23 @@ public class agentModel extends JDSModel {
             String city = request.getParameter("city");
 
             if (!city.isEmpty()) {
-                sql += " t2.city like" + "'%" + city + "%'" ;        
-            } 
+                sql += " t2.city like" + "'%" + city + "%'";
+            }
 
             if (!agentName.isEmpty()) {
                 if (!city.isEmpty()) {
-                    sql += " and" ;        
-                } 
+                    sql += " and";
+                }
                 sql += " t1.agentName like " + "'%" + agentName + "%'";
             } else {
                 if (!city.isEmpty()) {
-                    sql += " and" ;        
-                } 
+                    sql += " and";
+                }
                 sql += " t1.agentName like " + "'%%'";
             }
-            PreparedStatement stGet = conn.prepareStatement(sql);
-            ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-            xml = util.convertResultSetToXML(rs);
+            try (PreparedStatement stGet = conn.prepareStatement(sql); ResultSet rs = stGet.executeQuery();) {
+                xml = util.convertResultSetToXML(rs);
+            }
         }
 
         return xml;

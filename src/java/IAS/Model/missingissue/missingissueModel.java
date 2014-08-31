@@ -9,6 +9,7 @@ import IAS.Class.msgsend;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
 import com.mysql.jdbc.Statement;
+import com.sun.rowset.CachedRowSetImpl;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -46,7 +47,7 @@ public class missingissueModel extends JDSModel {
         try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery();) {
                 while (rs.next()) {
                     BeanProcessor bProc = new BeanProcessor();
                     Class type = Class.forName("IAS.Bean.missingissue.missingissueFormBean");
@@ -118,7 +119,7 @@ public class missingissueModel extends JDSModel {
         try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setString(paramIndex, request.getParameter("missingissueId"));
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery();) {
                 xml = util.convertResultSetToXML(rs);
             }
         }
@@ -135,7 +136,7 @@ public class missingissueModel extends JDSModel {
             int paramIndex = 1;
             stGet.setString(paramIndex, request.getParameter("journalGroupName"));
             stGet.setString(++paramIndex, request.getParameter("subscriptionId"));
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery();) {
                 if (rs.next()) {
                     copies = rs.getInt(1);
                 } else {
@@ -155,7 +156,7 @@ public class missingissueModel extends JDSModel {
         try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setString(paramIndex, request.getParameter("miId"));
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery();) {
                 xml = util.convertResultSetToXML(rs);
             }
         }
@@ -170,7 +171,7 @@ public class missingissueModel extends JDSModel {
         try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setString(paramIndex, request.getParameter("miId"));
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery();) {
                 if (rs.next()) {
                     xml = "R";
                 } else {
@@ -219,7 +220,7 @@ public class missingissueModel extends JDSModel {
             stGet.setString(++paramIndexml, journalName);
             stGet.setInt(++paramIndexml, year);
             stGet.setString(++paramIndexml, issue);
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery();) {
                 if (rs.next()) {
                     mlid = rs.getInt(1);
                 }
@@ -236,7 +237,7 @@ public class missingissueModel extends JDSModel {
         try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setString(paramIndex, request.getParameter("miId"));
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery();) {
                 if (rs.next()) {
                     xml = util.convertResultSetToXML(rs);
                     conn.setAutoCommit(false);
@@ -254,24 +255,26 @@ public class missingissueModel extends JDSModel {
         return xml;
     }
 
-    public ResultSet generateMLforMI() throws SQLException, IllegalAccessException, InvocationTargetException {
+    public CachedRowSetImpl generateMLforMI() throws SQLException, IllegalAccessException, InvocationTargetException {
 
         missingissueFormBean missingissueFormBean = new IAS.Bean.missingissue.missingissueFormBean();
         request.setAttribute("missingissueFormBean", missingissueFormBean);
 
         FillBean(this.request, missingissueFormBean);
         this._missingissueFormBean = missingissueFormBean;
-        Connection conn = this.getConnection();
         String sql = Queries.getQuery("reprint_mi_list");
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        //stGet.setString(paramIndex, request.getParameter("miId"));
-        stGet.setString(paramIndex, Integer.toString(_missingissueFormBean.getMiId()));
+        CachedRowSetImpl crs = new CachedRowSetImpl();
+        try (Connection conn = this.getConnection();
+                PreparedStatement stGet = conn.prepareStatement(sql);) {
+            int paramIndex = 1;
+            stGet.setString(paramIndex, Integer.toString(_missingissueFormBean.getMiId()));
+            String type = request.getParameter("printOption");
+            try (ResultSet rs = stGet.executeQuery();) {
+                crs.populate(rs);
+            }
 
-        String type = request.getParameter("printOption");
-        ResultSet rs = this.db.executeQueryPreparedStatement(stGet);
-
-        return rs;
+        }
+        return crs;
     }
 
     public String generateMl() throws IllegalAccessException, ParseException,
@@ -286,7 +289,7 @@ public class missingissueModel extends JDSModel {
             int paramIndex = 0;
             stGet.setString(++paramIndex, request.getParameter("miId"));
             String sqlmldtl = Queries.getQuery("insert_mldtl_mil");
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet); PreparedStatement stmldtl = conn.prepareStatement(sqlmldtl);) {
+            try (ResultSet rs = stGet.executeQuery(); PreparedStatement stmldtl = conn.prepareStatement(sqlmldtl);) {
                 while (rs.next()) {
                     paramIndex = 0;
                     Object value = null;
@@ -439,7 +442,7 @@ public class missingissueModel extends JDSModel {
         try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setString(paramIndex, request.getParameter("inwardNumber"));
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery();) {
                 if (rs.next()) {
                     Object value = null;
                     value = rs.getObject(1);
@@ -461,7 +464,7 @@ public class missingissueModel extends JDSModel {
         try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setString(paramIndex, request.getParameter("subscriberNumber"));
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery();) {
                 while (rs.next()) {
                     BeanProcessor bProc = new BeanProcessor();
                     Class type = Class.forName("IAS.Bean.missingissue.missingissueFormBean");

@@ -50,67 +50,6 @@ public class Database implements HttpSessionBindingListener {
         return getDataSource().getConnection();
     }
 
-    public ResultSet executeQuery(String query) throws SQLException {
-        PreparedStatement st;
-        ResultSet rs;
-        try {
-            st = Database.getConnection().prepareStatement(query);
-        } catch (SQLException e) {
-            throw (new SQLException(e.getMessage()));
-        }
-
-        rs = st.executeQuery();
-
-        if (st == null) {
-            return null;
-        } else {
-            return rs;
-        }
-
-    }
-
-    public ResultSet executeQueryPreparedStatement(PreparedStatement pstatement) throws SQLException {
-
-        ResultSet rs;
-        rs = pstatement.executeQuery();
-        if (pstatement == null) {
-            return null;
-        } else {
-            return rs;
-        }
-
-    }
-
-    public ResultSet executeQueryPreparedStatementWithPages(String query, int pageNumber, int pageSize) throws SQLException {
-
-        ResultSet rs;
-        int start = (pageNumber - 1) * pageSize;
-        query += " LIMIT " + start + "," + pageSize;
-        PreparedStatement pstatement = Database.getConnection().prepareStatement(query);
-        rs = pstatement.executeQuery();
-        if (pstatement == null) {
-            return null;
-        } else {
-            return rs;
-        }
-
-    }
-
-    public int executeUpdate(String statement) throws SQLException {
-
-        PreparedStatement st;
-        int rs;
-        st = Database.getConnection().prepareStatement(statement);
-        rs = st.executeUpdate();
-
-        if (st == null) {
-            return 0;
-        } else {
-            return rs;
-        }
-
-    }
-
     public int executeUpdatePreparedStatement(PreparedStatement pstatement) throws SQLException {
 
         int rs;

@@ -100,7 +100,7 @@ public class districtModel extends JDSModel {
             st.setInt(1, _districtFormBean.getId());
 
             // populate the bean from the resultset using the beanprocessor class
-            try (ResultSet rs = db.executeQueryPreparedStatement(st)) {
+            try (ResultSet rs = st.executeQuery()) {
                 // populate the bean from the resultset using the beanprocessor class
                 while (rs.next()) {
                     BeanProcessor bProc = new BeanProcessor();
@@ -137,7 +137,7 @@ public class districtModel extends JDSModel {
         try (Connection _conn = this.getConnection(); PreparedStatement stGet = _conn.prepareStatement(sql)) {
             int paramIndex = 1;
             stGet.setString(paramIndex, "%" + term + "%");
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery()) {
                 xml = util.convertResultSetToXML(rs);
             }
         }

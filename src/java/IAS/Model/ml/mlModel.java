@@ -5,6 +5,7 @@ import IAS.Class.JDSLogger;
 import IAS.Class.Queries;
 import IAS.Class.util;
 import IAS.Model.JDSModel;
+import com.sun.rowset.CachedRowSetImpl;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
@@ -61,7 +62,7 @@ public class mlModel extends JDSModel {
         try (Connection conn = this.getConnection(); PreparedStatement stGet = conn.prepareStatement(sql);) {
             int paramIndex = 1;
             stGet.setInt(paramIndex, mlId);
-            try (ResultSet rs = this.db.executeQueryPreparedStatement(stGet);) {
+            try (ResultSet rs = stGet.executeQuery();) {
                 xml = util.convertResultSetToXML(rs);
             }
 
@@ -95,10 +96,8 @@ public class mlModel extends JDSModel {
         return xml;
     }
 
-    public ResultSet getMlDtlResultset(int mlId) throws SQLException {
+    public CachedRowSetImpl getMlDtlResultset(int mlId) throws SQLException {
 
-        // get the connection from connection pool
-        Connection conn = this.getConnection();
         String printOption = request.getParameter("printOption");
 
         String sql = Queries.getQuery("search_mldtl");
@@ -110,13 +109,17 @@ public class mlModel extends JDSModel {
         } else if (printOption.equals("F")) {
             sql += " and country <> 'India' order by ml.pincode";
         }
+        CachedRowSetImpl crs = new CachedRowSetImpl();
+        // get the connection from connection pool
+        try (Connection conn = this.getConnection();
+                PreparedStatement stGet = conn.prepareStatement(sql);) {
+            stGet.setInt(1, mlId);
+            try (ResultSet rs = stGet.executeQuery();) {
+                crs.populate(rs);
+            }
+        }
 
-        PreparedStatement stGet = conn.prepareStatement(sql);
-        int paramIndex = 1;
-        stGet.setInt(paramIndex, mlId);
-        ResultSet rs = stGet.executeQuery();
-
-        return (rs);
+        return (crs);
     }
 
     public synchronized String generate() throws IllegalAccessException, ParseException,
