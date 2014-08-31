@@ -20,19 +20,18 @@ import org.apache.commons.fileupload.FileItem;
  */
 public class FileUploadBase extends JDSModel {
 
-    public FileUploadBase(HttpServletRequest request) throws SQLException{
+    public FileUploadBase(HttpServletRequest request) throws SQLException {
         super(request);
     }
-    private ArrayList<FileItem> uploadedFiles=new ArrayList<>();
+    private final ArrayList<FileItem> uploadedFiles = new ArrayList<>();
 
-    public void addFiles(List<FileItem> _uploadedFiles) {        
+    public void addFiles(List<FileItem> _uploadedFiles) {
         for (FileItem fileItem : _uploadedFiles) {
             if (fileItem.isFormField() == false) {
-                uploadedFiles.add(fileItem);                
+                uploadedFiles.add(fileItem);
             }
         }
     }
-  
 
     public List<FileItem> getFiles() {
         return uploadedFiles;
@@ -42,10 +41,10 @@ public class FileUploadBase extends JDSModel {
         throw (new UnsupportedOperationException());
     }
 
-    public String getOutputAsXML() throws IOException, TransformerException, ParserConfigurationException{
+    public String getOutputAsXML() throws IOException, TransformerException, ParserConfigurationException {
         throw (new UnsupportedOperationException());
     }
-    
+
     public ArrayList<String> getOutputAsLIST() throws IOException {
         throw (new UnsupportedOperationException());
     }
