@@ -170,7 +170,7 @@ public class PlReferListPDF extends JDSPDF {
         Paragraph paragraphOuter;
         paragraphOuter = new Paragraph();
         Paragraph addressParagraph = new Paragraph();
-        PdfPTable addressTable = new PdfPTable(2);
+        //PdfPTable addressTable = new PdfPTable(2);
         PdfPTable InvoiceInfoTable = new PdfPTable(2);
         Paragraph paragraphInvoiceInfo = new Paragraph();
         Paragraph paragraphBody = new Paragraph();
@@ -182,10 +182,11 @@ public class PlReferListPDF extends JDSPDF {
         paragraphOuter.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         paragraphOuter.setAlignment(Element.ALIGN_LEFT);
 
-        InvoiceInfoTable.setWidthPercentage(100);
+        InvoiceInfoTable.setWidthPercentage(70);
+        InvoiceInfoTable.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE * 3);
         Paragraph invoiceNumber = new Paragraph(new Chunk("Invoice No: " + invoice_no, JDS_FONT_BODY));
         Paragraph subscriberNumber = new Paragraph(new Chunk("Sub No: " + _invoiceBean.getSubscriberNumber(), JDS_FONT_BODY));
-        Paragraph invoiceHeader = new Paragraph("INVOICE");
+        Paragraph invoiceHeader = new Paragraph("INVOICE", JDSPDF.JDS_BOLD_FONT);
         invoiceHeader.setAlignment(Element.ALIGN_CENTER);
 
         PdfPCell subscriberNumberCell = new PdfPCell(subscriberNumber);
@@ -195,24 +196,29 @@ public class PlReferListPDF extends JDSPDF {
         subscriberNumberCell.setBorder(Rectangle.NO_BORDER);
         subscriberNumberCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         subscriberNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
-        subscriberNumberCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_LESS);
+        //subscriberNumberCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_LESS);
 
         /*invoiceHeaderCell.setBorder(Rectangle.NO_BORDER);
          invoiceHeaderCell.setHorizontalAlignment(Element.ALIGN_CENTER);
          invoiceHeaderCell.setVerticalAlignment(Element.ALIGN_TOP);*/
         invoiceNumberCell.setBorder(Rectangle.NO_BORDER);
-        invoiceNumberCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        invoiceNumberCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         invoiceNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
+        invoiceNumberCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_MORE * 2);
 
         InvoiceInfoTable.addCell(subscriberNumberCell);
         //InvoiceInfoTable.addCell(invoiceHeaderCell);
         InvoiceInfoTable.addCell(invoiceNumberCell);
 
+        // insert two blank rows before the invoice address starts
+        this.insertCell(InvoiceInfoTable, "", Element.ALIGN_LEFT, 2, JDS_BOLD_FONT, Rectangle.NO_BORDER);
+        this.insertCell(InvoiceInfoTable, "", Element.ALIGN_LEFT, 2, JDS_BOLD_FONT, Rectangle.NO_BORDER);
+
         paragraphInvoiceInfo.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE);
-        addressParagraph.add(addressTable);
-        addressParagraph.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
-        addressParagraph.setSpacingBefore(JDSPDF.LESS_OUTER_PARAGRAPH_SPACE);
-        addressTable.setWidthPercentage(100);
+        //addressParagraph.add(addressTable);
+        //addressParagraph.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
+        //addressParagraph.setSpacingBefore(JDSPDF.LESS_OUTER_PARAGRAPH_SPACE);
+        //addressTable.setWidthPercentage(100);
         Chunk invoiceAddressHeader = new Chunk("INVOICE ADDRESS", JDS_FONT_BODY);
         invoiceAddressHeader.setTextRise(2);
         invoiceAddressHeader.setUnderline(1, 0);
@@ -233,9 +239,13 @@ public class PlReferListPDF extends JDSPDF {
         invoiceAddressCell.setBorder(Rectangle.NO_BORDER);
         invoiceAddressCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         invoiceAddressCell.setVerticalAlignment(Element.ALIGN_TOP);
-        invoiceAddressCell.setPaddingLeft(JDSConstants.ADDRESS_LEFT_PADDING);
-        addressTable.addCell(invoiceAddressCell);
-        addressTable.addCell(ctextCell);
+        //invoiceAddressCell.setPaddingLeft(JDSConstants.ADDRESS_LEFT_PADDING);
+
+        InvoiceInfoTable.addCell(invoiceAddressCell);
+        InvoiceInfoTable.addCell(ctextCell);
+
+        //addressTable.addCell(invoiceAddressCell);
+        //addressTable.addCell(ctextCell);
         paragraphBody.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         paragraphBody.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
 
@@ -245,7 +255,7 @@ public class PlReferListPDF extends JDSPDF {
 
         PdfPTable table;
         table = new PdfPTable(4);
-        table.setWidthPercentage(98);
+        table.setWidthPercentage(80);
 
         PdfPCell cell1 = new PdfPCell(new Paragraph("Journal Name", JDS_FONT_BODY));
         cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -256,7 +266,7 @@ public class PlReferListPDF extends JDSPDF {
         cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        PdfPCell cell3 = new PdfPCell(new Paragraph("Rs.", JDS_FONT_BODY));
+        PdfPCell cell3 = new PdfPCell(new Paragraph("Rate", JDS_FONT_BODY));
         cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
@@ -327,8 +337,9 @@ public class PlReferListPDF extends JDSPDF {
         // amount in words
         EnglishNumberToWords _EnglishNumberToWords = new EnglishNumberToWords();
         paragraphBody.add(Chunk.NEWLINE);
-        paragraphBody.add(new Phrase(_EnglishNumberToWords.convertDouble(_invoiceBean.getAmount()).toUpperCase(), JDSPDF.JDS_FONT_NORMAL_SMALL));//Convert total value in words
-
+        Paragraph invoiceAmount = new Paragraph(_EnglishNumberToWords.convertDouble(_invoiceBean.getAmount()).toUpperCase(), JDSPDF.JDS_FONT_NORMAL_SMALL);
+        invoiceAmount.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS * 4);
+        paragraphBody.add(invoiceAmount);
         // add the invoice header, subscriber number and invoice number
         paragraphOuter.add(invoiceHeader);
         paragraphOuter.add(InvoiceInfoTable);

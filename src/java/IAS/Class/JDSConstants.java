@@ -24,7 +24,6 @@ public class JDSConstants {
     public static int PAYMENT_MODE_CASH = 4;
     public static int PAYMENT_MODE_BANK_TRANSFER = 5;
 
-
     public static int INVOICE_REQUEST_FOR_INVOICE = 1;
     public static int INVOICE_OUTSTANDING_PAYMENT_INVOICE = 2;
     public static int INVOICE_UPCOMING_YEAR_INVOICE = 3;
@@ -41,7 +40,7 @@ public class JDSConstants {
 
     //IAS Payment Footer for Letters
     public static String IAS_PAYMENTFOOT_HEADER = "Payment can also be made through electronic transfer "
-                + "and the details of account are given here";
+            + "and the details of account are given here";
     public static String IAS_PAYMENTFOOT_ACC = "Name of account holder";
     public static String IAS_PAYMENTFOOT_ACC_NAME = "Indian Academy of Sciences";
     public static String IAS_PAYMENTFOOT_BANK = "Name of the Bank";
@@ -49,7 +48,7 @@ public class JDSConstants {
     public static String IAS_PAYMENTFOOT_BRANCH = "Branch";
     public static String IAS_PAYMENTFOOT_BRANCH_NAME = "Sadashivanagar Branch";
     public static String IAS_PAYMENTFOOT_ACCNO = "A/c No.(Savings Bank)";
-    public static String IAS_PAYMENTFOOT_ACCNO_DTLS = "10356 553343";
+    public static String IAS_PAYMENTFOOT_ACCNO_DTLS = "33251454227";
     public static String IAS_PAYMENTFOOT_IFSCOD = "IFS Code(For non-SBI banks)";
     public static String IAS_PAYMENTFOOT_IFSCOD_DTLS = "SBI N 000 1811";
     public static String IAS_PAYMENTFOOTER = "* After electronic transfer please confirm the remittance by e-mail/post or SMS to 9008032004.";
@@ -62,11 +61,11 @@ public class JDSConstants {
 
     public static float ADDRESS_LEFT_PADDING = 30f;
 
-    public String getInwardPurpose(int purposeID){
+    public String getInwardPurpose(int purposeID) {
 
         String purpose = null;
 
-        switch(purposeID){
+        switch (purposeID) {
             case 1:
                 purpose = "New Subscription";
                 break;
@@ -76,35 +75,35 @@ public class JDSConstants {
             case 3:
                 purpose = "Payment";
                 break;
-             case 4:
+            case 4:
                 purpose = "Request for Invoice";
                 break;
-             case 5:
+            case 5:
                 purpose = "Missing Issue";
                 break;
-             case 6:
+            case 6:
                 purpose = "Reprint";
                 break;
             case 7:
                 purpose = "Advertisement";
                 break;
-             case 8:
+            case 8:
                 purpose = "Manuscript";
                 break;
-             case 9:
+            case 9:
                 purpose = "Others";
                 break;
-             case 10:
+            case 10:
                 purpose = "Address Change";
                 break;
         }
         return purpose;
     }
 
-    public String getPaymentText(int paymentModeID){
+    public String getPaymentText(int paymentModeID) {
 
         String paymentMode = null;
-        switch(paymentModeID){
+        switch (paymentModeID) {
             case 1:
                 paymentMode = "Cheque";
                 break;
@@ -114,15 +113,14 @@ public class JDSConstants {
             case 3:
                 paymentMode = "Money Order";
                 break;
-             case 4:
+            case 4:
                 paymentMode = "Cash";
                 break;
-             case 5:
+            case 5:
                 paymentMode = "Bank Transfer";
                 break;
         }
         return paymentMode;
     }
-
 
 }

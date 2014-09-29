@@ -70,19 +70,19 @@ public class EnglishNumberToWords {
         String part2 = parts[1];
 
         if (part2.length() == 1) {
-            part2=part2.concat("0");
+            part2 = part2.concat("0");
         }
 
         long numBeforeDec = Integer.parseInt(part1);
         long numAfterDec = Integer.parseInt(part2);
 
         String finalConvWord = convertInteger(numBeforeDec);
-        finalConvWord = "INDIAN RS. ".concat(finalConvWord); 
+        finalConvWord = "INDIAN RS. ".concat(finalConvWord);
         if (numAfterDec != 0) {
             String wordsAfterDec = convertInteger(numAfterDec);
             finalConvWord = finalConvWord.concat(" and " + wordsAfterDec + " Paise");
         }
-        return finalConvWord;
+        return finalConvWord.concat(" ONLY");
     }
 
     public String convertInteger(long number) {

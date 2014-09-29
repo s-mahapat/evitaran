@@ -25,13 +25,14 @@ public class JDSPDF implements IJDSPDF {
     public static int RIGHT_INDENTATION_LESS = 15;
     public static int LEFT_INDENTATION_MORE = 30;
     public static Font JDS_BOLD_FONT = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.BLACK);
+    public static Font JDS_BOLDER_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
     public static Font JDS_FONT_NORMAL_SMALL = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK);
     public static Font JDS_FONT_BODY = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
     public static Font JDS_FONT_NORMAL_SMALL_BOLD = new Font(Font.FontFamily.HELVETICA, 8, Font.BOLD, BaseColor.BLACK);
     public static Font JDS_FONT_AUTOGEN_FOOTER = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.GRAY);
     public static final int JDS_PDF_LEFT_MARGIN = 10;
     public static final int JDS_PDF_RIGHT_MARGIN = 10;
-    public static final int JDS_PDF_TOP_MARGIN = 10;
+    public static final int JDS_PDF_TOP_MARGIN = 30;
     public static final int JDS_PDF_BOTTOM_MARGIN = 10;
 
     public JDSPDF() {
@@ -55,14 +56,14 @@ public class JDSPDF implements IJDSPDF {
         return document;
     }
 
-    protected PdfWriter getPDFWriter(Document document, ByteArrayOutputStream outputStream) throws DocumentException{
+    protected PdfWriter getPDFWriter(Document document, ByteArrayOutputStream outputStream) throws DocumentException {
         PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
         PDFEventHandler footer = new PDFEventHandler();
         pdfWriter.setPageEvent(footer);
         return pdfWriter;
     }
 
-    protected PdfWriter getPDFWriterForMailingList(Document document, ByteArrayOutputStream outputStream) throws DocumentException{
+    protected PdfWriter getPDFWriterForMailingList(Document document, ByteArrayOutputStream outputStream) throws DocumentException {
         PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
         //PDFEventHandler footer = new PDFEventHandler();
         //pdfWriter.setPageEvent(footer);
@@ -79,10 +80,10 @@ public class JDSPDF implements IJDSPDF {
         return document;
     }
 
-    public void addPaymentFooter(Document document, PdfWriter pdfWriter) throws DocumentException{
+    public void addPaymentFooter(Document document, PdfWriter pdfWriter) throws DocumentException {
 
         float availableSpace = pdfWriter.getVerticalPosition(true) - document.bottomMargin();
-        if(availableSpace < JDSConstants.heightFromBottom){
+        if (availableSpace < JDSConstants.heightFromBottom) {
             document.newPage();
         }
 
@@ -90,7 +91,7 @@ public class JDSPDF implements IJDSPDF {
         float pageWidth = pdfWriter.getPageSize().getWidth();
         //float pageHeight = pdfWriter.getPageSize().getHeight();
 
-        float llx = (pageWidth - Utilities.millimetersToPoints(JDSConstants.width))/2;
+        float llx = (pageWidth - Utilities.millimetersToPoints(JDSConstants.width)) / 2;
         float lly = Utilities.millimetersToPoints(JDSConstants.heightFromBottomOfPage);
         float urx = llx + Utilities.millimetersToPoints(JDSConstants.width);
         float ury = lly + Utilities.millimetersToPoints(JDSConstants.height);
@@ -106,11 +107,10 @@ public class JDSPDF implements IJDSPDF {
         //int status = ColumnText.START_COLUMN;
 
         /*
-        Paragraph info = new Paragraph();
-        info.add(new Chunk(JDSConstants.IAS_PAYMENTFOOT_HEADER, JDSPDF.JDS_FONT_NORMAL_SMALL));
-        ct.addElement(info);
-        */
-
+         Paragraph info = new Paragraph();
+         info.add(new Chunk(JDSConstants.IAS_PAYMENTFOOT_HEADER, JDSPDF.JDS_FONT_NORMAL_SMALL));
+         ct.addElement(info);
+         */
         PdfPTable table0 = new PdfPTable(1);
         table0.setWidthPercentage(100f);
         table0.setHeaderRows(0);
@@ -200,16 +200,16 @@ public class JDSPDF implements IJDSPDF {
         ct.addElement(table);
 
         /*
-        Phrase footerS = new Phrase();
-        footerS.add(Chunk.NEWLINE);
-        ct.addElement(footerS);
-        */
+         Phrase footerS = new Phrase();
+         footerS.add(Chunk.NEWLINE);
+         ct.addElement(footerS);
+         */
 
         /*
-        Paragraph paymentFooter = new Paragraph();
-        paymentFooter.add(new Chunk(JDSConstants.IAS_PAYMENTFOOTER, JDSPDF.JDS_FONT_NORMAL_SMALL));
-        ct.addElement(paymentFooter);
-        */
+         Paragraph paymentFooter = new Paragraph();
+         paymentFooter.add(new Chunk(JDSConstants.IAS_PAYMENTFOOTER, JDSPDF.JDS_FONT_NORMAL_SMALL));
+         ct.addElement(paymentFooter);
+         */
         PdfPTable tableLast = new PdfPTable(1);
         tableLast.setWidthPercentage(100f);
         tableLast.setHeaderRows(0);
@@ -231,7 +231,7 @@ public class JDSPDF implements IJDSPDF {
          * ----------------------------------------------------------------------
          * //headerTable
          * -------------------------------------------------------------------
-         *     logoCell   | addressCell caontains the paragraphAddress
+         *     logoCell   | addressCell contains the paragraphAddress
          * -------------------------------------------------------------------
          * ---------------------------------------------------------------------
          */
@@ -244,7 +244,6 @@ public class JDSPDF implements IJDSPDF {
         Paragraph paragraphAddress = new Paragraph();
         paragraphAddress.setAlignment(Element.ALIGN_CENTER);
 
-
         Paragraph paragraphDate = new Paragraph();
         paragraphDate.setAlignment(Element.ALIGN_RIGHT);
         paragraphDate.setIndentationRight(JDSPDF.RIGHT_INDENTATION_LESS);
@@ -252,8 +251,7 @@ public class JDSPDF implements IJDSPDF {
         /* the header table, the first cell is the logo and the second cell is the address */
         PdfPTable headerTable = new PdfPTable(2);
         headerTable.setWidthPercentage(90);
-        headerTable.setWidths(new int[]{1,6});
-
+        headerTable.setWidths(new int[]{1, 6});
 
         // get the logo
         ServletContext context = ServletContextInfo.getServletContext();
@@ -265,12 +263,11 @@ public class JDSPDF implements IJDSPDF {
         logoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         headerTable.addCell(logoCell);
 
-
         // for the address now
-        Chunk HeaderIAS = new Chunk(JDSConstants.IAS_LETTERHEAD, JDSPDF.JDS_BOLD_FONT);
-        Chunk HeaderIASAddress = new Chunk(JDSConstants.IAS_LETTERHEAD_ADDRESS, JDSPDF.JDS_BOLD_FONT);
-        Chunk HeaderIASTel = new Chunk(JDSConstants.IAS_LETTERHEAD_TELEPHONE, JDSPDF.JDS_BOLD_FONT);
-        Chunk HeaderEmail_Web = new Chunk(JDSConstants.IAS_LETTERHEAD_EMAIL + " " + JDSConstants.IAS_LETTERHEAD_WEB, JDSPDF.JDS_BOLD_FONT);
+        Chunk HeaderIAS = new Chunk(JDSConstants.IAS_LETTERHEAD, JDSPDF.JDS_BOLDER_FONT);
+        Chunk HeaderIASAddress = new Chunk(JDSConstants.IAS_LETTERHEAD_ADDRESS, JDSPDF.JDS_FONT_BODY);
+        Chunk HeaderIASTel = new Chunk(JDSConstants.IAS_LETTERHEAD_TELEPHONE, JDSPDF.JDS_FONT_BODY);
+        Chunk HeaderEmail_Web = new Chunk(JDSConstants.IAS_LETTERHEAD_EMAIL + " " + JDSConstants.IAS_LETTERHEAD_WEB, JDSPDF.JDS_FONT_BODY);
         Chunk LetterDate = new Chunk("Date: " + util.getDateString(), JDSPDF.JDS_FONT_BODY);
         paragraphDate.add(LetterDate);
 
@@ -285,6 +282,7 @@ public class JDSPDF implements IJDSPDF {
         // create a cell for the headerTable, this cell contains the address
         PdfPCell addressCell = new PdfPCell(paragraphAddress);
         addressCell.setBorder(Rectangle.NO_BORDER);
+        //addressCell.setPaddingLeft(JDS_PDF_LEFT_MARGIN);
         addressCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
         // add this cell to the table
@@ -325,6 +323,24 @@ public class JDSPDF implements IJDSPDF {
         paragraph.add(Chunk.NEWLINE);
 
         return paragraph;
+
+    }
+
+    public void insertCell(PdfPTable table, String text, int align, int colspan, Font font, int Border) {
+
+        //create a new cell with the specified Text and Font
+        PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
+        //set the cell alignment
+        cell.setHorizontalAlignment(align);
+        //set the cell column span in case you want to merge two or more cells
+        cell.setColspan(colspan);
+        cell.setBorder(Border);
+        //in case there is no text and you wan to create an empty row
+        if (text.trim().equalsIgnoreCase("")) {
+            cell.setMinimumHeight(10f);
+        }
+        //add the call to the table
+        table.addCell(cell);
 
     }
 
