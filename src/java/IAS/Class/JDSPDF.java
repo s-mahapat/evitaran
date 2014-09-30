@@ -314,7 +314,8 @@ public class JDSPDF implements IJDSPDF {
 
         Paragraph paragraph = new Paragraph();
         paragraph.setAlignment(Element.ALIGN_RIGHT);
-        paragraph.setSpacingBefore(40);
+        paragraph.setIndentationRight(JDS_PDF_RIGHT_MARGIN * 4);
+        paragraph.setSpacingBefore(50);
 
         paragraph.add(new Chunk(JDSConstants.IAS_LETTERFOOT_CLOSING, JDSPDF.JDS_FONT_BODY));
         paragraph.add(Chunk.NEWLINE);

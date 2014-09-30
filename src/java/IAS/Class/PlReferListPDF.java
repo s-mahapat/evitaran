@@ -97,7 +97,7 @@ public class PlReferListPDF extends JDSPDF {
                     Paragraph _page = this.getPlReferListLetterBody(conn, invoice_no, year);
                     document.add(_page);
                     document.add(this.getLetterFooter());
-                    //document.add(this.getPaymentFooter());
+                    this.addPaymentFooter(document, pdfWriter);
                 }
             } catch (Exception ex) {
                 logger.fatal(ex);
@@ -255,7 +255,7 @@ public class PlReferListPDF extends JDSPDF {
 
         PdfPTable table;
         table = new PdfPTable(4);
-        table.setWidthPercentage(80);
+        table.setWidthPercentage(75);
 
         PdfPCell cell1 = new PdfPCell(new Paragraph("Journal Name", JDS_FONT_BODY));
         cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -338,7 +338,7 @@ public class PlReferListPDF extends JDSPDF {
         EnglishNumberToWords _EnglishNumberToWords = new EnglishNumberToWords();
         paragraphBody.add(Chunk.NEWLINE);
         Paragraph invoiceAmount = new Paragraph(_EnglishNumberToWords.convertDouble(_invoiceBean.getAmount()).toUpperCase(), JDSPDF.JDS_FONT_NORMAL_SMALL);
-        invoiceAmount.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS * 4);
+        invoiceAmount.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS * 5);
         paragraphBody.add(invoiceAmount);
         // add the invoice header, subscriber number and invoice number
         paragraphOuter.add(invoiceHeader);

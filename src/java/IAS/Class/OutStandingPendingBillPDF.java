@@ -213,7 +213,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         paragraphBody.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
 
         PdfPTable table = new PdfPTable(6);
-        table.setWidthPercentage(80);
+        table.setWidthPercentage(75);
         table.setWidths(new int[]{4, 1, 1, 2, 1, 1});
 
         PdfPCell cell1 = new PdfPCell(new Paragraph("Journal Name", JDSPDF.JDS_FONT_BODY));
@@ -407,14 +407,14 @@ public class OutStandingPendingBillPDF extends JDSPDF {
             letterNoText = String.format(letterNoText, ".....", ".....");
         }
         Paragraph refernceLetter = new Paragraph(letterNoText, JDSPDF.JDS_FONT_NORMAL_SMALL);
-        refernceLetter.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS * 4);
+        refernceLetter.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS * 5);
         paragraphBody.add(refernceLetter);
         paragraphBody.add(Chunk.NEWLINE);
 
         EnglishNumberToWords _EnglishNumberToWords = new EnglishNumberToWords();
         paragraphBody.add(Chunk.NEWLINE);
         Paragraph invoiceAmount = new Paragraph(_EnglishNumberToWords.convertDouble(_invoiceBean.getBalance()).toUpperCase(), JDSPDF.JDS_FONT_NORMAL_SMALL);
-        invoiceAmount.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS * 4);
+        invoiceAmount.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS * 5);
         paragraphBody.add(invoiceAmount);//Convert total value in words
         paragraphOuter.add(invoiceHeader);
         paragraphOuter.add(InvoiceInfoTable);
