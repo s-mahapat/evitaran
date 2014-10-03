@@ -32,7 +32,7 @@ public class JDSPDF implements IJDSPDF {
     public static Font JDS_FONT_AUTOGEN_FOOTER = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.GRAY);
     public static final int JDS_PDF_LEFT_MARGIN = 10;
     public static final int JDS_PDF_RIGHT_MARGIN = 10;
-    public static final int JDS_PDF_TOP_MARGIN = 30;
+    public static final int JDS_PDF_TOP_MARGIN = 20;
     public static final int JDS_PDF_BOTTOM_MARGIN = 10;
 
     public JDSPDF() {

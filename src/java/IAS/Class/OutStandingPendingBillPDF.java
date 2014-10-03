@@ -90,7 +90,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         Paragraph invoiceHeader = new Paragraph(new Chunk("INVOICE", JDSPDF.JDS_BOLD_FONT));
         invoiceHeader.setAlignment(Element.ALIGN_CENTER);
 
-        InvoiceInfoTable.setSpacingBefore(OUTER_PARAGRAPH_SPACE * 3);
+        InvoiceInfoTable.setSpacingBefore(OUTER_PARAGRAPH_SPACE);
         InvoiceInfoTable.setWidthPercentage(70);
         Paragraph invoiceNumber = new Paragraph(new Chunk("Invoice No: " + _invoiceBean.getInvoiceNumber(), JDSPDF.JDS_FONT_BODY));
         Paragraph invoiceDate = new Paragraph(new Chunk("Invoice Date: " + _invoiceBean.getInvoiceCreationDate(), JDSPDF.JDS_FONT_BODY));

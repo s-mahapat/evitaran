@@ -183,7 +183,7 @@ public class PlReferListPDF extends JDSPDF {
         paragraphOuter.setAlignment(Element.ALIGN_LEFT);
 
         InvoiceInfoTable.setWidthPercentage(70);
-        InvoiceInfoTable.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE * 3);
+        InvoiceInfoTable.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE);
         Paragraph invoiceNumber = new Paragraph(new Chunk("Invoice No: " + invoice_no, JDS_FONT_BODY));
         Paragraph subscriberNumber = new Paragraph(new Chunk("Sub No: " + _invoiceBean.getSubscriberNumber(), JDS_FONT_BODY));
         Paragraph invoiceHeader = new Paragraph("INVOICE", JDSPDF.JDS_BOLD_FONT);
