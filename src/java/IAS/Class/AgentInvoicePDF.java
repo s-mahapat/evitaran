@@ -80,9 +80,9 @@ public class AgentInvoicePDF extends JDSPDF {
         //*********************************
         Paragraph paragraphOuter = new Paragraph();
         Paragraph addressParagraph = new Paragraph();
-        PdfPTable addressTable = new PdfPTable(1);
+        //PdfPTable addressTable = new PdfPTable(1);
         PdfPTable InvoiceInfoTable = new PdfPTable(2);
-        Paragraph paragraphInvoiceInfo = new Paragraph();
+        //Paragraph paragraphInvoiceInfo = new Paragraph();
         Paragraph paragraphBody = new Paragraph();
         Paragraph paragraphInvoiceAddress = new Paragraph();
 
@@ -93,10 +93,10 @@ public class AgentInvoicePDF extends JDSPDF {
         //*********************************
         // Invoice Header for invoice number and inward number
         //*********************************
-        Paragraph invoiceHeader = new Paragraph(new Chunk("INVOICE", JDSPDF.JDS_FONT_BODY));
+        Paragraph invoiceHeader = new Paragraph(new Chunk("INVOICE", JDSPDF.JDS_BOLD_FONT));
         invoiceHeader.setAlignment(Element.ALIGN_CENTER);
 
-        InvoiceInfoTable.setWidthPercentage(100);
+        InvoiceInfoTable.setWidthPercentage(70);
         Paragraph invoiceNumber = new Paragraph(new Chunk("Invoice No: " + _invoiceBean.getInvoiceNumber(), JDSPDF.JDS_FONT_BODY));
         Paragraph inwardNumber = new Paragraph(new Chunk("Inward No: " + InwardNumber, JDSPDF.JDS_FONT_BODY));
 
@@ -106,7 +106,7 @@ public class AgentInvoicePDF extends JDSPDF {
         invoiceNumberCell.setBorder(Rectangle.NO_BORDER);
         invoiceNumberCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         invoiceNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
-        invoiceNumberCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_LESS);
+        //invoiceNumberCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_LESS);
 
         inwardNumberCell.setBorder(Rectangle.NO_BORDER);
         inwardNumberCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -114,15 +114,15 @@ public class AgentInvoicePDF extends JDSPDF {
 
         InvoiceInfoTable.addCell(invoiceNumberCell);
         InvoiceInfoTable.addCell(inwardNumberCell);
-        paragraphInvoiceInfo.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE);
+        //paragraphInvoiceInfo.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE);
 
         //*********************************
         // create invoice address table
         //*********************************
-        addressParagraph.add(addressTable);
-        addressParagraph.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
-        addressParagraph.setSpacingBefore(JDSPDF.LESS_OUTER_PARAGRAPH_SPACE);
-        addressTable.setWidthPercentage(100);
+        //addressParagraph.add(addressTable);
+        //addressParagraph.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
+        //addressParagraph.setSpacingBefore(JDSPDF.LESS_OUTER_PARAGRAPH_SPACE);
+        //addressTable.setWidthPercentage(100);
         Chunk invoiceAddressHeader = new Chunk("INVOICE ADDRESS", JDSPDF.JDS_FONT_BODY);
         invoiceAddressHeader.setTextRise(2);
         invoiceAddressHeader.setUnderline(1, 0);
@@ -143,8 +143,14 @@ public class AgentInvoicePDF extends JDSPDF {
         invoiceAddressCell.setBorder(Rectangle.NO_BORDER);
         invoiceAddressCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         invoiceAddressCell.setVerticalAlignment(Element.ALIGN_TOP);
-        addressTable.addCell(invoiceAddressCell);
 
+        this.insertCell(InvoiceInfoTable, "", Element.ALIGN_LEFT, 1, JDS_BOLD_FONT, Rectangle.NO_BORDER);
+        this.insertCell(InvoiceInfoTable, "", Element.ALIGN_LEFT, 1, JDS_BOLD_FONT, Rectangle.NO_BORDER);
+
+        InvoiceInfoTable.addCell(invoiceAddressCell);
+        this.insertCell(InvoiceInfoTable, "", Element.ALIGN_LEFT, 1, JDS_BOLD_FONT, Rectangle.NO_BORDER);
+
+        //addressTable.addCell(invoiceAddressCell);
         paragraphBody.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
         paragraphBody.setSpacingBefore(JDSPDF.INNER_PARAGRAPH_SPACE);
 
@@ -152,7 +158,7 @@ public class AgentInvoicePDF extends JDSPDF {
         //Balance Table
         //*********************************
         PdfPTable table = new PdfPTable(3);
-        table.setWidthPercentage(100);
+        table.setWidthPercentage(75);
 
         PdfPCell cell1 = new PdfPCell(new Paragraph("Subscription Value", JDSPDF.JDS_FONT_BODY));
         cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -191,8 +197,9 @@ public class AgentInvoicePDF extends JDSPDF {
         paragraphBody.add(table);
         EnglishNumberToWords _EnglishNumberToWords = new EnglishNumberToWords();
         paragraphBody.add(Chunk.NEWLINE);
-        paragraphBody.add(
-                new Phrase(_EnglishNumberToWords.convertDouble(_invoiceBean.getBalance()).toUpperCase(), JDSPDF.JDS_FONT_BODY));//Convert total value in words
+        Paragraph invoiceAmount = new Paragraph(_EnglishNumberToWords.convertDouble(_invoiceBean.getBalance()).toUpperCase(), JDSPDF.JDS_FONT_NORMAL_SMALL);
+        invoiceAmount.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS * 5);
+        paragraphBody.add(invoiceAmount);
 
         //*********************************
         // Return the whole paragraph
