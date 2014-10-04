@@ -1556,26 +1556,26 @@ public convertToPdf(){
 
             Font font;
 
+            font = new Font(lfontType, lfontSizeHeader, lfontStyle, BaseColor.BLACK);
+            String firstLine = sLabelInfo.getsubscriberNumber() + " " + sLabelInfo.getjournalCode();
+
+            if(sLabelInfo.getcopies() > 1){
+                firstLine = firstLine + " " + sLabelInfo.getcopies();
+            }
+            firstLine = firstLine + " " + sLabelInfo.getsubtypecode();            
+            
             if(!noHeader){
-                font = new Font(lfontType, lfontSizeHeader, lfontStyle, BaseColor.BLACK);
-                String firstLine = sLabelInfo.getsubscriberNumber() + " " + sLabelInfo.getjournalCode();
-
-                if(sLabelInfo.getcopies() > 1){
-                    firstLine = firstLine + " " + sLabelInfo.getcopies();
-                }
-
-                firstLine = firstLine + " " + sLabelInfo.getsubtypecode();
-
                 if(sLabelInfo.getsubType().equals("Paid")) {
                     firstLine = firstLine + " " + sLabelInfo.getstartDate() +
                         " " + "to" +
                         " " + sLabelInfo.getendDate();
                 }
-                if(!firstLine.isEmpty()) {
-                    info.add(new Chunk(firstLine, font));
-                    info.add(Chunk.NEWLINE);
-                }
             }
+            if(!firstLine.isEmpty()) {
+                info.add(new Chunk(firstLine, font));
+                info.add(Chunk.NEWLINE);
+            }            
+            
             font = new Font(lfontType, lfontSize, lfontStyle, BaseColor.BLACK);
             if(!sLabelInfo.getsubscriberName().isEmpty()) {
                 info.add(new Chunk(sLabelInfo.getsubscriberName(), font));
