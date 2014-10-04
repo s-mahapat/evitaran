@@ -730,7 +730,7 @@ public convertToPdf(){
 
     }
 
-    public Paragraph addSubjectReminderType1(String invoiceNo, String invoiceDate, float invoiceAmount)
+    public Paragraph addSubjectReminderType1(String invoiceNo, String invoiceDate, double invoiceAmount)
     {
         Paragraph paragraph = new Paragraph();
 

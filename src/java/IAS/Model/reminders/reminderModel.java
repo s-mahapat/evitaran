@@ -181,7 +181,7 @@ public class reminderModel extends JDSModel {
             String subscriberName = rsGet.getString(5);
             sInfo.setSubscriberName(subscriberName);
 
-            int balance = rsGet.getInt(6);
+            double balance = rsGet.getDouble(6);
             sInfo.setBalance(balance);
 
             int reminderType = rsGet.getInt(7);

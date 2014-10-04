@@ -19,7 +19,7 @@ public class subscriberInfo extends JDSBean {
     String subtypecode   = "";
     String subscriberNumber = "";
     String subscriberName = "";
-    int balance;
+    double balance;
     int reminderType;
     String reminderDate  = "";
     String department    = "";
@@ -207,11 +207,11 @@ public class subscriberInfo extends JDSBean {
         this.reminderType = _reminderType;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return this.balance;
     }
 
-    public void setBalance(int _balance) {
+    public void setBalance(double _balance) {
         this.balance = _balance;
     }
 
