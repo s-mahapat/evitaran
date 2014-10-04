@@ -799,7 +799,7 @@ public convertToPdf(){
 
     public String getCurrentDate()
     {
-        Format dtformat = new SimpleDateFormat("dd MMM yyyy");
+        Format dtformat = new SimpleDateFormat("dd/MM/yyyy");
         java.util.Date dt = new java.util.Date();
         String date = dtformat.format(dt);
         return date;
