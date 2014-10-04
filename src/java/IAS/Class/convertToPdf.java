@@ -382,7 +382,7 @@ public convertToPdf(){
 
             // 2. Add the address, date, subNo
             // Add the address, date, subNo
-            //document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
 
             // Setup the font and leading
             //PdfContentByte cb = writer.getDirectContent();
@@ -391,18 +391,26 @@ public convertToPdf(){
             PdfPTable table = new PdfPTable(2);
             table.setWidthPercentage(100f);
             table.setHeaderRows(0);
-            //PdfPCell c1 = new PdfPCell(new Phrase());
+
+            // Enhancement#426 - Reminders invoice address moves right by 1 inch
+            // 1inch = 25.4mm            
             PdfPCell c1 = new PdfPCell(getSubNo(sinfo));
+            c1.setPaddingLeft(Utilities.millimetersToPoints(25.4f));            
             c1.setBorder(PdfPCell.NO_BORDER);
             PdfPCell c2 = new PdfPCell(getDate());
+            c2.setPaddingLeft(Utilities.millimetersToPoints(25.4f));
             c2.setBorder(PdfPCell.NO_BORDER);
             PdfPCell c3 = new PdfPCell(getInvoiceAddressHeader());
+            c3.setPaddingLeft(Utilities.millimetersToPoints(25.4f));
             c3.setBorder(PdfPCell.NO_BORDER);
             PdfPCell c4 = new PdfPCell(getShippingAddressHeader());
+            c4.setPaddingLeft(Utilities.millimetersToPoints(25.4f));
             c4.setBorder(PdfPCell.NO_BORDER);
             PdfPCell c5 = new PdfPCell(getInvoiceAddress(sinfo));
+            c5.setPaddingLeft(Utilities.millimetersToPoints(25.4f));
             c5.setBorder(PdfPCell.NO_BORDER);
             PdfPCell c6 = new PdfPCell(getShippingAddress(sinfo));
+            c6.setPaddingLeft(Utilities.millimetersToPoints(25.4f));
             c6.setBorder(PdfPCell.NO_BORDER);
 
             table.addCell(c1);
