@@ -1974,6 +1974,7 @@ public class reportModel extends JDSModel {
                         proInvNo = "-";
                     }
                     String proInvDate = rsCurr.getString("proInvDate");
+                    proInvDate = util.changeDateFormat(proInvDate);
                     int startYear = 0;
                     int endYear = 0;
                     int newStart = 0;
@@ -2082,6 +2083,7 @@ public class reportModel extends JDSModel {
                             proInvNo = "-";
                         }
                         String proInvDate = rs.getString("proInvDate");
+                        proInvDate = util.changeDateFormat(proInvDate);
 
                         int startYear = 0;
                         int endYear = 0;
