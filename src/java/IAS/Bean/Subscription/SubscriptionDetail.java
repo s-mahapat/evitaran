@@ -108,4 +108,4 @@ public class SubscriptionDetail {
     public void setRate(int _rate){
         this.rate = _rate;
     }
-}
+    }
