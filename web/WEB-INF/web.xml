@@ -491,6 +491,11 @@
             <description/>
             <url-pattern>/email/*</url-pattern>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>home</web-resource-name>
+            <description/>
+            <url-pattern>/home</url-pattern>
+        </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>user</role-name>

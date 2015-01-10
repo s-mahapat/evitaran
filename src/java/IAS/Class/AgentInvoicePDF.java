@@ -78,6 +78,9 @@ public class AgentInvoicePDF extends JDSPDF {
         inwardFormBean _inwardFormBean = _inwardModel.GetInward(InwardNumber);
         agentProcModel _agentProcModel = new agentProcModel(this.request);
         InvoiceFormBean _invoiceBean = _agentProcModel.getAgentInvoiceDetail(InwardNumber, this.request);
+        
+        float discount = _agentProcModel.getDiscount(_inwardFormBean.getAgentID());
+
         double invoiceTotal = 0;
 
         //*********************************
@@ -101,24 +104,36 @@ public class AgentInvoicePDF extends JDSPDF {
         Paragraph invoiceHeader = new Paragraph(new Chunk("INVOICE", JDSPDF.JDS_BOLD_FONT));
         invoiceHeader.setAlignment(Element.ALIGN_CENTER);
 
-        InvoiceInfoTable.setWidthPercentage(70);
+        InvoiceInfoTable.setWidthPercentage(75);
         Paragraph invoiceNumber = new Paragraph(new Chunk("Invoice No: " + _invoiceBean.getInvoiceNumber(), JDSPDF.JDS_FONT_BODY));
         Paragraph inwardNumber = new Paragraph(new Chunk("Inward No: " + InwardNumber, JDSPDF.JDS_FONT_BODY));
+        Paragraph invoiceDate = new Paragraph(new Chunk("Invoice Date: " + _invoiceBean.getInvoiceCreationDate(), JDSPDF.JDS_FONT_BODY));
 
         PdfPCell inwardNumberCell = new PdfPCell(inwardNumber);
         PdfPCell invoiceNumberCell = new PdfPCell(invoiceNumber);
+        PdfPCell invoiceDateCell = new PdfPCell(invoiceDate);
+        PdfPCell blankCell = new PdfPCell();
+        blankCell.setBorder(Rectangle.NO_BORDER);
 
         invoiceNumberCell.setBorder(Rectangle.NO_BORDER);
         invoiceNumberCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         invoiceNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
-        //invoiceNumberCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_LESS);
+        invoiceNumberCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_MORE * 3);
 
         inwardNumberCell.setBorder(Rectangle.NO_BORDER);
-        inwardNumberCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        inwardNumberCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         inwardNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
+        
+        invoiceDateCell.setBorder(Rectangle.NO_BORDER);
+        invoiceDateCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        invoiceDateCell.setVerticalAlignment(Element.ALIGN_TOP);
+        invoiceDateCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_MORE * 3);
 
-        InvoiceInfoTable.addCell(invoiceNumberCell);
         InvoiceInfoTable.addCell(inwardNumberCell);
+        InvoiceInfoTable.addCell(invoiceNumberCell);
+        InvoiceInfoTable.addCell(blankCell);
+        InvoiceInfoTable.addCell(invoiceDateCell);
+        
         //paragraphInvoiceInfo.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE);
 
         //*********************************
@@ -163,17 +178,22 @@ public class AgentInvoicePDF extends JDSPDF {
         SubscriptionModel _model = new SubscriptionModel(request);
         java.util.List<IAS.Bean.Subscription.SubscriptionFormBean> subscriptions = _model.getSubscriptionsForInward(InwardNumber);
 
-        
+        HashMap JournalNamesHash = new HashMap();
+        HashMap JournalGrpPriceHash = new HashMap();
+        HashMap JournalGrpCopiesHash = new HashMap();
+        HashMap JournalGrpPeriodHash = new HashMap();
+        HashMap JournalGrpStartDateHash = new HashMap();
+        HashMap JournalGrpEndDateHash = new HashMap();
 
         // for each subscription create the invoice address table and subscription details table
         for (IAS.Bean.Subscription.SubscriptionFormBean subscription : subscriptions) {
             
-            HashMap JournalNamesHash = new HashMap();
-            HashMap JournalGrpPriceHash = new HashMap();
-            HashMap JournalGrpCopiesHash = new HashMap();
-            HashMap JournalGrpPeriodHash = new HashMap();
-            HashMap JournalGrpStartDateHash = new HashMap();
-            HashMap JournalGrpEndDateHash = new HashMap();
+            JournalNamesHash.clear();
+            JournalGrpPriceHash.clear();
+            JournalGrpCopiesHash.clear();
+            JournalGrpPeriodHash.clear();
+            JournalGrpStartDateHash.clear();
+            JournalGrpEndDateHash.clear();
 
             IAS.Bean.Subscriber.subscriberFormBean subscriber = (new IAS.Model.Subscriber.subscriberModel()).GetSubscriber(subscription.getSubscriberNumber());
 
@@ -338,7 +358,7 @@ public class AgentInvoicePDF extends JDSPDF {
         bcell1.setHorizontalAlignment(Element.ALIGN_CENTER);
         bcell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         
-        PdfPCell bcell4 = new PdfPCell(new Paragraph("Discount", JDSPDF.JDS_FONT_BODY));
+        PdfPCell bcell4 = new PdfPCell(new Paragraph("Discount(%)", JDSPDF.JDS_FONT_BODY));
         bcell4.setHorizontalAlignment(Element.ALIGN_CENTER);
         bcell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
         
@@ -365,7 +385,7 @@ public class AgentInvoicePDF extends JDSPDF {
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         btable.addCell(c1);
         
-        PdfPCell c4 = new PdfPCell(new Phrase("Discount", JDSPDF.JDS_FONT_NORMAL_SMALL));
+        PdfPCell c4 = new PdfPCell(new Phrase(String.valueOf(discount), JDSPDF.JDS_FONT_NORMAL_SMALL));
         c4.setHorizontalAlignment(Element.ALIGN_CENTER);
         c4.setVerticalAlignment(Element.ALIGN_MIDDLE);
         btable.addCell(c4);
