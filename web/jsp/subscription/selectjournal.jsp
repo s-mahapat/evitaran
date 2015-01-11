@@ -14,8 +14,15 @@
         <select class="IASComboBoxMandatory" TABINDEX="11" name="subscriptionStartYear" id="subscriptionStartYear" onchange="">
             <%
                 int year = Integer.parseInt(util.getDateString("yyyy"));
-                for (int i = year; i <= year + 10; i++) {
-                    out.println("<option value=\"" + i + "\">" + i + "</option>");
+                // start from the previous year instead of the current year, this way subscriptions that start in Jun/Jul can be
+                // subscribed to in the next year begining
+                for (int i = year - 1; i <= year + 10; i++) {
+                    if(i == year){
+                        out.println("<option selected value=\"" + i + "\">" + i + "</option>");
+                    }else{
+                        out.println("<option value=\"" + i + "\">" + i + "</option>");
+                    }
+                    
                 }
             %>
         </select>
