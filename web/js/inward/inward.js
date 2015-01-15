@@ -22,20 +22,8 @@ function enableSubscriptionID(value) {
 
 function validateSearchSubscriber() {
 
-    var selectedSubscriberFromDialog = searchSubscriber(
-        $("#from").val(), $("#country").val(), $("#state").val(), $("#city").val(), $("#pincode").val(), $("#institution").val(), $("#department").val(), $("#email").val());
+    searchSubscriber($("#from").val(), $("#country").val(), $("#state").val(), $("#city").val(), $("#pincode").val(), $("#institution").val(), $("#department").val(), $("#email").val());
 
-    if (!isEmptyValue(selectedSubscriberFromDialog.SubscriberNumber) && selectedSubscriberFromDialog.SubscriberNumber != 0) {
-        $("#subscriberId").val(selectedSubscriberFromDialog.SubscriberNumber);
-        $("#institution").val(selectedSubscriberFromDialog.Instituttion);
-        $("#department").val(selectedSubscriberFromDialog.Department);
-        $("#email").val(selectedSubscriberFromDialog.Email);
-        $("#pincode").val(selectedSubscriberFromDialog.PinCode);
-        $("#from").val(selectedSubscriberFromDialog.SubscriberName);
-        $("#city").val(selectedSubscriberFromDialog.City);
-        $("#country").val(selectedSubscriberFromDialog.Country);
-
-    }
 }
 
 function validateSearchSubscription() {
@@ -48,6 +36,19 @@ function validateSearchSubscription() {
     return true;
 }
 
+function setSubscriber(subscriber){
+    if (!isEmptyValue(subscriber.SubscriberNumber) && subscriber.SubscriberNumber != 0) {
+        $("#subscriberId").val(subscriber.SubscriberNumber);
+        $("#institution").val(subscriber.Instituttion);
+        $("#department").val(subscriber.Department);
+        $("#email").val(subscriber.Email);
+        $("#pincode").val(subscriber.PinCode);
+        $("#from").val(subscriber.SubscriberName);
+        $("#city").val(subscriber.City);
+        $("#country").val(subscriber.Country);
+    }
+}
+
 function searchSubscriber(subscriberName, country, state, city, pincode, institution, department, email) {
     var subscriber = new Object();
     subscriber.country = country;
@@ -58,9 +59,16 @@ function searchSubscriber(subscriberName, country, state, city, pincode, institu
     subscriber.institution = institution;
     subscriber.department = department;
     subscriber.email = email;
-    var selectedSubscriberFromDialog = openModalPopUp("jsp/subscriber/subscriberlist.jsp", subscriber);
-    return selectedSubscriberFromDialog;
+    
+    // function defined in subscriberlist.jsp, since this file gets included we can call the method here.
+    // not the right approach but a quick fix solution
+    _dlg_searchSubscriber(subscriber);
+    
+    
+    //openModalPopUp("jsp/subscriber/subscriberlist.jsp", subscriber, null, setSubscriber);
 }
+
+
 
 function searchSubscription(subscriberNumber) {
     var subscriber = new Object();

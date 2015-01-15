@@ -29,10 +29,10 @@ function checkMandatoryFields() {
 function _checkMandatoryFields() {
     var _filled = true;
     var _classToValidate = new Array("IASTextBoxMandatory", "IASTextBoxMandatoryWide", "IASTextAreaMandatory", "IASComboBoxMediumMandatory", "IASComboBoxSmallMandatory", "IASComboBoxMandatory");
-    $(_classToValidate).each(function(index, el) {
+    $(_classToValidate).each(function (index, el) {
         var _elements = $("." + el);
-        $(_elements).each(function(index, el) {
-            if ($("#" + el.id).val().length == 0) {
+        $(_elements).each(function (index, el) {
+            if ($("#" + el.id).val().length === 0) {
                 _filled = false;
                 return;
             }
@@ -46,18 +46,6 @@ function _checkMandatoryFields() {
 }
 
 
-function openModalPopUp(url, dialogArgs, windowParameters) {
-    if (windowParameters == undefined) {
-        var width = 1200;
-        var height = 650;
-        var x = (window.screen.availWidth - width) / 2;
-        var y = (window.screen.availHeight - height) / 2;
-        windowParameters = "dialogHeight: " + height + "px; dialogWidth: " + width + "px; dialogTop:" + y + "px; dialogLeft:" + x + "px; center:no; resizeable: no; location:no; status:no; menubar: no; scrollbars: no; toolbar: no";
-    }
-    result = window.showModalDialog(url, dialogArgs, windowParameters);
-    return result;
-}
-
 function openModalPopUpMandatoryReturn(url) {
     result = window.showModalDialog(url, 1, "dialogHeight: 500px; dialogWidth: 1100px;center: yes;resizeable: no;status: no;menubar: no;scrollbars: yes;toolbar: no;");
     return result;
@@ -69,7 +57,7 @@ function changePwdDialog(url) {
 
 function isEmpty(element) {
     var elValue = element.value;
-    if (elValue.length == 0) {
+    if (elValue.length === 0) {
         return true;
     } else {
         //check if there are non space characters.
@@ -86,7 +74,7 @@ function isEmptyValue(evalue) {
     }
 
     var elValue = evalue.toString();
-    if (elValue.length == 0) {
+    if (elValue.length === 0) {
         return true;
     } else {
         //check if there are non space characters.
@@ -162,12 +150,12 @@ function setActionValue(value) {
 }
 
 /*function alert(msg,title,callback){
-    if(title == null){
-        title = 'Journal Distribution System';
-    }
-    jAlert(msg,title,callback);
-    return false;
-}*/
+ if(title == null){
+ title = 'Journal Distribution System';
+ }
+ jAlert(msg,title,callback);
+ return false;
+ }*/
 
 function jdsConfirm(msg, title, callback) {
     if (title.length == 0) {
@@ -185,7 +173,7 @@ function jQueryCalendar(divId, disablefuturedates) {
         _maxdate = 0;
     }
     var div = "#" + divId;
-    $(function() {
+    $(function () {
         $(div).datepicker({
             dateFormat: 'dd/mm/yy',
             maxDate: _maxdate,
@@ -202,7 +190,7 @@ function jQueryDatePicker(fromDiv, toDiv) {
     dateRangediv = fromDiv + "," + toDiv;
 
 
-    $(function() {
+    $(function () {
         var dates = $(dateRangediv).datepicker({
             defaultDate: "-1m",
             changeMonth: true,
@@ -213,10 +201,10 @@ function jQueryDatePicker(fromDiv, toDiv) {
             numberOfMonths: 2,
             showMonthAfterYear: true,
             showButtonPanel: true,
-            onSelect: function(selectedDate) {
+            onSelect: function (selectedDate) {
                 //var option = this.id == "from" ? "minDate" : "maxDate",
                 instance = $(this).data("datepicker"), date = $.datepicker.parseDate(
-                instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+                        instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
                 //dates.not( this ).datepicker( "option", option, date );
             }
         });
@@ -237,7 +225,7 @@ function jdsAutoComplete(requestURL, xmlRowTag, formElementId) {
     var _formElementId = "#" + formElementId;
     var myArr = new Array;
     $(_formElementId).autocomplete({
-        source: function(request, response) {
+        source: function (request, response) {
             $.ajax({
                 type: "GET",
                 url: requestURL,
@@ -246,9 +234,9 @@ function jdsAutoComplete(requestURL, xmlRowTag, formElementId) {
                     "term": request.term
                 },
                 dataType: "xml",
-                success: function(xml) {
+                success: function (xml) {
                     myArr = [];
-                    $(xml).find(xmlRowTag).each(function() {
+                    $(xml).find(xmlRowTag).each(function () {
                         myArr.push($(this).text());
                     });
                     response(myArr);
@@ -308,12 +296,12 @@ function jdsAppend(requestURL, xmlRowTag, formElementId, defaultSelect, callback
         url: requestURL,
         // change to full path of file on server
         dataType: "xml",
-        success: function(xml) {
-            $(xml).find(xmlRowTag).each(function() {
+        success: function (xml) {
+            $(xml).find(xmlRowTag).each(function () {
                 myArr.push($(this).text());
             });
         },
-        complete: function() {
+        complete: function () {
             var html = null;
             for (var i = 0; i < myArr.length; i++) {
                 //set this variable to save the state from the last postback
@@ -333,9 +321,10 @@ function jdsAppend(requestURL, xmlRowTag, formElementId, defaultSelect, callback
             }
             if (callback != undefined) {
                 callback();
-            };
+            }
+            ;
         },
-        error: function() {
+        error: function () {
             alert("XML File could not be found at " + requestURL);
         }
     });
@@ -372,7 +361,7 @@ function GetCookieValue(cookieName, keyName) {
         return null;
     }
     var _value = null;
-    $.each(json, function(key, value) {
+    $.each(json, function (key, value) {
         if (key == keyName) {
             _value = value;
             return;
@@ -406,8 +395,8 @@ function jdsEmail(url) {
         url: url,
         // change to full path of file on server
         dataType: "xml",
-        success: function(xmlResponse) {
-            $(xmlResponse).find("results").each(function() {
+        success: function (xmlResponse) {
+            $(xmlResponse).find("results").each(function () {
                 var isSucess = $(this).find("success").text();
                 if (parseInt(isSucess) === 1) {
                     alert("Email sent successfully");
@@ -416,10 +405,10 @@ function jdsEmail(url) {
                 }
             });
         },
-        complete: function() {
+        complete: function () {
 
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             alert("Failed to send Email. " + textStatus + ": " + errorThrown);
         }
     });
@@ -427,14 +416,15 @@ function jdsEmail(url) {
 
 function jdsPrint(url, windowName) {
     _window = window.open(url, windowName);
-    _window.onload = function() {
+    _window.onload = function () {
         _window.document.title = windowName + " Print Preview";
     };
     return false;
 }
 
 function TestFileType(fileName, fileTypes) {
-    if (!fileName) return false;
+    if (!fileName)
+        return false;
 
     dots = fileName.split(".");
     //get the part AFTER the LAST period.
@@ -479,7 +469,7 @@ function validateForTextOnly(FieldId) {
 }
 
 function setEnterKeyAction(func) {
-    $(document).keydown(function(event) {
+    $(document).keydown(function (event) {
         if (event.which === 13) {
             func();
         }
@@ -493,8 +483,8 @@ function isNumber(FieldId) {
     }
 }
 
-function YesNo2Boolean(value){
-    if(value.toLowerCase() === 'yes'){
+function YesNo2Boolean(value) {
+    if (value.toLowerCase() === 'yes') {
         return true;
     }
     return false;

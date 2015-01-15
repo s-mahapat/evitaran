@@ -148,9 +148,9 @@ public class AgentInvoicePDF extends JDSPDF {
         invoiceAddressHeader.setUnderline(1, 0);
         paragraphInvoiceAddress.add(invoiceAddressHeader);
         paragraphInvoiceAddress.add(Chunk.NEWLINE);
-        paragraphInvoiceAddress.add(new Phrase(_invoiceBean.getInvoiceAddress(), JDSPDF.JDS_FONT_BODY));
-        paragraphInvoiceAddress.add(Chunk.NEWLINE);
         paragraphInvoiceAddress.add(new Phrase(_inwardFormBean.getAgentName(), JDSPDF.JDS_FONT_BODY));
+        paragraphInvoiceAddress.add(Chunk.NEWLINE);
+        paragraphInvoiceAddress.add(new Phrase(_invoiceBean.getInvoiceAddress(), JDSPDF.JDS_FONT_BODY));
         paragraphInvoiceAddress.add(Chunk.NEWLINE);
         paragraphInvoiceAddress.add(new Phrase(_invoiceBean.getCity(), JDSPDF.JDS_FONT_BODY));
         paragraphInvoiceAddress.add(Chunk.NEWLINE);

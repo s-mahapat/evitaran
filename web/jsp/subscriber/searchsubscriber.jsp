@@ -26,7 +26,7 @@
                 setEnterKeyAction(searchSubscriber);
 
                 //});
-                $("#subscriberNumber").focus()
+                $("#subscriberNumber").focus();
 
                 $("#subscriberTable").jqGrid({
                     url:"subscriber?action=search",

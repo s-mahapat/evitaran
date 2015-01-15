@@ -2,10 +2,10 @@
 <jsp:useBean class="IAS.Bean.Inward.inwardFormBean" id="inwardFormBean" scope="request"></jsp:useBean>
 <script type="text/javascript" src="<%=request.getContextPath() + "/js/inward/inward.js"%>"></script>
 <script>
-    $(document).ajaxStop(function() {
+    $(document).ajaxStop(function () {
         MakePaymentFieldsMandatory();
     });
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#subscriberId").focus();
 
         // get the inward complete state from the bean
@@ -13,7 +13,7 @@
 
         // disable the send return button if the inward is not complete yet
         // perform other actions that are required when inward is not complete inside this
-        if (iscomplete == false) {
+        if (iscomplete === false) {
             //$("#btnSendReturn").button("disable");
         } else {
             // do not let the user modify the inward or send
@@ -22,33 +22,34 @@
             //$("#btnSendReturn").hide();
         }
 
-        $(function() {
+        $(function () {
             $("#btnSearchSubscriber")
                     .button({icons: {primary: "ui-icon-circle-zoomin"}})
-                    .click(function() {
+                    .click(function () {
                         if ($("#subscriberId").val()) {
-                            
+
                             ValidateSubscriber();
                         } else {
+                            $("#dialog").dialog('open');
                             validateSearchSubscriber();
                         }
                         return false;
                     });
         });
 
-        $(function() {
+        $(function () {
             $("#btnResetSubscriber")
                     .button({icons: {primary: "ui-icon-trash"}})
-                    .click(function() {
+                    .click(function () {
                         clearSubscriber();
                         return false;
                     });
         });
 
-        $(function() {
+        $(function () {
             $("#btnUE")
                     .button("disable")
-                    .click(function() {
+                    .click(function () {
                         $("#agentName").val("");
                         $("#agentName").change();
                         return false;
@@ -57,15 +58,15 @@
                     .buttonset();
         });
 
-        $(function() {
+        $(function () {
             $("#add-new-city").button()
-                    .click(function() {
+                    .click(function () {
                         $("#new-city-dialog-form").dialog("open");
                     });
         });
 
 
-        $("#inwardPurpose").change(function() {
+        $("#inwardPurpose").change(function () {
             var inward_purpose = $("#inwardPurpose").val();
             // if the inward type is new subscription disable the search subscriber button
             if (inward_purpose.toLowerCase() == 0) {
@@ -77,7 +78,7 @@
             }
         });
 
-        $("#agentName").change(function() {
+        $("#agentName").change(function () {
             // disable the search subscriber and reset button
             if (!isEmptyValue($("#agentName").val())) {
                 $("#btnSearchSubscriber").button("disable");
@@ -99,7 +100,7 @@
             width: 250,
             modal: true,
             buttons: {
-                Save: function() {
+                Save: function () {
                     var new_city = $("#newcity").val();
                     if (new_city === "") {
                         return;
@@ -109,7 +110,7 @@
                         url: "<%=request.getContextPath()%>" + "/city?action=add&city=" + new_city,
                         async: false,
                         dataType: "json",
-                        success: function(json) {
+                        success: function (json) {
                             id = json['id'];
                             message = json['message'];
                             if (parseInt(id) > 0) {
@@ -121,23 +122,50 @@
                             }
                             $("#city-add-message").text(message);
                         },
-                        error: function() {
+                        error: function () {
                             alert("Error getting data from server");
                         }
                     });
                 },
-                Cancel: function() {
+                Cancel: function () {
                     $(this).dialog("close");
                 }
             },
-            close: function() {
+            close: function () {
                 $("#city-add-message").val("").removeClass("ui-state-error-text");
                 $("#city-add-message").val("").removeClass("ui-state-highlight");
             }
         });
 
+        // create a dialog on the div id=dialog
+        $("#dialog").dialog({
+            height: 680,
+            width: 1200,
+            modal: true,
+            autoOpen: false,
+            buttons: {
+                "Select": function () {
+                    $(this).dialog("close");
+                    
+                    // call this function from the subscriberlist.jsp
+                    subscriber = dlg_getSelectedSubscriber();
+                    
+                    // called from inward.js
+                    setSubscriber(subscriber);
+                    
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function () {
+                
+            }
+        });
+
     });
 </script>
+
 <%-----------------------------------------------------------------------------------------------------%>
 <%-- Inward Info Field Set --%>
 <%-----------------------------------------------------------------------------------------------------%>
@@ -160,6 +188,10 @@
                 </span>
             </span>
 
+        </div>
+
+        <div id="dialog">
+            <%@include file="../subscriber/subscriberlist.jsp" %>
         </div>
 
         <div class="IASFormFieldDiv">
