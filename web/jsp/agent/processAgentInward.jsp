@@ -159,7 +159,7 @@
                             $("#btnCompleteInward").button("enable");
                         }
                     },
-                    pager: '#pager',
+                    //pager: '#pager',
                     rowNum: 10,
                     rowList: [10, 20, 30],
                     gridview: true,
@@ -250,7 +250,6 @@
                 </div>
                 <div class="IASFormFieldDiv" id="divManualProc">
                     <table class="datatable" id="resultTable"></table>
-                    <div id="pager"></div>
                 </div>
             </div>
 
