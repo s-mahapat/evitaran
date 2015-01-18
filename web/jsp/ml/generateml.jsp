@@ -97,7 +97,7 @@
 
 
             function generate(){
-
+            
                 if ($("#year").val() == 0) {
                     alert("Select Year");
                 }
@@ -121,6 +121,10 @@
                 }
 
                 else {
+                    
+                    var answer = confirm ("Please check if selected Journal, YEAR, MONTH, Vol No, Issue No are correct. \n YEAR, MONTH and Journal are used to select valid subscriptions. \n Incorrect selection can lead to incorrect mailing list generation. \n Mailing List once generated cannot be re-generated");
+                    if (answer) {
+                    
                     isPageLoaded = true;
                     jQuery("#mlTable").setGridParam({postData:
                             {
@@ -141,6 +145,7 @@
                     jQuery("#btnSearch").button("disable");
                     jQuery("#btnAdd").button("disable");
                 }
+            }
             }
 
 

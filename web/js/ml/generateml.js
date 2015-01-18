@@ -137,6 +137,7 @@ function checkMl(){
             + "&journalName=" + $("#journalName").val()
             + "&volume=" + $("#volume").val()
             + "&mlCreationDate=" + $("#mlCreationDate").val()
+            + "&month=" + $("#month").val()
             + "&issue=" + $("#issue").val(),
 
             success: function(xmlResponse, textStatus, jqXHR){
@@ -148,7 +149,7 @@ function checkMl(){
                     $("#btnAdd").button("enable");
                 }
                 else {
-                    alert("Mailing List already generated for Year: " +  $("#year").val() + ", Journal Name: " + $("#journalName").val()
+                    alert("Mailing List already generated for Year: " +  $("#year").val() + ", Month: " + $("#month").val() + ", Journal Name: " + $("#journalName").val()
                             + ", Volume Number: " + $("#volume").val() + ", Issue: " + $("#issue").val());
                 }
                 return true;

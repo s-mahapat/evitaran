@@ -40,7 +40,7 @@ public class mlModel extends JDSModel {
             stGet.setString(++paramIndex, request.getParameter("year"));
             stGet.setString(++paramIndex, request.getParameter("volume"));
             stGet.setString(++paramIndex, request.getParameter("issue"));
-
+            stGet.setString(++paramIndex, request.getParameter("month"));
             try (ResultSet rs = stGet.executeQuery();) {
                 if (rs.next()) {
                     return rs.getInt(1);

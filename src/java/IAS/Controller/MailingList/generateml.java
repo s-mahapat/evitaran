@@ -30,13 +30,12 @@ public class generateml extends JDSController {
             _mlModel = new IAS.Model.ml.mlModel(request);
 
             if(action.equalsIgnoreCase("generate")){
-
+                
                 String xml = _mlModel.generate();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
 
             }else if(action.equalsIgnoreCase("checkml")){
-
                 String xml = _mlModel.checkMl();
                 request.setAttribute("xml", xml);
                 url = "/xmlserver";
