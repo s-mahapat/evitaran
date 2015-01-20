@@ -547,6 +547,7 @@ public class reportModel extends JDSModel {
         String toDate = request.getParameter("to");
         String selall = request.getParameter("selall");
         String agentName = request.getParameter("agentName");
+        String activeSubscription = request.getParameter("activeSubscription");
 
         String sql;
 
@@ -579,37 +580,69 @@ public class reportModel extends JDSModel {
         }
 
         sql = Queries.getQuery("list_susbsriber");
-        if (subType != null && subType.compareToIgnoreCase("NULL") != 0 && subType.length() > 0) {
+        boolean flag = true;
+        
+        if ("1".equals(activeSubscription)) {
+            sql += " where subscription.active" + " = " + "1";
+            flag = false;
+        } else {
+            sql += " where";
+            flag = true;
+        }               
+        
+ 
+        if (subType != null && subType.compareToIgnoreCase("NULL") != 0 && subType.length() > 0 && flag == false) {
             sql += " and subscriber_type.subtype =" + "'" + subType + "'";
+        } else if(subType != null && subType.compareToIgnoreCase("NULL") != 0 && subType.length() > 0 && flag == true) {
+            sql += " subscriber_type.subtype =" + "'" + subType + "'";
         }
-        if (subscriberType != null && subscriberType.compareToIgnoreCase("NULL") != 0 && subscriberType.length() > 0) {
+        
+        if (subscriberType != null && subscriberType.compareToIgnoreCase("NULL") != 0 && subscriberType.length() > 0 && flag == false) {
             sql += " and subscriber_type.subtypedesc =" + "'" + subscriberType + "'";
+        }else if(subscriberType != null && subscriberType.compareToIgnoreCase("NULL") != 0 && subscriberType.length() > 0 && flag == true) {
+            sql += " subscriber_type.subtypedesc =" + "'" + subscriberType + "'";
         }
-        if (city != null && city.compareToIgnoreCase("NULL") != 0 && city != null && city.length() > 0) {
+        
+        if (city != null && city.compareToIgnoreCase("NULL") != 0 && city.length() > 0 && flag == false) {
             sql += " and cities.city = " + "'" + city + "'";
+        } else if(city != null && city.compareToIgnoreCase("NULL") != 0 && city.length() > 0 && flag == true) {
+            sql += " cities.city = " + "'" + city + "'";
         }
 
-        if (country != null && country.compareToIgnoreCase("NULL") != 0 && country.length() > 0) {
+        if (country != null && country.compareToIgnoreCase("NULL") != 0 && country.length() > 0 && flag == false) {
             sql += " and countries.country = " + "'" + country + "'";
+        } else if(country != null && country.compareToIgnoreCase("NULL") != 0 && country.length() > 0 && flag == true) {
+            sql += " countries.country = " + "'" + country + "'";
         }
 
-        if (state != null && state.compareToIgnoreCase("NULL") != 0 && state.length() > 0) {
+        if (state != null && state.compareToIgnoreCase("NULL") != 0 && state.length() > 0 && flag == false) {
             sql += " and states.state = " + "'" + state + "'";
+        } else if(state != null && state.compareToIgnoreCase("NULL") != 0 && state.length() > 0 && flag == true) {
+            sql += " states.state = " + "'" + state + "'";
         }
 
-        if (journalName != null && journalName.compareToIgnoreCase("NULL") != 0 && journalName.length() > 0) {
+        if (journalName != null && journalName.compareToIgnoreCase("NULL") != 0 && journalName.length() > 0 && flag == false) {
             sql += " and journals.journalName = " + "'" + journalName + "'";
+        } else if(journalName != null && journalName.compareToIgnoreCase("NULL") != 0 && journalName.length() > 0 && flag == true) {
+            sql += " journals.journalName = " + "'" + journalName + "'";
         }
-        if (agentName != null && agentName.compareToIgnoreCase("NULL") != 0 && agentName.length() > 0) {
+        
+        if (agentName != null && agentName.compareToIgnoreCase("NULL") != 0 && agentName.length() > 0 && flag == false) {
             sql += " and agents.agentName = " + "'" + agentName + "'";
+        } else if(agentName != null && agentName.compareToIgnoreCase("NULL") != 0 && agentName.length() > 0 && flag == true) {
+            sql += " agents.agentName = " + "'" + agentName + "'";
         }
 
-        if (nationality != null && nationality.compareToIgnoreCase("NULL") != 0 && nationality.length() > 0) {
+        if (nationality != null && nationality.compareToIgnoreCase("NULL") != 0 && nationality.length() > 0 && flag == false) {
             sql += " and subscriber_type.nationality = " + "'" + nationality + "'";
+        } else if(nationality != null && nationality.compareToIgnoreCase("NULL") != 0 && nationality.length() > 0 && flag == true) {
+            sql += " subscriber_type.nationality = " + "'" + nationality + "'";
         }
 
-        if (institutional != null && institutional.compareToIgnoreCase("NULL") != 0 && institutional.length() > 0) {
+        if (institutional != null && institutional.compareToIgnoreCase("NULL") != 0 && institutional.length() > 0 && flag == false) {
             sql += " and subscriber_type.institutional = " + "'" + institutional + "'";
+        } else if(institutional != null && institutional.compareToIgnoreCase("NULL") != 0 && institutional.length() > 0 && flag == true) {
+            sql += " subscriber_type.institutional = " + "'" + institutional + "'";
         }
 
         if ("1".equals(selall)) {

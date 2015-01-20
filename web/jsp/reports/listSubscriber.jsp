@@ -105,7 +105,7 @@
             function searchSubscriber(){
                 //if(validateSearchSubscriber() == true)
                 if(($("#subtype").val() == 0 && $("#nationality").val() == 0 && $("#institutional").val() == 0
-                    && $("#subscriberType").val() == 0 && $("#journalGroupName").val() == 0
+                    && $("#subscriberType").val() == 0 && $("#journalName").val() == 0 && $("#agentName").val() == 0
                     && $("#country").val() == 0) && $("#city").val() == 0 && $("#state").val() == 0)
                     alert("Atleast one search parameter should be selected");
                 else
@@ -123,7 +123,8 @@
                             city                : $("#city").val(),
                             from                : $("#from").val(),
                             to                  : $("#to").val(),
-                            selall              : $("#selall:checked").length
+                            selall              : $("#selall:checked").length,
+                            activeSubscription  : $("#activeSubscription:checked").length
                         }});
                     jQuery("#subscriberTable").setGridParam({ datatype: "xml" });
                     jQuery("#subscriberTable").trigger("clearGridData");
@@ -146,12 +147,20 @@
             }
 
             function getChecked(){
-                if (document.getElementById("selall").value == 1 ){
-                    document.getElementById("selall").value = 0;
-                }else {
+                if (document.getElementById("selall").value == 0){
                     document.getElementById("selall").value = 1;
+                }else {
+                    document.getElementById("selall").value = 0;
                 }
             }
+            
+            function getCheckedActiveSubscription(){
+                if (document.getElementById("activeSubscription").value == 0 ){
+                    document.getElementById("activeSubscription").value = 1;
+                }else {
+                    document.getElementById("activeSubscription").value = 0;
+                }
+            }            
 
             // draw the date picker.
             jQueryDatePicker("from","to");
@@ -315,17 +324,25 @@
                                 </div>
                                 <div class="IASFormFieldDiv">
                                     <span class="IASFormDivSpanLabel">
-                                        <label>Only Active</label>
+                                        <label>Only Active Subscribers</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
                                         <input class="IASCheckBox allusers" TABINDEX="11" type="checkbox" name="selall" id="selall" onclick="getChecked()"/>
                                     </span>
                                 </div>
+                                <div class="IASFormFieldDiv">
+                                    <span class="IASFormDivSpanLabel">
+                                        <label>Only active subscriptions</label>
+                                    </span>
+                                    <span class="IASFormDivSpanInputBox">
+                                        <input class="IASCheckBox allusers" TABINDEX="12" type="checkbox" value = "1" checked name="activeSubscription" id="activeSubscription" onclick="getCheckedActiveSubscription()"/>
+                                    </span>
+                                </div>                                    
                             </div>
 
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="12" onclick="searchSubscriber()"/>Search</button>
-                                <input class="IASButton allusers" TABINDEX="13" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="13" onclick="searchSubscriber()"/>Search</button>
+                                <input class="IASButton allusers" TABINDEX="14" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>
@@ -347,9 +364,9 @@
                         <div class="IASFormFieldDiv">
                             <div class="singleActionBtnDiv">
                                 <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
-                                <input class="IASButton allusers" TABINDEX="14" type="submit" value="Print" disabled id="printReportBtn" onclick="print()"/>
-                                <input class="IASButton" TABINDEX="15" type="submit" value="Print Label" disabled id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
-                                <input class="IASButton" TABINDEX="16" type="submit" value="Print Sticker" disabled id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
+                                <input class="IASButton allusers" TABINDEX="15" type="submit" value="Print" disabled id="printReportBtn" onclick="print()"/>
+                                <input class="IASButton" TABINDEX="16" type="submit" value="Print Label" disabled id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
+                                <input class="IASButton" TABINDEX="17" type="submit" value="Print Sticker" disabled id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
                             </div>
                         </div>
                     </fieldset>
