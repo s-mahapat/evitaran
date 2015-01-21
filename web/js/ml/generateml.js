@@ -196,6 +196,7 @@ function checkMl(){
             + "&journalName=" + $("#journalName").val()
             + "&volume=" + $("#volume").val()
             + "&mlCreationDate=" + $("#mlCreationDate").val()
+            + "&month=" + $("#month").val()
             + "&issue=" + $("#issue").val(),
 
             success: function(xmlResponse, textStatus, jqXHR){
@@ -204,7 +205,7 @@ function checkMl(){
                     mlid = $(this).find("mlid").text();
                 });
                 if (mlid == 0){
-                    alert("Mailing List not generated for Year: " +  $("#year").val() + ", Journal Name: " + $("#journalName").val()
+                    alert("Mailing List not generated for Year: " +  $("#year").val() + ", Month: " + $("#month").val() + ", Journal Name: " + $("#journalName").val()
                             + ", Volume Number: " + $("#volume").val() + ", Issue: " + $("#issue").val());
 
                 }
