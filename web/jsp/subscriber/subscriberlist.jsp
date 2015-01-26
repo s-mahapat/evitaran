@@ -193,7 +193,7 @@
                     </div>
                     <div class="actionBtnDiv">
                         <input class="IASButton" TABINDEX="6" type="button" value="Search" onclick="dlg_searchSubscriber()" id="btnSearchSubscriber"/>
-                        <input class="IASButton" TABINDEX="7" type="reset" value="Reset" onclick="dlg_reset()"/>
+                        <input class="IASButton" TABINDEX="7" type="button" value="Reset" onclick="dlg_reset()"/>
                     </div>
             </fieldset>
             </form>

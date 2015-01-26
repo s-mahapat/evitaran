@@ -236,6 +236,9 @@ function isInwardSelected() {
 }
 
 function selectSubscriber(city, subscriberName, rowid) {
+    // open the search subscriber window, this fix was made in a hurry as firefox and chrome
+    // removed support for OpenModalDialog API
+    $("#dialog").dialog('open');
     selectedSubscriberId = searchSubscriber(subscriberName, "", "", city);
     // ensure that user has selected a subscriber
     if (selectedSubscriberId != null && !isEmptyValue(selectedSubscriberId.SubscriberNumber)) {

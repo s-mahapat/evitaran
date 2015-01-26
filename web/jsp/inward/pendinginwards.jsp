@@ -14,14 +14,14 @@
         <script type="text/javascript">
 
             var isPageLoaded = true;
-            $(document).ready(function(){
+            $(document).ready(function () {
                 $("#btnNext").button("disable");
 
                 // fill in the inward purpose
-                jdsAppend("CMasterData?md=purpose","purpose","inwardPurpose");
+                jdsAppend("CMasterData?md=purpose", "purpose", "inwardPurpose");
 
                 $("#inwardTable").jqGrid({
-                    url:"inward?action=pendinginwards",
+                    url: "inward?action=pendinginwards",
                     datatype: 'xml',
                     mtype: 'GET',
                     width: '100%',
@@ -36,75 +36,75 @@
                     sortorder: 'desc',
                     emptyrecords: "No inwards to view",
                     loadtext: "Loading...",
-                    colNames:['Inward No','Subscriber Id','Agent', 'From','Received Date','City','Cheque#','Amount','Purpose','PurposeID','Action'],
-                    colModel :[
-                        {name:'InwardNo', sortable: false, index:'inward_id', width:40, align:'center', xmlmap:'inwardNumber', formatter: inwardlink},
-                        {name:'SubscriberId'
-                            , index:'subscriber_id'
-                            , width:45
-                            , align:'center'
+                    colNames: ['Inward No', 'Subscriber Id', 'Agent', 'From', 'Received Date', 'City', 'Cheque#', 'Amount', 'Purpose', 'PurposeID', 'Action'],
+                    colModel: [
+                        {name: 'InwardNo', sortable: false, index: 'inward_id', width: 40, align: 'center', xmlmap: 'inwardNumber', formatter: inwardlink},
+                        {name: 'SubscriberId'
+                            , index: 'subscriber_id'
+                            , width: 45
+                            , align: 'center'
                             , sortable: false
-                            , xmlmap:'subscriberId'
+                            , xmlmap: 'subscriberId'
                         },
-                        {name:'Agent'
-                            , index:'agent'
-                            , width:50
-                            , align:'center'
+                        {name: 'Agent'
+                            , index: 'agent'
+                            , width: 50
+                            , align: 'center'
                             , sortable: false
-                            , xmlmap:'agentName'
+                            , xmlmap: 'agentName'
                         },
-                        {name:'From', index:'from', width:80, align:'center', xmlmap:'from'},
+                        {name: 'From', index: 'from', width: 80, align: 'center', xmlmap: 'from'},
                         {
-                            name:'ReceivedDate',
-                            index:'inwardCreationDate',
-                            width:60,
-                            align:'center',
-                            xmlmap:'inwardCreationDate'
+                            name: 'ReceivedDate',
+                            index: 'inwardCreationDate',
+                            width: 60,
+                            align: 'center',
+                            xmlmap: 'inwardCreationDate'
 
                         },
-                        {name:'City', index:'city', sortable: false, width:80, align:'center', xmlmap:'city'},
-                        {name:'Cheque', index:'cheque', sortable: false, width:40, align:'center', xmlmap:'chqddNumber'},
-                        {name:'amount', index:'amount', sortable: false, width:40, align:'center', xmlmap:'amount'},
-                        {name:'Purpose', index:'purpose', sortable: false, width:80, align:'center', xmlmap:'inwardPurpose'},
-                        {name:'PurposeID', index:'purposeid', sortable: false, width:80, align:'center', hidden:true, xmlmap:'inwardPurposeID'},
+                        {name: 'City', index: 'city', sortable: false, width: 80, align: 'center', xmlmap: 'city'},
+                        {name: 'Cheque', index: 'cheque', sortable: false, width: 40, align: 'center', xmlmap: 'chqddNumber'},
+                        {name: 'amount', index: 'amount', sortable: false, width: 40, align: 'center', xmlmap: 'amount'},
+                        {name: 'Purpose', index: 'purpose', sortable: false, width: 80, align: 'center', xmlmap: 'inwardPurpose'},
+                        {name: 'PurposeID', index: 'purposeid', sortable: false, width: 80, align: 'center', hidden: true, xmlmap: 'inwardPurposeID'},
                         {
-                            name:'action',
-                            index:'',
-                            width:80,
-                            align:'center',
-                            xmlmap:'',
+                            name: 'action',
+                            index: '',
+                            width: 80,
+                            align: 'center',
+                            xmlmap: '',
                             formatter: subscriberlink
                         }
                     ],
-                    xmlReader : {
+                    xmlReader: {
                         root: "results",
                         row: "row",
                         page: "results>page",
                         total: "results>total",
-                        records : "results>records",
+                        records: "results>records",
                         repeatitems: false,
                         id: "inwardNumber"
                     },
-                    pager: '#pager',
+                    pager: '#pager_1',
                     rowNum: 20,
-                    rowList:[20,50,100],
+                    rowList: [20, 50, 100],
                     viewrecords: true,
                     gridview: true,
                     caption: '&nbsp;',
-                    gridComplete: function() {
+                    gridComplete: function () {
                         var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
-                        if(ids.length > 0){
+                        if (ids.length > 0) {
                             $("#btnNext").button("enable");
                             jQuery("#inwardTable").jqGrid('setSelection', ids[0]);
                         }
                     },
-                    beforeRequest: function(){
+                    beforeRequest: function () {
                         return isPageLoaded;
                     },
-                    loadError: function(xhr,status,error){
+                    loadError: function (xhr, status, error) {
                         alert("Failed getting data from server" + status);
                     },
-                    onSelectRow: function(rowid, status, e){
+                    onSelectRow: function (rowid, status, e) {
                         selectRow(rowid);
                     }
 
@@ -112,29 +112,63 @@
 
                 // enable scrolling of the Grid with the arrow keys
                 // Pressing ENTER will process the Inward
-                jQuery("#inwardTable").jqGrid('bindKeys',{scrollingRows: true, onEnter: function(rowid){
+                jQuery("#inwardTable").jqGrid('bindKeys', {scrollingRows: true, onEnter: function (rowid) {
                         selectRow(rowid);
                         $("#processInwardForm").submit();
                     }});
+
+
+                // create a dialog on the div id=dialog
+                $("#dialog").dialog({
+                    height: 680,
+                    width: 1200,
+                    modal: true,
+                    autoOpen: false,
+                    buttons: {
+                        "Select": function () {
+                            $(this).dialog("close");
+
+                            // call this function from the subscriberlist.jsp
+                            subscriber = dlg_getSelectedSubscriber();
+                            
+                            var rowid = $("#inwardTable").getGridParam('selrow');
+
+                            jQuery("#inwardTable").jqGrid('setRowData', rowid, {
+                                'SubscriberId': subscriber.SubscriberNumber
+                            });
+                            selectedSubscriberId = subscriber.SubscriberNumber;
+                            // set the subscriber if it is selected after selecting the inward,
+                            // or any changes are made
+                            $("#subscriberNumber").val(selectedSubscriberId);
+
+                        },
+                        "Cancel": function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                    close: function () {
+
+                    }
+                });
 
             });
 
             /*
              * selects a row and highlights the selected row
              */
-            function selectRow(rowid){
+            function selectRow(rowid) {
                 var purposeId = jQuery("#inwardTable").jqGrid('getCell', rowid, "PurposeID");
                 setInwardSubscriber(rowid, purposeId);
             }
 
             // called when the search button is clicked
-            function searchInwards(){
-                if(true){
+            function searchInwards() {
+                if (true) {
                     isPageLoaded = true;
-                    jQuery("#inwardTable").setGridParam({ datatype: "xml" });
+                    jQuery("#inwardTable").setGridParam({datatype: "xml"});
                     jQuery("#inwardTable").setGridParam({postData:
-                            {inwardPurpose  : $("#inwardPurpose").val()
-                        }});
+                                {inwardPurpose: $("#inwardPurpose").val()
+                                }});
                     jQuery("#inwardTable").trigger("clearGridData");
                     jQuery("#inwardTable").trigger("reloadGrid");
                 }
@@ -142,8 +176,8 @@
 
             }
 
-            function inwardlink(cellvalue, options, rowObject){
-                if(cellvalue){
+            function inwardlink(cellvalue, options, rowObject) {
+                if (cellvalue) {
                     var link = '<a href="inward?action=view&inwardNumber=' + cellvalue + '">' + cellvalue + '</a>';
                     return link;
                 }
@@ -151,18 +185,18 @@
             }
 
             /*$(function(){
-                $("#btnManualCreation")
-                .click(function(){
-                    $("agentXLUpload").val("false");
-                });
-            });
-
-            $(function(){
-                $("#btnAgentXLUpload")
-                .click(function(){
-                    $("agentXLUpload").val("true");
-                });
-            });*/
+             $("#btnManualCreation")
+             .click(function(){
+             $("agentXLUpload").val("false");
+             });
+             });
+             
+             $(function(){
+             $("#btnAgentXLUpload")
+             .click(function(){
+             $("agentXLUpload").val("true");
+             });
+             });*/
 
 
         </script>
@@ -205,6 +239,10 @@
                             </div>
                         </fieldset>
 
+                        <div id="dialog">
+                            <%@include file="../subscriber/subscriberlist.jsp" %>
+                        </div>
+
 
 
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -214,7 +252,7 @@
                             <%--<legend>Inwards</legend>--%>
 
                             <table class="datatable" id="inwardTable"></table>
-                            <div id="pager"></div>
+                            <div id="pager_1"></div>
                         </fieldset>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
