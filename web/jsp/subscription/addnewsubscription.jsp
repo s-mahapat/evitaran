@@ -24,8 +24,9 @@
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/css/jquery/jquery.multiselect.css"%>"/>
         <script type="text/javascript">
             var duplicates = false;
-            $(document).ready(function(){
+            $(document).ready(function () {
                 $("#purpose").val(<%=request.getParameter("purpose")%>);
+                createDialog();
             });
         </script>
 
@@ -109,12 +110,17 @@
                             </div>
 
                         </fieldset>
+                        <div id="duplicate_check_dialog">
+                            <p>There are subscriptions already existing for the Journals marked in red. 
+                                <br>Click Cancel to review or Save to continue</p>
+                            <p id="balance-message">The subscriber has an outstanding balance of INR <strong><span id="balance_outstanding"></span></strong></p>
+                        </div>
                         <%@include file="addjournal.jsp"%>
                         <fieldset class="subMainFieldSet">
 
                             <div class="actionBtnDiv">
                                 <input type="hidden" name="action" id="action"/>
-                                <button onclick="saveSubscription()" class="IASButton SaveButton" TABINDEX="101" type="button" value="Save" id="btnSaveSubscription" name="btnSubmitAction"/>Save</button>
+                                <button onclick="isSubscriptionDuplicate()" class="IASButton SaveButton" TABINDEX="101" type="button" value="Save" id="btnSaveSubscription" name="btnSubmitAction"/>Save</button>
                             </div>
 
                         </fieldset>

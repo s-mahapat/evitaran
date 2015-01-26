@@ -57,16 +57,21 @@ public class AgentController extends JDSController {
         String url;
         agentProcModel _agentProcModel = new agentProcModel();
         InvoiceFormBean _invoiceFormBean = _agentProcModel.followOnProcessForAgentInward(_inwardFormBean.getInwardNumber(), request);
-        if (_invoiceFormBean.getBalance() > 0) {
+
+        // just show the user the invoice for the agent under all cases
+        request.setAttribute("invoiceFormBean", _invoiceFormBean);
+        url = "/jsp/invoice/agentinvoice.jsp";
+        
+        /*if (_invoiceFormBean.getBalance() > 0) {
             request.setAttribute("invoiceFormBean", _invoiceFormBean);
             url = "/jsp/invoice/agentinvoice.jsp";
         } else {
             url = "/jsp/inward/pendinginwards.jsp";
-        }
+        }*/
         return url;
     }
 
-    public void actionDiscount() throws SQLException, IOException{
+    public void actionDiscount() throws SQLException, IOException {
         int agent_id = Integer.parseInt(this.params[0]);
         agentProcModel agentmodel = new agentProcModel();
         float discount = agentmodel.getDiscount(agent_id);
@@ -76,7 +81,7 @@ public class AgentController extends JDSController {
         this.resp.getWriter().write(xml);
     }
 
-    public void actionSearch() throws SQLException, IOException{
+    public void actionSearch() throws SQLException, IOException {
         String search_term = this.req.getParameter("term");
         agentProcModel agentmodel = new agentProcModel();
         List agents = agentmodel.searchAgent(search_term);

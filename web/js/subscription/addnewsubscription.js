@@ -19,7 +19,7 @@ function addJournal() {
         subscriberType = getSubscriberType($("#subscriberNumber").val());
     }
     var arrRowIds = $("#newSubscription").getDataIDs();
-    $.each(userSelection, function(selectedJournalGroupName, selectedJournalGroupCode) {
+    $.each(userSelection, function (selectedJournalGroupName, selectedJournalGroupCode) {
         if (arrRowIds.length != 0) {
             intIndex = $.inArray(selectedJournalGroupName, arrRowIds);
             //intIndex = arrRowIds.indexOf(selectedJournalGroupName);
@@ -80,20 +80,20 @@ function updateTotal(val) {
     var gross_value = parseFloat($("#grosssubscriptionTotalValue").text()) + parseFloat(val);
     var newTotal;
     var agentid = parseInt($("#agentid").val());
-    
+
     // set the discount to 0% update later
     $("#discount").text(0);
 
     // if the subscription is from agent, we need to calculate discount
-    if(agentid && agentid > 0){
-        if(agent_discount == null){
+    if (agentid && agentid > 0) {
+        if (agent_discount == null) {
             agent_discount = getAgentDiscount($("#agentid").val());
         }
         $("#discount").text(agent_discount);
-        var discountedval = parseInt(val) - (agent_discount/100 * parseInt(val));
+        var discountedval = parseInt(val) - (agent_discount / 100 * parseInt(val));
         newTotal = parseInt(currentTotal) + parseInt(discountedval);
     }
-    else{
+    else {
         newTotal = parseInt(currentTotal) + parseInt(val);
         balance = newTotal - $("#amount").text();
     }
@@ -110,15 +110,15 @@ function getJournalGroupContents(groupID) {
         type: 'GET',
         dataType: 'xml',
         url: "subscription?oper=getJournalGroupContents&groupid=" + groupID,
-        success: function(xmlResponse, textStatus, jqXHR) {
+        success: function (xmlResponse, textStatus, jqXHR) {
 
-            $(xmlResponse).find("results").find("row").find("journalname").each(function() {
+            $(xmlResponse).find("results").find("row").find("journalname").each(function () {
                 html += '<li>' + $(this).text() + '</li>';
             });
             html += '</ol>';
             $("#journalGroupContents").html(html);
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             alert("Failed to get journal price. " + textStatus + ": " + errorThrown);
         }
 
@@ -148,27 +148,29 @@ function deleteRow(rowid) {
 
 }
 
-function saveSubscription() {
+function saveSubscription(isDuplicate) {
 
+    var jdsconstants = new JDSConstants();
     var ids = $("#newSubscription").getDataIDs();
-    if (ids.length == 0) {
+    if (ids.length === 0) {
         alert("No subscription data to save. Please select the journal group and click Add");
         return false;
     }
     // if the subscription is duplicate do not submit the form
-    var isDuplicate = isSubscriptionDuplicate();
-    if (isDuplicate == true) {
-        window.location='main2/inward/converttopayment/' + $("#inwardNumber").val() + "/" + $("#subscriberNumber").val();
+    if (isDuplicate === jdsconstants.CONVERT_SUBSCRIPTION_TO_PAYMENT) {
+        window.location = 'main2/inward/converttopayment/' + $("#inwardNumber").val() + "/" + $("#subscriberNumber").val();
         return false;
-    }else if(isDuplicate == -1){
+    } 
+    else if (isDuplicate === -1) {
         // user pressed Cancel
         return false;
     }
+    // else we proceed to save the subscription
 
     var arrRowData = $("#newSubscription").getRowData();
     var rowRequiredData = [];
     var subscriptionTotal = $("#subscriptionTotalValue").text();
-    
+
     for (intIndex in arrRowData) {
         var rowObj = arrRowData[intIndex];
         //alert(rowObj.startMonth)
@@ -214,19 +216,19 @@ function saveSubscription() {
     $.ajax({
         type: 'POST',
         url: "subscription?oper=add" +
-        "&subscriberNumber=" +
-        $("#subscriberNumber").val() +
-        "&inwardNumber=" +
-        $("#inwardNumber").val() +
-        "&createAgntSubscription=" + $("#createAgntSubscription").val(),
+                "&subscriberNumber=" +
+                $("#subscriberNumber").val() +
+                "&inwardNumber=" +
+                $("#inwardNumber").val() +
+                "&createAgntSubscription=" + $("#createAgntSubscription").val(),
         data: $.param(rowRequiredData),
-        success: function(xmlResponse, textStatus, jqXHR) {
+        success: function (xmlResponse, textStatus, jqXHR) {
 
             if (xmlResponse == null) {
                 alert("Failed to Save subscription");
                 return false;
             }
-            $(xmlResponse).find("results").each(function() {
+            $(xmlResponse).find("results").each(function () {
                 var error = $(this).find("success").text();
                 var subscriptionID = $(this).find("subscriptionID").text();
                 if (error == "false") {
@@ -246,7 +248,7 @@ function saveSubscription() {
             });
             return true;
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             alert("Failed to save subscription. " + textStatus + ": " + errorThrown);
         },
         dataType: 'xml'
@@ -258,7 +260,7 @@ function isSubscriptionDuplicate() {
     var arrRowData = $("#newSubscription").getRowData();
     var rowRequiredData = [];
     var ids = $("#newSubscription").getDataIDs();
-    var isDuplicate = false;
+    var jdsconstants = new JDSConstants();
     for (intIndex in arrRowData) {
         var rowObj = arrRowData[intIndex];
 
@@ -298,38 +300,25 @@ function isSubscriptionDuplicate() {
         type: 'GET',
         url: "main2/subscription/dupcheck/" + $("#subid").val(),
         data: $.param(rowRequiredData),
-        async: false,
         cache: false,
         // has to be sync else the form gets submitted before the response comes back from server
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             alert("Failed check for duplicate subscription " + textStatus + ": " + errorThrown);
         },
         dataType: 'xml',
-        success: function(xmlResponse) {
+        success: function (xmlResponse) {
             var dup_journal_grp_ids = $(xmlResponse).find("row");
             if (dup_journal_grp_ids.length > 0) {
-                isDuplicate = false;
                 markDuplicates(dup_journal_grp_ids);
-                var width = 480;
-                var height = 140;
-                var x = (window.screen.availWidth - width) / 2;
-                var y = (window.screen.availHeight - height) / 2;
-                var windowParameters = "dialogHeight: " + height + "px; dialogWidth: " + width + "px; dialogTop:" + y + "px; dialogLeft:" + x + "px; center:yes; resizeable: no; location:no; status:no; menubar: no; scrollbars: no; toolbar: no;";
-                var ret = openModalPopUp("jsp/subscription/duplicate_subscription_confirm.jsp", $("#subscriberNumber").val(), windowParameters);
-                var jdsconstants = new JDSConstants();
-                if(ret == jdsconstants.SAVE_DUPLICATE_SUBSCRIPTION){
-                    isDuplicate = false;
-                }else if(ret == jdsconstants.CONVERT_SUBSCRIPTION_TO_PAYMENT){
-                    isDuplicate = true;
-                }else if(ret == jdsconstants.CANCEL){
-                    isDuplicate = -1;
-                }
+                $('#duplicate_check_dialog').dialog('open');
+            }else{
+                // it is not a duplicate subscription
+                saveSubscription(jdsconstants.SAVE_SUBSCRIPTION);
             }
 
         }
     });
 
-    return isDuplicate;
 }
 
 function markDuplicates(dup_journal_grp_ids) {
@@ -351,4 +340,51 @@ function markDuplicates(dup_journal_grp_ids) {
         }
     }
 
+}
+
+function createDialog() {
+    var jdsconstants = new JDSConstants();
+    var returnVal = 1;
+    $('#duplicate_check_dialog').dialog({
+        height: 220,
+        width: 600,
+        modal: true,
+        autoOpen: false,
+        buttons: {
+            "Cancel": function () {
+                returnVal = -1;
+                $(this).dialog("close");
+            },
+            "Save": function () {
+                returnVal = jdsconstants.SAVE_DUPLICATE_SUBSCRIPTION;
+                $(this).dialog("close");
+            },
+            "Make Payment": function () {
+                returnVal = jdsconstants.CONVERT_SUBSCRIPTION_TO_PAYMENT;
+                $(this).dialog("close");
+            }
+        },
+        close: function () {
+            saveSubscription(returnVal);
+        },
+        open: function () {
+            var subscriber_number = $("#subscriberNumber").val();
+            $.ajax({
+                type: "GET",
+                url:  "subscriber?action=balance&subscriber=" + subscriber_number,
+                // change to full path of file on server
+                dataType: "json",
+                async: true,
+                success: function (json) {
+                    balance = parseFloat(json['balance']);
+                    if (balance > 0) {
+                        $("#balance_outstanding").text(balance);
+                    }
+                    else {
+                        $("#balance-message").hide();
+                    }
+                }
+            });
+        }
+    });
 }

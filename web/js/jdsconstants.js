@@ -29,6 +29,7 @@ function JDSConstants() {
     this.CANCEL = 0;
 
     //duplicate subscription action codes
+    this.SAVE_SUBSCRIPTION = 0;
     this.SAVE_DUPLICATE_SUBSCRIPTION = 1;
     this.CONVERT_SUBSCRIPTION_TO_PAYMENT = 2;
 
