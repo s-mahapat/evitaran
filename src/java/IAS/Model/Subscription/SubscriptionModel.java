@@ -63,7 +63,7 @@ public class SubscriptionModel extends JDSModel {
             this.inwardID = _inwardFormBean.getInwardID();
             this.inwardPurposeID = _inwardFormBean.getInwardPurposeID();
         } catch (NullPointerException ex) {
-            logger.error("Could not find inwardUnderProcess in session " + ex.getMessage());
+            logger.info("Could not find inwardUnderProcess in session " + ex.getMessage());
             this.inwardNumber = null;
         }
     }
@@ -263,7 +263,7 @@ public class SubscriptionModel extends JDSModel {
 
     }
 
-    public int addNewSubscription(String subscriberNumber, String inwardNumber, String subscriptionDate) throws SQLException {
+    public int addNewSubscription(String subscriberNumber, String inwardNumber, String subscriptionDate) throws SQLException, ParseException {
 
         int subscriptionID = 0;
 
@@ -271,6 +271,7 @@ public class SubscriptionModel extends JDSModel {
         String sql = Queries.getQuery("insert_subscription");
         try (Connection conn = this.getConnection();
                 PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+            conn.setAutoCommit(false);
             int paramIndex = 0;
             st.setString(++paramIndex, subscriberNumber);
             st.setString(++paramIndex, inwardNumber);
@@ -284,12 +285,10 @@ public class SubscriptionModel extends JDSModel {
                     subscriptionID = rs.getInt(1);
                 }
             }
-        } catch (ParseException ex) {
-            logger.error(ex);
-        } finally {
-            //conn.close();
-            return subscriptionID;
+            conn.commit();
+            conn.setAutoCommit(true);
         }
+        return subscriptionID;
 
     }
 
