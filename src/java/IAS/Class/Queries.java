@@ -14,9 +14,9 @@ public class Queries {
     private static final String propFileName = "jds_sql.properties";
     private static final Logger logger = JDSLogger.getJDSLogger(IAS.Class.Queries.class.getName());
     private static Properties props;
+    private static final InputStream is = Queries.class.getResourceAsStream("/properties/" + propFileName);
 
     public static Properties getQueries() throws IOException {
-        InputStream is = Queries.class.getResourceAsStream("/properties/" + propFileName);
         if (is == null) {
             throw new IOException("Unable to load property file: " + propFileName);
         }

@@ -5,12 +5,13 @@ root {
     display: block;
 }
 
-body{
+html, body{
     margin:0px;
     padding:0px;
     /*background-color: #F6F6F6;*/
     font-family: arial,sans-serif;
     font-size: 11px;
+    height: 100%;
 }
 
 A:link {
@@ -140,7 +141,7 @@ A:active {
     width: 88%;
     overflow: auto;
     float: right;
-    height: available;
+    height: 100%;
 }
 
 #watermark{
@@ -163,9 +164,8 @@ A:active {
 }
 
 .MainDiv{
-    /*background-color: #F6F6F6;*/
     padding: 2px 2px;
-    height: auto;
+    height: 100%;
 }
 
 .subMainDiv{

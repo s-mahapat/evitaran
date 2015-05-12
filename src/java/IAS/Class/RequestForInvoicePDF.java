@@ -242,97 +242,47 @@ public class RequestForInvoicePDF extends JDSPDF {
         SubscriptionModel _model = new SubscriptionModel(request);
         java.util.List<IAS.Bean.Subscription.SubscriptionDetail> sub_details = _model.getSubscriptionDetailsObjectsForInward(InwardNumber);
         Iterator iterator = sub_details.iterator();
-
-        HashMap JournalNamesHash = new HashMap();
-        HashMap JournalGrpPriceHash = new HashMap();
-        HashMap JournalGrpCopiesHash = new HashMap();
-        HashMap JournalGrpPeriodHash = new HashMap();
-        HashMap JournalGrpStartDateHash = new HashMap();
-        HashMap JournalGrpEndDateHash = new HashMap();
-        int total = 0;
-
-        ArrayList<String> names;
-        ArrayList JournalGrpIDs = new ArrayList<>();
+        float total = 0;
 
         while (iterator.hasNext()) {
             IAS.Bean.Subscription.SubscriptionDetail detail = (IAS.Bean.Subscription.SubscriptionDetail) iterator.next();
-            int _journalgrpid = detail.getJournalGroupID();
+            String journalName = detail.getJournalName();
+            String copies = String.valueOf(detail.getCopies());
+            String startDate = String.valueOf(detail.getStartMonth()) + "/" + String.valueOf(detail.getStartYear());
+            String endDate = String.valueOf(detail.getEndMonth()) + "/" + String.valueOf(detail.getEndYear());
+            String journalPrice = String.valueOf(detail.getRate());
+            String period = String.valueOf(detail.getPeriod());
 
-            // group the journal names by journal grp id
-            // this can be done using a hash.
-            if (JournalNamesHash.containsKey(_journalgrpid)) {
-                // if the hash already contains the journal grp id then get the journal names
-                names = (ArrayList) JournalNamesHash.get(_journalgrpid);
-            } else {
-                // add the journal grp id to array to maintaiin the order of print
-                JournalGrpIDs.add(_journalgrpid);
+            //update the total for the entire subscription
+            total += detail.getRate();
 
-                // if it does not have then initialize the array for the journal grp id
-                names = new ArrayList<>();
-                JournalNamesHash.put(_journalgrpid, new ArrayList<String>());
-            }
-            // append the new journal name to the list
-            names.add(detail.getJournalName());
-            // put it back into the hash
-            JournalNamesHash.put(_journalgrpid, names);
+            PdfPCell c1 = new PdfPCell(new Phrase(journalName, JDSPDF.JDS_FONT_NORMAL_SMALL));
+            c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+            c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            c1.setColspan(2);
+            table.addCell(c1);
 
-            // fill in the price and total for each journal grp
-            JournalGrpCopiesHash.put(_journalgrpid, detail.getCopies());
-            JournalGrpPriceHash.put(_journalgrpid, detail.getTotal());
-            JournalGrpPeriodHash.put(_journalgrpid, detail.getPeriod());
-            JournalGrpStartDateHash.put(_journalgrpid, detail.getStartMonth() + "/" + detail.getStartYear());
-            JournalGrpEndDateHash.put(_journalgrpid, detail.getEndMonth() + "/" + detail.getEndYear());
+            PdfPCell c4 = new PdfPCell(new Paragraph(copies, JDSPDF.JDS_FONT_NORMAL_SMALL));
+            c4.setHorizontalAlignment(Element.ALIGN_CENTER);
+            c4.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        }
+            PdfPCell c5 = new PdfPCell(new Paragraph(startDate + " to " + endDate, JDSPDF.JDS_FONT_NORMAL_SMALL));
+            c5.setHorizontalAlignment(Element.ALIGN_CENTER);
+            c5.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        Iterator iterator_ids = JournalGrpIDs.iterator();
-        int _journalgrpid;
+            PdfPCell c2 = new PdfPCell(new Phrase(period, JDSPDF.JDS_FONT_NORMAL_SMALL));
+            c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        while (iterator_ids.hasNext()) {
-            _journalgrpid = (int) iterator_ids.next();
-            //names = new ArrayList<>();
-            names = (ArrayList) JournalNamesHash.get(_journalgrpid);
-            int _rowspan = names.size();
-            boolean bprinted = false;
-            for (String _jname : names) {
-                PdfPCell c1 = new PdfPCell(new Phrase(_jname, JDSPDF.JDS_FONT_NORMAL_SMALL));
-                c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-                c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                c1.setColspan(2);
-                table.addCell(c1);
+            PdfPCell c3 = new PdfPCell(new Paragraph(journalPrice, JDSPDF.JDS_FONT_NORMAL_SMALL));
+            c3.setHorizontalAlignment(Element.ALIGN_CENTER);
+            c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-                if (!bprinted) {
-                    PdfPCell c2 = new PdfPCell(new Phrase(String.valueOf(JournalGrpPeriodHash.get(_journalgrpid)), JDSPDF.JDS_FONT_NORMAL_SMALL));
-                    c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                    c2.setRowspan(_rowspan);
+            table.addCell(c4);
+            table.addCell(c5);
+            table.addCell(c2);
+            table.addCell(c3);
 
-                    int _grptotal = (int) JournalGrpPriceHash.get(_journalgrpid);
-                    PdfPCell c3 = new PdfPCell(new Paragraph(String.valueOf(_grptotal), JDSPDF.JDS_FONT_NORMAL_SMALL));
-                    c3.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                    c3.setRowspan(_rowspan);
-                    total += _grptotal;
-
-                    PdfPCell c4 = new PdfPCell(new Paragraph(String.valueOf(JournalGrpCopiesHash.get(_journalgrpid)), JDSPDF.JDS_FONT_NORMAL_SMALL));
-                    c4.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    c4.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                    c4.setRowspan(_rowspan);
-
-                    PdfPCell c5 = new PdfPCell(new Paragraph(String.valueOf(JournalGrpStartDateHash.get(_journalgrpid) + " to " + String.valueOf(JournalGrpEndDateHash.get(_journalgrpid))), JDSPDF.JDS_FONT_NORMAL_SMALL));
-                    c5.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    c5.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                    //c5.setColspan(2);
-                    c5.setRowspan(_rowspan);
-
-                    bprinted = true;
-
-                    table.addCell(c4);
-                    table.addCell(c5);
-                    table.addCell(c2);
-                    table.addCell(c3);
-                }
-            }
         }
 
         PdfPCell totalCell = new PdfPCell(new Phrase("Total", JDSPDF.JDS_FONT_NORMAL_SMALL));
@@ -346,6 +296,19 @@ public class RequestForInvoicePDF extends JDSPDF {
 
         table.addCell(totalCell);
         table.addCell(totalValue);
+        
+        PdfPCell totalDueCell = new PdfPCell(new Phrase("Total after discount(if applicable)", JDSPDF.JDS_FONT_NORMAL_SMALL));
+        totalDueCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        totalDueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        totalDueCell.setColspan(5);
+
+        String _totalDiscounted = String.format("%.1f", (float) _invoiceBean.getBalance());
+        PdfPCell totalDiscountedValue = new PdfPCell(new Phrase(_totalDiscounted, JDSPDF.JDS_FONT_NORMAL_SMALL));
+        totalDiscountedValue.setHorizontalAlignment(Element.ALIGN_CENTER);
+        totalDiscountedValue.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        
+        table.addCell(totalDueCell);
+        table.addCell(totalDiscountedValue);
 
         //paragraphBody.add(new Phrase(bodyText));
         //paragraphBody.add(Chunk.NEWLINE);

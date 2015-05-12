@@ -57,7 +57,7 @@ public class PlReferListPDF extends JDSPDF {
         document.open();
 
         int prl_id = 0;
-        String prl_sql = "select id from prl where year=? limit 1";
+        String prl_sql = "select id from prl where year=? order by id desc limit 1";
         try (Connection conn = Database.getConnection(); PreparedStatement _pst = conn.prepareStatement(prl_sql)) {
             _pst.setInt(1, year);
             try (ResultSet _rs = _pst.executeQuery()) {
@@ -191,16 +191,11 @@ public class PlReferListPDF extends JDSPDF {
 
         PdfPCell subscriberNumberCell = new PdfPCell(subscriberNumber);
         PdfPCell invoiceNumberCell = new PdfPCell(invoiceNumber);
-        //PdfPCell invoiceHeaderCell = new PdfPCell(invoiceHeader);
 
         subscriberNumberCell.setBorder(Rectangle.NO_BORDER);
         subscriberNumberCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         subscriberNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
-        //subscriberNumberCell.setPaddingLeft(JDSPDF.LEFT_INDENTATION_LESS);
 
-        /*invoiceHeaderCell.setBorder(Rectangle.NO_BORDER);
-         invoiceHeaderCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-         invoiceHeaderCell.setVerticalAlignment(Element.ALIGN_TOP);*/
         invoiceNumberCell.setBorder(Rectangle.NO_BORDER);
         invoiceNumberCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         invoiceNumberCell.setVerticalAlignment(Element.ALIGN_TOP);
@@ -215,10 +210,7 @@ public class PlReferListPDF extends JDSPDF {
         this.insertCell(InvoiceInfoTable, "", Element.ALIGN_LEFT, 2, JDS_BOLD_FONT, Rectangle.NO_BORDER);
 
         paragraphInvoiceInfo.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE);
-        //addressParagraph.add(addressTable);
-        //addressParagraph.setIndentationLeft(JDSPDF.LEFT_INDENTATION_LESS);
-        //addressParagraph.setSpacingBefore(JDSPDF.LESS_OUTER_PARAGRAPH_SPACE);
-        //addressTable.setWidthPercentage(100);
+  
         Chunk invoiceAddressHeader = new Chunk("INVOICE ADDRESS", JDS_FONT_BODY);
         invoiceAddressHeader.setTextRise(2);
         invoiceAddressHeader.setUnderline(1, 0);

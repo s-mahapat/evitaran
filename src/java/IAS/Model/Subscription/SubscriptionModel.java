@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
@@ -63,7 +62,7 @@ public class SubscriptionModel extends JDSModel {
             this.inwardID = _inwardFormBean.getInwardID();
             this.inwardPurposeID = _inwardFormBean.getInwardPurposeID();
         } catch (NullPointerException ex) {
-            logger.info("Could not find inwardUnderProcess in session " + ex.getMessage());
+            logger.debug("Could not find inwardUnderProcess in session " + ex.getMessage());
             this.inwardNumber = null;
         }
     }
@@ -614,7 +613,7 @@ public class SubscriptionModel extends JDSModel {
 
         List<IAS.Bean.Subscription.SubscriptionDetail> sub_details = null;
 
-        HashMap JournalGrpIDsMap = new HashMap();
+        //HashMap JournalGrpIDsMap = new HashMap();
 
         try (Connection _conn = this.getConnection()) {
             // Execute the SQL statement and return the results in a List of
@@ -623,11 +622,13 @@ public class SubscriptionModel extends JDSModel {
                     h, InwardNumber);
 
             for (IAS.Bean.Subscription.SubscriptionDetail detail : sub_details) {
-                if (JournalGrpIDsMap.containsKey(detail.getJournalGroupID())) {
+                float rate = this.getRate(detail.getJournalID(), detail.getSubType(), detail.getStartYear(), detail.getPeriod());
+                detail.setRate(rate);
+                /*if (JournalGrpIDsMap.containsKey(detail.getJournalGroupID())) {
                     detail.setRate(0);
                 } else {
                     JournalGrpIDsMap.put(detail.getJournalGroupID(), 1);
-                }
+                }*/
             }
         } catch (SQLException ex) {
             logger.error(ex);
