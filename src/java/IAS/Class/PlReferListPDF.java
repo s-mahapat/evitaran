@@ -210,7 +210,7 @@ public class PlReferListPDF extends JDSPDF {
         this.insertCell(InvoiceInfoTable, "", Element.ALIGN_LEFT, 2, JDS_BOLD_FONT, Rectangle.NO_BORDER);
 
         paragraphInvoiceInfo.setSpacingBefore(JDSPDF.OUTER_PARAGRAPH_SPACE);
-  
+
         Chunk invoiceAddressHeader = new Chunk("INVOICE ADDRESS", JDS_FONT_BODY);
         invoiceAddressHeader.setTextRise(2);
         invoiceAddressHeader.setUnderline(1, 0);
@@ -266,7 +266,7 @@ public class PlReferListPDF extends JDSPDF {
         table.addCell(cell2);
         table.addCell(cell3);
 
-        //float total = 0;
+        float totalBeforeDiscount = 0;
         try (PreparedStatement pst = conn.prepareStatement(sql)) {
             // get price for next year
             pst.setInt(1, currentYear);
@@ -274,10 +274,15 @@ public class PlReferListPDF extends JDSPDF {
 
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
-                    String journalName = rs.getString("journalGroupName");
+                    String journalName = rs.getString("journalName");
+                    int journalID = rs.getInt("journalID");
+                    //int startYear = rs.getInt("startYear");
                     int period = rs.getInt("period");
-                    String years = String.valueOf(period);
-                    float _rate = rs.getFloat("rate");
+                    //String years = String.valueOf(period);
+                    //float _rate = rs.getFloat("rate");
+
+                    float _rate = _SubscriptionModel.getRate(journalID, _invoiceBean.getSubscriberType(), prl_year + period, period);
+                    totalBeforeDiscount += _rate;
                     String subscription_period = rs.getString("startMonth") + "/" + String.valueOf(currentYear) + " to " + rs.getString("endMonth") + "/" + String.valueOf(prl_year + period);
 
                     //total += _rate;
@@ -311,17 +316,33 @@ public class PlReferListPDF extends JDSPDF {
         blankCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         blankCell.setColspan(2);
 
-        PdfPCell totalCell = new PdfPCell(new Phrase("Total", JDSPDF.JDS_FONT_NORMAL_SMALL));
-        totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        totalCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        PdfPCell totalCellBeforeDiscount = new PdfPCell(new Phrase("Total", JDSPDF.JDS_FONT_NORMAL_SMALL));
+        totalCellBeforeDiscount.setHorizontalAlignment(Element.ALIGN_CENTER);
+        totalCellBeforeDiscount.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-        PdfPCell totalValue = new PdfPCell(new Phrase(String.valueOf(_invoiceBean.getAmount()), JDSPDF.JDS_FONT_NORMAL_SMALL));
-        totalValue.setHorizontalAlignment(Element.ALIGN_CENTER);
-        totalValue.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        PdfPCell totalValueBeforeDiscount = new PdfPCell(new Phrase(String.valueOf(totalBeforeDiscount), JDSPDF.JDS_FONT_NORMAL_SMALL));
+        totalValueBeforeDiscount.setHorizontalAlignment(Element.ALIGN_CENTER);
+        totalValueBeforeDiscount.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
         table.addCell(blankCell);
-        table.addCell(totalCell);
-        table.addCell(totalValue);
+        table.addCell(totalCellBeforeDiscount);
+        table.addCell(totalValueBeforeDiscount);
+
+        // show the discount only when available
+        if (totalBeforeDiscount > _invoiceBean.getAmount()) {
+
+            PdfPCell totalCell = new PdfPCell(new Phrase("Total after discount", JDSPDF.JDS_FONT_NORMAL_SMALL));
+            totalCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            totalCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+            PdfPCell totalValue = new PdfPCell(new Phrase(String.valueOf(_invoiceBean.getAmount()), JDSPDF.JDS_FONT_NORMAL_SMALL));
+            totalValue.setHorizontalAlignment(Element.ALIGN_CENTER);
+            totalValue.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+            table.addCell(blankCell);
+            table.addCell(totalCell);
+            table.addCell(totalValue);
+        }
 
         // add the subscription table to letter body
         paragraphBody.add(table);

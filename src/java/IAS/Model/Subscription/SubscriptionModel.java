@@ -1162,7 +1162,7 @@ public class SubscriptionModel extends JDSModel {
         return _rate;
     }
 
-    private float getRate(int journalGrpID, int subtypeID, int startYear, int period) throws SQLException {
+    public float getRate(int journalGrpID, int subtypeID, int startYear, int period) throws SQLException {
 
         String sql = Queries.getQuery("get_journal_grp_price");
         int _rate = 0;

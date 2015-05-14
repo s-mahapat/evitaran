@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
@@ -296,19 +294,22 @@ public class RequestForInvoicePDF extends JDSPDF {
 
         table.addCell(totalCell);
         table.addCell(totalValue);
-        
-        PdfPCell totalDueCell = new PdfPCell(new Phrase("Total after discount(if applicable)", JDSPDF.JDS_FONT_NORMAL_SMALL));
-        totalDueCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        totalDueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        totalDueCell.setColspan(5);
 
-        String _totalDiscounted = String.format("%.1f", (float) _invoiceBean.getBalance());
-        PdfPCell totalDiscountedValue = new PdfPCell(new Phrase(_totalDiscounted, JDSPDF.JDS_FONT_NORMAL_SMALL));
-        totalDiscountedValue.setHorizontalAlignment(Element.ALIGN_CENTER);
-        totalDiscountedValue.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        
-        table.addCell(totalDueCell);
-        table.addCell(totalDiscountedValue);
+        if (total > _invoiceBean.getAmount()) {
+
+            PdfPCell totalDueCell = new PdfPCell(new Phrase("Total after discount", JDSPDF.JDS_FONT_NORMAL_SMALL));
+            totalDueCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            totalDueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            totalDueCell.setColspan(5);
+
+            String _totalDiscounted = String.format("%.1f", (float) _invoiceBean.getBalance());
+            PdfPCell totalDiscountedValue = new PdfPCell(new Phrase(_totalDiscounted, JDSPDF.JDS_FONT_NORMAL_SMALL));
+            totalDiscountedValue.setHorizontalAlignment(Element.ALIGN_CENTER);
+            totalDiscountedValue.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+            table.addCell(totalDueCell);
+            table.addCell(totalDiscountedValue);
+        }
 
         //paragraphBody.add(new Phrase(bodyText));
         //paragraphBody.add(Chunk.NEWLINE);
