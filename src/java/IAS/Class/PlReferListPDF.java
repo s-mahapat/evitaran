@@ -281,7 +281,7 @@ public class PlReferListPDF extends JDSPDF {
                     //String years = String.valueOf(period);
                     //float _rate = rs.getFloat("rate");
 
-                    float _rate = _SubscriptionModel.getRate(journalID, _invoiceBean.getSubscriberType(), prl_year + period, period);
+                    float _rate = _SubscriptionModel.getRate(journalID, _invoiceBean.getSubscriberType(), currentYear, period);
                     totalBeforeDiscount += _rate;
                     String subscription_period = rs.getString("startMonth") + "/" + String.valueOf(currentYear) + " to " + rs.getString("endMonth") + "/" + String.valueOf(prl_year + period);
 

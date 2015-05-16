@@ -1117,7 +1117,7 @@ public class SubscriptionModel extends JDSModel {
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     //String journalName = rs.getString("journalGroupName");
-                    int period = rs.getInt("period");
+                    int period = this.nextYearSubscriptionPeriod > 0 ? this.nextYearSubscriptionPeriod : rs.getInt("period");
                     int subtype = rs.getInt("subtype");
                     int journalGrpID = rs.getInt("journalGroupID");
                     //int startYear = rs.getInt("startYear");
@@ -1146,8 +1146,6 @@ public class SubscriptionModel extends JDSModel {
                     // only update the subscription period with the minimum period for all subscription details
                     // of the subscription
                     if (period > 0 && this.nextYearSubscriptionPeriod == 0) {
-                        this.nextYearSubscriptionPeriod = period;
-                    } else if (period < this.nextYearSubscriptionPeriod) {
                         this.nextYearSubscriptionPeriod = period;
                     }
                 }
