@@ -13,7 +13,7 @@ public class SubscriptionDetail {
     private int copies;
     private int startYear;
     private int endYear;
-    private int total;
+    private float total;
     private int journalGroupID;
     private int journalID;
     private int subscriptionID;
@@ -48,11 +48,11 @@ public class SubscriptionDetail {
         this.endYear = _endYear;
     }
 
-    public int getTotal() {
+    public float getTotal() {
         return this.total;
     }
 
-    public void setTotal(int _total) {
+    public void setTotal(float _total) {
         this.total = _total;
     }
 

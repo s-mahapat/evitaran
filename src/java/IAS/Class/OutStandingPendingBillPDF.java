@@ -240,6 +240,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         table.addCell(cell2);
         table.addCell(cell3);
         float total = 0;
+        float discountedTotal = 0;
 
         SubscriptionModel _model = new SubscriptionModel(request);
         java.util.List<IAS.Bean.Subscription.SubscriptionDetail> sub_details = _model.getSubscriptionDetailsObjectsForInward(InwardNumber);
@@ -251,6 +252,7 @@ public class OutStandingPendingBillPDF extends JDSPDF {
             String endDate = String.valueOf(detail.getEndMonth()) + "/" + String.valueOf(detail.getEndYear());
             String journalPrice = String.valueOf(detail.getRate());
             String period = String.valueOf(detail.getPeriod());
+            discountedTotal = detail.getTotal();
 
             //update the total for the entire subscription
             total += detail.getRate();
@@ -297,14 +299,14 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         table.addCell(totalValue);
 
         // show the discount row only if it is available
-        if (total > _invoiceBean.getAmount()) {
+        if (total > discountedTotal) {
 
             PdfPCell totalDueCell = new PdfPCell(new Phrase("Total after discount", JDSPDF.JDS_FONT_NORMAL_SMALL));
             totalDueCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             totalDueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             totalDueCell.setColspan(5);
 
-            String _totalDiscounted = String.format("%.1f", (float) _invoiceBean.getBalance());
+            String _totalDiscounted = String.format("%.1f", (float) discountedTotal);
             PdfPCell totalDiscountedValue = new PdfPCell(new Phrase(_totalDiscounted, JDSPDF.JDS_FONT_NORMAL_SMALL));
             totalDiscountedValue.setHorizontalAlignment(Element.ALIGN_CENTER);
             totalDiscountedValue.setVerticalAlignment(Element.ALIGN_MIDDLE);

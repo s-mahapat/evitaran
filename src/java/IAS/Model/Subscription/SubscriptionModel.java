@@ -622,7 +622,8 @@ public class SubscriptionModel extends JDSModel {
                     h, InwardNumber);
 
             for (IAS.Bean.Subscription.SubscriptionDetail detail : sub_details) {
-                float rate = this.getRate(detail.getJournalID(), detail.getSubType(), detail.getStartYear(), detail.getPeriod());
+                int journalGroupID = this.getJournalGroupIDForSingleJournal(detail.getJournalID());
+                float rate = this.getRate(journalGroupID, detail.getSubType(), detail.getStartYear(), detail.getPeriod());
                 detail.setRate(rate);
                 /*if (JournalGrpIDsMap.containsKey(detail.getJournalGroupID())) {
                     detail.setRate(0);
@@ -1179,6 +1180,25 @@ public class SubscriptionModel extends JDSModel {
             //_conn.close();
             return (float) _rate;
         }
+    }
+    
+    /*
+    Given a journal id, this function returns the journal group id in which it
+    is the only journal
+    */
+    public int getJournalGroupIDForSingleJournal(int journalID) throws SQLException{
+        
+        String sql = Queries.getQuery("get_journal_group_id_for_journal");
+        int journalGroupID = 0;
+        try(Connection conn = this.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)){
+            pst.setInt(1, journalID);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.first()) {
+                    journalGroupID = rs.getInt("journalGroupID");
+                }
+            }
+        }
+        return journalGroupID;
     }
 
     private int getMinimumSubscriptionPeriod(int journalGrpID, int subtypeID, int startYear) throws SQLException {
