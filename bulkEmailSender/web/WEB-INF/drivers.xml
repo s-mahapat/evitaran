@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+    Document   : drivers.xml
+    Created on : December 25, 2011, 5:14 PM
+    Author     : aloko
+    Description:
+        Used by DriverUtilities2. Here you configure information about your
+        database server in XML. To add a driver, include a vendor keyword,
+        description, driver-class and URL. For general use, th ehost and database
+        name should not be cinluded in the URl; a special notation is required
+        for the host and database name. Use [$host] as a placeholder for the host
+        server and [$dbName] as a placeholder for the database name.
+        Specify the actual host and database name when making call to
+        makeUrl (DriverUtilities). Then, the appropriate strings will be
+        substituted for [$host] and [$dbName] before the URLis returned.
+-->
+<drivers>
+    <driver>
+        <vendor>MYSQL</vendor>
+        <description>MySQL Connector/J 5.1.18</description>
+        <driver-class>com.mysql.jdbc.Driver</driver-class>
+        <url>jdbc:mysql://[$host]:3306/[$dbName]</url>
+    </driver>
+</drivers>
