@@ -71,6 +71,20 @@ public class generateml extends JDSController {
                 ResultSet rs = _mlModel.printml();
                 request.setAttribute("ResultSet", rs);
                 url = "/pdfserver?action=generatemlPrintSticker";
+            }else if (action.equalsIgnoreCase("exportToExcel")) {
+
+                ResultSet rs = _mlModel.printml();
+                request.setAttribute("ResultSet", rs);
+
+                String noHeader = "off";
+                request.setAttribute("noHeader", noHeader);
+
+                String periodicals = "off";
+                request.setAttribute("periodicals", periodicals);
+                
+                String query = "Stickers-Labels";
+                request.setAttribute("query", query);
+                url = "/excelserver?action=generatemlPrintLabel";                
             }
 
         } catch (Exception e) {

@@ -67,6 +67,7 @@
                         var ids = jQuery("#journalTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
                             $("#printReportBtn").button("enable");
+                            $("#printReportBtnExcel").button("enable");
                         }
                     },
                     beforeRequest: function(){
@@ -96,6 +97,18 @@
                         jQuery("#journalTable").trigger("reloadGrid");
                     }
                 }
+                
+            function printReportPdf()
+            {
+                var x = "printJournalGroup";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelJournalGroup";
+                $('#action').val(x);
+            }            
 
         </script>
     </head>
@@ -103,7 +116,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printJournalGroup"%>" name="listJournals">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="listJournals">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List and Print Journals</legend>
@@ -151,12 +164,13 @@
                         <%-- Print Action Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
 
-
+                        <input class="allusers" type="hidden" name="action" id="action"/>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
-                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="4" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="5" value="Print - Excel" disabled id="printReportBtnExcel" onclick="printReportExcel()"/>
                                 </div>
                             </div>
                         </fieldset>

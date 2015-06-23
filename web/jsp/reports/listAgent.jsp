@@ -39,7 +39,7 @@
                     rownumbers: true,
                     emptyrecords: "No Agent",
                     loadtext: "Loading...",
-                    colNames:['Agent Id','Agent Name','Registriation Date','emailId', 'Address','City'],
+                    colNames:['Agent Id','Agent Name','Registriation Date','Email Id', 'Address','City'],
                     colModel :[
                         {name:'id', index:'id', width:50, align:'center', xmlmap:'id'},
                         {name:'agentName', index:'agentName', width:80, align:'center', xmlmap:'agentName'},
@@ -67,6 +67,7 @@
                         var ids = jQuery("#agentTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
                             $("#printReportBtn").button("enable");
+                            $("#printReportBtnExportToExcel").button("enable");
                         }
                     },
                     beforeRequest: function(){
@@ -107,6 +108,18 @@
                     document.getElementById("selall").value = 1;
                 }
             }
+            
+            function printReportPdf()
+            {
+                var x = "printAgents";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelAgents";
+                $('#action').val(x);
+            }            
 
         </script>
 
@@ -116,7 +129,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printAgents"%>" name="listAgentForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="listAgentForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List and Print Agent Data</legend>
@@ -196,11 +209,12 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- SPrint Button Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-
-                     <fieldset class="subMainFieldSet">
+                    <input class="allusers" type="hidden" name="action" id="action"/>
+                    <fieldset class="subMainFieldSet">
                         <div class="IASFormFieldDiv">
                             <div class="singleActionBtnDiv">
-                                <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
+                                <input class="IASButton allusers" type="submit" TABINDEX="6" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                <input class="IASButton allusers" type="submit" TABINDEX="7" value="Print - Excel" disabled id="printReportBtnExportToExcel" onclick="printReportExcel()"/>
                             </div>
                         </div>
                     </fieldset>

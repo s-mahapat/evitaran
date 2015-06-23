@@ -79,6 +79,7 @@
                             var ids = jQuery("#inwardTable").jqGrid('getDataIDs');
                             if(ids.length > 0){
                                 $("#printReportBtn").button("enable");
+                                $("#printReportBtnExcel").button("enable");
                             }
                         },
                         beforeRequest: function(){
@@ -142,6 +143,18 @@
                 }
 
             }
+            
+            function printReportPdf()
+            {
+                var x = "printInwardsList";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelInwardsList";
+                $('#action').val(x);
+            }             
 
             // draw the date picker.
             jQueryDatePicker("from","to");
@@ -153,7 +166,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printInwardsList"%>" name="listInwardForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="listInwardForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List and Print Inwards</legend>
@@ -278,12 +291,13 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- SPrint Button Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
-
+                    <input class="allusers" type="hidden" name="action" id="action"/>
                      <fieldset class="subMainFieldSet">
                         <div class="IASFormFieldDiv">
                             <div class="singleActionBtnDiv">
                                 <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
-                                <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="12" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="13" value="Print - Excel" disabled id="printReportBtnExcel" onclick="printReportExcel()"/>                                                                    
                             </div>
                         </div>
                     </fieldset>

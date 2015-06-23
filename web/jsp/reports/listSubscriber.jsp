@@ -76,6 +76,8 @@
                                 $("#printReportBtn").button("enable");
                                 $("#btnPrintLabel").button("enable");
                                 $("#btnPrintSticker").button("enable");
+                                $("#btnExportToExcel").button("enable");
+                                $("#btnExportReportToExcel").button("enable");
                             }
                         },
                         beforeRequest: function(){
@@ -182,6 +184,17 @@
                 var x = "printSubscribersReport";
                 $('#action').val(x);
             }
+            
+            function exportToExcel()
+            {
+                var x = "printSubscribersExportToExcel";
+                $('#action').val(x);
+            }
+            function exportReportToExcel()
+            {
+                var x = "exportReportToExcel";
+                $('#action').val(x);
+            }            
         </script>
     </head>
     <body>
@@ -364,9 +377,11 @@
                         <div class="IASFormFieldDiv">
                             <div class="singleActionBtnDiv">
                                 <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
-                                <input class="IASButton allusers" TABINDEX="15" type="submit" value="Print" disabled id="printReportBtn" onclick="print()"/>
-                                <input class="IASButton" TABINDEX="16" type="submit" value="Print Label" disabled id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
-                                <input class="IASButton" TABINDEX="17" type="submit" value="Print Sticker" disabled id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
+                                <input class="IASButton allusers" TABINDEX="15" type="submit" value="Print Report - PDF" disabled id="printReportBtn" onclick="print()"/>
+                                <input class="IASButton" TABINDEX="16" type="submit" value="Print Report - Excel" disabled id="btnExportReportToExcel" name="btnExportReportToExcel" onclick="exportReportToExcel()"/>
+                                <input class="IASButton" TABINDEX="17" type="submit" value="Print Label - PDF" disabled id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
+                                <input class="IASButton" TABINDEX="18" type="submit" value="Print Sticker - PDF" disabled id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
+                                <input class="IASButton" TABINDEX="19" type="submit" value="Label/Sticker - Excel" disabled id="btnExportToExcel" name="btnExportToExcel" onclick="exportToExcel()"/>
                             </div>
                         </div>
                     </fieldset>

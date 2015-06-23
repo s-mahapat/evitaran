@@ -98,7 +98,20 @@
                     jQuery("#printOrderTable").trigger("clearGridData");
                     jQuery("#printOrderTable").trigger("reloadGrid");
                     $("#printReportBtn").button("enable");
+                    $("#printReportBtnExcel").button("enable");
                 }
+                
+            function printReportPdf()
+            {
+                var x = "printPOT";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelPOT";
+                $('#action').val(x);
+            }                
 
         </script>
     </head>
@@ -107,7 +120,7 @@
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
             <jsp:useBean class="IAS.Bean.Reports.printOrderFormBeanReport" id="printOrderFormBeanReport" scope="request"></jsp:useBean>
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printPOT"%>" name="printOrderForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="printOrderForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Print Order Details</legend>
@@ -140,12 +153,13 @@
                         <%-- Print Action Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
 
-
+                        <input class="allusers" type="hidden" name="action" id="action"/>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
-                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="2" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="3" value="Print - Excel" disabled id="printReportBtnExcel" onclick="printReportExcel()"/>
                                 </div>
                             </div>
                         </fieldset>

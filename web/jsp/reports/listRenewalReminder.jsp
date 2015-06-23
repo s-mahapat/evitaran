@@ -68,6 +68,7 @@
                         var ids = jQuery("#remTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
                             $("#printReportBtn").button("enable");
+                            $("#printReportBtnExcel").button("enable");                            
                         }
                     },
                     beforeRequest: function(){
@@ -122,6 +123,17 @@
                 );
             }
 
+            function printReportPdf()
+            {
+                var x = "printListReminder";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelListReminder";
+                $('#action').val(x);
+            } 
 
             // draw the date picker.
             jQueryDatePicker("from","to");
@@ -131,7 +143,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printListReminder"%>" name="reminderReport">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="reminderReport">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List Sent Reminders</legend>
@@ -149,7 +161,7 @@
                                         <label>Reminder Type</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                     <select class="IASComboBoxWide allusers" TABINDEX="6" name="remType" id="remType">
+                                     <select class="IASComboBoxWide allusers" TABINDEX="1" name="remType" id="remType">
                                         <option value ="1">Gentle Reminder</option>
                                         <option value ="2">Strong Reminder</option>
                                         <option value ="3">Harsh Reminder</option>
@@ -164,15 +176,15 @@
                                     </span>
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox allusers" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
+                                        <input class="IASDateTextBox allusers" TABINDEX="2" readonly size="10" type="text" id="from" name="from"/>
                                         <label> to </label>
-                                        <input class="IASDateTextBox allusers" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
+                                        <input class="IASDateTextBox allusers" TABINDEX="3" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="3" onclick="getList()" value="Search"/>Search</button>
-                                <input class="IASButton allusers" TABINDEX="4" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="4" onclick="getList()" value="Search"/>Search</button>
+                                <input class="IASButton allusers" TABINDEX="4" type="reset" TABINDEX="5" value="Reset"/>
                             </div>
                         </fieldset>
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -183,11 +195,13 @@
                             <table class="datatable" id="remTable"></table>
                             <div id="pager"></div>
                         </fieldset>
+                        <input class="allusers" type="hidden" name="action" id="action"/>
                          <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
-                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="6" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="7" value="Print - Excel" disabled id="printReportBtnExcel" onclick="printReportExcel()"/>                                    
                                 </div>
                             </div>
                         </fieldset>

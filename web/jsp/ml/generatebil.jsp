@@ -25,7 +25,8 @@
                 jQuery("#btnSearch,#btnPrint").attr("disabled",true);
                 reloadSubscriberNumber('g');
                 $("#btnPrintLabel").button("disable");
-                $("#btnPrintSticker").button("disable");                 
+                $("#btnPrintSticker").button("disable"); 
+                $("#btnExportToExcel").button("disable");   
             });
 
             $(function(){
@@ -90,9 +91,11 @@
                         if(ids.length > 0){
                             $("#btnPrintLabel").button("enable");
                             $("#btnPrintSticker").button("enable");
+                            $("#btnExportToExcel").button("enable");  
                         } else {
                             $("#btnPrintLabel").button("disable");
-                            $("#btnPrintSticker").button("disable");                            
+                            $("#btnPrintSticker").button("disable");  
+                            $("#btnExportToExcel").button("disable");                              
                         }
                     },
                     beforeRequest: function(){
@@ -239,14 +242,15 @@
                                 <input class="IASCheckBox" TABINDEX="6" type="checkbox" name="periodicals" id="periodicals"/>
                                 <input class="IASButton" TABINDEX="7" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabelGbil()"/>
                                 <input class="IASButton" TABINDEX="8" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printStickerGbil()"/>
-                                <input class="IASButton" TABINDEX="9" type="reset" value="Reset"/>                                
+                                <input class="IASButton" TABINDEX="9" type="submit" value="Label/Sticker - Excel" id="btnExportToExcel" name="btnExportToExcel" onclick="exportToExcel()"/>
+                                <input class="IASButton" TABINDEX="10" type="reset" value="Reset"/>                                
                             </div>
                             <div class="SeparateLabel">
-                                <input class="IASCheckBox" TABINDEX="10" type="checkbox" name="separateLabelForP" id="separateLabelForP"/>
+                                <input class="IASCheckBox" TABINDEX="11" type="checkbox" name="separateLabelForP" id="separateLabelForP"/>
                                 <label>Generate separate label for latest issue of P</label>
-                                <input class="IASCheckBox" TABINDEX="11" type="checkbox" name="separateLabelForRES" id="separateLabelForRES"/>
+                                <input class="IASCheckBox" TABINDEX="12" type="checkbox" name="separateLabelForRES" id="separateLabelForRES"/>
                                 <label>Generate separate label for latest issue of RES</label>
-                                <input class="IASCheckBox" TABINDEX="12" type="checkbox" name="separateLabelForCURR" id="separateLabelForCURR"/>
+                                <input class="IASCheckBox" TABINDEX="13" type="checkbox" name="separateLabelForCURR" id="separateLabelForCURR"/>
                                 <label>Generate separate label for latest issue of CURR</label>                                
                             </div>
                         </fieldset>

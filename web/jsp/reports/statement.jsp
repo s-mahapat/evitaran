@@ -64,6 +64,7 @@
                             var ids = jQuery("#statementTable").jqGrid('getDataIDs');
                             if(ids.length > 0){
                                 $("#printReportBtn").button("enable");
+                                $("#printReportBtnExcel").button("enable");                                
                             }
                         },
                         beforeRequest: function(){
@@ -138,6 +139,17 @@
                 jdsAppend(requestURL,"volumeNumber","volume");
             }
 
+            function printReportPdf()
+            {
+                var x = "printStatement";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelStatement";
+                $('#action').val(x);
+            }  
 
         </script>
         <title>Statement</title>
@@ -147,7 +159,7 @@
 
         <div id="bodyContainer">
             <jsp:useBean class="IAS.Bean.Reports.statementFormBean" id="statementFormBean" scope="request"></jsp:useBean>
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printStatement"%>" name="statement">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="statement">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Statement</legend>
@@ -223,11 +235,13 @@
                             <table class="datatable" id="statementTable"></table>
                             <div id="pager"></div>
                         </fieldset>
+                        <input class="allusers" type="hidden" name="action" id="action"/>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
-                                    <input class="IASButton allusers" type="submit" TABINDEX="8" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="8" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="9" value="Print - Excel" disabled id="printReportBtnExcel" onclick="printReportExcel()"/>                                    
                                 </div>
                             </div>
                         </fieldset>

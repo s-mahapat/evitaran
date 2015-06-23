@@ -63,6 +63,7 @@
                         var ids = jQuery("#subTypeTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
                             $("#printReportBtn").button("enable");
+                            $("#printReportBtnExportToExcel").button("enable");                           
                         }
                     },
                     beforeRequest: function(){
@@ -102,6 +103,18 @@
                     document.getElementById("selall").value = 1;
                 }
             }
+            
+            function printReportPdf()
+            {
+                var x = "printSubType";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelSubType";
+                $('#action').val(x);
+            }               
 
         </script>
     </head>
@@ -109,7 +122,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printSubType"%>" name="searchSubTypeForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="searchSubTypeForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List and Print Subscriber Type</legend>
@@ -201,11 +214,14 @@
                             <div id="pager"></div>
                         </fieldset>
 
-                         <fieldset class="subMainFieldSet">
+                        <input class="allusers" type="hidden" name="action" id="action"/>
+                        
+                        <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
-                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" TABINDEX="5" type="submit" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" TABINDEX="6" type="submit" value="Print - Excel" disabled id="printReportBtnExportToExcel" onclick="printReportExcel()"/>
                                 </div>
                             </div>
                         </fieldset>
