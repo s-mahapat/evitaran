@@ -5,6 +5,7 @@
 package IAS.Servlet;
 
 import IAS.Bean.reminder.subscriberInfo;
+import IAS.Class.BackIssueLabels;
 import IAS.Class.JDSLogger;
 import IAS.Class.ServletContextInfo;
 import IAS.Class.convertToPdf;
@@ -14,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import javax.servlet.ServletContext;
@@ -167,8 +169,12 @@ public class pdfserver extends JDSController {
                 String separateLabelForRES = request.getParameter("separateLabelForRES");
                 String separateLabelForCURR = request.getParameter("separateLabelForCURR");
 
-                convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, separateLabelForP, separateLabelForRES, separateLabelForCURR, true);
-                c2Pdf.prepareBILStickerContent(rs);
+                //convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, separateLabelForP, separateLabelForRES, separateLabelForCURR, true);
+                BackIssueLabels bil = new BackIssueLabels();
+                bil.BackIssueLabel(separateLabelForP, separateLabelForRES, separateLabelForCURR, true);
+                ArrayList BILlabels = bil.prepareBILLabelContent(rs);
+                convertToPdf c2Pdf = new convertToPdf(BILlabels, true, noHeader, periodicals);
+                //c2Pdf.prepareBILStickerContent(rs);
                 c2Pdf.addStickerContent(rs, os);
 
                 response.setContentType("application/pdf");
@@ -186,8 +192,12 @@ public class pdfserver extends JDSController {
                 String separateLabelForRES = request.getParameter("separateLabelForRES");
                 String separateLabelForCURR = request.getParameter("separateLabelForCURR");
 
-                convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, separateLabelForP, separateLabelForRES, separateLabelForCURR, true);
-                c2Pdf.prepareBILLabelContent(rs);
+                //convertToPdf c2Pdf = new convertToPdf(noHeader, periodicals, separateLabelForP, separateLabelForRES, separateLabelForCURR, true);
+                BackIssueLabels bil = new BackIssueLabels();
+                bil.BackIssueSticker(separateLabelForP, separateLabelForRES, separateLabelForCURR, true);
+                ArrayList BILlabels = bil.prepareBILLabelContent(rs);
+                convertToPdf c2Pdf = new convertToPdf(BILlabels, true, noHeader, periodicals);                                             
+                //c2Pdf.prepareBILLabelContent(rs);
                 c2Pdf.addLabelContent(rs, os);
 
                 response.setContentType("application/pdf");

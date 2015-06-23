@@ -53,6 +53,15 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printXML";
+            } else if (action.equalsIgnoreCase("exportToExcelRates")) {
+                String xml = _reportModel.listRates();
+
+                request.setAttribute("xml", xml);
+
+                String query = "Annual Rates for Journals";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printXML";
             } else if (action.equalsIgnoreCase("constructTableJournalRates")) {
                 _reportModel.constructTableJournalRates();
                 url = "/jsp/reports/journalRates.jsp";
@@ -74,6 +83,15 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
+            } else if (action.equalsIgnoreCase("exportToExcelJournalGroup")) {
+                ResultSet rs = _reportModel.searchJournalGroup();
+
+                request.setAttribute("ResultSet", rs);
+
+                String query = "List of journals in group";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printResultset";
             }
 
             // This actually generates a html page with table. This functionality is nolonger used
@@ -100,6 +118,15 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
+            } else if (action.equalsIgnoreCase("exportToExcelSubType")) {
+                ResultSet rs = _reportModel.searchSubType();
+
+                request.setAttribute("ResultSet", rs);
+
+                String query = "List of subscriber types";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printResultset";
             }
 
             // This actually generates a html page with table. This functionality is nolonger used
@@ -126,6 +153,15 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
+            }else if (action.equalsIgnoreCase("exportToExcelInwardsList")) {
+                ResultSet rs = _reportModel.searchInwardsAll();
+
+                request.setAttribute("ResultSet", rs);
+
+                String query = "List of inwards";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printResultset";
             }
 
             /* ---------------------------------------------------------------- */
@@ -144,6 +180,15 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
+            }else if (action.equalsIgnoreCase("exportToExcelAgents")) {
+                ResultSet rs = _reportModel.searchAgents();
+
+                request.setAttribute("ResultSet", rs);
+
+                String query = "List of Agents";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printResultset";
             }
 
             // This actually generates a html page with table. This functionality is nolonger used
@@ -172,6 +217,7 @@ import javax.servlet.http.HttpServletResponse;
                 String query = "List of Subscribers";
 
                 request.setAttribute("query", query);
+                //url = "/excelserver?action=printResultset";
                 url = "/pdfserver?action=printResultset";
             } else if (action.equalsIgnoreCase("printSubscribersSticker")) {
 
@@ -190,6 +236,23 @@ import javax.servlet.http.HttpServletResponse;
                 request.setAttribute("periodicals", periodicals);
                 url = "/pdfserver?action=generatemlPrintSticker";
             } else if (action.equalsIgnoreCase("printSubscribersLabel")) {
+                
+                String orderBy = "pincode";
+                // ResultSet rs = _reportModel.printSubscribersList();
+                ResultSet rs = _reportModel.searchSubscriber(orderBy);
+
+                request.setAttribute("ResultSet", rs);
+
+                String noHeader = "off";
+
+                request.setAttribute("noHeader", noHeader);
+
+                String periodicals = "off";
+
+                request.setAttribute("periodicals", periodicals);
+                url = "/pdfserver?action=generatemlPrintSticker";
+               
+            } else if (action.equalsIgnoreCase("exportReportToExcel")) {
 
                 String orderBy = "pincode";
                 // ResultSet rs = _reportModel.printSubscribersList();
@@ -204,7 +267,25 @@ import javax.servlet.http.HttpServletResponse;
                 String periodicals = "off";
 
                 request.setAttribute("periodicals", periodicals);
-                url = "/pdfserver?action=generatemlPrintLabel";
+                String query = "Stickers-Labels";
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printResultset";                
+            }else if (action.equalsIgnoreCase("printSubscribersExportToExcel")) {
+
+                String orderBy = "pincode";
+                // ResultSet rs = _reportModel.printSubscribersList();
+                ResultSet rs = _reportModel.searchSubscriber(orderBy);
+
+                request.setAttribute("ResultSet", rs);
+
+                String noHeader = "off";
+
+                request.setAttribute("noHeader", noHeader);
+
+                String periodicals = "off";
+
+                request.setAttribute("periodicals", periodicals);
+                url = "/excelserver?action=generatemlPrintLabel";
             }
 
             // This actually generates a html page with table. This functionality is nolonger used
@@ -246,6 +327,17 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printXML";
+            }else if (action.equalsIgnoreCase("exportToExcelStatement")) {
+                ResultSet rs  = null;
+                String    xml = _reportModel.statement();
+
+                request.setAttribute("xml", xml);
+
+                String query = "Statement for Journal " + request.getParameter("journalName") + " for year "
+                               + request.getParameter("year") + " for issue no " + request.getParameter("issue");
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printXML";
             }
 
             /* ---------------------------------------------------------------- */
@@ -264,6 +356,16 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printXML";
+            }else if (action.equalsIgnoreCase("exportToExcelCirculationFigures")) {
+                String xml = _reportModel.circulationFigures();
+
+                request.setAttribute("xml", xml);
+
+                String query = "Circulation Figures for Year " + request.getParameter("year") + " for Month "
+                               + request.getParameter("month");
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printXML";
             }
 
             /* ---------------------------------------------------------------- */
@@ -284,6 +386,15 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printXML";
+            }else if (action.equalsIgnoreCase("exportToExcelSubscriptionFigures")) {
+                String xml = _reportModel.subscriptionFigures();
+
+                request.setAttribute("xml", xml);
+
+                String query = "Subscription Figures";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printXML";
             }
             /* ---------------------------------------------------------------- */
             else if (action.equalsIgnoreCase("subscriptionFiguresLegacy")) {
@@ -296,11 +407,20 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("xml", xml);
 
-                String query = "Circulation Figures for " + request.getParameter("year");
+                String query = "Circulation Figures Legacy for " + request.getParameter("year");
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printXML";
-            }            
+            }else if (action.equalsIgnoreCase("exportToExcelSubscriptionFiguresLegacy")) {
+                String xml = _reportModel.subscriptionFiguresLegacy();
+
+                request.setAttribute("xml", xml);
+
+                String query = "Circulation Figures Legacy for " + request.getParameter("year");
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printXML";
+            }             
 
             /* ---------------------------------------------------------------- */
             else if (action.equalsIgnoreCase("listMl")) {
@@ -318,7 +438,17 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
-            } else if (action.equalsIgnoreCase("listBil")) {
+            } else if (action.equalsIgnoreCase("exportToExcelMl")) {
+                ResultSet rs = _reportModel.listMl();
+
+                request.setAttribute("ResultSet", rs);
+
+                String query = "Circulation Figures";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printResultset";
+            }                        
+            else if (action.equalsIgnoreCase("listBil")) {
                 ResultSet rs  = _reportModel.listBil();
                 String    xml = util.convertResultSetToXML(rs);
 
@@ -333,6 +463,15 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
+            }else if (action.equalsIgnoreCase("exportToExcelBil")) {
+                ResultSet rs = _reportModel.listBil();
+
+                request.setAttribute("ResultSet", rs);
+
+                String query = "Circulation Figures";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printResultset";
             }
 
             /* ---------------------------------------------------------------- */
@@ -346,6 +485,12 @@ import javax.servlet.http.HttpServletResponse;
                 String query = "List invoice";
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printXML";
+            }else if (action.equalsIgnoreCase("exportToExcelInvoice")) {
+                String    xml  = _reportModel.listInvoice();
+                request.setAttribute("xml", xml);
+                String query = "List invoice";
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printXML";
             }
 
             /* ---------------------------------------------------------------- */
@@ -364,6 +509,15 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
+            }else if (action.equalsIgnoreCase("exportToExcelListReminder")) {
+                ResultSet rs = _reportModel.listReminders();
+
+                request.setAttribute("ResultSet", rs);
+
+                String query = "List Reminders";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printResultset";
             }
 
             /* ---------------------------------------------------------------- */
@@ -384,6 +538,15 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printXML";
+            }else if (action.equalsIgnoreCase("exportToExcelPOT")) {
+                String xml = _reportModel.printOrderTableDetailsList();
+
+                request.setAttribute("xml", xml);
+
+                String query = "Print Order Table";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printXML";
             }
 
             /* -----------------------outstaning Bill -------------------------- */
@@ -401,6 +564,15 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printXML";
+            }else if (action.equalsIgnoreCase("exportToExcelOutstandingBalance")) {
+                String xml = _reportModel.outstaningBalnace();
+
+                request.setAttribute("xml", xml);
+
+                String query = "Outstanding balance for Subscriptions";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printXML";
             }
 
             /* ---------------------------------------------------------------- */
@@ -420,6 +592,15 @@ import javax.servlet.http.HttpServletResponse;
 
                 request.setAttribute("query", query);
                 url = "/pdfserver?action=printResultset";
+            }else if (action.equalsIgnoreCase("exportToExcelgml")) {
+                ResultSet rs = _reportModel.gml();
+
+                request.setAttribute("ResultSet", rs);
+
+                String query = "List of Generated mailing list";
+
+                request.setAttribute("query", query);
+                url = "/excelserver?action=printResultset";
             }
 
             /* ---------------------------------------------------------------- */

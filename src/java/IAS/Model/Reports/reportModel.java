@@ -1281,9 +1281,9 @@ public class reportModel extends JDSModel {
                                             if (rsPO.next()) {
                                                 print_order = Integer.toString(rsPO.getInt(1));
                                             }
-                                            xml = xml + "<col" + issueNo + ">";
+                                            xml = xml + "<issueNo" + issueNo + ">";
                                             xml = xml + print_order;
-                                            xml = xml + "</col" + issueNo + ">";
+                                            xml = xml + "</issueNo" + issueNo + ">";
                                         }
 
                                         issueNo++;
@@ -1298,7 +1298,7 @@ public class reportModel extends JDSModel {
                     int residualIssues = maxNoOfIssuesForJournal - (issueNo - 1);
 
                     for (int i = 0; i < residualIssues; i++) {
-                        xml = xml + "<col" + issueNo + ">" + "NA" + "</col" + issueNo + ">";
+                        xml = xml + "<issueNo" + issueNo + ">" + "NA" + "</issueNo" + issueNo + ">";
                         issueNo++;
                     }
 
@@ -1377,7 +1377,7 @@ public class reportModel extends JDSModel {
         String colModel = "[" + "{name:'journalCode', index:'journalCode', xmlmap:'journalCode'},";
         for (int i = 1; i <= maxNoOfIssues; i++) {
             colNames = colNames + "'" + i + "'";
-            colModel = colModel + "{name:'col" + i + "'," + "index:'col" + i + "'," + "align:'center'," + "xmlmap:'col" + i + "'}";
+            colModel = colModel + "{name:'issueNo" + i + "'," + "index:'issueNo" + i + "'," + "align:'center'," + "xmlmap:'issueNo" + i + "'}";
 
             if (i != maxNoOfIssues) {
                 colNames = colNames + ",";

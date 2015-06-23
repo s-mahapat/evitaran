@@ -13,7 +13,7 @@ import java.sql.SQLException;
  */
 public class subInfo {
 
-    private String subscriberNumber = null, journalCode = null, subtypecode = null, startDate = null, endDate = null;
+    private String subscriberNumber = null, journalCode = "", subtypecode = null, startDate = null, endDate = null;
     private String subscriberName   = null, department = null, institution = null, address = null;
     private String city             = null, pincode = null, state = null, country = null;
     private String startYear=null, startMonth=null, endYear=null, endMonth=null;
@@ -45,6 +45,9 @@ public class subInfo {
                 subscriberNumber = rs.getString(i);
             } if(columnName.equals("journalCode")) {
                 journalCode = rs.getString(i);
+                if(journalCode == null) {
+                    journalCode = "";
+                }
             } if(columnName.equals("subtypecode")) {
                 subtypecode = rs.getString(i);
             } if(columnName.equals("startYear")) {

@@ -69,6 +69,7 @@
                             var ids = jQuery("#circulationTable").jqGrid('getDataIDs');
                             if(ids.length > 0){
                                 $("#printReportBtn").button("enable");
+                                $("#printReportBtnExcel").button("enable");                                
                             }
                         },
                         beforeRequest: function(){
@@ -98,6 +99,18 @@
 
                 }
             }
+            
+            function printReportPdf()
+            {
+                var x = "printCirculationFigures";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelCirculationFigures";
+                $('#action').val(x);
+            }              
 
         </script>
     </head>
@@ -105,7 +118,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printCirculationFigures"%>" name="circulationFigures">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="circulationFigures">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Circulation Figures</legend>
@@ -137,15 +150,15 @@
                                         <label>Month:</label>
                                     </span>
                                     <span class="IASFormDivSpanInputBox">
-                                    <select class="IASComboBoxMandatory allusers" TABINDEX="4" name="month" id="month">
+                                    <select class="IASComboBoxMandatory allusers" TABINDEX="2" name="month" id="month">
                                             <option value="0">Select</option>
                                         </select>
                                     </span>
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="2" onclick="getReport()"/>Search</button>
-                                <input class="IASButton allusers" TABINDEX="3" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="3" onclick="getReport()"/>Search</button>
+                                <input class="IASButton allusers" TABINDEX="4" type="reset" value="Reset"/>
                             </div>
 
                         </fieldset>
@@ -165,12 +178,13 @@
                         <%-- Print Action Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
 
-
+                        <input class="allusers" type="hidden" name="action" id="action"/>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
-                                    <input class="IASButton allusers" type="submit" TABINDEX="4" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="5" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="6" value="Print - Excel" disabled id="printReportBtnExcel" onclick="printReportExcel()"/>                                    
                                 </div>
                             </div>
                         </fieldset>

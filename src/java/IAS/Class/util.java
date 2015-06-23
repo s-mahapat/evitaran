@@ -152,7 +152,7 @@ public final class util {
 
         ResultSetMetaData rsmd = rs.getMetaData();
         int colCount = rsmd.getColumnCount();
-
+        
         while (rs.next()) {
             Element row = doc.createElement("row");
             results.appendChild(row);
@@ -178,6 +178,45 @@ public final class util {
         return xml;
 
     }
+    
+    public static String convertResultSetToXMLColumnName(ResultSet rs) throws ParserConfigurationException, SQLException, TransformerException {
+
+        String xml = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.newDocument();
+
+        Element results = doc.createElement("results");
+        doc.appendChild(results);
+
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int colCount = rsmd.getColumnCount();
+        
+        while (rs.next()) {
+            Element row = doc.createElement("row");
+            results.appendChild(row);
+
+            for (int i = 1; i <= colCount; i++) {
+                String columnName = rsmd.getColumnName(i);
+                //String columnName = rsmd.getColumnLabel(i);
+                // check if the value is null, then initialize it to a blank string
+                Object value = rs.getObject(i) != null ? rs.getObject(i) : "";
+                Element node = doc.createElement(columnName);
+                node.appendChild(doc.createTextNode(value.toString()));
+                row.appendChild(node);
+            }
+        }
+        DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.transform(domSource, result);
+        xml = writer.toString();
+
+        return xml;
+
+    }    
 
     public static String convertStringToXML(String text, String tagName) throws ParserConfigurationException, TransformerException, IOException {
 
@@ -579,4 +618,14 @@ public final class util {
      }
      }
      */
+    public static int getColTypes(ResultSetMetaData rsmd, int col)
+                            throws SQLException {
+
+      int jdbcType = rsmd.getColumnType(col);
+      //String name = rsmd.getColumnTypeName(i);
+      //System.out.print("Column " + col + " is JDBC type " + jdbcType);
+      //System.out.println(", which the DBMS calls " + name);
+      return jdbcType;
+
+    }
 }

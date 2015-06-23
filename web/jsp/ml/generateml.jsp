@@ -25,7 +25,7 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=month"%>","month","month");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
-                jQuery("#btnAdd,#btnPrintLabel,#btnPrintSticker").button("disable");
+                jQuery("#btnAdd,#btnPrintLabel,#btnPrintSticker,#btnExportToExcel").button("disable");
 
             });
 
@@ -141,7 +141,7 @@
                     jQuery("#mlTable").trigger("reloadGrid");
                     //jQuery("#btnPrintLabel").attr("disabled",false);
                     //jQuery("#btnPrintSticker").attr("disabled",false);
-                    jQuery("#btnPrintLabel,#btnPrintSticker").button("enable");
+                    jQuery("#btnPrintLabel,#btnPrintSticker,#btnExportToExcel").button("enable");
                     jQuery("#btnSearch").button("disable");
                     jQuery("#btnAdd").button("disable");
                 }
@@ -212,6 +212,11 @@
                 var x = "printSticker";
                 $('#action').val(x);
             }
+            function exportToExcel()
+            {
+                var x = "exportToExcel";
+                $('#action').val(x);
+            }            
 
             function getNoHeaderChecked(){
                 if (document.getElementById("noHeader").value == 1 ){
@@ -361,25 +366,25 @@
                         <%-- Journal Actions Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
 
-                        <input type="hidden" name="action" id="action"/>
-                        
+                        <input type="hidden" name="action" id="action"/>                        
                         <fieldset class="subMainFieldSet">
                             <div class="actionBtnDiv">
-                               <div id="printMedium">
-                                    <span class="IASFormDivSpanLabel">
+                               <%--<div id="printMedium">--%>
+                                    <%--<span class="IASFormDivSpanLabel">--%>
                                         <label>Print option</label>
-                                    </span>
-                                    <span class="IASFormDivSpanInputBox">
+                                    <%--</span>--%>
+                                    <%--<span class="IASFormDivSpanInputBox">--%>
                                      <select class="IASComboBox" TABINDEX="6" name="printOption" id="printOption">
                                         <option value ="O">India 1 Copy</option>
                                         <option value ="E">India Extra</option>
                                         <option value ="F">Foreign</option>
                                      </select>
-                                    </span>
-                                </div>
+                                    <%--</span>--%>
+                                <%--</div>--%>
                                 <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
                                 <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
-                                <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
+                                <input class="IASButton" TABINDEX="8" type="submit" value="Label/Sticker - Excel" id="btnExportToExcel" name="btnExportToExcel" onclick="exportToExcel()"/>
+                                <input class="IASButton" TABINDEX="9" type="reset" value="Reset"/>
                             </div>
                         </fieldset>
                     </fieldset>

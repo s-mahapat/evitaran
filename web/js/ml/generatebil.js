@@ -181,3 +181,28 @@ function printStickerGbil()
     var x = "printStickerGbil";
     $('#action').val(x); 
 }
+
+function exportToExcel()
+{
+    var arrRowData = $("#bilTable").getRowData();
+    var rowRequiredData = [];
+    var ids = $("#bilTable").getDataIDs();
+    //var ids = jQuery("#bilTable").jqGrid('getDataIDs');
+
+    for(intIndex in arrRowData){
+        var rowObj = arrRowData[intIndex];
+        /*pick on required fields from the UI. Not fields are requred, they can be derieved from the database itself.
+         * e.g. the journal name can be derieved from the code if required.
+         */
+        rowRequiredData.push({
+            name: "bilid",
+            value: rowObj.bilid
+        });        
+    }
+    
+    
+    $('#bilid').val($.param(rowRequiredData));
+    //$('#bil_ids').val(rowRequiredData);
+    var x = "exportToExcel";
+    $('#action').val(x); 
+}

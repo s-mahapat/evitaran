@@ -56,6 +56,7 @@
                         var ids = jQuery("#datatable").jqGrid('getDataIDs');
                         if(ids.length > 0){
                             $("#printReportBtn").button("enable");
+                            $("#printReportBtnExportToExcel").button("enable");                           
                         }
                     },
                     beforeRequest: function(){
@@ -99,10 +100,17 @@
                 }
             }
 
-            function print(){
-                 var x = "printRates";
-                 $('#action').val(x);
+            function printReportPdf()
+            {
+                var x = "printRates";
+                $('#action').val(x);
             }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelRates";
+                $('#action').val(x);
+            }               
 
         </script>
 
@@ -184,10 +192,12 @@
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Print Button Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
+                        <input class="allusers" type="hidden" name="action" id="action"/>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
-                                    <input class="IASButton allusers" TABINDEX="4" type="submit" value="Print" id="printReportBtn" name="printReportBtn" onclick="print()"/>
+                                    <input class="IASButton allusers" TABINDEX="4" type="submit" value="Print - PDF" id="printReportBtn" name="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" TABINDEX="5" type="submit" value="Print - Excel" id="printReportBtnExportToExcel" onclick="printReportExcel()"/>
                                 </div>
                             </div>
                         </fieldset>

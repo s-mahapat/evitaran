@@ -144,7 +144,8 @@
                         jQuery("#mlTable").setGridParam({ datatype: "xml" });
                         jQuery("#mlTable").trigger("clearGridData");
                         jQuery("#mlTable").trigger("reloadGrid");
-                        jQuery("#btnPrint").button("enable");
+                        jQuery("#printReportBtn").button("enable");
+                        jQuery("#printReportBtnExcel").button("enable");
 
                         jQuery("#mlTable").jqGrid('navGrid','#pager',
                             // Which buttons to show
@@ -186,6 +187,17 @@
                 jdsAppend(requestURL,"volumeNumber","volume");
             }
 
+            function printReportPdf()
+            {
+                var x = "printlistMl";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelMl";
+                $('#action').val(x);
+            } 
 
         </script>
     </head>
@@ -193,7 +205,7 @@
 
         <%@include file="../templates/layout.jsp" %>
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printlistMl"%>" name="bilForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="bilForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>Report - Mailing List</legend>
@@ -315,7 +327,7 @@
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Actions Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>
-
+                            <input class="allusers" type="hidden" name="action" id="action"/>
                             <fieldset class="subMainFieldSet">
                                 <%--
                                 <div class="IASFormFieldDiv">
@@ -328,8 +340,9 @@
                                 </div>
                                 --%>
                                 <div class="actionBtnDiv">
-                                    <input class="IASButton allusers" TABINDEX="5" type="submit" value="Print" id="btnPrint" name="btnPrint"/>
-                                    <input class="IASButton allusers" TABINDEX="6" type="reset" value="Reset" id="btnReset" name="btnReset"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="7" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="8" value="Print - Excel" disabled id="printReportBtnExcel" onclick="printReportExcel()"/>                                    
+                                    <input class="IASButton allusers" TABINDEX="9" type="reset" value="Reset" id="btnReset" name="btnReset"/>
                                 </div>
                             </fieldset>
                     </fieldset>

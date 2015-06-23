@@ -28,7 +28,7 @@
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=month"%>","month","month");
                 jdsAppend("<%=request.getContextPath() + "/CMasterData?md=journalname"%>","journalName","journalName");
-                jQuery("#btnSearch,#btnPrintLabel,#btnPrintSticker").button("disable");
+                jQuery("#btnSearch,#btnPrintLabel,#btnPrintSticker,#btnExportToExcel").button("disable");
 
              });
 
@@ -155,7 +155,7 @@
                         jQuery("#mlTable").trigger("clearGridData");
                         jQuery("#mlTable").trigger("reloadGrid");
                         //jQuery("#btnPrintLabel,#btnPrintSticker").attr("disabled",false);
-                        jQuery("#btnPrintLabel,#btnPrintSticker").button("enable");
+                        jQuery("#btnPrintLabel,#btnPrintSticker,#btnExportToExcel").button("enable");
                         jQuery("#btnSearch").button("disable");
 
                         //jQuery("#mlTable").jqGrid('searchGrid', {multipleSearch:true} );
@@ -238,6 +238,12 @@
             function printSticker()
             {
                 var x = "printSticker";
+                $('#action').val(x);
+            }
+            
+            function exportToExcel()
+            {
+                var x = "exportToExcel";
                 $('#action').val(x);
             }
 
@@ -397,7 +403,8 @@
                                     <%--</div>--%>
                                     <input class="IASButton" TABINDEX="6" type="submit" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
                                     <input class="IASButton" TABINDEX="7" type="submit" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
-                                    <input class="IASButton" TABINDEX="8" type="reset" value="Reset"/>
+                                    <input class="IASButton" TABINDEX="8" type="submit" value="Label/Sticker - Excel" id="btnExportToExcel" name="btnExportToExcel" onclick="exportToExcel()"/>
+                                    <input class="IASButton" TABINDEX="9" type="reset" value="Reset"/>
                                 </div>
                             </fieldset>
                     </fieldset>

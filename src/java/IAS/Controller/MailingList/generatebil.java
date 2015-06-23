@@ -67,6 +67,11 @@ public class generatebil extends JDSController {
                 request.setAttribute("ResultSet", rs);
                 //url = "/pdfserver?action=generatemlPrintSticker";
                 url = "/pdfserver?action=generatebilPrintSticker";
+            }else if(action.equalsIgnoreCase("exportToExcel")){
+
+                ResultSet rs = _bilModel.printbil();
+                request.setAttribute("ResultSet", rs);
+                url = "/excelserver?action=generatebil";
             }
 
         } catch (Exception e) {

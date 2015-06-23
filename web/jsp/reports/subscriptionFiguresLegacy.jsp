@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="../templates/style.jsp" %>
         <link rel="stylesheet" type="text/css" href="css/report/circulationFigures.css" />
-        <title>Subscription Figures</title>
+        <title>Subscription Figures Legacy</title>
         <script type="text/javascript">
             $(document).ready(function() {
                 <%--jdsAppend("<%=request.getContextPath() + "/CMasterData?md=year"%>","year","year");--%>
@@ -63,6 +63,7 @@
                             var ids = jQuery("#subscriptionFigTable").jqGrid('getDataIDs');
                             if(ids.length > 0){
                                 $("#printReportBtn").button("enable");
+                                $("#printReportBtnExcel").button("enable");
                             }
                         },
                         beforeRequest: function(){
@@ -86,6 +87,18 @@
                     jQuery("#subscriptionFigTable").trigger("reloadGrid");
 
             }
+            
+            function printReportPdf()
+            {
+                var x = "printSubscriptionFiguresLegacy";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelSubscriptionFiguresLegacy";
+                $('#action').val(x);
+            }             
 
         </script>
     </head>
@@ -94,10 +107,10 @@
 
         <div id="bodyContainer">
             <jsp:useBean class="IAS.Bean.Reports.subscriptionFiguresFormBeanReport" id="subscriptionFiguresFormBeanReport" scope="request"></jsp:useBean>
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printSubscriptionFiguresLegacy"%>" name="subscriptionFigures">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="subscriptionFigures">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
-                        <legend>Subscription Figures</legend>
+                        <legend>Subscription Figures Legacy</legend>
 
                         <%-----------------------------------------------------------------------------------------------------%>
                         <%-- Search Criteria Field Set --%>
@@ -154,12 +167,13 @@
                         <%-- Print Action Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
 
-
+                        <input class="allusers" type="hidden" name="action" id="action"/>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" onclick="javascript:window.print();"/>--%>
-                                    <input class="IASButton allusers" type="submit" TABINDEX="4" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="8" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="9" value="Print - Excel" disabled id="printReportBtnExcel" onclick="printReportExcel()"/>                                                                        
                                 </div>
                             </div>
                         </fieldset>

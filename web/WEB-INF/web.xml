@@ -252,6 +252,10 @@
         <servlet-name>LogoutController</servlet-name>
         <servlet-class>IAS.Controller.LogoutController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>excelserver</servlet-name>
+        <servlet-class>IAS.Servlet.excelserver</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -441,6 +445,10 @@
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>excelserver</servlet-name>
+        <url-pattern>/excelserver</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

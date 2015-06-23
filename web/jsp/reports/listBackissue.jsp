@@ -42,25 +42,25 @@
                     rownumbers: true,
                     emptyrecords: "No Mailing List Found or Generated",
                     loadtext: "Loading...",
-                    colNames:['journalCode', 'subtypecode', 'subscriberNumber', 'subscriberName', 'city',
-                                'state', 'country', 'pincode', 'copies', 'issue', 'month', '`year`', 'startYear', 'startMonth', 'endYear', 'endMonth'],
+                    colNames:['Journal Code', 'Sub Type Code', 'Subscriber Number', 'Subscriber Name', 'City',
+                                'State', 'Country', 'Pincode', 'Copies', 'Issue', 'Month', 'Year', 'Start Year', 'Start Month', 'End Year', 'End Month'],
                     colModel :[
                         {name:'journalCode', index:'journalCode', width:80, align:'center', xmlmap:'journalCode'},
                         {name:'subtypecode', index:'subtypecode', width:20, align:'center', xmlmap:'subtypecode'},
                         {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
                         {name:'subscriberName', index:'subscriberName', width:100, align:'center', xmlmap:'subscriberName'},
-                        {name:'city', index:'city', width:80, align:'center', xmlmap:'city'},
-                        {name:'state', index:'state', width:80, align:'center', xmlmap:'state'},
-                        {name:'country', index:'country', width:80, align:'center', xmlmap:'country'},
-                        {name:'pincode', index:'pincode', width:80, align:'center', xmlmap:'pincode'},
-                        {name:'copies', index:'copies', width:10, align:'copies', xmlmap:'copies'},
-                        {name:'issue', index:'issue', width:10, align:'center', xmlmap:'issue'},
-                        {name:'month', index:'month', width:80, align:'center', xmlmap:'month'},
-                        {name:'year', index:'year', width:20, align:'center', xmlmap:'year'},
-                        {name:'startYear', index:'startYear', width:25, align:'center', xmlmap:'startYear'},
-                        {name:'startMonth', index:'startMonth', width:20, align:'center', xmlmap:'startMonth'},
-                        {name:'endYear', index:'endYear', width:25, align:'center', xmlmap:'endYear'},
-                        {name:'endMonth', index:'endMonth', width:20, align:'center', xmlmap:'endMonth'},
+                        {name:'city', index:'city', width:60, align:'center', xmlmap:'city'},
+                        {name:'state', index:'state', width:60, align:'center', xmlmap:'state'},
+                        {name:'country', index:'country', width:60, align:'center', xmlmap:'country'},
+                        {name:'pincode', index:'pincode', width:50, align:'center', xmlmap:'pincode'},
+                        {name:'copies', index:'copies', width:30, align:'copies', xmlmap:'copies'},
+                        {name:'issue', index:'issue', width:30, align:'center', xmlmap:'issue'},
+                        {name:'month', index:'month', width:40, align:'center', xmlmap:'month'},
+                        {name:'year', index:'year', width:40, align:'center', xmlmap:'year'},
+                        {name:'startYear', index:'startYear', width:40, align:'center', xmlmap:'startYear'},
+                        {name:'startMonth', index:'startMonth', width:40, align:'center', xmlmap:'startMonth'},
+                        {name:'endYear', index:'endYear', width:40, align:'center', xmlmap:'endYear'},
+                        {name:'endMonth', index:'endMonth', width:40, align:'center', xmlmap:'endMonth'},
                     ],
                     xmlReader : {
                         root: "results",
@@ -79,6 +79,12 @@
                     caption: '&nbsp;',
                     editurl:"<%=request.getContextPath() + "/reports?action=listBil"%>",
                     gridComplete: function() {
+                        
+                        var ids = jQuery("#bilTable").jqGrid('getDataIDs');
+                            if(ids.length > 0){
+                                $("#printReportBtn").button("enable");
+                                $("#printReportBtnExcel").button("enable");                                
+                            }
 
                     },
                     beforeRequest: function(){
@@ -180,6 +186,18 @@
 
             // draw the date picker.
             jQueryDatePicker("from","to");
+            
+            function print()
+            {
+                var x = "printlistBil";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelBil";
+                $('#action').val(x);
+            }             
 
         </script>
     </head>
@@ -222,7 +240,7 @@
                                                     <label>Volume Number:</label>
                                                 </span>
                                                 <span class="IASFormDivSpanInputBox">
-                                                    <select class="IASComboBox allusers" TABINDEX="4" name="volume" id="volume" onchange="loadIssues()">
+                                                    <select class="IASComboBox allusers" TABINDEX="3" name="volume" id="volume" onchange="loadIssues()">
                                                         <option value="0">Select</option>
                                                     </select>
                                                 </span>
@@ -236,7 +254,7 @@
                                                 <label>Issue:</label>
                                             </span>
                                             <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox allusers" TABINDEX="5" name="issue" id="issue">
+                                                <select class="IASComboBox allusers" TABINDEX="4" name="issue" id="issue">
                                                     <option value="0">Select</option>
                                                 </select>
                                             </span>
@@ -246,7 +264,7 @@
                                                 <label>Subscriber Type</label>
                                             </span>
                                             <span class="IASFormDivSpanInputBox">
-                                                <select class="IASComboBox allusers" TABINDEX="1" name="subscriberType" id="subscriberType">
+                                                <select class="IASComboBox allusers" TABINDEX="5" name="subscriberType" id="subscriberType">
                                                     <option value="0" selected>Select</option>
                                                 </select>
                                             </span>
@@ -257,14 +275,14 @@
                                             </span>
                                             <div class="dateDiv"></div>
                                             <span class="IASFormDivSpanInputBox">
-                                                <input class="IASDateTextBox allusers" readonly size="10" type="text" id="from" name="from"/>
+                                                <input class="IASDateTextBox allusers" TABINDEX="6" readonly size="10" type="text" id="from" name="from"/>
                                                 <label> to </label>
-                                                <input class="IASDateTextBox allusers" readonly size="10" type="text" id="to" name="to"/>
+                                                <input class="IASDateTextBox allusers" TABINDEX="7" readonly size="10" type="text" id="to" name="to"/>
                                             </span>
                                         </div>
                                     </div>
                                     <div class="actionBtnDiv">
-                                        <button class="IASButton SearchButton allusers" type="button" TABINDEX="5" id="btnSearch" name="btnSearch" onclick="search()"/>Search</button>
+                                        <button class="IASButton SearchButton allusers" type="button" TABINDEX="8" id="btnSearch" name="btnSearch" onclick="search()"/>Search</button>
                                     </div>
                             </fieldset>
 
@@ -281,11 +299,12 @@
                             <%-----------------------------------------------------------------------------------------------------%>
                             <%-- Actions Field Set --%>
                             <%-----------------------------------------------------------------------------------------------------%>
-
+                            <input class="allusers" type="hidden" name="action" id="action"/>
                             <fieldset class="subMainFieldSet">
                                 <div class="actionBtnDiv">
-                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
-                                    <input class="IASButton allusers" TABINDEX="8" type="reset" value="Reset"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="9" value="Print - PDF" disabled id="printReportBtn" onclick="print()"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="10" value="Print - Excel" disabled id="printReportBtnExcel" onclick="printReportExcel()"/>
+                                    <input class="IASButton allusers" TABINDEX="11" type="reset" value="Reset"/>
                                 </div>
                             </fieldset>
                     </fieldset>

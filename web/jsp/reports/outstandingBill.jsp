@@ -67,6 +67,7 @@
                         var ids = jQuery("#balanceTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
                             $("#printReportBtn").button("enable");
+                            $("#printReportBtnExcel").button("enable");
                         }
                     },
                     beforeRequest: function(){
@@ -126,13 +127,25 @@
                     );
                 }
             }
+            
+            function printReportPdf()
+            {
+                var x = "printOutstandingBalance";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelOutstandingBalance";
+                $('#action').val(x);
+            }             
         </script>
     </head>
     <body>
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printOutstandingBalance"%>" name="listOutstandingBill">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="listOutstandingBill">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List and Print Outstanding Bill</legend>
@@ -206,12 +219,13 @@
                         <%-- Print Action Field Set --%>
                         <%-----------------------------------------------------------------------------------------------------%>
 
-
+                        <input class="allusers" type="hidden" name="action" id="action"/>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
-                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="4" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="5" value="Print - Excel" disabled id="printReportBtnExcel" onclick="printReportExcel()"/>                                                                        
                                 </div>
                             </div>
                         </fieldset>

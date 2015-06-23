@@ -36,7 +36,7 @@
                     rownumbers: true,
                     emptyrecords: "No Subscriber Type",
                     loadtext: "Loading...",
-                    colNames:['invoiceNumber','invoiceCreationDate','subscriberNumber','journalCode','Period','Amount'],
+                    colNames:['Invoice Number','Invoice Creation Date','Subscriber Number','Journal Code','Period','Amount'],
                     colModel :[
                         {name:'proInvNo', index:'proInvNo', width:80, align:'center', xmlmap:'proInvNo'},
                         {name:'proInvDate', index:'proInvDate', width:80, align:'center', xmlmap:'proInvDate'},
@@ -64,6 +64,7 @@
                         var ids = jQuery("#subTypeTable").jqGrid('getDataIDs');
                         if(ids.length > 0){
                             $("#printReportBtn").button("enable");
+                            $("#printReportBtnExcel").button("enable");
                         }
                     },
                     beforeRequest: function(){
@@ -119,6 +120,17 @@
 
             }
 
+            function printReportPdf()
+            {
+                var x = "printlistInvoice";
+                $('#action').val(x);
+            }
+            
+            function printReportExcel()
+            {
+                var x = "exportToExcelInvoice";
+                $('#action').val(x);
+            }  
 
             // draw the date picker.
             jQueryDatePicker("from","to");
@@ -128,7 +140,7 @@
         <%@include file="../templates/layout.jsp" %>
 
         <div id="bodyContainer">
-            <form method="post" action="<%=request.getContextPath() + "/reports?action=printlistInvoice"%>" name="searchSubTypeForm">
+            <form method="post" action="<%=request.getContextPath() + "/reports"%>" name="searchSubTypeForm">
                 <div class="MainDiv">
                     <fieldset class="MainFieldset">
                         <legend>List Invoice</legend>
@@ -159,15 +171,15 @@
                                     </span>
                                     <div class="dateDiv"></div>
                                     <span class="IASFormDivSpanInputBox">
-                                        <input class="IASDateTextBox allusers" TABINDEX="5" readonly size="10" type="text" id="from" name="from"/>
+                                        <input class="IASDateTextBox allusers" TABINDEX="2" readonly size="10" type="text" id="from" name="from"/>
                                         <label> to </label>
-                                        <input class="IASDateTextBox allusers" TABINDEX="6" readonly size="10" type="text" id="to" name="to"/>
+                                        <input class="IASDateTextBox allusers" TABINDEX="3" readonly size="10" type="text" id="to" name="to"/>
                                     </span>
                                 </div>
                             </div>
                             <div class="actionBtnDiv">
-                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="3" onclick="getList()" value="Search"/>Search</button>
-                                <input class="IASButton allusers" TABINDEX="4" type="reset" value="Reset"/>
+                                <button class="IASButton SearchButton allusers" type="button" TABINDEX="4" onclick="getList()" value="Search"/>Search</button>
+                                <input class="IASButton allusers" TABINDEX="5" type="reset" value="Reset"/>
                             </div>
                         </fieldset>
                         <%-----------------------------------------------------------------------------------------------------%>
@@ -178,11 +190,13 @@
                             <table class="datatable" id="subTypeTable"></table>
                             <div id="pager"></div>
                         </fieldset>
+                        <input class="allusers" type="hidden" name="action" id="action"/>
                         <fieldset class="subMainFieldSet">
                             <div class="IASFormFieldDiv">
                                 <div class="singleActionBtnDiv">
                                     <%--<input class="IASButton" type="button" value="Print" disabled id="printReportBtn" onclick="printReport();"/>--%>
-                                    <input class="IASButton allusers" type="submit" value="Print" disabled id="printReportBtn"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="6" value="Print - PDF" disabled id="printReportBtn" onclick="printReportPdf()"/>
+                                    <input class="IASButton allusers" type="submit" TABINDEX="7" value="Print - Excel" disabled id="printReportBtnExcel" onclick="printReportExcel()"/>                                    
                                 </div>
                             </div>
                         </fieldset>
