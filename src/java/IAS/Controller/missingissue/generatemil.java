@@ -58,9 +58,10 @@ public class generatemil extends JDSController {
                 
                 if (request.getParameter("printType").equals("printLabel")){
                   url = "/pdfserver?action=generatebilPrintLabel";  
-                }
-                else{
+                } else if (request.getParameter("printType").equals("printSticker")){
                   url = "/pdfserver?action=generatebilPrintSticker";  
+                } else if (request.getParameter("printType").equals("exportToExcel")) {
+                  url = "/excelserver?action=generatebil";
                 }
             }
 

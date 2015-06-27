@@ -144,6 +144,13 @@
                 $('#printType').val(x);
                 printMissingInfo();
             }
+            
+            function exportToExcel()
+            {
+                var x = "exportToExcel";
+                $('#printType').val(x);
+                printMissingInfo();
+            }            
 
             // draw the date picker.
             jQueryDatePicker("from","to");
@@ -220,7 +227,8 @@
                             <div class="actionBtnDiv">
                                 <input class="IASButton" TABINDEX="7" type="button" value="Print Label" id="btnPrintLabel" name="btnPrintLabel" onclick="printLabel()"/>
                                 <input class="IASButton" TABINDEX="8" type="button" value="Print Sticker" id="btnPrintSticker" name="btnPrintSticker" onclick="printSticker()"/>
-                                <input class="IASButton" TABINDEX="9" type="reset" value="Reset"/>
+                                <input class="IASButton" TABINDEX="9" type="button" value="Label/Sticker - Excel" id="btnExportToExcel" name="btnExportToExcel" onclick="exportToExcel()"/>
+                                <input class="IASButton" TABINDEX="10" type="reset" value="Reset"/>
                             </div>
                         </fieldset>
                     </fieldset>
