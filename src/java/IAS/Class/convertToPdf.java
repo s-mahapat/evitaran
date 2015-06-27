@@ -1179,15 +1179,71 @@ public convertToPdf(){
     }
 
     //Note: The same code exists in convertToExcel -> getLabelContentExportToExcel. Any change to this code review in other function as well
+    
     public Paragraph getLabelContent(ResultSet rs) throws SQLException
     {
-        /*
-        String subscriberNumber = null, journalCode = null, subtypecode = null, startDate = null, endDate = null;
-        String subscriberName   = null, department = null, institution = null, address = null;
-        String city             = null, pincode = null, state = null, country = null;
-        String startYear=null, startMonth=null, endYear=null, endMonth=null;
-        String subType=null; int copies = 0;
-        */
+        Paragraph info = null;
+
+        if(rs.next())
+        {
+            CreateLabels label = new CreateLabels(rs, noHeader);
+
+            info = new Paragraph();
+            info.setLeading(lfixedLeading, lmultipliedLeadingPlus);
+            info.setAlignment(ltextAlignment);
+
+            Font font;
+
+            font = new Font(lfontType, lfontSizeHeader, lfontStyle, BaseColor.BLACK);
+            String firstLine = label.getFirstLine();
+            if(!firstLine.isEmpty()) {
+                info.add(new Chunk(firstLine, font));
+                info.add(Chunk.NEWLINE);
+            }            
+            
+            font = new Font(lfontType, lfontSize, lfontStyle, BaseColor.BLACK);
+            String subscriberName = label.getSubscriberName();
+            if(!subscriberName.isEmpty()) {
+                info.add(new Chunk(subscriberName, font));
+                info.add(Chunk.NEWLINE);
+            }
+            
+            String department = label.getDepartment();
+            if(!department.isEmpty()) {
+                info.add(new Chunk(department, font));
+                info.add(Chunk.NEWLINE);
+            }
+            
+            String institution = label.getInstitution();
+            if(!institution.isEmpty()) {
+                info.add(new Chunk(institution, font));
+                info.add(Chunk.NEWLINE);
+            }
+
+            String address = label.getAddress();
+            if(!address.isEmpty()) {
+                info.add(new Chunk(address, font));
+                info.add(Chunk.NEWLINE);
+            }
+            font = new Font(lfontType, lfontSize, Font.BOLD);
+
+            String lastLine = label.getLastLine();
+            if(!lastLine.isEmpty()) {
+                lastLine = lastLine.trim();
+                info.add(new Chunk(lastLine, font));
+            }
+        }
+        return info;
+    }
+    
+    /* Commented on 27-June-2015
+    public Paragraph getLabelContent(ResultSet rs) throws SQLException
+    {
+        // String subscriberNumber = null, journalCode = null, subtypecode = null, startDate = null, endDate = null;
+        // String subscriberName   = null, department = null, institution = null, address = null;
+        // String city             = null, pincode = null, state = null, country = null;
+        // String startYear=null, startMonth=null, endYear=null, endMonth=null;
+        // String subType=null; int copies = 0;
 
         Paragraph info = null;
 
@@ -1240,11 +1296,11 @@ public convertToPdf(){
                 info.add(Chunk.NEWLINE);
             }
             font = new Font(lfontType, lfontSize, Font.BOLD);
-            /*String lastLine = sLabelInfo.getcity() +
-                    " " + sLabelInfo.getpincode() +
-                    " " + sLabelInfo.getstate() +
-                    " ";
-            */
+            // String lastLine = sLabelInfo.getcity() +
+            //        " " + sLabelInfo.getpincode() +
+            //        " " + sLabelInfo.getstate() +
+            //        " ";
+            
             String lastLine = "";
             if(!sLabelInfo.getcity().isEmpty()) {
                 lastLine = lastLine + sLabelInfo.getcity();
@@ -1280,16 +1336,76 @@ public convertToPdf(){
         }
         return info;
     }
+*/
     
     public Paragraph getStickerContent(ResultSet rs) throws SQLException
     {
-        /*
-        String subscriberNumber = null, journalCode = null, subtypecode = null, startDate = null, endDate = null;
-        String subscriberName   = null, department = null, institution = null, address = null;
-        String city             = null, pincode = null, state = null, country = null;
-        String startYear=null, startMonth=null, endYear=null, endMonth=null;
-        String subType=null; int copies = 0;
-        */
+        
+        Paragraph info = null;
+
+        if(rs.next())
+        {
+            CreateLabels label = new CreateLabels(rs, noHeader);            
+
+            info = new Paragraph();
+            info.setLeading(leading);
+            info.setAlignment(textAlignment);
+
+            Font font;
+            if(!noHeader){
+                font = new Font(sfontType, sfontSizeHeader, sfontStyle, BaseColor.BLACK);
+                String firstLine = label.getFirstLine();
+                if(!firstLine.isEmpty()) {
+                    info.add(new Chunk(firstLine, font));
+                    info.add(Chunk.NEWLINE);
+                }
+            }
+            font = new Font(sfontType, sfontSize, sfontStyle, BaseColor.BLACK);
+
+            String subscriberName = label.getSubscriberName();
+            if(!subscriberName.isEmpty()) {
+                info.add(new Chunk(subscriberName, font));
+                info.add(Chunk.NEWLINE);
+            }
+            
+            String department = label.getDepartment();
+            if(!department.isEmpty()) {
+                info.add(new Chunk(department, font));
+                info.add(Chunk.NEWLINE);
+            }
+            
+            String institution = label.getInstitution();
+            if(!institution.isEmpty()) {
+                info.add(new Chunk(institution, font));
+                info.add(Chunk.NEWLINE);
+            }
+
+            String address = label.getAddress();
+            if(!address.isEmpty()) {
+                info.add(new Chunk(address, font));
+                info.add(Chunk.NEWLINE);
+            }
+
+            font = new Font(sfontType, sfontSize, Font.BOLD);
+            String lastLine = label.getLastLine();
+            if(!lastLine.isEmpty()) {
+                lastLine = lastLine.trim();
+                info.add(new Chunk(lastLine, font));
+            }
+        }
+        return info;
+    }    
+    
+    /* Commented on 27-June-2015
+    public Paragraph getStickerContent(ResultSet rs) throws SQLException
+    {
+        
+        //String subscriberNumber = null, journalCode = null, subtypecode = null, startDate = null, endDate = null;
+        //String subscriberName   = null, department = null, institution = null, address = null;
+        //String city             = null, pincode = null, state = null, country = null;
+        //String startYear=null, startMonth=null, endYear=null, endMonth=null;
+        //String subType=null; int copies = 0;
+        
 
         Paragraph info = null;
 
@@ -1347,12 +1463,12 @@ public convertToPdf(){
             }
 
             font = new Font(sfontType, sfontSize, Font.BOLD);
-            /*
-            String lastLine = sLabelInfo.getcity() +
-                    " " + sLabelInfo.getpincode() +
-                    " " + sLabelInfo.getstate() +
-                    " ";
-            */
+            
+            //String lastLine = sLabelInfo.getcity() +
+            //        " " + sLabelInfo.getpincode() +
+            //        " " + sLabelInfo.getstate() +
+            //        " ";
+            
             String lastLine = "";
             if(!sLabelInfo.getcity().isEmpty()) {
                 lastLine = lastLine + sLabelInfo.getcity();
@@ -1388,6 +1504,7 @@ public convertToPdf(){
         }
         return info;
     }
+    */
 
 
     /*

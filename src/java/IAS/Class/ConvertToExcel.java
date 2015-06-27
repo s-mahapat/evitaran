@@ -242,72 +242,36 @@ public class ConvertToExcel {
 
         while(rs.next())
         {
-            subInfo sLabelInfo = new subInfo(rs);
+            CreateLabels label = new CreateLabels(rs, noHeader);
 
-            String firstLine = sLabelInfo.getsubscriberNumber() + " " + sLabelInfo.getjournalCode();
-
-            if(sLabelInfo.getcopies() > 1){
-                firstLine = firstLine + " " + sLabelInfo.getcopies();
-            }
-            firstLine = firstLine + " " + sLabelInfo.getsubtypecode();            
-            
-            if(!noHeader){
-                if(sLabelInfo.getsubType().equals("Paid")) {
-                    firstLine = firstLine + " " + sLabelInfo.getstartDate() +
-                        " " + "to" +
-                        " " + sLabelInfo.getendDate();
-                }
-            }
+            String firstLine = label.getFirstLine();
             if(!firstLine.isEmpty()) {
                 firstLine = firstLine + "\n";
             }            
             
-            if(!sLabelInfo.getsubscriberName().isEmpty()) {
-                firstLine = firstLine + sLabelInfo.getsubscriberName() + "\n";
-            }
-            if(!sLabelInfo.getdepartment().isEmpty()) {
-                firstLine = firstLine + sLabelInfo.getdepartment() + "\n";
-            }
-            if(!sLabelInfo.getinstitution().isEmpty()) {
-                firstLine = firstLine + sLabelInfo.getinstitution() + "\n";
-            }
-
-            if(!sLabelInfo.getaddress().isEmpty()) {
-                firstLine = firstLine + sLabelInfo.getaddress() + "\n";
-            }
-
-            String lastLine = "";
-            if(!sLabelInfo.getcity().isEmpty()) {
-                lastLine = lastLine + sLabelInfo.getcity();
-            }
-            if(sLabelInfo.getcity().isEmpty()) {
-                lastLine = lastLine + sLabelInfo.getpincode();
-            } else {
-                lastLine = lastLine + " " + sLabelInfo.getpincode();
-            }
-            if(sLabelInfo.getpincode().isEmpty()){
-                lastLine = lastLine + sLabelInfo.getstate();
-            } else {
-                lastLine = lastLine + " " + sLabelInfo.getstate();
-            }
-
-            String country = "";
-            if(!sLabelInfo.getcountry().equals("India")){
-                country = sLabelInfo.getcountry();
-            }
-
-            if(sLabelInfo.getstate().isEmpty()){
-                lastLine = lastLine + country;
-            } else {
-                lastLine = lastLine + " " + country;
-            }
-
-            if(!lastLine.isEmpty()) {
-                lastLine = lastLine.trim();
-                firstLine = firstLine + lastLine + "\n";
+            String subscriberName = label.getSubscriberName();
+            if(!subscriberName.isEmpty()) {
+                subscriberName = subscriberName + "\n";
             }
             
-            labels.add(firstLine);
+            String department = label.getDepartment();
+            if(!department.isEmpty()) {
+                department = department + "\n";
+            }
+            
+            String institution = label.getInstitution();
+            if(!institution.isEmpty()) {
+                institution = institution + "\n";
+            }
+
+            String address = label.getAddress();
+            if(!address.isEmpty()) {
+                address = address + "\n";
+            }
+
+            String lastLine = label.getLastLine();
+            
+            labels.add(firstLine + subscriberName + department + institution + address + lastLine);
         }
         return labels;
     }
