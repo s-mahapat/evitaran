@@ -40,16 +40,17 @@
                     rownumbers: true,
                     emptyrecords: "No Reminders Found",
                     loadtext: "Loading...",
-                    colNames:['Subscription Id','Subscriber Type','Subscriber Number','Subscriber Name',
-                        'Balance','reminder Type','Reminder date','Email'],
+                    colNames:['Subscription Id','Subscriber Type','Subscriber Number','Subscriber Name', 'Invoice Number',
+                        'Balance','Reminder Type','Reminder Date','Email'],
                     colModel :[
                         {name:'subId', index:'subId', width:50, align:'center', xmlmap:'subId'},
                         {name:'subtypecode', index:'subtypecode', width:50, align:'center', xmlmap:'subtypecode'},
                         {name:'subscriberNumber', index:'subscriberNumber', width:80, align:'center', xmlmap:'subscriberNumber'},
                         {name:'subscriberName', index:'subscriberName', width:80, align:'center', xmlmap:'subscriberName'},
+                        {name:'invoiceNumber', index:'invoiceNumber', width:80, align:'center', xmlmap:'invoiceNumber'},
                         {name:'balance', index:'balance', width:80, align:'center', xmlmap:'balance'},
-                        {name:'reminderType', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderType'},
-                        {name:'reminderDate', index:'subscriber_id', width:50, align:'center', xmlmap:'reminderDate'},
+                        {name:'reminderType', index:'reminderType', width:50, align:'center', xmlmap:'reminderType'},
+                        {name:'reminderDate', index:'reminderDate', width:50, align:'center', xmlmap:'reminderDate'},
                         {name:'email', index:'email', width:50, align:'center', xmlmap:'email'}
                     ],
                     xmlReader : {
