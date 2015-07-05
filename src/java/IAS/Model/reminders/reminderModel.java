@@ -138,6 +138,7 @@ public class reminderModel extends JDSModel {
                 int paramIndex = 1;
                 while (rs.next()) {
                     subscriptionId = rs.getInt("subscriptionId");
+                    int invoiceId = rs.getInt("invoiceId");
                     int amount = rs.getInt("amount");
                     int payment = rs.getInt("payment");
                     int balance = 0;
@@ -145,6 +146,7 @@ public class reminderModel extends JDSModel {
                     if (balance > 0) {
                         paramIndex = 1;
                         stInsRem.setInt(paramIndex, subscriptionId);
+                        stInsRem.setInt(++paramIndex, invoiceId);
                         stInsRem.setInt(++paramIndex, balance);
                         stInsRem.setInt(++paramIndex, remType);
                         stInsRem.executeUpdate();
