@@ -240,6 +240,7 @@ public class msgsend {
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (IOException | MessagingException ex) {
+            logger.error(ex);
             return false;
         }
         return true;
@@ -347,6 +348,7 @@ public class msgsend {
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (IOException | MessagingException ex) {
+            logger.error(ex);
             return false;
         }
         return true;
@@ -433,6 +435,7 @@ public class msgsend {
             // send the thing off
             Transport.send(message);
         } catch (IOException | MessagingException ex) {
+            logger.error(ex);
             return false;
         }
         return true;
@@ -529,6 +532,7 @@ public class msgsend {
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (IOException | MessagingException ex) {
+            logger.error(ex);
             return false;
         }
         return true;
