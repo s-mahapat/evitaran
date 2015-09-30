@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -241,6 +242,10 @@ public class OutStandingPendingBillPDF extends JDSPDF {
         table.addCell(cell3);
         float total = 0;
         float discountedTotal = 0;
+        
+        // hash map having prices of each journal grp, it cannot have duplicate
+        // entries
+        HashMap journalGrpPrices = new HashMap();
 
         SubscriptionModel _model = new SubscriptionModel(request);
         java.util.List<IAS.Bean.Subscription.SubscriptionDetail> sub_details = _model.getSubscriptionDetailsObjectsForInward(InwardNumber);
@@ -252,8 +257,21 @@ public class OutStandingPendingBillPDF extends JDSPDF {
             String endDate = String.valueOf(detail.getEndMonth()) + "/" + String.valueOf(detail.getEndYear());
             String journalPrice = String.valueOf(detail.getRate());
             String period = String.valueOf(detail.getPeriod());
-            discountedTotal = detail.getTotal();
-
+            int journalID = detail.getJournalID();
+            int journalGrpID = detail.getJournalGroupID();
+            
+            // if the jrnl id and grp id are the same it means its a individual
+            // journal, so add the up the total
+            if(journalID == journalGrpID){
+                discountedTotal += detail.getTotal();
+            // if the jrnl id and grp id are different and not already present
+            // in the hash map, add it to hash map and add to total. if this is
+            // not done the price for jrnl grp will be added multiple times.
+            }else if(!journalGrpPrices.containsKey(journalGrpID)){
+                journalGrpPrices.put(journalGrpID, detail.getTotal());
+                discountedTotal += detail.getTotal();
+            }
+            
             //update the total for the entire subscription
             total += detail.getRate();
 
