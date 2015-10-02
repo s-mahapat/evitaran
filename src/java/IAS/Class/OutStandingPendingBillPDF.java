@@ -315,9 +315,21 @@ public class OutStandingPendingBillPDF extends JDSPDF {
 
         table.addCell(totalCell);
         table.addCell(totalValue);
+        
+        float discount = total - discountedTotal;
 
         // show the discount row only if it is available
-        if (total > discountedTotal) {
+        if (discount > 0) {
+            
+            PdfPCell discountCell = new PdfPCell(new Phrase("Discount", JDSPDF.JDS_FONT_NORMAL_SMALL));
+            discountCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            discountCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            discountCell.setColspan(5);
+
+            String _discount = String.format("%.1f", (float) discount);
+            PdfPCell discountedValue = new PdfPCell(new Phrase(_discount, JDSPDF.JDS_FONT_NORMAL_SMALL));
+            discountedValue.setHorizontalAlignment(Element.ALIGN_CENTER);
+            discountedValue.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
             PdfPCell totalDueCell = new PdfPCell(new Phrase("Total after discount", JDSPDF.JDS_FONT_NORMAL_SMALL));
             totalDueCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -329,6 +341,8 @@ public class OutStandingPendingBillPDF extends JDSPDF {
             totalDiscountedValue.setHorizontalAlignment(Element.ALIGN_CENTER);
             totalDiscountedValue.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
+            table.addCell(discountCell);
+            table.addCell(discountedValue);
             table.addCell(totalDueCell);
             table.addCell(totalDiscountedValue);
         }
