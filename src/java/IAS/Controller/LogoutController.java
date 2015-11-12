@@ -36,7 +36,13 @@ public class LogoutController extends JDSController {
         HttpSession session = this.req.getSession(false);        
         if (session != null) {
             session.setMaxInactiveInterval(0);
+            
+            // remove the user bean
+            session.removeAttribute("userBean");
+            
             session.invalidate();
+            
+            //session.setAttribute("userBean", null);
             this.resp.sendRedirect(url + "/jsp/home.jsp");
         }
         //RequestDispatcher rd = getServletContext().getRequestDispatcher("/jsp/home.jsp");
