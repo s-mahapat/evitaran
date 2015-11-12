@@ -255,25 +255,27 @@ public class OutStandingPendingBillPDF extends JDSPDF {
             String copies = String.valueOf(detail.getCopies());
             String startDate = String.valueOf(detail.getStartMonth()) + "/" + String.valueOf(detail.getStartYear());
             String endDate = String.valueOf(detail.getEndMonth()) + "/" + String.valueOf(detail.getEndYear());
-            String journalPrice = String.valueOf(detail.getRate());
+            String journalPrice = String.valueOf(detail.getRate() * detail.getCopies());
             String period = String.valueOf(detail.getPeriod());
             int journalID = detail.getJournalID();
             int journalGrpID = detail.getJournalGroupID();
+            float _discountedTotal = detail.getTotal() * detail.getCopies();
             
             // if the jrnl id and grp id are the same it means its a individual
             // journal, so add the up the total
             if(journalID == journalGrpID){
-                discountedTotal += detail.getTotal();
+                discountedTotal += _discountedTotal;
             // if the jrnl id and grp id are different and not already present
             // in the hash map, add it to hash map and add to total. if this is
             // not done the price for jrnl grp will be added multiple times.
             }else if(!journalGrpPrices.containsKey(journalGrpID)){
-                journalGrpPrices.put(journalGrpID, detail.getTotal());
-                discountedTotal += detail.getTotal();
+                journalGrpPrices.put(journalGrpID, _discountedTotal);
+                discountedTotal += _discountedTotal;
             }
             
+            
             //update the total for the entire subscription
-            total += detail.getRate();
+            total += detail.getRate() * detail.getCopies();
 
             PdfPCell c1 = new PdfPCell(new Phrase(journalName, JDSPDF.JDS_FONT_NORMAL_SMALL));
             c1.setHorizontalAlignment(Element.ALIGN_LEFT);

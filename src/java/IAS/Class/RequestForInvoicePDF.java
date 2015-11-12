@@ -248,11 +248,11 @@ public class RequestForInvoicePDF extends JDSPDF {
             String copies = String.valueOf(detail.getCopies());
             String startDate = String.valueOf(detail.getStartMonth()) + "/" + String.valueOf(detail.getStartYear());
             String endDate = String.valueOf(detail.getEndMonth()) + "/" + String.valueOf(detail.getEndYear());
-            String journalPrice = String.valueOf(detail.getRate());
+            String journalPrice = String.valueOf(detail.getRate() * detail.getCopies());
             String period = String.valueOf(detail.getPeriod());
 
             //update the total for the entire subscription
-            total += detail.getRate();
+            total += detail.getRate() * detail.getCopies();
 
             PdfPCell c1 = new PdfPCell(new Phrase(journalName, JDSPDF.JDS_FONT_NORMAL_SMALL));
             c1.setHorizontalAlignment(Element.ALIGN_LEFT);
