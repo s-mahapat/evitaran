@@ -35,7 +35,14 @@ public class LogoutController extends JDSController {
         String url = context.getContextPath();
         HttpSession session = this.req.getSession(false);        
         if (session != null) {
-            session.setMaxInactiveInterval(0);
+            
+            this.resp.setHeader("Pragma","no-cache");
+            this.resp.setHeader("Cache-Control","no-cache");
+            this.resp.setHeader("Cache-Control","no-store"); 
+            this.resp.setHeader("Expires","0"); 
+            this.resp.setDateHeader("Expires",-1);
+            
+            //session.setMaxInactiveInterval(0);
             
             // remove the user bean
             session.removeAttribute("userBean");
