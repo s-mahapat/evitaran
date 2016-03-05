@@ -32,6 +32,7 @@ public class PlReferListPDF extends JDSPDF {
     private InvoiceModel _InvoiceModel = null;
     private SubscriptionModel _SubscriptionModel = null;
     private static final Logger logger = JDSLogger.getJDSLogger(PlReferListPDF.class.getName());
+    private int prlId = 0;
 
     public PlReferListPDF() throws SQLException {
         super();
@@ -63,6 +64,7 @@ public class PlReferListPDF extends JDSPDF {
             try (ResultSet _rs = _pst.executeQuery()) {
                 if (_rs.first()) {
                     prl_id = _rs.getInt(1);
+                    this.prlId = prl_id;
                 }
 
             } catch (Exception ex) {
@@ -271,6 +273,7 @@ public class PlReferListPDF extends JDSPDF {
             // get price for next year
             pst.setInt(1, currentYear);
             pst.setInt(2, _invoiceBean.getSubscriptionID());
+            pst.setInt(3, this.prlId);
 
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
