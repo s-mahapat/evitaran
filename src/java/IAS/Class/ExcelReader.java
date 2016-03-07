@@ -79,8 +79,10 @@ public class ExcelReader {
 
         }
         boolean EmptyRow = true;
-        for(int col=0; col<rowData.length; col++){
-            if(rowData[col].getType() != CellType.EMPTY ){
+        for (Cell cell : rowData) {
+            
+            // ensure that its not an empty cell and also there are no contents
+            if (cell.getType() != CellType.EMPTY && cell.getContents().trim().length() > 0) {
                 EmptyRow = false;
                 break;
             }
