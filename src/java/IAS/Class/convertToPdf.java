@@ -1092,7 +1092,7 @@ public convertToPdf(){
                     }
 
                     float x = leftMargin + ((stickerWidth + gapAcrossStickers)*(r-1));
-                    float y = pageHeight - (topMargin+(stickerHeight*i));
+                    float y = pageHeight - (bottomMargin +(stickerHeight*i));
 
                     float llx = x;
                     float lly = y + stickerHeight;
