@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
@@ -1040,6 +1041,8 @@ public convertToPdf(){
 
         // step 3
         document.open();
+        document.setMargins(0,0,0,0);
+        
 
         Properties properties = getMailingListProperties();
 
@@ -1051,6 +1054,7 @@ public convertToPdf(){
         float stickerWidth  = Float.valueOf(properties.getProperty("stickerWidth").trim()).floatValue();   //9.91cms
         float rightMargin   = Float.valueOf(properties.getProperty("rightMargin").trim()).floatValue();    //4.9mm
         float gapAcrossStickers = Float.valueOf(properties.getProperty("gapAcrossStickers").trim()).floatValue(); //2mm
+        float safetyMargin  =  Float.valueOf(properties.getProperty("safetyMargin").trim()).floatValue(); //2mm
         //Total Width = 4.9 + 99.1*2 + 4.9 + 2.0 = 206
 
         float topMargin     = Float.valueOf(properties.getProperty("topMargin").trim()).floatValue();    //12.9cms
@@ -1092,32 +1096,34 @@ public convertToPdf(){
                     }
 
                     float x = leftMargin + ((stickerWidth + gapAcrossStickers)*(r-1));
-                    float y = pageHeight - (bottomMargin +(stickerHeight*i));
+                    //float y = pageHeight - (bottomMargin +(stickerHeight*i));
+                    float y = pageHeight - topMargin - (stickerHeight * (i-1));
 
-                    float llx = x;
-                    float lly = y + stickerHeight;
+                    float llx = x + safetyMargin;
+                    float lly = y - stickerHeight;
                     float urx = llx + stickerWidth;
-                    float ury = lly - stickerHeight;
-                    x = Utilities.millimetersToPoints(x);
-                    y = Utilities.millimetersToPoints(y);
+                    float ury = lly + stickerHeight - safetyMargin;
 
-                    //logger.debug("Row: " + i + " Col: " + r + " " + llx + " " + lly + " " + " " + urx + " " + ury);
 
+                    System.out.println("Row: " + i + " Col: " + r + " " + llx + " " + lly + " " + " " + urx + " " + ury);
+                                     
                     llx = Utilities.millimetersToPoints(llx);
-                    lly = Utilities.millimetersToPoints(lly) - Utilities.millimetersToPoints(header);
+                    //lly = Utilities.millimetersToPoints(lly) - Utilities.millimetersToPoints(header);
+                    lly = Utilities.millimetersToPoints(lly);
                     urx = Utilities.millimetersToPoints(urx);
-                    ury = Utilities.millimetersToPoints(ury) - Utilities.millimetersToPoints(header);
-
-
-                    // Draw the boundary
+                    //ury = Utilities.millimetersToPoints(ury) - Utilities.millimetersToPoints(header);
+                    ury = Utilities.millimetersToPoints(ury);
+                 
                     /*
+                    // Draw the boundary                    
                     PdfContentByte canvas = writer.getDirectContent();
                     canvas.setRGBColorFill(0xFF, 0x45, 0x00);
                     canvas.setColorFill(BaseColor.WHITE);
-                    canvas.rectangle(x, y, Utilities.millimetersToPoints(stickerWidth), Utilities.millimetersToPoints(stickerHeight));
-                    canvas.fillStroke();
+                    //canvas.rectangle(llx-safetyMargin, lly, Utilities.millimetersToPoints(stickerWidth), Utilities.millimetersToPoints(stickerHeight));
+                    canvas.rectangle(llx-safetyMargin, lly, urx, ury);
+                    canvas.fillStroke();                     
                     */
-
+                    
                     // Create a column
                     ct.setSimpleColumn(llx, lly, urx, ury);
                     int status = ColumnText.START_COLUMN;
