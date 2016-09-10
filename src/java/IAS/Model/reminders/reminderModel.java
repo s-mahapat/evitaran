@@ -507,7 +507,7 @@ public class reminderModel extends JDSModel {
             // If message sending passed
             byte[] bytes = baos.toByteArray();
             DataSource ds = new ByteArrayDataSource(bytes, "application/pdf");
-            if (!sendMsg.sendMail(email, "", "jds.ias.mails@gmail.com", "Reminder", msg, "", "invoice.pdf", ds)) {
+            if (!sendMsg.sendMail(email, "", "", "Reminder", msg, "", "invoice.pdf", ds)) {
                 success = false;
                 message = message + " " + email;
             }

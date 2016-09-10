@@ -192,10 +192,9 @@ public class BulkEmailModel extends JDSModel {
         msgsend sendMsg = new msgsend("text/html");
         logger.debug("Starting to send emails");
         for (Address s : toUser) {
-            //boolean success = sendMsg.sendMail("", "", emailIDs + " jds.ias.mails@gmail.com", subject, msg, "", "", null);
             String email = s.toString();
 
-            if (!sendMsg.sendMail(email, "", "jds.ias.mails@gmail.com", subject, msg, "", "", null)) {
+            if (!sendMsg.sendMail(email, "", "", subject, msg, "", "", null)) {
                 success = false;
                 message = message + "\n" + email;
             }

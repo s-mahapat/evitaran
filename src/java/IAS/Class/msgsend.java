@@ -11,9 +11,6 @@ package IAS.Class;
  * datasource is null, then the file "fileName" will be attached with the mail
  * if fileName is not null or empty.
  *
- * jds.adm.all@gmail.com: This account is used to collect all the exception
- * messages jds.ias.mails@gmail.com: This account is used to collect all the
- * mails which are sent by IAS. All mails to this account are sent as bcc
  */
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -81,7 +78,7 @@ public class msgsend {
     }
 
     public void sendExceptionMail(String exceptionMsg) throws IOException {
-        this.sendMail(EXCEPTION_EMAIL, null, null, "Exception generated in JDS code", exceptionMsg, "JDS Exception Handler", null, null);
+        //this.sendMail(EXCEPTION_EMAIL, null, null, "Exception generated in JDS code", exceptionMsg, "JDS Exception Handler", null, null);
     }
 
     private static Mailer getMailer() throws IOException {
@@ -100,6 +97,7 @@ public class msgsend {
         email.setFromAddress(FROM_TEXT, FROM_EMAIL_ID);
         email.setSubject(Subject);
         email.addRecipient(SubscriberEmail, SubscriberEmail, RecipientType.TO);
+        if(BCC_EMAIL != null && !BCC_EMAIL.isEmpty())
         email.addRecipient("IAS", BCC_EMAIL, RecipientType.BCC);
         email.setText(body);
 
@@ -125,6 +123,7 @@ public class msgsend {
         email.setFromAddress(FROM_TEXT, FROM_EMAIL_ID);
         email.setSubject(Subject);
         email.addRecipient(SubscriberEmail, SubscriberEmail, RecipientType.TO);
+        if(BCC_EMAIL != null && !BCC_EMAIL.isEmpty())
         email.addRecipient("IAS", BCC_EMAIL, RecipientType.BCC);
         email.setText(body);
 
@@ -188,17 +187,17 @@ public class msgsend {
                 message.setFrom(addressFrom);
             }
 
-            if (!to.isEmpty()) {
+            if (to != null && !to.isEmpty()) {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
             }
             // To send mail to multiple people, comma separated
             // message.addRecipients(RecipientType.TO, TO);
             // Parse a comma-separated list of email addresses. Be strict.
-            if (!cc.isEmpty()) {
+            if (cc != null && !cc.isEmpty()) {
                 message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(cc, false));
             }
             // Parse comma/space-separated list. Cut some slack.
-            if (!bcc.isEmpty()) {
+            if (bcc != null && !bcc.isEmpty()) {
                 message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(bcc, false));
             }
 
@@ -296,17 +295,17 @@ public class msgsend {
                 message.setFrom(addressFrom);
             }
 
-            if (!to.isEmpty()) {
+            if (to != null && !to.isEmpty()) {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
             }
             // To send mail to multiple people, comma separated
             // message.addRecipients(RecipientType.TO, TO);
             // Parse a comma-separated list of email addresses. Be strict.
-            if (!cc.isEmpty()) {
+            if (cc != null && !cc.isEmpty()) {
                 message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(cc, false));
             }
             // Parse comma/space-separated list. Cut some slack.
-            if (!bcc.isEmpty()) {
+            if (bcc != null && !bcc.isEmpty()) {
                 message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(bcc, false));
             }
 
@@ -386,15 +385,15 @@ public class msgsend {
                 message.setFrom(addressFrom);
             }
 
-            if (!to.isEmpty()) {
+            if (to != null && !to.isEmpty()) {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
             }
 
-            if (!cc.isEmpty()) {
+            if (cc != null && !cc.isEmpty()) {
                 message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(cc, false));
             }
 
-            if (!bcc.isEmpty()) {
+            if (bcc != null && !bcc.isEmpty()) {
                 message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(bcc, false));
             }
 
@@ -478,17 +477,17 @@ public class msgsend {
                 message.setFrom(addressFrom);
             }
 
-            if (!to.isEmpty()) {
+            if (to != null && !to.isEmpty()) {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
             }
             // To send mail to multiple people, comma separated
             // message.addRecipients(RecipientType.TO, TO);
             // Parse a comma-separated list of email addresses. Be strict.
-            if (!cc.isEmpty()) {
+            if (cc != null && !cc.isEmpty()) {
                 message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(cc, false));
             }
             // Parse comma/space-separated list. Cut some slack.
-            if (!bcc.isEmpty()) {
+            if (bcc != null && !bcc.isEmpty()) {
                 message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(bcc, false));
             }
 
