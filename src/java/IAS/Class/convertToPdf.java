@@ -1869,7 +1869,7 @@ public convertToPdf(){
         String template8 = "Thanking you,";
         String template9 = "Yours Sincerely,";
         String template10 = "For Circulation Department.";
-        String template11 = "EMail:orders@ias.ernet.in";
+        String template11 = "EMail:orders@ias.ac.in";
 
         cb.newlineText();
         cb.newlineShowText(template1);
@@ -1900,7 +1900,7 @@ public convertToPdf(){
         String template4 = "Thanking you in anticipation,";
         String template5 = "Yours Sincerely,";
         String template6 = "For Circulation Department.";
-        String template7 = "EMail:orders@ias.ernet.in";
+        String template7 = "EMail:orders@ias.ac.in";
         String template8    = "***************************************";
         String template9    = "PLEASE ALWAYS QUOTE THE";
         String template10   = "ABOVE MENTIONED SUB. NO.";
@@ -1947,7 +1947,7 @@ public convertToPdf(){
         String template4 = "Thanking you in anticipation,";
         String template5 = "Yours Sincerely,";
         String template6 = "For Circulation Department.";
-        String template7 = "EMail:orders@ias.ernet.in";
+        String template7 = "EMail:orders@ias.ac.in";
         String template8    = "****************************";
         String template9    = "PLEASE ALWAYS QUOTE THE ABOVE MENTIONED SUB. NO. IN ALL CORRESPONDENCE CLAIMS, ETC.";
 
